@@ -1,0 +1,16 @@
+h2. SmartStyle Office Product description
+
+SmartStyle Computing is a private cloud solution, which replaces conventional hardware and infrastructure with virtual desktops, servers and networking.
+
+SmartStyle Office includes:
+* *Hardware*: Our solution is based on an integrated hardware stack that runs virtual servers, desktops and networks.
+* *Cloud Management Center*: The Cloud Management Center (CMC) is a web-based console which allows you to centrally manage your private cloud. You can effortlessly incorporate additional nodes into your environment, manage virtual machines and define your business continuity policy.
+* *Unbreakable Storage System*: The BitSpread Storage technology ensures data is stored across multiple nodes to protect against data loss in case of a disk or node failure.
+* *Monitoring Kit*: Our SmartStyle Office solution meticulously monitors all network, CPU and memory activity of virtual servers and virtual desktops so no unusual behaviour goes unnoticed. Optionally partners can buy the Managed Services Module Server Care, Server Watch and Total Desktop care from Zenith that does OS and Application monitoring.
+* *Backup*: SmartStyle uses the BitLog sequential write technology to create storage efficient snapshots of your data every 15 minutes. These snapshots provide you with various restore points to ensure business continuity.
+* *24/7 Support*: choice of 3 support models going from standard package with extensive self support tools and fully included defect support to a support model including a personal service manager
+* *3 year warranty*: Zenith Infotech offers 3 years all inclusive warranty on the SmartStyle Office solution.
+
+
+!aserver_productview1.png!
+

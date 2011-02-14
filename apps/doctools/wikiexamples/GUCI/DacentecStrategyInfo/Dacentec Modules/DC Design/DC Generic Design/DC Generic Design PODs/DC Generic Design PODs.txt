@@ -1,0 +1,46 @@
+h3. Datacenter POD
+
+The Datacenter POD is a fully independent datacenter including 60 racks.
+
+* The POD design is used for both plate racks and for colocation purposes.
+* Each POD has 60 racks, a dedicated generator, dedicated cooling, dedicated switchboard, dedicated fire security system.
+* Each 5 PODs share a backup generator (N+1 redundancy).
+* Optionally, a 2 (N+1) system can be implemented where each POD has redundant components and can still failover to generators of other PODs
+* The Switchboard includes the functionality to switch between the external feed (utility companny) and the internal feed (generators)
+* Each row in the POD has its own PDU (Power Distribution Unit) that also includes a fuse for each rack
+
+The cooling is a closed loop principle that is designed as follows:
+* 2 rows of rack are frontal faced and closed by the sides
+* around the rows chilled air is blown in from top roof cooling units
+* the chilled air is sucked in by the ventilators of the servers (colo) or plate racks (cloud)
+* the hot air raises in the closed corridor in between the rows and is sucked out and send to the chillers to cool down the air
+
+There are 2 types of PODs: Cloud Datacenter PODs & Colocation PODs
+
+The cloud datacenter POD includes:
+* 60 Plate Racks
+* 5kW per rack, 48V DC
+* 300kW per POD
+* Conversion of AC-DC inside the rack
+* 6KVA UPS per rack, 48V
+* Cooling per POD
+* 750 kW Generator
+* 1600A 480V Switchboard
+
+The Colocation datacenter POD includes:
+* 60 Racks per POD
+* 5kW per rack, 208V AC
+* 300kW per POD
+* 550 KVA UPS per POD
+* Cooling per POD
+* 750 kW Generator
+* 1600A 480V Switchboard
+* Possible upgrade to 2N+1
+
+PODs are installed side to side with independent supplies:{br}{br} !dacentec_dc_floorplan_modules.png|border=0, width=800!
+{pagebreak}
+Detail of a POD:{br}{br} !dacentec_dc_floorplan_module_detail.png|border=0, width=800!
+
+Air temperatures inside the POD: around the racks cool airm in between heated air:{br}{br} !dacentec_dc_flooplan_airco.png|border=0, width=400!
+
+{pagebreak}

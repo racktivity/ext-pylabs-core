@@ -1,0 +1,71 @@
+h1. DAAS 2.0
+
+h3. Back office
+
+* DIY team in india Active for SSO & DAAS
+** DIY team india is 1st & 2nd level support
+** 2 US guys 3rd line support
+
+h3. Storage:
+
+* S3 & FTP & WEBDAV storage on top of DSS volume
+* running in vmachine (monitor the performance, if too bad \-> move to XEN manually and maintain manually)
+* customer will only have root access to vmachine running in our main SSO (not to CMC until we have user mgmt)
+* per S3 namespace create DSS volume
+* choose mgmt interface for FTP, S3, Webdav (e.g. stripped down webmin)
+* manually configuration & deployment & support by our DIY team in India
+* max 100 TB supported for now per volume (do test in testlab amplidata)
+* choose most reliable filesystem
+* 4/16 policy dss
+* this will require separate storage / cpu nodes
+
+h3. CPU
+
+* standard dedicated SSO 3 node as minimum, local storage
+* can expand to X node SSO and even dedicated additional storage nodes or CPU nodes
+
+h3. Monitoring active for basic services
+
+* Storage: storage vmachine performance ok, s3, ftp, webdav
+* CPU: NOC for std SSO
+* Network monitoring (see William)
+
+h3. Locations
+
+* Datacenters = Datentec, NOC also there
+* 2 locations to start with
+
+h3. infra
+
+* Storage: At least 200 TB per location
+** e.g. 20 new storage nodes Amplidata in each location
+* CPU: 60 CPU nodes US location, 30 CPU nodes EUR location (allows us to build 30 environments we can hand out)
+* Invoices with deferred payments from Zenith & Amplidata from out of Dacentec
+
+
+h1. DAAS 2.1
+
+h3. Timing
+
+* End Feb
+
+h3. Cloud Marketplace
+
+* nice looking website (confluence) with info per appliance (Arvid?)
+* example appliances
+** Bacula backup appliance (*y)
+** visiosafe: [http://www.visiosafe.com/] (*y)
+** Storage Appliance (same as one used above), billed following used TB/month
+** XAMPP appliance
+** 20\+ free premade appliances (osticket, joomla, mantis, …)
+* (*y) Free for first 6 months, paying afterwards
+* technology (1-2 manweeks of work)
+** from out of CMC link to marketplace website and use SSO GUID
+*** the SSO guid is id for SSO and allows scripts behind the marketplace to import the relevant appliances and do additional steps
+** Market place uses wizards per appliance which execute remote calls to required SSO to get the vmachines imported
+** If async jobs are required event/queue/worker approach is used like in reservation site
+
+h3. Other features
+
+* SSO with granular user rights
+* XEN support

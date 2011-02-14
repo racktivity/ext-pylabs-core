@@ -1,0 +1,20 @@
+h2. DC Automate solution
+
+We have developed DC Automate which is a cloud software only solution.
+DC Automate is based on the framework that is used to build the A-Server public cloud solution Datacenter As A Service (DAAS) and the Aserver private cloud solution called SmartStyle Office (SSO).
+
+The DC automate technology allows you to:
+* build the most capable & flexible cloud available
+* build the most cost effective cloud available
+* Have an unbreakable storage system
+* Control of your power utilization
+* Give control to your customers
+* Improve MTBF & MTBR (mean time between repairs)
+* Manage your datacenters
+
+This suite is the result of 15Y of development and many product iterations.
+
+We deliver DC Automate as part of custom projects where everything is possible.
+These are large scale strategic projects in which A-server wil partner tightly with the customer.
+
+Guaranteed we can allow our customers to build any kind of cloud solution independant from hypervisor, hardware, network, .... 

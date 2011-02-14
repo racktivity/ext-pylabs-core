@@ -1,0 +1,7 @@
+h2. Racktivity: problems we are trying to resolve, situation of the market
+
+In the last 10 years, the energy consumption and cost of data centers has increased significantly due to the rising cost of electricity, increased power density of servers&racks, therefore, the increased capacity of cooling systems. Globally, the phenomenal growth of digital content and media, combined with wide spread use of cloud computing and hosted solutions require both corporate and commercial data centers to expand capacity and compute density to meet the demand. According to IDC, the projected worldwide installed base of servers is 45 million at the end of 2010 where 40-45% are based in the U.S. and 30-35% are located in Europe.
+
+In addition, Gartner estimates that 48% of the data center budget is spent on energy, up from 8% ten years ago. In the U.S., the total data center energy consumption is estimated to be 100 Tera Watt hours in 2010, which is approximately 10-11 billion dollar of electricity fees annually.
+
+While the energy consumption thus energy cost of data centers continue to escalate the data center managers do not have access the detailed current and precise information on the energy use by IT assets in the data center.

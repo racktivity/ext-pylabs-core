@@ -1,0 +1,41 @@
+h2. MirrorCloud Product description
+
+SmartStyle MirrorCloud is a complete business continuity offering for servers and desktops consists of a closely integrated stack of hardware, software and services:
+
+*Hardware*
+* Scalable infrastructure which can grow with the customer needs
+* Unbreakable storage to ensure maximum reliability
+* High performance due to integrated Solid State Disk
+* Flexibility to add more storage or more CPU capacity according to the needs
+
+*Software*
+* Backup of Windows desktops and servers
+* Data is mirrored with retention points every 15 minutes
+* Seamless P2V, V2V or V2P
+
+*Services*
+* Integrated monitoring with 24/7 escalation
+* Monthly test virtualizations to ensure maximum business continuity
+* 24/7 helpdesk for implementation & troubleshooting support
+* White-labeled solution allowing to add additional services
+
+SmartStyle MirrorCloud Overview:
+
+!aserver_mc_overview.png|border=0, width=800!
+
+SmartStyle MirrorCloud features overview:
+* Backup for Windows Servers and Desktops
+* Continuous Data Mirroring
+* Near instant Standby server
+* Built-in Snapshotting
+* Scale as you grow
+* Failover server capability
+* Built-in high reliable SAN storage
+* File and Folder level restores
+* Message or Exchange object recovery
+* Offsite replication of the data
+* Ready for Private Cloud Activation
+* White labeled product at an SMB tailored price
+
+!aserver_mc_features.png|border=0, width=800!
+

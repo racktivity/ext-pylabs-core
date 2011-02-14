@@ -1,0 +1,15 @@
+h3. Datacenter Peering Room
+
+
+
+Private Peering, Public Peering, Transit, Dark Fiber, Wavelengths, Ethernet High Speed, MPLS (Multiprotocol Label Switching), Leased lines will all be connected to the peering room, also called the meet the room.
+
+Private Peering is an interconnection between the customers and the telcos (most of the cases) or between datacenter customers. Also public peering is often installed in the datacenter in the form of a public exchange switch within the datacenter so that customers can exchange data without the need to have a private connection.
+
+If 2 parties want to be connected with a private peering, a cable will be installed inside the customers rack that guides towards the peering room. Inside the peering room, the connection is made inside a rack that typically has drawers in which the connection of the cables is done.
+
+&nbsp;&nbsp;&nbsp; !dacentec_dc_peering.png|border=0, width=310! 
+
+Telcos will deliver access to their bandwidth systems. In most cases the telco cables enter inside a telco room. Inside that room each telco installs its equipment that is used to route the customers traffic inside the datacenter and to manage the datastream wave and the cables.
+
+When a customer peers with a telco, the telco provides transit to that customer. For the transit the datacenter customer will pay the telco a monthly fee, often based on a fix number of Mbps (Megabits per second) and often also allowing peaks for short times or at extra variable charges.

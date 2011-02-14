@@ -1,0 +1,26 @@
+from cloud_api_rootobjects import cloud_api_$className
+
+class $className:
+
+    def __init__(self):
+        self._rootobject = cloud_api_${className}.${className}()
+#for $method in $methods:
+
+    def $method.name (self, $method.args):
+        """
+        $method.docs
+        """
+#set $line = ','.join($method.argNames)
+        result = self._rootobject.${method.name}($line)
+#if $method.name == 'getObject':
+
+        from osis import ROOTOBJECT_TYPES
+        import base64
+        from osis.model.serializers import ThriftSerializer
+        result = base64.decodestring(result['result'])
+        result = ROOTOBJECT_TYPES['$className'].deserialize(ThriftSerializer, result)
+#end if
+        return result
+
+#end for
+

@@ -1,0 +1,17 @@
+h3. Arne Redlich - Storage Expert
+
+{table}{tr}{td:valign=top|width=500}
+
+Arne Redlich is Senior Software Engineer at storage company Amplidata. He is a linux storage developer with more than 6 years experience in iSCSI target development and 3 years in InfiniBand storage target development.
+
+He is the maintainer of the iSCSI Enterprise Target (IET) project and contributor to the TGT Linux SCSI Target Framework. He is an expert in the linux kernel and also did several contributions to it. He also supported several projects in the Linux storage area (SCST Generic SCST Target Subsystem for Linux, openiscsi iSCSI initiator).
+
+He has Profound knowledge of TCP/IP and InfiniBand protocol stacks and development of software / drivers based on these.
+
+He has Substantiated knowledge of SAN technologies and protocols (iSCSI, iSNS, SRP, iSER), Linux software RAID and device mapper (multipathing, volume management)
+
+Before he worked as a Platform Team Lead, Sphairon Access Systems GmbH, a German vendor of xDSL access systems. He was a Software Developer at Xiranet Communications GmbH, a company that specialised in iSCSI and InfiniBand storage systems.
+
+He started his carreer as System Administrator at Dresden University of Technology, Germany. He garduated in Computer Science also at Dresden University.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-arne.png|border=1, width=250! {td}{tr}{table}

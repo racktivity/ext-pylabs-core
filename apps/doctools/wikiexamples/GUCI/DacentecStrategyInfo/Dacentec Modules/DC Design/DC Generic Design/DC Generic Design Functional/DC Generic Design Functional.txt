@@ -1,0 +1,16 @@
+h3. Functional Rooms
+
+The are 2 large meeting rooms equipped with a projection wall. The meeting rooms have a direct window that shows the NOC (Network Operation Center). The window is special smart glass that includes a liquid crystal film between the two glass plates. As soon as the power is turned on in the glass, these crystals align themselves in a way that trans­forms the glass into a transparent surface. Each meeting room has private bathrooms and a direct access door to the kitchen for food supply purposes.
+
+2 of the offices have doors connecting directly to the NOC, hosting the NOC Office desks.
+
+All Electrical distribution is done via a dedicated electrical room. Next to that the Peering and Meet Me Room is placed.
+
+From the reception area, the access to the colo wing and cloud wing are fully seperated. Customers in the colo wing will not be able to access the cloud wing. For material purposes, a hallway from the colo wing to the cloud wing is foreseen for personnel only.
+
+The loading dock area is situated at the back of the building, next to teh electrical room. This allows temporary power containers to be installed nearby, for example when power maintenance works are executed.
+
+{br}
+{table}{tr}{td:valign=top}Loading dock, electrical room, customer cages:{br}{br} !dacentec_dc_floorplan_utilities.png|width=350! {td}{td:valign=top}Reception, Offices and Meeting Rooms:{br}{br} !dacentec_dc_floorplan_offices.png|width=350!{td}{tr}{table}
+
+{pagebreak}

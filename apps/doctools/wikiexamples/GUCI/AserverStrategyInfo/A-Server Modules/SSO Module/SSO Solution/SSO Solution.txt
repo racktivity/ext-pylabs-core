@@ -1,0 +1,28 @@
+h2. SmartStyle Office solution
+
+SmartStyle Computing® is a *private cloud solution, which replaces conventional hardware and infrastructure with virtual desktops, servers and networking*. It includes advanced features that provide *more reliability and flexibility than traditional IT systems*: auto provisioning of servers/desktops, a built in fully redundant storage SAN, 15 minute snapshotting, golden image technology, automatic failover, and much more\!
+
+Following its tradition of creating Service Provider Enabling solutions, *Zenith Infotech also bundles its full 24/7 monitoring & Network Operations Centre*. The pre-configured networking and storage setup fits into nearly all IT environments, ranging from small businesses, enterprises and corporate data centres.
+
+SmartStyle Office *enables traditional SMB resellers to port existing client-server business application to a cloud infrastructure* on the premises or within the data centre of the SMB customer.
+
+SmartStyle Office helps SMB resellers to:
+
+h3. Create
+
+*Create*: SmartStyle Office is a +fully integrated and managed provisioning platform+ for virtual servers and desktops. It enables capacity planning for IT projects and gives access to functional IT at your fingertips via the comprehensive web interface.
+
+!aserver_sso_create.png|border=0, width=800!
+{pagebreak}
+
+h3. Manage
+
+*Manage*: Manage IT as a value-add by having +full control over on-demand capacity+. Allocate and manage storage and computing power in order to consolidate or grow existing IT infrastructure. But also offer brand new IT systems in a fully managed way. We fully manage your platform 24/7 via our operations centre located in Mumbai, India.
+
+!aserver_sso_manage.png|border=0, width=800!
+
+h3. Monitor
+
+*Monitor*: SmartStyle Office allows you to +monitor IT activity and performance+. IT partners can remotely access the monitoring system and check server and desktop activity. This enables you to report about the performance to your customers, suggest upgrades and sell additional managed services.
+
+!aserver_sso_monitor.png|border=0, width=800!

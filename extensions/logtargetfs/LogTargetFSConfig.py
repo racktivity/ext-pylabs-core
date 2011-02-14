@@ -1,0 +1,3 @@
+from pymonkey.config import ItemSingleClass
+from pymonkey.logging.logtargets.LogTargetFS import LogTargetFSConfigManagementItem
+LogTargetFSConfig = ItemSingleClass(LogTargetFSConfigManagementItem)

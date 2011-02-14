@@ -1,0 +1,436 @@
+h2. XMLRPC Cloud API DOC - cloud
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.cloud.getXMLSchema(cloudguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the cloud rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloud.addDatacenter(cloudguid, datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Add a datacenter to which the cloud belongs
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudguid (guid) :          Guid of the cloud rootobject
+                * Datacenterguid (guid) :     Guid of the datacenter to add
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.addDatacenter(cloudguid=<guid>,datacenterguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloud.create(name, description, datacenterguids, dns, smtp, smtplogin, smtppassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new cloud.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name (string) :                    Name for the cloud.
+                * Description (string) :             Description for the cloud.
+                * Datacenterguids (list(guid)) :         guid of the datacenters to which this cloud belongs, can be a cloud spans multiple datacenters
+                * Dns (ipaddress) :                     dns for this cloud environment.
+                * Smtp (string) :                    Host of the SMTP server to use in this cloud.
+                * Smtplogin (string) :               Login of the SMTP server (if required).
+                * Smtppassword (string) :            Password of the SMTP server (if required).
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.create(name=<string>,description=<string>,datacenterguids=<list(guid)>,dns=<ipaddress>,smtp=<string>,smtplogin=<string>,smtppassword=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with cloudguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloud.list(cloudguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all clouds.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudguid () :                 Guid of the cloud specified
+                * Jobguid () :                   Guid of the job if avalailable else empty string
+                * Executionparams () :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.list(cloudguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of cloud info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloud.getYAML(cloudguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the cloud rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudguid (guid) :              Guid of the cloud rootobject
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.getYAML(cloudguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the cloud
+Return type : string
+    {noformat}
+    h3.cloud.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :       Guid of the cloud rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.cloud.deleteDatacenter(cloudguid, datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Remove a datacenter to which the cloud belongs
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudguid (guid) :          Guid of the cloud rootobject
+                * Datacenterguid (guid) :     Guid of the datacenter to add
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.deleteDatacenter(cloudguid=<guid>,datacenterguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloud.updateModelProperties(cloudguid, name, description, datacenterguids, dns, smtp, smtplogin, smtppassword, installtype, installoption, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudguid (guid) :               Guid of the cloud specified
+                * Name (string) :                    Name for the cloud.
+                * Description (string) :             Description for the cloud.
+                * Datacenterguids (list(guid)) :         guid of the datacenters to which this cloud belongs, can be a cloud spans multiple datacenters
+                * Dns (string) :                     IP of the DNS server to use in this cloud.
+                * Smtp (string) :                    Host of the SMTP server to use in this cloud.
+                * Smtplogin (string) :               Login of the SMTP server (if required).
+                * Smtppassword (string) :            Password of the SMTP server (if required).
+                * Installtype (string) :             DEVELOPMENT / PRODUCTION
+                * Installoption (string) :           SSO / MIRRORCLOUD / DAAS
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.updateModelProperties(cloudguid=<guid>,name=<string>,description=<string>,datacenterguids=<list(guid)>,dns=<string>,smtp=<string>,smtplogin=<string>,smtppassword=<string>,installtype=<string>,installoption=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with cloud guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloud.listDatacenters(cloudguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all related datacenters of the cloud.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloud.getXML(cloudguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the cloud rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloud.find(name, description, datacenterguids, dns, smtp, smtplogin, smtppassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () :                    Name for the cloud.
+                * Description () :             Description for the cloud.
+                * Datacenterguids () :         guid of the datacenters to which this cloud belongs, can be a cloud spans multiple datacenters
+                * Dns () :                     IP of the DNS server used in this cloud.
+                * Smtp () :                    Host of the SMTP server used in this cloud.
+                * Smtplogin () :               Login of the SMTP server.
+                * Smtppassword () :            Password of the SMTP server.
+                * Jobguid () :                 Guid of the job if avalailable else empty string
+                * Executionparams () :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.find(name=<>,description=<>,datacenterguids=<>,dns=<>,smtp=<>,smtplogin=<>,smtppassword=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of cloud guids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.cloud.delete(cloudguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a cloud.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudguid (guid) :              Guid of the cloud rootobject to delete.
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloud.delete(cloudguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

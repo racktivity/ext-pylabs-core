@@ -1,0 +1,3025 @@
+h2. XMLRPC Cloud API DOC - sso
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.sso.listSmartClientDevices(isfree, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all available smart client devices for a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Isfree () : <no description found>
+                * Jobguid () :              Guid of the job if avalailable else empty string
+                * Executionparams () :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listSmartClientDevices(isfree=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary of array of dictionaries with guid, name, description, modelnr, serialnr,  status, isfree.
+Return type : dictionary
+    {noformat}
+    h3.sso.changePasswordOnPMachines(username, newpassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Changes the password on each pmachine using new pass word
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Username () :                username
+                * Newpassword () :             new password of the user
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.changePasswordOnPMachines(username=<>,newpassword=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.listSystemNASMachineTemplates(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists machine templates available on the SystemNAS
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listSystemNASMachineTemplates(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with available templates and their paths
+Return type : dictionary
+    {noformat}
+    h3.sso.syncModel(interval, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Cleans snapshots on the volume driver which did not make it in the model
+        Cleans snapshots in the model that has no snapshots at the backend
+        
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Interval () :             float
+                * Jobguid (guid) :              Guid of the job if available else empty string
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.syncModel(interval=<>,jobguid=<guid>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with jobguid as result of pending model update and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.editMachine(machineguid, name, description, cloudspaceguid, machinetype, osguid, assetid, alias, hostname, nrcpu, cpufrequency, memory, memoryminimal, importancefactor, deviceguid, boot, backup, clouduserguid, ownerguid, iconname, bootstatus, retentionpolicyguids, customerapplications, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :                 guid of the machine specified
+                * Name (string) :                        Name of the machine.
+                * Description (string) :                 Description for this machine
+                * Cloudspaceguid (guid) :              guid of the space to which this machine belongs
+                * Machinetype (string) :                 Machine type.
+                * Osguid (guid) :                      guid of the OS.
+                * Assetid (string) :                     Asset ID.
+                * Alias (string) :                       Alias of the machine.
+                * Hostname (string) :                    Hostname of the machine.
+                * Nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * Cpufrequency (int) :                CPU frequency in MHz.
+                * Memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * Memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * Importancefactor (int) :            Importance of the virtual machine
+                * Deviceguid (guid) :                  guid of the parent device
+                * Boot (bool) :                        flag indicating that this machine must be automatically started when rebooting the parent machine
+                * Backup (bool) :                      Backup flag
+                * Clouduserguid (guid) :               guid of the clouduser, owning this machine
+                * Ownerguid (guid) :                   guid of the owner.
+                * Iconname (string) :                    Icon for the machine.
+                * Bootstatus (string) :                  Machine boot status (INSTALL|FROMDISK|RECOVERY)
+                * Retentionpolicyguids (dictionary) :        Retention policy for the disks of the machine {'diskguid': 'policyguid'}
+                * Customerapplications (list) :        Customer applications to be running on machine
+                * Jobguid (guid) :                     guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.editMachine(machineguid=<guid>,name=<string>,description=<string>,cloudspaceguid=<guid>,machinetype=<string>,osguid=<guid>,assetid=<string>,alias=<string>,hostname=<string>,nrcpu=<int>,cpufrequency=<int>,memory=<int>,memoryminimal=<int>,importancefactor=<int>,deviceguid=<guid>,boot=<bool>,backup=<bool>,clouduserguid=<guid>,ownerguid=<guid>,iconname=<string>,bootstatus=<string>,retentionpolicyguids=<dictionary>,customerapplications=<list>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with machine guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.addPowerSwitchDevice(name, macaddress, cloudspaceguid, description, racku, racky, rackz, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new powerswitch device to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () : <no description found>
+                * Macaddress () :            MAC address of the new resource node
+                * Cloudspaceguid () : <no description found>
+                * Description () :           remarks on the device
+                * Racku () :                 size of the device, measured in u e.g. 1u high
+                * Racky () :                 physical position of the device in a rack (y coordinate) measured in u slots. The position starts at bottom of rack, starting with 1
+                * Rackz () :                 physical position of the device in the rack (z coordinate, 0 = front, 1 = back)
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addPowerSwitchDevice(name=<>,macaddress=<>,cloudspaceguid=<>,description=<>,racku=<>,racky=<>,rackz=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getAvailableTempDiskSizes(diskroletype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists available disk sizes for creation of temp disks 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Diskroletype (string) :         SSDTEMP or TEMP
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getAvailableTempDiskSizes(diskroletype=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.createSnapshots(snapshottype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates snapshots off all disks
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Snapshottype (string) :         If PAUSED, the machine will be paused before snapshot is taken.
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.createSnapshots(snapshottype=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.snapshotMachine(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Snapshots a machine and updating the model asynchronnically
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :          Guid of the snapshot machine
+                * Jobguid (guid) :              Guid of the job if available else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.snapshotMachine(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary  {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getKioskModeSmartClientInfo(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the information of a smartclient in kiosk mode
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :           guid of machine
+                * Jobguid (guid) :              Guid of the job if available else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getKioskModeSmartClientInfo(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : information { description , iqn , ip }
+Return type : dictionary
+    {noformat}
+    h3.sso.listVirtualDesktops(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all vistual desktop for a certain cloud space
+
+        Execute method in WFE to get list of current authenticated user
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid () :        guid of an existing cloudspaceguid to whom the virtual desktops belong
+                * Jobguid () :              Guid of the job if avalailable else empty string
+                * Executionparams () :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listVirtualDesktops(cloudspaceguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with jobguid and result
+Return type : dictionary
+    {noformat}
+    h3.sso.scrubVolumes(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Scrubs volumes on a timely basis (used in a policy)
+                                          
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.scrubVolumes(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getAvailableFOCNode(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+        List available node for defining new FailOver Cache on  
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :            guid of the machine to list the FOC volumes
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getAvailableFOCNode(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with node name , management ip , port of node where FOC can be initialized
+Return type : dictionary
+    {noformat}
+    h3.sso.getPhysicalDisksCount(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the number of physical disks on given pmachine 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :        guid of the pmachine
+                * Jobguid (guid) :            guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getPhysicalDisksCount(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : string
+    {noformat}
+    h3.sso.shutdown(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        shutdown the sso environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.shutdown(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.sendMessageToNoc(customerguid, username, password, domain, message, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sends a message to the NOC for a certain domain
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Customerguid () :        Guid of the customer unregistering the domain
+                * Username () :            ITPS portal username
+                * Password () :            ITPS portal password
+                * Domain () :              Domain to unregister
+                * Message () :             message to be sent
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.sendMessageToNoc(customerguid=<>,username=<>,password=<>,domain=<>,message=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.listAvailableCPUNodes(memorymin, hypervisor, includeappliancehost, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all cpu/combined nodes with at least memorymin memory available for a Virtual Machine.
+        * No backups or templates.
+        * Not the CPU node on which the appliance is running.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Memorymin () : <no description found>
+                * Hypervisor () : <no description found>
+                * Includeappliancehost () :   Include the host of the appliance machine in the list
+                * Jobguid () :                Guid of the job if avalailable else empty string
+                * Executionparams () :        Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listAvailableCPUNodes(memorymin=<>,hypervisor=<>,includeappliancehost=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.sendMail(subject, body, sender, to, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sends a mail using smtp 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Subject (string) :            Subject for the email
+                * Body (string) :               Body of the mail
+                * Sender (string) :             The email address of the sender
+                * To (string) :                 The email address of the addressee (when None admin is the target)
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.sendMail(subject=<string>,body=<string>,sender=<string>,to=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.startMachines(machineguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Starts multiple machines at once 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguids (list) :       guids of the machines to start
+                * Jobguid (guid) :            guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.startMachines(machineguids=<list>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : string
+    {noformat}
+    h3.sso.listSmartclientByDevice(deviceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the list of smartclients by deviceguid
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Deviceguid (guid) :            Guid of the device
+                * Jobguid (guid) :              Guid of the job if available else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listSmartclientByDevice(deviceguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : information [{ description , iqn , address, machinename }]
+Return type : dictionary
+    {noformat}
+    h3.sso.getAvailableHypervisors(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists available hypervisors
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getAvailableHypervisors(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.changeAgentPassword(oldpwd, newpwd, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Modify the password of the agent v4.
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Oldpwd (string) :                 current password of the agent
+                * Newpwd (string) :                 new password for the agent
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.changeAgentPassword(oldpwd=<string>,newpwd=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.startApplications(applicationguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Starts a list of applications     
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Applicationguids () : <no description found>
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.startApplications(applicationguids=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.validateDomain(machineguids, domain, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        validates a domain for a customer
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguids (list) :       list of machineguids to be validated (if none are passed all pmachineguids are tested)
+                * Domain (string) :             Domain to validate
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.validateDomain(machineguids=<list>,domain=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.deleteSnapshots(policyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes all outdated snapshots off all disks
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Policyguid (guid) :           Guid of the snapshot retention policy to detect outdated snapshots
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.deleteSnapshots(policyguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.addDataDisks(machineguid, diskinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds multiple data disks at once to a machine
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :            guid of the machine rootobject
+                * Diskinfo (list) :               [ { name: , size: , description, retentionpolicyguid} ]
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addDataDisks(machineguid=<guid>,diskinfo=<list>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with added diskguids e.g. params  { 'result': [diskguids] }
+Return type : dictionary
+    {noformat}
+    h3.sso.addSmartClientDevice(name, macaddress, cloudspaceguid, description, racku, racky, rackz, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new smart client device to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () : <no description found>
+                * Macaddress () :            MAC address of the new resource node
+                * Cloudspaceguid () : <no description found>
+                * Description () :           remarks on the device
+                * Racku () :                 size of the device, measured in u e.g. 1u high
+                * Racky () :                 physical position of the device in a rack (y coordinate) measured in u slots. The position starts at bottom of rack, starting with 1
+                * Rackz () :                 physical position of the device in the rack (z coordinate, 0 = front, 1 = back)
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addSmartClientDevice(name=<>,macaddress=<>,cloudspaceguid=<>,description=<>,racku=<>,racky=<>,rackz=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.cleanup(maxage, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        DRP model cleansing:
+          Removes versioning information on all rootobjects
+          Removes events and jobs older than maxage
+                             
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Maxage () :             how long the information is kept
+                * Jobguid () :            Guid of the job if avalailable else empty string
+                * Executionparams () :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.cleanup(maxage=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.listSystemNASISOImages(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists iso images available on the SystemNAS
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listSystemNASISOImages(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with available iso images and their paths
+Return type : dictionary
+    {noformat}
+    h3.sso.maintenance(duration, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Execute maintenance tasks on SSO environment.
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Duration (int) :             duration of the maintenance tasks (seconds)
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.maintenance(duration=<int>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary
+    {noformat}
+    h3.sso.addVirtualServerFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, userinfo, vdcinfo, defaultgateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new virtual server to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * Templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * Name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * Description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid) :            guid of the machine this machine will be created upon.
+                * Userinfo (dictionary) :                     {clouduserguid,login,password,email, firstname,lastname}
+                * Vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * Defaultgateway (string) :               Default gateway for the machine
+                * Jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addVirtualServerFromTemplate(cloudspaceguid=<guid>,templatemachineguid=<guid>,name=<string>,languids=<array>,description=<string>,parentmachineguid=<guid>,userinfo=<dictionary>,vdcinfo=<dictionary>,defaultgateway=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getVirtualMachineDiskInfo(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns information about the virtual machine disk information 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :          machineguid of the virtual machine
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getVirtualMachineDiskInfo(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.addVirtualDesktop(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, osguid, deviceguid, hostname, backup, boot, alias, userinfo, hypervisor, importancefactor, defaultgateway, monitors, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new virtual desktop.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * Name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * Status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * Bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * Assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * Memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * Memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * Nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * Cpufrequency (int) :                CPU frequency in MHz.
+                * Description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * Networkinfo (dictionary) :                 network information {nr_nics: , info { languid, ip} }
+                * Diskinfo (list) :                    disk information info [{ diskguid, size, role}]
+                * Osguid (guid) :                      osguid of the machine.
+                * Deviceguid (guid) :                  deviceguid of the machine.
+                * Hostname (string) :                    hostname of the machine
+                * Backup (boolean) :                      whether to backup the machine
+                * Boot (boolean) :                        whether to boot the machine when pmachine starts
+                * Alias (string) :                       alias of the machine
+                * Userinfo (dictionary) :                    {clouduserguid,login,password,email, firstname,lastname}
+                * Hypervisor (string) :                  hypervisor of the machine.
+                * Importancefactor (string) :            hypervisor of the machine.
+                * Defaultgateway (string) :              Default gateway for the machine
+                * Monitors (list) :                    monitors configuration ['1024x768x24','800x600x24']
+                * Jobguid (guid) :                     guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addVirtualDesktop(cloudspaceguid=<guid>,name=<string>,machinetype=<string>,status=<string>,bootstatus=<string>,assetid=<string>,memory=<int>,memoryminimal=<int>,nrcpu=<int>,cpufrequency=<int>,description=<string>,parentmachineguid=<guid>,networkinfo=<dictionary>,diskinfo=<list>,osguid=<guid>,deviceguid=<guid>,hostname=<string>,backup=<boolean>,boot=<boolean>,alias=<string>,userinfo=<dictionary>,hypervisor=<string>,importancefactor=<string>,defaultgateway=<string>,monitors=<list>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getVirtualServerInfo(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns information about the virtual server
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Macaddress (string) :           macaddress of the virtual server
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getVirtualServerInfo(macaddress=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary
+    {noformat}
+    h3.sso.addSmartClientKioskModeFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, deviceguid, devicename, macaddress, vdcinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new smart client based on a template to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * Templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * Name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * Description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid</para><para>@param deviceguid                   guid of an existing smart client device to which this virtual desktop is linked @type deviceguid                    guid</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string) :            guid of the machine this machine will be created upon.
+                * Deviceguid () :                    guid of an existing smart client device to which this virtual desktop is linked
+                * Devicename () : <no description found>
+                * Macaddress () : <no description found>
+                * Vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * Jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addSmartClientKioskModeFromTemplate(cloudspaceguid=<guid>,templatemachineguid=<guid>,name=<string>,languids=<array>,description=<string>,parentmachineguid=<guid</para><para>@param deviceguid                   guid of an existing smart client device to which this virtual desktop is linked @type deviceguid                    guid</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string>,deviceguid=<>,devicename=<>,macaddress=<>,vdcinfo=<dictionary>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.listFOCVolumes(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+        List FailOver Cache volumes on a given machine
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :            guid of the machine to list the FOC volumes
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listFOCVolumes(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : list of volumes having the FOC on this node
+Return type : list
+    {noformat}
+    h3.sso.addNode(macaddress, name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new node to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Macaddress (string) :           MAC address of the new node
+                * Name (string) :                 Name for the new node
+                * Description (string) :          Description for the new node
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addNode(macaddress=<string>,name=<string>,description=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with the new device guid  as result and jobguid: {'result': '2388d3d3-4de4-45fe-b17f-4f1ca05ff062', 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getVirtualDesktopInfo(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns information about the virtual desktop 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Macaddress (string) :           macaddress of the virtual desktop
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getVirtualDesktopInfo(macaddress=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary
+    {noformat}
+    h3.sso.addVirtualDesktopFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, userinfo, vdcinfo, defaultgateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new virtual desktop to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * Templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * Name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * Description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid) :            guid of the machine this machine will be created upon.
+                * Userinfo (dictionary) :                     {clouduserguid,login,password,email, firstname,lastname}
+                * Vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * Defaultgateway (string) :               Default gateway for the machine
+                * Jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addVirtualDesktopFromTemplate(cloudspaceguid=<guid>,templatemachineguid=<guid>,name=<string>,languids=<array>,description=<string>,parentmachineguid=<guid>,userinfo=<dictionary>,vdcinfo=<dictionary>,defaultgateway=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.assignDeviceToPowerPort(deviceguid, powerswitchdeviceguid, powerportsequence, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Assigns a device to a power port of a powerswitch
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Deviceguid (guid) :               guid of the device assigned to the power port
+                * Powerswitchdeviceguid (guid) :    guid of the powerswitch device
+                * Powerportsequence (int) :        sequence of the powerport
+                * Jobguid (guid) :                  Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :          Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.assignDeviceToPowerPort(deviceguid=<guid>,powerswitchdeviceguid=<guid>,powerportsequence=<int>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.getVirtualDesktopClient(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns current user connected to the virtual desktop 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Macaddress (string) :           macaddress of the virtual desktop
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getVirtualDesktopClient(macaddress=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary having Ipaddress of the client connected to the Vmachine
+Return type : dictionary
+    {noformat}
+    h3.sso.canMove(movementplan, failover, minimalcapacity, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks whether vmachine(s) can be moved to other node(s) 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Movementplan (dict) :           dict of movement plan of the machines { sourcevmachine : target host }
+                * Failover () :               flag to use failovering workflow
+                * Minimalcapacity (boolean) :        flag to use minimal capacity workflow (e.g. minimal memory...)
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.canMove(movementplan=<dict>,failover=<>,minimalcapacity=<boolean>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : True or False
+Return type : boolean
+    {noformat}
+    h3.sso.listAvailableStorageDaemons(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all available storage daemons
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid () :              Guid of the job if avalailable else empty string
+                * Executionparams () :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listAvailableStorageDaemons(jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.addSmartClientUserModeFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, userinfo, vdcinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new smart client from a template to a Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * Templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * Name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * Description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid) :            guid of the machine this machine will be created upon.
+                * Userinfo (dictionary) :                     {clouduserguid,login,password,email, firstname,lastname}
+                * Vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * Jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addSmartClientUserModeFromTemplate(cloudspaceguid=<guid>,templatemachineguid=<guid>,name=<string>,languids=<array>,description=<string>,parentmachineguid=<guid>,userinfo=<dictionary>,vdcinfo=<dictionary>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getSSOVersion(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists version of the current SSO
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getSSOVersion(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.applyTemplate(diskguid, machineguid, overwrite, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        apply template to specific machine
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Diskguid (guid) :              guid of orignial boot disk
+                * Machineguid (guid) :          guid of the machine rootobject
+                * Overwrite (boolean) :            boolean value indicating whether the old boot disk in the machine will be overwritten
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.applyTemplate(diskguid=<guid>,machineguid=<guid>,overwrite=<boolean>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.initialize(email, password, ipaddress, netmask, gateway, dnsserver, network, netmaskpublic, startip, endip, sitename, sitedescription, siteaddress, sitecity, sitecountry, setuptype, firstnodetype, networkname, timezonename, timezonedelta, smtpserver, smtplogin, smtppassword, nrreservedip, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Initializes a new Smart Style Office environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Email () :                 Email for the administrator account. All system level communication will be send to this email address.
+                * Password () :              Password for the administrator account.
+                * Ipaddress () :             The public IP address for the appliance.
+                * Netmask () :               Netmask of the customer LAN.
+                * Gateway () :               Gateway IP address of the customer LAN.
+                * Dnsserver () :             IP address of the DSN server of the customer LAN.
+                * Network () :               Network range to be used as public LAN. Will be used if Smart Style Office environment is NOT integrated into customer LAN.
+                * Netmaskpublic () :         Netmask of the new public LAN that will be created.
+                * Startip () :               Start IP address of the public LAN. Will be used if Smart Style Office environment is integrated into customer LAN.
+                * Endip () :                 End IP address of the public LAN. Will be used if Smart Style Office environment is integrated into customer LAN.
+                * Sitename () :              Name for this Smart Style Office site.
+                * Sitedescription () :       Description for this Smart Style Office site.
+                * Siteaddress () :           Address for this Smart Style Office site.
+                * Sitecity () :              City for this Smart Style Office site.
+                * Sitecountry () :           County for this Smart Style Office site.
+                * Setuptype (string) :            Define setup type configuration [SSO | CLOUDMIRROR]
+                * Firstnodetype (string) :        Define node type configuration for first node [COMBINEDNODE | CPUNODE]
+                * Networkname (string) :          name of the public network
+                * Timezonename (string) :         timezone to be set for physical machines
+                * Timezonedelta (float) :        delta of timeZone for the location.
+                * Smtpserver (string) :           Smtp server
+                * Smtplogin (string) :            Login for the Smtp server
+                * Smtppassword (string) :         Password for the Smtp server
+                * Nrreservedip (integer) :         Number of reserved ip addresses for the sso nodes
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.initialize(email=<>,password=<>,ipaddress=<>,netmask=<>,gateway=<>,dnsserver=<>,network=<>,netmaskpublic=<>,startip=<>,endip=<>,sitename=<>,sitedescription=<>,siteaddress=<>,sitecity=<>,sitecountry=<>,setuptype=<string>,firstnodetype=<string>,networkname=<string>,timezonename=<string>,timezonedelta=<float>,smtpserver=<string>,smtplogin=<string>,smtppassword=<string>,nrreservedip=<integer>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.moveMachine(movementplan, failover, minimalcapacity, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves a machine to another node     
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Movementplan (dict) :           dict of movement plan of the machines { sourcevmachine : target host }
+                * Failover () :               flag to use failovering workflow
+                * Minimalcapacity (boolean) :        flag to use minimal capacity workflow (e.g. minimal memory...)
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.moveMachine(movementplan=<dict>,failover=<>,minimalcapacity=<boolean>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.readConfigurationInfo(sourceuri, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Get information about a specified image configuration 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Sourceuri (string) :              URI where the configuration resides
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.readConfigurationInfo(sourceuri=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with available templates and its path
+Return type : dictionary
+    {noformat}
+    h3.sso.stopApplications(applicationguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Stops a list of applications     
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Applicationguids () : <no description found>
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.stopApplications(applicationguids=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.restartApplications(applicationguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Restarts a list of applications     
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Applicationguids () : <no description found>
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.restartApplications(applicationguids=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.addSmartClientKioskMode(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, osguid, deviceguid, hostname, importancefactor, backup, boot, alias, devicename, macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new machine based on a template, but allows you to overrule capacity properties of the machine.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * Name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * Status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * Bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * Assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * Memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * Memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * Nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * Cpufrequency (int) :                CPU frequency in MHz.
+                * Description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * Networkinfo (dictionary) :                 network information {nr_nics: , info { languid, ip} }
+                * Diskinfo (list) :                    disk information info [{ diskguid, size, role}]
+                * Osguid (guid) :                      osguid of the machine.
+                * Deviceguid (guid) :                  deviceguid of the machine.
+                * Hostname (string) :                    hostname of the machine
+                * Importancefactor (int) :            importancefactor of the machine
+                * Backup (boolean) :                      whether to backup the machine
+                * Boot (boolean) :                        whether to boot the machine when pmachine starts
+                * Alias (string</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string) :                        alias of the machine
+                * Devicename () : <no description found>
+                * Macaddress () : <no description found>
+                * Jobguid (guid) :                     guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addSmartClientKioskMode(cloudspaceguid=<guid>,name=<string>,machinetype=<string>,status=<string>,bootstatus=<string>,assetid=<string>,memory=<int>,memoryminimal=<int>,nrcpu=<int>,cpufrequency=<int>,description=<string>,parentmachineguid=<guid>,networkinfo=<dictionary>,diskinfo=<list>,osguid=<guid>,deviceguid=<guid>,hostname=<string>,importancefactor=<int>,backup=<boolean>,boot=<boolean>,alias=<string</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string>,devicename=<>,macaddress=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getApplianceInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists info about the appliance vmachine
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getApplianceInfo(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.resetFailoverCache(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Resets the Failover Cache of a disk (eg when degraded)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Diskguid (guid) :           guid of the disk
+                * Jobguid (guid) :            guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.resetFailoverCache(diskguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : string containing status OK_SYNC, OK_STANDALONE, CATCHUP , DEGRADED or None
+Return type : string
+    {noformat}
+    h3.sso.getFailoverCacheStatus(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the Failover Cache status of a disk when existing
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Diskguid (guid) :           guid of the disk
+                * Jobguid (guid) :            guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getFailoverCacheStatus(diskguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : string containing status OK_SYNC, OK_STANDALONE, CATCHUP , DEGRADED or None
+Return type : string
+    {noformat}
+    h3.sso.listWebservices(action, jobguid, executionparams)
+
+    h4. Description
+    
+            
+        Lists the webservice urls for a certain action
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Action () :                  string
+                * Jobguid (guid) :                guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listWebservices(action=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.getSystemNasInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists info systemnas
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getSystemNasInfo(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.failoverManagement(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves and Initializes all management applications to node with specified machineguid
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Machineguid (guid) :           Guid of the machine to fail over the management applications to
+                * Jobguid (guid) :              Guid of the job if available else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.failoverManagement(machineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.addSmartClientUserMode(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, osguid, deviceguid, hostname, backup, boot, alias, userinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new machine based on a template, but allows you to overrule capacity properties of the machine.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * Name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * Status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * Bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * Assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * Memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * Memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * Nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * Cpufrequency (int) :                CPU frequency in MHz.
+                * Description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * Parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * Networkinfo (dictionary) :                 network information {nr_nics: , info { languid, ip} }
+                * Diskinfo (list) :                    disk information info [{ diskguid, size, role}]
+                * Osguid (guid) :                      osguid of the machine.
+                * Deviceguid (guid) :                  deviceguid of the machine.
+                * Hostname (string) :                    hostname of the machine
+                * Backup (boolean) :                      whether to backup the machine
+                * Boot (boolean) :                        whether to boot the machine when pmachine starts
+                * Alias (string) :                       alias of the machine
+                * Userinfo () : <no description found>
+                * Jobguid (guid) :                     guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.addSmartClientUserMode(cloudspaceguid=<guid>,name=<string>,machinetype=<string>,status=<string>,bootstatus=<string>,assetid=<string>,memory=<int>,memoryminimal=<int>,nrcpu=<int>,cpufrequency=<int>,description=<string>,parentmachineguid=<guid>,networkinfo=<dictionary>,diskinfo=<list>,osguid=<guid>,deviceguid=<guid>,hostname=<string>,backup=<boolean>,boot=<boolean>,alias=<string>,userinfo=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.optimizeDisks(diskguids, scrubagentmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Optimizes a disk. E.g. defragments a Physical disk or scrubs a DSS disks
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Diskguids () : <no description found>
+                * Scrubagentmachineguid (guid) :    guid of the machine where scrubbing agent is running
+                * Jobguid (guid) :                  guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.optimizeDisks(diskguids=<>,scrubagentmachineguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.getAssignedFOCNode(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieves the pmachine of the FailOver Cache for the given disk 
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Diskguid (guid) :           guid of the disk
+                * Jobguid (guid) :            guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getAssignedFOCNode(diskguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dict with applicationguid and foc machineguid
+Return type : dictionary
+    {noformat}
+    h3.sso.listAvailableStorageNodes(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all available storage nodes
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listAvailableStorageNodes(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.sendSNMPTrap(message, hostdestination, port, community, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generate a notification (trap) to report an event to the SNMP manager with the specified message.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Message (string) :            Message of notification
+                * Hostdestination (string) :    Specifies the target network manager host to which the trap message will be sent.
+                * Port (int) :               Port number on host
+                * Community (string) :          Specifies community name to use
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.sendSNMPTrap(message=<string>,hostdestination=<string>,port=<int>,community=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.initializeNode(deviceguid, nodetype, name, description, hypervisor, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Initializes a device as a specified node type in the Smart Style Office environment.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Deviceguid (guid) :           Guid of the device to install
+                * Nodetype (string) :             Node type of the device to add (CPU, STORAGE or COMBINED)
+                * Name (string) :                 Name for the new node
+                * Description (string) :          Description for the new node
+                * Hypervisor (string) :           Hypervisor for the new node
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.initializeNode(deviceguid=<guid>,nodetype=<string>,name=<string>,description=<string>,hypervisor=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.sso.setTimezone(timezone, timezonedelta, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        sets timezone for the sso environment
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Timezone (string) :             Timezone to be set
+                * Timezonedelta (float) :        delta of timeZone for the location.
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.setTimezone(timezone=<string>,timezonedelta=<float>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary
+Return type : dictionary
+    {noformat}
+    h3.sso.generateMacAddress(languid, customerguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generates a new MAC address depending on LAN and customer
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid</para><para>@param customerguid         guid of customerguid) :               guid of languid
+                * Customerguid (guid) :          guid of customerguid
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.generateMacAddress(languid=<guid</para><para>@param customerguid         guid of customerguid>,customerguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : mac address
+Return type : string
+    {noformat}
+    h3.sso.listSmartclientByUser(clouduserguid, customerguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the list of smartclients for a specific user
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Clouduserguid (guid</para><para>@param customerguid         guid of customerguid) :         guid of clouduser
+                * Customerguid (guid) :          guid of customerguid
+                * Jobguid (guid) :              Guid of the job if available else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.listSmartclientByUser(clouduserguid=<guid</para><para>@param customerguid         guid of customerguid>,customerguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : information [{ description , iqn , address, machinename }]
+Return type : dictionary
+    {noformat}
+    h3.sso.getVirtualMachineInfo(macaddress, machinetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns information about the virtual machine
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Macaddress (string) :           macaddress of the virtual machine
+                * Machinetype (string) :          type of the virtual machine (VIRTUALSERVER | VIRTUALDESKTOP)
+                * Jobguid (guid) :              Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_sso.getVirtualMachineInfo(macaddress=<string>,machinetype=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary
+    {noformat}

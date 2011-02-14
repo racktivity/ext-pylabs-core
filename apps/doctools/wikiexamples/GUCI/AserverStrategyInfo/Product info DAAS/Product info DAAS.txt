@@ -1,0 +1,19 @@
+{numberedheadings}
+h1. DAAS Product Information Sheet
+
+{include:DAAS Market Situation}
+
+{include:DAAS Solution}
+
+{include:DAAS Target Market}
+
+{include:DAAS Product description} 
+
+{include:DAAS USPS} 
+
+{include:DAAS Competitive}
+
+{include:DAAS Pricing} 
+
+{include:DAAS Exclusions}
+{numberedheadings}

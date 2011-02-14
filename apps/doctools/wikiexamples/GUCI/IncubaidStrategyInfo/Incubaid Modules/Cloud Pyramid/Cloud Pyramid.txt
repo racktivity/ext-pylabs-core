@@ -1,0 +1,4 @@
+h2. Cloud Pyramid
+
+The Cloud Pyramid below shows the layers in the cloud eco system and where the companies focuses are:
+!inc_cloudpyramid.png|border=0, width=800!

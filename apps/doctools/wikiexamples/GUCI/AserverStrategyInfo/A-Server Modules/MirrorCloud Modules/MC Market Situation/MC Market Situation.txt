@@ -1,0 +1,25 @@
+h2. MirrorCloud: Problems we are trying to resolve, situation of market
+
+The current economic climate has forced many SMBs to spend less on technology and their IT infrastructure. Today more businesses are investing in managed services rather than on in-house IT systems.
+
+Making backups of important business data is what all companies are doing today. What most companies do not have is a working business continuity plan. They do not have a backup solution in place that can prevent, survive and recover from a ‘crisis’. A business continuity solution that protects against natural disasters, human errors, technical failures, etc. needs to ensure that the business can recover and continue in the shortest time possible and ensure there is no data loss, even not from the very last minutes before tge issue occured.
+
+Spendings on Business Continuity solutions is estimated to increase now in many businesses, according to the results of a new survey from Forrester Research. The research showed that almost 40% of the questioned companies do not have any form of a business continuity plan when a disaster happens.
+
+The current solutions being offered like tape, disk to disk backup, online backup have restraints:
+* human error sensitive, ex tapes get lost, broken, procedure not always strictly followed
+* slow speed to recover, can be hours to days!
+* unsure about the data consistency: backups are never tested on their integrity, a write error can break the backup
+* when all data is in datacenter, the time to get data back through the wire is too long
+* when the amount of data is growing, the backup system often fails to follow and extensions lead to more complexity and costs
+
+We have found that *channel partners are missing a product that enables them to leverage their stronger values while meeting the new requirements of their customers IT*. Those requirements are:
+
+* +Increased Speed of Recovery+ of the failed IT resources
+* +Increased Reliability+ of the backup solution
+* +Increased Scalability+ of the backup solution
+* +Improved TCO for channels partners end users+
+
+The *Channel active in the SMB market segment does not have off the shelf solutions to meet the higher delivery standards that the challengers in their market can offer.* At the same time, the SMB customers remain with a need of private, secure and on-premise backup solution, being undependent from internat delays and downtimes and being independent from third party work loads. Additionally, SMBs continue to appreciate the localised approach of the Managed Service Provider and their ability to listen to personalised needs.
+
+*Traditional SMB resellers do not have the resources to work out a product providing them all the above capabilities.*

@@ -1,0 +1,105 @@
+h2. DAAS.com (Datacenter As A Service) solution
+
+The DAAS.com solution is offered in 2 ways:
+* As a Storage Cloud Solution
+* As a Private Turnkey Cloud Solution
+
+h3. DAAS.com Private Turnkey Cloud Solution: a private, secure and reliable green cloud datacenter
+
+The DAAS.com cloud provides the customer with own dedicated physical cloud storage and CPU nodes, along with cloud functions and 24/7 services:
+
+* Installed in Green Cloud Datacenter
+* Cloud Hardware: Storage and CPU Nodes
+* Cloud Control Center
+** Virtual Private Datacenters
+** Virtual Servers
+** Virtual Dekstops
+** Virtual Disks
+** Virtual Networking
+* Integrated SAN
+* Power and Environment Measurement & Management
+* Networking
+* Backup & Monitoring
+* NOC Support
+
+h4. Private Cloud Datacenter
+
+DAAS.com brings a completely virtual alternative to physical infrastructure. DAAS.com offers full control on the lowest layer: datacenter + infrastructure is provided as a service. Everything you are used to do in the physical world, you can still do in the DAAS.com cloud\! Run Servers, Desktops, Firewalls, Loadbalancers and much more as virtual machines in the DAAS.com cloud.
+
+* Private cloud nodes: no sharing of CPU, RAM, Disks
+* Deploy virtual servers, virtual desktops, virtual disks
+* Upload own OSs and applications
+* Design virtual datacenters: servers, dekstops, firewalls, ...
+* Full private networking
+
+h4. Revolutionary High Reliable Setup
+
+DAAS.com is set up to improve uptime, improve data reliability and provide a better TCO for IT computing resources:
+
+* DAAS.com uses a Dispersed Storage System allowing 100% data availability and 100% data reliability
+* DAAS.com has Built-in Disaster Recovery, Automatic Failover, Self healing
+
+h4. On Demand Self Service Hosting
+
+* More flexibility and control, just like dedicated hosting
+
+DAAS.com provides dedicated-hosting-like flexibility thanks to the many functions and parameters available. This way, users do not need to give away any control and get even more control. Additionally, DAAS.com was the first to bring the Virtual Datacenter concept. This lifts DAAS.com above many other solutions, since it is closest to the way developers and system engineers work: they like to draw out their infrastructure in an overview. The Virtual Datacenter module inside DAAS.com allows its users not only to draw their datacenter, but also bring it live instantly.
+
+Some of the features:
+* Start/stop a server, desktop or virtual datacenter
+* Clone a server, desktop, disk or virtual datacenter
+* Move virtual machines between cloud nodes
+* Expose disks as an iscsi target
+* Scale Up or Down CPU, RAM for your server, desktop
+* Add additional disks to existing servers
+* Change the gateway for a server/desktop
+* Clone an entire server, desktop, virtual datacenter to a secured maintenance environment
+* Make a snapshot of a server, desktop or entire datacenter at any time
+
+h4. Full Transparency
+
+With DAAS.com, customers know exactly what they get thanks to the cloud nodes concept. A customer buys a dedicated cloud node and has the freedom to decide how to use the CPU, RAM and storage inside that cloud node. The customer does not need to fear impact from others, since all is dedicated and secure.
+
+Customers also get access to much more than only the virtual environment, allowing them to see the health and functioning of their private cloud:
+* Access to physical enviroment settings
+* Full monitoring of both virtual and physical machines
+* Full monitoring of both virtual and physical servers, desktops and disks
+* Full access to all jobs and events
+* Real time view of energy usage & uptime of his cloud
+
+h4. Pay as you grow
+
+In DAAS.com, customers can gradually grow their cloud from a single node on, with extra cost efficient cloud nodes. This way, customers are not confronted with sudden high investment costs like for example an extra SAN. Also, no complex integration is needed: new cloud nodes are brought available as extra capacity within the same cloud management center.
+
+The Cloud Management center also allows to keep on scaling the virtual servers and desktops in the cloud to the needs. Customers can Scale Up or Down CPU and RAM for servers and desktops and add or remove disks to servers and desktops.
+
+h4. Green
+
+DAAS.com is installed in a Green Cloud Datacenter. The green cloud datacenter is a repository for the storage, computing capacity and management of data and applications in which the building, mechanicals, lighting, electrical and computer systems are designed for maximum energy efficiency and minimum environmental impact.
+
+Green Datacenter:
+* Ultra-efficient datacenter cooling design
+* Avoiding power conversion losses
+* Looking for efficiency at the operating system level
+
+Cloud Datacenter:
+* High performant IT capacity
+* Full Automation of the physical/datacenter layer
+* Super High speed low latency networking
+
+h3. DAAS.com Storage Cloud Solution
+
+DAAS.com Storage Cloud delivers storage for the Internet. It is designed for developers who require scalable storage for their applications. This storage is delivered as a scalable volume, meaning that it can be considered as a web drive that can grow in capacity.
+
+The DAAS.com storage volumes can be accessed via:
+* S3 API (Amazon`s Simple Storage Service): API format that is accepted as a standard to read/write files from cloud storage
+* Traditional FTP (File Transfer Protocol)
+* WebDAV (Web-based Distributed Authoring and Versioning): WebDAV is a set of methods that facilitates collaboration between users in editing and managing documents and files stored on World Wide Web servers. It is supported on most Operating Systems including Windows, MAC and Linux.
+
+The DAAS.com volumes have following extra options:
+
+* Choice of a Region to optimize for latency, minimize costs, or address regulatory requirements: Europe, US, Middle East. Files stored in a Region never leave the Region.
+* Authentication mechanisms to ensure that data is kept secure from unauthorized access
+* File support of up to 5TB for a single file
+* Size of a DAAS.com volume is maximum 100TB, a customer can have multiple volumes
+* Manage the storage volume via an easy web admin

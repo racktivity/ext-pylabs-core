@@ -1,0 +1,337 @@
+h2. XMLRPC Cloud API DOC - errorcondition
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.errorcondition.getXMLSchema(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the errorcondition rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.errorcondition.create(errorconditiontype, timestamp, level, agent, tags, errormessagepublic, errormessageprivate, application, backtrace, logs, transactioninfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new errorcondition
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Errorconditiontype (int) :        type of errorcondition
+                * Timestamp (int) :                 timestamp of errorcondition
+                * Level (string) :                     level of errorcondition
+                * Agent (string) :                     unique id of agent
+                * Tags (string) :                      series of tags format
+                * Errormessagepublic () :       public error message
+                * Errormessageprivate () :      private error message
+                * Application (string) :               name of the application
+                * Backtrace (string) :                 backtrace message
+                * Logs (string) :                      log message
+                * Transactioninfo (string) :           info of the transaction
+                * Jobguid (guid) :                   guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.create(errorconditiontype=<int>,timestamp=<int>,level=<string>,agent=<string>,tags=<string>,errormessagepublic=<>,errormessageprivate=<>,application=<string>,backtrace=<string>,logs=<string>,transactioninfo=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with backplaneguid as result and errorconditionguid: {'result': guid, 'errorconditionguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.errorcondition.list(errorconditionguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all errorconditions or only specified errorcondition
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Errorconditionguid (guid) :        guid of the errorcondition
+                * Jobguid (guid) :                   guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.list(errorconditionguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of errorcondition info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.errorcondition.getYAML(errorconditionguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the errorcondition rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Errorconditionguid (guid) :  guid of the errorcondition rootobject
+                * Jobguid (guid) :             guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :     dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.getYAML(errorconditionguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the errorcondition
+Return type : string
+    {noformat}
+    h3.errorcondition.getObject(errorconditionguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Errorconditionguid (guid) :    guid of the job rootobject
+                * Jobguid (guid) :               guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.getObject(errorconditionguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : rootobject
+    {noformat}
+    h3.errorcondition.raiseErrorCondition(level, typeid, errormessagepublic, errormessageprivate, tags, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new errorcondition and escalate it
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Level (string) :                     level of errorcondition ('CRITICAL','ERROR','INFO','UNKNOWN','URGENT','WARNING')
+                * Typeid (string) :                    predefined type id (ex. SSO-MON-NETWORK-0001)
+                * Errormessagepublic () :       public error message
+                * Errormessageprivate () :      private error message
+                * Tags (string) :                      series of tags format
+                * Jobguid (guid) :                   guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.raiseErrorCondition(level=<string>,typeid=<string>,errormessagepublic=<>,errormessageprivate=<>,tags=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with backplaneguid as result and errorconditionguid: {'result': guid, 'errorconditionguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.errorcondition.getXML(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the errorcondition rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.errorcondition.find(errorconditiontype, timestamp, level, agent, tags, application, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Errorconditiontype (string) :        type of errorcondition
+                * Timestamp (int) :                 timestamp of errorcondition
+                * Level (int) :                     level of errorcondition
+                * Agent (string) :                     unique id of agent
+                * Tags (string) :                      series of tags format
+                * Application (string) :               name of the application
+                * Jobguid (guid) :                   guid of the job if avalailable else empty string
+                * Executionparams (dictionary @returns array of array [[...]]) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.find(errorconditiontype=<string>,timestamp=<int>,level=<int>,agent=<string>,tags=<string>,application=<string>,jobguid=<guid>,executionparams=<dictionary @returns array of array [[...]]>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : s array of array [[...]]
+Return type : 
+    {noformat}
+    h3.errorcondition.delete(errorconditionguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete the specified errorcondition
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Errorconditionguid (guid) :        guid of the errorcondition
+                * Jobguid (guid) :                   guid of the errorcondition if avalailable else empty string
+                * Executionparams (dictionary) :           dictionary of errorcondition specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_errorcondition.delete(errorconditionguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and errorcondition: {'result': True, 'errorconditionguid': guid}
+Return type : dictionary
+    {noformat}

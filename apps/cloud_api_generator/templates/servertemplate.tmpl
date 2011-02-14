@@ -1,0 +1,29 @@
+from pymonkey import q
+from cloud_api_rootobjects import cloud_api_$className
+from cloud_api.BaseCloudAPI import BaseCloudAPI
+
+class ${className}(BaseCloudAPI):
+    def __init__(self):
+        self._rootobject = cloud_api_${className}.${className}()
+#if $className == 'cmc'
+
+    @q.manage.applicationserver.expose_authenticated
+    def checkCredentials(self):
+        return True
+#end if
+#for $method in $methods:
+
+#if $method.requireAuthorization
+    @q.manage.applicationserver.expose_authorized(groups=$method.groups)
+#else
+    @q.manage.applicationserver.expose_authenticated
+#end if
+    def $method.name (self, $method.args):
+        """
+        $method.docs
+	"""
+#set $line = ','.join($method.argNames)
+	return self._rootobject.${method.name}($line)
+
+#end for
+

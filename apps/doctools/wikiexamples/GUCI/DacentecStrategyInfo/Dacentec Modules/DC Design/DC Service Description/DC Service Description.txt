@@ -1,0 +1,41 @@
+h2. Service Description
+
+This chapter described the tasks Dacentec will execute.
+
+Needs to be foreseen by the project partner:
+
+* Land
+* Building Licenses
+
+Dacentec will:
+
+* Do the full Datacenter design: 
+** Detailed development and completion of the engineering design
+** Preparation of the construction documents
+** Equipment procurement
+
+* Coordinate the Datacenter construction:
+** Selection of subcontractors
+** All building construction activities
+** Electrical and Mechanical installations
+** Installation of equipment and systems
+
+* Create a project plan
+** Develop a phased plan to indicate construction tasks, equipment interconnection and locations.
+
+* Manage & Operate the Datacenter
+** Manage Staffing
+** Work out Security Protocol
+** Work out procedures
+** Work out monitoring
+** Manage all daily operations
+** Organise sales & marketing
+** Certify for SAS 70 Type II
+
+h2. About SAS 70 Type II
+
+SAS 70 (the Statement on Auditing Standards No. 70) defines the standards an auditor must employ in order to assess the contracted internal controls of a service organization. Service organizations, such as hosted data centers, insurance claims processors and credit processing companies, provide outsourcing services that affect the operation of the contracting enterprise. The SAS 70 was developed by the American Institute of Certified Public Accountants (AICPA) as a simplification of a set of criteria for auditing standards originally defined in 1988.
+
+Under SAS 70, auditor reports are classified as either Type I or Type II. In a Type I report, the auditor evaluates the efforts of a service organization at the time of audit to prevent accounting inconsistencies, errors and misrepresentation. The auditor also evaluates the likelihood that those efforts will produce the desired future results. A Type II report includes the same information as that contained in a Type I report; in addition, the auditor attempts to determine the effectiveness of agreed-on controls since their implementation. Type II reports also incorporate data compiled during a specific time period, usually a minimum of six months.
+
+SAS 70 reports are commissioned at the request of either a service organization (the company) or the user organization (customers). It is in the service organization's best interests to provide consistent service auditor's reports. Positive independent reports build a customer's trust and confidence in the service organization and satisfy any concerns. Furthermore, Type II reports identify any operational areas that need improvement. A lack of current reports, on the other hand, may generate multiple audit requests from the user organization and these audits can be costly for the service organization.

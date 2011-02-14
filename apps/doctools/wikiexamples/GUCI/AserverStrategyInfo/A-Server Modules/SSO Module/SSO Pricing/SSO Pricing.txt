@@ -1,0 +1,10 @@
+h2. SmartStyle Office Pricing
+
+* As from €4.999 for 3 year contract including:
+** 2 hardware nodes
+** 2 network swithces
+** 1 Racktivity power swith
+** Cloud management center
+** SSO tools: SSO viewer, file recovery, ...
+** 24/7 support by NOC
+** warranty

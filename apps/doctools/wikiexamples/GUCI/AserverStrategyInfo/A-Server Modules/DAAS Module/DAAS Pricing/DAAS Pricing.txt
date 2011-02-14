@@ -1,0 +1,20 @@
+h2. DAAS Pricing
+
+h3. DAAS Private Cloud
+
+|| Type || RAM || SSD || CPU cores || Storage || Price ||
+| Base CPU Node | 12GB | 64GB | 6 | \- | $199/month |
+| Advanced CPU Node | 32GB | 256GB | 12 | \- | $399/month |
+| Storage Node | \- | \- | \- | 3TB | $199/month |
+
+h3. DAAS Storage Cloud
+
+DAAS is offered at prices 30% less than Amazon AWS:
+
+|| Commitment || Amazon US || DAAS.com ||
+| 0-01TB | $0,14/GB/month | $0,100/GB/month |
+| Next 49TB | $0,125/GB/month | $0,085/GB/month |
+| Next 450TB | $0,110/GB/month | $0,075/GB/month |
+| Next 500TB | $0,095/GB/month | $0,065/GB/month |
+| Next 4000TB | $0,080/GB/month | $0,055/GB/month |
+| Over 5000TB | $0,055/GB/month | $0,040/GB/month |

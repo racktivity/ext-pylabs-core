@@ -1,0 +1,7 @@
+h2. DAAS Target market
+
+DAAS has a value proposition towards:
+
+* ISVs
+* SAAS Providers
+* Cloud builders

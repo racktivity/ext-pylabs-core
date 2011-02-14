@@ -1,0 +1,13 @@
+h1. Product Info Vapp-Market
+
+{include:Vapp Market Situation}
+
+{include:Vapp Target Market}
+
+{include:Vapp Solution}
+
+{include:Vapp Product Description}
+
+{include:Vapp USPs}
+
+{include:Vapp Competitive}

@@ -1,0 +1,597 @@
+h2. REST Cloud API DOC - clouduser
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.clouduser.listJobs(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of jobs the cloud user executed.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :     guid of the cloud user
+                * jobguid (guid) :           guid of the job if avalailable else empty string
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/listJobs?clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of machines for the cloud user.
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.listGroups(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the list of groups to which a given clouduser belongs.
+ 
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid () :     guid of the cloud user for which to retrieve the list of groups to which this user belongs.
+                * jobguid () :           guid of the job if avalailable else empty string
+                * executionparams () :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/listGroups?clouduserguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with clouduserguid, login, email, firstname, lastname, cloudusergroupguid, name, description.
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.getXMLSchema(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the cloud user rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.clouduser.generateCertificate(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generates a certificate for the cloud user specified.
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :         guid of the cloud user specified
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/generateCertificate?clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.create(login, password, email, firstname, lastname, name, description, systemUser, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new cloud user        
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * login (string) :                Login for this new cloud user
+                * password (string) :             Password for this new cloud user
+                * email (string) :                Email address for this new cloud user
+                * firstname (string) :            Firstname for this new cloud user
+                * lastname (string) :             Lastname for this new cloud user
+                * name (string) :                 Name for this new cloud user
+                * description (string) :          Description for this new cloud user
+                * systemUser (boolean) :           Indicates if this user is system user
+                * jobguid (guid) :              guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/create?login=<string>&password=<string>&email=<string>&firstname=<string>&lastname=<string>&name=<string>&description=<string>&systemUser=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with cloud user guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.list(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud users.
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid () :      guid of the cloud user specified
+                * jobguid () :            guid of the job if avalailable else empty string
+                * executionparams () :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/list?clouduserguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with guid, login, name, description, firstname, lastname, address, city, country and status for cloud user.
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.listStatuses(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of possible cloud user statuses.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid () :           guid of the job if avalailable else empty string
+                * executionparams () :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/listStatuses?jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of statuses.
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.getYAML(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the cloud user rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :             guid of the cloud user rootobject
+                * jobguid (guid) :                   guid of the job if avalailable else empty string
+                * executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/getYAML?clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : YAML representation of the cloud user
+Return type : string 
+    {noformat}
+
+    h3.clouduser.setAdminFlag(clouduserguid, isAdmin, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Updates the admin flag for the cloud user specified.
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :         guid of the cloud user specified
+                * isAdmin (boolean) :               Admin flag value for this cloud user, default is False.
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/setAdminFlag?clouduserguid=<guid>&isAdmin=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :     guid of the lan rootobject
+                * jobguid () : <no description found>
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.clouduser.listMachines(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of machines of the cloud user.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :     guid of the cloud user
+                * jobguid (guid) :           guid of the job if avalailable else empty string
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/listMachines?clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of machines for the cloud user.
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.updateModelProperties(clouduserguid, name, description, email, firstname, lastname, address, city, country, phonemobile, phonelandline, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update properties, every parameter which is not passed or passed as empty string is not updated.
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :         guid of the cloud user specified
+                * name (string) :                  Name for this cloud user
+                * description (string) :           Description for this cloud user
+                * email (string) :                 Email for this cloud user
+                * firstname (string) :             Firstname for this cloud user
+                * lastname (string) :              Lastname for this cloud user
+                * address (string) :               Address for this cloud user
+                * city (string) :                  City for this cloud user
+                * country (string) :               Country for this cloud user
+                * phonemobile (string) :           Phonemobile for this cloud user
+                * phonelandline (string) :         Phonelandline for this cloud user
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/updateModelProperties?clouduserguid=<guid>&name=<string>&description=<string>&email=<string>&firstname=<string>&lastname=<string>&address=<string>&city=<string>&country=<string>&phonemobile=<string>&phonelandline=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with cloud user guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.listDatacenters(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of datacenters of the cloud user.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :     guid of the cloud user
+                * jobguid (guid) :           guid of the job if avalailable else empty string
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/listDatacenters?clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of datacenters for the cloud user.
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.updatePassword(clouduserguid, currentpassword, newpassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update the password for the cloud user specified.
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :         guid of the cloud user specified
+                * currentpassword (string) :       Current password for this cloud user
+                * newpassword (string) :           New password for this cloud user
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/updatePassword?clouduserguid=<guid>&currentpassword=<string>&newpassword=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.getXML(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the cloud user rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.clouduser.setStatus(clouduserguid, status, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Updates the admin flag for the cloud user specified.
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :         guid of the cloud user specified
+                * status (string) :                Status for the cloud user specified. See listStatuses() for the list of possible statuses.
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/setStatus?clouduserguid=<guid>&status=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.clouduser.find(login, email, name, status, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud user guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * login () :                    Login of  the cloud user to include in the search criteria.
+                * email () :                    Email of  the cloud user to include in the search criteria.
+                * name () :                     Name of the cloud user to include in the search criteria.
+                * status () :                   Status of the cloud user to include in the search criteria. See listStatuses().
+                * jobguid () :                  guid of the job if avalailable else empty string
+                * executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/find?login=<>&email=<>&name=<>&status=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Array of cloud user guids which met the find criteria specified.
+Return type : array 
+    {noformat}
+
+    h3.clouduser.delete(clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes the cloud user specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid) :             guid of the cloud user to delete.
+                * jobguid (guid) :                   guid of the job if avalailable else empty string
+                * executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_clouduser/delete?clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

@@ -1,0 +1,11 @@
+h3. Kester Goh - Legal Director {span:style=font-size:small;}{span}
+
+{table}{tr}{td:valign=top|width=500}Kester Goh is the Legal Director for Dacentec. He has over 11 years of experience in the venture capital and IT industry market.
+
+He worked before at several technology companies: as legal counsel for Datacenter Technologies, Dedigate, Clear2Pay, Big Bang Ventures and Q-Layer. 
+
+Kester Goh has a Masters degree in Law and post-graduate degree in Business Management:
+
+Kester is managing partner of Incubaid.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top}  !foto-kester.png|border=1, width=250!  {td}{tr}{table}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+base=/opt/qbase3
+
+python $base/utils/shell.py "$1" "$2" "$3" "$4"
+
+
+    

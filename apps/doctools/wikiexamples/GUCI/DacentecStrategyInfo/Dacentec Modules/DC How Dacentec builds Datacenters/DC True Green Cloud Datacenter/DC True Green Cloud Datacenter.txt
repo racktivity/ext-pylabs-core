@@ -1,0 +1,95 @@
+h2. How Dacentec creates a True Green Cloud Datacenter
+
+h3. Green
+
+A green datacenter is a repository for the storage, computing capacity and management of data and applications in which the building, mechanicals, lighting, electrical and computer systems are designed for maximum energy efficiency and minimum environmental impact.
+
+h4. Ultra-efficient data center cooling
+
+{table}{tr}{td:valign=top|width=500}For years, hot-aisle/cold-aisle, raised-floor cooling has been the standard method of cooling servers. A traditional set up of hot aisle/cold aisle with blanking panels will probably still waste cold air in places you wouldn't expect.
+
+Dacentec uses a system to contain hot or cold air in a (closed-loop) system by using return-air plenums. A plenum is a separate space provided for air circulation for heating, ventilation, and air-conditioning. To that plenum we add computer room air conditioning (CRAC) units. Hot air naturally rises, so the CRAC units are sucking air in from the hottest part of the hot aisle that is high in the  room. The air is cooled down and brought in low into the area of the old aisle, where is is sucked in by the IT equipment and blown out into the hot aisle.
+{td}{td:valign=top} !dacentec_dc_cold_aisle_hot_aisle.png|width=300!{td}{tr}{table}
+
+Depending on the ambient conditions of a location, we will use a closed system or the outside air in the cooling process. For using the outside air we implement Air-Side economizers to reduce significantly energy costs. Mechanical cooling, depending on the source, is estimated to consume anywhere from 33% to 40% of a facility's incoming electricity.
+
+The outside air is brought into the building and distributed via a series of dampers and fans. Instead of being recirculated and cooled, the heated air coming out the IT equipment is simply directed outside. If the outside air is particularly cold, the economizer may mix the heated air and the incoming air, ensuring that the resulting air temperature falls within the desired range for the equipment. The Air-Side economizers include filters to reduce the amount of particulate matter or contaminants that are brought into the data center space and will regulate the humidity of the air.
+
+By doing this, Dacentec does not need to use raised floors and saves a lot of costs in construction and creates more efficiency in the entire datacenter cooling design. Raised floor cooling can never ensure optimal cooling at each spot and therefor overcooling in many datacenters with raised floors is still a fact and a high cost.
+{pagebreak}
+
+h4. Avoid big bigger biggest
+
+{table}{tr}{td:valign=top|width=500}Datacenters are still being built using impressive material without realizing it is less efficient and less cost effective:
+
+* huge diesel generators
+* huge UPS systems
+* huge air conditioning systems
+* ...
+
+Dacentec is saving money and improving the datacenter uptime by building out the datacenter in smaller compartments. Each department operates independently, what makes that in case of major failures it is unlikely that the entire datacenter is impacted. Also, the approach of smaller compartments allows usage of more cost efficient and equal qualitative equipment.
+
+Dacentec can build out a 10.000 m2 datacenter step by step and start generating revenues and adding on additional compartments based on the need. Using this methodology the datacenter scales out better.
+{td}{td:valign=top}Old approach:{br} !dacentec_dc_olddc.png|width=300! {br}{br}Modular approach:{br} !dacentec_dc_modular.png|width=300! {td}{tr}{table}
+
+h4. Looking for efficiency at the operating system level
+
+While most datacenters are taking measures at the supply side of a datacenter: building, power, airco, ... it is important to consider the actual load side: IT equipment.
+
+As a typical colocation datacenter, is it is impossible to get control on customers equipment.
+
+Dacentec is not selling out colocation, but raw CPU and Storage capacity. Dacentec provides a network with access to super fast storage and CPU capacity built out on super high density optimized hardware. Customers will not buy CPU processors or virtual machines, they will buy dedicated CPU nodes and storage nodes. On top of the delivered raw CPU and Storage capacity, Customers will still have all flexibility, can run whatever Operating System and application they like. The management of the equipment is taken away from the customers.
+
+Next to building out the IT resources super high dense and efficient, the optimizations go a lot further: shutting down servers when they're idle, reducing the CPU power or running them more efficiently by moving workloads. Dacentec uses a power orchestration system that shows not only the overall power consumption but can show the real power usage of each server. Like this the customer can be charged for what he uses and will have an incentive to optimize the usage of it.
+
+Finally, the power orchestration framework also monitors up to indivual components providing a continuous optimization and alarming faster for indicidents or breakdowns and even predicting power breakdowns of servers.
+
+h4. Avoiding power conversion losses
+
+Power enters a datacenter building with high voltage and is being converted in many steps. All these steps and especially the last conversion inside the servers results into a loss of up to 30% of energy. This since each server operates on low voltages (12 to 48V) but the input is still 240V (EU) or 210V US) so inside there is another conversion done.
+
+Dacentec reduced this conversion loss by using low voltage power inside the racks, connecting the servers directly on low voltage.
+{pagebreak}
+
+
+h3. Cloud
+
+The cloud datacenter is the next generation of datacenters that moves away from traditional housing or colocation towards delivering ready to use resources for computing without putting any barrier on the choice of software and applications for customers. By doing that, the cloud datacenter can improve signficantly the cost, lower the energy consumption and raise the IT resources uptime.
+
+h4. Deliver High performant IT capacity
+
+Dacentec developed its own high density equipment that delivers the base storage and computing capacity for the customers.
+
+The High capacity model is realised using a custom rack and server design: plate racks and plate servers. The principe is simple: Everything is stripped down to the essential while still using high performant components: no need for server casing, no need for power cables, the plates click into a power bar. Like this the plates have more density than any standard servers on the market\!
+
+In order to achieve the most optical cooling, the air cooling can optionally be installed on the racks itself.
+
+{table}{tr}
+{td:valign=top}High density storage plate:{br} !dacentec_plate.png|border=0, width=300! {td}{td:valign=top}Rack filled with plates:{br} !dacentec_platerack.png|border=0, width=200! {td}{td:valign=top}Local rack cooling:{br} !dacentec_dc_cooledracks.png|border=0, width=300!{td}
+{tr}{table}
+
+h4. Implement Full Automation
+
+A Cloud Datacenter needs to be able to manage petabytes (1 petabyte = 1024 terabyte = 1 million gigabyte) and terahertzes of CPU without constantly adding costs and complexity.
+
+Dacentec uses intelligent automation frameworks to manage and monitor the installed equipment. The management interface provides a view on all resources and guards its health upto the smallest detail. The automation helps the datacenter to grow without hurdles of downtime or complex procedures.
+{pagebreak}
+
+h4. Upgrade to scalable and unbreakable storage
+
+{table}{tr}{td:valign=top|width=500}There is currently no public cloud that can offer fast and reliable storage to their customers at cost efficient pricing. Reason is the limitations of scalability and missing high speed low latency networking techniques to access data.
+
+Dacentec is solving this by integrating technolgy from sister company Amplidata that brings a solution to this at the level of the cloud datacenter: customers can access high capacity storage volumes of up to 100TB each, through high speed connections\!
+
+Amplidata adds safety to the data that is 10.000 more reliable than traditional storage systems. Additionaly, the extra cost to apply the storage safety is less than any competing technology.
+
+The figure shows how data is coded and being spread out to multiple disks om different locations. Only some of the disks are needed to rebuild the data\!
+{td}{td:valign=top} !amplidata_bitspread2.png|border=0, width=140! {td}{tr}{table}
+
+h4. Go beyond standard datacenter automation
+
+{table}{tr}{td:valign=top|width=500}
+Dacentec integrates A-Server`s & Incubaid cloud automation framework allowing customers to create, manage and monitor their infrastructure and this without taking away freedom of choice of software and applications for the customer.
+
+The figure shows the cloud control center that allows easy management of the infrastructure by customers.
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top}Cloud control center:{br} !aserver_sso_vdc.png|border=0, width=250! {td}{tr}{table}

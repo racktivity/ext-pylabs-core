@@ -1,0 +1,75 @@
+h2. XMLRPC Cloud API DOC - $className
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+#for $method in $methods :
+    #set $args = ', '.join($method.argNames)
+    #set $str = 'h3.' + $className + '.' + $method.name + '(' +  $args + ')'
+    $str
+
+    h4. Description
+    
+    #set $docparts = $method.docs.split('@')
+    #set $description = $docparts[0]
+    $description
+    
+    #set $docs = $method.docs
+    
+    #if $docs.lower().find('phase2') >= 0:
+        {note} Not yet implemented {note}
+    #else:
+
+    h4.  Parameters
+    
+        #set $params=dict() 
+        #set $retval=''
+        #set $rettype='' 
+        #for $line in $docs.splitlines:
+            #set $line = $line.strip()
+            #if $line.find('@param') >= 0:
+                #set $lineparts = $line.split(' ')
+                #set $params[$lineparts[1].rstrip(':')] = $line[($line.find($lineparts[1]) + len($lineparts[1])):]
+            #elif $line.find('@return') >= 0:
+                #set $retval = $line.lstrip('@return:').strip()
+            #elif $line.find('@rtype') >= 0:
+                #set $rettype = $line.lstrip('@rtype:').strip()
+            #end if
+        #end for
+
+        #for $arg in $method.argClasses :
+            #if $params.has_key($arg.name):
+                * $arg.name.capitalize() ($arg.argtype) : $params[$arg.name]
+            #else:
+                * $arg.name.capitalize() ($arg.argtype) : <no description found>
+            #end if
+        #end for
+    
+    h4. Python Example
+    
+
+        #set $lines=[]
+        #for $arg in $method.argClasses:
+            #set $line = '%s=<%s>'%($arg.name,$arg.argtype)
+            $lines.append($line)
+        #end for 
+        #set $element = ','.join($lines)
+        #set str = '(' + $element + ')'
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_$className.$method.name$str)['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : $retval
+Return type : $rettype
+    {noformat}
+    #end if
+#end for

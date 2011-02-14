@@ -1,0 +1,17 @@
+h1. Datacenter Expert Team
+
+{include:DC Expert Mission}
+
+{include:DC Proven Track Record}
+
+{include:DC US Concept}
+
+{pagebreak}
+h1. Team
+
+{include:Kristof De Spiegeleer}
+{pagebreak}
+{include:William Groh}
+
+{include:Wilbert Ingels}
+{pagebreak}

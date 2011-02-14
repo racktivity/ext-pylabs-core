@@ -1,0 +1,44 @@
+h2. Pricing
+
+We have setup *an infrastructure to allow our customers to compete as next generation cloud providers*. Therefor, we made that our *cost price is better than the one of all cloud IAAS providers today*, including Amazon Webservices, allowing our customers to compete even with Amazon Webservices, both in functionality and in price\!
+
+h3. Storage
+
+When comparing the storage costs, we are *3 times more cost effective compared to Amazon Webservices* costs:
+
+* Amazon S3 reliable storage is estimated at 60 USD/TB month
+* Amazon S3 less reliable storage is estimated at 40 USD/TB month
+* +Dacentec Ultra reliable storage is 20 USD/TB month+
+
+Moreover, Dacentec is thanks to its bitspread storage technology 10.000 more reliable than Amazon S3 reliable. Data and server uptime in Amazon is something that the developer of the application need to take into account: there are no guarantees: when the server instance dies, the data is gone. Developers can store data in the Amazon cloud on multiple places to obtain better data relaibility, but he pays the price for each write. With Dacentec the high reliability is standard and the overhead storage is limited.
+
+h3. Computing
+
+When comparing the computing costs, we are *4 times more cost effective compared to Amazon Webservices* costs:
+
+* Amazon small instance Sales price 0.085 USD/hour = 61 USD/month
+** Estimate cost price = 20 USD / month = 1.7 GB memory, 1 core, 150 GB local SATA storage    (not redundant)
+
+* Dacentec compute instance
+** +Internal Cost is 15 USD/month+ = 4 GB memory, 1 core, 150 GB 100% redundant SAN storage
+** Much more features & reliability as Amazon Webservices
+
+h3. Why we can be so disruptive in price?
+
+We can be so disruptive because of:
+
+* Our +buying power+ from 2nd biggest hardware vendor in India (Zenith)
+* +Disruptive technology+
+** Amplidata Unbreakable Storage System
+** A-server Cloud Management System
+** Incubaid Distributed Database
+** Incubaid Distributed Filesystem
+** Incubaid Automation & Software Distribution System
+** Incubaid S3 Amazon Storage System
+** Dacentec Power Management Software
+* +Hardware volume deals+
+** Amplidata Disk Appliances (raw capacity)
+** Dacentec Datacenter Rack Controllers
+** Unique knowledge how to build & organize greenest datacenter
+** Optional Plate Rack
+** Green Datacenter Buildout Concepts

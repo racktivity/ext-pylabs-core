@@ -1,0 +1,7 @@
+h1. Racktivity Product Information Sheet
+
+{include:Racktivity Market Situation}
+{include:Racktivity Solution}
+{include:Racktivity Target Market}
+{include:Racktivity Product Description}
+{include:Racktivity Competitive}

@@ -1,0 +1,9 @@
+h2. MirrorCloud Pricing
+
+* As from €2.450 for 3 year contract including:
+** Hardware capable of backing up 3 servers or 9 desktops
+** On board instant virtualisation of made backups
+** Backup Cloud Management center
+** Recovery tools: Standby virtualisation server, file & email recovery, monthly backup testing, ...
+** 24/7 support by NOC
+** warranty

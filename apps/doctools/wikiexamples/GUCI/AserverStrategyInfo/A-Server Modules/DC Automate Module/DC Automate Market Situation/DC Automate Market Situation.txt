@@ -1,0 +1,22 @@
+h2. DC Automate: Problems we are trying to resolve, situation of market
+
+Today the typical problems in IT infrastructure include reliance on labor intensive, limited automation‏, limited visibility and lack of true utility computing. Typically, every new application or company looking for a private hosted solution will be installed on dedicated infrastructure. These shortages resulted in datacenters with a usage of 10% of its available resources.
+
+Enterprises mostly build automated IT solutions to their needs based on a mix of best of breed solutions they selected. These implementations are often made to complex and have limitations in scalability. Maintenance and expansion costs are high and even ehen uptime has been higher thanks to the use of high end components and the implementation of redudant processes, the toll of complexity resulted in longer times to recover from a dowmtime scenario.
+
+Solutions adopted by enterprises are a combination of virtualization tools with central storage SAN, together with networking systems that are upgraded to handle virtual/physical mapping. At the virtualization side most popular choices are VMWare, Citrix XenServer/XenDesktop and more recently Microsoft Hyper-V. At the storage side choices are made for EMC, Netapp, Equallogic, IBM that often include fibre channel interfaces and some form of a storage virtualization software layer. Finally, at the switching side, choices are with traditional vendors such as Cisco. The total solution is mostly implemented by System Integrators.
+
+The state of the market and technology clearly states that there is a need for 100% agility. In IT infrastructure this requirement baiscally means the capability to change It infrastructure towards business needs in minutes. For example a new employee virtual desktop provisioning process, bringing live a new server, etc.
+
+Where 100 % confirms these needs, the state of technology is as follows:
+
+|Customers can self manage & deploy|40 %|
+|ERP alike System Mgmt Approach|0 %|
+|Automated capacity planning|50 %|
+|Charge back mechanism|30 %|
+|Infrastructure neutral|10 %|
+|Multi tenant & resell capabilities|10 %|
+
+While several players succeeded in bringing a solution for bringing the required agility, they are not ready or usable by the enterprise. Amazon brings Infrastructure as a Service to developers, this is a hosted and out of control solution that is a misfit zith the IT security policy for primary business processes in every enterprise. Other offerings are more evolved hosting offerings where we find in the high end Terremark and in the more mass market players like Rackspace and GoGrid.
+
+Also, we see that they don`t comply with the above statements because the focus is situated in only one aspect like auto provisioning, where charge back mechnismns, automated capacity planning, etc. are often not included.

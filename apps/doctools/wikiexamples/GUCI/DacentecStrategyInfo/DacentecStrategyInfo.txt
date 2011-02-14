@@ -1,0 +1,3 @@
+h1. Dacentec Strategic Info
+
+{children}

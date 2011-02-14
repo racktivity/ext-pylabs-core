@@ -1,0 +1,60 @@
+h2. Datacenter Design Requirements
+
+h3. Construction
+
+* Building: 6,000 square meters
+* Capacity of 1,800 cabinets that will be installed phased over 3 to 4 years
+* 2 main sections in the building:
+** 50%: Cloud Datacenter section
+** 50%: Collocation section: cabinets capacity
+* Modular design need to allow to add per Performance-Optimized Datacenter (POD)\*
+* Offices and meeting rooms
+* Entrance with security guards
+* Network Operation Center (NOC) room
+* Entrance and other public spaces need to look impressive to welcome the datacenter visitors
+
+\* POD (Performance-Optimized Data center) is a modular datacenter approach that allows to deploy an entire new data center in a matter of months at a fraction of the cost of a traditional data center
+
+h3. Supplies
+
+* 11.5 MW total power requirements
+* Power Redundancy: N+1
+* Fiber Redundancy: N+N
+
+h3. Datacenter Equipment
+
+* Generator 500kW per POD, 1 redundant generator per 4 PODs
+* 6kW max capacity/cabinet, 4.5kW average capacity/cabinet for the complete datacenter
+* UPS per Cabinet
+** AC power for Collocation section
+** DC 48V for IAAS/DAAS/Storage section
+** Full Power management per cabinet/server
+* Efficient cooling system:
+** Hot or Cold aisle containment
+** Use of free air (if ambient situation allows this)
+* Building automation system
+
+h3. Security
+
+* Fire protection and suppression system
+** per POD
+** Prevention by Early detection warning systems (Smoke detectors and others)
+** Protection by Fire walls and others
+** Suppression by gas
+
+* Access Security:
+** Physical security by security guards
+** Full camera protection including motion detection/recording/regnition (See VisioSafe)
+** Hand scan security for every room in the datacenter (See Sensometrix)
+
+* Monitoring
+** Full monitoring of electrical section (Power feeds, generators, UPSes, switching gear etc)
+** Full monitoring of the mechanical part (Chillers, Cracs, pumps, humidifiers etc)
+** Full Monitoring of the security elements
+** Full monitoring of the building automation
+** Full monitoring of the fire detection/suppression system
+** Full monitoring of the Network elements (Dark fiber, Routers, Switches etc)
+** Possibility to fully remotely manage the datacenter
+** NOC in the building
+
+{pagebreak}

@@ -1,0 +1,59 @@
+h3. Meeting details
+
+Date:
+* 20/12/10
+
+Present:
+* Carlo Schreurs (Besix)
+** \+32478804004 (B)
+** \+966506448831 (SA)
+** cschreurs@besix.com
+* Sophie De Maesschalck
+* Stijn Hanssens
+* Wilbert Ingels (via skype)
+
+Agenda:
+* try to get info for a high level cost estimation for the 6000m2 datacenter in Jeddah, Saudi Arabia.
+* check possible interest from Besix as contractor.
+
+h3. Building requirements
+
+* based on preliminary building layout from William and Wilbert
+* outer walls: painted concrete + insulation
+* height: higher than normal due to piping under the roof (8m)
+* antistatic concrete floors (spaces except offices and reception)
+* offices and reception: higher finish.
+* inner walls: no concrete
+* fireproof compartments (dependent on local legistlations)
+* backup generators in seperate building (steel structure)
+* closed loop datacenter cooling
+
+h3. Besix feedback on Jeddah
+
+* harsh climate
+** summer: 40°-48°C
+** winter: 28°-32°C
+** very high humidity
+** sandstorms: not frequent in that area.
+* earthquake zone
+** close to the coast: coral rock (less stable)
+** 1-2km inland: solid rock (better)
+* electricity supply is very unreliable
+** high emphasis on backup generators en UPS's required
+* high bureaucracy (general for SA)
+
+h3. Besix feedback on building and pricing
+
+* Besix started operations 2 years ago in Saudi Arabia. They work with local contractors as jumpstart.
+* concrete in Jeddah area is cheap due to high availability of raw materials
+* cool units should be protected from sand (floating roof)
+* rule of thumb pricing estimate (building only, no equipment):
+** non-office: 5.000m2 x 1.200 eur/m2 = 6.000.000 eur
+** offices:    1.000m2 x 1.700 eur/m2 = 1.700.000 eur
+** height: add 15%
+** total: 8.855.000 eur ($ 12 M)
+* more detailed estimate will be supplied asap
+* Besix interest?
+** project probably too small for them
+** Besix will be expensive compared to others
+** possibility: local contractor "AL MUHAIDIB" ([http://www.muhaidib.com/]), under supervision of Besix.

@@ -1,0 +1,7 @@
+h3. Wim De Wispelaere - Storage Expert
+
+{table}{tr}{td:valign=top|width=500}Wim De Wispelaere is a Storage Veteran who has been involved in the development and launch of several innovative products and technologies. He started Amplidata where he developed a revolutionary dispersed storage system with his team. Before Wim was Director of Product Management at Symantec (Veritas), responsible for the introduction of deduplication (NetBackup PureDisk) and disk backup technologies in the market-leading Veritas NetBackup product. The deduplication technology had been developed at DataCenter Technolgies where Wim was leading product management and pre-sales.
+
+Prior to DCT, Wim has also been involved in bringing Alcatel ADSL to the market during the early years of broadband internet access, and worked at Formus and Broadnet on the product portfolio and business strategy for broadband wireless internet. Wim has a Masters Degree in Civil Electronics Engineering from the Ghent university in Belgium.
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-wim.jpg|border=1, width=250! {td}{tr}{table}
+

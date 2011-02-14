@@ -1,0 +1,14 @@
+h1. World Greenest Cloud Datacenters
+
+{include:DC Introduction}
+{pagebreak}
+{include:DC Market Situation}
+{include:DC Mission}
+{include:DC Solution}
+{pagebreak}
+{include:DC Product Datacenter Construction}
+{pagebreak}
+{include:DC Pricing}
+{pagebreak}
+{include:DC Competitive}
+{include:DC Target Datacenter Construction}

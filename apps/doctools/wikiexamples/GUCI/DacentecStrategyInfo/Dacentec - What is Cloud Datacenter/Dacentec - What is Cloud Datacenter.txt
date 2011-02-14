@@ -1,0 +1,15 @@
+h1. What is a Green Cloud Datacenter
+
+h2. Introduction
+
+This document will explain the difference between a traditional datacenter and a Green Cloud Datacenter.
+
+{include:DC Typical Datacenter Construction}
+{include:DC Peering Room}
+{pagebreak}
+{include:DC Typical Green Datacenters}
+{pagebreak}
+{include:DC Introduction}
+{pagebreak}
+{include:DC How Dacentec builds Datacenters}
+{pagebreak}

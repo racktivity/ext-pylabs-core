@@ -1,0 +1,33 @@
+"""
+filecomment
+"""
+
+
+#comment
+##comment
+
+
+class iets1(Inhe):
+    """
+    ddd
+    """
+    def adef(self,param1,param2="sss"):
+        """
+        comment def
+        """
+        print param1 #should not be removed
+
+#breaks and should be removed
+a=2 #should not be matched when trying to find e.g. classes
+
+class Iets-Anders :
+    def __init__(self,ddd)
+        dddd
+        #comment
+
+
+def afunction():
+    functioncontent
+    # comment
+    ## comment
+    

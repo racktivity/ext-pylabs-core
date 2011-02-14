@@ -1,0 +1,15 @@
+h3. Wilbert Ingels - CTO
+
+{table}{tr}{td:valign=top|width=500}Wilbert Ingels has 16 years of experience in the IT and Telecoms sector. Before starting with A-Server he was: Sales Director at Netcom Solutions, Sales Director at Level3 Communications Inc., European Director Business Development at Level3 Communications Inc., Vice President Sales at Dedigate/Terremark Inc., Senior Vice President Managed Hosting Dedigate/Terremark Inc., Chief Operating Officer Europe at Dedigate/Terremark Inc.
+
+Wilbert is an engineer by education and an expert in datacenter design and power management. He invented several new concepts regarding power management in datacenters. He has several patents on his name for datacenter power technology designs. 
+
+Wilbert was the fouder of Racktivity. Racktivity did 2 succesfull funding rounds and is now headquartered in the US.
+
+Next to its power experise, Ingels has on the field experience as CTO in previous ventures for multi datacenter design and management, data replication methods, security in datacenters, high volume infrastructure setups and disaster recovery in and between datacenters.
+
+Wilbert is an Entrepreneur In Residence from Incubaid. 
+Wilbert is now one of founding partners of Dacentec and was co-founder of Dedigate, Racktivity & A-server before.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-wil2.png|border=1, width=250! {td}{tr}{table}
+

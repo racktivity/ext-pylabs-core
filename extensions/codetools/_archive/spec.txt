@@ -1,0 +1,38 @@
+# Start state: "filestart".
+# "N" character before the comments means: go to Next line.
+
+defbody -> defbody                                       N (find empty line) Add empty line to classDef
+xxx -> xxx                                               N (find empty line)
+defbody -> classbody                                       (find text < 8 chars)
+defheader -> classbody                                     (find text < 8 chars)
+classbody ->  filebody                                     (find text < 4 chars)
+classheader ->  filebody                                   (find text < 4 chars)
+
+filestart -> filestart                                   N (find #, adding line to license text)
+filestart -> filebody                                      (find line not starting with #)
+
+filebody -> classheader                                  N (found class statement at beginning of line) create new classDef
+classheader -> classheader                               N (find 2 * """ in line) add to docstring of classDef
+classheader -> classheader_indocstring                   N (find """ at beginning of line after trim)
+classheader_indocstring -> classheader_indocstring       N () Add to docstring of classDef
+classheader_indocstring -> classheader                   N (find """)
+
+classbody -> classbody                                   N (found line starting with ##) Read decorators
+classheader -> classbody                                 N (found line starting with ##) Read decorators
+filebody -> filebody                                     N (found line starting with ##) Read decorators
+classheader -> classheader                               N (found line starting with #) Add to class comments
+classheader -> classbody                                   (found line not starting with #)
+
+classbody -> parsedef                                    N (find def at beginning of line after trim)
+filebody -> parsedef                                     N (find def at beginning of line after trim)
+parsedef -> defheader                                    N () create MethodDef
+defheader -> defbody                                     N (find 2 * """ in line) Add to docstring
+defheader -> defheader_indocstring                       N (find """ at beginning of line after trim)
+defheader_indocstring -> defbody                         N (find """)
+defheader_indocstring -> defheader_indocstring           N () Add to docstring
+
+defheader -> defbody                                       (No docstring found)
+defbody -> defbody                                       N (found text or comments, add to body of MethodDef)
+
+classbody -> classbody                                   N () Create new propdef
+filebody -> filebody                                     N (found file contents) 

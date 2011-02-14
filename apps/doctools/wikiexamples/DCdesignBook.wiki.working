@@ -1,0 +1,89 @@
+
+
+*Design Book for Datacenter Saudi Arabia near Jeddah*
+
+{include:GUCI:DC Title Page}
+{tokenized}
+PB||
+{tokenized}
+
+h1. Table of Contents
+
+
+
+{tokenized}
+PB||
+{tokenized}
+
+h1. Proposal for Khobra Fund
+
+h2. Scope
+
+The scope of this document is to provide the design overview for building a 6000m² datacenter near Jeddah, Saudi Arabia with extension option to 8000m².
+
+h2. Executive Summary
+
+* Size
+* Planning
+* Budgets
+* Phases
+
+h1. Datacenter Design Book
+
+{include:GUCI:DC Design Requirements}
+
+h2. Datacenter Design
+{include:GUCI:DC Generic Design Overview}
+{include:GUCI:DC Generic Design Specifications}
+{include:GUCI:DC Generic Design PODs}
+{include:GUCI:DC Generic Design Functional}
+{include:GUCI:DC Peering Room}
+
+{include:GUCI:DC Networking Design}
+{tokenized}
+PB||
+{tokenized}
+{include:GUCI:DC Rack Design}
+
+{include:GUCI:DC Storage Design}
+
+{include:GUCI:DC Security Design}
+
+{include:GUCI:DC Service Description}
+{tokenized}
+PB||
+{tokenized}
+h1. About us
+
+{include:GUCI:DC Expert Mission}
+
+{include:GUCI:DC Proven Track Record}
+
+{include:GUCI:DC US Concept}
+
+{tokenized}
+PB||
+{tokenized}
+
+h2. Team
+
+{include:GUCI:Kristof De Spiegeleer}
+{include:GUCI:Stijn Hanssens}
+{tokenized}
+PB||
+{tokenized}
+{include:GUCI:Wilbert Ingels}
+{include:GUCI:William Groh}
+{tokenized}
+PB||
+{tokenized}
+{include:GUCI:Peter Grypdonck}
+{include:GUCI:Jan De Landtsheer}
+{tokenized}
+PB||
+{tokenized}
+{include:GUCI:Arvid Fossen}
+{include:GUCI:Sophie De Maesschalck}
+{include:GUCI:Kester Goh}
+
+

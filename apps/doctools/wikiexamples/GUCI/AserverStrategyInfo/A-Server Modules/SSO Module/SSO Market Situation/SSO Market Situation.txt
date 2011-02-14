@@ -1,0 +1,20 @@
+h2. SmartStyle Office: Problems we are trying to resolve, situation of market
+
+The current economic climate has forced many SMBs to spend less on technology and their IT infrastructure. Today more businesses are investing in managed services rather than on in-house IT systems.
+
+Many *channel partners see new competitors in their market space*, the SMB market with no or limited IT (5-100 employees): *hosting service providers* with messaging & collaboration solutions, *SAAS providers* like Google, Salesforce. Those *new competitors are able to offer a solution at a monthly fee* without an upfront investment in infrastructure. Additionally, they can offer products that are *faster provisioned, easier to scale and promise a higher reliability* thanks of being installed a secured and redudant datacenter facility.
+
+The impact on the channel means decreased revenues. In order to mitigate these issues, the IT channel is looking for higher-margin revenue streams and products that allow them to compete with the new players in their segment.
+
+The *Channel active in the SMB market segment does not have off the shelf solutions to meet the higher delivery standards that the challengers in their market can offer.* At the same time, the SMB customers remain with a need of private, secure and on-premise infrastructure, being undependent from internat delays and downtimes and being independent from third party work loads. Additionally, SMBs continue to appreciate the localised apporach of the Managed Service Provider and their ability to listen to personalised needs.
+
+*What the channel is missing*, is a product that enables them to leverage their stronger values while meeting the *new requirements of their customers IT*. Those requirements are:
+
+* +Full Automatic provisioning+ of your IT resources
+* +Increased Reliability+ of your IT resources
+* +Increased Scalability+ of your IT resources
+* +More efficient use+ of your IT resources
+* +Improved TCO for channels partners end users+
+* +Environmentally Friendly+
+
+*Traditional SMB resellers do not have the resources to work out a product providing them all the above capabilities.*

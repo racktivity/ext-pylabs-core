@@ -1,0 +1,13 @@
+h3. Overview
+
+!dacentec_dc_buildingpreview.png|border=0!
+
+Dacentec builds its Datacenters very modular by use of PODs. A POD is a seperate room holding 60 racks and has its own dedicated supply equipment like generator and cooling.
+
+This modular datacenter design layout provides many benefits:
+* Allow a phased build out of the datacenter
+* Reduce costs thanks to more simple components and materials required for each POD
+* Spreads the risk thanks to full POD independency: dedicated generator and dedicated cooling per POD
+* Brings better uptimes thanks to more transparant setup and easier to manage than big complex redundancy equipment used in datacenters
+* Simplify future extensions: the decentralised apporach allows to extend the building fast and easy with additional PODs
+* Optimized access control: access into the datacenter POD without disruption to other operational PODs

@@ -1,0 +1,394 @@
+h2. XMLRPC Cloud API DOC - ipaddress
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.ipaddress.getXMLSchema(ipaddressguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the ipaddress rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.ipaddress.create(name, description, address, netmask, block, iptype, ipversion, languid, virtual, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new ipaddress.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name (string) :               name of the ipaddress
+                * Description (string) : <no description found>
+                * Address (type_ipaddress) : <no description found>
+                * Netmask (type_netmaskaddress) : <no description found>
+                * Block (boolean) : <no description found>
+                * Iptype (string) : <no description found>
+                * Ipversion (string) :          version of the IP object, IPV4 or IPV6
+                * Languid (guid</para><para>@param virtual            flag is if ip is a VIPA @type virtual             boolean) :            lan to which the ip is connected
+                * Virtual () :             flag is if ip is a VIPA
+                * Jobguid (guid) :            Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.create(name=<string>,description=<string>,address=<type_ipaddress>,netmask=<type_netmaskaddress>,block=<boolean>,iptype=<string>,ipversion=<string>,languid=<guid</para><para>@param virtual            flag is if ip is a VIPA @type virtual             boolean>,virtual=<>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with ipaddressguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.ipaddress.list(ipaddressguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all ipaddresss.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Ipaddressguid () :            Guid of the ipaddress rootobject
+                * Jobguid () :                  Guid of the job if avalailable else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.list(ipaddressguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of ipaddress info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.ipaddress.getYAML(ipaddressguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the ipaddress rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Ipaddressguid (guid) :          Guid of the ipaddress rootobject
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.getYAML(ipaddressguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the ipaddress
+Return type : string
+    {noformat}
+    h3.ipaddress.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :         Guid of the ipaddress rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.ipaddress.updateModelProperties(ipaddressguid, name, description, address, netmask, block, iptype, ipversion, virtual, languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Ipaddressguid (guid) :           Guid of the ipaddress specified
+                * Name (string) :                    name of the ipaddress
+                * Description (string) : <no description found>
+                * Address (type_ipaddress) : <no description found>
+                * Netmask (type_netmaskaddress) : <no description found>
+                * Block (boolean) : <no description found>
+                * Iptype (string) : <no description found>
+                * Ipversion (string) :               version of the IP object, IPV4 or IPV6
+                * Virtual () :                  flags whether ipaddress is a VIPA
+                * Languid (guid</para><para>@param virtual                 flags whether ipaddress is a VIPA @type virtual                  boolean) :                 lan to which the ip is connected
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.updateModelProperties(ipaddressguid=<guid>,name=<string>,description=<string>,address=<type_ipaddress>,netmask=<type_netmaskaddress>,block=<boolean>,iptype=<string>,ipversion=<string>,virtual=<>,languid=<guid</para><para>@param virtual                 flags whether ipaddress is a VIPA @type virtual                  boolean>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with ipaddress guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.ipaddress.getXML(ipaddressguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the ipaddress rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.ipaddress.setState(ipaddressguid, status, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sets the state of the ip address
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Ipaddressguid (guid) :            Guid of the ipaddress rootobject
+                * Status (string) :                   status of the ipaddress
+                * Jobguid (guid) :                  Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.setState(ipaddressguid=<guid>,status=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with boolean as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : string
+    {noformat}
+    h3.ipaddress.find(name, description, address, netmask, block, iptype, ipversion, languid, cloudspaceguid, virtual, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of ipaddress guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () :                     name of the ipaddress
+                * Description () :              description of the object
+                * Address () :                  IP address of the IP object
+                * Netmask () :                  netmask of the IP object
+                * Block () :                    flag indicating if the IP is blocked
+                * Iptype () :                   type of the IP object, STATIC or DHCP
+                * Ipversion () :                version of the IP object, IPV4 or IPV6
+                * Languid () :                  lan to which the ip is connected
+                * Cloudspaceguid () :           cloudspaceguid to which the ip is connected
+                * Virtual () :                   flag whether to include VIPA
+                * Jobguid () :                  Guid of the job if avalailable else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.find(name=<>,description=<>,address=<>,netmask=<>,block=<>,iptype=<>,ipversion=<>,languid=<>,cloudspaceguid=<>,virtual=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of ipaddress guids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.ipaddress.delete(ipaddressguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a ipaddress.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Ipaddressguid (guid) :          Guid of the ipaddress rootobject to delete.
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_ipaddress.delete(ipaddressguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

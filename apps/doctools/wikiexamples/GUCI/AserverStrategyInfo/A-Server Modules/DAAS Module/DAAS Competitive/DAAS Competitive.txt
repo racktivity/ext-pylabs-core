@@ -1,0 +1,30 @@
+h2. DAAS Competitive
+
+* DAAS has a value proposition towards ISVs and SAAS providers and compete in this directly with Amazon Web Services.
+|| || DAAS || Amazon ||
+| Unlimited Snapshotting | yes | \- |
+| Unlimited Clones | yes | \- |
+| Thin provisioning | yes | \- |
+| Virtual Datacenter | yes | \- |
+| Maintenance environment | yes | \- |
+| Unbreakable Storage SAN | yes | \- |
+| Power Orchestrator | yes | \- |
+| Built-in restore tools | yes | \- |
+| Built-in system monitoring | yes | \- |
+| Built-in performance monitoring | yes | \- |
+
+* DAAS differentiates itself in bringing a combination of in house technology that provides infrastructure in a way that ISVs do not need to change their way of working: DAAS is fully private and delivers storage, servers and networking integrated in one solution
+
+* DAAS is a product out of the Gent Incubation Group Incubaid. Incubaid has over 20 years of experience in improving datacenters and making $200M in successfull exits. By this, DAAS includes a wider set of technology than each other cloud solution worldwide:
+** Hosted from Green Cloud Datacenters in Europe & US (Dacentec)
+** CPU & Storage Hardware manufactured to the cloud needs (Zenith Computers)
+** Power & Environment Measurement (Racktivity)
+** Automation Platform (Pylabs)
+** Dispersed Storage System (Amplidata)
+** Virtualisation Engine (Virtual Box)
+** Cloud Management Center
+** Network Operation Center (Zenith Infotech)
+
+* DAAS will be offered at a disruptive price model, we are not depending on external licenses\!
+
+* A-Server provides a turnkey solution but is different since it will not provide typical hosting services

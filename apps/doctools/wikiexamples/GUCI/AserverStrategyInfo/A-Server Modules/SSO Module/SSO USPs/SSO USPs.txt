@@ -1,0 +1,10 @@
+h2. SmartStyle Office USPs for partners
+
+* SmartStyle Office allows you to delivery higher reliability to your customers at a better TCO for your customer and while still generating an attractive margin
+* Save time and money in your maintenance be IT that is more responsive than traditional computing and includes high-availability and redundancy configuration with failover, snapshot and roll-back functionality
+* Enablement to drive managed services and take infrastructure control on-premise with a fully integrated turnkey solution under your own brand\!
+
+h2. SmartStyle Office USPs for end users
+
+* Very cost effective IT solution to replace the entire IT solution with a much higher reliability and agility
+* Get access to enterprise class features like built-in SAN, unlimited snapshotting, etc. available in an SMB environment at no premium price

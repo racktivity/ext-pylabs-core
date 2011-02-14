@@ -1,0 +1,6 @@
+h2. What we don't do
+
+* offer high end solutions
+* answer to RFP`s unless this is part of a partnership formalisation process
+* change technology choices, like supporting vmware
+* offer classic hosting: dedicated servers, websites, domain names, ...

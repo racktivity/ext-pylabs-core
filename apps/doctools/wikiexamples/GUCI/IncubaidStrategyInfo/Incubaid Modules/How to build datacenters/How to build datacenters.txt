@@ -1,0 +1,135 @@
+DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT 
+
+
+h1. White Paper: How to build datacenters for cloud
+
+h2. Introduction
+
+Everybody going to cloud computing is doing that mainly for the following reasons:
+
+* *Simplicity*: Customers like to see a nice automated frontend to create, manage and monitor their infrastructure so they do not have to worry about setting drivers, creating RAID groups, and so on. This means that behind that interface technically this translates into creation and management of server, storage and networking.
+
+* *Cost optimization*: Customers understand that the traditional way of dealing with infrastructure is sub optimal. They look how cloud computing can bring racks/processors/GBs to half the cost of other players. Techniques like virtualisation, moving workloads, dispersed storage, power optimization and datacenter airflow are to be considered to obtain significant cost savings.
+
+* *Go green*: more and more companies are making choices to reduce their energy usage and carbon footprint. In order to have significant improvements, it is important to look at the lower layers in the datacenter ecosystem and improve that layers. Green is not only about saving the planet, it means also to achieve significant cost savings\!
+
+* *Agility*: Let IT follow the needs of the business and not vice verso. Techniques like auto provisioning and scalability of servers and dekstops will bring this agility.
+
+* *Follow the leaders*: big players are adopting cloud computing to obtain cost and usage advantages. This means they are lowering the prices fulfilling the same IT needs. The new techniques allow them to enter new segments in the market, like for example SMEs and even to the end users directly. Google, Apple, Microsoft and many more are investing a lot of money to become and remain leaders in delivering IT infrastructure through the cloud.
+
+h2. Challenge to the Datacenter Best Practices
+
+h3. Power Conversion Efficiency
+
+Datacenters have *an inefficient power conversion* methodology.
+
+Power is converted in multiple steps
+* High Voltage to 380V
+* 380V for input in the UPS (batteries)
+* 380V DC is again converted to 208V AC since servers work on AC power
+* Inside the server, the power is converted again from AC to DC (between 5V and 12V)
+
+All these steps, especially the last step conversion per server results in loss of energy, up to 30%!
+
+h3. Power Usage Efficiency
+
+Datacenters Power Usage Efficiency *PUE can be much better*
+
+Datacenters are historically built out from a real estate perspective: renting out floorspace in a secured and redundant environment including power and bandwidth for production infrastructure. Those datacenters have shortages that generate extra costs and creates inefficiency that impacts uptime. This because these *datacenters* have an old *design where the Power Usage Effectiveness (PUE) is bad*. To power 1000 watts of production servers, most datacenters require another 1500 watts to cool down the datacenter, convert the power via UPSs, etc. totalling 2500 watts\! (a *PUE of 2,5*)
+
+*Datacenters that took action and obtained an optimized the PUE up to 1,8 in average*, by making improvements on the supply side of the datacenter: airco, airflow, containment, ... Best PUE reported so far are around 1,21.
+
+New datacenter challengers like Google, Yahoo, Facebook, ... significantly improved the way how dealing with reducing costs through renewed datacenter designs and new ways of dealing with energy usage. Google and Apple are the best examples of companies having and still building datacenters that are more efficient in cost and uptime and that brought them in a position that makes it for others impossible to obtain the same cost advantages. They report PUEs of 1,21 and are aiming lower.
+
+h3. Raised floor Efficiency
+
+*Raised floor* best practice turns more and more *inefficient*:
+* over cooling, hotspots, ...
+* A lot of 'hidden' things beneath a raised floor, when you are on slab everything is visible
+* Cost of raised floor
+
+h3. Sizing issues
+
+*Big, bigger, biggest is not working*: single point of failures, complexity of fail overs, not enough real fail over tests, ...
+
+h3. MTBF/MTBR
+
+MTBF/MTBR: The Mean Time Between failure vs The Mean Time Between Repairs
+* Making a solution more redundant will reduce the number of failures, MTBF gets better
+* However when  making that failures happen less often redudancy measures often leads to additional complexity that highers the time to repair, MTBR gets worse
+
+h3. Colocation issues
+
+Traditional colocation is inefficient and time consuming. Everybody is hosting its server is faced with the same tasks: install, maintain, spare parts, networking etc. Datacenters try to help out colocation customers by providing remote hand options, but this solution has its limitations: remote hands services will not be able to execute all tasks and moreover this adds an additional cost.
+
+Colocation also means hire a space, and not all spaces are optimally filled, leaving a part of the datacenter unused.
+
+Finally colocation offerings today have no optimized cooling and energy design for high density cloud computing.
+
+The shift to build out datacenters with standardized equipment and not providing customer access is ongoing.
+
+h3. Monitoring Effectiveness
+
+Monitoring on room level is no monitoring, the Datacenter needs to know what device is causing power and temperature issues!
+
+h2. Start to care, take control and become green!
+
+* A Datacenter that keeps itself away from managing the load equipment is ready for a new approach: the raw layer in a Datacenter needs to be under the Datacenter manager control in order to be able to take the measures to become a green Datacenter with significant changes, being a PUE equal or better than the market leaders.
+
+* Analysts generally accept that in a traditional Datacenter, the load side usages of its resources like CPU, Storage and Networking is about 10% in average. Reasons are that many servers are over dimensioned and have a dedicated configuration that has occasional peaks to process. Also loads are not rebalanced over servers so the density of physical servers is optimised and the usage of its resources improves.
+
+* Datacenters typically do not care on power over usage: power over usage is providing extra revenue. Security measures to protect the available power capacity is done at the level of a fuse in the rack. The customers having an overload in the rack are punished by a power cut. Moreover, A and B feed policies are hard to verify and often leads to problems when one of the feeds go down that the other feed is incapable of managing the entire load. Finally, after a short general power break down, restarting servers will trigger a 30% extra poer consumption, what can cause another overload with additional downtime as a consequence. History learns that a Datacenter that wants to control its uptime and manage its power better needs to take control of the infrastructure layer in order to achieve that.
+
+h2. The next generation Datacenter is a cloud Datacenter
+
+We need to change our behavior, to change our behavior, we need to:
+* Start measuring the power (load side) in detail for every piece of equipment and this in time;
+* We need to automatically shut down non used equipment based on power and load analyses
+* We need to put the less important equipment at a lower power state;
+* We need the move virtual servers to more efficient equipment and shut down the less efficient servers at off-peak;
+* We need to optimize airflow in datacenters and avoid overcooling, redefine rack layouts to optimize air cooling and consider air corridor, free air, adiabatic cooling.
+
+h2. Market analyses
+
+When building a datacenter, a lot of components seem available and still every datacenter is a new custom project.
+Companies like Yahoo, Google are sharing their general concepts, but never in a way somebody can reuse their concepts with the same effectiveness.
+Datacenter equipment vendors like APC, Liebert and Rittal have good solutions but they are badly integrated and mainly work at optimizing the PUE factor.
+So most people building a datacenter are stuck hiring an integrator or talking to 6 different vendors hoping that a good solution comes out of it. This solution will probably be quite ok but we know from experience we can do literally 2 times better on power savings and 2 to 5 times better on budget needed to build a cloud datacenters without sacrificing quality.
+
+h2. Some best practices used when Dacentec builds or helps to build a cloud datacenter.
+
+* Big bigger biggest is not the solution, therefor we are dividing datacenter buildings in smaller autonomous compartments. Investment increments are better, redundancy costs are better, single point of failures are made smaller;
+
+* No raised floors. They are not needed, potentially lead to a messy network structure, are not good for the airflow.
+
+* Avoid complexity: think about would I rather spend more money on more redundant equipment that is more complex and more subject to human error, or do I prefer a lower redundant less complex alternative? In the first case, higher redundancy will make it takes longer before an issue occurs, but history shows that when it occurs, the time to restore is much longer and will have a bigger impact on customer satisfaction. In the case with less redundant equipment, it can fail more often, but since of lower cost an immediate fix or even replacement since spare parts are more affordable can solve the issue in such a short notice that neither customer satisfaction, neither the SLA is impacted\! A typical example can be found in networking, where overcomplexity often leads to errors and longer down times. The simple network switch to the contrary might break, but when it occurs, datacenter operators don`t loose time looking for the issue and simply replace it instantly. We go one step further and build a Zigbee network interface on each rack as a backup network.
+
+* Using Building automation with the ability to turn off cooling, power, lights as needed
+
+* Using variable speed motors, fans and pumps, allowing the system to scale up or down as needed
+
+* Air Corridor - instead of installing air handlers with the racks, all racks connect to a central air supply and return system that allows us to scale cooling on the back end without going near the racks. Also we don't have any water near the servers.
+
+* Using low voltage DC power to the equipment removing power conversion energy loss
+
+* Offer to customers raw capacity instead of collocation: raw storage, raw cpu capacity
+
+* Focus on what is really important: a datacenter needs to be structured, neatly organised and secured, with the required procedures. A Datacenter does not need to look like a laboratory clean room, all extra fancy stuff needs to be avoided.
+
+* NEW: since a couple of years we are working on a plate rack design which changes the way how cpu & storage capacity is being deployed in a datacenter. It goes out of the scope of this doc and is under NDA but this system saves additional 50% on power and additional 50% on CAPEX required. This system can be deployed most existing datacenters.
+
+* NEW: we are developing a new technology to load balance servers over power phases in an automatic way which saves on complexity and improves uptime.
+
+Ofcourse we also do what the industry recommends today like
+
+* Hot Aisle containment: today overcooling if a fact in many datacenters, it feels cooled down. To receive best efficiency, the return air is needs to be hot enough.
+
+
+h2. Tips to optimize TCO
+
+* Don't build UPS rooms there are alternatives.
+* Change the way how power is being distributed.
+* Measure power usage on server level, find broken power supplies, find polluters.
+* Look at free cooling, this is the only way to have a very low PUE
+* Look at the load side, most savings can be made by changing to servers that are drawing less power
+* Build in smaller increments, the costs of the more regular available equipment is often cheaper and the lower requirements of the smaller increment do not always need to go to higher load capable datacenter equipment

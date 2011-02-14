@@ -1,0 +1,398 @@
+h2. XMLRPC Cloud API DOC - cloudspace
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.cloudspace.listVdcs(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of vdcs for the cloudspace.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloudspace.listLans(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of lans for the cloudspace.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloudspace.listApplications(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of applications for the cloudspace.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloudspace.getXMLSchema(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the cloudspace rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloudspace.create(customerguid, name, description, parentcloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new cloudspace for the given customer.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Customerguid (guid) :              Guid of the customer to which this cloudspace is assigned.
+                * Name (string) :                      Name for the new cloudspace
+                * Description (string) :               Description for the new cloudspace
+                * Parentcloudspaceguid (guid) :      Guid of the cloudspace of which this cloudspace is part of.
+                * Jobguid (guid) :                   Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.create(customerguid=<guid>,name=<string>,description=<string>,parentcloudspaceguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with cloudspaceguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloudspace.list(customerguid, cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloudspaces for a given customer.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Customerguid () :      Guid of  the customer for which to retrieve the list of cloudspaces.
+                * Cloudspaceguid () :    Guid of the cloudspace to delete.
+                * Jobguid () :           Guid of the job if avalailable else empty string
+                * Executionparams () :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.list(customerguid=<>,cloudspaceguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary of array of dictionaries with guid, name and status for each cloudspace.
+Return type : dictionary
+    {noformat}
+    h3.cloudspace.getYAML(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the cloudspace rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :   Guid of the cloudspace rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.getYAML(cloudspaceguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the cloudspace
+Return type : string
+    {noformat}
+    h3.cloudspace.setStatus(cloudspaceguid, status, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Updates the status of the cloudspace specified.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :          Guid of the cloudspace specified
+                * Status (string) :                  Status for the cloudspace specified. See listStatuses() for the list of possible statuses.
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.setStatus(cloudspaceguid=<guid>,status=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cloudspace.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :     Guid of the lan rootobject
+                * Jobguid () : <no description found>
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.cloudspace.listStatuses(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of possible cloudspace statuses.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid () :           Guid of the job if avalailable else empty string
+                * Executionparams () :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.listStatuses(jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary of array of statuses.
+Return type : dictionary
+    {noformat}
+    h3.cloudspace.getXML(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the cloudspace rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloudspace.listDevices(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of devices for the cloudspace.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cloudspace.find(customerguid, parentcloudspaceguid, name, status, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloudspace guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Customerguid () :      		Guid of  the customer to include in the search criteria.
+                * Parentcloudspaceguid () :     Guid of the parent cloudspace to include in the search criteria.
+                * Name () :     				Name of the cloudspace to include in the search criteria.
+                * Status () :     				Status of the cloudspace to include in the search criteria. See listStatuses().
+                * Jobguid () :     	        	Guid of the job if avalailable else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.find(customerguid=<>,parentcloudspaceguid=<>,name=<>,status=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of cloudspaceguids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.cloudspace.delete(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes the given cloudspace.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :    Guid of the cloudspace to delete.
+                * Jobguid (guid) :           Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cloudspace.delete(cloudspaceguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

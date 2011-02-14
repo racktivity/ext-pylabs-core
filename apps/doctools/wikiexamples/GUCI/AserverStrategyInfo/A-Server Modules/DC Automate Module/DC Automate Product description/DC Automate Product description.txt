@@ -1,0 +1,51 @@
+h2. DC Automate Product description
+
+Most Important DC Automate Features include:
+
+*Desktop Virtualisation*
+* Virtual Desktops via thin client			
+* Virtual Desktops via thin client software			
+* User-driven desktop restart			
+* Virtual Desktop Provisioning			
+* Golden Image Support/ Desktop Image Management			
+* Snapshot & Revert Snapshot			
+* Integrated monitoring			
+* Local peripheral support			
+* SmoothRoaming			
+* Multimedia support			
+* Instant on support			
+* Desktop assignment			
+* High availability/failover			
+* Desktop performance monitoring			
+
+*Private Cloud*
+* Dedicated hardware			
+* Scale as you grow			
+* High availability setup			
+* 24/7 Monitoring & support			
+* 24/7 Access to NOC			
+
+*Unbreakable Setup*
+* Unbreakable storage			
+* Redundant networking			
+* Self healing			
+* Automatic failover			
+* Disaster recovery			
+* Solid state disks			
+
+*Cloud Management Center*
+* Virtual private datacenter
+* Auto provisioning of infrastructure
+* Drag and drop datacenter design
+* Roll back resources
+* Integrated monitoring
+* Extensive Cloud API
+
+*Compatibility*
+* Windows & Linux servers
+* Windows XP, Windows Vista, Windows 7
+* Ubuntu Desktop
+* Import Vbox & VMWare Images
+* Use of own licenses
+* Firewalls & Load balancers
+* 32 bit or 64 bit

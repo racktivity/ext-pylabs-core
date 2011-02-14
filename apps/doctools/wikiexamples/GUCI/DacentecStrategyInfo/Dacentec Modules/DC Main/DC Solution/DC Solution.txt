@@ -1,0 +1,65 @@
+h2. Dacentec Solution
+
+*Greenest Unbreakable Cloud Datacenters In The World*:
+* +Green+: 5 times less power needed
+* +Unbreakable+: 10 times more reliable
+* +Lowest TCO+: 4 times less capex required to build
+
+h3. Dacentec improves Power usage
+
+* Saving thanks to enabling a *better power consumption*
+** +Revolutionary Storage Concept+ allowing +80% power savings+ for storage capacity
+** Optional Plate Rack Concept: Inside the racks Dacentec uses a new +Green Plate Concept+ for cloud compute & storage racks that have built in batteries, providing +50% power savings+ for storage & CPU capacity
+*** For more information about the Plat Rack Concept see: [Dacentec Platerack Design Presentation|http://confluence.incubaid.com/download/attachments/5603957/Dacentec-PlateRack-Design.pdf] 
+* Delivering a *far better PUE than the market leaders*:
+** Greener datacenters: datacenter design and the cloud infrastructure layer integrate in such a way that major improvements are obtained at the level of saving energy and improving uptime.
+** Dacentec +reviewed the entire air circulation system+. Like this Dacentec +achieved the most efficient PUE optimizations.
+** No UPS rooms required, racks have local batteries
+
+h3. Dacentec improves uptime
+
+* *Disaster Prevention* for the physical layer
+** +Detect faulty power supply+: Measure power, current, temperature, humidity, airflow, rack security, …
+** +Detect short circuits+: restart racks immediately and detect&disable short circuited server immediately
+** +Detect temperature issues:+ this is one of the&nbsp;biggest reason broken Hard Drives
+** +Plan power capacity to prevent blown fuses+: 2.500.000 measurements per rack per second
+
+* *Disaster Recovery* for the physical layer
+** +Identify error causes & take appropriate actions+: Historic Logging, Analyses,Thresholds, Alarms, Priorities, …
+** +Allow much faster network & server recovery+: Meshed Wireless allows remote console access for servers & network devices, …
+
+h3. Dacentec has the lowest Total Cost of Ownership in the industry (TCO)
+
+** Storage power utilization = 1/5 to 1/10 of competition
+** Storage cost = 1/2 compared to Amazon internal cost prices
+*** because of a smarter storage system
+*** because of different rack design & power distribution system
+** Storage density is 3 times better as competition
+** Datacenter construction cost = 1/4 compared to most datacenters being build 
+*** because of smart construction ideas 
+*** because of avoiding many of the complexities required in other datacenter designs like UPS rooms, raised floors
+*** because of using industry grade components in stead of overhyped datacenter components (e.g. chillers)
+** Management costs = 1/2 to 1/10 compared to any datacenter out there 
+*** because of 100% automation 
+*** because of 100% remote management
+
+Remark: most of Dacentec IP can be integrated in existing or already build datacenters.
+
+h3. Dacentec constructs and/or operates Cloud Datacenters
+
+Dacentec *provides inside its Cloud Datacenters raw CPU and TB storage capacity* into its datacenters to anyone looking to build a cloud platform: IAAS, SAAS, PAAS.
+
+Dacentec`s *Green Cloud Datacenter concept introduces the next generation of cloud providers*.
+
+Today, the Cloud Provider typically will manage hosting, server & storage hardware, lots of technology pieces (storage, virtualization, automation, …), managed services, monitoring, apps, …. Below that there will be a colocation provider delivering rackspace, power network, ... .
+
+*Dacentec delivers with its Green Cloud Datacenter rackspace, power network, storage & server capacity, physical management{*}so that the next generation of *cloud providers can focus on their core business*, being hosting, lots of technology pieces (storage, virtualization, automation, …), managed services, monitoring, apps, …
+
+The *Cloud datacenter is the next logical step from colocation*:
+* It is +no longer colocation+, customers will never enter the datacenter/place equipment;
+* Customers don`t by hosting products, +buy just the raw IT infrastructure+ commodities like CPU, storage & network capacity;
+* Customers +pay on a month per month+ basis;
+* Customers build on top of a +green datacenter+, benefit +disruptive pricing+, ultra +scalability+ and +reliability+.
+
+Image: Cloud Datacenter is the basis of the next generation datacenter
+!DacentecPositioning.png|border=0,width=500!

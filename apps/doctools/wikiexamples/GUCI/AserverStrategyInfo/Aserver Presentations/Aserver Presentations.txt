@@ -1,0 +1,17 @@
+h2. Some Aserver Presentations
+
+h3. A-Server: Presentation on vision to VC audience
+
+{viewfile:A-Server - Cloud 2.0 VC Presentation.pptx}
+
+h3. A-Server: DC Automate Framework used to build SSO & DAAS
+{viewfile:A-server - DC Automate.pptx}
+
+h3. Zenith Infotech Europe: Vision to channel
+{viewfile:ZIE - Cloud 2.0 Channel Presentation.pptx}
+
+h3. Zenith Infotech Europe: Use case presentation
+{viewfile:ZIE - SSO Use Case.pptx}
+
+h2. attachments
+{attachments:upload=True}

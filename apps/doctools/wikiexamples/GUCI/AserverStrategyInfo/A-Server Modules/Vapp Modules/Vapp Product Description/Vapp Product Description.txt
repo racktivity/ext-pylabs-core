@@ -1,0 +1,27 @@
+h2. V-app Market Product Description
+
+h3. Vapp-Market delivers an extensive library of software
+
+The Vapp-Market library contains hundreds of different applications spanning all major product categories. It includes both Open Source server and licensed server software.
+
+The "ready to use" concept is saving time in setting it all up, managing updates, but also encourages to evaluate applications more quickly. When you are satisfied you can start using it instantly in production.
+
+Vapp-Market is a virtual machine instance that includes an Operation System along with server applications installed. These server applications are installed using a packaging method.
+
+h3. Vapp-Market uses Qpackages
+
+The Q-Package (virtual applications) system introduces an application packaging system, that has the advantages of a conventional packaging system but not the complexity. Q-Package takes away all the packaging difficulties and is targeted specifically at system administrators, who are not considered developers. When applications have been packaged as a Q-Package, these packaged applications are called "QPackages".
+
+Q-Packages framework is like RPM or Apt-get, but more advanced and not tied to a single distribution or operating system.
+
+A Q-Package is an application that has been packaged for easy installation using the application packaging framework of Q-Shell. Q-Shell is a powerful and easy-to-use cross platform shell. Q-Shell can be installed on Linux, OpenSolaris and Windows, it provides powerful features for system administration and it is the primary user interface to download, install and handle all Q-Packages. Q-Shell can be downloaded from http://www.pylabs.org.
+
+h3. V-app Market Benefits
+
+* Cross-platform uniform installation of applications: Linux/Unix, Windows and OpenSolaris
+* Integrated configuration management: configure each application from Q-Shell using a standard set of commands
+* Automatic updates of the application without any impact on the host OS
+* Very easy dependency management: e.g. if your application requires Apache, just create a dependency on Apache
+* Fully sandboxed installation on Linux and OpenSolaris (no conflicts between applications and libraries)
+* Partially sandboxed installation on Windows
+* Uniform configuration and control of all applications in Q-Shell: e.g. manage Apache by using commands such as q.manage.apache.start()

@@ -1,0 +1,79 @@
+h1. Company Goal
+
+* Be a technology innovator and global leading Provider of cloud solutions
+* Improve painpoints in and around the datacenter
+* Rechallenge current best of breed technologies when we see it can be done better and/or cheaper
+
+h2. The problem
+
+It infrastucture and datacenters are not managed efficiently:
+
+* Power is ½ of cost of hardware over 3 years
+* Manual processes
+* MTBR is bad
+* Storage is one of biggest issues to deal with (DR, backup, reliability, …)
+* Complexity is huge
+* Automation is low
+
+Further:
+
+* IT, both from datacenter and local perspective, is still very much hardware driven
+* Customers want infrastructure that is *available, reliable, scalable and performing*, often called `agility`
+* today's approach to servicing these is very much dependent on hardware configurations
+** availability and reliabilty is fundamentally achieved through hardware redundancy
+** scalability and performance are worked around through over-dimensioning IT environments
+* This hardware diversity leads to great complexity
+** *heavy integration* with high implementation costs
+** *"unmanageability"* leads to errors and downtime and as such high operational costs
+** rigidness of environment demands for *continuous investments* and "desinvestments"
+
+h2. The solution
+
+* We have developed a fully integrated cloud platform environment, offering
+** High Availability, through 
+*** granular node-based architecture
+*** built-in snapshotting and recovery options
+*** intelligent hardware monitoring/power management (Racktivity)
+** Data Reliability, through Unbreakable Storage (Amplidata)
+** Scalability and performance through Plug&Play of resource nodes (cpu, ram, storage)
+
+* Integration of all elements has lead to a great simplification of the infrastructure, and offers a number of additional benefits
+** manageability, through a central user interface (for your entire IT environment, servers and desktops where required)
+** Fast time to implementation
+** Change in the hardware paradigm of "bigger, faster, stronger" leading to lower TCOs
+** No need to over-dimension environments, i.e. invest only in what you really need today
+
+* The solution can be set in production in different ways
+** Market-ready Public Cloud: DataCenter As A Service (DAAS)
+** On-premise and hosted Private Clouds: SmartStyle Office (SSO)
+** Tailored cloud solution based on A-Server cloud platform: DC Automate
+
+h2. Target Market
+
+Any company willing with a need to obtain agility by using a cloud-based business strategy:
+* We have a cloud platform that can serve an enterprise market directly, through custom delivery of cloud solutions, DC Automate
+* We can serve ISVs and SAAS vendors through our public cloud, DAAS.
+* We offer the SME market the perspective of a private cloud via SSO.
+
+h2. Competition
+
+h3. Channel (details see [INC:Product info SSO])
+
+* Best of breed custom made combinations
+* Hardware vendors, trying to push a solution through more and more add ons and pre-installs:
+* Old school way of delivering IT by channel partners
+* Hosting Service Providers (HSPs)
+* Backup for SMB vendors
+* Public Clouds: not as a substitute product for the partner, but they go directly to the SMB
+
+h3. Direct
+
+* Best of breed custom combinations
+* Amazon Webservices to developers
+* Hosting Service Providers
+
+h2. What we are not
+
+* a professional services firm
+* a system integrator
+* an ISV

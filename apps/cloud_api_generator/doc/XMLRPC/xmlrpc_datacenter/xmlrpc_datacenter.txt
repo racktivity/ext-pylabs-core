@@ -1,0 +1,365 @@
+h2. XMLRPC Cloud API DOC - datacenter
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.datacenter.listClouds(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all clouds of the datacenter.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.datacenter.getXMLSchema(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the datacenter rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.datacenter.listRacks(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all racks of the datacenter.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.datacenter.create(name, description, locationguid, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new datacenter.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name (string) :                    Name for the datacenter.
+                * Description (string) :             Description for the datacenter.
+                * Locationguid (guid) :            guid of the location of the datacenter
+                * Clouduserguid (guid) :           guid of the clouduser owning the datacenter
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.create(name=<string>,description=<string>,locationguid=<guid>,clouduserguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with datacenterguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.datacenter.list(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all datacenters.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Datacenterguid () :           Guid of the datacenter specified
+                * Jobguid () :                  Guid of the job if avalailable else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.list(datacenterguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of datacenter info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.datacenter.getYAML(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the datacenter rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Datacenterguid (guid) :         Guid of the datacenter rootobject
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.getYAML(datacenterguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the datacenter
+Return type : string
+    {noformat}
+    h3.datacenter.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :       Guid of the datacenter rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.datacenter.listNetworkzones(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all network zones of the datacenter.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.datacenter.updateModelProperties(datacenterguid, name, description, locationguid, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Datacenterguid (guid) :          Guid of the datacenter specified
+                * Name (string) :                    Name for the datacenter.
+                * Description (string) :             Description for the datacenter.
+                * Locationguid (guid) :            guid of the location of the datacenter
+                * Clouduserguid (guid) :           guid of the clouduser owning the datacenter
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.updateModelProperties(datacenterguid=<guid>,name=<string>,description=<string>,locationguid=<guid>,clouduserguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with datacenter guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.datacenter.getXML(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the datacenter rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.datacenter.find(name, description, locationguid, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of datacenter guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () :                    Name for the datacenter.
+                * Description () :             Description for the datacenter.
+                * Locationguid () :            guid of the location of the datacenter
+                * Clouduserguid () :           guid of the clouduser owning the datacenter
+                * Jobguid () :                 Guid of the job if avalailable else empty string
+                * Executionparams () :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.find(name=<>,description=<>,locationguid=<>,clouduserguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of datacenter guids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.datacenter.listResourceGroups(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all resource groups of the datacenter.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.datacenter.delete(datacenterguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a datacenter.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Datacenterguid (guid) :         Guid of the datacenter rootobject to delete.
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_datacenter.delete(datacenterguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

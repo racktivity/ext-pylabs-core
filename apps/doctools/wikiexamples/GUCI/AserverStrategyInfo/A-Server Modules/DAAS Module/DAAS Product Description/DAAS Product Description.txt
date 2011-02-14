@@ -1,0 +1,116 @@
+h2. DAAS.com Product description
+
+h3. DAAS.com Storage Cloud
+
+h4. 100% protection of your data
+
+DAAS.com stores data in a revolutionary way: DAAS.com uses a dispersed storage system that is 10,000 times more reliable than a traditional RAID based storage system. This system is called DAAS.com StorageSpread.
+
+DAAS.com StorageSpread offers storage space accessible via different methods: S3 API, FTP, WebDAV. StorageSpread will disperse all received data over different cloud storage nodes in such a way that several cloud nodes can fail and the data is still safe and available\! The intelligent StorageSpread system is designed fully transparently for customers who will not notice any delay on the storage side. StorageSpread also guards data, by built-in data quality check functions.
+
+h4. Functionality
+
+DAAS.com Storage Cloud works as follows:
+
+# Register online for a DAAS.com account
+# Provide your billing details
+# Choose the number of virtual disks and TB per disk
+# Your order will now be validated by the DAAS.com support team
+# You receive an e-mail with access details to the Storage Management Center
+# You log in into the Storage Management Center
+# You can now see your ordered disks, with available and used capacity and activate S3, FTP and WebDAV accounts
+
+h4. Features:
+
+* 100% Reliability and Availability: StorageSpread does not require lengthy and cumbersome rebuilds that cause data to remain unprotected for multiple days. StorageSpread can lose up to 4 disks without any impact. In case a disk fails, a spare disk will rebuild immediately the storage spread without a load impact on the other disks in the pool.
+
+* Reduces power consumption: traditional RAID systems have a high energy consumption since all disks need to keep spinning. StorageSpread optimized spreading technology lowers the load on each disk, consequently reducing the energy consumption.
+
+* High Scalability: let your storage volume grow step by step, seamlessly, up to 100 TB\!
+
+* Built-in functions that protect against bit errors and bit rot on disk, block replication or multiple data copies
+
+* Retain history of the stored data, making it possible to go back in time to recover from eventual corruption
+
+* Storage Management Center: online web administration that allows: view disks and files, upload/download files, create and manage storage access methods (S3, WebDAV, FTP)
+
+
+h3. DAAS.com Private Cloud
+
+h4. A full private cloud
+
+DAAS.com allows you to set up and configure infrastructure, with full freedom to define your own instances, operating systems and applications. DAAS.com is designed in such a way that you have all flexibility of dedicated hosting together with the advantages of cloud computing like auto provisioning, scalability and high reliability.
+
+DAAS.com allows customers to upload their own images and pre-package them as an instance. DAAS.com is a private cloud, thus running on dedicated hardware per customer. This means that customers will manage their own capacity and deploy their full custom instances on that infrastucture.
+
+With DAAS.com There is no price per unit, no virtual units, virtual cores or RAM hours: just a price per cloud node per month. A cloud node delivers all you need: CPU, RAM, Networking and Storage.
+
+DAAS.com is much more than virtualisation installed at a server, it is a cloud computing framework in which the virtual servers can be moved around, where storage is designed for 100% availability and where monitoring and backup is fully automated for each private cloud.
+
+Customers can start off with just one cloud node and keep on adding nodes to their cloud environment. Each time a cloud node is added, it will be available as additional capacity in the customers cloud. Billing was never more simple, just the price for a cloud node per month covers all\!
+
+All this means that you get what you payed for: freedom of instance choice, use of own OSs, transparent billing, no sharing of resources and guaranteed private computing & storage capacity\!
+
+h4. Functionality
+
+DAAS.com works as follows:
+
+# Register online for a DAAS.com account
+# Provide your billing details
+# Choose the number of storage nodes and cloud nodes
+# Your order will now be validated by the DAAS.com support team
+# You receive an e-mail with access to your cloud environment
+# You log in into the Cloud Management Center
+# You can now see your ordered nodes and start provisioning virtual servers, desktops and disks
+
+h4. Features
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com Cloud Management Center*: The extensive DAAS.com interface allows users to easily manage 1000s of machines and disks. The flash based users interface runs on each platform and behaves like a windows application. The Cloud Management center runs as a full private management interface on your own cloud. It has 100s of functions to support auto-provisioning, scaling, vm management, disk management, monitoring and backup.{td}{td:valign=top} !daas_dashboard_main.png|border=1, width=300! {td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com Virtual Datacenter Designer*: Create and Manage your servers more easily thanks to the Virtual Datacenter Designer. Drag and Drop your instances into a network overview or create new instances. The Virtual Datacenters function as handy views where many commands can be applied to: for example start a view of servers, snapshot all and even clone an entire datacenter including mulitple machines and disks\!
+{td}{td:valign=top} !daas_vpdc3.png|border=1, width=300! {td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com StorageSpread*: StorageSpread offers persistent SAN storage for your servers, desktops and disks. StorageSpread delivers an off-instance storage volume that persists independently from the life of your server instance. StorageSpread will disperse data over different cloud nodes in such a way several cloud nodes can fail and the data is still save and available\! The intelligen storagespread system is designed fully transparently for customers and they will not notice any delay on the storage side\!
+{td}{td:valign=top} !amplidata_bitspread2.png|border=0, width=150! {td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com AutoSnapshot*: For more durability, DAAS.com will automatically make 15 minutes snapshots. Like this you will have point-in-time consistent snapshots of your volumes that are then stored still within your own cloud, using StorageSpread. You can change the AutoSnapshot frequency for each server and also request an instant snapshot when you need this.
+{td}{td:valign=top} !daas_snapshot.png|border=1, width=300! {td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com InstantClone*: The DAAS.com cloud allows you to create clones of your virtual server and virtual desktop images and of your disks. When cloning, you can choose to clone images as a new production environment or to copy the clone into a shielded maintenance environment.
+{td}{td:valign=top} !daas_clone.png|border=1, width=300! {td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com ShieldedZone*: ShieldedZone is the DAAS.com maintenance area where users can test safely new OSs and software invisible from the production environment. A handy example is to test a new software patch first in the maintenance environment on a clone of the production instance.
+{td}{td:valign=top} !daas_maintenance.png|border=1, width=300! {td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com NodeSelect*: With HostMove virtual servers and desktops can be installed on a cloud node of choice. After the provisioning, the virtual servers and desktops can still be moved to another cloud node. Like this, NodeSelect allows users to optimize and rebalance their computing load.
+{td}{td:valign=top}
+{td}{tr}{table}
+{br}
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com CloudScaler*: CloudScaler allows you to scale Up or Down you CPU and RAM for your servers or desktops\!
+{td}{td:valign=top} !daas_scaler.png|border=1, width=300! {td}{tr}{table}
+{br}
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com VideoStar*: VideoStar is a special remote desktop viewer client that runs on Windows. It is designed to signficantly improve video performance when connection to a virtual desktop server in the DAAS.com cloud
+{td}{td:valign=top}
+{td}{tr}{table}
+{br}
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com CloudWatch*: CloudWatch is the monitoring of all events and active resources in the DAAS.com cloud. Users can see the live monitoring results of their own cloud in the Cloud Management Center
+{td}{td:valign=top} !daas_watch.png|border=1, width=300! {td}{tr}{table}
+{br}
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com OpenInstance*: OpenInstance allows users to design their very own instance to their needs. Define the number of CPU cores, RAM, Disks, Backup settings, etc. and save them in a template.
+{td}{td:valign=top}
+{td}{tr}{table}
+{br}
+{table}{tr}{td:valign=top|width=500}{*}DAAS.com DesktopEnhance*: Virtual Desktops support thin clients and thin client software support, multiple monitors, user-driven desktop restart, local peripheral support, smoothroaming, instant on support and desktop performance monitoring
+{td}{td:valign=top} !daas_monitors.png|border=1, width=300! {td}{tr}{table}
+
+h4. Operating Systems and Software
+
+{table}{tr}{td:valign=top|width=500}
+* Windows & Linux servers
+* Windows XP, Windows Vista, Windows 7
+* Ubuntu Desktop
+* Import Vbox & VMWare Images
+* Use of own licenses
+* Firewalls & Load balancers
+* 32 bit or 64 bit
+{td}{td:valign=top} !daas_oschoice.png|border=1, width=300! {td}{tr}{table}

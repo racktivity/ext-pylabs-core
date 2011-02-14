@@ -1,0 +1,27 @@
+h3. Specifications and floorplan
+
+The datacenter is designed to have a seperation between the cloud datacenter (cloud wing) and the colocation datacenter (colo wing)
+
+The Datacenter design includes:
+* 30 independent datacenter PODs holding each 60 racks (1800 racks in total)
+** 50% for cloud datacenter
+** 50% for colocation
+* 30 electrical rooms, 1 per POD
+* 30 top roof cooling units
+* Room for Customer cages
+* Load Dock + Storage Room
+* Workshop room
+* Telco and Meet Me Room
+* NOC (Network Operations Center) room
+* 4 office rooms
+* 2 large meeting rooms
+* Kitchen
+* 2 Toilet rooms
+* Large reception
+* Security Office in front of building with view on entrance and check in window inside the man trap
+* 2 Man Traps, one at reception and one at the loading dock: double door systen where second door opens after security check
+{pagebreak}
+Floorplan:{br}
+!dacentec_dc_floorplan_overview.png|border=0, width=750!
+
+{pagebreak}

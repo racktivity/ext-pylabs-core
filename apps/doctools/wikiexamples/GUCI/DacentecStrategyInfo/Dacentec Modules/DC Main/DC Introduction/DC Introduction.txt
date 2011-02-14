@@ -1,0 +1,23 @@
+h2. True Green Cloud data center concept
+
+Dacentec has developed the *true Green Cloud data center concept*\!
+
+* It is *designed by the data center experts team* that has helped build over a dozen enterprise-scale data centers during the past two decades.
+* Dacentec implements a combination of innovations to deliver unseen efficiency and reliability, bringing the *carbon foorprint 75% less than major Datacenters*.
+* At the same time, it is also a source for ideas for further *data center innovations*.
+* Dacentec is *fully automated and the entire infrastructure can be controlled remotely*, which makes it ideal for cloud computing and archive storage.
+
+Historically, the team that created Dacentec focused around data center automation. More recently, through a number of successful ventures, the focus has become Cloud Computing and Green Data Centers. Data Center Automation is still an important aspect of this venture.
+
+About 5 years ago, Amazon took the lead in the Cloud Computing industry with S3 and EC2. Google (AppEngine) and Salesforce (Force.com) joined in, and soon the ecosystem was being segmented in Infrastructure as a Service (IAAS), Platform as a Service (PAAS) and Software as a Service (SAAS). Cloud Computing is experiencing a growing popularity in all industry segments, with a lot of activity within the top layer. Dacentec has identified a lot of opportunities for innovation in the IAAS layer.
+
+In spite of all the Cloud innovation of the past 3 years, the *IAAS layer still faces a lot of issues and it is not Green at all*:
+
+* +Power consumption is still at unacceptable levels+; in the scope of 3 years, the power cost is 50% of the hardware cost.
+* There are +still too many manual processes+; we have still not reached full automation, as promised by the cloud paradigm.
+* +Current storage technologies are no longer adequate+ for today's storage requirements (low cost, always online, and unbreakable).
+* The levels of +complexity in the data center have not been reduced+; most cloud platforms do nothing more than virtualizing servers.
+
+Green Cloud Datacenter:
+
+!dacentec_sustainability.png|border=0, width=800!

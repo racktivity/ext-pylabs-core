@@ -1,0 +1,587 @@
+h2. REST Cloud API DOC - cloudusergroup
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.cloudusergroup.listGroups(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud user groups which are member of the given cloud user group.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :  guid of the cloud user group specified
+                * jobguid (guid) :             guid of the job if avalailable else empty string
+                * executionparams (dictionary) :     dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/listGroups?cloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with customerguid, and an array of cloud user groups with cloudusergroupguid, name, description.
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.getXMLSchema(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the cloud user group rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.cloudusergroup.addUser(cloudusergroupguid, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Add an existing cloud user to the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :    guid of the cloud user group specified
+                * clouduserguid (guid) :         Gui of the cloud user to add to the cloud user group specified
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/addUser?cloudusergroupguid=<guid>&clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.create(name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new cloud user group
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                 Name for this new cloud user group
+                * description (string) :          Description for this new cloud user group
+                * jobguid (guid) :              guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/create?name=<string>&description=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with cloud user group guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.removeUserRole(cloudusergroupguid, clouduserroleguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Remove an existing cloud user role from the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :            guid of the cloud user group specified
+                * clouduserroleguid (guid) :             Guid of the cloud user role who should be removed from the cloud user group specified
+                * jobguid (guid) :                       guid of the job if avalailable else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/removeUserRole?cloudusergroupguid=<guid>&clouduserroleguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.list(customerguid, cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud user groups which are related to the customer specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * customerguid () :          guid of the customer for which to retrieve the list of cloud user groups.
+                * cloudusergroupguid () :    guid of the cloud user group specified
+                * jobguid () :               guid of the job if avalailable else empty string
+                * executionparams () :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/list?customerguid=<>&cloudusergroupguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with customerguid, and an array of cloud user groups with cloudusergroupguid, name, description.
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.removeGroup(cloudusergroupguid, membercloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Remove an existing cloud user group from the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :            guid of the cloud user group specified
+                * membercloudusergroupguid (guid) :      Guid of the cloud user group who should be removed from the cloud user group specified
+                * jobguid (guid) :                       guid of the job if avalailable else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/removeGroup?cloudusergroupguid=<guid>&membercloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.getYAML(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the cloud user group rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :        guid of the cloud user group rootobject
+                * jobguid (guid) :                   guid of the job if avalailable else empty string
+                * executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/getYAML?cloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : YAML representation of the cloud user group
+Return type : string 
+    {noformat}
+
+    h3.cloudusergroup.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :     guid of the lan rootobject
+                * jobguid () : <no description found>
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.cloudusergroup.listUsers(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud users which are member of the given cloud user group.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :   guid of the cloud user group specified
+                * jobguid (guid) :              guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/listUsers?cloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with customerguid, and an array of cloud user groups with cloudusergroupguid, name, description.
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.listRoles(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud user roles of the cloud user group
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :  guid of the cloud user group specified
+                * jobguid (guid) :             guid of the job if avalailable else empty string
+                * executionparams (dictionary) :     dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/listRoles?cloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with an array of cloud user roles with cloudusergroupguid
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.removeUser(cloudusergroupguid, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Remove an existing cloud user from the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :    guid of the cloud user group specified
+                * clouduserguid (guid) :         Gui of the cloud user to remove from the cloud user group specified
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/removeUser?cloudusergroupguid=<guid>&clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.updateModelProperties(cloudusergroupguid, name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties, every parameter which is not passed or passed as empty string is not updated.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :    guid of the cloud user group specified
+                * name (string) :                  Name for this cloud user group
+                * description (string) :           Description for this cloud user group
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/updateModelProperties?cloudusergroupguid=<guid>&name=<string>&description=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with cloud user group guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.listCustomers(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud users which are member of the given cloud user group.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.cloudusergroup.addGroup(cloudusergroupguid, membercloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Add an existing cloud user group to the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :            guid of the cloud user group specified
+                * membercloudusergroupguid (guid) :      Guid of the cloud user group who should become a member of the cloud user group specified
+                * jobguid (guid) :                       guid of the job if avalailable else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/addGroup?cloudusergroupguid=<guid>&membercloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.getXML(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the cloud user group rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.cloudusergroup.addUserRole(cloudusergroupguid, clouduserroleguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Add an existing cloud user role to the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :            guid of the cloud user group specified
+                * clouduserroleguid (guid) :             Guid of the cloud user role
+                * jobguid (guid) :                       guid of the job if avalailable else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/addUserRole?cloudusergroupguid=<guid>&clouduserroleguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.cloudusergroup.find(name, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cloud user groups guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name () :                     Name of the cloud user group to include in the search criteria.
+                * jobguid () :                  guid of the job if avalailable else empty string
+                * executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/find?name=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Array of cloud user group guids which met the find criteria specified.
+Return type : array 
+    {noformat}
+
+    h3.cloudusergroup.delete(cloudusergroupguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes the cloud user group specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudusergroupguid (guid) :        guid of the cloud user group to delete.
+                * jobguid (guid) :                   guid of the job if avalailable else empty string
+                * executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_cloudusergroup/delete?cloudusergroupguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

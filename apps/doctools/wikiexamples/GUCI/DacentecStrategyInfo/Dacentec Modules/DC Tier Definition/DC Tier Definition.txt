@@ -1,0 +1,6 @@
+h2. Dacatacenter Tier Definition
+
+Tier I: composed of a single path for power and cooling distribution, without redundant components, providing 99.671% availability.
+Tier II: composed of a single path for power and cooling distribution, with redundant components, providing 99.741% availability
+Tier III: composed of multiple active power and cooling distribution paths, but only one path active, has redundant components, and is concurrently maintainable, providing 99.982% availability
+Tier IV: composed of multiple active power and cooling distribution paths, has redundant components, and is fault tolerant, providing 99.995% availability.

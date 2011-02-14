@@ -1,0 +1,17 @@
+h2. Amplidata Target Market
+ 
+Amplidata defined their targeted markets based on the markets' needs, the adoption process of new technology and experience in the sales process of a startup.
+ 
+We identified the following main segments:
+* People with huge data volume requirements (+1 Petabyte) e.g. Cloud Computing providers, Storage Service providers (e.g. dropbox, …), large universities, ….
+* OEM for software vendors e.g. integrate with backup application, archive application, …
+* Video security image & video archival, these guys generate an awesome amount of data, it needs to be kept for multiple months sometimes years, it needs to be very reliable, it needs to be tamper proof.
+* Storage for virtual machines, this product could be sold through channels. First target is to integrate with VMWare. This usecase requires our much more advanced features like unlimited cloning, snapshotting, thin provisioning, …
+ 
+Our product can be sold in any storage market but we believe that above defined markets are the low hanging fruit.
+ 
+The pricing is completely different depending the market we sell into. For the volume market we can play a price game and beat any storage vendor in the market. 
+Amazon sells 1TB storage for about 150 USD per month without bandwidth . This is based on replication & raid.
+Our customers costprice if they use amplidata can be less  than 25 USD per month for 1TB (this includes rackspace, power, hardware management, even bandwidth).
+ 
+For the virtual machine storage we charge a big premium and the product is sold at competitive prices compared with the big iScsi or FC storage vendors. We sell based on features & reliability in this case.

@@ -1,0 +1,15 @@
+h2. DC Automate Competitive
+
+* DC Automate competes directly with offerings based on a custom implementation of best of breed vendors: VMWare, Citrix, EMC, Netapp, ...
+
+* DC Automate is a product out of the Gent Incubation Group Incubaid. Incubaid has over 20 years of experience in improving datacenters and making $200M in successfull exits. By this, DC Automate includes a wider set of technology than each other cloud solution wordlwide:
+** Hosted from Green Cloud Datacenters in Europe & US (Dacentec)
+** CPU & Storage Hardware manufactured to the cloud needs (Zenith Computers)
+** Power & Environment Measurement (Racktivity)
+** Automation Platform (Pylabs)
+** Dispersed Storage System (Amplidata)
+** Virtualisation Engine (Virtual Box)
+** Cloud Management Center
+** Network Operation Center (Zenith Infotech)
+
+* DC Automate will be offered at a disruptive price model, we are not dependent of external licenses!

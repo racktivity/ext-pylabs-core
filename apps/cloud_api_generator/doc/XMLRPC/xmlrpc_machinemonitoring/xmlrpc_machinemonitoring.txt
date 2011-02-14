@@ -1,0 +1,526 @@
+h2. XMLRPC Cloud API DOC - machinemonitoring
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.machinemonitoring.getDSSDirectorInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Return information about DSS Director monitoring
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getDSSDirectorInfo(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': dict(), 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getDSSStorageDaemonInfo(applicationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Return information about DSS Storage daemon monitoring
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Applicationguid (guid) :             guid of the application representing the dss storage daemon in drp
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getDSSStorageDaemonInfo(applicationguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': dict(), 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getVMachineStorageInfo(vmachineguid, diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        return info about sso storage information (dispersed storage info mainly)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Vmachineguid () :                guid of the guest machine for which to retrieve the storage info for
+                * Diskguid () :                    guid of the disk for which to retrieve the storage info for, or all disks when not specified
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getVMachineStorageInfo(vmachineguid=<>,diskguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getPMachineStorageInfo(pmachineguid, diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns sso storage information of physical volumes on storage nodes
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Pmachineguid () :                guid of physical storage node to retrieve info from
+                * Diskguid () :                    guid of the disk for which to retrieve the storage info for, or all disks when not specified
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getPMachineStorageInfo(pmachineguid=<>,diskguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getDSSVolumeInfo(volumeguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Return information about a(ll) volume(s)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Volumeguid () :                  guid of the volume to get information of
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getDSSVolumeInfo(volumeguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': dict ( key = volumeGuid,
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getPMachineProcesses(pmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns array of processes running on pmachine and details of that process like cpu & memory used.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Pmachineguid () :                guid of the host machine for which to retieve  the virtual machines' load info for
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getPMachineProcesses(pmachineguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getPMachineNetworkInfo(pmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        return info about networking per interface (device) for a given physical machine
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Pmachineguid () :                guid of the host machine for which to retrieve the network info for
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getPMachineNetworkInfo(pmachineguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getVMachinesLoad(pmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns load information for each virtual machine running on the specified host machine.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Pmachineguid () :                guid of the host machine for which to retieve  the virtual machines' load info for
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getVMachinesLoad(pmachineguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getPMachinePowerInfo(pmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Return pmachine power monitoring information from PDU
+
+          * Voltage
+          * Current
+          * CPU usage
+          * Max current
+          * Power
+          * Power Factor
+          * Consumption
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Pmachineguid () :                guid of the host machine for which to retrieve  the power info for
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getPMachinePowerInfo(pmachineguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getDSSStoragePoolInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Return information about DSS Storage pool monitoring
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getDSSStoragePoolInfo(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': dict(), 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getPMachineLoad(pmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns load information for a given physical machine.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Pmachineguid () :                guid of the host machine for which to retieve  the virtual machines' load info for
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getPMachineLoad(pmachineguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getVMachineLoad(vmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns load information for a specified (virtual) machine.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Vmachineguid () :                guid of the virtual machine for which to get load info for
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getVMachineLoad(vmachineguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.machinemonitoring.getEnvironmentPowerInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Return environment monitoring information of PDU
+
+          * Voltage
+          * Total current
+          * Total Power
+          * Total consumption
+          * Temperature
+          * Humidity
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_machinemonitoring.getEnvironmentPowerInfo(jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

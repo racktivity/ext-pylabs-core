@@ -1,0 +1,17 @@
+h2. Amplidata Solution
+
+Amplidata delivers a RAID placement disk storage system that is more reliable, more energy efficient and more scalable:
+
+*Unbreakable - AmpliStor is 10,000 times more reliable*
+Amplidata BitSpread stores data 10,000 times more reliably than RAID and replication based solutions. BitDynamics monitors the storage system and proactively verifies and heals stored data.
+
+*Green - AmpliStor consumes 10 times less power*
+The AmpliStor solution reduces overall power cost by a factor 10. The BitSpread encoder requires 2-3 times less raw disk capacity to store data while the Amplidata appliance with power management consumes up to 5 times less power than typical storage servers.
+
+*Scalable - ZetaByte ready*
+Scale AmpliStor by simply adding storage nodes. No reconfiguration is required as the BitDynamics technology automatically includes added capacity in the storage pool. Amplidata scales beyond petabytes.
+
+The Amplidata reliability benefit compared to RAID:
+
+!amplidata_bitspreadbenefit.png|border=0, width=800!
+

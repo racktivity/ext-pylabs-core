@@ -1,0 +1,106 @@
+h2. Market Info
+
+h3. It Growth in Middle East
+
+* Gartner Says IT Spending in the Middle East and Africa on Pace to Reach $213 Billion in 2010
+** IT spending in the Middle East and Africa is on pace to reach $212.9 billion in 2010, a 3.9 percent increase from 2009 spending of $205 billion, according to Gartner, Inc.
+** While organizations are spending more on IT this year, CIOs and IT leaders are under increasing pressure to drive business growth.
+** Gains will come from collaborative and innovative solutions that take advantage of the new 'lighter-weight' services-based and social media technologies, including virtualization, cloud computing and Web 2.0 social computing.
+** Source 09/2010: http://www1.albawaba.com/main-headlines/gartner-says-it-spending-middle-east-and-africa-pace-reach-213-billion-2010
+
+* The Middle East has an enormous growth in internet penetration growth;
+** it grew almost 1200% between 2000 and 2008, compared to the growth of about 300% in the rest of the world.
+** Source: http://middleeast.about.com/od/middleeast101/a/me081206d.htm
+
+* Middle East On Growth Path, IMF Says
+Source 10/2010: http://www.allheadlinenews.com/articles/7020316614
+
+h3. Cloud Growth Worldwide
+
+* Gartner Says Worldwide Cloud Services Market to Surpass $68 Billion in 2010
+** Worldwide cloud services revenue is forecast to reach $68.3 billion in 2010, a 16.6 percent increase from 2009 revenue of $58.6 billion, according to Gartner, Inc.
+** The industry is poised for strong growth through 2014, when worldwide cloud services revenue is projected to reach $148.8 billion.
+** The scale of application deployments is growing; multi-thousand-seat deals are increasingly common.
+** IT managers are thinking strategically about cloud service deployments; more-progressive enterprises are thinking through what their IT operations will look like in a world of increasing cloud service leverage. This was highly unusual a year ago.
+** Gartner estimates that, over the course of the next five years, enterprises will spend $112 billion cumulatively on software as a service (SaaS), platform as a service (PaaS), and infrastructure as a service (IaaS), combined.
+** Source 06/2010: http://www.gartner.com/it/page.jsp?id=1389313
+
+* Gartner Survey Shows Cloud-Computing Services Represents 10 Percent of Spending on External IT Services in 2010
+** Cloud-computing services consumed from external service providers (ESPs) are estimated to be 10.2 percent of the spending on external IT services, according to a worldwide survey by Gartner, Inc.
+** The cloud market is evolving rapidly, with 39 percent of survey respondents worldwide indicating they allocated IT budget to cloud computing as a key initiative for their organization. Forty-six percent of respondents with budget allocated to cloud computing indicated they planned to increase the use of cloud services from external providers. 
+** On a regional basis, Asia/Pacific, Europe, the Middle East and Africa (EMEA), and North America spent between 40 and 50 percent of the cloud budget on cloud services from ESPs.
+** Source 09/2010: http://www.gartner.com/it/page.jsp?id=1438813
+
+* IDC Predicts Steady Growth in Cloud Server Market Through 2014
+** IDC predicts that server revenue in the public cloud category will grow from $582 million in 2009 to $718 million in 2014
+** Source 05/2010: http://www.eweek.com/c/a/Data-Storage/IDC-Sees-Steady-Growth-in-Cloud-Server-Market-Through-2014-411000/
+
+* IDC 2010 Cloud Update
+** http://www.slideshare.net/JorFigOr/cloud-computing-2010-an-idc-update
+
+* Opportunities from cloud computing worth $160 billion by 2011
+** Plus Additional $800 billing on cloud services
+** http://www.ameinfo.com/229214.html
+
+h3. Datacenters Middle East
+
+* Middle East falling behind in data centre field
+** Businesses in the Middle East have been encouraged to adopt data centre models in order to save on IT spending.
+** At the Data Centre Strategies Middle East event, held in Abu Dhabi, experts in the data centre and managed services fields have called on firms in the region to catch up with the standard set by European and North American countries on the issue of outsourcing IT services.
+** Source 05/2010: http://www.ameinfo.com/233689.html
+
+* In the Middle East region there is now considerable growth taking place in the Data Center sector
+** Data Center development is still at an early stage of development in most countries
+** Lack on Data Center space compared with datacenter penetration in Europe and US
+** Source 11/ 2010: http://www.tmcnet.com/usubmit/2010/11/30/5164141.htm
+
+* Major shift from in-house to third-party data center services in Middle East and South Asia
+** Generally, increasing demand for managed services in those markets is being driven by enterprises’ growing requirements for compute and networking capacity, which makes manageability more and more challenging.
+** Companies are looking to leverage advanced skill sets of service providers’ personnel and high service-level guarantees as they transform their IT spending from a CAPEX model to an OPEX one.
+** Source 10/2009: http://www.datacenterdynamics.com/ME2/dirmod.asp?sid=&nm=&type=news&mod=News&mid=9A02E3B96F2A415ABC72CB5F516B4C10&tier=3&nid=9161E29678AE4F6C82ED0C7E0A8E1E0E
+** http://www.researchandmarkets.com/reportinfo.asp?cat_id=0&report_id=1416501&q=the-africa-middl&p=1
+
+* Businesses in the middle east are finding it difficult to keep up with IT demand
+** businesses in the middle east are finding it difficult to keep up with IT demand there and have been forced to install and operate high density computing, which he said is a challenge with a majority of pre-existing data centers unable to support this.
+** Source 12/2010: http://www.datacenterdynamics.com/ME2/dirmod.asp?sid=&nm=&type=news&mod=News&mid=9A02E3B96F2A415ABC72CB5F516B4C10&tier=3&nid=74435D196CE943DE841CCBF865731320
+
+h3. India Market Size
+
+* India Information Technology Report Q4 2010
+** Indian addressable market for IT products and services is now projected to increase from US$16.3bn in 2010 to US$34.3bn by 2014 (compound annual growth rate (CAGR) of 18%)
+** The long-term potential of India's IT market is plain: less than 3% of people in India own a computer (about one-fifth of the level in China)
+** A significant opportunity will be created by demand from Indian businesses and government agencies for help to utilise cloud computing.
+** There are already more than 50 cloud computing service providers working in the Indian market.
+** Indian internet services providers (ISPs) and data centre service providers such as Bharti Airtel, Sify, Trimax, and NetMagic are investing in bandwidth and facilities to support new cloud service offerings.
+** Indian IT companies like Wipro, Infosys, TCS, HCL and Mahindra Satyam are developing cloud computing applications and solutions for verticals ranging from financial services and banking to manufacturing.
+** http://www.companiesandmarkets.com/Market-Report/india-information-technology-report-q4-2010-392109.asp (€500 for full details)
+
+* India Datacenter Study - Data Center Outsourcing ($2000)
+** http://www.marketresearch.com/product/display.asp?productid=2800037&SID=69919289-496673103-430982006&curr=USD&kw=&view=abs
+
+* IT Services Market in India to 2014 ($500 for full details)
+** This databook provides the most comprehensive and up-to-date information on the IT services revenue opportunity across the infrastructure and applications service portfolios in India.
+** http://www.marketresearch.com/product/display.asp?productid=2744236&SID=69919289-496673103-430982006
+
+* Gartner Says Data Center Capacity in India to Surpass 5 Million Square Feet by 2012
+** In the long term, India has the potential to become a hub for data center hosting for nearby markets such as Middle East, East Africa and Southeast Asia.
+** Source Nov 2008 http://www.gartner.com/it/page.jsp?id=808212
+
+* Google Data Center in India?
+** Nov 2010 http://www.datacenterknowledge.com/archives/2010/11/01/weekend-roundup-google-data-center-in-india/
+
+h3. Pakistan Market Size
+
+* IT Market in Pakistan
+** Upward trend is seen in the adoption of basic IT technologies by SMEs with the major focus toward IT infrastructure building
+** Medium sized enterprises are concentrating more on networking and improving connectivity technologies.
+** The major verticals driving the growth of ICT market in the SME sector are BFSI and Manufacturing
+** http://www.companiesandmarkets.com/Summary-Market-Report/it-market-in-pakistan-64429.asp
+
+* Pakistan IT Market review 2010
+** Pakistan’s IT spend and global revenu: 2,25 Billion USD
+** http://www.pseb.org.pk/UserFiles/documents/PSEB-IT-Market-Review.pdf
+
+* Pakistan IT Market
+** 2,8 billion
+** Source End 2009: http://www.riazhaq.com/2009/10/pakistans-28-billion-it-industry.html

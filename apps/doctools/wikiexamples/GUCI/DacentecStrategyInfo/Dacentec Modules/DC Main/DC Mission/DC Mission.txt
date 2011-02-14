@@ -1,0 +1,13 @@
+h2. Mission
+
+Dacentec`s mission is *to design, build & operate world greenest cloud datacenters and to help partners to build their own green cloud datacenters*.
+
+Dacentec goes far beyond the PUE standard, *bringing the energy usage even below what is traditionally needed*, by investing in both the supply side and load side of the datacenter. Dacentec does this at a *TCO that is 10 times better than the average datacenter and even \*2 times better than the Google datacenters*. Dacentec *green cloud datacenters* consequently have *carbon footprints 75% less than major Datacenters*.
+
+Dacentec believes *datacenters need to change their behavior* in order to survive in the fast evolving datacenter market:
+* +Start measuring the power+ (load side) in detail for every piece of equipment and this in time;
+* +Shut down+ non used equipment;
+* Put the less important equipment at a +lower power state+;
+* +Optimize airflow+ in datacenters and avoid overcooling, redefine rack layouts to optimize air cooling
+* +Optimise the density+ without impacting the airflow or energy needs per square meter
+* Look more into the +choice of equipment that is placed inside the datacenter+, since that choice has a significant impact on the power usage

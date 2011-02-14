@@ -1,0 +1,36 @@
+h2. SmartStyle MirrorCloud solution
+
+SmartStyle MirrorCloud is an *SMB tailored advanced Business Continuity solution* for Windows servers and desktops. MirrorCloud is delivered as a turnkey solution, that can be setup without complex integrations. Business continuity has neven been so *simple and easy to manage*. On board wizards, built-in backup, monitoring and support from our Networking Operation Center allow a super fast installation. 
+
+The solution ensures you never lose data again thanks to its *built-in reliability and high availibility*. This is expressed by the fact that you can recover data from seconds before the error and can be up in running with a quick standby server. This eliminates costly downtime due to server hardware failure. The standby server funcationality is tested once a month to ensure maximum reliability.  Additionally, MirrorCloud will send the backups offsite to a secured datacenter facility. 
+
+MirrorCloud is built on the *modular and scalable* SmartStyle Computing platform which allows to add storage and CPU capacity when needed. Start with 1 node and as the demand for storage increases add more nodes. The underlying unbreakable storage technology allows to lose a node without any data loss in a a multi node setup! In case of a disaster you can add extra nodes for that extra virtualization capacity.  
+
+MirrorCloud`s on board technology can be used to built out a private local cloud. By using your business continuity solution as cloud you can extend your Client’s Hardware Lifecycle and *enable additional services without significant cost*. With Business Continuity moving to the cloud, traditional tape and disk solutions are showing their limitations. As a private cloud-based business continuity solution, SmartStyle MirrorCloud provides high availability, high performance, and a seamlessly expandable architecture.
+ 
+h3. Simplicity
+
+MirrorCloud contains the full stack of hardware, software and service to offer the next step in business contuintity for desktops and servers. The MirrorCloud software installs as an agent on desktops and servers and is light weight. The impact on the resources is less then 1%. The software captures every write performed by the operating system to the hard drive and mirrors it on the MirrorCloud storage. Data is copied at the byte level so applications, data and the operating system are protected. 
+
+MirrorCloud has a simple graphical user interface to start mirroring partitions to the MirrorCloud storage. With a few simple clicks you can turn your backups or the active mirror into a live virtual machine within 20 minutes. For the end-customer nothing changes as the IP address will be taken over by the virtual machine.
+
+MirrorCloud also comes with backup monitoring and monthly test virtualisations by our NOC (Network Operations Center) so you can focus on the customer. Our NOC, consisting of 700 skilled engineers, gives 24/7 implementation and troubleshooting support to partners through email, online chat and  phone. 
+
+
+h3. Modularity
+
+SmartStyle MirrorCloud consists of a local on site component running on at least one MirrorCloud node. Optionally the off-site component can be activated, creating a redundant copy for archiving or disaster recovery.
+
+Unlike traditional backup appliances, SmartStyle MirrorCloud is modular. It seamlessly integrates additional storage into its available storage pool. The unbreakable storage automatically optimizes its cache and storage structure without needing to be reconfigured. In case of a disaster, additional CPU capacity can easily be added to ensure best performance. 
+
+h3. Reliability
+
+SmartStyle MirrorCloud saves the data to built-in disks using the BitSpread revolutionary data storage technology. BitSpread stores data by spreading information across multiple disks and multiple nodes for maximum performance and reliability: a multi node setup can lose an entire node without any data loss! To ensure protection against corruption, the copied data is backupped every 15 minutes. 
+
+MirrorCloud offers granular recovery for  files and folders. OnTrack Power Tools are also included allowing for individual message or Exchange object recovery. 
+
+With MirrorCloud`s near instant virtualization capability, allows to create performant virtual machines by making use of the integrated SSD disk for caching. Failing servers and workstations can be virtualized in the time it takes to perform a reboot as MirrorCloud keeps virtual clones of workloads ready available at all times. Live Bare Metal Recovery* mirrors data back to (dissimilar) physical hardware while the virtual machine is running.
+
+h3. Service enablement
+
+MirrorCloud can be transitioned into a SmartStyle Office Private Cloud by adding an additional node to the initial MirrorCloud node. Use the System Profile Migration tool to convert physical machines to virtual machines and move them to the Cloud. Phase out traditional desktops and turn them into thin clients. Migrate servers or offer additional services by bringing live a new virtual server or use MiccrorCloud to run temporary workloads. 

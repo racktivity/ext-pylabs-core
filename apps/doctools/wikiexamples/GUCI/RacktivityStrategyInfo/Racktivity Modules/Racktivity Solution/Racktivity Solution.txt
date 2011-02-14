@@ -1,0 +1,10 @@
+h2. Racktivity Solution
+
+Racktivity offers a complete set of hardware and software solutions to measure, monitor and manage the energy consumption of data centers. The Companys integrated software and hardware platform will improve uptime and save energy and reduce the energy cost dramatically.
+
+Racktivitys smart Power Distribution Unit (PDU) hardware product, Rack Controller, measures and analyzes energy consumption with extreme accuracy so that the customers can increase uptime and reliability while reducing energy consumption on both supply and load side of the power.
+
+Racktivitys comprehensive software platform, PowerOrchestrator, provides a detailed perspective of energy use across the data center and has the capability to dynamically manage energy consumption at server level.
+
+!racktivity_SoftwarePlatformGraphic.png|border=0!
+

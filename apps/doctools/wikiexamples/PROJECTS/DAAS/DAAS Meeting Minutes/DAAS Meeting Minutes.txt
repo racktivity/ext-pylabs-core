@@ -1,0 +1,54 @@
+h1. Meeting Minutes Brainstorm 05-01-2011
+
+Questions/Remarks from todays brainstorm, using the google requirements for 2.0 as basis for the discussion:
+
+Present: Stijn Boussemaere, Stijn Hanssens, Peter, Arvid, Nour
+
+* 2.0 timeframe? when is deadline?
+
+* Preference to start in Brussels with the POC, not in US: reason to have more constructive customer feedback
+
+* Why root access to storage gateway VM?
+** Customers might break it?
+** give them just enough priviliges with shell login or just a webadmin?
+** avoid that they can enter the network\!
+
+* What ticketing system will we use?
+** Zendesk?
+
+* What ordering system will we use?
+** Magento, OS Commerce, Big commerce?
+
+* Billing
+** what tool to use?
+** start with credit card recurring payments
+** first 6 months free
+
+* What about the storage SAN: will it be 1 big environment, for example 1 petabyte or larger?
+** storage design to be made with Amplidata
+** tested up to x TB?
+** is 100TB volume for real?
+** 4/16 policy = 1,64 GB to store 1 GB
+** is overbooking allowed? If so, how much?
+
+* Resources
+** OPS: A-Server does not have currently resources available, for at least for 1 month, since of SSO launch
+** Eng: will continue to work on S3, Storage Gateway
+** How and when will India be involved?
+** Who will train India?
+
+* Action Points \-> let's prioritize and assign
+** Contact with Jumpbox
+** Getting equipment in place in datacenters
+** Product Definition, Pricing & Offering
+** Start to work out Procedures: provide, cease, ...
+** What Filesystem to use?
+** Make network Design
+** Set up India Team
+** Billing Tool
+** Support Tool
+** Website
+** Create Storage Gateway VM for Storage Cloud
+** Update DotProject
+** Monitoring Design
+** Scalability tests: can we do up to 100TB?

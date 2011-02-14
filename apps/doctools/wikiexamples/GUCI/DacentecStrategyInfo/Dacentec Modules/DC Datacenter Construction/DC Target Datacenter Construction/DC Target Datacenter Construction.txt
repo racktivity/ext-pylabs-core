@@ -1,0 +1,15 @@
+h2. Target market
+
+Direct to *any party who wants to construct a datacenter and who is looking for a more cost effective and green way of doing this*. 
+Dacentec helps companies to do that using its Green Cloud Datacenter concept.
+
+h2. USP for Dacentec customers
+
+* *Full datacenter automation*
+* *Better than ever TCO*
+** 10 times less power needed for STORAGE.
+** 4 times less power needed for CPU capacity
+** Ultra cost effective Storage & CPU capacity
+* Access to *Green Cloud Technology*
+* *Ultra Fast deployment* of resources
+* *Full control*, only the lowest layer: datacenter + infrastructure is provided as a service

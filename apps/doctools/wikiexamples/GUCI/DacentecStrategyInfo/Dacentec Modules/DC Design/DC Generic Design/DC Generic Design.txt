@@ -1,0 +1,11 @@
+h2. Datacenter Design
+
+{include:GUCI:DC Generic Design Overview}
+
+{include:GUCI:DC Generic Design Specifications}
+
+{include:GUCI:DC Generic Design PODs}
+
+{include:GUCI:DC Generic Design Functional}
+
+{include:GUCI:DC Peering Room}

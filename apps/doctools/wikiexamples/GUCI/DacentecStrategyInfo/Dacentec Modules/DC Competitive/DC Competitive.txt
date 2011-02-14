@@ -1,0 +1,17 @@
+h2. Main Product Advantages 
+
+Dacentec has a strong position with its Green Cloud Datacenter in the datacenter market thanks to:
+
+* *IP: several *datacenter technologies at several levels under its control*:*
+** Energy & Uptime framework
+** Datacenter Automation Framework
+** Green Plate concept (optional) (more storage & CPU capacity per rack at lower cost & carbon footprint)
+
+* *Green: Power Saving Achievements*
+** 10 times less power needed for STORAGE.
+** 4 times less power needed for CPU capacity
+
+* *Proven Track record*
+** 20 years of experience in improving datacenters with innovating technology:&nbsp;Datacenter Technologies, Veritas Software, Symantec, SUN, Terremark, Dedigate, …
+
+

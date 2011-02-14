@@ -1,0 +1,7 @@
+h1. About Racktivity
+
+Racktivity solutions deliver the next generation power distribution in data centers. The Rack Controller smart PDUs' real-time capabilities prevent disasters, monitor events and proactively manage energy consumption. The software platform offers an open and flexible framework to control uptime and energy conditions across data centers and easily integrate with other applications. That’s smarter control.
+
+Racktivity was Founded in February 2009 in Lochristi, Belgium and has opened shortly after that its Headquarters in Redwood City, CA, U.S. Racktivity is funded by Partech International and Big Bang Ventures. Racktivity`s board and management team consists of Datacenter & Energy veterans that have been in multipe ventures before.
+
+

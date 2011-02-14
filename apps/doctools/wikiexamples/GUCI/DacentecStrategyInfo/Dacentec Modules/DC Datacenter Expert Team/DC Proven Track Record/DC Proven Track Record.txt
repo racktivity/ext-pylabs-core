@@ -1,0 +1,68 @@
+h2. Proven Track record
+
+The team in Dacentec has been dealing for 15 years with datacenter companies or with companies building software for the datacenter:
+
+Previous successes
+* Datacenter Technologies (sold to Symantec in 2005)
+* Dedigate: high end hosting (now part of Terremark, enterprise cloud vendor & large scale datacenter provider)
+* Hostbasket: hosting & datacenter capacity for SMB market (sold to Belgium Telco Telenet)
+* Q-Layer: Cloud Automation Software (sold to SUN Microsystems in 2008)
+
+Previous experience of our team in the *{+}design, implementation and full operational management{+}* of:
+
+* Creation & building out of datacenters
+* High volume management of servers
+* High speed networks
+* Long distance dark fibre
+* DWDM (Dense Wavelength Division Multiplexing) systems
+* Large scale BGP 4 networks
+* Datacenter Networking: router access infrastructures, cisco, juniper, ...
+* Multi datacenter concepts:
+** Data replication between multiple datacenter locations
+** Load balancing between multiple datacenter locations
+** Setup and management of  of data replication between multiple datacenter locations
+** Disaster Recovery between datacenters
+* Management of large datacenters
+* Large experience in cloud computing
+** Complex virtual environments
+** Public and private clouds
+
+Examples of these experiences where we did the *{+}design, implementation and the full operational management{+}*:
+
+* *Creation & building out of datacenters*
+** PSINet datacenters (multiple datacenters in Europe)
+*** 7000m2 datacenter in London Docklands, was biggest datacenter at that point (1999)
+*** Datacenter in Berlin & Amsterdam
+*** 3 world records in hosting of large scale events (Nasa rocket launch 1999, UEFA football 2000, Worldcup 1998)
+** Datacenter for Hostbasket Belgium
+** Datacenter of Level3 in Brussels, Belgium
+** Telefonica Miami KeyCenter: 100,000 square foot project
+** Diveo Datacenters accross Latin America: 100,000 to 150,000 square foot projects
+** Kristof De Spiegeleer was responsible for cloud strategy at SUN for 1 year and advisor to build large scale datacenter in Las Vegas
+
+* *Management of large Datacenters*
+** Large Datacenter facility of Téléfonica
+
+* *High volume Infrastructure Management*
+** Dedigate/Terremark \+6000 mission critical servers
+
+* *High Availability and High Volume Infrastructure*
+** Ilse Media, one of the largest online media groups of Europe (via Terremark):
+*** infrastructure receiving 21 million pageviews per day
+*** hosting of 1000 websites
+*** average of 700.000 open connections
+*** peaks to 4 Gbit/s bandwidth
+*** fully loadbalanced multi datacenter infrastructure
+*** build with Citris NetScalers, Juniper and Cisco infrastructure: load balancing, caching, ...
+*** all clustered over different datacenters with data replication between the datacenters
+*** total of \+300 servers
+
+* *High Availability Infrastructure*
+** Public Transport chipcard for the Dutch Government
+*** multi datancenter infrastructure: 2 datacenters
+*** fibre between the datacenters
+*** all data active-active clustered
+*** super high availability setup: designed to have never downtime
+
+* *Ultra Security Project*
+** Global collect: worldwide online payments (we cannot disclose more information)

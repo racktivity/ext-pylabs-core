@@ -1,0 +1,25 @@
+h1. Strategic Info GUCI Incubaid Companies
+
+GUCI = Green Unbreakable Cloud Initiative.
+4 companies are very active around this concept.
+4 companies are still in stealth mode
+
+You can find more information about these companies and also some strategic info about why and what they do.
+
+h2. General
+
+* [Incubaid Companies Overview]
+
+h2. Product Info Overview
+
+* Amplidata
+** [Amplidata Product Info]
+* A-Server
+** [Product Info DAAS]
+** [Product Info DC Automate]
+** [Product Info SSO]
+* Dacentec
+** [Dacentec - Datacenter Construction]
+** [Dacentec - End User]
+* Racktivity
+** [Racktivity Product Info]

@@ -1,0 +1,15 @@
+h2. Vapp-Market Solution
+
+Vapp-Market lets you run server applications instantly with full flexibility and privacy like you would have set it up yourself!
+
+Vapp-Market is a marketplace of "ready-to-use" applications already pre-installed into a private virtual machine. This virtual machine will be activated on a private cloud instance in the DAAS.com computing environment located in European and US Green Cloud Datacenters.
+
+Users of Vapp-market will register through vapp-market.com. Here they will be able to browse a library of applications. Launching an application can be done by clicking the "launch in DAAS.com" cloud button. A few minutes later the user receives confirmation that the a Virtual Machine(s) is running with its preferred applications installed.
+
+The user has compared to SAAS business applications full root access to the server. He can also fully customize its applications!
+
+One of the unique features of Vapp-market is that the user does not have to worry about updating its software! He will be using an automated software update framework! Each application will be installed in a virtual container and can be sychronised without having any impact on the surrounding applications and OS.
+
+Vapp-market uses for the software packaging:
+* Incubaid`s QPackages for Windows and Linux OSs
+* Ubuntu's Advanced Packaging Tool for the Ubuntu OS

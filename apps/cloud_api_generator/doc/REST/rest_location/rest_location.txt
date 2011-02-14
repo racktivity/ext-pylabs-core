@@ -1,0 +1,349 @@
+h2. REST Cloud API DOC - location
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.location.getXMLSchema(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the location rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.location.create(name, description, alias, address, city, country, public, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new location.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                    Name for the location.
+                * description (string) :             Description for the location.
+                * alias (string) :                   Alias for the location.
+                * address (string) :                 Address for the location.
+                * city (string) :                    City for the location.
+                * country (string) :                 Country for the location.
+                * public (boolean) :                  Indicates if the location is a public location.
+                * jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/create?name=<string>&description=<string>&alias=<string>&address=<string>&city=<string>&country=<string>&public=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with locationguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.location.list(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all locations.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * locationguid () :             Guid of the location specified
+                * jobguid () :                  Guid of the job if avalailable else empty string
+                * executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/list?locationguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of location info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.location.getYAML(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the location rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * locationguid (guid) :           Guid of the location rootobject
+                * jobguid (guid) :                Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/getYAML?locationguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : YAML representation of the location
+Return type : string 
+    {noformat}
+
+    h3.location.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :         Guid of the location rootobject
+                * jobguid () : <no description found>
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.location.updateModelProperties(locationguid, name, description, alias, address, city, country, public, timezonename, timezonedelta, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * locationguid (guid) :            Guid of the location specified
+                * name (string) :                    Name for the location.
+                * description (string) :             Description for the location.
+                * alias (string) :                   Alias for the location.
+                * address (string) :                 Address for the location.
+                * city (string) :                    City for the location.
+                * country (string) :                 Country for the location.
+                * public (boolean) :                  Indicates if the location is a public location.
+                * timezonename (string) :            name of timeZone for the location.
+                * timezonedelta (float) :           delta of timeZone for the location.
+                * jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/updateModelProperties?locationguid=<guid>&name=<string>&description=<string>&alias=<string>&address=<string>&city=<string>&country=<string>&public=<boolean>&timezonename=<string>&timezonedelta=<float>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with location guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.location.listDatacenters(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all datacenters of the location.
+        
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.location.getXML(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the location rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.location.setTimeZone(locationguid, timezonename, timezonedelta, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Changes the time zone for a certain location
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * locationguid (guid) :             Guid of the location rootobject
+                * timezonename (string) :             name of timeZone for the location.
+                * timezonedelta (float) :            delta of timeZone for the location.
+                * jobguid (guid) :                  Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/setTimeZone?locationguid=<guid>&timezonename=<string>&timezonedelta=<float>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as a result when succeeded
+Return type : dictionary 
+    {noformat}
+
+    h3.location.find(name, description, alias, address, city, country, public, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of location guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name () :                    Name for the location.
+                * description () :             Description for the location.
+                * alias () :                   Alias for the location.
+                * address () :                 Address for the location.
+                * city () :                    City for the location.
+                * country () :                 Country for the location.
+                * public () :                  Indicates if the location is a public location.
+                * jobguid () :                 Guid of the job if avalailable else empty string
+                * executionparams () :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/find?name=<>&description=<>&alias=<>&address=<>&city=<>&country=<>&public=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Array of location guids which met the find criteria specified.
+Return type : array 
+    {noformat}
+
+    h3.location.delete(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a location.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * locationguid (guid) :           Guid of the location rootobject to delete.
+                * jobguid (guid) :                Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_location/delete?locationguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

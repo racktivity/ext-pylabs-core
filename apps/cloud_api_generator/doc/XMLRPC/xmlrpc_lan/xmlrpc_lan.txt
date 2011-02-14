@@ -1,0 +1,1041 @@
+h2. XMLRPC Cloud API DOC - lan
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.lan.listVdcs(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the vdcs the lan is used in.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                     guid of the lan to list the vdcs for.
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.listVdcs(languid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of ip info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :     guid of the lan rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.lan.setFromIpToIp(languid, fromip, toip, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the network for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Fromip (string) :                  Network address for the LAN
+                * Toip (string) :                    Defines if the LAN is used as a management LAN
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setFromIpToIp(languid=<guid>,fromip=<string>,toip=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.setFlags(languid, publicflag, managementflag, storageflag, internetpublicflag, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sets the role flags for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Publicflag (boolean) :              Defines if the LAN is used as a public LAN. Not modified if empty.
+                * Managementflag (boolean) :          Defines if the LAN is used as a management LAN. Not modified if empty.
+                * Storageflag (boolean) :             Defines if the LAN is used as a storage LAN. Not modified if empty.
+                * Internetpublicflag (boolean) :      Defines if the LAN is used as a internet public LAN. e.g a public lan with extra security constraints.
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setFlags(languid=<guid>,publicflag=<boolean>,managementflag=<boolean>,storageflag=<boolean>,internetpublicflag=<boolean>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.find(backplaneguid, cloudspaceguid, name, dns, status, startip, endip, gateway, managementflag, publicflag, storageflag, network, netmask, parentlanguid, vlantag, lantype, dhcpflag, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of LAN guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Backplaneguid () :            guid of the backplane to include in the search criteria.
+                * Cloudspaceguid () :           guid of the cloudspace to include in the search criteria.
+                * Name () :                     Name of the lans to include in the search criteria.
+                * Dns () :                      DNS of the lans to include in the search criteria.
+                * Status () :                   Status of the lans to include in the search criteria. See listStatuses().
+                * Startip () :                  startip of the lans to include in the search criteria.
+                * Endip () :                    endip of the lans to include in the search criteria.
+                * Gateway () :                  gateway of the lans to include in the search criteria.
+                * Managementflag () :           managementflag of the lans to include in the search criteria.
+                * Publicflag () :               publicflag of the lans to include in the search criteria.
+                * Storageflag () :              storageflag of the lans to include in the search criteria.
+                * Network () :                  network of the lans to include in the search criteria.
+                * Netmask () :                  netmask of the lans to include in the search criteria.
+                * Parentlanguid () :            guid of the parent lan to include in the search criteria.
+                * Vlantag () :                  vlan tag of the lans to include in the search criteria.
+                * Lantype () :                  Type the lan (static of dynamic)
+                * Dhcpflag () : <no description found>
+                * Jobguid () :                  guid of the job if available else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.find(backplaneguid=<>,cloudspaceguid=<>,name=<>,dns=<>,status=<>,startip=<>,endip=<>,gateway=<>,managementflag=<>,publicflag=<>,storageflag=<>,network=<>,netmask=<>,parentlanguid=<>,vlantag=<>,lantype=<>,dhcpflag=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of lan guids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.lan.listMacRanges(publicflag, managementflag, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the macranges define on lans
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Publicflag (boolean) :                  Filter on public flag on lan
+                * Managementflag (boolean) :              Filter on management flag on lan
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.listMacRanges(publicflag=<boolean>,managementflag=<boolean>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : list of dictionary {'guid','name','macrange','publicflag','managementflag'}
+Return type : list
+    {noformat}
+    h3.lan.moveToCloudspace(languid, spaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves the specified LAN to the another space.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Spaceguid (guid) :               guid of the space to move the LAN to
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.moveToCloudspace(languid=<guid>,spaceguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.create(cloudspaceguid, backplaneguid, name, lantype, parentlanguid, network, netmask, fromip, toip, gateway, dns, publicflag, internetpublicflag, managementflag, storageflag, description, integratedflag, nrreservedip, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new lan
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid (guid) :          guid of the space this lan is part of
+                * Backplaneguid (guid) :           guid of the backplane this lan is part of
+                * Name (string) :                    Name the lan
+                * Lantype (string) :                 Type the lan (static of dynamic)
+                * Parentlanguid (guid) :           guid of the lan's parent lan
+                * Network (string) :                 Network address for the LAN
+                * Netmask (string) :                 Netmask for the LAN
+                * Fromip (string) :                  Network address for the LAN
+                * Toip (string) :                    Defines if the LAN is used as a management LAN
+                * Gateway (string) :                 Address of the default gateway.
+                * Dns (string) :                     Address of the DNS server.
+                * Publicflag (boolean) :              Defines if the LAN is used as a public LAN. Not modified if empty.
+                * Internetpublicflag (boolean) :      Defines if the LAN is used as a internet public LAN. Not modified if empty.
+                * Managementflag (boolean) :          Defines if the LAN is used as a management LAN. Not modified if empty.
+                * Storageflag (boolean) :             Defines if the LAN is used as a storage LAN. Not modified if empty.
+                * Description (string) :             Description of the LAN
+                * Integratedflag (boolean) :          True if the lan is a integrated network or not, default false, because only used for public networks
+                * Nrreservedip (integer) :            Number of reserved ip addresses for the sso nodes
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.create(cloudspaceguid=<guid>,backplaneguid=<guid>,name=<string>,lantype=<string>,parentlanguid=<guid>,network=<string>,netmask=<string>,fromip=<string>,toip=<string>,gateway=<string>,dns=<string>,publicflag=<boolean>,internetpublicflag=<boolean>,managementflag=<boolean>,storageflag=<boolean>,description=<string>,integratedflag=<boolean>,nrreservedip=<integer>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with languid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.setStatus(languid, status, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the status for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Status (string) :                  Status of the LAN ("BROKEN", "ACTIVE", "DISABLED", "NOTCONNECTED)
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setStatus(languid=<guid>,status=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.updateModelProperties(languid, name, description, gateway, network, netmask, startip, endip, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                  Guid of the LAN to update.
+                * Name (string) :                     Name of the lan.
+                * Description (string) :              Description of the lan.
+                * Gateway (string) :                  Gateway of the lan.
+                * Network (string) :                  Network of the lan.
+                * Netmask (string) :                  Netmask of the lan.
+                * Startip (string) :                  Startip of the lans to include in the search criteria.
+                * Endip (string) :                    Endip of the lans to include in the search criteria.
+                * Jobguid (guid) :                  Guid of the job if available else empty string
+                * Executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.updateModelProperties(languid=<guid>,name=<string>,description=<string>,gateway=<string>,network=<string>,netmask=<string>,startip=<string>,endip=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with lan guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.getNextMacRange(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Get the next mac range for a qlan
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.getNextMacRange(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of ip info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.checkIPRangeInUse(startip, endip, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Check if this ip range conflicts with any existing ip range, return true if it conflicts, false otherwise
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Startip (string) :                     Start ip of the range
+                * Endip (string) :                       End ip of the range
+                * Jobguid (guid) :                     guid of the job if available else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.checkIPRangeInUse(startip=<string>,endip=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : array of the existing lans that conflict with this range ({'result': array, 'jobguid': guid})
+Return type : dictionary
+    {noformat}
+    h3.lan.setLanType(languid, lantype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the LAN type for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the lan
+                * Lantype (integer) :                 Type of LAN
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setLanType(languid=<guid>,lantype=<integer>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.setNetworkNetmask(languid, network, netmask, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the network for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Network (string) :                 Network address for the LAN
+                * Netmask (string) :                 Netmask for the LAN
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setNetworkNetmask(languid=<guid>,network=<string>,netmask=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.listIPAddresses(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all IP addresses for a lan.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid () :                     guid of the lan to list the ips for.
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.listIPAddresses(languid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of ip info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.setDNS(languid, dns, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the domain name server for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Dns (string) :                     Address of the DNS server.
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setDNS(languid=<guid>,dns=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.getXML(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the lan rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.lan.setDefaultGateway(languid, gateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the default gateway for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Gateway (string) :                 Address of the default gateway.
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setDefaultGateway(languid=<guid>,gateway=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.getXMLSchema(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the lan rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.lan.moveToBackplane(languid, backplaneguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves the specified LAN to the another backplane.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the LAN
+                * Backplaneguid (guid) :           guid of the backplane to move the LAN to
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.moveToBackplane(languid=<guid>,backplaneguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.list(cloudspaceguid, backplaneguid, languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all lans.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cloudspaceguid () :              guid of the cloud space to list the lans for. If not specified, return all lans you have access to.
+                * Backplaneguid () :               guid of the backplane to list the lans for. If not specified, return all lans you have access to.
+                * Languid () :                     guid of the LAN
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.list(cloudspaceguid=<>,backplaneguid=<>,languid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of lan info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.getYAML(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the lan rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the lan rootobject
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.getYAML(languid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the disk
+Return type : string
+    {noformat}
+    h3.lan.listFreeIPAddresses(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the free ip addresses for a lan.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid () :                     guid of the lan to list the ips for.
+                * Jobguid () :                     guid of the job if available else empty string
+                * Executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.listFreeIPAddresses(languid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of ip info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.setVlanTag(languid, vlantag, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Configures the VLAN tag for the specified LAN.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the lan
+                * Vlantag (integer) :                 VLAN tag
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.setVlanTag(languid=<guid>,vlantag=<integer>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.lan.delete(languid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes s lan.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Languid (guid) :                 guid of the lan to delete
+                * Jobguid (guid) :                 guid of the job if available else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_lan.delete(languid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

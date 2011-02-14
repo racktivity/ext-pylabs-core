@@ -1,0 +1,15 @@
+h3. Ringo De Smet - Release Manager
+
+{table}{tr}{td:valign=top|width=500}
+
+Ringo De Smet is release manager at Amplidata. Here he takes part in managing the deliverables, defining test plans, making sure the necessary test suites get run and results reported. Another aspect is the follow up on the quality of the code from the off-shore teams, mostly on making it easily testable. Bootstrapping the required test suites, explaining the rationale behind the test approach and setting up the required test suites is an important facet.
+
+Before he worked as a consultant at Telenet, largest cable broadband provider, where he overlooked the integration process of Telenetʼs own customer management system with external services.
+
+His experience in storage before Amplidata he had with EMC². At EMC² he was a Senior Software Engineer at the Centera division in Belgium. Centera is a Content Address Storage system.
+
+Before EMC², he worked as a Software Engineer at Synes NV and as a Project Engineer at MediaGeniX.
+
+He holds a university degree for applied computer Sciences.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-ringo.png|border=1, width=250! {td}{tr}{table}

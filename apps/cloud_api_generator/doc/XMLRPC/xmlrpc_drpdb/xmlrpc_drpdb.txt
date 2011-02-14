@@ -1,0 +1,84 @@
+h2. XMLRPC Cloud API DOC - drpdb
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.drpdb.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :     guid of the rootobject
+                * Jobguid () : <no description found>
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_drpdb.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.drpdb.find(name, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of drpdb guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name (string) :                        Name of the machine.
+                * Jobguid (guid) :                     guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_drpdb.find(name=<string>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with an array of drpdb guids as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

@@ -1,0 +1,5 @@
+h1. Dacentec Modules
+
+In order to reuse content blocks, the descriptions are build using the following components:
+
+{children}

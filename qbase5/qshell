@@ -1,0 +1,19 @@
+#!/bin/bash
+. /opt/qbase3/bin/init-bootstrap.sh
+
+if [ "x$IPYTHONDIR" == "x" ]; then
+  export IPYTHONDIR=$HOME/.ipython
+fi
+
+mkdir -p $IPYTHONDIR
+cp $base/lib/python2.6/site-packages/IPython/UserConfig/ipythonrc $IPYTHONDIR
+cp $base/init/ipy_user_conf.py $IPYTHONDIR
+
+mkdir -p $base/var/pid
+mkdir -p $base/var/log
+mkdir -p $base/var/tmp
+
+python $base/utils/shell.py "$1" "$2" "$3" "$4"
+
+
+    

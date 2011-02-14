@@ -1,0 +1,5 @@
+h2. What we don`t do
+
+Replace SANs for highly transactional applications such as Oracle databases.
+
+Don’t go after an SMB that wants to replace his 16TB Equallogic iSCSI SAN simply for the cost. We need to focus on 500TB+ systems.

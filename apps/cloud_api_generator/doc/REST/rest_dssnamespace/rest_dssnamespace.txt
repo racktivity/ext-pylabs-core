@@ -1,0 +1,239 @@
+h2. REST Cloud API DOC - dssnamespace
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.dssnamespace.getSpreads(namespaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+		Lists all spreads currently in use by that namespace. A spread is a list of storage daemon application GUID's
+        
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.getXMLSchema(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the disk rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.create(name, dsspolicyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new namespace with the given policy
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                name of the namespace
+                * dsspolicyguid (guid) :       guid of the dss policy that should be applied for storing data in this namespace
+                * jobguid (guid) :             guid of the job if avalailable else empty string
+                * executionparams (dictionary) :     dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_dssnamespace/create?name=<string>&dsspolicyguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with namespaceguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.dssnamespace.getYAML(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the disk rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.getnamespaceinfo(namespaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+		returns status information about all objects and superblocks in the namespace. 
+          
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :     guid of the lan rootobject
+                * jobguid () : <no description found>
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_dssnamespace/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.dssnamespace.getnextobjectid(namespaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+		Returns the next available objectid for that namespace. A dss client will use that id to store the object.
+        
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.updateSpreads(namespaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+		Updates and returns all spreads in use by that namespace. Is used when balckisted storage daemons are detected in a spread. A spread is a list of storage daemon application GUID's
+        
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.verifyobject(namespaceguid, objectid, jobguid, executionparams)
+
+    h4. Description
+    
+     verifies if object is restorable from dss storage system, this checks the status of the data on the storage daemons for this object.
+          
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.getobjectinfo(namespaceguid, objectid, jobguid, executionparams)
+
+    h4. Description
+    
+     returns storage information about an object in the store; list storage daemons per superblock and associated spread
+          
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.getXML(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the disk rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.dssnamespace.find(name, dsspolicyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of namespace guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                        Name of the namespace to find.
+                * dsspolicyguid (guid) :               guid of the dss policy that is used for the namespace to find
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_dssnamespace/find?name=<string>&dsspolicyguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with an array of namespace guids as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.dssnamespace.delete(dssnamespaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a namespace.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * dssnamespaceguid (guid) :  guid of the namespace rootobject
+                * jobguid (guid) :           guid of the job if avalailable else empty string
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_dssnamespace/delete?dssnamespaceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

@@ -1,0 +1,10 @@
+h2. Amplidata Competitive
+ 
+Online Storage: Many Application Providers started their business on existing storage clouds. E.g.: S3.  The challenge is to convince them to build their own storage infrastructure at a fraction of the cost.
+ 
+Using open source solutions, lots of service providers build scale out storage infrastructure of their own. Key selling points here are lower management cost, higher reliability.
+ 
+There are quite a few “Expensive” enterprise-grade solutions available that can deliver acceptable levels of availability. Key selling point will be cost. E.g.: EMC Atmos, NetApp GX, …
+ 
+A few startups are operating in the same space. E.g.: Cleversafe, Gluster, ...
+ 

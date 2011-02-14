@@ -1,0 +1,4 @@
+h1. How Dacentec builds Datacenters
+
+{include:GUCI:DC True Green Cloud Datacenter}
+{include:GUCI:DC Dacentec Best Practices}

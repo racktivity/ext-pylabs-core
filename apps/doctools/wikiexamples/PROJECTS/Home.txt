@@ -1,0 +1,15 @@
+This is the home of the Projects space.
+
+To help you on your way, we've inserted some of our favourite macros on this home page. As you start creating pages, blogging and commenting you'll see the macros below fill up with all the activity in your space. 
+{section}
+{column:width=60%}
+{recently-updated}
+{column}
+{column:width=5%}
+{column}
+{column:width=35%}
+h6. Navigate space
+{pagetreesearch}
+{pagetree}
+{column}
+{section}

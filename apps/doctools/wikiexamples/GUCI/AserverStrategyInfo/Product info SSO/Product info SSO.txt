@@ -1,0 +1,16 @@
+h1. Product Info Smart Style Computing
+
+{include:SSO Market Situation}
+{include:SSO Target Market}
+{pagebreak}
+{include:SSO Solution}
+{pagebreak}
+{include:SSO Product Description}
+{include:SSO Support Models}
+{pagebreak}
+{include:SSO USPs}
+
+{include:SSO Competitive}
+
+{include:SSO Pricing}
+

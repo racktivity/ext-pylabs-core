@@ -1,0 +1,5 @@
+h2. Vapp-Market Target Market
+
+Vapp-market is developed for any IT professional user that is looking for a more controlled, private and flexibile environment to run applications.
+
+It can be ordered online and will geographically be hosted in its first phase in the US and Europe.

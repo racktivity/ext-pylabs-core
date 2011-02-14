@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <script src='http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js'
+            type='text/javascript'></script>
+
+        <script type='text/javascript'>
+            function display_table(data) {
+                res = '<table>';
+                res += '<tr><td>User</td><td>Credit</td></tr>';
+
+                for(var name in data) {
+                    amount = data[name];
+                    res += '<tr><td>' + name + '</td><td>' + amount + '</td>';
+                }
+
+                res += '</table>';
+
+                $('#scores').html(res);
+            }
+
+            $(document).ready(function() {
+                    $('#creator').submit(function() {
+                        data = $(this).serialize();
+                        $.ajax({
+                            url: '/poker/create_table/',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: data,
+                            success: function(result) {
+                                $('#create_view').hide();
+                                $('#play_view').show();
+                                $('.table_id').val(result[0]);
+                                display_table(result[1]);
+                                },
+                            error: function(result) {
+                                alert('An exception occurred');
+                                }
+                            });
+
+                        return false;
+                    });
+                    
+                    $('#bet').submit(function() {
+                        data = $(this).serialize();
+                        $.ajax({
+                            url: '/poker/bet/',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: data,
+                            success: function(result) {
+                                display_table(result);
+                            },
+                            error: function(result) {
+                                alert('An exception occurred');
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    $('#fold').submit(function() {
+                        data = $(this).serialize();
+                        $.ajax({
+                            url: '/poker/fold/',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: data,
+                            success: function(result) {
+                                display_table(result);
+                            },
+                            error: function(result) {
+                                alert('An exception occurred');
+                            }
+                        });
+
+                        return false;
+                    });
+            });
+        </script>
+        <style type='text/css'>
+            #play_view {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Poker tracker</h1>
+        <div id='create_view'>
+            <h2>Create game</h2>
+            <form id='creator'>
+                <input type='text' name='users' id='users' />
+                <input type='submit' />
+            </form>
+        </div>
+        <div id='play_view'>
+            <div id='score_container'>
+                <h2>Scores</h2>
+                <div id='scores'>&nbsp;</div>
+            </div>
+            <div id='betform'>
+                <form id='bet'>
+                    <input type='hidden' name='table_id' id='table_id1'
+                        class='table_id'/>
+                    <input type='text' name='user' id='user' />
+                    <input type='amount' name='amount' id='amount' />
+                    <input type='submit' />
+                </form>
+                <form id='fold'>
+                    <input type='hidden' name='table_id' id='table_id2'
+                        class='table_id' />
+                    <input type='text' name='winner' id='winner' />
+                    <input type='submit' value='Fold' />
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

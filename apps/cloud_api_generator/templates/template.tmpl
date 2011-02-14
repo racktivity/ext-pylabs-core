@@ -1,0 +1,30 @@
+from cloud_api_client.Exceptions import CloudApiException
+
+class $className:
+    def __init__(self, proxy):
+        self._proxy = proxy
+
+#for $method in $methods:
+
+    def $method.name (self, $method.args):
+        """
+        $method.docs
+        """
+#set $line = ','.join($method.argNames)
+        try:
+            result = self._proxy.$serviceName.${method.name}($line)
+    #if $method.name == 'getObject':
+
+            from osis import ROOTOBJECT_TYPES
+            import base64
+            from osis.model.serializers import ThriftSerializer
+            result = base64.decodestring(result['result'])
+            result = ROOTOBJECT_TYPES['$className'].deserialize(ThriftSerializer, result)
+    #end if
+            return result
+        except Exception, ex:
+            raise CloudApiException(ex)
+
+#end for
+
+

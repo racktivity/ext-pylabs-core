@@ -1,0 +1,9 @@
+h2. Racktivity Competitive
+
+Given the large global market opportunity, Racktivity expects to see a number of competitors varying from existing players to emerging companies that will offer similar value proposition. The main competitors of Racktivity are the established power solution providers such as APC and Emerson that have revenues in multi billion dollars. In addition, there are a number of venture-backed startups like Modius and PowerAssure that offer software solutions to report energy use of data centers.
+
+However, Racktivity has unique competitive advantages that create a significant barriers and defense to others in the sector:
+* Superior PDU product that provides precise measurements
+* Comprehensive software platform that offers full visibility
+* Integrated HW&SW framework
+

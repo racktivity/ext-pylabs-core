@@ -1,0 +1,1509 @@
+h2. REST Cloud API DOC - disk
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.disk.restore(backupdiskguid, diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Restores a backup from a disk to another disk.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.canRollback(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks whether snapshots that are more recent have clones. If so, rollback is disallowed
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the snapshot to check.
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/canRollback?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': diskguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :     guid of the disk rootobject
+                * jobguid () : <no description found>
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.disk.listExportedImages(diskguid, cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a the list of exported disk images on the systemNAS for a specific disk
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk rootobject
+                * cloudspaceguid (guid) :     guid of the disk rootobject
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/listExportedImages?diskguid=<guid>&cloudspaceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : list of exported images.
+Return type : array 
+    {noformat}
+
+    h3.disk.getLatestSnapshot(diskguid, consistent, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the snapshots for a given disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :              guid of the disk to list the snapshots from.
+                * consistent (boolean) :            boolean to specify snapshot consistency flag.
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/getLatestSnapshot?diskguid=<guid>&consistent=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with snapshot disk info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.cloneToNewDisk(diskguid, name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Clones a snaphot to a new disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the snapshot to clone.
+                * name (string) :  		      name given to the new disk
+                * description (string) :    	  description given to the new disk
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/cloneToNewDisk?diskguid=<guid>&name=<string>&description=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': diskguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.listClones(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the clones for a given disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :              guid of the disk to list the snapshots from.
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/listClones?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of snapshot disks info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.find(name, machineguid, disktype, windowsdiskname, devicename, sizefrommb, sizetomb, compressiontype, disklifecycletype, templatediskguid, iqn, status, role, backuplabel, parentdiskguid, id, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of disk guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name () :                     Name of the disk.
+                * machineguid () :              guid of the machine the disk is part of.
+                * disktype () :                 Type of the disk. (DSSVOL, DSSVOLIMAGE, FILE, ...)
+                * windowsdiskname () :          Name of the windows disk.
+                * devicename () :               Name of the disk's device
+                * sizefrommb () :               Minimum size of the disk in MB.
+                * sizetomb () :                 Maxinum size of the disk in MB.
+                * compressiontype () :          Compression type used on the disk. (NONE, GZIP, SEVENZIP, TARGZIP)
+                * disklifecycletype () :        Dikslifecycletype of the disk. (ACTIVE, CLONE, SNAPSHOT, TEMPLATE, TODELETE)
+                * templatediskguid () :         guid of the disk that was used to create the disk.
+                * iqn () :                      IQN of the disk.
+                * status () :                   Status of the disk (ACTIVE, CONFIGURED, CREATED)
+                * role () :                     guid of the disk that was used to create the disk.
+                * backuplabel () :              guid of the disk that was used to create the disk.
+                * parentdiskguid () :           guid of the disk's parent disk.
+                * id () :                       volume id of the disk.
+                * jobguid () :                  guid of the job if avalailable else empty string
+                * executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/find?name=<>&machineguid=<>&disktype=<>&windowsdiskname=<>&devicename=<>&sizefrommb=<>&sizetomb=<>&compressiontype=<>&disklifecycletype=<>&templatediskguid=<>&iqn=<>&status=<>&role=<>&backuplabel=<>&parentdiskguid=<>&id=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Array of disk guids which met the find criteria specified.
+Return type : array 
+    {noformat}
+
+    h3.disk.iscsiUnExpose(diskguid, protocol, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Unexposes a disk which is exposed over ISCSI and deletes the ISCSI target.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the ISCSI exposed disk to unexpose.
+                * protocol () : <no description found>
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/iscsiUnExpose?diskguid=<guid>&protocol=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.listSnapshots(diskguid, timestampfrom, timestampuntil, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the snapshots for a given disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :              guid of the disk to list the snapshots from.
+                * timestampfrom (datetime) :         Filter snapshots from given timestamp
+                * timestampuntil (datetime) :        Filter snapshots until given timestamp
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/listSnapshots?diskguid=<guid>&timestampfrom=<datetime>&timestampuntil=<datetime>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of snapshot disk info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.cloneToExistingDisk(diskguid, destinationdiskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Clones a snapshot to an existing disk. The existing disk is deleted. Then the clone is created with the same guid as the existing disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :            Guid of the disk to clone
+                * destinationdiskguid (guid) :  Guid of the destination disk
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/cloneToExistingDisk?diskguid=<guid>&destinationdiskguid=<guid>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': diskguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.iscsiExpose(diskguid, targetIQN, username, password, initiatorIQN, ipaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Exposes a disk over iscsi on a cpu node which has capacity. Disks can only be exposed once at a time.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk to expose over ISCSI.
+                * targetIQN (string) :                iSCSI Qualified Name representing the iscsi target
+                * username (string) :                 Username that is allowed to connect
+                * password (string) :                 Password of user that is allowed to connect
+                * initiatorIQN (string) :             iSCSI Qualified Name allowed to connect
+                * ipaddress (string) :                ip address allowed to connect to the iscsi target
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/iscsiExpose?diskguid=<guid>&targetIQN=<string>&username=<string>&password=<string>&initiatorIQN=<string>&ipaddress=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with a dictionary with ipaddress and iqn of the ISCSI exposed disk as result and jobguid: {'result': {'diskguid': guid, 'ipaddress': ip, 'iqn': iqn}, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.addPartitionFromImage(diskguid, imageuri, filesystemtype, imagechecksum, size, order, boot, backup, label, mountpoint, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a partition to a disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk rootobject.
+                * imageuri (string) :                 URI of the image to use.
+                * filesystemtype (string) :           Filesystem type used on partition. (EXT2, EXT3, FAT32, LINUX_SWAP, NTFS, REISERFS, XFS)
+                * imagechecksum (string) :            MD5 Hash of the image to check if the image is correct. No check executed if not specified.
+                * size (int) :                     Size of the partition in MB. Remaining size on the disk if not specified.
+                * order (int) :                    Partition number. Next available partition number if not specified.
+                * boot (boolean) :                     Indicate if this is the active partition.
+                * backup (boolean) :                   Indicate if this is partition should be included in backups.
+                * label (String) :                    Label of the partition
+                * mountpoint (string) :               Mountpoint of the partition
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/addPartitionFromImage?diskguid=<guid>&imageuri=<string>&filesystemtype=<string>&imagechecksum=<string>&size=<int>&order=<int>&boot=<boolean>&backup=<boolean>&label=<String>&mountpoint=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.copyToExistingDisk(diskguidsource, diskguiddestination, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Copies all data from one disk to another.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguidsource (guid) :           guid of the disk to copy all data from.
+                * diskguiddestination (guid) :      guid of the disk to copy all data to.
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/copyToExistingDisk?diskguidsource=<guid>&diskguiddestination=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.listUnmanagedDisks(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists the unmanaged disks (Disks not bound to a machine).
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/listUnmanagedDisks?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of unmanaged disks as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.updateModelProperties(diskguid, name, description, timestamp, id, iqn, devicename, status, disktype, diskorder, backendsize, dsspolicyguid, failovercachestatus, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                guid of the disk specified
+                * name (string) :                    Name for this disk
+                * description (string) :             Description for this disk
+                * timestamp (datetime) :               Timestamp of creation date in reality
+                * id (string) :                      id
+                * iqn (string) :                     iqn for this disk
+                * devicename (string) :              devicename for this disk
+                * status (string) :                  status for this disk
+                * disktype (string) :                disktype for this disk
+                * diskorder (int) :               Order of the disk
+                * backendsize (int) :             Backendsize of the disk (eg DSS volumes)
+                * dsspolicyguid (guid</para><para>@param failovercachestatus     status of failover cache  (NONE,STANDALONE,DEGRADED or SYNCHRONISED) @type failovercachestatus      string) :           guid of the dss policy
+                * failovercachestatus () :      status of failover cache  (NONE,STANDALONE,DEGRADED or SYNCHRONISED)
+                * jobguid (guid) :                 guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/updateModelProperties?diskguid=<guid>&name=<string>&description=<string>&timestamp=<datetime>&id=<string>&iqn=<string>&devicename=<string>&status=<string>&disktype=<string>&diskorder=<int>&backendsize=<int>&dsspolicyguid=<guid</para><para>@param failovercachestatus     status of failover cache  (NONE,STANDALONE,DEGRADED or SYNCHRONISED) @type failovercachestatus      string>&failovercachestatus=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with disk guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.removeFilesystem(diskguid, order, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes a filesystem from a partition.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.moveFailovercacheToMachine(diskguid, machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Move failover cache for a disk from one machine to another.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk for which to move the failover cache.
+                * machineguid (guid) :              guid of the machine to move the failover cache to.
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/moveFailovercacheToMachine?diskguid=<guid>&machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.setWindowsDiskName(diskguid, windowsdiskname, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Set windows name for disk
+        Can be used to query disks
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk rootobject.
+                * windowsdiskname (string) :          Windows disk name  e.g. c:
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/setWindowsDiskName?diskguid=<guid>&windowsdiskname=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.importImage(sourceuri, diskguid, executormachineguid, compressed, type, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Import specified image on a disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * sourceuri (string) :               URI of the location from where the VDI should be imported. (e.g ftp://login:passwd@myhost.com/backups/machinex/10_20_2008_volImage_C_drive.vdi.gz)
+                * diskguid (guid) :                guid of the disk on which the VDI will be imported.
+                * executormachineguid (guid) :     guid of the machine which should convert the VDI to the disk. If the executormachineguid is empty, a machine will be selected automatically.
+                * compressed (boolean) :              Boolean indicating if the image should be compressed or not. Compression used is 7zip
+                * type () : <no description found>
+                * jobguid (guid) :                 guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/importImage?sourceuri=<string>&diskguid=<guid>&executormachineguid=<guid>&compressed=<boolean>&type=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.removePartition(diskguid, order, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes a partition from a disk.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.rollback(snapshotguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Rollback a disk to the given snapshot.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * snapshotguid (guid) :       guid of the snapshot.
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/rollback?snapshotguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.createTemplate(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a template from the disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk to mark as template.
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/createTemplate?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.moveToMachine(diskguid, machineguid, failover, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Move a disk from one machine to another. When failovering the disk, the locking mechanism will be bypassed and failover cache be used when possible.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk to move.
+                * machineguid (guid) :              guid of the machine to move the disk to.
+                * failover (boolean) :                 flags whether failover workflow needs to be followed
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/moveToMachine?diskguid=<guid>&machineguid=<guid>&failover=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.addPartition(diskguid, size, order, boot, backup, info, filesystem, label, mountpoint, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a partition to a disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk rootobject.
+                * size (int) :                     Size of the partition in MB. Remaining size on the disk if not specified.
+                * order (int) :                    Partition number. Next available partition number if not specified.
+                * boot (boolean) :                     Indicate if this is the active partition.
+                * backup (boolean) :                   Indicate if this is partition should be included in backups.
+                * info (string) :                     extra information about the partition
+                * filesystem (string) :               Filesystem of the partition
+                * label (String) :                    Label of the partition
+                * mountpoint (string) :               Mountpoint of the partition
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/addPartition?diskguid=<guid>&size=<int>&order=<int>&boot=<boolean>&backup=<boolean>&info=<string>&filesystem=<string>&label=<String>&mountpoint=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.listBackups(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the snapshots for a given disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :              guid of the disk to list the backups from.
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/listBackups?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of snapshot machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.exportImage(diskguid, destinationuri, executormachineguid, compressed, imagetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Export specified disk as vdi image on defined destination.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                guid of the disk to export.
+                * destinationuri (string) :          URI of the location where the VDI should be stored. (e.g ftp://login:passwd@myhost.com/backups/machinex/10_20_2008_volImage_C_drive.vdi.gz)
+                * executormachineguid (guid) :     guid of the machine which should convert the disk to a VDI. If the executormachineguid is empty, a machine will be selected automatically.
+                * compressed (boolean) :              Boolean indicating if the image should be compressed or not. Compression used is 7zip
+                * imagetype (string) :               Type of the image format (VDI, RAW, VMDK, ...)
+                * jobguid (guid) :                 guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/exportImage?diskguid=<guid>&destinationuri=<string>&executormachineguid=<guid>&compressed=<boolean>&imagetype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.listPartitions(diskguid, label, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all partitions on the disk.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.applyTemplate(diskguid, templateguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Applies a template on an existing disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :              guid of the disk on which the template will be applied.
+                * templateguid (guid) :          guid of the template to apply.
+                * jobguid (guid) :               guid of the job if avalailable else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/applyTemplate?diskguid=<guid>&templateguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.getXML(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the disk rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.optimize(diskguid, scrubagentmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Optimizes a disk. E.g. defragments a Physical disk or scrubs a DSS disks
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk to optimize.
+                * scrubagentmachineguid (guid) :    guid of the machine where scrubbing agent is running
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/optimize?diskguid=<guid>&scrubagentmachineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.addFilesystem(diskguid, order, filesystemtype, devicename, mountpoint, label, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a filesystem on a partition of a disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk rootobject.
+                * order (int) :                    Partition number.
+                * filesystemtype (string) :           Filesystem type used on partition. (EXT2, EXT3,EXT4, FAT32, LINUX_SWAP, NTFS, REISERFS, XFS)
+                * devicename (string) :               Name of the device of the partition on the OS.
+                * mountpoint (string) :               Name of the mountpoint of the partition on the OS.
+                * label (string) :                    Label of filesystem
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/addFilesystem?diskguid=<guid>&order=<int>&filesystemtype=<string>&devicename=<string>&mountpoint=<string>&label=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.getXMLSchema(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the disk rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.canDelete(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks whether there are clones. If so, deletion is disallowed
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk to check.
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/canDelete?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with boolean as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.copyToNewDisk(diskguid, size, diskrole, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Copies the content of the specified disk to a new disk with the given size and the role specified. All data is copied.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk to copy all data from.
+                * size (int) :               Size of the new disk in MB. Same size as the source disk if no size specified.
+                * diskrole (string) :           Role of the new disk ('BOOT', 'TEMP', 'DATA'). Same role as the source disk of no role specified.
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/copyToNewDisk?diskguid=<guid>&size=<int>&diskrole=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': diskguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.list(diskguid, name, template, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a the list of diks
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk rootobject
+                * name (string) :               name of the disk
+                * template (bool) :           disk is template
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/list?diskguid=<guid>&name=<string>&template=<bool>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of disk info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.setSnapshotRetentionPolicy(diskguid, policyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sets the snapshot retention policy for disk
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                    guid of the disk to set retention policy.
+                * policyguid (guid) :                  guid of the retention policy to set
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/setSnapshotRetentionPolicy?diskguid=<guid>&policyguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.getYAML(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the disk rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                 guid of the disk rootobject
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/getYAML?diskguid=<guid>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : YAML representation of the disk
+Return type : string 
+    {noformat}
+
+    h3.disk.addRaidConfigurationToPartition(diskguid, partitionorder, level, state, devices, activeDevices, failedDevices, spareDevices, totalDevices, raidDevices, backendSize, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Set raid configuration to partition
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :                    guid of the disk to set raid configuration on partition
+                * partitionorder (integer) :              order of the partition
+                * level (string) :                       raid level
+                * state (string) :                       state of raid configuration
+                * devices (string) :                     devices of raid configuration
+                * activeDevices (integer) :               number of active devices
+                * failedDevices (integer) :               number of failed devices
+                * spareDevices (integer) :                number of spare devices
+                * totalDevices (integer) :                number of total devices
+                * raidDevices (integer) :                 number of raid devices
+                * backendSize (integer) :                 sum of all partition sizes the raid device is build on
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/addRaidConfigurationToPartition?diskguid=<guid>&partitionorder=<integer>&level=<string>&state=<string>&devices=<string>&activeDevices=<integer>&failedDevices=<integer>&spareDevices=<integer>&totalDevices=<integer>&raidDevices=<integer>&backendSize=<integer>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.snapshot(diskguid, snapshotname, label, automated, async, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a snapshot with given name of the disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk rootobject
+                * snapshotname (string) :       Name for the snapshot. If no name provided, a name will be generated based on the disk name and current date/time.
+                * label (string) :              label for the snapshot
+                * automated (boolean) :          Flag if snapshot was taken manually or scheduled
+                * async (boolean) :              Flags whether the snapshot will be taken asynchronically afterwards (by calling the sso.snapshotmachine method)
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/snapshot?diskguid=<guid>&snapshotname=<string>&label=<string>&automated=<boolean>&async=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with snapshotguid as result and jobguid: {'result': snapshotguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.getConfigurationString(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generate the configuration string for the given disk 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/getConfigurationString?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : string containing configuration data
+Return type : string 
+    {noformat}
+
+    h3.disk.backup(diskguid, backupname, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a backup with given name of the disk.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.disk.create(machineguid, name, size, diskrole, diskorder, retentionpolicyguid, description, disksafetytype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new disk with the given name, size and the role specified.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :             guid of the machine rootobject to which this disk belongs
+                * name (string) :                    name given to the disk
+                * size (int) :                    Size of disk in MB
+                * diskrole (string) :                Role of the disk ('BOOT', 'TEMP','SSDTEMP', 'DATA')
+                * diskorder (int) :               Order of the disk
+                * retentionpolicyguid (guid) :     Policy to be used for retention of snapshots
+                * description (string) :             Description for the disk
+                * disksafetytype (string) :         Type of disk safety (SSO,MIRRORCLOUD...)
+                * jobguid (guid) :                 guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/create?machineguid=<guid>&name=<string>&size=<int>&diskrole=<string>&diskorder=<int>&retentionpolicyguid=<guid>&description=<string>&disksafetytype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.disk.delete(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a disk.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :            guid of the disk rootobject
+                * jobguid (guid) :   	       guid of the job if avalailable else empty string
+                * executionparams (dictionary) :     dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_disk/delete?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

@@ -1,0 +1,88 @@
+h2. Datacenter Security Design
+
+h3. Intelligent Proactive & Reactive Video Surveillance
+
+Dacentec installs a wide network of video cameras covering every angle inside and outside the datacenter combined with innovating video surveillance software. The software can detect a crime before it happens (proactive) and also provides appropriate tools for fast and automatic response (reactive). 
+
+The system uses a combination of distributed video management, a searchable video recorder, advanced video analytics and video facial biometric authentication.
+
+In our datacenters we install 100 cameras per 2,000 square meter:
+* 65% of the camera would support Video Motion Detection Only
+* 25% of the cameras would have Video Analytics + Peoples Tracking
+* 10% of the cameras would have Video Facial Identification
+
+h4. Video Management
+
+* Central Management System which allows to monitor, control, and manage all cameras and control all remote devices
+* Advanced search and alarms and events management: an operator can instantly retrieve all pictures or videos of any alarm or event for each camera.
+* Map browser which can show the position of all devices and cameras on the map.
+* Automatic alarm triggering: Each video alarm will be able to instantaneously initiate an action such as video recording, camera activation, etc
+
+Example of the management interface, browse between cameras: !dacentec_security_int2.png|border=0!
+
+{tokenized}
+PB||
+{tokenized}
+
+Example of the management interface, zoom and rotate the security camera: !dacentec_security_int3.png|border=0!
+
+Example of mobile access to security images, for example for guard doing a facility check tour:  !dacentec_security_int4.png|border=0!
+{tokenized}
+PB||
+{tokenized}
+
+h4. Video Analytics
+
+* Intelligent object detection: the video system is trained to detect any type of object in the scene: if objects are left alone an alarm can be triggered
+* Intelligent video detection: the surveillance system knows the difference between moving people, car and even safe background conditions, such as blowing trees or splashing fountains.
+* Intelligent video tracking: the position of objects can be tracked, including speed and direction of each object in the scene.
+
+Real Time scenarios that are detected and pop up in the security room:
+
+*People/Objects Tracking and Face recognition*
+
+The system can detect, recognize, and track moving objects such as vehicle and humans. It keeps the history of the each object or person and analyses its behavior. The security guard of the datacenter will know at any time where what person is located and what rooms he visited. Peoples faces are automatically recognised even when they are not looking straight into the camera.
+
+We are able to detect, track, and identify people with use of 3D cameras in day and night. The main benefit is that it works during both day or night which means that it is less sensitive to lighting conditions compared to standard camera. Even if there is poor lighting condition, the system can still detect and track people. Recognizing faces in dark is now possible.
+
+An example where this technique can be very important is the case of access control which identifies people where the camara checks if no one else is present even in bad lighting conditions.
+
+ !dacentec_security4.png|width=300! 
+
+*Intrusion Detection*
+
+We will activate intruder alerts when individuals or vehicles intrude restricted areas: the gates and fences of the building, restricted areas inside the building and acts of vandalism. 
+
+The system suppresses the false alarm due to environmental factors such as rain, snow, shadows, reflections, flying birds, and waving trees. It can distinguish between moving people, car and safe background conditions, such as blowing trees or splashing fountains.
+
+ !dacentec_security2.png|width=300! 
+
+*Abandoned Object and Object Removals*
+
+The system generates an alarm or event when an item (package or baggage) is deposited and has been left behind in the datacenter. When this event occurs into a hallway, the priority for the guard can be set higher, when in an operating room this can be set low and informational only. Also time can be linked to such an event: objects or vehicles staying too long in certain zones.
+
+The system detects instantly if an item is removed or disappears from its last location in a controlled area and raises an alarm.
+ 
+The system also suppresses the false alarms as described above.
+ !dacentec_security5.png|width=300! 
+
+{tokenized}
+PB||
+{tokenized}
+*Fallen Person*
+
+Detects instantly if a person falls in a controlled area and raises an alarm. This functionality can also be used to detect suspicious behaviors and can also help to control better a crowded room.
+ !dacentec_security3.png|width=300! 
+
+h3. High secured access control
+
+For all entry doors into the datacenter building, we use a biometric handscan control. This system compares millions of points on the palm vein cartography without needing physical contact and matches it with a database in just a second, so no annoying delays are caused with the biometric detection.
+ !SENSOBOX.jpg! 
+
+h3. Fire protection system
+
+* Dry pipe sprinkler system for the building
+* Gas system per POD
+{tokenized}
+PB||
+{tokenized}

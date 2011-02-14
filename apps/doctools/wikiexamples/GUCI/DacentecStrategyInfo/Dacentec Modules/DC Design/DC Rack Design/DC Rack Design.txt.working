@@ -1,0 +1,83 @@
+h2. Dacentec Rack Design
+
+h3. A full new vision on datacenter racks
+
+The Dacentec team has bene looking into what is the best way of achieving the goal of building a datacenter rack that can be cooled with as minimal energy as possible and that can be made more dense than traditional datacenter racks.
+
+Since the cloud datacenter also delivers the raw capacity, ie the storage and computing capacity for its customers, a lot of typical datacenter specifications can be changed. In order to obtain significant improvements in energy and uptime usage, Dacentec worked out the plate racks concept.
+
+Plate racks are custom design racks that include:
+
+* storage server plates or cpu server plates
+* click-on power bar system (no plugs required anymore!)
+* local battery pack (UPS)
+* built in power failover module directly to the generator feed
+* rack air evacuation fans and on rack air evaculation tubes
+* distributed air evacuation panels
+* integrated high speed low latency networking
+* built-in temperature measurement
+ !dacentec_platerack.png|width=250! 
+
+h3. Server Plates
+
+Plate servers are custom Dacentec designed servers for the Dacentec cloud. Plate servers do not have any casing and have all electronics litterally installed on an iron plate.
+
+On this iron plate the motherboard is installed including hard drives, memory, CPUs. We make a difference between storage plates and CPU plates. Storage plates have mainly disks installed where cpu plates have next to disks also a Solid State Drive and Infiniband connectivity on it.
+
+ Storage Plate:  !dacentec_platestorage.png|width=300!   CPU Plate:  !dacentec_platecpu.png|width=300! 
+{tokenized}
+PB||
+{tokenized}
+Each plate slides into a rails mechamismn into the rack and clicks directly into a power bar. The plates work on 48V DC power instead of higher voltage AC power. This method saves 30% of energy that is lost in the final conversion inside the server. Servers work typically with volatges between 5V and 12V and the final step to convert 48V to 5-12V is not bringing a lot of energy loss.
+
+The plates can be handled with less risk and no further isolated power cables are needed inside the rack. The plate servers all have a 1U size and one rack holds 42 plates. Installation and replacement can be done easy and fast.
+
+ !dacentec_platerslides.png|width=250! 
+
+The networking connections are all done at the front side of the plates. All plates will have Gigabit Ethernet connectivity and CPU plate servers have additionally 40Gbit/s Infiniband connectivity.
+
+ !dacentec_plateracknetworkin.png|width=250! 
+{tokenized}
+PB||
+{tokenized}
+
+h3. Rack Cooling design
+
+For years, hot-aisle/cold-aisle, raised-floor cooling has been the standard method for cooling servers. A traditional set up of hot aisle/cold aisle with blanking panels will probably still waste cold air in places you wouldn't expect. Mechanical cooling, depending on the source, is estimated to consume anywhere from 33% to 40% of a facility's incoming electricity.
+
+Dacentec uses hot air containment. Each plate rack has on its top fans that suck through the air from the cold aisle through the servers and evacuates the heated air it via a tube system. In order to optimize the air flow in the rack, a perforated panel is installed in the back of the rack. At the bottom the holes in this back panel are larger than higher on this panel. Like that the airflow speed is optimized and therefor the cooling efficiency is equal for each plate.
+
+ Top Rack Ventilators:  !dacentec_platerack_ventilators_front_1.png|width=250!   Air evacuation:  !dacentec_platerack_ventilators_front_5.png|width=250!   Perforated Pannel:  !dacentec_platerrackperforated.png|width=200! 
+
+Depending of the ambient situation of the datacenter, Dacentec will use a closed loop system or a system involving the outside air. The air in the cold aisle should be no more than 24 degrees. If the outside air is most of the time above this, a closed loop system investment will be installed.
+
+To optimize the cooling loop proces, return-air plenums are used. A plenum is a separate space provided for the air circulation. To that plenum we add computer room air conditioning (CRAC) units. Hot air naturally rises, so the CRAC units are sucking air in from the air evacuation tubes. The air is cooled down by the CRACS and by mixing it with outside air.
+
+For using the outside air we implement Air-Side economizers. The outside air is brought into the building and distributed via a series of dampers and fans. Instead of being recirculated and cooled, the heated air coming out the IT equipment is simply directed outside. If the outside air is particularly cold, the economizer may mix the heated air and the incoming air, ensuring that the resulting air temperature falls within the desired range for the equipment. The Air-Side economizers include filters to reduce the amount of particulate matter or contaminants that are brought into the data center space and will regulate the humidity of the air.
+ !dacentec_module3.png|width=300! 
+
+{tokenized}
+PB||
+{tokenized}
+
+ Closed system, air is contained:  !dacentec_module4.png|width=350!  Hot air is send out:  !dacentec_module2.png|width=350! 
+
+By doing this, Dacentec can bring a lot of cost saving on energy for cooling: compared with most datacenters, hot aisle/cold aisle without containment can never ensure optimal cooling at each spot and therefor overcooling in many datacenters is still a fact and a high cost.
+
+h3. Plate Rack Power design
+
+Dacentec brings in 208V AC feeds towards the racks that are converted inside the racks itself.
+
+Below in each rack there is a built in power convertor and UPS system (batteries). The power convertor converts the 208V AC incoming power feed to 48V DC power. The power connects to the UPS and the UPS feeds the server plates via a power bar. The power bar is an iron non isolated bar. A server plate clicks into the power bar and receives like that its power.
+
+ !dacentec_platerack_connector1.png|width=250!  !dacentec_platerack_connector2.png|width=250!  !dacentec_platerack_connector3.png|width=250! 
+
+h3. Plate Rack Power & Environment monitoring
+
+The power consumption of each server and of the full rack is measured and the results are integrated in the datacenter global power orchestration system. Inside the rack temperature, airflow sensors and humidity sensors are installed.
+
+The measurements are consolidated and the power orchestration system will generate alarms and take actions when needed: overheated servers can be shut down to avoid further overheating inside the rack or the air flow system will adapt when possible and needed. Another action is where the load state of machines is measured: servers that are idle or that have too much load can have their load migrated to other servers.
+
+{tokenized}
+PB||
+{tokenized}

@@ -1,0 +1,4 @@
+h1. Ideal Cloud Architecture
+
+!inc_idealcloudarchitecture.png|border=0!
+

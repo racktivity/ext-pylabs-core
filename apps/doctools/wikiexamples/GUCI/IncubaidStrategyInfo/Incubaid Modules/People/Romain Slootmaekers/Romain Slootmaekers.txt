@@ -1,0 +1,11 @@
+h3. Romain Slootmaekers - Master Researcher
+
+{table}{tr}{td:valign=top|width=500}Romain Slootmaekers is a computer scientist (ir cw, KULeuven) with interest in all facets of software development strategy and a special attraction towards the algorithmical challenges of distributed computing.
+
+While being a Research team lead at A-Server, he discovered that Telecom and Storage are in fact the same (Storage is a very high latency telecom). This insight led to a new class of storage now systems being productised by Amplidata.
+
+Being convinced that a programming language should be part of the solution, not part of the problem he succeeded in making C++ a largely defunct programming language at Incubaid and Amplidata, replacing it with something less inept (OCaml).
+
+In the past, he was Head of R&D at iNuron, Architect/technical project lead at RVPONP, Technical manager/team lead at ZZICT, Software  development team lead at Netvision/Ubizen and a Research assistent at KULeuven.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-romain.png|border=1, width=250! {td}{tr}{table}

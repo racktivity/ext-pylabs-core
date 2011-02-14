@@ -1,0 +1,16 @@
+h2. DC Automate USPs for partners
+
+* total automation of datacenter
+* hands off solution
+* fast deployment
+* better than ever TCO
+* framework to write own applications
+* self healing
+* full control
+
+h2. DC Automate USPs for end users
+
+* pay your infrasturcture as you use, pay as you grow
+* better uptime
+* better protection of data
+* better TCO thanks to savings in datacenter & cloud costs

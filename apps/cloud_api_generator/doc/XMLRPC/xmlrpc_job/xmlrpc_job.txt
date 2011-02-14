@@ -1,0 +1,360 @@
+h2. XMLRPC Cloud API DOC - job
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.job.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :    guid of the job rootobject
+                * Jobguid (guid) :           guid of the job if available else empty string
+                * Executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.getObject(rootobjectguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : rootobject
+    {noformat}
+    h3.job.create(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new job.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :           guid of the job if available else empty string
+                * Executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.create(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with backplaneguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.job.getXMLSchema(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the job rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.job.clear(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes all jobs.
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguid (guid) :                   guid of the job if available else empty string
+                * Executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.clear(jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.job.getYAML(yamljobguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the job rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Yamljobguid (guid) :        guid of the job rootobject
+                * Jobguid (guid) :            guid of the job if available else empty string
+                * Executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.getYAML(yamljobguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the job
+Return type : string
+    {noformat}
+    h3.job.getLogInfo(jobguid, MaxLogLevel, executionparams)
+
+    h4. Description
+    
+    
+        return log info as string
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.job.findLatestJobs(maxrows, errorsonly, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the latest jobs.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Maxrows (int) :           specifies the number of jobs to return
+                * Errorsonly (boolean) :        When True, only the latest <maxrows> ERROR jobs will be returned, otherwise the latest <maxrows> ERROR/RUNNING jobs will be returned
+                * Jobguid () : <no description found>
+                * Executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.findLatestJobs(maxrows=<int>,errorsonly=<boolean>,jobguid=<>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : jobtree
+Return type : array of dict [{...}]
+    {noformat}
+    h3.job.getXML(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the job rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.job.getJobTree(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the full tree of the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :    guid of the job rootobject
+                * Jobguid (guid) :           guid of the job if available else empty string
+                * Executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.getJobTree(rootobjectguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : jobtree
+Return type : array of dict [{...}]
+    {noformat}
+    h3.job.find(actionname, agentguid, machineguid, applicationguid, datacenterguid, fromTime, toTime, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+            
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Actionname (string) :        actionname of the jobs to find
+                * Agentguid (guid) :         agentguid of the jobs to find
+                * Machineguid (guid) :       machineguid of the jobs to find
+                * Applicationguid (guid) :   applicationguid of the jobs to find
+                * Datacenterguid (guid) :    datacenterguid of the jobs to find
+                * Fromtime (datetime) :          starttime of the jobs to find (equal or greater than)
+                * Totime (datetime) :            endtime of the jobs to find (equal or less than)
+                * Clouduserguid (guid) :     guid of the job user executing the job
+                * Jobguid (guid) :           guid of the job if available else empty string
+                * Executionparams (dictionary</para><para>@returns array of array [[...]]) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.find(actionname=<string>,agentguid=<guid>,machineguid=<guid>,applicationguid=<guid>,datacenterguid=<guid>,fromTime=<datetime>,toTime=<datetime>,clouduserguid=<guid>,jobguid=<guid>,executionparams=<dictionary</para><para>@returns array of array [[...]]>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : s array of array [[...]]
+Return type : 
+    {noformat}
+    h3.job.delete(jobguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete all specified jobs and their children.
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Jobguids (array) :                  List of jobguids to delete
+                * Jobguid (guid) :                   guid of the job if available else empty string
+                * Executionparams (dictionary) :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_job.delete(jobguids=<array>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

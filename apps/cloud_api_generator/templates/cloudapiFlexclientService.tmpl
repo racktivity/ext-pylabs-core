@@ -1,0 +1,67 @@
+package com.aserver.flex.lib.CloudApi
+{
+	import com.adobe.serialization.json.JSON;
+	
+	import mx.rpc.events.ResultEvent;
+	import mx.rpc.http.HTTPService;	
+	import org.as3yaml.YAML;
+	
+	public class CloudApiRestService
+	{
+		public static var sdkAddress:String = null;
+		private static var _username:String = null;
+		private static var _password:String = null;
+		
+		public function CloudApiRestService()
+		{
+		}
+		public static function get Password():String
+		{
+			return _password;
+		}
+		
+		public static function set Password(pwd:String):void
+		{
+			_password = pwd;
+		}
+		
+		public static function get Username():String
+		{
+			return _username;
+		}
+		
+		public static function set Username(name:String):void
+		{
+			 _username = name;
+		}
+		public function Build(ns:String, methodName:String):HTTPService
+		{
+			var httpUrl:String= "http://" + sdkAddress + "/appserver/rest/" + ns + "/" + methodName;
+			var myServ:HTTPService = new HTTPService(httpUrl);
+			myServ.method="POST";
+			myServ.resultFormat="text";
+			myServ.useProxy=false;
+			myServ.url=httpUrl;
+			if (_username != "")
+			{
+				//todo when using authentication
+				//myServ.setCredentials(_username,_password);
+			}
+			return myServ;
+		}
+		public static function GetResult(e:ResultEvent):Object
+		{
+			return JSON.decode(e.result.toString()).result;
+		}
+		
+		public static function GetYamlResult(e:ResultEvent):Object
+		{
+			return YAML.decode(GetResult(e).toString());
+		}
+		
+		public static function GetJobGuid(e:ResultEvent):Object
+		{
+			return JSON.decode(e.result.toString()).jobguid;
+		}
+	}		
+}

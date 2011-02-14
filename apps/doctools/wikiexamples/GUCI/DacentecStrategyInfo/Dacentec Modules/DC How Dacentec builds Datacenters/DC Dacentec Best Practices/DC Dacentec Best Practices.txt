@@ -1,0 +1,17 @@
+h2. Best Practice Standards also applied by Dacentec
+
+Along with the specific cloud and green measures, Dacentec will also apply following best practices in each of its Datacenters:
+
+* Building selection process:
+** optimal location
+** not in flooding area
+* Crossing of power grids
+* Availability of a lot of fiber
+* Fully redundant setup:
+** redundant generators
+** A and B feeds
+** diverse fibre entry: different sides of the building
+** redundant UPSs
+** redundant cooling
+* Fully secured: iris scan, finger print, camera security
+* No customers access policy: since the raw material is already inside, there is never a customer that needs to enter the datacenter

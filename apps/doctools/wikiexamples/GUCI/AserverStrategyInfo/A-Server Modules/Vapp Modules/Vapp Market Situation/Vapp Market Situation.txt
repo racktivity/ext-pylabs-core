@@ -1,0 +1,15 @@
+h2. Vapp-Market: Problems we are trying to resolve, situation of market
+
+More and more companies are looking into cloud, to optimize their IT agility. Most companies will buy cloud as a ready to use application. The fastest growing cloud applications are SAAS or web 2.0 applications. They run as an application in your browser and let you use them without needing to deel with the IT infrastructure.
+
+Successful business SAAS Cloud Applications like Salesforce, Google, Marketo, Omniture, etc. are offering many advantages, but the success has it constraints:
+
+* Security? data is stored in a public cloud system, already many companies see the same restrictions as they set for going into shared hosting solutions
+* Lock in? while it is possible to use API`s, most meta data and intelligence remains withing the SAAS applications
+* Flexibility? customization is more difficult and when more functions come along, users are facing additional complexity in finding the right settings
+* Control of Pricing? business applications like Salesforce offer a small step in, but when an organisation grows, the costs can grow fast
+* Support? who do you call when google is down? the general mass market approach from SAAS reduces the personal support quality
+
+On the other hand, organisations are tired of managing a handfull of dedicated servers, locally or hosted, since it requires expensive IT staff to keep all up and running.
+
+The IT sector developed IAAS and PAAS providing a solution to developers, but the mainstream IT professional will not start to implement API`s or start creating its own virtual images. System integrators typically will fill in that gap and provide the applications with configured hardware and OSs to the IT professional.

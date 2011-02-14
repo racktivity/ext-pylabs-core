@@ -1,0 +1,22 @@
+{pagebreak}
+The SmartStyle Office product is available in 3 support models:
+
+* *SmartStyle Office Standard* (available now)
+** Self Service Support Portal, Defect Support, Self Service Monitoring and Escalation Included
+** You can during workhours call, email, chat with our helpdesk to get support and help on our products.
+** Enhancement Requests: We will always try to take your requests into consideration
+** Partners will setup their own support and monitoring using the detailed documented information available, tools like monitoring tools, ...
+
+* Support Option 1: *SmartStyle Office Gold* (available mid 2011)
+** Self Service Support Portal, Defect Support, Self Service Monitoring and Escalation Included
+** You can during workhours call, email, chat with our helpdesk to get support and help on our products.
+** Enhancement Requests: We will always try to take your requests into consideration
+** +NOC India will monitor and repair: investigate events, try to resolve issues, escalate issues, perform updates+
+
+* Support Option 2: *SmartStyle Office Managed Belgium* (available mid 2011)
+** Self Service Support Portal, Defect Support, Self Service Monitoring and Escalation Included
+** You can during workhours call, email, chat with our helpdesk to get support and help on our products.
+** Enhancement Requests: We will always try to take your requests into consideration
+** NOC India will monitor and repair: investigate events, try to resolve issues, escalate issues, perform updates
+** +You can during working hours contact a personal service manager to address any issue are get support.+
+** +Pro-active maintenance: your service manager will login into your environment and execute a basic maintenance plan+

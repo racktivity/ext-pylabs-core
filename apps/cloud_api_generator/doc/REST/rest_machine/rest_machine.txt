@@ -1,0 +1,3456 @@
+h2. REST Cloud API DOC - machine
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.machine.restore(backupmachineguid, restoremachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Restores a snapshot of a machine on another machine.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.bootInRecoverMode(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        make sure machine boots in recovery mode (a special network booted linux which gives access to local disk, ...)
+        on recovery machine applications like mc, krusader, disk mgmt tools, ... are installed
+        the pmachine will be booted with ip network config as specified in DRP
+        
+        when vmachine: use minimal memory properties
+        
+        FLOW
+        #set machine.bootstatus=... to go to recovery mode
+        #actor:  Installserver.bootInRecoverMode(...
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :       Guid of the physical machine
+                * jobguid (guid) :           Guid of the job
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/bootInRecoverMode?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.attachToDevice(machineguid, deviceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Forces a machine to run on a particular device.
+        (will use resourcegroups underneath)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to attach to a device.
+                * deviceguid (guid) :                  guid of the device to attach the machine to.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/attachToDevice?machineguid=<guid>&deviceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.changePassword(machineguid, username, newpassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Changes the password on a pmachine using new pass word
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid</para><para>@param username               username @type username                string</para><para>@param newpassword            new password of the user @type newpassword             string) :            guid of the physical machine
+                * username () :                username
+                * newpassword () :             new password of the user
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/changePassword?machineguid=<guid</para><para>@param username               username @type username                string</para><para>@param newpassword            new password of the user @type newpassword             string>&username=<>&newpassword=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addCapacityProvided(machineguid, amount, capacityunittype, name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds provided capacity for the machine specified.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.getMaximumAllowedIPCount(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieve the maximum allowed ip addresses on the specified machine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getMaximumAllowedIPCount?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : number of maximum allowed ip addresses or -1 for unlimited number
+Return type : integer 
+    {noformat}
+
+    h3.machine.find(name, assetid, alias, description, macaddress, hostname, status, hypervisor, defaultgateway, agentguid, deviceguid, parentmachineguid, osguid, clouduserguid, ownerguid, cloudspaceguid, resourcegroupguid, machinetype, template, boot, customsettings, backup, backuplabel, consistent, isbackup, ipaddress, machinerole, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of machine guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                        Name of the machine.
+                * assetid (string) :                     Asset ID.
+                * alias (string) :                       Alias of the machine.
+                * description (string) :                 Description for this machine
+                * macaddress (string) :                  MAC address of a NIC on the machine.
+                * hostname (string) :                    Hostname of the machine.
+                * status (string) :                      Status of the machine   CONFIGURED|IMAGEONLY|HALTED|RUNNING|OVERLOADED|PAUSED|TODELETE|STOPPING|STARTING|DELETING
+                * hypervisor (string) :                  Hypervisor of the machine.
+                * defaultgateway (ipaddress) :              Default gateway ip addr
+                * agentguid (guid) :                   Guid of the agent.
+                * deviceguid (guid) :                  Guid of the device.
+                * parentmachineguid (guid) :           Guid of the parent machine
+                * osguid (guid) :                      Guid of the OS.
+                * clouduserguid (guid) :               Guid of the clouduser, owning this machine
+                * ownerguid (guid) :                   Guid of the owner.
+                * cloudspaceguid (guid) :              Guid of the space to which this machine belongs
+                * resourcegroupguid (guid) :           Guid of the resource group to which this machine belongs
+                * machinetype (string) :                 Machine type.
+                * template (bool) :                    Is template, when template used as example for an machine
+                * boot (bool) :                        Flag indicating that this machine must be automatically started when rebooting the parent machine
+                * customsettings (string) :              Custom settings and configuration of machine, is XML, to be used freely
+                * backup (boolean) :                      Indicates if the machine should be included in the backup policies.
+                * backuplabel (string) :                 Backuplabel of the machine.
+                * consistent (boolean) :                  Indicates if consitent backups are taken.
+                * isbackup (boolean) :                    Indicates if the machine is a backup.
+                * ipaddress (string) :                   ipaddress of the machine.
+                * machinerole (string) :                 role of the machine.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/find?name=<string>&assetid=<string>&alias=<string>&description=<string>&macaddress=<string>&hostname=<string>&status=<string>&hypervisor=<string>&defaultgateway=<ipaddress>&agentguid=<guid>&deviceguid=<guid>&parentmachineguid=<guid>&osguid=<guid>&clouduserguid=<guid>&ownerguid=<guid>&cloudspaceguid=<guid>&resourcegroupguid=<guid>&machinetype=<string>&template=<bool>&boot=<bool>&customsettings=<string>&backup=<boolean>&backuplabel=<string>&consistent=<boolean>&isbackup=<boolean>&ipaddress=<string>&machinerole=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with an array of machine guids as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.createFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, defaultgateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new machine based on a template, template defined as machine identified by templatemachineguid.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * templatemachineguid (guid) :         guid of the machine this machine will be based on.
+                * name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * languids (array) :                    Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :           guid of the machine this machine will be created upon.
+                * defaultgateway (string) :              Default gateway of the machine (can be of a private/public lan)
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/createFromTemplate?cloudspaceguid=<guid>&templatemachineguid=<guid>&name=<string>&languids=<array>&description=<string>&parentmachineguid=<guid>&defaultgateway=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.pause(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Pauses a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to pause.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/pause?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.exportMachineTemplates(templates, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Exports template machines to the SystemNAS
+       
+        
+   
+
+    h4.  Parameters
+    
+
+                * templates () :          list of template of dict containing machine guids and destination URI
+                * jobguid (guid) :            Guid of the job if available else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/exportMachineTemplates?templates=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : 
+Return type :  
+    {noformat}
+
+    h3.machine.rollback(machineguid, snapshotmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Rolls a machine back to a given machine snapshot.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to rollback.
+                * snapshotmachineguid (guid) :         guid of the machine snapshot to rollback to.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/rollback?machineguid=<guid>&snapshotmachineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.updateMonitor(machineguid, order, name, width, height, bpp, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update monitor configuration of the specified machine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            Guid of the machine
+                * order (integer) :                  Order of the monitor [0-7]
+                * name (string) :                   Name of the monitor
+                * width (integer) :                  monitor width
+                * height (integer) :                 monitor height
+                * bpp (integer) :                    bits per pixel of the monitor
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/updateMonitor?machineguid=<guid>&order=<integer>&name=<string>&width=<integer>&height=<integer>&bpp=<integer>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with result and jobguid: {'result': boolean, 'jobguid': guid}
+Return type : dict 
+    {noformat}
+
+    h3.machine.stop(machineguid, clean, timeout, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Stops a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to stop.
+                * clean (boolean) :                       soft shutdown if true else power off
+                * timeout (int) :                     time (in seconds) to wait for the machine to stop
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/stop?machineguid=<guid>&clean=<boolean>&timeout=<int>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.resizeCPU(machineguid, nrcpu, cpufrequency, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        for vmachine resize cpu
+        when pmachine certain maintenance actions will happen to make sure machine is initialized to be used in cloud
+
+        Updates the memory of a machine.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.setSnapshotRetentionPolicy(machineguid, policyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sets the snapshot retention policy for machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to set retention policy.
+                * policyguid (guid) :                  guid of the retention policy to set
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/setSnapshotRetentionPolicy?machineguid=<guid>&policyguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.setVideoMode(machineguid, order, xres, yres, bpp, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the video mode for a machine controlled by its hypervisor.
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the physical machine
+                * order (integer) :                  Number of the monitor [0-7]
+                * xres (int) :                   horizontal resolution
+                * yres (int) :                   vertical resolution
+                * bpp (int) :                    bits per pixel
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/setVideoMode?machineguid=<guid>&order=<integer>&xres=<int>&yres=<int>&bpp=<int>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with jobguid and result True/False
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getXML(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the machine rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.getRole(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieves the role for a machine. Possible roles are CPUNODE, STORAGENODE, COMBINEDNODE
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                   guid of the machine rootobject
+                * jobguid (guid) :                       guid of the job if available else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getRole?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine role as result and jobguid: {'result': string, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getApplianceAgent(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieves the Agent GUID for the Appliance.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getApplianceAgent?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with Appliance machine.agentguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.exportToURI(machineguid, destinationuri, executormachineguid, compressed, diskimagetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Exports a machine to a given URI.
+        Export is set of vdi's in a given directory (no metadata is being stored).
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to export.
+                * destinationuri (string) :              URI of the location where export should be stored. (e.g ftp://login:passwd@myhost.com/backups/machinex/)
+                * executormachineguid (guid) :         guid of the machine which should export the machine. If the executormachineguid is empty, a machine will be selected automatically.
+                * compressed (boolean) :                  If True, the machine export will be compressed using 7zip compression
+                * diskimagetype (string) :               Type of the disk image format (VDI, RAW, VMDK, ...)
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/exportToURI?machineguid=<guid>&destinationuri=<string>&executormachineguid=<guid>&compressed=<boolean>&diskimagetype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.list(spaceguid, machinetype, hypervisor, machineguid, machinerole, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the machines in a cloud space.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * spaceguid () :             guid of the space.
+                * machinetype () :           type of the machine
+                * hypervisor () :            string
+                * machineguid () :           guid of the machine.
+                * machinerole () :           Role of the machine.
+                * jobguid () :               guid of the job if available else empty string
+                * executionparams () :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/list?spaceguid=<>&machinetype=<>&hypervisor=<>&machineguid=<>&machinerole=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.iscsiUnexpose(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Unexposes a machine using iSCSI
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to set retention policy.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/iscsiUnexpose?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listVdcs(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the vdcs the machine is used in.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :           guid of the machine to list the vdc's for.
+                * jobguid (guid) :               guid of the job if available else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listVdcs?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of snapshot machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.exists(name, assetid, cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                   Name of the machine (exact match)
+                * assetid (string) :                Asset id of the machine (exact match)
+                * cloudspaceguid (guid) :         Guid of the cloudspace
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/exists?name=<string>&assetid=<string>&cloudspaceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : list 
+    {noformat}
+
+    h3.machine.getVideoMode(machineguid, order, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the video mode for a machine controlled by its hypervisor
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the physical machine
+                * order (integer) :                  Number of the monitor [0-7]
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getVideoMode?machineguid=<guid>&order=<integer>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with jobguid and result a dict = { xres : , yres: , bpp : }
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.installDCOS(pmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        install DCOS on pmachine        
+        
+        FLOW
+        # check is pmachine
+        #set machine.bootstatus=... to go to install dcos mode
+        #actor:  Installserver.installDCOS(...
+        
+   
+
+    h4.  Parameters
+    
+
+                * pmachineguid (guid) :      Guid of the physical machine
+                * jobguid (guid) :           Guid of the job
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/installDCOS?pmachineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addCapacityConsumed(machineguid, amount, capacityunittype, name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds consumed capacity for the machine specified.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.listExportedImages(machineguid, cloudspaceguid, machinetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a the list of exported machine images on the systemNAS for a specific machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :        guid of the machine rootobject
+                * cloudspaceguid (guid) :     guid of the machine rootobject
+                * machinetype (string) :        filter on machine type
+                * jobguid (guid) :            guid of the job if available else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listExportedImages?machineguid=<guid>&cloudspaceguid=<guid>&machinetype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : list of exported images.
+Return type : array 
+    {noformat}
+
+    h3.machine.disconnectFromHost(machineguid, hostmachineguid, leavecacheintact, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Disconnects a machine on the specified host machine.
+
+        on specified host
+        * remove bridges for virtual nics
+        * disconnect volumes to storage (remove DSS cache data), or make sure vdi's are removed
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.addMonitor(machineguid, width, height, bpp, order, name, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Add new monitor configuration to the specified machine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            Guid of the machine
+                * width (integer) :                  monitor width
+                * height (integer) :                 monitor height
+                * bpp (integer) :                    bits per pixel of the monitor
+                * order (integer) :                  Order of the monitor [1-7]
+                * name (string) :                   Name for the monitor
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/addMonitor?machineguid=<guid>&width=<integer>&height=<integer>&bpp=<integer>&order=<integer>&name=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with result and jobguid: {'result': boolean, 'jobguid': guid}
+Return type : dict 
+    {noformat}
+
+    h3.machine.setTimeZone(machineguid, timezone, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        set timezone for a pmachine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (machineguid) :          machineguid of the pmachine
+                * timezone (string) :             name of the timezone
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/setTimeZone?machineguid=<machineguid>&timezone=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listSnapshots(machineguid, includeinconsistent, timestampfrom, timestampuntil, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the snapshots for a given machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () :                 guid of the machine to list the snapshots from.
+                * includeinconsistent () :         Flag to include snapshot machines in inconsistent state (eg snapshots that are being snapshotted asynchronically)
+                * timestampfrom () :               Filter snapshots from given timestamp
+                * timestampuntil () :              Filter snapshots until given timestamp
+                * jobguid () :                     guid of the job if available else empty string
+                * executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listSnapshots?machineguid=<>&includeinconsistent=<>&timestampfrom=<>&timestampuntil=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of snapshot machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.resizeMemory(machineguid, memory, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Updates the memory of a machine.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.listAccounts(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the accounts of a given machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () :                 guid of the machine to list the accounts for.
+                * jobguid () :                     guid of the job if available else empty string
+                * executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listAccounts?machineguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of account info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listTemplates(spaceguid, machinetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the machines templates in a cloud space (of a given machinetype).
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * spaceguid () :                   guid of the space.
+                * machinetype () :                 Type of the machine (PHYSICAL, VIRTUALSERVER, VIRTUALDESKTOP,VIRTUALSERVER, IMAGEONLY, SMARTCLIENT)
+                * jobguid () :                     guid of the job if available else empty string
+                * executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listTemplates?spaceguid=<>&machinetype=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.reboot(machineguid, clean, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Reboots a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to reboot.
+                * clean (boolean) :                       soft reboot if true else hard reboot
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/reboot?machineguid=<guid>&clean=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.resume(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Resumes a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to resume.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/resume?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listBackups(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the backups for a given machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () :                 guid of the machine to list the backups from.
+                * jobguid () :                     guid of the job if available else empty string
+                * executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listBackups?machineguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of backup machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addTempDisk(machineguid, size, name, role, retentionpolicyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new temp disk for a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to create a new data disk for.
+                * size (int) :                        Size of disk in MB
+                * name (string) :                        Name of the temp disk.
+                * role (string) :                        Role of the temp disk. ('TEMP' OR 'SSDTEMP')
+                * retentionpolicyguid (guid) :         Policy to be used for retention of snapshots
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/addTempDisk?machineguid=<guid>&size=<int>&name=<string>&role=<string>&retentionpolicyguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': diskguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.initialize(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Initializes a machine based on the model.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to initialize.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/initialize?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getCustomerGuid(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the customer related to the machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :        guid of the machine rootobject
+                * jobguid (guid) :            guid of the job if available else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getCustomerGuid?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : guid of the customer
+Return type : guid 
+    {noformat}
+
+    h3.machine.getXMLSchema(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the machine rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.registerAgent(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Initializes a machine based on the model.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * macaddress () :                MAC address of the machine on which to register a new agent.
+                * jobguid () :                   guid of the job if available else empty string
+                * executionparams () :           dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/registerAgent?macaddress=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with a dictionary as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.importMachineTemplates(templates, cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Imports machines from the SystemNAS and converts them into templates
+       
+        
+   
+
+    h4.  Parameters
+    
+
+                * templates () :          [ { name : Uri } ]
+                * cloudspaceguid (guid) :     guid of the cloudspace this machine is part of.
+                * jobguid (guid) :            Guid of the job if available else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/importMachineTemplates?templates=<>&cloudspaceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : 
+Return type :  
+    {noformat}
+
+    h3.machine.getYAML(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the machine rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :        guid of the machine rootobject
+                * jobguid (guid) :            guid of the job if available else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getYAML?machineguid=<guid>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : YAML representation of the machine
+Return type : string 
+    {noformat}
+
+    h3.machine.removeDataDisk(machineguid, diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes a data disk from a machine.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.removeIpaddress(machineguid, macaddress, ipaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes an ipaddress from a NIC on a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to remove the ipaddress from.
+                * macaddress () :                  string
+                * ipaddress (string) :                   Ipaddress to remove from the NIC.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/removeIpaddress?machineguid=<guid>&macaddress=<>&ipaddress=<string>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.canConnectTempdisks(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks if there is enough available storage for a vmachine
+                        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the vmachine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/canConnectTempdisks?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : true if there is space enough
+Return type : boolean 
+    {noformat}
+
+    h3.machine.getManagementIpaddress(machineguid, includevirtual, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieve the management ipaddress of the given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                   guid of the machine rootobject
+                * includevirtual (boolean) :                whether to include VIPA
+                * jobguid (guid) :                       guid of the job if available else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getManagementIpaddress?machineguid=<guid>&includevirtual=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with ipaddress as result and jobguid: {'result': '172.17.11.19', 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getConfigurationString(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generate the configuration string for the given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getConfigurationString?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : string with configuration data
+Return type : string 
+    {noformat}
+
+    h3.machine.getDiskSequences(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the disksequence as they will be attached to the hypervisor
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getDiskSequences?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with sorted array of disks info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : list 
+    {noformat}
+
+    h3.machine.setAccountPassword(machineguid, accounttype, login, currentpassword, newpassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Updates the password of a machine account.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to update account for.
+                * accounttype (string) :                 Type of account to update (PUBLICACCOUNT, SYSTEMACCOUNT).
+                * login (string) :                       Account login to update password for.
+                * currentpassword (string) :             Account's current password.
+                * newpassword (string) :                 Account's new p.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/setAccountPassword?machineguid=<guid>&accounttype=<string>&login=<string>&currentpassword=<string>&newpassword=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listMonitors(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns list of all available monitors of the specified machine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            Guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listMonitors?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with list of monitor configuration and jobguid: {'result': list, 'jobguid': guid}
+Return type : dict 
+    {noformat}
+
+    h3.machine.connectToNetworkService(machineguid, networkservicename, agentguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Connect to given networkservice of given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :         guid of the machine rootobject
+                * networkservicename (string) :  name of the networkservice to connect to
+                * agentguid (guid) :           guid of the agent which want to connect to KVM
+                * jobguid (guid) :             guid of the job if available else empty string
+                * executionparams (dictionary) :     dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/connectToNetworkService?machineguid=<guid>&networkservicename=<string>&agentguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with Trueas result and jobguid: {'result':True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listIpaddresses(machineguid, publicflag, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieve the ipaddress of the given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                   guid of the machine rootobject
+                * publicflag (boolean) :                    flag to filter on public or private
+                * jobguid (guid) :                       guid of the job if available else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listIpaddresses?machineguid=<guid>&publicflag=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with ipaddress as result and jobguid: {'result': '172.17.11.19', 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.removeNic(machineguid, macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes a NIC from a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to remove the NIC from.
+                * macaddress () :                  string
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/removeNic?machineguid=<guid>&macaddress=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.replace(machineguid, deviceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Replaces an exisiting pmachine on an unmanaged device
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to initialize.
+                * deviceguid (guid) :                  guid of the unmanaged machine to initialize.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/replace?machineguid=<guid>&deviceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addAccount(machineguid, accounttype, login, password, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds an account for a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to add an account to.
+                * accounttype (string) :                 Type of account to add (PUBLICACCOUNT, SYSTEMACCOUNT).
+                * login (string) :                       Account login.
+                * password (string) :                    Account password.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/addAccount?machineguid=<guid>&accounttype=<string>&login=<string>&password=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.reactivate(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Reactivate physical machine (e.g. after reboot/failure, restart volumes)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the physical machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/reactivate?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.checkAgent(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks whether for the agent is still running on given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/checkAgent?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : string with configuration data
+Return type : string 
+    {noformat}
+
+    h3.machine.create(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, machinerole, hypervisor, osguid, deviceguid, hostname, importancefactor, backup, boot, alias, customerapplications, defaultgateway, monitors, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new machine based on a template, but allows you to overrule capacity properties of the machine.
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * cpufrequency (int) :                CPU frequency in MHz.
+                * description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * networkinfo (dictionary) :                 network information [ { languid, ip , iptype } ]
+                * diskinfo (dictionary) :                    disk information {nr_disks: , info { diskguid, size, role,name,description} }
+                * machinerole (string) :                 machinerole of the machine.
+                * hypervisor (string) :                  hypervisor of the machine.
+                * osguid (guid) :                      osguid of the machine.
+                * deviceguid (guid) :                  deviceguid of the machine.
+                * hostname (string) :                    hostname of the machine
+                * importancefactor (int) :            importancefactor of the machine
+                * backup (boolean) :                      whether to backup the machine
+                * boot (boolean) :                        whether to boot the machine when pmachine starts
+                * alias (string) :                       alias of the machine
+                * customerapplications (list) :        list of applicationguids that runs on the machine
+                * defaultgateway (string) :              default gateway of the machine (can be of a private/public lan)
+                * monitors (list) :                    monitors configuration (widthxheightxbpp) ['1024x768x32','800x600x24']
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/create?cloudspaceguid=<guid>&name=<string>&machinetype=<string>&status=<string>&bootstatus=<string>&assetid=<string>&memory=<int>&memoryminimal=<int>&nrcpu=<int>&cpufrequency=<int>&description=<string>&parentmachineguid=<guid>&networkinfo=<dictionary>&diskinfo=<dictionary>&machinerole=<string>&hypervisor=<string>&osguid=<guid>&deviceguid=<guid>&hostname=<string>&importancefactor=<int>&backup=<boolean>&boot=<boolean>&alias=<string>&customerapplications=<list>&defaultgateway=<string>&monitors=<list>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.executeQshellScript(machineguid, qshellscriptcontent, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Execute a Q-Shell script on a pmachine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the pmachine to execute the script on
+                * qshellscriptcontent (string) :         Content of the script to execute.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/executeQshellScript?machineguid=<guid>&qshellscriptcontent=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.start(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Starts a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to start.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/start?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getAvailableTempdiskSize(machineguid, role, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the available temp disk size left on the node where  machineguid is situated
+                        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine
+                * role (string) :                   TEMP or SSDTEMP
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getAvailableTempdiskSize?machineguid=<guid>&role=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : the available space on SSD
+Return type : int 
+    {noformat}
+
+    h3.machine.updateNic(machineguid, macaddress, order, nictype, nicstatustype, ipaddresses, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update a NIC of the machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to update the NIC to.
+                * macaddress () :                  string
+                * order (int) :                       Order of NIC.
+                * nictype (string) :                     Type of the NIC. L{core.machine.nic}
+                * nicstatustype () :               string
+                * ipaddresses (array) :                 Array of new IP addresses configured for this NIC. (only adding new ipaddresses)
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/updateNic?machineguid=<guid>&macaddress=<>&order=<int>&nictype=<string>&nicstatustype=<>&ipaddresses=<array>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addDataDisk(machineguid, size, retentionpolicyguid, name, description, disksafetytype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new data disk for a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to create a new data disk for.
+                * size (int) :                        Size of disk in MB
+                * retentionpolicyguid (guid) :         Guid of the retention policy
+                * name (string) :                        Name of the data disk.
+                * description (string) :                 Description of the datadisk
+                * disksafetytype (string) :              Type of disk safety (SSO,MIRRORCLOUD...)
+                * jobguid (guid) :                     Guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/addDataDisk?machineguid=<guid>&size=<int>&retentionpolicyguid=<guid>&name=<string>&description=<string>&disksafetytype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with diskguid as result and jobguid: {'result': diskguid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listCustomerApplications(machineguid, cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the Customer applications for a machine in a cloudspace when defined
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            Guid of the machine
+                * cloudspaceguid (guid) :         Guid of the cloudspace to filter on
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listCustomerApplications?machineguid=<guid>&cloudspaceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of application info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : list 
+    {noformat}
+
+    h3.machine.addIpaddress(machineguid, macaddress, languid, ipaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds an ipaddress to a NIC on a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to add the ipaddress to.
+                * macaddress () :                  string
+                * languid (guid) :                     guid of the lan to from which the ipaddress is part of.
+                * ipaddress (string) :                   Ipaddress part of the lan to assign to the NIC. If not specified, an available ip will be selected from the lan.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/addIpaddress?machineguid=<guid>&macaddress=<>&languid=<guid>&ipaddress=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.copy(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Same as clone, but all blocks on disks will be copied instead of cloned.
+        
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.connectToHost(machineguid, hostmachineguid, failover, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Connects a machine on a specified host machine.
+
+        on specified host
+        * create bridges or virtual nics
+        * connect volumes to storage, or make sure vdi's are available
+        * when failover=True then the move of machine is forced and to always succeed
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to connect to the host machine.
+                * hostmachineguid (guid) :             guid of the pmachine hosting the vmachine.
+                * failover (boolean) :                    flags whether failover workflow needs to be followed
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/connectToHost?machineguid=<guid>&hostmachineguid=<guid>&failover=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listDisks(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the disks for a given machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :           guid of the machine to list the backups from.
+                * jobguid (guid) :               guid of the job if available else empty string
+                * executionparams (dictionary) :       dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listDisks?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of disks info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.restartAgent(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Restarts the agent if it is not running on given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/restartAgent?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : string with configuration data
+Return type : string 
+    {noformat}
+
+    h3.machine.delete(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to delete.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/delete?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getMachineAgent(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieves the Agent GUID for a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :       guid of the machine rootobject
+                * jobguid (guid) :           guid of the job if available else empty string
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getMachineAgent?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with Appliance machine.agentguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.canRollback(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks whether a snaphot machine can be rolledback
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the snapshotted machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/canRollback?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : True or False
+Return type : boolean 
+    {noformat}
+
+    h3.machine.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :     guid of the machine rootobject
+                * jobguid () : <no description found>
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.machine.getParentMachine(machineguid, machinetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the ancestor/parent machine related to the machine (based upon the optional machinetype parameter)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :        guid of the machine rootobject
+                * machinetype (string) :        machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * jobguid (guid) :            guid of the job if available else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getParentMachine?machineguid=<guid>&machinetype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : guid of parent machine
+Return type : guid 
+    {noformat}
+
+    h3.machine.setRole(machineguid, machinerole, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieves the role for a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                   guid of the machine rootobject
+                * machinerole (string) :                   Role of the machine. Possible roles are CPUNODE, STORAGENODE, COMBINEDNODE
+                * jobguid (guid) :                       guid of the job if available else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/setRole?machineguid=<guid>&machinerole=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine role as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addISOImage(machineguid, sourceuri, name, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new ISO image for a machine.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.changeGateway(machineguid, defaultgateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Change the default gateway of a machine.
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :              guid of the machine on which we will change the default gateway.
+                * defaultgateway (string) :           default gateway of the machine
+                * jobguid () : <no description found>
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/changeGateway?machineguid=<guid>&defaultgateway=<string>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : number of maximum allowed ip addresses
+Return type : integer 
+    {noformat}
+
+    h3.machine.removeCapacityProvided(machineguid, capacityunittype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes provided capacity for the machine specified.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.iscsiExpose(machineguid, targetIQN, username, password, initiatorIQN, ipaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Exposes a machine using iSCSI (except for its tempdisks)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :              Guid of the machine to expose over ISCSI.
+                * targetIQN (string) :                iSCSI Qualified Name representing the iscsi target
+                * username (string) :                 Username that is allowed to connect
+                * password (string) :                 Password of user that is allowed to connect
+                * initiatorIQN (string) :             iSCSI Qualified Name allowed to connect
+                * ipaddress (string) :                ip address allowed to connect to the iscsi target
+                * jobguid (guid) :                  guid of the job if available else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/iscsiExpose?machineguid=<guid>&targetIQN=<string>&username=<string>&password=<string>&initiatorIQN=<string>&ipaddress=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with a dictionary with list of ipaddress and iqn of the ISCSI exposed disk as result and jobguid: {'result': {'diskguid': guid, 'ipaddress': ip, 'iqn': iqn}, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.moveToCloudspace(machineguid, cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves a machine from one cloud space to another.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to move.
+                * cloudspaceguid (guid) :              guid of the cloud space to move the machine to.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/moveToCloudspace?machineguid=<guid>&cloudspaceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.bootFromDiskConfigure(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        make sure pmachine boots from disk next time it is restarted
+        when vmachine: use normal memory properties
+        
+        FLOW
+        # check is pmachine
+        # set machine.bootstatus=... to boot from disk
+        #todo complete
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () : <no description found>
+                * jobguid (guid) :           Guid of the job
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/bootFromDiskConfigure?machineguid=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.refreshStatus(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :       guid of the machine rootobject
+                * jobguid () : <no description found>
+                * executionparams (dictionary) :   dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/refreshStatus?machineguid=<guid>&jobguid=<>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.machine.connectToKvm(machineguid, agentguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Connect to Kvm of given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :        guid of the machine rootobject
+                * agentguid (guid) :          guid of the agent which want to connect to KVM
+                * jobguid (guid) :            guid of the job if available else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/connectToKvm?machineguid=<guid>&agentguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with Trueas result and jobguid: {'result':True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.updateModelProperties(machineguid, name, description, cloudspaceguid, machinetype, osguid, assetid, alias, template, hostname, nrcpu, cpufrequency, memory, memoryminimal, importancefactor, lastrealitycheck, deviceguid, boot, customsettings, defaultgateway, status, clouduserguid, parentmachineguid, hypervisor, accounts, capacityunitsconsumed, capacityunitsprovided, nics, resourcegroupguid, agentguid, ownerguid, backup, backuplabel, consistent, isbackup, iconname, timestamp, bootstatus, monitors, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine specified
+                * name (string) :                        Name of the machine.
+                * description (string) :                 Description for this machine
+                * cloudspaceguid (guid) :              guid of the space to which this machine belongs
+                * machinetype (string) :                 Machine type.
+                * osguid (guid) :                      guid of the OS.
+                * assetid (string) :                     Asset ID.
+                * alias (string) :                       Alias of the machine.
+                * template (bool) :                    is template, when template used as example for an machine
+                * hostname (string) :                    Hostname of the machine.
+                * nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * cpufrequency (int) :                CPU frequency in MHz.
+                * memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * importancefactor (int) :            an integer which defines how important a machine is, std=5, when having a disaster this will define order of recovery (nr between 0 & 10, 10 being most important e.g. 10 means this is the most important machine, 0 means no importance=will always be last)
+                * lastrealitycheck (datetime) :            date and time of last check on the machine
+                * deviceguid (guid) :                  guid of the device.
+                * boot (bool) :                        flag indicating that this machine must be automatically started when rebooting the parent machine
+                * customsettings (string) :              custom settings and configuration of machine, is XML, to be used freely
+                * defaultgateway (ipaddress) :              Default gateway
+                * status (string) :                      status of the machine   CONFIGURED|IMAGEONLY|HALTED|RUNNING|OVERLOADED|PAUSED|TODELETE|STOPPING|STARTING|DELETING
+                * clouduserguid (guid) :               guid of the clouduser, owning this machine
+                * parentmachineguid (guid) :           guid of the parent machine
+                * hypervisor (string) :                  Hypervisor of the machine.
+                * accounts () : <no description found>
+                * capacityunitsconsumed () : <no description found>
+                * capacityunitsprovided () : <no description found>
+                * nics () : <no description found>
+                * resourcegroupguid () : <no description found>
+                * agentguid (guid) :                   guid of the agent.
+                * ownerguid (guid) :                   guid of the owner.
+                * backup (boolean) :                      Indicates if the machine should be included in the backup policies.
+                * backuplabel (string) :                 Backuplabel of the machine.
+                * consistent () : <no description found>
+                * isbackup (boolean) :                    Indicates if the machine is a backup.
+                * iconname () : <no description found>
+                * timestamp (datetime) :                   Timestamp of creation date in reality
+                * bootstatus (string) :                  Machine boot status (INSTALL|FROMDISK|RECOVERY)
+                * monitors (list) :                    monitors configuration (widthxheightxbpp) ['1024x768x32','800x600x24']
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/updateModelProperties?machineguid=<guid>&name=<string>&description=<string>&cloudspaceguid=<guid>&machinetype=<string>&osguid=<guid>&assetid=<string>&alias=<string>&template=<bool>&hostname=<string>&nrcpu=<int>&cpufrequency=<int>&memory=<int>&memoryminimal=<int>&importancefactor=<int>&lastrealitycheck=<datetime>&deviceguid=<guid>&boot=<bool>&customsettings=<string>&defaultgateway=<ipaddress>&status=<string>&clouduserguid=<guid>&parentmachineguid=<guid>&hypervisor=<string>&accounts=<>&capacityunitsconsumed=<>&capacityunitsprovided=<>&nics=<>&resourcegroupguid=<>&agentguid=<guid>&ownerguid=<guid>&backup=<boolean>&backuplabel=<string>&consistent=<>&isbackup=<boolean>&iconname=<>&timestamp=<datetime>&bootstatus=<string>&monitors=<list>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.makeTemplate(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create template from a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to create template from.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/makeTemplate?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.snapshot(machineguid, label, description, automated, async, snapshottype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a snapshot of a machine.
+
+        means
+        - backup metadata of machine 
+        - pause machine (When snapshottype = PAUSED)
+        - snapshot all disks of machine if not async
+        - resume machine (When snapshottype = PAUSED)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () :                 guid of the machine to snapshot.
+                * label () :                       label for the snapshot
+                * description () :                 description for the snapshot
+                * automated () :                   Flags whether the snapshot is being taken scheduled or manually (is used for retention of snapshots)
+                * async () :                       Flags whether the snapshot will be taken asynchronically afterwards (by calling the sso.snapshotmachine method)
+                * snapshottype () :                type of the snapshot (REGULAR, PAUSED, VSS, CSBA)
+                * jobguid () :                     guid of the job if available else empty string
+                * executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/snapshot?machineguid=<>&label=<>&description=<>&automated=<>&async=<>&snapshottype=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with snapshot machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addNic(machineguid, nictype, order, macaddress, ipaddresses, nicstatustype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a NIC to the machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to add the NIC to.
+                * nictype (string) :                     Type of the NIC. L{core.machine.nic}
+                * order (int) :                       Order of NIC. Next available if not specified.
+                * macaddress () :                  string
+                * ipaddresses (array) :                 Array of IP addresses configured for this NIC.
+                * nicstatustype () :               string
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/addNic?machineguid=<guid>&nictype=<string>&order=<int>&macaddress=<>&ipaddresses=<array>&nicstatustype=<>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.getPublicIpaddress(machineguid, includevirtual, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieve the public ipaddress of the given machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                   guid of the machine rootobject
+                * includevirtual (boolean) :                whether to include VIPA
+                * jobguid (guid) :                       guid of the job if available else empty string
+                * executionparams (dictionary) :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/getPublicIpaddress?machineguid=<guid>&includevirtual=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with ipaddress as result and jobguid: {'result': '172.17.11.19', 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.clone(machineguid, cloudspaceguid, vdcguid, copynetworkinfo, maintenancemode, name, snapshotguid, hostmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        clone existing machine into defined space and into defined destinationVDC
+        if space=="" then in same space
+        if destinationVDC=="" then same VDC (maintenanceMode is not possible then)
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to clone.
+                * cloudspaceguid (guid) :              guid of cloud space to create the machine in. Same cloud space if not provided.
+                * vdcguid (guid) :                     guid of the VDC to create the machine in. Same VDC if not specified, in that case maintenanceMode is always False.
+                * copynetworkinfo (boolean) :             If True, all networking info will be copied as well. Private networks will be created in new Vlans, public networks are not created, but the machine will receive an ip in the same public lan.
+                * maintenancemode (boolean) :             If True, all networking info will be copied as well, even for public vlans.
+                * name (string) :                        name for new clone
+                * snapshotguid (guid) :                guid of the snapshot to clone from
+                * hostmachineguid (guid) :             host for the clone
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/clone?machineguid=<guid>&cloudspaceguid=<guid>&vdcguid=<guid>&copynetworkinfo=<boolean>&maintenancemode=<boolean>&name=<string>&snapshotguid=<guid>&hostmachineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.removeAccount(machineguid, accounttype, login, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes an account from a machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to remove an account from.
+                * accounttype (string) :                 Type of account to remove (PUBLICACCOUNT, SYSTEMACCOUNT).
+                * login (string) :                       Account login.
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/removeAccount?machineguid=<guid>&accounttype=<string>&login=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.disable(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.importFromURI(machineguid, sourceuri, executormachineguid, compressed, diskimagetype, cloudspaceguid, clouduserguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Import a machine from a given URI.
+        Machine object in drp needs to be created first.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine to import to.
+                * sourceuri (string) :                   URI of the location where the export is stored. (e.g ftp://login:passwd@myhost.com/backups/machinex/)
+                * executormachineguid (guid) :         guid of the machine which should import the export. If the executormachineguid is empty, a machine will be selected automatically.
+                * compressed (boolean) :                  Should be True if the machine export is compressed using 7zip compression
+                * diskimagetype (string) :               Type of the disk image format used (VDI, RAW, VMDK, ...)
+                * cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * clouduserguid (guid) :               guid of the related clouduser
+                * jobguid (guid) :                     guid of the job if available else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/importFromURI?machineguid=<guid>&sourceuri=<string>&executormachineguid=<guid>&compressed=<boolean>&diskimagetype=<string>&cloudspaceguid=<guid>&clouduserguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.addFloppyImage(machineguid, sourceuri, name, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new floppy image for a machine.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.removeCapacityConsumed(machineguid, capacityunittype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Removes consumed capacity for the machine specified.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.detachFromDevice(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Unforces a machine to run on a particular device.
+        (will use resourcegroups underneath)
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.removeMonitor(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Remove the last monitor of the specified machine
+        (Primary monitor [0] can not be removed)
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            Guid of the machine
+                * jobguid (guid) :                guid of the job if available else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/removeMonitor?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with result and jobguid: {'result': boolean, 'jobguid': guid}
+Return type : dict 
+    {noformat}
+
+    h3.machine.exportToSecondary(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a backup of a machine.
+
+        create a backup of the machine, will result in an exported vdi image (7zipped)
+        (in case of SSO onto DSS)
+        also the metadata is being stored
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.machine.listNics(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the NICs for a given machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () :                 guid of the machine to list the NICs for.
+                * jobguid () :                     guid of the job if available else empty string
+                * executionparams () :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listNics?machineguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of NIC info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.machine.listGuestMachines(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List the guests for a given host machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid () :                   guid of the host machine to list the guests from.
+                * jobguid () :                       guid of the job if available else empty string
+                * executionparams () :               dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_machine/listGuestMachines?machineguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of snapshot machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

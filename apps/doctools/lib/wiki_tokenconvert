@@ -1,0 +1,87 @@
+#!/usr/bin/python
+from PyUnoWrapper import PyUnoWrapper
+import os
+from optparse import OptionParser
+KEYWORDS = ('HEADER', 'NL', 'P', 'T', 'CODEBLOCK', 'BOLD', '*', '#', 'IMAGE',
+            'STRIKE', 'ITALIC', 'UNDER', 'LINK')
+
+#@todo please create class and put as part of doctools extension
+
+def writeDocument(parsedfilepath, filepath):
+    data = None
+    with open(parsedfilepath, "r") as fp:
+        data = fp.read()  #@todo please use pylabs constructs
+    baseDir = os.path.dirname(parsedfilepath)
+    for line in data.splitlines():
+        words = line.split('|')
+        keyword = words[0]
+        level = words[1]
+        text = words[2]
+        if keyword not in KEYWORDS:
+            raise RuntimeError('Unsupported keyword %s' % keyword)
+        if keyword == 'HEADER':
+            pyuno.addHeader(text, int(level))
+        elif keyword == 'NL':
+            pyuno.addNewLine()
+        elif keyword == 'BOLD':
+            pyuno.setBold()
+            pyuno.addText(text)
+            pyuno.resetBold()
+        elif keyword == 'STRIKE':
+            pyuno.setStrikeThrough()
+            pyuno.addText(text)
+            pyuno.resetStrikeThrough()
+        elif keyword == 'ITALIC':
+            pyuno.setItalic()
+            pyuno.addText(text)
+            pyuno.resetItalic()
+        elif keyword == 'UNDER':
+            pyuno.setUnderline()
+            pyuno.addText(text)
+            pyuno.resetUnderline()
+        elif keyword in ['P', 'T', 'CODEBLOCK']:
+            pyuno.addText(text)
+        elif keyword == '*':
+            pyuno.addBullets(text, int(level))
+        elif keyword == '#':
+            pyuno.addNumberings(text, int(level))
+        elif keyword == 'IMAGE':
+            location = os.path.join(baseDir, text)
+            pyuno.insertImage(location)
+        elif keyword == 'LINK':
+            pyuno.insertHyperlink(text, int(level))
+
+def _getLocations(wikifileLocation):
+    dirname = os.path.dirname(wikifileLocation)
+    filename = os.path.basename(wikifileLocation)
+    absfilename = filename.split('.')[0]
+    filelocation = '%s/%s' % (dirname, absfilename)
+    return dirname, absfilename, filelocation
+
+def generateDOC(wikifileLocation):
+    dirname, absfilename, filelocation = _getLocations(wikifileLocation)
+    pyuno.exportToDOC('%s.doc' % filelocation)
+
+def generatePDF(wikifileLocation):
+    dirname, absfilename, filelocation = _getLocations(wikifileLocation)
+    pyuno.exportToPDF('%s.pdf' % filelocation)
+
+def generateODT(wikifileLocation):
+    dirname, absfilename, filelocation = _getLocations(wikifileLocation)
+    pyuno.saveFileAs('%s/%s.odt' % (dirname, absfilename))
+
+if __name__ == '__main__':
+    parser = OptionParser()
+    parser.add_option('-f', '--filepath', dest='parsedfilepath', help='Parsed tokenized file path')
+    parser.add_option('-o', '--outputfilepath', dest='outputfilepath', help='Output file path to be generated e.g. /opt/qbase3/myfile.pdf')
+    (options, args) = parser.parse_args()
+
+    pyuno = PyUnoWrapper()
+    document = pyuno.loadNewDocument()
+    cursor = pyuno.getTextCursor()
+    
+    writeDocument(options.parsedfilepath, options.outputfilepath)
+    extensionsdict = {'odt': generateODT, 'doc': generateDOC, 'pdf': generatePDF}
+    extension = os.path.basename(options.outputfilepath).split('.')[1]
+    extensionsdict[extension](options.outputfilepath)
+    

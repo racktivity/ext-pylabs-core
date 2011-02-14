@@ -1,0 +1,397 @@
+h2. XMLRPC Cloud API DOC - location
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.location.getXMLSchema(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the location rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.location.create(name, description, alias, address, city, country, public, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new location.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name (string) :                    Name for the location.
+                * Description (string) :             Description for the location.
+                * Alias (string) :                   Alias for the location.
+                * Address (string) :                 Address for the location.
+                * City (string) :                    City for the location.
+                * Country (string) :                 Country for the location.
+                * Public (boolean) :                  Indicates if the location is a public location.
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.create(name=<string>,description=<string>,alias=<string>,address=<string>,city=<string>,country=<string>,public=<boolean>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with locationguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.location.list(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all locations.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Locationguid () :             Guid of the location specified
+                * Jobguid () :                  Guid of the job if avalailable else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.list(locationguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of location info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.location.getYAML(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the location rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Locationguid (guid) :           Guid of the location rootobject
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.getYAML(locationguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the location
+Return type : string
+    {noformat}
+    h3.location.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :         Guid of the location rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.location.updateModelProperties(locationguid, name, description, alias, address, city, country, public, timezonename, timezonedelta, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Locationguid (guid) :            Guid of the location specified
+                * Name (string) :                    Name for the location.
+                * Description (string) :             Description for the location.
+                * Alias (string) :                   Alias for the location.
+                * Address (string) :                 Address for the location.
+                * City (string) :                    City for the location.
+                * Country (string) :                 Country for the location.
+                * Public (boolean) :                  Indicates if the location is a public location.
+                * Timezonename (string) :            name of timeZone for the location.
+                * Timezonedelta (float) :           delta of timeZone for the location.
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.updateModelProperties(locationguid=<guid>,name=<string>,description=<string>,alias=<string>,address=<string>,city=<string>,country=<string>,public=<boolean>,timezonename=<string>,timezonedelta=<float>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with location guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.location.listDatacenters(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all datacenters of the location.
+        
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.location.getXML(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the location rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.location.setTimeZone(locationguid, timezonename, timezonedelta, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Changes the time zone for a certain location
+        
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Locationguid (guid) :             Guid of the location rootobject
+                * Timezonename (string) :             name of timeZone for the location.
+                * Timezonedelta (float) :            delta of timeZone for the location.
+                * Jobguid (guid) :                  Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :          Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.setTimeZone(locationguid=<guid>,timezonename=<string>,timezonedelta=<float>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as a result when succeeded
+Return type : dictionary
+    {noformat}
+    h3.location.find(name, description, alias, address, city, country, public, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of location guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () :                    Name for the location.
+                * Description () :             Description for the location.
+                * Alias () :                   Alias for the location.
+                * Address () :                 Address for the location.
+                * City () :                    City for the location.
+                * Country () :                 Country for the location.
+                * Public () :                  Indicates if the location is a public location.
+                * Jobguid () :                 Guid of the job if avalailable else empty string
+                * Executionparams () :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.find(name=<>,description=<>,alias=<>,address=<>,city=<>,country=<>,public=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of location guids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.location.delete(locationguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a location.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Locationguid (guid) :           Guid of the location rootobject to delete.
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_location.delete(locationguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

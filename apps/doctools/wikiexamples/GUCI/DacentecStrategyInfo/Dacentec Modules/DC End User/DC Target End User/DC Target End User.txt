@@ -1,0 +1,18 @@
+h2. Target market
+
+Direct to any *party who wants to provide compute & storage cloud capacity* and who is looking for a more cost effective and green way of doing this.
+
+Dacentec only sells to *customers who require at least 500TB storage & 100 CPU nodes*.
+
+h2. USP for Dacentec customer
+
+* *Better than ever TCO*
+** 10 times less power needed for STORAGE.
+** 4 times less power needed for CPU capacity
+** Ultra cost effective Storage & CPU capacity
+* *Ultra Fast deployment* of resources
+* *Full control*, only the lowest layer: datacenter + infrastructure is provided as a service
+* *Pay* your energy *as you use, pay as you grow*
+* Better *uptime*
+* Better *protection* of data
+* Green technology inside: *lower carbon foorprint*

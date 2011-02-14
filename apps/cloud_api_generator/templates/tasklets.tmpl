@@ -1,0 +1,19 @@
+__author__ = 'aserver'
+__tags__ = '$rootobject', '$methodName'
+__priority__= 3
+
+def main(q, i, params, tags):
+    #if $methodName == 'getObject'
+    from osis.model.serializers import ThriftSerializer
+    import base64
+    $rootobject  = q.drp.${rootobject}.get(params['rootobjectguid'])
+    params['result'] = base64.encodestring(ThriftSerializer.serialize($rootobject))
+
+    #else
+    params['result'] = ''
+    #end if
+
+def match(q, i, params, tags):
+    return True
+
+

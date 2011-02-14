@@ -1,0 +1,14 @@
+h2. Racktivity Product Description
+
+In order to effectively manage energy cost of data centers a precise measurement of energy consumption of IT assets at server level is required. Racktivity’s PDU products provide unparallel precision to measure apparent and real power consumed by each IT asset on the rack. Rack Controllers also provide temperature, airflow, humidity, and security information at rack level so that the use of the cooling system is optimized.
+
+In addition, Racktivity's software platform, PowerOrchestrator, offers data center managers a comprehensive visibility to monitor energy and environment of their data centers and manage their use more efficiently.
+
+Racktivity’s hardware and software products complement each other and together they provide a fully-integrated and state-of-the-art energy management platform for data centers.
+
+\\
+\\
+
+Racktivity Rack Controller:
+
+!racktivity_productview1.png|border=0, width=800!

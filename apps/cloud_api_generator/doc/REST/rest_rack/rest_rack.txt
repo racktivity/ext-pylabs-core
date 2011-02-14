@@ -1,0 +1,314 @@
+h2. REST Cloud API DOC - rack
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.rack.getXMLSchema(rackguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the rack rootobject structure.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.rack.create(name, racktype, description, datacenterguid, floor, corridor, position, height, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new rack.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name (string) :                    Name for the rack.
+                * racktype (string) :                type of the rack
+                * description (string) :             Description for the rack.
+                * datacenterguid (guid) :          datacenter to which the rack belongs
+                * floor (string(100)) : <no description found>
+                * corridor (string(100)) : <no description found>
+                * position (string(100)) : <no description found>
+                * height (int) : <no description found>
+                * jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/create?name=<string>&racktype=<string>&description=<string>&datacenterguid=<guid>&floor=<string(100)>&corridor=<string(100)>&position=<string(100)>&height=<int>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with rackguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.rack.list(rackguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all racks.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rackguid () :                 Guid of the rack specified
+                * jobguid () :                  Guid of the job if avalailable else empty string
+                * executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/list?rackguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of rack info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.rack.getYAML(rackguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the rack rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rackguid (guid) :               Guid of the rack rootobject
+                * jobguid (guid) :                Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/getYAML?rackguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : YAML representation of the rack
+Return type : string 
+    {noformat}
+
+    h3.rack.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rootobjectguid (guid) :       Guid of the rack rootobject
+                * jobguid () : <no description found>
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/getObject?rootobjectguid=<guid>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : rootobject
+Return type : string 
+    {noformat}
+
+    h3.rack.updateModelProperties(rackguid, name, racktype, description, datacenterguid, floor, corridor, position, height, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rackguid (guid) :                Guid of the rack specified
+                * name (string) :                    Name for the rack.
+                * racktype (string) :                type of the rack
+                * description (string) :             Description for the rack.
+                * datacenterguid (guid) :          datacenter to which the rack belongs
+                * floor (string(100)) : <no description found>
+                * corridor (string(100)) : <no description found>
+                * position (string(100)) : <no description found>
+                * height (int) : <no description found>
+                * jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/updateModelProperties?rackguid=<guid>&name=<string>&racktype=<string>&description=<string>&datacenterguid=<guid>&floor=<string(100)>&corridor=<string(100)>&position=<string(100)>&height=<int>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with rack guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.rack.getXML(rackguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the rack rootobject.
+
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.rack.listDevices(rackguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all devices of the rack.
+  
+        
+   
+
+        {note} Not yet implemented {note}  
+    h3.rack.find(name, racktype, description, datacenterguid, floor, corridor, position, height, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of rack guids which met the find criteria.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name () :                    Name for the rack.
+                * racktype () :                type of the rack
+                * description () :             Description for the rack.
+                * datacenterguid () :          datacenter to which the rack belongs
+                * floor () : <no description found>
+                * corridor () : <no description found>
+                * position () : <no description found>
+                * height () : <no description found>
+                * jobguid () :                 Guid of the job if avalailable else empty string
+                * executionparams () :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/find?name=<>&racktype=<>&description=<>&datacenterguid=<>&floor=<>&corridor=<>&position=<>&height=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Array of rack guids which met the find criteria specified.
+Return type : array 
+    {noformat}
+
+    h3.rack.delete(rackguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a rack.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * rackguid (guid) :               Guid of the rack rootobject to delete.
+                * jobguid (guid) :                Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_rack/delete?rackguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+

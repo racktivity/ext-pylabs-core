@@ -1,0 +1,321 @@
+h2. XMLRPC Cloud API DOC - cable
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.cable.getXMLSchema(cableguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XSD format of the cable rootobject structure.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cable.create(name, cabletype, description, label, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Create a new cable.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name (string) :                    Name for the cable.
+                * Cabletype (cabletype) :               cable type
+                * Description (string) :             description of the cable
+                * Label (string(60)) :                   label attached to cable
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.create(name=<string>,cabletype=<cabletype>,description=<string>,label=<string(60)>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with cableguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cable.list(cableguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        List all cables.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cableguid () :                Guid of the cable specified
+                * Jobguid () :                  Guid of the job if avalailable else empty string
+                * Executionparams () :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.list(cableguid=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with array of cable info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cable.getYAML(cableguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in YAML format of the cable rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cableguid (guid) :              Guid of the cable rootobject
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.getYAML(cableguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : YAML representation of the cable
+Return type : string
+    {noformat}
+    h3.cable.getObject(rootobjectguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the rootobject.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Rootobjectguid (guid) :       Guid of the cable rootobject
+                * Jobguid () : <no description found>
+                * Executionparams () : <no description found>
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.getObject(rootobjectguid=<guid>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : rootobject
+Return type : string
+    {noformat}
+    h3.cable.updateModelProperties(cableguid, name, cabletype, description, label, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cableguid (guid) :               Guid of the cable specified
+                * Name (string) :                    Name for the cable.
+                * Cabletype (cabletype) :               cable type
+                * Description (string) :             description of the cable
+                * Label (string(60)) :                   label attached to cable
+                * Jobguid (guid) :                 Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.updateModelProperties(cableguid=<guid>,name=<string>,cabletype=<cabletype>,description=<string>,label=<string(60)>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with cable guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}
+    h3.cable.getXML(cableguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets a string representation in XML format of the cable rootobject.
+
+        
+    
+    
+        {note} Not yet implemented {note}
+    h3.cable.find(name, cabletype, description, label, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns a list of cable guids which met the find criteria.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Name () :                    Name for the cable.
+                * Cabletype () :               cable type
+                * Description () :             description of the cable
+                * Label () :                   label attached to cable
+                * Jobguid () :                 Guid of the job if avalailable else empty string
+                * Executionparams () :         dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.find(name=<>,cabletype=<>,description=<>,label=<>,jobguid=<>,executionparams=<>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : Array of cable guids which met the find criteria specified.
+Return type : array
+    {noformat}
+    h3.cable.delete(cableguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Delete a cable.
+
+        
+    
+    
+
+    h4.  Parameters
+    
+
+                * Cableguid (guid) :              Guid of the cable rootobject to delete.
+                * Jobguid (guid) :                Guid of the job if avalailable else empty string
+                * Executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Python Example
+    
+
+            
+            
+            
+    
+    {code}
+    import xmlrpclib
+   
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
+    result=xmlrpcProxy.cloud_api_cable.delete(cableguid=<guid>,jobguid=<guid>,executionparams=<dictionary>))['result']
+    {code}
+        
+    
+    h4. Return
+    
+    {noformat:nopanel=true}
+Return result : dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary
+    {noformat}

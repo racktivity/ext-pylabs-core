@@ -1,0 +1,9 @@
+h2. DC Automate Target market
+
+DC Automate has a value proposition towards:
+
+* Enterprise with large scale datacenters with extension need of high capacity (4 high density racks minimum)
+* Enterprises or SAAS providers with a constant growing need of computing (1000 cores minimum) or storage (1 petabyte minimum)
+* Large System Integrators that work with A-Server on large deals
+
+Those companies will not find an agile solution that is as complete as DC Automate. This since more than any other solution, the ecostack of technology integrated is not present inside any other single cloud vendor: datacenter, power layer, dsitributed storage SAN, cloud automatiom platform & powerful GUI & APIs.

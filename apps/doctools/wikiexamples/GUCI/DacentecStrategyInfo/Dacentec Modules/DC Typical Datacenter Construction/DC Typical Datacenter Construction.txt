@@ -1,0 +1,51 @@
+h2. How everyone constructed their Datacenters
+
+Ingredients to a typical datacenter are:
+
+{table}{tr}{td:valign=top|width=500}* Building & Power
+** A secure building, fully shielded with no windows and restricted access
+** 1 or 2 external high voltage power feeds
+** Connection of high voltage feeds to transformers
+{td}{td:valign=top}!dacentec_dc_base.png|width=300!{td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}* Datacenter supply equipment
+** Batteries, called UPS: Uninterruptible power supply, to foresee power in case of of power breakdown by the utility company
+** Switch board room to distribute the power
+** Diesel generators to have power in case of of power breakdown by the utility company
+{td}{td:valign=top}!dacentec_dc_ups.png|width=300!{td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}* Cooling equiment:
+** chillers: to cool down the water for the airco conditioning
+** airco units below the raised floor
+** cooled air is blown into the datacenter rooms via perforated tiles
+{td}{td:valign=top}!dacentec_dc_cooling.png|width=300!{td}{tr}{table}
+{pagebreak}
+{table}{tr}{td:valign=top|width=500}* Colocation rooms:
+** Private room (racks all for 1 customer) or shared rooms (multiple customers)
+** Datacenter customers hire 1/4 of a rack up to a rack
+** Each room typically will include a raised floor: below it are cables and airco units
+** Racks are installed in such a way that the servers installed by customers suck in cooled air
+{td}{td:valign=top}!dacentec_dc_aisles.png|width=300!{td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}* Cable trays
+** Power distribution towards the racks
+** Networking distribution towards the racks
+** building automation cables: security camera, door security, ...
+{td}{td:valign=top}!dacentec_dc_cables.png|width=200!{td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}* Building Automation equipment
+** securtiy cameras
+** access security
+** equipment status monitoring
+{td}{td:valign=top}!dacentec_dc_security.png|width=300!{td}{tr}{table}
+
+{table}{tr}{td:valign=top|width=500}* Networking equipment
+** Entry of telcos in the building
+** Connections between bandwidth providers and datacenter customers
+** Connections between datacenter customers
+** All connections are manually installed by cable junctions in the Datacenter Peering Room
+{td}{td:valign=top}!dacentec_dc_networking.png|width=300!{td}{tr}{table}
+
+This typical datacenter concept is still being applied since it is considered as best of breed, mainly because everyone has been doing it like this for a long time.
+
+The cost of the datacenter construction increases by measures of extra redundancy, more expensive equipment, more expensive subcontractors and building costs.

@@ -1,0 +1,25 @@
+__author__ = 'aserver'
+__tags__ = 'wizard','${rootobject}_${method.name}'
+__priority__= 3
+$method.argNames.remove('jobguid')
+$method.argNames.remove('executionparams')
+def main(q, i, params, tags):
+    form = q.gui.form.createForm()
+    tab1 = form.addTab('tab$method.name','$method.name')
+#for $arg in $method.argNames:
+    form.tabs['tab$method.name'].addText('txt$arg.capitalize()','$arg.capitalize():')
+#end for
+    form.loadForm(q.gui.dialog.askForm(form))
+    cloudAPI = i.config.cloudApiConnection.find('main')
+
+#set $elements = str()
+#for $index, $arg in enumerate($method.argNames)
+#set $elements += '%s=form.tabs["tab%s"].elements["txt%s"].value'%($arg, $method.name, $arg.capitalize())
+#if not $index == len($method.argNames)-1
+#set $elements += ','
+#end if
+#end for
+    cloudAPI.${rootobject}.${method.name}($elements)
+def match(q,i,params,tags):
+    return True
+

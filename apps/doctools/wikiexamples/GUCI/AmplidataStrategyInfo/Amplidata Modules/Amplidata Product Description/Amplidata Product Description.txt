@@ -1,0 +1,28 @@
+h2. Amplidata Product Description
+ 
+Amplidata's featured solution is AmpliStor, a revolutionary alternative to RAID which is designed from the ground up to build large-scale storage infrastructures. Rather than avoiding the weaknesses of RAID through workarounds or small enhancements, Amplidata designed a whole new concept of storage which guarantees ultimate availability across ZetaByte scale data sets at lower cost.
+
+h3. Amplistore overview
+!amplidata_amplistor.png|border=0, width=800!
+ 
+The AmpliStor solution combines the three key Amplidata technology innovations:
+{pagebreak} 
+h3. BitSpread
+
+BitSpread: encodes data with higher availability and lower overhead
+
+Bitspread overview:
+!amplidata_bitspread.png|border=0, width=800!
+
+h3. BitLog
+
+BitLog: tracks all block data writes to offer snapshots, clones, rollback and history on all stored data
+
+BitLog overview:
+!amplidata_bitlog.png|border=0!
+{pagebreak}
+h3. Bit Dynamics
+
+BitDynamics: manages storage scalability and availability, and performs out-of-band storage verification and optimization
+
+AmpliStor delivers on the three main requirements for storage in the current economy: it is Unbreakable, Green and Scalable.

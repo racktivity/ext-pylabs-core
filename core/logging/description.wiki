@@ -1,0 +1,9 @@
+
+new version of logging
+much has been refactored to make code cleaner
+
+started from existing code 
+
+
+CHANGES REQUIRED
+* no logmessage object

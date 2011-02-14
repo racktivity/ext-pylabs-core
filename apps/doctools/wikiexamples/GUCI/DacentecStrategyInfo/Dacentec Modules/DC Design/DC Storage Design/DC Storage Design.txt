@@ -1,0 +1,94 @@
+h2. Storage Design
+
+h3. Introduction
+
+Dacentec uses a fully new design of storage: a dispersed storage system that is 10,000 times more reliable than a traditional RAID  based storage system (see chapter below for RAID definition). This Storage System is an innovation by Amplidata that is part of the Green Unbreakable Cloud Initiative of Dacentec.
+
+Disk capacities have increased tremendously (average disk size is 1 TB) and because of the always available requirements for data, RAID is no longer a viable technology:
+
+* The Reliability and Availability score of RAID drops as disk capacity increases because of lengthy and cumbersome rebuilds that cause data to remain unprotected for multiple days
+* RAID is power-hungry as all disks need to keep spinning: energy consumption is unacceptable according to current standards
+* As RAID is statically configured, managing and scaling RAID systems is cumbersome and resource intensive
+* RAID does not protect against bit errors or bit rot on disk, block replication or multiple data copies
+* RAID systems do not retain history of the stored data, making it impossible to go back in time to recover from eventual corruption
+
+Amplidata replaces RAID at the bottom layer of the storage stack and provides higher availability at a fraction of the cost. The Amplidata technology can be integrated as one or multiple high-available logical disks in your application or legacy storage environment where currently raid volumes would be used as storage targets. Using the Amplidata disk technology will make a storage environment 10,000 times more reliable while consuming less raw disk capacity and power.
+
+h3. Amplidata compared to RAID
+
+RAID is a storage controller method that allows to build more reliability on the disks within the same server. Most popular RAID methods used for storage are:
+
+* RAID 5:
+** 3 or more disks are grouped in a way any 1 disk can fail without losing data
+** if 1 out of 3 or more disks fail, the data can be retrieved from the other disks
+** when the failed disk is replaced, the redundant data is rebuild. As this requires all data from all remaining disk to be read this causes a heavy load on the system
+** when 2 disks fail, all data is lost. In this case data needs to be recovered from a replica or a backup.
+** RAID 5 deployed across a PB scale storage system will suffer 2-3 data loss events per year, caused by a second disk failure during a rebuild
+
+* RAID 6:
+** 4 or more disks are grouped in a way any 2 disks can fail without losing data
+** if 2 out of 4 or more disks fail, the data can be retrieved from the other disks
+** when the failed disk is replaced,&nbsp;the redundant data is rebuild. As this requires all data from all remaining disk to be read this causes a heavy load on the system
+** when 3 disks fail, all data is lost\!
+** RAID 6&nbsp;deployed across a PB scale storage system will still suffer 1 data loss event per year, caused by a second and third disk failure during a rebuild
+
+The Amplidata technology takes away these pain points:
+
+* typically data is stored across 16 or more disks in a way any 4 disks can fail without losing data
+* these 16 disks are selected as wide as possible across the available storage nodes, which minimizes the impact of a node failure.
+* if 4 out of 16 nodes fail, the data can still be retrieved from the other nodes, making data always available
+* when a disk fails, another disk will be selected to take over automatically, no manual action/replacement is needed
+* rebuilding the missing data from failed disk&nbsp;happens&nbsp;in the background, which avoids increased load on the application server
+* 4 storage servers can fail, and the data can still be accessed
+* the data is continuously checked in the background to avoid corrupt data, write errors and bit rot
+* Amplidata&nbsp;eliminates&nbsp;data loss as the risk for a 5th disk failure during a rebuild is 1 in 14,000 years
+
+!amplidata_bitspreadbenefit.png|width=400!
+
+
+h3. Spreading the data
+
+{table}{tr}{td:width=500|valign=top}The storage technology we are using in the cloud datacenter finds it strength in spreading data across storage nodes, therefore minimizing the risk of dataloss in case of a disk, node or rack failure. Additional quality check tools ensure better than ever than data integrity is maintained: proactive recovery from hardware write errors, bit rot, corrupt data, etc.
+
+The data in the cloud datacenter will spread data over different disks in different servers inside a plate rack in such a way that multiple servers and disks can fail simultaneously without any impact on data availability in the production environment.
+
+The system will spread each block of data over 16 disks across 16 storage plate servers. From those 16 disks, 4 can fail simultaneously. This means we can lose 4 servers simultaneously, since all the disks are in different servers.
+
+This method uses an algorythm that encodes and stores the production data across a pool of 16 disks such that all data can be retrieved from any subset of at least 12 good disks. The advantage of doing this is that the raw storage capacity usages is optimized: to save 1 GB of data, only 1.6 GB will be needed. To achieve a 4 disk safety with RAID6 + replication, 1 GB of data would require 2.5 GB of disk capacity. The&nbsp;benefit&nbsp;is obvious, you can store your data hyper secure, wile you will need 36% less disk capacity\!
+
+The data dispersion calculation introduces some latency, which makes it less suitable for primary computing tasks, like running a server operating system. Therefore the most&nbsp;frequently&nbsp;accessed data is cached in a combination of solid state disks and harddisks. The result is that the access to the data is as fast and in some cases even faster than traditional computing. This is because Solid State Disks have a random input/output performance that is 100 times higher than traditional hard disks, which results in much faster random read access for data on the solid state disks.
+{td}{td:valign=top} !amplidata_bitspread2.png|width=200! {td}{tr}{table}
+
+{pagebreak}
+
+h3. Design for the Cloud Datacenter
+
+For the Cloud Datacenter, Dacentec Designed Cloud Racks that are called Plate Racks.
+
+Inside the plate racks, we apply the following cloud topology:
+* Storage Plate Racks & Storage Front Ends
+* CPU Plate Racks
+* High speed low latency connections
+
+h4. Storage Front Ends
+
+The Storage Front End is the point where customers will send/retrieve their data to be stored/read in a so called logical 'volume'. A volume is a private and reserved area on the storage system that can be up to 100TB big. A volume can be used by a server to run applications or store data. The storage head can also be referred to as the SAN.
+
+The volume of the storage heads can be accessed in different ways:
+* by use of a cpu plate server: the cpu plate server uses disk capacity directly on the storage head over an iSCSI interface.
+* by use of one popular cloud storage access interfaces we provide: S3 (Simple Storage Service API0, FTP (File Transfer Protocol) and Webdav (Protocol to share data over Internet)
+
+The storage head includes 4 nodes of each 2U and are set up in a high available setup so that when a server fails the other continue (clustering). These 4 nodes connect to many disks installed in storage servers.
+
+Inside the storage head there is caching of the data done on Solid State Disks. The caching helps to retrieve frequently accessed data more quickly, important for applications: instead of retrieving the spread out data, the data is kept in the super fast Solid State Drives. When a customer accesses its data, the storage head will look first look if the data is in the cache and otherwise find the data into the dispersed storage system.
+
+h4. Storage Back End Racks
+
+The storage back end racks are racks full of storage plate servers including 6 disks on each plate. A full rack will deliver approximately 500 Terabytes, or 0.5 Petabyte of raw storage data.
+
+h4. CPU Racks
+
+CPU racks are racks with CPU plate servers in it. The CPU plate servers include 2 multi core processors and high speed connectivity cards towards the storage heads (infiniband).
+
+The CPU plate servers will connect to the highly redundant SAN of the storage head. This means for example that for a windows server, the C and D drives will be on the SAN and be connected via the super fast infiniband connection to the CPU node where the processors and memory is. By running the disks on the highly available storage head that has the dispersed back end, we can secure cloud servers better: when a cpu plate server fail, another one can take over immediately.
+{pagebreak}

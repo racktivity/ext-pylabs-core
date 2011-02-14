@@ -1,0 +1,5 @@
+h2. What we don't do
+
+* MirrorCloud is not a software only solution, but has flexibility towards hardware choice
+* MirrorCloud is enterprise grade but should not be sold as enterprise solution
+* We don't offer professional services for this product line

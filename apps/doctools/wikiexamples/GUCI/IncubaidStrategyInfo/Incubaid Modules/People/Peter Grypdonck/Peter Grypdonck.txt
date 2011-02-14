@@ -1,0 +1,21 @@
+h3. Peter Grypdonck - R&D Director
+
+{table}{tr}{td:valign=top|width=500}
+
+Peter Grypdonck has over 12 years of experience in leading IT projects for datacenters. He designs the architectures for automation at different levels of cloud datacenters.
+
+Before Peter Grypdonck was CTO at A-Server where he led the software department that developed both private and public cloud computing solutions. Peter was also involved as a scrum lead at the innovating Q-layer that launched the first private virtual datacenter automation suite. Q-Layer has been sold to Sun Microsystems and is currently part of Oracle.
+
+Peter held the IT project manager role at Hostbasket, a leading hosting provider in Belgium. He was responsible for designing the hosting engine that automates the provisioning of dedicated and shared hosting products and was involved in the IT automation architecture for 2 full datacenters that were developed at Hostbasket. Currently Hostbasket is part of broadband provider Telenet.
+
+Before Hostbasket, Peter co-founded 2-Consult, an IT consultancy services company. 2-Consult delivered IT projects to datacenter companies Dedigate (now Terremark)and Datacenter Technologies (DCT) (now part of Symantec). At 2-Consult, one of its major accomplishments was the creation of an asset management solution which scales for large datacenters.
+
+Peter started its carreer as an IT Architect at Goffin Bank.
+
+Peter is an VP R&D In Residence from Incubaid. 
+Peter active assignment is now the engineering of Dacentec cloud datacenter automation platform.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-peter.png|border=1, width=250! {td}{tr}{table}
+
+
+

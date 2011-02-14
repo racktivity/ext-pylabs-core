@@ -1,0 +1,10 @@
+h2. What we don't do
+
+* sell floorspace/offer colocation
+
+* no vmware or microsoft hyperv at this point.
+* help customers todo complex hosting
+* providing project management
+* offer classic hosting: dedicated servers, websites, domain names, ...
+
+all of this can ofcourse be done by our partners

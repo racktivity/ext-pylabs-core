@@ -1,0 +1,7 @@
+h1. Some Amplidata Presentations
+
+h2. Amplidata Presentations
+{viewfile:Amplidata introduction presentation 2010v19 CORP.pptx}
+{viewfile:Amplidata-Overview-v1.4.ppt}
+h2. attachments
+{attachments:upload=True}

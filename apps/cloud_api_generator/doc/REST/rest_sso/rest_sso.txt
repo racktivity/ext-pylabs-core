@@ -1,0 +1,2617 @@
+h2. REST Cloud API DOC - sso
+
+*Index :*
+
+{toc:minLevel=3|maxLevel=3}
+
+    h3.sso.listSmartClientDevices(isfree, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all available smart client devices for a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * isfree () : <no description found>
+                * jobguid () :              Guid of the job if avalailable else empty string
+                * executionparams () :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listSmartClientDevices?isfree=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary of array of dictionaries with guid, name, description, modelnr, serialnr,  status, isfree.
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.changePasswordOnPMachines(username, newpassword, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Changes the password on each pmachine using new pass word
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * username () :                username
+                * newpassword () :             new password of the user
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/changePasswordOnPMachines?username=<>&newpassword=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.listSystemNASMachineTemplates(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists machine templates available on the SystemNAS
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listSystemNASMachineTemplates?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with available templates and their paths
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.syncModel(interval, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Cleans snapshots on the volume driver which did not make it in the model
+        Cleans snapshots in the model that has no snapshots at the backend
+        
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * interval () :             float
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/syncModel?interval=<>&jobguid=<guid>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with jobguid as result of pending model update and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.editMachine(machineguid, name, description, cloudspaceguid, machinetype, osguid, assetid, alias, hostname, nrcpu, cpufrequency, memory, memoryminimal, importancefactor, deviceguid, boot, backup, clouduserguid, ownerguid, iconname, bootstatus, retentionpolicyguids, customerapplications, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Update basic properties (every parameter which is not passed or passed as empty string is not updated)
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :                 guid of the machine specified
+                * name (string) :                        Name of the machine.
+                * description (string) :                 Description for this machine
+                * cloudspaceguid (guid) :              guid of the space to which this machine belongs
+                * machinetype (string) :                 Machine type.
+                * osguid (guid) :                      guid of the OS.
+                * assetid (string) :                     Asset ID.
+                * alias (string) :                       Alias of the machine.
+                * hostname (string) :                    Hostname of the machine.
+                * nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * cpufrequency (int) :                CPU frequency in MHz.
+                * memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * importancefactor (int) :            Importance of the virtual machine
+                * deviceguid (guid) :                  guid of the parent device
+                * boot (bool) :                        flag indicating that this machine must be automatically started when rebooting the parent machine
+                * backup (bool) :                      Backup flag
+                * clouduserguid (guid) :               guid of the clouduser, owning this machine
+                * ownerguid (guid) :                   guid of the owner.
+                * iconname (string) :                    Icon for the machine.
+                * bootstatus (string) :                  Machine boot status (INSTALL|FROMDISK|RECOVERY)
+                * retentionpolicyguids (dictionary) :        Retention policy for the disks of the machine {'diskguid': 'policyguid'}
+                * customerapplications (list) :        Customer applications to be running on machine
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/editMachine?machineguid=<guid>&name=<string>&description=<string>&cloudspaceguid=<guid>&machinetype=<string>&osguid=<guid>&assetid=<string>&alias=<string>&hostname=<string>&nrcpu=<int>&cpufrequency=<int>&memory=<int>&memoryminimal=<int>&importancefactor=<int>&deviceguid=<guid>&boot=<bool>&backup=<bool>&clouduserguid=<guid>&ownerguid=<guid>&iconname=<string>&bootstatus=<string>&retentionpolicyguids=<dictionary>&customerapplications=<list>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine guid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addPowerSwitchDevice(name, macaddress, cloudspaceguid, description, racku, racky, rackz, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new powerswitch device to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name () : <no description found>
+                * macaddress () :            MAC address of the new resource node
+                * cloudspaceguid () : <no description found>
+                * description () :           remarks on the device
+                * racku () :                 size of the device, measured in u e.g. 1u high
+                * racky () :                 physical position of the device in a rack (y coordinate) measured in u slots. The position starts at bottom of rack, starting with 1
+                * rackz () :                 physical position of the device in the rack (z coordinate, 0 = front, 1 = back)
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addPowerSwitchDevice?name=<>&macaddress=<>&cloudspaceguid=<>&description=<>&racku=<>&racky=<>&rackz=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getAvailableTempDiskSizes(diskroletype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists available disk sizes for creation of temp disks 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskroletype (string) :         SSDTEMP or TEMP
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getAvailableTempDiskSizes?diskroletype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.createSnapshots(snapshottype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates snapshots off all disks
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * snapshottype (string) :         If PAUSED, the machine will be paused before snapshot is taken.
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/createSnapshots?snapshottype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.snapshotMachine(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Snapshots a machine and updating the model asynchronnically
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :          Guid of the snapshot machine
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/snapshotMachine?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary  {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getKioskModeSmartClientInfo(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the information of a smartclient in kiosk mode
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :           guid of machine
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getKioskModeSmartClientInfo?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : information { description , iqn , ip }
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.listVirtualDesktops(cloudspaceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all vistual desktop for a certain cloud space
+
+        Execute method in WFE to get list of current authenticated user
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid () :        guid of an existing cloudspaceguid to whom the virtual desktops belong
+                * jobguid () :              Guid of the job if avalailable else empty string
+                * executionparams () :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listVirtualDesktops?cloudspaceguid=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with jobguid and result
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.scrubVolumes(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Scrubs volumes on a timely basis (used in a policy)
+                                          
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :            Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/scrubVolumes?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getAvailableFOCNode(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+        List available node for defining new FailOver Cache on  
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine to list the FOC volumes
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getAvailableFOCNode?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with node name , management ip , port of node where FOC can be initialized
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getPhysicalDisksCount(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the number of physical disks on given pmachine 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :        guid of the pmachine
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getPhysicalDisksCount?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : string 
+    {noformat}
+
+    h3.sso.shutdown(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        shutdown the sso environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/shutdown?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.sendMessageToNoc(customerguid, username, password, domain, message, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sends a message to the NOC for a certain domain
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * customerguid () :        Guid of the customer unregistering the domain
+                * username () :            ITPS portal username
+                * password () :            ITPS portal password
+                * domain () :              Domain to unregister
+                * message () :             message to be sent
+                * jobguid (guid) :            Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/sendMessageToNoc?customerguid=<>&username=<>&password=<>&domain=<>&message=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.listAvailableCPUNodes(memorymin, hypervisor, includeappliancehost, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all cpu/combined nodes with at least memorymin memory available for a Virtual Machine.
+        * No backups or templates.
+        * Not the CPU node on which the appliance is running.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * memorymin () : <no description found>
+                * hypervisor () : <no description found>
+                * includeappliancehost () :   Include the host of the appliance machine in the list
+                * jobguid () :                Guid of the job if avalailable else empty string
+                * executionparams () :        Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listAvailableCPUNodes?memorymin=<>&hypervisor=<>&includeappliancehost=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with array of machine info as result and jobguid: {'result': array, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.sendMail(subject, body, sender, to, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Sends a mail using smtp 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * subject (string) :            Subject for the email
+                * body (string) :               Body of the mail
+                * sender (string) :             The email address of the sender
+                * to (string) :                 The email address of the addressee (when None admin is the target)
+                * jobguid (guid) :            Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/sendMail?subject=<string>&body=<string>&sender=<string>&to=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.startMachines(machineguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Starts multiple machines at once 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguids (list) :       guids of the machines to start
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/startMachines?machineguids=<list>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : string 
+    {noformat}
+
+    h3.sso.listSmartclientByDevice(deviceguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the list of smartclients by deviceguid
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * deviceguid (guid) :            Guid of the device
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listSmartclientByDevice?deviceguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : information [{ description , iqn , address, machinename }]
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getAvailableHypervisors(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists available hypervisors
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getAvailableHypervisors?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.changeAgentPassword(oldpwd, newpwd, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Modify the password of the agent v4.
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * oldpwd (string) :                 current password of the agent
+                * newpwd (string) :                 new password for the agent
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/changeAgentPassword?oldpwd=<string>&newpwd=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machine True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.startApplications(applicationguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Starts a list of applications     
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * applicationguids () : <no description found>
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/startApplications?applicationguids=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.validateDomain(machineguids, domain, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        validates a domain for a customer
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguids (list) :       list of machineguids to be validated (if none are passed all pmachineguids are tested)
+                * domain (string) :             Domain to validate
+                * jobguid (guid) :            Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/validateDomain?machineguids=<list>&domain=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.deleteSnapshots(policyguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Deletes all outdated snapshots off all disks
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * policyguid (guid) :           Guid of the snapshot retention policy to detect outdated snapshots
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/deleteSnapshots?policyguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addDataDisks(machineguid, diskinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds multiple data disks at once to a machine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine rootobject
+                * diskinfo (list) :               [ { name: , size: , description, retentionpolicyguid} ]
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addDataDisks?machineguid=<guid>&diskinfo=<list>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with added diskguids e.g. params  { 'result': [diskguids] }
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addSmartClientDevice(name, macaddress, cloudspaceguid, description, racku, racky, rackz, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new smart client device to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * name () : <no description found>
+                * macaddress () :            MAC address of the new resource node
+                * cloudspaceguid () : <no description found>
+                * description () :           remarks on the device
+                * racku () :                 size of the device, measured in u e.g. 1u high
+                * racky () :                 physical position of the device in a rack (y coordinate) measured in u slots. The position starts at bottom of rack, starting with 1
+                * rackz () :                 physical position of the device in the rack (z coordinate, 0 = front, 1 = back)
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addSmartClientDevice?name=<>&macaddress=<>&cloudspaceguid=<>&description=<>&racku=<>&racky=<>&rackz=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.cleanup(maxage, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        DRP model cleansing:
+          Removes versioning information on all rootobjects
+          Removes events and jobs older than maxage
+                             
+        
+   
+
+    h4.  Parameters
+    
+
+                * maxage () :             how long the information is kept
+                * jobguid () :            Guid of the job if avalailable else empty string
+                * executionparams () :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/cleanup?maxage=<>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.listSystemNASISOImages(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists iso images available on the SystemNAS
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listSystemNASISOImages?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with available iso images and their paths
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.maintenance(duration, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Execute maintenance tasks on SSO environment.
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * duration (int) :             duration of the maintenance tasks (seconds)
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/maintenance?duration=<int>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addVirtualServerFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, userinfo, vdcinfo, defaultgateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new virtual server to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :            guid of the machine this machine will be created upon.
+                * userinfo (dictionary) :                     {clouduserguid,login,password,email, firstname,lastname}
+                * vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * defaultgateway (string) :               Default gateway for the machine
+                * jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addVirtualServerFromTemplate?cloudspaceguid=<guid>&templatemachineguid=<guid>&name=<string>&languids=<array>&description=<string>&parentmachineguid=<guid>&userinfo=<dictionary>&vdcinfo=<dictionary>&defaultgateway=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getVirtualMachineDiskInfo(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns information about the virtual machine disk information 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :          machineguid of the virtual machine
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getVirtualMachineDiskInfo?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addVirtualDesktop(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, osguid, deviceguid, hostname, backup, boot, alias, userinfo, hypervisor, importancefactor, defaultgateway, monitors, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new virtual desktop.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * cpufrequency (int) :                CPU frequency in MHz.
+                * description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * networkinfo (dictionary) :                 network information {nr_nics: , info { languid, ip} }
+                * diskinfo (list) :                    disk information info [{ diskguid, size, role}]
+                * osguid (guid) :                      osguid of the machine.
+                * deviceguid (guid) :                  deviceguid of the machine.
+                * hostname (string) :                    hostname of the machine
+                * backup (boolean) :                      whether to backup the machine
+                * boot (boolean) :                        whether to boot the machine when pmachine starts
+                * alias (string) :                       alias of the machine
+                * userinfo (dictionary) :                    {clouduserguid,login,password,email, firstname,lastname}
+                * hypervisor (string) :                  hypervisor of the machine.
+                * importancefactor (string) :            hypervisor of the machine.
+                * defaultgateway (string) :              Default gateway for the machine
+                * monitors (list) :                    monitors configuration ['1024x768x24','800x600x24']
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addVirtualDesktop?cloudspaceguid=<guid>&name=<string>&machinetype=<string>&status=<string>&bootstatus=<string>&assetid=<string>&memory=<int>&memoryminimal=<int>&nrcpu=<int>&cpufrequency=<int>&description=<string>&parentmachineguid=<guid>&networkinfo=<dictionary>&diskinfo=<list>&osguid=<guid>&deviceguid=<guid>&hostname=<string>&backup=<boolean>&boot=<boolean>&alias=<string>&userinfo=<dictionary>&hypervisor=<string>&importancefactor=<string>&defaultgateway=<string>&monitors=<list>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getVirtualServerInfo(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns information about the virtual server
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * macaddress (string) :           macaddress of the virtual server
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getVirtualServerInfo?macaddress=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addSmartClientKioskModeFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, deviceguid, devicename, macaddress, vdcinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new smart client based on a template to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid</para><para>@param deviceguid                   guid of an existing smart client device to which this virtual desktop is linked @type deviceguid                    guid</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string) :            guid of the machine this machine will be created upon.
+                * deviceguid () :                    guid of an existing smart client device to which this virtual desktop is linked
+                * devicename () : <no description found>
+                * macaddress () : <no description found>
+                * vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addSmartClientKioskModeFromTemplate?cloudspaceguid=<guid>&templatemachineguid=<guid>&name=<string>&languids=<array>&description=<string>&parentmachineguid=<guid</para><para>@param deviceguid                   guid of an existing smart client device to which this virtual desktop is linked @type deviceguid                    guid</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string>&deviceguid=<>&devicename=<>&macaddress=<>&vdcinfo=<dictionary>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.listFOCVolumes(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+     
+        List FailOver Cache volumes on a given machine
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :            guid of the machine to list the FOC volumes
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listFOCVolumes?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : list of volumes having the FOC on this node
+Return type : list 
+    {noformat}
+
+    h3.sso.addNode(macaddress, name, description, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new node to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * macaddress (string) :           MAC address of the new node
+                * name (string) :                 Name for the new node
+                * description (string) :          Description for the new node
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addNode?macaddress=<string>&name=<string>&description=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with the new device guid  as result and jobguid: {'result': '2388d3d3-4de4-45fe-b17f-4f1ca05ff062', 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getVirtualDesktopInfo(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns information about the virtual desktop 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * macaddress (string) :           macaddress of the virtual desktop
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getVirtualDesktopInfo?macaddress=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addVirtualDesktopFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, userinfo, vdcinfo, defaultgateway, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new virtual desktop to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :            guid of the machine this machine will be created upon.
+                * userinfo (dictionary) :                     {clouduserguid,login,password,email, firstname,lastname}
+                * vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * defaultgateway (string) :               Default gateway for the machine
+                * jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addVirtualDesktopFromTemplate?cloudspaceguid=<guid>&templatemachineguid=<guid>&name=<string>&languids=<array>&description=<string>&parentmachineguid=<guid>&userinfo=<dictionary>&vdcinfo=<dictionary>&defaultgateway=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.assignDeviceToPowerPort(deviceguid, powerswitchdeviceguid, powerportsequence, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Assigns a device to a power port of a powerswitch
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * deviceguid (guid) :               guid of the device assigned to the power port
+                * powerswitchdeviceguid (guid) :    guid of the powerswitch device
+                * powerportsequence (int) :        sequence of the powerport
+                * jobguid (guid) :                  Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/assignDeviceToPowerPort?deviceguid=<guid>&powerswitchdeviceguid=<guid>&powerportsequence=<int>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getVirtualDesktopClient(macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        returns current user connected to the virtual desktop 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * macaddress (string) :           macaddress of the virtual desktop
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getVirtualDesktopClient?macaddress=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary having Ipaddress of the client connected to the Vmachine
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.canMove(movementplan, failover, minimalcapacity, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Checks whether vmachine(s) can be moved to other node(s) 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * movementplan (dict) :           dict of movement plan of the machines { sourcevmachine : target host }
+                * failover () :               flag to use failovering workflow
+                * minimalcapacity (boolean) :        flag to use minimal capacity workflow (e.g. minimal memory...)
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/canMove?movementplan=<dict>&failover=<>&minimalcapacity=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : True or False
+Return type : boolean 
+    {noformat}
+
+    h3.sso.listAvailableStorageDaemons(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all available storage daemons
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid () :              Guid of the job if avalailable else empty string
+                * executionparams () :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listAvailableStorageDaemons?jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addSmartClientUserModeFromTemplate(cloudspaceguid, templatemachineguid, name, languids, description, parentmachineguid, userinfo, vdcinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Adds a new smart client from a template to a Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :               guid of the cloudspace this machine is part of.
+                * templatemachineguid (guid) :          guid of the machine this machine will be based on.
+                * name (string) :                         Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * languids (array) :                     Array of lan guids. For each lan a nic will be created with an ip in the specified lan.
+                * description (string) :                  Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :            guid of the machine this machine will be created upon.
+                * userinfo (dictionary) :                     {clouduserguid,login,password,email, firstname,lastname}
+                * vdcinfo (dictionary) :                      {vdcguid,posx,posy}
+                * jobguid (guid) :                      Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :              Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addSmartClientUserModeFromTemplate?cloudspaceguid=<guid>&templatemachineguid=<guid>&name=<string>&languids=<array>&description=<string>&parentmachineguid=<guid>&userinfo=<dictionary>&vdcinfo=<dictionary>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getSSOVersion(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists version of the current SSO
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getSSOVersion?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.applyTemplate(diskguid, machineguid, overwrite, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        apply template to specific machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :              guid of orignial boot disk
+                * machineguid (guid) :          guid of the machine rootobject
+                * overwrite (boolean) :            boolean value indicating whether the old boot disk in the machine will be overwritten
+                * jobguid () : <no description found>
+                * executionparams () : <no description found>
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/applyTemplate?diskguid=<guid>&machineguid=<guid>&overwrite=<boolean>&jobguid=<>&executionparams=<> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.initialize(email, password, ipaddress, netmask, gateway, dnsserver, network, netmaskpublic, startip, endip, sitename, sitedescription, siteaddress, sitecity, sitecountry, setuptype, firstnodetype, networkname, timezonename, timezonedelta, smtpserver, smtplogin, smtppassword, nrreservedip, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Initializes a new Smart Style Office environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * email () :                 Email for the administrator account. All system level communication will be send to this email address.
+                * password () :              Password for the administrator account.
+                * ipaddress () :             The public IP address for the appliance.
+                * netmask () :               Netmask of the customer LAN.
+                * gateway () :               Gateway IP address of the customer LAN.
+                * dnsserver () :             IP address of the DSN server of the customer LAN.
+                * network () :               Network range to be used as public LAN. Will be used if Smart Style Office environment is NOT integrated into customer LAN.
+                * netmaskpublic () :         Netmask of the new public LAN that will be created.
+                * startip () :               Start IP address of the public LAN. Will be used if Smart Style Office environment is integrated into customer LAN.
+                * endip () :                 End IP address of the public LAN. Will be used if Smart Style Office environment is integrated into customer LAN.
+                * sitename () :              Name for this Smart Style Office site.
+                * sitedescription () :       Description for this Smart Style Office site.
+                * siteaddress () :           Address for this Smart Style Office site.
+                * sitecity () :              City for this Smart Style Office site.
+                * sitecountry () :           County for this Smart Style Office site.
+                * setuptype (string) :            Define setup type configuration [SSO | CLOUDMIRROR]
+                * firstnodetype (string) :        Define node type configuration for first node [COMBINEDNODE | CPUNODE]
+                * networkname (string) :          name of the public network
+                * timezonename (string) :         timezone to be set for physical machines
+                * timezonedelta (float) :        delta of timeZone for the location.
+                * smtpserver (string) :           Smtp server
+                * smtplogin (string) :            Login for the Smtp server
+                * smtppassword (string) :         Password for the Smtp server
+                * nrreservedip (integer) :         Number of reserved ip addresses for the sso nodes
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/initialize?email=<>&password=<>&ipaddress=<>&netmask=<>&gateway=<>&dnsserver=<>&network=<>&netmaskpublic=<>&startip=<>&endip=<>&sitename=<>&sitedescription=<>&siteaddress=<>&sitecity=<>&sitecountry=<>&setuptype=<string>&firstnodetype=<string>&networkname=<string>&timezonename=<string>&timezonedelta=<float>&smtpserver=<string>&smtplogin=<string>&smtppassword=<string>&nrreservedip=<integer>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.moveMachine(movementplan, failover, minimalcapacity, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves a machine to another node     
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * movementplan (dict) :           dict of movement plan of the machines { sourcevmachine : target host }
+                * failover () :               flag to use failovering workflow
+                * minimalcapacity (boolean) :        flag to use minimal capacity workflow (e.g. minimal memory...)
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/moveMachine?movementplan=<dict>&failover=<>&minimalcapacity=<boolean>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.readConfigurationInfo(sourceuri, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Get information about a specified image configuration 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * sourceuri (string) :              URI where the configuration resides
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/readConfigurationInfo?sourceuri=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with available templates and its path
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.stopApplications(applicationguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Stops a list of applications     
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * applicationguids () : <no description found>
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/stopApplications?applicationguids=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.restartApplications(applicationguids, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Restarts a list of applications     
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * applicationguids () : <no description found>
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/restartApplications?applicationguids=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addSmartClientKioskMode(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, osguid, deviceguid, hostname, importancefactor, backup, boot, alias, devicename, macaddress, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new machine based on a template, but allows you to overrule capacity properties of the machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * cpufrequency (int) :                CPU frequency in MHz.
+                * description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * networkinfo (dictionary) :                 network information {nr_nics: , info { languid, ip} }
+                * diskinfo (list) :                    disk information info [{ diskguid, size, role}]
+                * osguid (guid) :                      osguid of the machine.
+                * deviceguid (guid) :                  deviceguid of the machine.
+                * hostname (string) :                    hostname of the machine
+                * importancefactor (int) :            importancefactor of the machine
+                * backup (boolean) :                      whether to backup the machine
+                * boot (boolean) :                        whether to boot the machine when pmachine starts
+                * alias (string</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string) :                        alias of the machine
+                * devicename () : <no description found>
+                * macaddress () : <no description found>
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addSmartClientKioskMode?cloudspaceguid=<guid>&name=<string>&machinetype=<string>&status=<string>&bootstatus=<string>&assetid=<string>&memory=<int>&memoryminimal=<int>&nrcpu=<int>&cpufrequency=<int>&description=<string>&parentmachineguid=<guid>&networkinfo=<dictionary>&diskinfo=<list>&osguid=<guid>&deviceguid=<guid>&hostname=<string>&importancefactor=<int>&backup=<boolean>&boot=<boolean>&alias=<string</para><para>@param  devicename                  name for the new smart client device to which this virtual desktop is linked @type devicename                    string</para><para>@param  macaddress                  mac address for the new smart client device to which this virtual desktop is linked @type macaddress                    string>&devicename=<>&macaddress=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getApplianceInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists info about the appliance vmachine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getApplianceInfo?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.resetFailoverCache(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Resets the Failover Cache of a disk (eg when degraded)
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/resetFailoverCache?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : string containing status OK_SYNC, OK_STANDALONE, CATCHUP , DEGRADED or None
+Return type : string 
+    {noformat}
+
+    h3.sso.getFailoverCacheStatus(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns the Failover Cache status of a disk when existing
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getFailoverCacheStatus?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : string containing status OK_SYNC, OK_STANDALONE, CATCHUP , DEGRADED or None
+Return type : string 
+    {noformat}
+
+    h3.sso.listWebservices(action, jobguid, executionparams)
+
+    h4. Description
+    
+            
+        Lists the webservice urls for a certain action
+        
+        
+   
+
+    h4.  Parameters
+    
+
+                * action () :                  string
+                * jobguid (guid) :                guid of the job if avalailable else empty string
+                * executionparams (dictionary) :        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listWebservices?action=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getSystemNasInfo(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists info systemnas
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getSystemNasInfo?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.failoverManagement(machineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Moves and Initializes all management applications to node with specified machineguid
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * machineguid (guid) :           Guid of the machine to fail over the management applications to
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/failoverManagement?machineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.addSmartClientUserMode(cloudspaceguid, name, machinetype, status, bootstatus, assetid, memory, memoryminimal, nrcpu, cpufrequency, description, parentmachineguid, networkinfo, diskinfo, osguid, deviceguid, hostname, backup, boot, alias, userinfo, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Creates a new machine based on a template, but allows you to overrule capacity properties of the machine.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * cloudspaceguid (guid) :              guid of the cloudspace this machine is part of.
+                * name (string) :                        Name of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * machinetype (string) :                 machinetype of the machine. IMAGEONLY|SMARTCLIENT|VIRTUALDESKTOP|PHYSICAL|SNAPSHOT|VIRTUALSERVER.
+                * status (string) :                      status of the machine. CONFIGURED|IMAGEONLY|RUNNING|TODELETE|DELETING|OVERLOADED|STARTING|HALTED|PAUSED|STOPPING
+                * bootstatus (string) :                  bootstatus of the machine. FROMDISK|RECOVERY|INSTALL
+                * assetid (string) :                     Unique name of the machine. (Can be used as external reference by the user)
+                * memory (int) :                      Memory for the machine in MB. Same as template if not provided.
+                * memoryminimal (int) :               Minumum amount of memory required for the machine in MB. Same as template if not provided.
+                * nrcpu (int) :                       Number of CPUs for the machine. Same as template if not provided.
+                * cpufrequency (int) :                CPU frequency in MHz.
+                * description (string) :                 Description of the machine. The name is a freely chosen name, which has to be unique in SPACE.
+                * parentmachineguid (guid) :           guid of the physical machine this machine will be created upon.
+                * networkinfo (dictionary) :                 network information {nr_nics: , info { languid, ip} }
+                * diskinfo (list) :                    disk information info [{ diskguid, size, role}]
+                * osguid (guid) :                      osguid of the machine.
+                * deviceguid (guid) :                  deviceguid of the machine.
+                * hostname (string) :                    hostname of the machine
+                * backup (boolean) :                      whether to backup the machine
+                * boot (boolean) :                        whether to boot the machine when pmachine starts
+                * alias (string) :                       alias of the machine
+                * userinfo () : <no description found>
+                * jobguid (guid) :                     guid of the job if avalailable else empty string
+                * executionparams (dictionary) :             dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/addSmartClientUserMode?cloudspaceguid=<guid>&name=<string>&machinetype=<string>&status=<string>&bootstatus=<string>&assetid=<string>&memory=<int>&memoryminimal=<int>&nrcpu=<int>&cpufrequency=<int>&description=<string>&parentmachineguid=<guid>&networkinfo=<dictionary>&diskinfo=<list>&osguid=<guid>&deviceguid=<guid>&hostname=<string>&backup=<boolean>&boot=<boolean>&alias=<string>&userinfo=<>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with machineguid as result and jobguid: {'result': guid, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.optimizeDisks(diskguids, scrubagentmachineguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Optimizes a disk. E.g. defragments a Physical disk or scrubs a DSS disks
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguids () : <no description found>
+                * scrubagentmachineguid (guid) :    guid of the machine where scrubbing agent is running
+                * jobguid (guid) :                  guid of the job if avalailable else empty string
+                * executionparams (dictionary) :          dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/optimizeDisks?diskguids=<>&scrubagentmachineguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getAssignedFOCNode(diskguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Retrieves the pmachine of the FailOver Cache for the given disk 
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * diskguid (guid) :           guid of the disk
+                * jobguid (guid) :            guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getAssignedFOCNode?diskguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dict with applicationguid and foc machineguid
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.listAvailableStorageNodes(jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Lists all available storage nodes
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listAvailableStorageNodes?jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.sendSNMPTrap(message, hostdestination, port, community, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generate a notification (trap) to report an event to the SNMP manager with the specified message.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * message (string) :            Message of notification
+                * hostdestination (string) :    Specifies the target network manager host to which the trap message will be sent.
+                * port (int) :               Port number on host
+                * community (string) :          Specifies community name to use
+                * jobguid (guid) :            Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :    Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/sendSNMPTrap?message=<string>&hostdestination=<string>&port=<int>&community=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.initializeNode(deviceguid, nodetype, name, description, hypervisor, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Initializes a device as a specified node type in the Smart Style Office environment.
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * deviceguid (guid) :           Guid of the device to install
+                * nodetype (string) :             Node type of the device to add (CPU, STORAGE or COMBINED)
+                * name (string) :                 Name for the new node
+                * description (string) :          Description for the new node
+                * hypervisor (string) :           Hypervisor for the new node
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/initializeNode?deviceguid=<guid>&nodetype=<string>&name=<string>&description=<string>&hypervisor=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : Dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.setTimezone(timezone, timezonedelta, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        sets timezone for the sso environment
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * timezone (string) :             Timezone to be set
+                * timezonedelta (float) :        delta of timeZone for the location.
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/setTimezone?timezone=<string>&timezonedelta=<float>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.generateMacAddress(languid, customerguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Generates a new MAC address depending on LAN and customer
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * languid (guid</para><para>@param customerguid         guid of customerguid) :               guid of languid
+                * customerguid (guid) :          guid of customerguid
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/generateMacAddress?languid=<guid</para><para>@param customerguid         guid of customerguid>&customerguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : mac address
+Return type : string 
+    {noformat}
+
+    h3.sso.listSmartclientByUser(clouduserguid, customerguid, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Gets the list of smartclients for a specific user
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * clouduserguid (guid</para><para>@param customerguid         guid of customerguid) :         guid of clouduser
+                * customerguid (guid) :          guid of customerguid
+                * jobguid (guid) :              Guid of the job if available else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/listSmartclientByUser?clouduserguid=<guid</para><para>@param customerguid         guid of customerguid>&customerguid=<guid>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : information [{ description , iqn , address, machinename }]
+Return type : dictionary 
+    {noformat}
+
+    h3.sso.getVirtualMachineInfo(macaddress, machinetype, jobguid, executionparams)
+
+    h4. Description
+    
+    
+        Returns information about the virtual machine
+
+        
+   
+
+    h4.  Parameters
+    
+
+                * macaddress (string) :           macaddress of the virtual machine
+                * machinetype (string) :          type of the virtual machine (VIRTUALSERVER | VIRTUALDESKTOP)
+                * jobguid (guid) :              Guid of the job if avalailable else empty string
+                * executionparams (dictionary) :      Dictionary of job specific params e.g. userErrormsg, maxduration ...
+    
+    h4. Example
+    
+            
+            
+            
+            
+    
+    {noformat:nopanel=true}http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_sso/getVirtualMachineInfo?macaddress=<string>&machinetype=<string>&jobguid=<guid>&executionparams=<dictionary> {noformat} 
+    \\ List and Dicts are in [json|http://en.wikipedia.org/wiki/JSON] format.
+    
+    h4. Return
+    
+    {noformat:nopanel=true} 
+Return result : dictionary {'guid','name','pmachineguid','maintenancemode','VBoxProcessID','ipaddress','portnumber'}
+Return type : dictionary 
+    {noformat}
+

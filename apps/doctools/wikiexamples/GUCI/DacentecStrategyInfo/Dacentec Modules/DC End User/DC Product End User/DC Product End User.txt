@@ -1,0 +1,36 @@
+h2. Product description
+
+h3. Cloud Datacenter for Cloud Providers
+
+Dacentec constructed a privately owned datacenters in the US, North Carolina (next to Google in North Carolina on crossing of 2 powergrids). 
+In that datacenters we *applied our new Green Unbreakable Cloud concept* and can prove the impact of our solution.
+
+In Dacentec`s US Datacenter facility in Lenoir, NC, Dacentec provides 300PB storage capacity(Petabyte = 1024 Terabyte = 1.048.576 GBytes) and 150.000 CPU cores capacity.
+
+*Customers can buy raw capacity to build their own IAAS cloud offering: Storage, CPU, Networking, Bandwidth.*
+
+Customers can take benefit from our Datacenter Automation that is tightly integrated with the installed Plate Concept.
+
+Each datacenter unit has a *renewed cooling approach*:
+* Air circulation mechanism brings in non cooled air from the outside and sends in out again in the atmosphere
+* Each rack sucks in air via a ventilator and sends heated air outside
+* Only 2 ventilators per rack
+
+*Racks are totally redesigned*, each racks has:
+* Own air evacuation system: perforated back wall connects to a ventilator that sucks the cooler through the rack
+* Passive power system 48 V: own batteries installed in the bottom that deliver 48V power
+* Built in environmental monitoring: temperature, humidity, airflow
+* Built in energy monitoring
+* Plate servers that are providing the basis for the cloud infrastructure
+
+*Plate servers* that have:
+* An open casing, all the components are attached to an iron plate
+* An Unbreakable Storage System installed: dispersed storage technology including self healing, spreading the data in such a way that the failure of several plate servers does not affect production
+* CPU capacity on board
+* On board energy measurement component
+* Power delivered at 48V directly over an iron power bar in the back of the rack that touches the inserted plates
+{pagebreak}
+Dacentec Racks & Plate Servers:
+
+!dacentec_platerack.png|border=0!
+!dacentec_plate.png|border=0, width=400!

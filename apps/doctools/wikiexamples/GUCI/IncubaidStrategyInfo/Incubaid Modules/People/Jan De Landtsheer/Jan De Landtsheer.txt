@@ -1,0 +1,11 @@
+h3. Jan De Landtsheer - Technical Director Platforms
+
+{table}{tr}{td:valign=top|width=500}
+
+Jan De Landtsheer is working for 20 years together as a team with Kristof De Spiegeleer.
+
+Jan is the genious behind many of the inventions done at Incubaid. Jan is mainly active in everything to do with systems (linux, solaris, storage, networking, ...).
+
+Jan is a master architect and master researcher at Incubaid and cofounded Dedigate, DCT, Q-layer, Amplidata, A-server and now Dacentec.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-jan.png|border=1, width=250! {td}{tr}{table}

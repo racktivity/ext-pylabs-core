@@ -1,0 +1,3 @@
+h2. Racktivity Target Market
+
+The data center market is segmented into two primary categories: corporate or enterprise data centers and commercial data centers. Corporate data centers’ size varies from a server closet to a large data center with hundreds of racks that house thousands of servers. Racktivity’s initial target market is Mid-tier to Enterprise class data centers, as defined by IDC, where the average server per location is approximately 200 and 500, respectively.

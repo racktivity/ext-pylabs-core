@@ -1,0 +1,29 @@
+h1. header 1
+h2. header 2
+
+some *bold text*
+some *boldtext
+over multiple lines*  #this should not work because bold is only supported on 1 line
+
+h2. header x
+
+* 1
+** 11
+*** 111
+**** 111
+
+{code}
+text inhere will not be processed by macro's of formatting
+{code}
+
+{flowchart}
+{flowchart}
+
+{macro:label1 label2 tag1:red tag2:high} #generic macro
+#is comment, goes for rest of line, see there is no space between comment sign and first word, does not span lines
+#2nd line of comment
+# is no comment
+## is definately no comment
+
+!picture.jpg! #is in same dir as page
+!http://www.google.be/images/logos/ps_logo2.png! #picture comes from website

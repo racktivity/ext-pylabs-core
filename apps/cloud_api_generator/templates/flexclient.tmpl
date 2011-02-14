@@ -1,0 +1,125 @@
+#set reservedKeywords = ['delete', 'public', 'private', 'static']
+
+package com.aserver.flex.lib.CloudApi
+{
+    import flash.events.EventDispatcher;
+    import mx.rpc.events.FaultEvent;
+    import mx.rpc.Fault;
+    import mx.rpc.events.ResultEvent;
+    import org.idmedia.as3commons.util.HashMap;
+    import mx.rpc.remoting.mxml.RemoteObject;
+
+    public class $className.capitalize() extends EventDispatcher
+    {
+        private var srv:CloudApiAMFService = new CloudApiAMFService();
+        private var service:String = 'cloud_api_$className';
+        public const EVENTTYPE_ERROR:String = 'request_failed';
+
+        public function $className.capitalize()()
+        {
+        }
+        private function getError(error:*):void
+        {
+            this.dispatchEvent(new FaultEvent(EVENTTYPE_ERROR,true, false, new Fault(error.code, error.level, error.description)));
+            srv.disconnect();
+        }
+#set $typeConverter = {'string':'String','guid':'String','int':'Number','integer':'Number','boolean':'Boolean','dictionary':'Object','array':'Array','ipaddress':'String','datetime':'String'}
+#for $method in $methods:
+        #set flexMethodArgs = ''
+        #if $method.args:
+            #for $arg in $method.argClasses:
+                #set argumentName= $arg.name
+                #if $argumentName in $reservedKeywords:
+                    #set argumentName = 'is%s'%$argumentName
+                #end if
+                #if  $typeConverter.has_key($arg.argtype):
+                   #set $flexMethodArg = '%s:%s'%($argumentName, $typeConverter[$arg.argtype])
+                   #if $arg.hasdefault:
+                      #if isinstance($arg.value, dict) or isinstance($arg.value, list):
+                          #set $flexMethodArg = '%s=%s'%($flexMethodArg, 'null')
+                      #else:
+                          #if isinstance($arg.value, bool):
+                              #set $flexMethodArg = '%s=%s'%($flexMethodArg, str($arg.value).lower())
+                          #else:
+                              #if isinstance($arg.value, int):
+                                  #set $flexMethodArg = '%s=%s'%($flexMethodArg, $arg.value)
+                              #else:
+                                  #if $typeConverter[$arg.argtype] == "Boolean":
+                                      #set $flexMethodArg = '%s=%s'%($flexMethodArg, "false")
+                                  #elif $typeConverter[$arg.argtype] == "Number":
+                                  #set $value = '"%s"'%$arg.value
+                                  #if $arg.value == ""
+                                  #set $value = 0
+                                  #end if
+                                      #set $flexMethodArg = '%s=%s'%($flexMethodArg, $value)
+                                  #else
+                                      #set $flexMethodArg = '%s="%s"'%($flexMethodArg, $arg.value)
+                                  #end if
+                              #end if
+                          #end if
+                      #end if
+                   #end if
+                   #set $flexMethodArgs = '%s,%s'%($flexMethodArgs, $flexMethodArg)
+                #else:
+                    #if $arg.hasdefault:
+                        #set $flexMethodArgs = '%s,%s:Object=null'%($flexMethodArgs, $argumentName)
+                    #else:
+                        #set $flexMethodArgs = '%s,%s:Object'%($flexMethodArgs, $argumentName)
+                    #end if
+                #end if
+            #end for
+        #end if
+        #if len($flexMethodArgs) > 0:
+            #set $flexMethodArgs = $flexMethodArgs[1:]
+        #end if
+
+        #set evTypeString= '%s_response'%$method.name
+        #set resultReceivedMethodName = '%s_ResultReceived'%$method.name
+
+        public const EVENTTYPE_$method.name.upper():String = '$evTypeString';
+        /**
+        #for $doc_line in $method.docs.splitlines()
+        #if len($doc_line) > 0
+        * $doc_line
+        #end if
+        #end for
+        */
+        #if $method.name in $reservedKeywords:
+        #set $methodName = '%s%s'%($method.name, $className.capitalize())
+        #else
+        #set $methodName = $method.name
+        #end if
+        public function $methodName ($flexMethodArgs):void
+        {
+            var params:Object = new Object();
+
+            #if $method.args:
+            #for $arg in $method.argNames:
+            #set argumentName= $arg
+            #if $argumentName in $reservedKeywords:
+                #set argumentName = 'is%s'%$argumentName
+            #end if
+            #if $argumentName == 'executionparams':
+            if ($argumentName == null){
+                $argumentName = new HashMap();
+            }
+            #end if
+            #end for
+            #end if
+
+            #set $line = ','.join($method.argNames)
+            srv.callMethod(service, '$methodName', $resultReceivedMethodName, getError, $line);
+
+        }
+
+        private function $resultReceivedMethodName (e:*):void
+        {
+            this.dispatchEvent(new ResultEvent(EVENTTYPE_$method.name.upper(), false, false, e.result));
+            srv.disconnect();
+        }
+
+
+#end for
+    }
+}
+

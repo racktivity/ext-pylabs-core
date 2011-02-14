@@ -1,0 +1,11 @@
+h2. DAAS USPs
+
+* DAAS is a full private cloud per customer: private cpu and private storage\!
+* DAAS customers buy capacity and manage that capacity themselves\!
+* DAAS has a powerfull GUI allowing to manage 100s of VMs in one interface\!
+* DAAS offers customers a high reliable SAN for storage\!
+* DAAS offers a better uptime thanks to built-in automatic failover\!
+* DAAS offers a better reliability thanks to built-in backup and monitoring\!
+* DAAS is hosted in a green cloud datacenter, reducing the carbon footprint\!
+* DAAS is offered at disruptive prices, allowing customers to compete with the big boys\!
+* DAAS is offered with a framework to write own applications\!

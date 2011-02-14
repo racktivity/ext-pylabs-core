@@ -1,0 +1,13 @@
+h1. Product Information sheet Amplidata
+
+{include:Amplidata Market Situation}
+{pagebreak}
+{include:Amplidata Solution}
+{pagebreak}
+{include:Amplidata Target Market}
+
+{include:Amplidata Product Description}
+
+{include:Amplidata Competitive}
+
+{include:Amplidata Exclusions}

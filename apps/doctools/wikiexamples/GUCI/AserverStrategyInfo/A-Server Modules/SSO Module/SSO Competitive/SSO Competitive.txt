@@ -1,0 +1,22 @@
+h2. SmartStyle Office Competitive
+
+* *Best of breed* custom made *combinations*:
+** VMware virtualisation installed on hardware
+** Citrix Xenserver installed on hardware
+** Microsoft HyperV
+* *Hardware vendors*, trying to push a solution through more and more add ons and pre-installs:
+** Example: HP with its total care solution
+** Netapp, Equallogic bringing their product as a basis storage layer for virtualization systems
+* *Old school way* of delivering IT by channel partners
+** HP, Dell, Fujutsi Siemens server with Microsoft Small Business Server
+** Storage RAID server vendors including additional tools to built storage pools, ex Dell, HP, SuperServer
+* *Hosting Service Providers* (HSPs)
+** Hosting companies core business is still dedicated servers, with or without virtualization; SSO offering virtual servers and virtual desktops at the end user premise in SMB, an important segment for many HSPs, goes in direct competition
+** HSPs have been trying to convince SMBs to migrate their office applications to their datacenters with tools with messaging & collaboration bundles including Hosted Exchange, Hosted Sharepoint, Hosted CRM, Terminal Services, Backup, ...; also here SSO competes by allowing partners to set up all the tools private at the end user site or even hosted in a datacenter
+** HSPs are now embracing the cloud and rolled out their first offerings, mostly auto provisioning of virtual servers by using online control panels
+* *Backup for SMB vendors*
+** Both Online and on premise sellers of backup solutions are preparing a cloud to incorporate more office functions than only backup
+** Examples:
+*** software vendors setting up their own clouds will incorporate step by step more functions of the SME office (Kaseya)
+* *Public Clouds*: not as a substitute product for the partner, but they go directly to the SMB
+** Google Apps Professional

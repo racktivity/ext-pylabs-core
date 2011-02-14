@@ -1,0 +1,16 @@
+h3. Joost Damad - Software Engineer
+
+{table}{tr}{td:valign=top|width=500}
+
+Joost Damad is an experienced software engineer in Linux, Solaris, performance testing, scalability, clustering, lowlevel bughunting en fixing, C, C++, python, ruby, erlang, java, clearcase, subversion, mercurial, networking (solid knowledge of a large number of protocols). He is a contributer to a couple of open-source projects, the Debian GNU/Linux distribution being the most important one.
+
+Previously he worked 9 years at divisions as a Software Engineer at Siemens. He completed several projects around:
+* Integrating and extending multiple OEM RADIUS servers
+* Embedded development for an ATM router
+* Integration, testing and extending a 3rd party SIP application server.Integration, development and testing of a PoC (Push To Talk Over Cellular) service.
+* Work out prototypes of products with simularities to PoC
+* Development and integration of an Instant Messaging product. Analysis of scalability concepts, implementation of a scalable interface service.
+
+Technologies he worked with professionally at Siemens: RADIUS, LDAP, SNMP, SOAP, Oracle, MySQL, C, C++, Python, Solaris, Shell scripting, packaging, TCP/IP, ATM, VxWorks, Linux, SIP, DIAMETER, RMI, erlang/OTP
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-joost.png|border=1, width=250! {td}{tr}{table}

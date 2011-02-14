@@ -1,0 +1,17 @@
+h3. Wouter Van Eetvelde - COO Storage
+
+{table}{tr}{td:valign=top|width=500}
+
+Wouter Van Eetvelde is COO of Amplidata, a company active in the field of Cloud Storage and providing technology to its Customers in order to integrate these new concepts into their IT infrastructure. He is leading the architecture, software and customer support teams with local and offshored teams.
+
+Before Wouter Van Eetvelde was a Director of Engineering at Symantec where he was managing the worldwide development of the PureDisk Product, leading teams in Europe, USA, India and China and driving the product quarterly revenue over 100 mio USD.
+
+Wouter was a Director QA, Support & Professional Services at Datacenter Technologies (DCT), a software company that provided Storage Solutions for Archival, Backup and Restore in Europe and the USA.
+
+He was Operations Director at Dedigate, now a subsidiary of Terremark, a market leader in managed dedicated hosting of complex internet infrastructure projects.
+
+He started his carreer at KBC Bank where he held roles as Business Consultant in several areas in IT.
+
+He graduated as a Civil Electronics Engineer in Computer Science at the University of Ghent, holds a Post academic degree in Business Administration, attended the IBO Management School in Heist (The Netherlands) and attended Vlerick Management School in project management in high tech startups.
+
+{td}{td:valign=top}&nbsp;&nbsp;&nbsp;{td}{td:valign=top} !foto-wouter.png|border=1, width=250! {td}{tr}{table}

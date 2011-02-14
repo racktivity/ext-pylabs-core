@@ -1,0 +1,15 @@
+h2. DAAS: Problems we are trying to resolve, situation of market
+
+Today the typical problems in datacenters include reliance on labor intensive, very limited automation‏, limited visibility and lack of true utility computing. Typically, every new application or company looking for a private hosted solution will be installed on dedicated infrastructure. These shortages resulted in datacenters with a usage of 10% of its available resources.
+
+The market started evolving and many adopted virtualization methods in order to optimize the density issue in datacenters. However, the complexity in management, the automation and scalability has often not improved. The need of the market for working with IT infrastructure as a utility has not completely met. Additionally, in order to obtain the same quality, costs have not dropped but even increased.
+
+Several players though succeeded in bringing a solution for targeted segments solving this problem. Amazon Webservices, a division of the popular Amazon.com online shop, has become the largest provider of Infrastructure as a Service brought to developers. They have now become the reference in this area. With this service, a new stream of solutions was named 'cloud computing', a buzzword without a clear definition, but representing the improved agility towards users dealing with IT infrastructure: auto provisioning, scaling, self-healing, redundant storage architecture.
+
+The Cloud Computing trend started and several companies initiated successful Infrastructure as a Service solutions. We see high end solutions like Terremark and solutions like Rackspace and GoGrid that are for people searching for hosting and not for ISVs.
+
+However, these innovators in cloud computing brought solutions that are presented as either a public cloud solution where flexibility and choices are still limited or as evolved hosting solutions where packages with pieces of automation are solved.
+
+ISVs and Service Providers are still required to adapt their way of writing applications to a provider. Basically, what they need is a solution that allows them to have the existing way of IT mimicked in a private dedicated cloud: private storage, private networking, private virtual and physical servers.
+
+Finally, the market is and will be more and more challenged by players as google and amazon with low cost application platforms. The market demand for private, secured and independent solutions will not go away and current challengers are often too expensive with their alternative cloud solutions.

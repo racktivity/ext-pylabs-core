@@ -1,0 +1,21 @@
+h2. Dacentec: Problems we are trying to resolve, situation of the market
+
+Datacenters are historically built out from a real estate perspective: renting out floorspace in a secured and redundant environment including power and bandwidth for production infrastructure. Those datacenters have shortages that generate extra costs and creates inefficiency that impacts uptime. This because these *datacenters* have an old *design where the Power Usage Effectiveness (PUE) is bad*. To power 1000 watts of production servers, most datacenters require another 1500 watts to cool down the datacenter, convert the power via UPSs, etc. totalling 2500 watts\! (a *PUE of 2,5*)
+
+*Datacenters that took action and obtained an optimized the PUE up to 1,8 in average*, by making improvements on the supply side of the datacenter: airco, airflow, containment, ... Best PUE reported so far are around 1,21.
+
+Green *datacenters aim to get to 30%-40% power savings but almost never achieve this*. The result of the optimization is in realty \+-20% of cost savings. That is because datacenters:
+
+* +do not know+ what +workloads+ are running on their servers
+* +do not know who is polluting+ their power usage (bad power supplies, overloaded racks, …)
+* +do not know who is consuming+ all the +power+ (equipment, …) and cannot charge back for power usage.
+* +still lose a lot of power+ via many step conversions
+* +do not invest in optimization power at the load side+: only 10% of the resources are used: idle servers that are never powered down, few servers use built-in energy reduction functions (ACPI), ...
+* +do not have a control of the physical layer+: temperature and airflow are the most difficult to control parameters in a datacenter\! Racks are never equipped with airflow & temperature sensors, causing hotspots that can only be solved via overcooling
+
+*New datacenter challengers* emerged in the market like: Google, Yahoo, Facebook, ... . 
+These new challengers significantly improved the way how dealing with reducing costs through renewed datacenter designs and new ways of dealing with energy usage. 
+Google and Apple are the best examples of companies having and still building datacenters that are more efficient in cost and uptime and that brought them in a position that makes it for others impossible to obtain the same cost advantages. 
+They report PUEs of 1,21 and are aiming lower.
+
+Today's *top notch commercial datacenters have become too expensive and too complex to manage cost effectively*. Datacenter created complexities in setting up redundancies that have been improving the mean time between failures, but caused an increase of the mean time to repair, resulting in longer downtimes.

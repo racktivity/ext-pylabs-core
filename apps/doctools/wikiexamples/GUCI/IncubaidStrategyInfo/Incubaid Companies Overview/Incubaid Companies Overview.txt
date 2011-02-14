@@ -1,0 +1,68 @@
+h1. Incubaid Companies Overview
+
+{include:Incubaid Companies}
+{pagebreak}
+{include:Cloud Pyramid}
+{include:Cloud Evolution}
+{pagebreak}
+
+h1. A-Server
+
+h2. DAAS
+
+{include:DAAS Market Situation}
+{include:DAAS Solution}
+{pagebreak}
+{include:DAAS Target Market}
+{include:DAAS Competitive}
+
+{pagebreak}
+
+h2. SmartStyle Office
+
+{include:SSO Market Situation}
+{pagebreak}
+{include:SSO Solution}
+{pagebreak}
+{include:SSO Product Description}
+{include:SSO Target Market}
+{include:SSO Competitive}
+{pagebreak}
+
+h2. DC Automate
+
+{include:DC Automate Market Situation}
+{pagebreak}
+{include:DC Automate Solution}
+{include:DC Automate Target Market}
+{include:DC Automate Competitive}
+{pagebreak}
+
+h1. Amplidata
+
+{include:Amplidata Market Situation}
+{pagebreak}
+{include:Amplidata Solution}
+{pagebreak}
+{include:Amplidata Product Description}
+{include:Amplidata Target Market}
+{include:Amplidata Competitive}
+{pagebreak}
+
+h1. Racktivity
+
+{include:Racktivity Market Situation}
+{include:Racktivity Solution}
+{pagebreak}
+{include:Racktivity Product Description}
+{include:Racktivity Target Market}
+{include:Racktivity Competitive}
+{pagebreak}
+
+h1. Dacentec
+
+{include:DC Market Situation}
+{include:DC Solution}
+{pagebreak}
+{include:DC Target Datacenter Construction}
+{include:DC Competitive}

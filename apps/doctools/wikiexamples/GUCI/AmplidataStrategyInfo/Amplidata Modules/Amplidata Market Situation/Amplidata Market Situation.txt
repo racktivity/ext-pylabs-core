@@ -1,0 +1,14 @@
+h2. Amplidata: Problems we are trying to resolve, situation of the market
+ 
+A key challenge for storage-intensive online application providers is how to build 100TB+ storage infrastructures that meet the capacity and availability requirements of an always-online service. Enterprise storage solutions are too expensive, so most service providers choose to build a system in-house using open source software components and cheap hardware. Whether the solution is based on a cloud storage system, a clustered file system, IP san or block relocation technology, the data is typically stored on hard disks which are protected against failures using RAID.
+ 
+Disk capacities have increased tremendously (average disk size is 1 TB) and because of the always available requirements for data, RAID is no longer a viable technology:
+ 
+* The Reliability and Availability score of RAID drops as disk capacity increases because of
+lengthy and cumbersome rebuilds that cause data to remain unprotected for multiple days
+* RAID is power-hungry as all disks need to keep spinning: energy consumption is unacceptable according to current standards
+* As RAID is statically configured, managing and scaling RAID systems is cumbersome and resource intensive
+* RAID does not protect against bit errors or bit rot on disk, block replication or multiple data copies
+* RAID systems do not retain history of the stored data, making it impossible to go back in time to recover from eventual corruption
+ 
+Amplidata replaces RAID at the bottom layer of the storage stack and provides better levels of availability at a fraction of the cost. The Amplidata technology can be integrated as one or multiple high-available disks in your application or legacy storage environment where currently raid volumes would be used as storage targets. Using the Amplidata disk technology will make a storage environment 10,000 times more reliable while consuming less raw disk capacity and power.

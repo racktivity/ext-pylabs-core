@@ -1,0 +1,10 @@
+h1. Product Info Smart Style MirrorCloud
+
+{include:MC Solution}
+{include:MC Market Situation}
+{include:MC Target Market}
+{pagebreak}
+{include:MC Product Description}
+{pagebreak}
+{include:MC Pricing}
+{include:MC Exclusions}

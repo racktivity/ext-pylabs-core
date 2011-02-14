@@ -1,0 +1,18 @@
+h1. DC Automate Product Information Sheet
+
+{include:DC Automate Market Situation}
+{pagebreak}
+{include:DC Automate Solution}
+
+{include:DC Automate Target Market}
+{pagebreak}
+{include:DC Automate Product description}
+{pagebreak}
+{include:DC Automate USPs}
+
+{include:DC Automate Competitive}
+
+{include:DC Automate Pricing}
+
+{include:DC Automate Exclusions}
+

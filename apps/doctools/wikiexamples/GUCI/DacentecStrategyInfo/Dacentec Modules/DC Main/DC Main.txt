@@ -1,0 +1,14 @@
+h1. World Greenest Cloud Datacenters
+
+{include:DC Introduction}
+
+{include:DC Market Situation}
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+{include:DC Mission}
+
+{include:DC Solution}
