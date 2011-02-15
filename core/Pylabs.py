@@ -172,7 +172,7 @@ def _pylabs_qpackagetools():
     return QPackageTools()
 
 
-class pylabs:
+class Pylabs:
     '''Central pylabs framework class, of which C{q} is an instance'''
     # Construct the singleton objects
     system = pylabsContainerAttributeDescriptor('system',_pylabs_system)

@@ -33,7 +33,7 @@
 #
 # </License>
 
-__version__ = (5, 0, 0)
+__version__ = (3, 1, 0)
 
 __all__ = ['__version__', 'q', 'i']
 
@@ -240,10 +240,10 @@ except Exception:
 del _setup_stacktrace_hook
 
 
-from pylabs.Pylabs import pylabs
+from pylabs.Pylabs import Pylabs
 from pylabs.interactive.Interactive import Interactive
 
-q = pylabs()
+q = Pylabs()
 i = Interactive()
 
 #from pylabs.testing import pylabsTestCase
