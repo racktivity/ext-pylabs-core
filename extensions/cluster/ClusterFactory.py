@@ -1,5 +1,5 @@
-from pymonkey import q,i
-from pymonkey.Shell import *
+from pylabs import q,i
+from pylabs.Shell import *
 from Replicator import Replicator
 from Cluster import Cluster
 

@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 from codetools.parser.CodeParser import CodeParser
 from codetools.codeformatters.templates.CodeFormatterStd import CodeFormatterStd
 from codetools.parser.CodeStructure import CodeStructure

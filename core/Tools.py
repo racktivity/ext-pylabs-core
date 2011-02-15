@@ -33,21 +33,21 @@
 #
 # </License>
 
-'''Accessors (factories) to several PyMonkey tools'''
+'''Accessors (factories) to several pylabs tools'''
 
 # Implementation details
 # ======================
 # There's one container class, 'Tools', to which a reference is created on
-# q.tools (the tools attribute of the PYMonkey class is class Tools (not an
+# q.tools (the tools attribute of the pylabs class is class Tools (not an
 # instance).
 # In Tools some attributes are set, references to tool classes, which expose
 # one or more static methods.
 # Overall: this works using static methods, no instances are created (since
 # this is not necessary for our purpose).
 
-import pymonkey
-from pymonkey.inifile.IniFile import IniFile
-import pymonkey.hash
+import pylabs
+from pylabs.inifile.IniFile import IniFile
+import pylabs.hash
 
 class InifileTool:
     @staticmethod
@@ -60,9 +60,9 @@ class InifileTool:
         @raises RuntimeError: When the provided filename doesn't exist
 
         @returns: Opened INI file object
-        @rtype: pymonkey.inifile.IniFile.IniFile
+        @rtype: pylabs.inifile.IniFile.IniFile
         '''
-        if not pymonkey.q.system.fs.exists(filename):
+        if not pylabs.q.system.fs.exists(filename):
             raise RuntimeError('Attempt to open non-existing INI file %s' % filename)
         return IniFile(filename, create=False)
 
@@ -76,9 +76,9 @@ class InifileTool:
         @raises RuntimeError: When the provided filename exists
 
         @returns: New INI file object
-        @rtype: pymonkey.inifile.IniFile.IniFile
+        @rtype: pylabs.inifile.IniFile.IniFile
         '''
-        if pymonkey.q.system.fs.exists(filename):
+        if pylabs.q.system.fs.exists(filename):
             raise RuntimeError('Attempt to create existing INI file %s as a new file' % filename)
         return IniFile(filename, create=True)
 
@@ -92,20 +92,20 @@ class ExpectTool:
         @type cmd: string
 
         @returns: Expect session
-        @rtype: pymonkey.cmdline.QExpect.QExpect
+        @rtype: pylabs.cmdline.QExpect.QExpect
         '''
-        from pymonkey.cmdline.QExpect import QExpect
+        from pylabs.cmdline.QExpect import QExpect
         return QExpect(cmd=cmd or '')
 
 
 class HashTool:
     pass
 
-for alg in pymonkey.hash.SUPPORTED_ALGORITHMS:
+for alg in pylabs.hash.SUPPORTED_ALGORITHMS:
     setattr(HashTool, '%s_string' % alg,
-            staticmethod(getattr(pymonkey.hash, alg)))
+            staticmethod(getattr(pylabs.hash, alg)))
     setattr(HashTool, alg,
-            staticmethod(getattr(pymonkey.hash, '%s_file' % alg)))
+            staticmethod(getattr(pylabs.hash, '%s_file' % alg)))
 
 
 class Tools:

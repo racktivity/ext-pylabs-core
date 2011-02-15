@@ -1,8 +1,8 @@
-#import pymonkey
+#import pylabs
 import pprint
-from pymonkey.Shell import *
-from pymonkey.messages.MessageObject import MessageObject
-from pymonkey import q
+from pylabs.Shell import *
+from pylabs.messages.MessageObject import MessageObject
+from pylabs import q
 
 class MessageTargetBase(object):
     

@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
 class ManagementConfiguration(object):
     """

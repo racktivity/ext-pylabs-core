@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 from QPackageObject4 import QPackageObject4
 from QPackageObject3 import QPackageObject3
 from DependencyDef4 import DependencyDef4

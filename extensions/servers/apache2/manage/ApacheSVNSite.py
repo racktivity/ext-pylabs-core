@@ -33,7 +33,7 @@
 #
 # </License>
  
-from pymonkey import q
+from pylabs import q
 from ApacheSite import ApacheSite, SiteTemplate
 
 SVNSiteTemplate = SiteTemplate.subclass(source="""

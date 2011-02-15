@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 
 class QPackageVersioning(object):
     @staticmethod

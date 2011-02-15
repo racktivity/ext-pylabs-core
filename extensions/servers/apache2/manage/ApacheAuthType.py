@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.baseclasses.BaseEnumeration import EnumerationWithValue
+from pylabs import q
+from pylabs.baseclasses.BaseEnumeration import EnumerationWithValue
 
 from PgsqlAuth import PgsqlAuth
 from BasicAuth import BasicAuth

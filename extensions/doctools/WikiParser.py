@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 import os
 import json
 import re, htmlentitydefs
@@ -59,14 +59,14 @@ class Parser(object):
             self._te = taskletengine
         else:
             raise RuntimeError("Either macrotaskletspath or taskletengine should be passed to %s" % self.__class__)
-        self.content=pymonkey.q.system.fs.fileGetContents(self.wikifilePath)
+        self.content=pylabs.q.system.fs.fileGetContents(self.wikifilePath)
         self.NEWLINE = "NL||"
 
     def logError(self, log):
         self._errors.append(log)
     
     def reload(self):
-        self.content=pymonkey.q.system.fs.fileGetContents(self.wikifilePathWorking)
+        self.content=pylabs.q.system.fs.fileGetContents(self.wikifilePathWorking)
         
     def do(self):
         tokens = list()

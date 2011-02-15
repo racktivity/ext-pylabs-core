@@ -37,7 +37,7 @@ from heapq import heapify, heappop, heappush
 from itertools import islice, cycle
 from tempfile import gettempdir
 import os
-import pymonkey
+import pylabs
 
 def merge(chunks,key=None):
     if key is None:
@@ -56,7 +56,7 @@ def merge(chunks,key=None):
                 os.remove(chunk.name)
                 chunks.remove(chunk)
             except:
-                pymonkey.q.logger.log("StopIterationException", 5)
+                pylabs.q.logger.log("StopIterationException", 5)
         else:
             heappush(values,((key(value),index,value,iterator,chunk)))
 
@@ -72,7 +72,7 @@ def merge(chunks,key=None):
                 os.remove(chunk.name)
                 chunks.remove(chunk)
             except:
-                pymonkey.q.logger.log("StopIterationException", 5)
+                pylabs.q.logger.log("StopIterationException", 5)
         else:
             heappush(values,(key(value),index,value,iterator,chunk))
 
@@ -104,13 +104,13 @@ def batch_sort(input, output, header, key=None,buffer_size=32000,tempdirs=[]):
                     chunk.close()
                     os.remove(chunk.name)
                 except:
-                    pymonkey.q.logger.log("StopIterationException", 5)
+                    pylabs.q.logger.log("StopIterationException", 5)
             if output_chunk not in chunks:
                 try:
                     output_chunk.close()
                     os.remove(output_chunk.name)
                 except:
-                    pymonkey.q.logger.log("StopIterationException", 5)
+                    pylabs.q.logger.log("StopIterationException", 5)
             return
     finally:
         input_file.close()
@@ -131,5 +131,5 @@ def batch_sort(input, output, header, key=None,buffer_size=32000,tempdirs=[]):
                 chunk.close()
                 os.remove(chunk.name)
             except:
-                pymonkey.q.logger.log("StopIterationException", 5)
+                pylabs.q.logger.log("StopIterationException", 5)
         output_file.close()

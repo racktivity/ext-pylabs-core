@@ -35,7 +35,7 @@
  
 #searchFilters module contains the possible values for search parameters supported by confluence
 
-from pymonkey.baseclasses.BaseEnumeration import BaseEnumeration, EnumerationWithValue
+from pylabs.baseclasses.BaseEnumeration import BaseEnumeration, EnumerationWithValue
 
 class ConfluenceTypeFilter(EnumerationWithValue):
     """ConfluenceTypeFilter contains the type values supported by confluence search"""

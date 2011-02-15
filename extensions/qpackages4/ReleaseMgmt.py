@@ -1,7 +1,7 @@
 import os, re, tarfile
 import difflib
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
+from pylabs import q
+from pylabs.baseclasses import BaseType
 
 ##########################################
 #

@@ -41,8 +41,8 @@ expose several classes in one server instance.
 
 Here's a sample service:
 
->>> from pymonkey.baseclasses.xmlrpc.server import ManagementClassXMLRPCServer
->>> from pymonkey.baseclasses.xmlrpc.server import xmlrpc_expose, xmlrpc_require_authentication
+>>> from pylabs.baseclasses.xmlrpc.server import ManagementClassXMLRPCServer
+>>> from pylabs.baseclasses.xmlrpc.server import xmlrpc_expose, xmlrpc_require_authentication
 >>>
 >>> class AuthHandler:
 ...     def check(self, username, password):
@@ -77,7 +77,7 @@ Here's a sample service:
 ...     main()
 
 Once this service is running, you can access it using any XMLRPC client. See
-L{pymonkey.baseclasses.xmlrpc.client} for a more user-friendly approach.
+L{pylabs.baseclasses.xmlrpc.client} for a more user-friendly approach.
 
 Here's a sample using plain xmlrpclib:
 
@@ -108,7 +108,7 @@ from twisted.internet import reactor
 from twisted.web import xmlrpc, server
 from twisted.python import log
 
-import pymonkey
+import pylabs
 
 #TODO Introspection
 #TODO Document xmlrpc_request functionality
@@ -287,7 +287,7 @@ class RootServer(xmlrpc.XMLRPC):
 
         if not self.authenticationHandler:
             msg = 'XMLRPC method requires athentication, but no authentication handler registered'
-            pymonkey.q.logger.log(msg)
+            pylabs.q.logger.log(msg)
             raise RuntimeError(msg)
 
         if not self.authenticationHandler.check(user, password):
@@ -345,7 +345,7 @@ class RootServer(xmlrpc.XMLRPC):
 class ManagementClassXMLRPCServer(object):
     '''Server object to expose one or more service objects over XMLRPC
 
-    See the module documentation of L{pymonkey.baseclasses.xmlrpc.server} for
+    See the module documentation of L{pylabs.baseclasses.xmlrpc.server} for
     an extensive example.
     '''
     def __init__(self, port=8000, authentication_handler=None, interface=''):
@@ -395,7 +395,7 @@ class ManagementClassXMLRPCServer(object):
         Any exposed method on the manager added at endpoint marked with
         xmlrpc_expose will be available as C{endpoint.methodname} on the
         XMLRPC server. See the module documentation of
-        L{pymonkey.baseclasses.xmlrpc.server} for an extensive example.
+        L{pylabs.baseclasses.xmlrpc.server} for an extensive example.
         '''
         manager_server = generate_manager_server(manager)
         self._managers[manager] = (endpoint, manager_server)

@@ -34,7 +34,7 @@
 # </License>
 
 
-import pymonkey
+import pylabs
 from TaskletEngine4 import TaskletEngine4
 
 class TaskletEngineFactory4:

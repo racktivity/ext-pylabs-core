@@ -35,8 +35,8 @@
 
 import os
 import os.path
-import pymonkey
-#from pymonkey.Shell import *
+import pylabs
+#from pylabs.Shell import *
 
 
 class FSWalker:
@@ -46,7 +46,7 @@ class FSWalker:
         if depths==[]:
             return True
         #path=q.system.fs.pathclean(path)
-        path=pymonkey.q.system.fs.pathRemoveDirPart(path,root)
+        path=pylabs.q.system.fs.pathRemoveDirPart(path,root)
         for depth in depths:
             dname=os.path.dirname(path)
             split=dname.split(os.sep)
@@ -61,8 +61,8 @@ class FSWalker:
     def _checkContent(path,contentRegexIncludes=[], contentRegexExcludes=[]):
         if contentRegexIncludes==[] and contentRegexExcludes==[]:
             return True
-        content=pymonkey.q.system.fs.fileGetContents(path)
-        if pymonkey.q.codetools.regex.matchMultiple(patterns=contentRegexIncludes,text=content) and not pymonkey.q.codetools.regex.matchMultiple(patterns=contentRegexExcludes,text=content):
+        content=pylabs.q.system.fs.fileGetContents(path)
+        if pylabs.q.codetools.regex.matchMultiple(patterns=contentRegexIncludes,text=content) and not pylabs.q.codetools.regex.matchMultiple(patterns=contentRegexExcludes,text=content):
             return True
         return False
 
@@ -121,7 +121,7 @@ class FSWalker:
         @param depths array of depth values e.g. only return depth 0 & 1 (would mean first dir depth and then 1 more deep) (array(int)) 
         
         '''
-        if not pymonkey.q.system.fs.isDir(root):
+        if not pylabs.q.system.fs.isDir(root):
             raise ValueError('Root path for walk should be a folder')
         if recursive==False:
             depths=[0]
@@ -134,12 +134,12 @@ class FSWalker:
             if includeFolders:
                 for dirname in dirnames:
                     path = os.path.join(dirpath, dirname)
-                    if pymonkey.q.codetools.regex.matchMultiple(patterns=pathRegexIncludes,text=path) and not pymonkey.q.codetools.regex.matchMultiple(patterns=pathRegexExcludes,text=path):
+                    if pylabs.q.codetools.regex.matchMultiple(patterns=pathRegexIncludes,text=path) and not pylabs.q.codetools.regex.matchMultiple(patterns=pathRegexExcludes,text=path):
                         if FSWalker._checkDepth(path,depths,root) and FSWalker._checkContent(path,contentRegexIncludes, contentRegexExcludes):
                             callback(arg, path)
             for filename in filenames:
                 path = os.path.join(dirpath, filename)
-                if pymonkey.q.codetools.regex.matchMultiple(patterns=pathRegexIncludes,text=path) and not pymonkey.q.codetools.regex.matchMultiple(patterns=pathRegexExcludes,text=path):
+                if pylabs.q.codetools.regex.matchMultiple(patterns=pathRegexIncludes,text=path) and not pylabs.q.codetools.regex.matchMultiple(patterns=pathRegexExcludes,text=path):
                     if FSWalker._checkDepth(path,depths,root) and FSWalker._checkContent(path,contentRegexIncludes, contentRegexExcludes):
                         callback(arg, path)
                 
@@ -149,9 +149,9 @@ class FSWalker:
             #items = [os.path.join(root, name) for name in os.listdir(root)]
             #if includeFolders:
                 ##Loop through all items in 'items', filter out folders, loop over these
-                #for dirpath in (item for item in items if pymonkey.q.system.fs.isDir(item)):
+                #for dirpath in (item for item in items if pylabs.q.system.fs.isDir(item)):
                     #callback(arg, dirpath)
 
             ##Loop through all items in 'items', filter out files, loop over these
-            #for filepath in (item for item in items if pymonkey.q.system.fs.isFile(item)):
+            #for filepath in (item for item in items if pylabs.q.system.fs.isFile(item)):
                 #callback(arg, filepath)

@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class networkzonerule:
     def getXMLSchema (self, networkzoneruleguid, jobguid = "", executionparams = {}):

@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class vdc:
     def importVdc (self, sourceUri, vdcGuid = "", executerMachineGuid = "", jobguid = "", executionparams = {}):

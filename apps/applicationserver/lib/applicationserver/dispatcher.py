@@ -57,7 +57,7 @@ CHECK_AUTHORIZATION_METHOD = 'checkAuthorization'
 APPLICATIONSERVER_REQUEST_ARG = 'applicationserver_request'
 APPLICATIONSERVER_HUMAN_READABLE_ARG = 'humanReadableResponse'
 
-from pymonkey import q
+from pylabs import q
 
 #TODO Find a better base exception type
 #TODO Difference between authentication required and authentication failed
@@ -431,7 +431,7 @@ def expose(func):
     def exposed_func(*args, **kwargs):
         # We'll pop off the EXPOSED_SERVICE_NAME_KWARG since this should not be
         # handled to the called function. In this implementation we don't need
-        # it altogether, but some code, eg the PyMonkey binding stuff, wants it
+        # it altogether, but some code, eg the pylabs binding stuff, wants it
         # (and provides a different implementation of C{expose}), so it's
         # always used to call exposed functions.
         kwargs = kwargs.copy()

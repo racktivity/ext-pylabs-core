@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey.baseclasses import BaseEnumeration
+from pylabs.baseclasses import BaseEnumeration
 
 class SeverityType(BaseEnumeration):
     """Utility class which gives string representation of severity level"""

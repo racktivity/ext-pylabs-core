@@ -50,7 +50,7 @@ simple script, eg.
 ...     registerVisitor(name)
 ...     q.gui.dialog.message('Welcome to the party, %s' % name)
 
-These scripts are PyMonkey2 C{tasklets}, see the documentation of the tasklet
+These scripts are pylabs2 C{tasklets}, see the documentation of the tasklet
 extension for more information.
 
 There's one issue here since we're working in a web-based context: the HTTP
@@ -525,9 +525,9 @@ import simplejson
 
 # We require this for the tests to run fine
 if __name__ == '__main__':
-    from pymonkey.InitBase import q, i #pylint: disable-msg=F0401
+    from pylabs.InitBase import q, i #pylint: disable-msg=F0401
 else:
-    from pymonkey import q, i #pylint: disable-msg=F0401
+    from pylabs import q, i #pylint: disable-msg=F0401
 
 class UnknownSessionException(Exception):
     '''Exception raised when an invalid session ID is used'''

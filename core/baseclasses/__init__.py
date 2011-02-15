@@ -35,12 +35,12 @@
 
 __all__ = ['BaseEnumeration', 'EnumerationWithValue', 'BaseType', ]
 
-from pymonkey.baseclasses.BaseEnumeration import BaseEnumeration, EnumerationWithValue
-from pymonkey.baseclasses.ManagementApplication import ManagementApplication
-from pymonkey.baseclasses.CMDBApplicationObject import CMDBApplicationObject
-from pymonkey.baseclasses.CMDBObject import CMDBObject
-from pymonkey.baseclasses.CMDBServerObject import CMDBServerObject
-from pymonkey.baseclasses.SystemWrapper import SystemWrapper
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
+from pylabs.baseclasses.BaseEnumeration import BaseEnumeration, EnumerationWithValue
+from pylabs.baseclasses.ManagementApplication import ManagementApplication
+from pylabs.baseclasses.CMDBApplicationObject import CMDBApplicationObject
+from pylabs.baseclasses.CMDBObject import CMDBObject
+from pylabs.baseclasses.CMDBServerObject import CMDBServerObject
+from pylabs.baseclasses.SystemWrapper import SystemWrapper
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
 
-from pymonkey.baseclasses.BaseType import BaseType
+from pylabs.baseclasses.BaseType import BaseType

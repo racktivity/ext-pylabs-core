@@ -1,5 +1,5 @@
-from pymonkey.config import ConfigManagementItem, ItemSingleClass, ItemGroupClass
-from pymonkey import q
+from pylabs.config import ConfigManagementItem, ItemSingleClass, ItemGroupClass
+from pylabs import q
 
 class MercurialConfigManagementItem(ConfigManagementItem):
     CONFIGTYPE = "mercurialconnection"

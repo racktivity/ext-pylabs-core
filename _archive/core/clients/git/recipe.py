@@ -38,7 +38,7 @@
 It provides an interface similar to the interface of *SvnRecipe*.
 
 The Git recipe implementation uses the *clone* and *checkout_tree* functions
-implemented in *pymonkey.clients.git.clone* so it can be important to know how
+implemented in *pylabs.clients.git.clone* so it can be important to know how
 those work. Read the documentation provided with them.
 
 Example usage
@@ -46,16 +46,16 @@ Example usage
 To use the recipe, something like this could be used::
 
     >>> recipe = GitRecipe()
-    >>> recipe.addRepository('pymonkey', 'mainline',
-    ...                  'git://staging.pymonkey.org/pymonkey/mainline.git')
-    >>> recipe.addSource('pymonkey', 'mainline', 'master',
-    ...                  'packages/pymonkey/core',
-    ...                  'lib/pymonkey/core/pymonkey')
+    >>> recipe.addRepository('pylabs', 'mainline',
+    ...                  'git://staging.pylabs.org/pylabs/mainline.git')
+    >>> recipe.addSource('pylabs', 'mainline', 'master',
+    ...                  'packages/pylabs/core',
+    ...                  'lib/pylabs/core/pylabs')
     >>> recipe.export()
 '''
 
-import pymonkey
-from pymonkey.clients.git.clone import clone, checkout
+import pylabs
+from pylabs.clients.git.clone import clone, checkout
 
 class _GitRecipeItem: #pylint: disable-msg=R0903
    
@@ -67,8 +67,8 @@ class _GitRecipeItem: #pylint: disable-msg=R0903
         self.remote_name = remote_name
         self.branch_name = branch_name
         self.source = source
-        base = pymonkey.q.dirs.baseDir
-        self.destination = pymonkey.q.system.fs.joinPaths(base, destination)
+        base = pylabs.q.dirs.baseDir
+        self.destination = pylabs.q.system.fs.joinPaths(base, destination)
 
     def export(self):
         '''Execute an 'svn export'-like process'''
@@ -127,28 +127,28 @@ class GitRecipe:
     def exportToSandbox(self):
         '''Export all items from VCS to the system sandbox'''
         for item in self._items:
-            if pymonkey.q.system.fs.exists(item.destination):
-                if pymonkey.q.qshellconfig.interactive:
+            if pylabs.q.system.fs.exists(item.destination):
+                if pylabs.q.qshellconfig.interactive:
                     # In interactive mode, ask whether destination can be
                     # removed
                     removed = False
 
-                    if pymonkey.q.system.fs.isDir(item.destination):
-                        answer = pymonkey.q.gui.dialog.askYesNo(
+                    if pylabs.q.system.fs.isDir(item.destination):
+                        answer = pylabs.q.gui.dialog.askYesNo(
                             'Export location %s exists. Do you want the '
                             'folder to be removed before exporting?' % \
                             item.destination)
                         if answer:
-                            pymonkey.q.system.fs.removeDirTree(item.destination)
+                            pylabs.q.system.fs.removeDirTree(item.destination)
                             removed = True
 
-                    elif pymonkey.q.system.fs.isFile(item.destination):
-                        answer = pymonkey.q.gui.dialog.askYesNo(
+                    elif pylabs.q.system.fs.isFile(item.destination):
+                        answer = pylabs.q.gui.dialog.askYesNo(
                             'Export location %s exists. Do you want the file '
                             'to be removed before exporting?' % \
                             item.destination)
                         if answer:
-                            pymonkey.q.system.fs.removeFile(item.destination)
+                            pylabs.q.system.fs.removeFile(item.destination)
                             removed = True
 
                     if not removed:
@@ -167,7 +167,7 @@ class GitRecipe:
         otherwise.
         '''
         for item in self._items:
-            if pymonkey.q.system.fs.exists(item.destination):
+            if pylabs.q.system.fs.exists(item.destination):
                 return False
 
         return True
@@ -175,10 +175,10 @@ class GitRecipe:
     def removeFromSandbox(self):
         '''Remove all folders the recipe has written to'''
         for item in self._items:
-            if pymonkey.q.system.fs.isDir(item.destination):
-                pymonkey.q.system.fs.removeDirTree(item.destination)
+            if pylabs.q.system.fs.isDir(item.destination):
+                pylabs.q.system.fs.removeDirTree(item.destination)
             else:
-                pymonkey.q.system.fs.remove(item.destination)
+                pylabs.q.system.fs.remove(item.destination)
 
 
     def executeTaskletAction(self, action):

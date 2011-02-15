@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 from ClusterSSHClient import ClusterSSHClient
 import random
         
@@ -32,8 +32,8 @@ class ClusterNode():
         # p = """ some texts %s blabla """ % 'insert me' 
         # does not work so we do a replace.
         template="""
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
+from pylabs.InitBase import *
+from pylabs.Shell import *
 
 q.application.appname = "qshellexecute"
 q.application.start()
@@ -401,7 +401,7 @@ else:
         q.transaction.start("Backup /opt/qbase pylabs code on %s" % self.ipaddr)
         self.execute("mkdir -p /opt/backups", False)
         path="/opt/backups/pylabscore_%s.tgz" % q.base.time.getLocalTimeHRForFilesystem()
-        pathstobackup='/opt/qbase3/lib/pymonkey/extensions /opt/code/pylabs-core/code/utils /opt/code/pylabs-core/code/packages/pymonkey/core'
+        pathstobackup='/opt/qbase3/lib/pylabs/extensions /opt/code/pylabs-core/code/utils /opt/code/pylabs-core/code/packages/pylabs/core'
         # compress them
         self.execute("tar zcvfh %s %s " % (path, pathstobackup) , False)
         # remember last compressed

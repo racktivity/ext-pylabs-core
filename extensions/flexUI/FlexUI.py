@@ -1,5 +1,5 @@
-from pymonkey import *
-from pymonkey.Shell import *
+from pylabs import *
+from pylabs.Shell import *
 import simplejson
 from threading import Thread
 
@@ -58,7 +58,7 @@ class FlexUI:
 
     def launchBrowser(self):
         "Launches the browser that directly connects to the server"
-        url = 'file:///opt/qbase3/lib/pymonkey/extensions/flexUI/flexapp/bin/Wizard.html'
+        url = 'file:///opt/qbase3/lib/pylabs/extensions/flexUI/flexapp/bin/Wizard.html'
         q.system.process.execute("firefox '%s'" % (url))
 
     def launch(self, wizardFunction):

@@ -33,7 +33,7 @@
 #
 # </License>
  
-from pymonkey.InitBase import *
+from pylabs.InitBase import *
 
 import urllib2
 import time

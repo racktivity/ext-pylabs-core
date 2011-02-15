@@ -39,7 +39,7 @@ import urllib
 It provides an interface similar to the interface of *SvnRecipe*.
 
 The hg recipe implementation uses the *clone* and *export* functions
-implemented in *pymonkey.clients.hg.clone* so it can be important to know how
+implemented in *pylabs.clients.hg.clone* so it can be important to know how
 those work. Read the documentation provided with them.
 
 Example usage
@@ -50,13 +50,13 @@ To use the recipe, something like this could be used::
     >>> recipe.addRepository('TESTING', 'testing3',
     ...                  'https://ramesh@bitbucket.org/ramesh/testing3/')
     >>> recipe.addSource('TESTING', 'testing3', 'master',
-    ...                  'packages/pymonkey/core',
-    ...                  'lib/pymonkey/core/pymonkey')
+    ...                  'packages/pylabs/core',
+    ...                  'lib/pylabs/core/pylabs')
     >>> recipe.export()
 '''
 
-import pymonkey
-from pymonkey import q
+import pylabs
+from pylabs import q
 
 class _HgRecipeItem:
     '''Ingredient of a L{HgRecipe}'''
@@ -93,28 +93,28 @@ class HgRecipe:
     def exportToSandbox(self):
         '''Export all items from VCS to the system sandbox'''
         for item in self._items:
-            if pymonkey.q.system.fs.exists(item.destination):
-                if pymonkey.q.qshellconfig.interactive:
+            if pylabs.q.system.fs.exists(item.destination):
+                if pylabs.q.qshellconfig.interactive:
                     # In interactive mode, ask whether destination can be
                     # removed
                     removed = False
 
-                    if pymonkey.q.system.fs.isDir(item.destination):
-                        answer = pymonkey.q.gui.dialog.askYesNo(
+                    if pylabs.q.system.fs.isDir(item.destination):
+                        answer = pylabs.q.gui.dialog.askYesNo(
                             'Export location %s exists. Do you want the '
                             'folder to be removed before exporting?' % \
                             item.destination)
                         if answer:
-                            pymonkey.q.system.fs.removeDirTree(item.destination)
+                            pylabs.q.system.fs.removeDirTree(item.destination)
                             removed = True
 
-                    elif pymonkey.q.system.fs.isFile(item.destination):
-                        answer = pymonkey.q.gui.dialog.askYesNo(
+                    elif pylabs.q.system.fs.isFile(item.destination):
+                        answer = pylabs.q.gui.dialog.askYesNo(
                             'Export location %s exists. Do you want the file '
                             'to be removed before exporting?' % \
                             item.destination)
                         if answer:
-                            pymonkey.q.system.fs.removeFile(item.destination)
+                            pylabs.q.system.fs.removeFile(item.destination)
                             removed = True
 
                     if not removed:
@@ -133,7 +133,7 @@ class HgRecipe:
         otherwise.
         '''
         for item in self._items:
-            if pymonkey.q.system.fs.exists(item.destination):
+            if pylabs.q.system.fs.exists(item.destination):
                 return False
 
         return True
@@ -141,10 +141,10 @@ class HgRecipe:
     def removeFromSandbox(self):
         '''Remove all folders the recipe has written to'''
         for item in self._items:
-            if pymonkey.q.system.fs.isDir(item.destination):
-                pymonkey.q.system.fs.removeDirTree(item.destination)
+            if pylabs.q.system.fs.isDir(item.destination):
+                pylabs.q.system.fs.removeDirTree(item.destination)
             else:
-                pymonkey.q.system.fs.remove(item.destination)
+                pylabs.q.system.fs.remove(item.destination)
 
     def executeTaskletAction(self, action):
         '''Execute the correct methods for an action in a QPackage tasklet'''

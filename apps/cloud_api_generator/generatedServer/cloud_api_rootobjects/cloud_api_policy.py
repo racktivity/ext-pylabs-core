@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class policy:
     def getXMLSchema (self, policyguid, jobguid = "", executionparams = {}):

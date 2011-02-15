@@ -33,12 +33,12 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 import os
 import re
 import time
 import signal
-if pymonkey.q.platform.isWindows():
+if pylabs.q.platform.isWindows():
     import win32process
 
 class PMApp(object):
@@ -50,9 +50,9 @@ class PMApp(object):
     
         
     def kill(self):
-        """Attempts to stop a PyMonkey application gracefully
+        """Attempts to stop a pylabs application gracefully
         
-        Attempts to stop a PyMonkey application in a nice way, waits for two seconds.
+        Attempts to stop a pylabs application in a nice way, waits for two seconds.
         If the attempt fails, the application is killed the hard way.
         """
         self.shutdown()
@@ -61,22 +61,22 @@ class PMApp(object):
             os.kill(self.processid, signal.SIGTERM)
         
     def shutdown(self):
-        """Attempts to stop a PyMonkey application gracefully"""
-        stopcommand = os.path.join(pymonkey.q.dirs.baseDir,'control',self.name,'stop.')
-        if pymonkey.q.platform.isUnix():
+        """Attempts to stop a pylabs application gracefully"""
+        stopcommand = os.path.join(pylabs.q.dirs.baseDir,'control',self.name,'stop.')
+        if pylabs.q.platform.isUnix():
             stopcommand+='py'
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
             stopcommand+='bat'
-        pymonkey.q.system.process.execute(stopcommand)
+        pylabs.q.system.process.execute(stopcommand)
     
     def _get_state(self):
-        '''Retrieves the status of a PyMonkey application'''
-        if pymonkey.q.platform.isUnix():
-            if pymonkey.q.system.fs.exists(os.path.join(os.sep,'proc','%d' % (self.processid))):
+        '''Retrieves the status of a pylabs application'''
+        if pylabs.q.platform.isUnix():
+            if pylabs.q.system.fs.exists(os.path.join(os.sep,'proc','%d' % (self.processid))):
                 return PMAppType.RUNNING
             else:
                 return PMAppType.HALTED
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
             if self.processid in win32process.EnumProcesses():
                 return PMAppType.RUNNING
             else:

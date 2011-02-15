@@ -37,7 +37,7 @@ import sys
 if not sys.platform.startswith('win'):
     raise "WinRegValueType enumerator is only supported on Windows operating system"
 
-from pymonkey.baseclasses import BaseEnumeration
+from pylabs.baseclasses import BaseEnumeration
 import _winreg as reg
 
 class WinRegValueType(BaseEnumeration):

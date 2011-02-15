@@ -33,8 +33,8 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 
 from PFilter import PFilter
 from PFind import PFind,PFindWorker

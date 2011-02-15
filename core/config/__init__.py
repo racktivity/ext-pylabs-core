@@ -33,6 +33,6 @@
 #
 # </License>
 
-from pymonkey.config.IConfigBase import ConfigManagementItem, GroupConfigManagement, SingleConfigManagement
-from pymonkey.config.QConfigBase import ConfiguredItem, ConfiguredItemGroup
-from pymonkey.config.ConfigLib import ItemGroupClass, ItemSingleClass
+from pylabs.config.IConfigBase import ConfigManagementItem, GroupConfigManagement, SingleConfigManagement
+from pylabs.config.QConfigBase import ConfiguredItem, ConfiguredItemGroup
+from pylabs.config.ConfigLib import ItemGroupClass, ItemSingleClass

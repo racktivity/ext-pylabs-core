@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 q.logger.log('Initializing applicationserver')
 

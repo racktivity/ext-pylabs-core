@@ -33,9 +33,9 @@
 #
 # </License>
 
-import pymonkey
-from pymonkey.config import *
-from pymonkey import q
+import pylabs
+from pylabs.config import *
+from pylabs import q
 
 
 class SvnConnection(ConfigManagementItem):
@@ -74,14 +74,14 @@ class SvnConnection(ConfigManagementItem):
         Optional implementation of retrieve() method, to be used by find()
         """
         try:
-            svnConnection=pymonkey.q.clients.svn.createConnection(self.params['url'], self.params['branch'], self.params['login'], self.params['passwd'])
+            svnConnection=pylabs.q.clients.svn.createConnection(self.params['url'], self.params['branch'], self.params['login'], self.params['passwd'])
         except:
-            pymonkey.q.logger.log(pymonkey.q.errorconditionhandler.getCurrentExceptionString())
-            pymonkey.q.logger.log("Cannot login to url %s path %s with user %s" % (self.params['url'], self.params['branch'], self.params['login']))
+            pylabs.q.logger.log(pylabs.q.errorconditionhandler.getCurrentExceptionString())
+            pylabs.q.logger.log("Cannot login to url %s path %s with user %s" % (self.params['url'], self.params['branch'], self.params['login']))
             svnConnection=False
-            pymonkey.q.console.echo("\n##################################################################################")          
-            pymonkey.q.console.echo( "WARNING: Could not connect to SVN server. Please review settings for repo %s." % self.itemname)
-            pymonkey.q.console.echo("\n##################################################################################")          
+            pylabs.q.console.echo("\n##################################################################################")          
+            pylabs.q.console.echo( "WARNING: Could not connect to SVN server. Please review settings for repo %s." % self.itemname)
+            pylabs.q.console.echo("\n##################################################################################")          
         return svnConnection
 
 

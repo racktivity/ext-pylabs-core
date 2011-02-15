@@ -35,4 +35,4 @@
 
 __all__ = ['Clients', ]
 
-from pymonkey.clients.Clients import Clients
+from pylabs.clients.Clients import Clients

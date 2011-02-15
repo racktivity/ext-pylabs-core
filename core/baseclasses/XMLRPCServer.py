@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
 from twisted.web import xmlrpc
 from twisted.internet import defer

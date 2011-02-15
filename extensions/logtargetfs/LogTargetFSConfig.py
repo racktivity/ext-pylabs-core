@@ -1,3 +1,3 @@
-from pymonkey.config import ItemSingleClass
-from pymonkey.logging.logtargets.LogTargetFS import LogTargetFSConfigManagementItem
+from pylabs.config import ItemSingleClass
+from pylabs.logging.logtargets.LogTargetFS import LogTargetFSConfigManagementItem
 LogTargetFSConfig = ItemSingleClass(LogTargetFSConfigManagementItem)

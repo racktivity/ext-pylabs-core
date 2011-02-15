@@ -36,7 +36,7 @@
 from PropertyDef import PropertyDef
 from MethodDef import MethodDef
 from ClassDef import ClassDef
-from pymonkey import q
+from pylabs import q
 
 class CodeElements:
     

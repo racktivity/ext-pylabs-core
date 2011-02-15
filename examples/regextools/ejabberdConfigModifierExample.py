@@ -1,6 +1,6 @@
 
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
+from pylabs.InitBase import *
+from pylabs.Shell import *
 
 
 q.application.appname="ejabberdconfigexample"

@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 import PropertyDef
 
 class ClassDef:

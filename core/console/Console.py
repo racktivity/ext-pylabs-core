@@ -1,9 +1,9 @@
-from pymonkey.Shell import *
+from pylabs.Shell import *
 import re
 import sys
-import pymonkey
-from pymonkey.logging.RedirectStreams import isRedirected
-from pymonkey.pmtypes import IPv4Address, IPv4Range
+import pylabs
+from pylabs.logging.RedirectStreams import isRedirected
+from pylabs.pmtypes import IPv4Address, IPv4Range
 import textwrap
 
 
@@ -24,7 +24,7 @@ class Console:
         """
         when typing, char per char will be returned
         """
-        pymonkey.q.platform.ubuntu.check()
+        pylabs.q.platform.ubuntu.check()
         import termios, fcntl, sys, os
         fd = sys.stdin.fileno()
 
@@ -72,7 +72,7 @@ class Console:
         if indent==0 or indent==None:
             indent=self.indent
             
-        #if pymonkey.q.transaction.hasRunningTransactions():
+        #if pylabs.q.transaction.hasRunningTransactions():
         #    maxLengthStatusType= 8 #nr chars
         #else:
         #    maxLengthStatusType=0
@@ -126,14 +126,14 @@ class Console:
         if lf and msg<>"" and msg[-1]<>"\n":
             msg+="\n"
         msg=self._cleanline(msg)
-        #if pymonkey.q.transaction.hasRunningTransactions() and withStar==False:
+        #if pylabs.q.transaction.hasRunningTransactions() and withStar==False:
         #    indent=self.indent+1
         msg=self.formatMessage(msg,indent=indent,withStar=withStar,prefix=prefix).rstrip(" ")
-        pymonkey.q.logger.inlog=True
+        pylabs.q.logger.inlog=True
         print msg,
-        pymonkey.q.logger.inlog=False
+        pylabs.q.logger.inlog=False
         if log:
-            pymonkey.q.logger.log(msg,1,dontprint=True)
+            pylabs.q.logger.log(msg,1,dontprint=True)
 
     def echoListItem(self, msg):
         """
@@ -201,7 +201,7 @@ class Console:
         @returns: Response provided by the user
         @rtype: string
         """
-        if pymonkey.q.qshellconfig.interactive<>True:
+        if pylabs.q.qshellconfig.interactive<>True:
             raise RuntimeError ("Cannot ask a string in a non interactive mode.")
         if validate and not callable(validate):
             raise TypeError('The validate argument should be a callable')
@@ -234,7 +234,7 @@ class Console:
         @returns: Password provided by the user
         @rtype: string
         """
-        if pymonkey.q.qshellconfig.interactive<>True:
+        if pylabs.q.qshellconfig.interactive<>True:
             raise RuntimeError ("Cannot ask a password in a non interactive mode."        )
         if validate and not callable(validate):
             raise TypeError('The validate argument should be a callable')
@@ -278,7 +278,7 @@ class Console:
 
         @return: integer representing the response on the question
         """
-        if pymonkey.q.qshellconfig.interactive<>True:
+        if pylabs.q.qshellconfig.interactive<>True:
             raise RuntimeError ("Cannot ask an integer in a non interactive mode.")
         if validate and not callable(validate):
             raise TypeError('The validate argument should be a callable')
@@ -303,7 +303,7 @@ class Console:
                 responseInt = int(response.strip())
                 if (minValue == None or responseInt >= minValue) and (maxValue == None or responseInt <= maxValue):
                     return responseInt
-            pymonkey.q.console.echo("Please insert a valid value!")
+            pylabs.q.console.echo("Please insert a valid value!")
             retryCount = retryCount - 1
 
         raise ValueError("Console.askInteger() failed: tried %d times but user didn't fill out a value that matches '%s'." % (retry, response))
@@ -318,7 +318,7 @@ class Console:
         @return: Positive or negative answer
         @rtype: bool
         '''
-        if pymonkey.q.qshellconfig.interactive<>True:
+        if pylabs.q.qshellconfig.interactive<>True:
             raise RuntimeError ("Cannot ask a yes/no question in a non interactive mode.")
         
         while True:
@@ -374,7 +374,7 @@ class Console:
 
     def askChoice(self,choicearray, descr=None, sort=False):
         #choicearray=["aabbccdd","aaddccaa","1","2","3","4","5","kristof","kristof3","kristof5","10","11","12","13","14","15","16"]
-        if len(choicearray)>5 and pymonkey.q.platform.isLinux():
+        if len(choicearray)>5 and pylabs.q.platform.isLinux():
             descr2 = descr or "\nMake a selection please, start typing, we will try to do auto completion, ? prints the list, * turns on wildcard search."
             self.echo(descr2)
             print
@@ -435,7 +435,7 @@ class Console:
             
 
     def _askChoice(self, choicearray, descr=None, sort=False):
-        if pymonkey.q.qshellconfig.interactive<>True:
+        if pylabs.q.qshellconfig.interactive<>True:
             raise RuntimeError ("Cannot ask a choice in an list of items in a non interactive mode.")
         if not choicearray:
             return None
@@ -458,7 +458,7 @@ class Console:
         return choicearray[result-1]
 
     def askChoiceMultiple(self, choicearray, descr=None, sort=None):
-        if pymonkey.q.qshellconfig.interactive<>True:
+        if pylabs.q.qshellconfig.interactive<>True:
             raise RuntimeError ("Cannot ask a choice in an list of items in a non interactive mode.")
         if not choicearray:
             return []

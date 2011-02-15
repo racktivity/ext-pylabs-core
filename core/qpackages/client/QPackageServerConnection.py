@@ -35,12 +35,12 @@
 
 import time
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import PlatformType
-from pymonkey.qpackages.client.QPackageClient import QPackageClient
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.client.QPackageUtils import QPackageUtils
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import PlatformType
+from pylabs.qpackages.client.QPackageClient import QPackageClient
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.client.QPackageUtils import QPackageUtils
 import os
 
 class QPackageServerConnections(BaseType):
@@ -128,7 +128,7 @@ class QPackageServerConnections(BaseType):
         Deletes a connection from the configured connections
         @param connectionName:  Name of the connection to remove.
         """
-        q.logger.log('Removing connection %s from pymonkey.qpackageserverlist' % connectionName)
+        q.logger.log('Removing connection %s from pylabs.qpackageserverlist' % connectionName)
 
         if not connectionName in q.qshellconfig.qpackageserverlist.getSections():
             raise ValueError('Connection does not exists!')

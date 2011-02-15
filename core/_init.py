@@ -33,12 +33,12 @@
 #
 # </License>
 
-'''Basic PyMonkey initialization functions used by pymonkey.InitBase*'''
+'''Basic pylabs initialization functions used by pylabs.InitBase*'''
 
 import sys
 import os
 import sitecustomize
-from pymonkey.enumerators import AppStatusType
+from pylabs.enumerators import AppStatusType
 
 
 
@@ -47,9 +47,9 @@ def setup_dirs(q, base):
 
     This function calculates all paths for q.dirs.* and initializes q.dirs.
 
-    @param q: PyMonkey instance to initialize
-    @type q: L{PYMonkey}
-    @param base: PyMonkey sandbox base folder
+    @param q: pylabs instance to initialize
+    @type q: L{pylabs}
+    @param base: pylabs sandbox base folder
     @type base: string
     '''
     q.dirs.baseDir = base
@@ -73,7 +73,7 @@ def initialize_redirections(redirect_output, hide_output):
     if not redirect_output:
         return
 
-    from pymonkey.logging.RedirectStreams import redirectStreams
+    from pylabs.logging.RedirectStreams import redirectStreams
     redirectStreams(hideoutput=hide_output)
 
 
@@ -94,17 +94,17 @@ def initialize_q(redirect_output, hide_output=False, verbose=False):
 
     import traceback
 
-    from pymonkey import q
+    from pylabs import q
 
     if q._init_called or q._init_final_called:
         if _initstack:
-            print 'Illegal attempt to re-initialize PyMonkey detected.'
+            print 'Illegal attempt to re-initialize pylabs detected.'
             print
             print 'Previous initialization occurred at:'
             print
             print _initstack
             print
-        raise RuntimeError('Do not reimport pymonkey.InitBase*')
+        raise RuntimeError('Do not reimport pylabs.InitBase*')
 
     stack = traceback.extract_stack()
     # Skip the last 3 frames:
@@ -120,7 +120,7 @@ def initialize_q(redirect_output, hide_output=False, verbose=False):
 
     baseDir = sitecustomize.find_qbase_path()
     if not baseDir:
-        print "PyMonkey not supported on this platform"
+        print "pylabs not supported on this platform"
         sys.exit(1)
     setup_dirs(q, baseDir)
 
@@ -130,7 +130,7 @@ def initialize_q(redirect_output, hide_output=False, verbose=False):
 
 def initialize_i():
     '''Initialize the C{i} object'''
-    from pymonkey import q, i
+    from pylabs import q, i
 
     if q.vars.getVar("INTERACTIVE"):
         # TODO: No longer use qshellconfig
@@ -148,7 +148,7 @@ def initialize(redirect_output, hide_output=False, verbose=False):
     @see: L{initialize_i}
 
     @returns: The initialized C{q} and C{i} objects
-    @rtype: tuple<PYMonkey, Interactive>
+    @rtype: tuple<pylabs, Interactive>
     '''
     q = initialize_q(redirect_output, hide_output=False, verbose=verbose)
     i = initialize_i()

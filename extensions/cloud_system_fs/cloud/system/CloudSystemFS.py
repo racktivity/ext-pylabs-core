@@ -4,8 +4,8 @@ from FtpFS import *
 from FileFS import *
 from HttpFS import *
 from SshFS import *
-from pymonkey import q
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
+from pylabs import q
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
 import re
 
 class CloudSystemFS:

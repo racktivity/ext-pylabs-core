@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 
-class PFilter(pymonkey.baseclasses.BaseType):
+class PFilter(pylabs.baseclasses.BaseType):
     """
     Defines a set of rules used by PFind to create a PList
     Only PFiles matching the criteria will be added to the PList  

@@ -5,7 +5,7 @@
 #import operator
 import string
 
-import pymonkey
+import pylabs
 
 class Transaction(object):
     '''
@@ -40,7 +40,7 @@ class Transaction(object):
         msg=""
         for log in self.log:
             logstr=str(log)
-            msg+=pymonkey.q.console.formatMessage(logstr,withStar=True)
+            msg+=pylabs.q.console.formatMessage(logstr,withStar=True)
         return msg
         
     def __str__(self):
@@ -48,7 +48,7 @@ class Transaction(object):
                                                "resolmsg":self.resolutionmessage}        
         msg=""
         for key in dictionary.keys():
-            msg+=pymonkey.q.console.formatMessage(str(dictionary[key]),key,withStar=True)+"\n"
+            msg+=pylabs.q.console.formatMessage(str(dictionary[key]),key,withStar=True)+"\n"
         return msg
      
     def getErrorMessage(self,withloginfo=False):

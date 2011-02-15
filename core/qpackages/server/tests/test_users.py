@@ -34,14 +34,14 @@
 # </License>
 
 import os
-from pymonkey import PymonkeyTestCase
-from pymonkey import q
+from pylabs import pylabsTestCase
+from pylabs import q
 
-class Users(PymonkeyTestCase):
+class Users(pylabsTestCase):
     ''' Test Suite for the Users.py in servers '''
 
     def init(self):
-        from pymonkey.qpackages.server.Users import Users
+        from pylabs.qpackages.server.Users import Users
         u = Users()
         u.addUser('test_user', 'test_password')
         u.addUser('test_user1', 'test_password1')
@@ -49,7 +49,7 @@ class Users(PymonkeyTestCase):
     def test_add_user(self):
         ''' Testing whether we can add users'''
         self.init()
-        from pymonkey.qpackages.server.Users import Users
+        from pylabs.qpackages.server.Users import Users
         u = Users()
         self.assert_(u)
         u.addUser('test_user2', 'test_password')
@@ -58,21 +58,21 @@ class Users(PymonkeyTestCase):
 
     def test_exists(self):
         self.init()
-        from pymonkey.qpackages.server.Users import Users
+        from pylabs.qpackages.server.Users import Users
         u = Users()
         self.assert_(u.exists('test_user'))
         self.assert_(not u.exists('test_shouldnotexist'))
 
     def test_validate(self):
         self.init()
-        from pymonkey.qpackages.server.Users import Users
+        from pylabs.qpackages.server.Users import Users
         u = Users()
         self.assert_(u.validate('test_user', 'test_password'))
         self.assert_(not u.validate('test_user', 'testweq_password'))
 
     def test_delete_user(self):
         self.init()
-        from pymonkey.qpackages.server.Users import Users
+        from pylabs.qpackages.server.Users import Users
         u = Users()
         u.removeUser('test_user1')
         userList = u.list()

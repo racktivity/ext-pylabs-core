@@ -33,7 +33,7 @@
 #
 # </License>
 
-'''Some PyMonkey descriptor types acting as generics
+'''Some pylabs descriptor types acting as generics
 
 The types defined in this module are no real descriptors, it are functions
 which generate descriptor types on-the-fly. The end-user syntax remains
@@ -41,7 +41,7 @@ the same:
 
 >>> class MyType: pass
 ...
->>> from pymonkey.baseclasses import BaseType
+>>> from pylabs.baseclasses import BaseType
 >>> class MyClass(BaseType):
 ...     mt = q.basetype.object(MyType)
 ...
@@ -58,7 +58,7 @@ Traceback (most recent call last):
 '''
 import inspect
 
-from pymonkey.pmtypes.base import BaseType as TypeBaseType, NO_DEFAULT
+from pylabs.pmtypes.base import BaseType as TypeBaseType, NO_DEFAULT
 
 OBJECT_DESCRIPTOR_CACHE = dict()
 def Object(type_, **kwargs):
@@ -69,12 +69,12 @@ def Object(type_, **kwargs):
 
     @param type_: Type of which values should be instances
     @type type_: class or type
-    @param kwargs: Kwargs sent to L{pymonkey.pmtypes.base.BaseType.__init__}
+    @param kwargs: Kwargs sent to L{pylabs.pmtypes.base.BaseType.__init__}
 
     @returns: An instance of a custom descriptor class
-    @rtype: L{pymonkey.pmtypes.base.BaseType.__init__}
+    @rtype: L{pylabs.pmtypes.base.BaseType.__init__}
 
-    @see: L{pymonkey.pmtypes.base.BaseType.__init__}
+    @see: L{pylabs.pmtypes.base.BaseType.__init__}
     '''
     if not inspect.isclass(type_) and not isinstance(type_, type):
         raise TypeError('type_ parameter of Object should be of type type or class')
@@ -114,15 +114,15 @@ def Enumeration(enumerationtype, **kwargs):
     generating a class instance, not a class.
 
     @param enumerationtype: Type of which values should be instances
-    @type enumerationtype: Subclass of L{pymonkey.baseclasses.BaseEnumeration.BaseEnumeration}
-    @param kwargs: Kwargs sent to L{pymonkey.pmtypes.base.BaseType.__init__}
+    @type enumerationtype: Subclass of L{pylabs.baseclasses.BaseEnumeration.BaseEnumeration}
+    @param kwargs: Kwargs sent to L{pylabs.pmtypes.base.BaseType.__init__}
 
     @returns: An instance of a custom descriptor class
-    @rtype: L{pymonkey.pmtypes.base.BaseType.__init__}
+    @rtype: L{pylabs.pmtypes.base.BaseType.__init__}
 
-    @see: L{pymonkey.pmtypes.base.BaseType.__init__}
+    @see: L{pylabs.pmtypes.base.BaseType.__init__}
     '''
-    from pymonkey.baseclasses import BaseEnumeration
+    from pylabs.baseclasses import BaseEnumeration
     if not issubclass(enumerationtype, BaseEnumeration):
         raise TypeError('enumerationtype parameter of Object should be of type type or class')
 

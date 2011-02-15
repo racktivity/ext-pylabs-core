@@ -36,7 +36,7 @@
 import sys,os
 import time
 import threading
-import pymonkey
+import pylabs
 
 class CommandLauncher(threading.Thread):
     cmd= None ##string 
@@ -63,7 +63,7 @@ class CommandLauncher(threading.Thread):
     def run ( self ):
         """Run the command launcher"""
         os.chdir(self.workingdir)
-        resultcode=pymonkey.q.system.process.executeAsync(self.cmd, redirectStreams=False)
+        resultcode=pylabs.q.system.process.executeAsync(self.cmd, redirectStreams=False)
 
 
 

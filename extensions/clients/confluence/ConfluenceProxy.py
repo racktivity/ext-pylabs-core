@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 
 from Confluence import Confluence
 from ConfluenceImpl import ConfluenceImpl

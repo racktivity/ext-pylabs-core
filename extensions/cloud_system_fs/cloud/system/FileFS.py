@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
+from pylabs import q
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
 
 
 # maybe this could be switched to http://curlftpfs.sourceforge.net/ 

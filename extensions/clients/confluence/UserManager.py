@@ -8,7 +8,7 @@
 #     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
-#     * Neither the name of the PyMonkey nor the
+#     * Neither the name of the pylabs nor the
 #       names of its contributors may be used to endorse or promote products
 #       derived from this software without specific prior written permission.
 #
@@ -25,12 +25,12 @@
 
 import xmlrpclib
 
-from pymonkey import q
-#from pymonkey.log import Logger
+from pylabs import q
+#from pylabs.log import Logger
 
 from model.Group import Group
 from model.User import User
-from pymonkey.baseclasses.BaseType import BaseType
+from pylabs.baseclasses.BaseType import BaseType
 import Utils
 
 

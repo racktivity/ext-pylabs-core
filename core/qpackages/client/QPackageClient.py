@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.sync.Sync import SyncFromServer, SyncToServer
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.sync.Sync import SyncFromServer, SyncToServer
 import xmlrpclib
 import exceptions
 

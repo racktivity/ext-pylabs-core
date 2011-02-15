@@ -33,11 +33,11 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.client.QPackage import QPackage
-from pymonkey.qpackages.interactive.QPackageServerConnectionsGUI import QPackageServerConnectionsGUI
-from pymonkey.qpackages.common.QPackageVersioning import QPackageVersioning
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.client.QPackage import QPackage
+from pylabs.qpackages.interactive.QPackageServerConnectionsGUI import QPackageServerConnectionsGUI
+from pylabs.qpackages.common.QPackageVersioning import QPackageVersioning
 import string
 
 class QPackageManagementGUI(object):
@@ -46,7 +46,7 @@ class QPackageManagementGUI(object):
         """
         Find one or more QPackage
         Searches for an exact match of qpackageName (if specified) unless wildcard * is added at the end of the qpackageName.
-        e.g i.qpackages.find('pymon*') and i.qpackages.find('pymonkey')
+        e.g i.qpackages.find('pymon*') and i.qpackages.find('pylabs')
         @param qpackageName: name of the QPackage to search for
         @param version: version of the QPackage you are searching for
         @param domain: domain you wish to search

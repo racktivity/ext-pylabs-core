@@ -39,9 +39,9 @@ import re
 # Template base class
 from Cheetah.Template import Template as CheetahTemplate
 
-from pymonkey import q
-from pymonkey.baseclasses.CMDBServerObject import CMDBServerObject
-from pymonkey.baseclasses.CMDBSubObject import CMDBSubObject
+from pylabs import q
+from pylabs.baseclasses.CMDBServerObject import CMDBServerObject
+from pylabs.baseclasses.CMDBSubObject import CMDBSubObject
 
 # Must initialise ApacheSiteType
 from ApacheSiteType import ApacheSiteType

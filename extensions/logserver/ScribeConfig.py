@@ -1,7 +1,7 @@
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.config import *
-from pymonkey.inifile import IniFile
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.config import *
+from pylabs.inifile import IniFile
 
 def _commit():
     serverIniFile = IniFile(q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'logservermain.cfg'))

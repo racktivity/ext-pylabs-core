@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class dhcpserver:
     def addHost (self, machineguid, tftpserveripaddress = "", bootimagename = "", bootparameters = "", jobguid = "", executionparams = {}):

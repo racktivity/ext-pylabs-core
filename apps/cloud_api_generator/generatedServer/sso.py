@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 from cloud_api_rootobjects import cloud_api_sso
 from cloud_api.BaseCloudAPI import BaseCloudAPI
 

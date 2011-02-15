@@ -1,8 +1,8 @@
 import time
 import traceback
-from pymonkey import q, i
+from pylabs import q, i
 from MessageObject import MessageObject
-from pymonkey.Shell import *
+from pylabs.Shell import *
 import string
 
 class ErrorconditionObject(MessageObject):
@@ -152,7 +152,7 @@ class ErrorconditionObject(MessageObject):
         try:
             k="%s"%k
             v="%s"%v
-            if k in ["re","q","pymonkey","pprint","qexec","qshell","Shell","__doc__","__file__","__name__","__package__","i","main","page"]:
+            if k in ["re","q","pylabs","pprint","qexec","qshell","Shell","__doc__","__file__","__name__","__package__","i","main","page"]:
                 return False
             if v.find("<module")<>-1:
                 return False
@@ -160,7 +160,7 @@ class ErrorconditionObject(MessageObject):
                 return False
             if v.find("<built-in function")<>-1:
                 return False
-            if v.find("pymonkey.Shell")<>-1:
+            if v.find("pylabs.Shell")<>-1:
                 return False
         except:
             return False

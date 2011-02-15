@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class agent:
     def unregisterFromNOC (self, machineguid, jobguid = "", executionparams = {}):

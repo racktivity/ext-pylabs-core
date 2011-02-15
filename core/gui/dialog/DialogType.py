@@ -33,8 +33,8 @@
 #
 # </License>
 
-import pymonkey
-from pymonkey.baseclasses import BaseEnumeration
+import pylabs
+from pylabs.baseclasses import BaseEnumeration
 
 class DialogType(BaseEnumeration):    
     @classmethod

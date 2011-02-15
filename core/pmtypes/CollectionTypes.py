@@ -37,7 +37,7 @@
 
 import types
 
-from pymonkey.pmtypes.base import BaseType, NO_DEFAULT
+from pylabs.pmtypes.base import BaseType, NO_DEFAULT
 
 class Dictionary(BaseType):
     '''Generic dictionary type'''

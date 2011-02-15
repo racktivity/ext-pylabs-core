@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 from urllib import unquote, quote
 
 class Tags():

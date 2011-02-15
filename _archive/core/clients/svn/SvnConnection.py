@@ -40,8 +40,8 @@ import os.path
 
 import pysvn
 
-import pymonkey
-from pymonkey import q
+import pylabs
+from pylabs import q
 class SvnConnection:
      
     #@todo refactor to have login, passwd, uri, name as visible properties  
@@ -88,7 +88,7 @@ class SvnConnection:
 
     def checkConnection(self):
         #do a list on svn server to see if svn connection works
-        pymonkey.q.logger.log("Check SVN connection")         
+        pylabs.q.logger.log("Check SVN connection")         
         try:
             self._svnclient.list(self._svnURI)
         except:
@@ -109,23 +109,23 @@ class SvnConnection:
         """
         if not self.svnPathExists(svnpath):
             svnpath=self._svnURI+"/"+svnpath
-            pymonkey.q.logger.log("Svn import path %s to dest %s with message \n %s " % (svnpath,source,message)) 
+            pylabs.q.logger.log("Svn import path %s to dest %s with message \n %s " % (svnpath,source,message)) 
             self._svnclient.import_(source,svnpath,message)
             return True
         else:
-            pymonkey.q.logger.log("Svn location does exist. Skipping import.") 
+            pylabs.q.logger.log("Svn location does exist. Skipping import.") 
             return False
             
         ##return self.doAction(svnpath,source,"import")
 
     def getFileContent(self,path):
-        #tmpdir=pymonkey.q.dirs.getTmpDir()
+        #tmpdir=pylabs.q.dirs.getTmpDir()
         #file=path.replace("/","_")
         #file=file.replace("\\","_")
         #file=tmpdir+os.sep+file+".tmp"
         #self.checkout(path)
         url=self._svnURI+path
-        pymonkey.q.logger.log("SVN CAT: %s "% (url))
+        pylabs.q.logger.log("SVN CAT: %s "% (url))
         result= self._svnclient.cat(url)
         return result
 
@@ -197,7 +197,7 @@ class SvnConnection:
         @param path: is part of svn after basepath
         """
         p='%s/%s' % (self._svnURI,path)
-        pymonkey.q.logger.log("check path %s on svn exists" %  p)
+        pylabs.q.logger.log("check path %s on svn exists" %  p)
         try:
             self._svnclient.list(p)
             return True
@@ -215,7 +215,7 @@ class SvnConnection:
             if path == None:
                 return
             if path in alreadyInSvn:
-                if pymonkey.q.system.fs.isDir(path):
+                if pylabs.q.system.fs.isDir(path):
                     #check sub items
                     items = os.listdir(path)
                     for item in items:
@@ -252,10 +252,10 @@ class SvnConnection:
         """
         destination = destination.rstrip(os.path.sep)
         url=self._svnURI+path
-        pymonkey.q.logger.log("SVNACTION:%s :%s to %s"% (action,url,destination))
+        pylabs.q.logger.log("SVNACTION:%s :%s to %s"% (action,url,destination))
 
-        if pymonkey.q.system.fs.isDir(destination)==False:
-            pymonkey.q.system.fs.createDir(destination)
+        if pylabs.q.system.fs.isDir(destination)==False:
+            pylabs.q.system.fs.createDir(destination)
 
         if revisionNumber == None:
             revisionObject = pysvn.Revision(pysvn.opt_revision_kind.head)
@@ -264,7 +264,7 @@ class SvnConnection:
 
         try:
             if action =="checkout" or (action=='export' and not force):
-                pymonkey.q.system.fs.removeDirTree(destination)
+                pylabs.q.system.fs.removeDirTree(destination)
             if action=="import":
                 #destination here is source 
                 print self._svnclient.import_(destination,url ,"")
@@ -431,7 +431,7 @@ class SvnConnection:
             revision2 = pysvn.Revision(pysvn.opt_revision_kind.head)
         else:
             revision2 = pysvn.Revision(pysvn.opt_revision_kind.number, revisionNumber2)
-        diff = self._svnclient.diff(pymonkey.q.dirs.getTmpDir(), fullUrl, revision1, fullUrl, revision2)
+        diff = self._svnclient.diff(pylabs.q.dirs.getTmpDir(), fullUrl, revision1, fullUrl, revision2)
 
         return (diff != '')
 

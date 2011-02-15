@@ -33,8 +33,8 @@
 #
 # </License>
 
-import pymonkey
-from pymonkey.pmtypes.base import BaseType as TypeBaseType
+import pylabs
+from pylabs.pmtypes.base import BaseType as TypeBaseType
 
 def generate_init_properties(cls, attrs):
     '''Generate a class __init_properties__ method
@@ -50,7 +50,7 @@ def generate_init_properties(cls, attrs):
     def __init_properties__(self):
         '''Initialize all properties with their default value'''
 
-        pymonkey.q.logger.log('Initialize all properties with their default '
+        pylabs.q.logger.log('Initialize all properties with their default '
                               'value for instance of %s' % \
                               self.__class__.__name__, 7)
 
@@ -63,7 +63,7 @@ def generate_init_properties(cls, attrs):
                             if isinstance(p[1], TypeBaseType)):
             value = attr.get_default(self)
             setattr(self, attr.attribute_name, value)
-            pymonkey.q.logger.log('Set attr %s to %r' % \
+            pylabs.q.logger.log('Set attr %s to %r' % \
                                   (attr.attribute_name, value), 9)
 
     return __init_properties__
@@ -118,7 +118,7 @@ class BaseType(object):
         an object from the cmdb.        
         """
 
-        pymonkey.q.logger.log('Checking if properties need to be initialized '
+        pylabs.q.logger.log('Checking if properties need to be initialized '
                               'for %s instance' % self.__class__.__name__, 7)
         
         if not hasattr(self, '_pm__initialized'):

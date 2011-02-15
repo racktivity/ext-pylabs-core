@@ -33,12 +33,12 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
-from pymonkey.cmdb import cmdb
-from pymonkey.baseclasses.BaseCMDBObject import BaseCMDBObject
-from pymonkey.pmtypes.PrimitiveTypes import String, Boolean
-from pymonkey.pmtypes.CustomTypes import Guid
+from pylabs.cmdb import cmdb
+from pylabs.baseclasses.BaseCMDBObject import BaseCMDBObject
+from pylabs.pmtypes.PrimitiveTypes import String, Boolean
+from pylabs.pmtypes.CustomTypes import Guid
 
 class CMDBSubObject(BaseCMDBObject):
     """

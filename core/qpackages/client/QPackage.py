@@ -33,14 +33,14 @@
 #
 # </License>
 
-from pymonkey import q, i
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.common.DependencyDef import DependencyDef
-from pymonkey.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
-from pymonkey.qpackages.client.QPackageTasklets import QPackageTasklets
-from pymonkey.qpackages.common.enumerators import QPackageState
-from pymonkey.qpackages.client.QPackageUtils import QPackageUtils
+from pylabs import q, i
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.common.DependencyDef import DependencyDef
+from pylabs.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
+from pylabs.qpackages.client.QPackageTasklets import QPackageTasklets
+from pylabs.qpackages.common.enumerators import QPackageState
+from pylabs.qpackages.client.QPackageUtils import QPackageUtils
 import string
 
 class QPackage(BaseType):
@@ -487,7 +487,7 @@ class QPackage(BaseType):
         Delete the QPackage, depending on the params given also delete on server and in domain.
         @param domainLogin:    The user's login for the given domain
         @param domainPassword: The user's password for the given domain
-        @param fromQPackageServer: specifies whether the QPackage should be removed from pymonkey.qpackageserver (when qpackageserver is not the master for the domain), default False
+        @param fromQPackageServer: specifies whether the QPackage should be removed from pylabs.qpackageserver (when qpackageserver is not the master for the domain), default False
         @param fromQPackageMasterServer: specifies whether the QPackage should be removed from the domain (when server is the master for the domain), default False
         @param qualityLevels: list of qualityLevels where the QPackage should be removed from.
         """

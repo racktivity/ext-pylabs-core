@@ -1,6 +1,6 @@
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
+from pylabs.InitBase import *
+from pylabs.Shell import *
+from pylabs.qpackages.common.QPackageObject import QPackageObject
 
 q.application.appname = "processor"
 q.application.start()

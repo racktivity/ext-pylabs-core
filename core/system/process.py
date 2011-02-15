@@ -44,7 +44,7 @@ import subprocess
 import inspect
 import signal
 
-import pymonkey
+import pylabs
 
 def kill(pid, sig=None):
     """
@@ -52,8 +52,8 @@ def kill(pid, sig=None):
     @param pid: pid of the process to kill
     @param sig: signal. If no signal is specified signal.SIGKILL is used
     """
-    pymonkey.q.logger.log('Killing process %d' % pid, 7)
-    if pymonkey.q.platform.isUnix():
+    pylabs.q.logger.log('Killing process %d' % pid, 7)
+    if pylabs.q.platform.isUnix():
         import signal
         try:
             if sig is None:
@@ -63,7 +63,7 @@ def kill(pid, sig=None):
 
         except OSError:
             raise
-    elif pymonkey.q.platform.isWindows():
+    elif pylabs.q.platform.isWindows():
         import win32api, win32process, win32con
         try:
             handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE, False, pid)
@@ -572,7 +572,7 @@ def _safe_subprocess(*args, **kwargs):
     @see: L{subprocess.Popen}
     '''
     #Close all threaded log targets before creating a subprocess, which forks
-    ##from pymonkey.log.LogTargets import ThreadedLogTarget
+    ##from pylabs.log.LogTargets import ThreadedLogTarget
     ##ThreadedLogTarget.disable_all_instances(close=True)
 
     try:
@@ -824,7 +824,7 @@ def _runWithEnv(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
     if captureOutput and showOutput:
         raise ValueError('captureOutput and showOutput are mutually exclusive')
 
-    pymonkey.q.logger.log(
+    pylabs.q.logger.log(
             'system.process.start "%s" maxSeconds=%d stopOnError=%s' % \
             (commandline, maxSeconds, stopOnError), 5)
 
@@ -839,7 +839,7 @@ def _runWithEnv(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
     elif not showOutput and not captureOutput:
         #There's no place like devnull
         fd = open(getattr(os, 'devnull', \
-                'nul' if pymonkey.q.platform.isWindows() else '/dev/null'),
+                'nul' if pylabs.q.platform.isWindows() else '/dev/null'),
                 'rw')
         stdin = stdout = stderr = fd
 
@@ -860,7 +860,7 @@ def _runWithEnv(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
     if not subprocess.mswindows:
         # Reset all signals before calling execlp but after forking. This
         # fixes Python issue 1652 (http://bugs.python.org/issue1652) and
-        # PyMonkey ticket 189
+        # pylabs ticket 189
         def reset_signals():
             '''Reset all signals to SIG_DFL'''
             for i in xrange(1, signal.NSIG):
@@ -904,7 +904,7 @@ def _runWithEnv(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
 
         if process.poll() is None:
             #Child is still running, kill it
-            if pymonkey.q.platform.isUnix():
+            if pylabs.q.platform.isUnix():
                 #Soft and hard kill on Unix
                 try:
                     process.terminate()
@@ -932,7 +932,7 @@ def _runWithEnv(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
             #fun).
 
             #Read out process streams, but don't block
-            if pymonkey.q.platform.isUnix():
+            if pylabs.q.platform.isUnix():
                 def readout(stream):
                     #Non-blocking, safe UNIX-style stream readout
                     import fcntl
@@ -994,18 +994,18 @@ def _runWithEnv(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
     for func in cleanup:
         func()
 
-    pymonkey.q.logger.log('system.process.run ended, exitcode was %d' % \
+    pylabs.q.logger.log('system.process.run ended, exitcode was %d' % \
             ret[0], 4)
-    pymonkey.q.logger.log('system.process.run stdout:\n%s' % ret[1], 7)
-    pymonkey.q.logger.log('system.process.run stderr:\n%s' % ret[2], 7)
+    pylabs.q.logger.log('system.process.run stdout:\n%s' % ret[1], 7)
+    pylabs.q.logger.log('system.process.run stderr:\n%s' % ret[2], 7)
 
     #45 first, since -2 != 0
     if stopOnError and killed:
-        pymonkey.q.logger.log(
+        pylabs.q.logger.log(
                 'system.process.start had to kill the subprocess', 3)
         sys.exit(45)
     if stopOnError and ret[0] != 0:
-        pymonkey.q.logger.log('system.process.start subprocess failed', 3)
+        pylabs.q.logger.log('system.process.start subprocess failed', 3)
         sys.exit(44)
 
     return ret
@@ -1018,7 +1018,7 @@ def runScript(script, showOutput=False, captureOutput=True, maxSeconds=0,
     not be buffered.
 
     For an overview of the parameters and function behaviour, see the
-    documentation of L{pymonkey.system.process.run}.
+    documentation of L{pylabs.system.process.run}.
 
     @param script: Script to execute
     @type script: string
@@ -1028,13 +1028,13 @@ def runScript(script, showOutput=False, captureOutput=True, maxSeconds=0,
 
     @raise ValueError: Script is not an existing file
 
-    @see: pymonkey.system.process.run
+    @see: pylabs.system.process.run
     '''
-    if not pymonkey.q.system.fs.isFile(script):
+    if not pylabs.q.system.fs.isFile(script):
         raise ValueError('Unable to execute %s: not an existing file' % script)
 
     cmdline = '%s -u "%s"' % (sys.executable, script)
-    pymonkey.q.logger.log('Executing script: %s' % cmdline, 6)
+    pylabs.q.logger.log('Executing script: %s' % cmdline, 6)
 
     return run(cmdline, showOutput=showOutput, captureOutput=captureOutput,
             maxSeconds=maxSeconds, stopOnError=stopOnError)
@@ -1094,7 +1094,7 @@ def runDaemon(commandline, stdout=None, stderr=None, user=None, group=None,
     if group is not None:
         logmessage.append('setgid to group %s' % str(group))
     logmessage = ', '.join(logmessage)
-    pymonkey.q.logger.log(logmessage, 5)
+    pylabs.q.logger.log(logmessage, 5)
 
     uid, gid = _convert_uid_gid(user, group)
 
@@ -1111,10 +1111,10 @@ def runDaemon(commandline, stdout=None, stderr=None, user=None, group=None,
     cmd.extend(('-c', '\'from processhelper import main; main()\'', ))
 
     if stdout:
-        pymonkey.q.system.fs.createDir(os.path.dirname(stdout))
+        pylabs.q.system.fs.createDir(os.path.dirname(stdout))
         cmd.extend(('--stdout', '"%s"' % stdout, ))
     if stderr:
-        pymonkey.q.system.fs.createDir(os.path.dirname(stderr))
+        pylabs.q.system.fs.createDir(os.path.dirname(stderr))
         cmd.extend(('--stderr', '"%s"' % stderr, ))
 
     if uid is not None:
@@ -1152,7 +1152,7 @@ def runDaemon(commandline, stdout=None, stderr=None, user=None, group=None,
     if 'GID' in processdata:
         logmessage.append('GID is %d' % int(processdata['GID']))
     logmessage = ', '.join(logmessage)
-    pymonkey.q.logger.log(logmessage, 6)
+    pylabs.q.logger.log(logmessage, 6)
 
     return childpid
 
@@ -1225,19 +1225,19 @@ class SystemProcess:
         @rtype: integer represents the exitcode
         if exitcode is not zero then the executed command returned with errors
         """
-        pymonkey.q.logger.log("Using DEPRECATED method system.process.executeWithoutPipe(). Please use system.process.executeAsync() instead, and call the wait() method of the returned object.", 3)
+        pylabs.q.logger.log("Using DEPRECATED method system.process.executeWithoutPipe(). Please use system.process.executeAsync() instead, and call the wait() method of the returned object.", 3)
         if not (outputToStdout == "deprecatedArgument"):
-            pymonkey.q.logger.log("system.process.executeWithoutPipe called with deprecated argument 'outputToStdout'. This paramater is deprecated because it is confusing: printing the output to StdOut is impossible when executing a command without piping. The argument indicates if the command itself should be written on screen and is therefore renamed to 'printCommandToStdout'. Use this argument instead.", 3)
+            pylabs.q.logger.log("system.process.executeWithoutPipe called with deprecated argument 'outputToStdout'. This paramater is deprecated because it is confusing: printing the output to StdOut is impossible when executing a command without piping. The argument indicates if the command itself should be written on screen and is therefore renamed to 'printCommandToStdout'. Use this argument instead.", 3)
             printCommandToStdout = outputToStdout
 
         if printCommandToStdout:
-            pymonkey.q.logger.log("system.process.executeWithoutPipe [%s]" % command, 8)
+            pylabs.q.logger.log("system.process.executeWithoutPipe [%s]" % command, 8)
         else:
-            pymonkey.q.logger.log("system.process.executeWithoutPipe [%s]" % command, 8)
+            pylabs.q.logger.log("system.process.executeWithoutPipe [%s]" % command, 8)
         exitcode = os.system(command)
 
         if exitcode !=0 and dieOnNonZeroExitCode:
-            pymonkey.q.logger.log("command: [%s]\nexitcode:%s" % (command, exitcode), 3)
+            pylabs.q.logger.log("command: [%s]\nexitcode:%s" % (command, exitcode), 3)
             raise RuntimeError("Error during execution!\nCommand: %s\nExitcode: %s" % (command, exitcode))
 
         return exitcode
@@ -1253,20 +1253,20 @@ class SystemProcess:
         @return: If redirectStreams is true, this function returns a subprocess.Popen object representing the started process. Otherwise, it will return the pid-number of the started process.
         """
         if useShell == None: # The default value depends on which platform we're using.
-            if pymonkey.q.platform.isUnix():
+            if pylabs.q.platform.isUnix():
                 useShell = True
-            elif pymonkey.q.platform.isWindows():
+            elif pylabs.q.platform.isWindows():
                 useShell = False
             else:
                 raise RuntimeError("Platform not supported")
 
         #TODO Uh?
         if printCommandToStdout:
-            pymonkey.q.logger.log("system.process.executeAsync [%s]" % command, 8)
+            pylabs.q.logger.log("system.process.executeAsync [%s]" % command, 8)
         else:
-            pymonkey.q.logger.log("system.process.executeAsync [%s]" % command, 8)
+            pylabs.q.logger.log("system.process.executeAsync [%s]" % command, 8)
 
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             if argsInCommand:
                 cmd = command
             else:
@@ -1301,7 +1301,7 @@ class SystemProcess:
                                                  sui)         # Startup Information
                 retVal = pid
 
-        elif pymonkey.q.platform.isUnix():
+        elif pylabs.q.platform.isUnix():
             if useShell:
                 if argsInCommand:
                     cmd = command
@@ -1352,12 +1352,12 @@ class SystemProcess:
         # on stdout or stdin of the child process, we log it
         #
         # When the process terminates, we log the final lines (and add a \n to them)
-        pymonkey.q.logger.log("exec:%s" % command)
+        pylabs.q.logger.log("exec:%s" % command)
         def _logentry(entry,loglevel=5):
             if outputToStdout:
-                pymonkey.q.console.echo(entry, loglevel)
+                pylabs.q.console.echo(entry, loglevel)
             else:
-                pymonkey.q.logger.log(entry,loglevel)
+                pylabs.q.logger.log(entry,loglevel)
 
         def _splitdata(data):
             """ Split data in pieces separated by \n """
@@ -1401,21 +1401,21 @@ class SystemProcess:
 
         if command is None:
             raise ValueError('Error, cannot execute command not specified')
-        pymonkey.q.logger.log("system.process.execute [%s]" % command, 8)
+        pylabs.q.logger.log("system.process.execute [%s]" % command, 8)
         try:
             import errno
-            if pymonkey.q.platform.isUnix():
+            if pylabs.q.platform.isUnix():
                 import subprocess
                 import signal
                 try:
                     signal.signal(signal.SIGCHLD, signal.SIG_DFL)
                 except Exception, ex:
-                    pymonkey.q.logger.log('failed to set child signal, error %s'%ex, 2)
+                    pylabs.q.logger.log('failed to set child signal, error %s'%ex, 2)
                 childprocess = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True, env=os.environ)
                 (output,error) = childprocess.communicate()
                 exitcode = childprocess.returncode
                 
-            elif pymonkey.q.platform.isWindows():
+            elif pylabs.q.platform.isWindows():
                 import subprocess, win32pipe, msvcrt, pywintypes
 
                 # For some awkward reason you need to include the stdin pipe, or you get an error deep inside
@@ -1446,19 +1446,19 @@ class SystemProcess:
             raise
 
         if exitcode<>0 or error<>"":
-            pymonkey.q.logger.log(" Exitcode:%s\nOutput:%s\nError:%s\n" % (exitcode, output, error), 5)
+            pylabs.q.logger.log(" Exitcode:%s\nOutput:%s\nError:%s\n" % (exitcode, output, error), 5)
             if ignoreErrorOutput<>True:
                 output="%s\n***ERROR***\n%s\n" % (output,error)
 
         if exitcode !=0 and dieOnNonZeroExitCode:
-            pymonkey.q.logger.log("command: [%s]\nexitcode:%s\noutput:%s\nerror:%s" % (command, exitcode, output, error), 3)
+            pylabs.q.logger.log("command: [%s]\nexitcode:%s\noutput:%s\nerror:%s" % (command, exitcode, output, error), 3)
             raise RuntimeError("Error during execution! (system.process.execute())\n\nCommand: [%s]\n\nExitcode: %s\n\nProgram output:\n%s\n\nErrormessage:\n%s\n" % (command, exitcode, output, error))
 
         return exitcode, output
 
     def executeScript(self, scriptName):
         """execute python script from shell/Interactive Window"""
-        pymonkey.q.logger.log('Excecuting script with name: %s'%scriptName, 8)
+        pylabs.q.logger.log('Excecuting script with name: %s'%scriptName, 8)
         if scriptName is None:
             raise ValueError('Error, Script name in empty in system.process.executeScript')
         try:
@@ -1471,7 +1471,7 @@ class SystemProcess:
         @param command: string (command to be executed)
         @param timeout: 0 means to ever, expressed in seconds
         """
-        pymonkey.q.logger.log('Executing command %s in sandbox'%command, 8)
+        pylabs.q.logger.log('Executing command %s in sandbox'%command, 8)
         if command is None:
             raise RuntimeError('Error, cannot execute command not specified')
         try:
@@ -1490,8 +1490,8 @@ class SystemProcess:
            For windows, the process information is retrieved and it is double checked that the process is python.exe
            or pythonw.exe
         """
-        pymonkey.q.logger.log('Checking whether process with PID %d is alive' % pid, 9)
-        if pymonkey.q.platform.isUnix():
+        pylabs.q.logger.log('Checking whether process with PID %d is alive' % pid, 9)
+        if pylabs.q.platform.isUnix():
             # Unix strategy: send signal SIGCONT to process pid
             # Achilles heal: another process which happens to have the same pid could be running
             # and incorrectly considered as this process
@@ -1504,9 +1504,9 @@ class SystemProcess:
 
             return True
 
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
 
-            return pymonkey.q.system.windows.isPidAlive(pid)
+            return pylabs.q.system.windows.isPidAlive(pid)
 
     kill = staticmethod(kill)
 
@@ -1520,29 +1520,29 @@ class SystemProcess:
         if port >65535 or port <0 :
             raise ValueError("Port cannot be bigger then 65535 or lower then 0")
 
-        pymonkey.q.logger.log('Checking whether a service is running on port %d' % port, 8)
+        pylabs.q.logger.log('Checking whether a service is running on port %d' % port, 8)
 
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             # netstat: n == numeric, -t == tcp, -u = udp, l= only listening, p = program
             command = "netstat -ntulp | grep ':%s '" % port
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
             return exitcode
-        elif pymonkey.q.platform.isSolaris() or pymonkey.q.platform.isDarwin():
+        elif pylabs.q.platform.isSolaris() or pylabs.q.platform.isDarwin():
             command = "netstat -an -f inet"
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
             for line in output.splitlines():
                 match = re.match(".*\.%s .*\..*LISTEN"%port, line)
                 if match:
                     return 0
             # No ipv4? Then check ipv6
             command = "netstat -an -f inet6"
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
             for line in output.splitlines():
                 match = re.match(".*\.%s .*\..*LISTEN"%port, line)
                 if match:
                     return 0
             return 1
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
             # We use the GetTcpTable function of the Windows IP Helper API (iphlpapi.dll)
             #
             # Parameters of GetTcpTable:
@@ -1604,12 +1604,12 @@ class SystemProcess:
 
         @TODO: The process matching on strings is incorrect, it will match a partial match (e.g.: apache will match a process using apache2)
         """
-        pymonkey.q.logger.log('Checking whether at least %d processes %s are running' % (min, process), 8)
-        if pymonkey.q.platform.isUnix():
+        pylabs.q.logger.log('Checking whether at least %d processes %s are running' % (min, process), 8)
+        if pylabs.q.platform.isUnix():
             # Need to set $COLUMNS such that we can grep full commandline
             # Note: apparently this does not work on solaris
             command = "env COLUMNS=300 ps -ef"
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
             i=0
             co = re.compile("\s*(?P<uid>[a-z]+)\s+(?P<pid>[0-9]+)\s+(?P<ppid>[0-9]+)\s+(?P<cpu>[0-9]+)\s+(?P<stime>\S+)\s+(?P<tty>\S+)\s+(?P<time>\S+)\s+(?P<cmd>.+)")
             for line in output.splitlines():
@@ -1627,9 +1627,9 @@ class SystemProcess:
             return 1
 
         # Windows platform
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
 
-            return pymonkey.q.system.windows.checkProcess(process, min)
+            return pylabs.q.system.windows.checkProcess(process, min)
 
     def checkProcessForPid(self, pid, process):
         """
@@ -1638,15 +1638,15 @@ class SystemProcess:
         @param process: (str) the process that should have the pid
         @return status: (int) 0 when ok, 1 when not ok.
         """
-        pymonkey.q.logger.log('Checking whether process with PID %d is actually %s' % (pid, process), 7)
-        if pymonkey.q.platform.isUnix():
+        pylabs.q.logger.log('Checking whether process with PID %d is actually %s' % (pid, process), 7)
+        if pylabs.q.platform.isUnix():
             command = "ps -p %i"%pid
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
             i=0
             for line in output.splitlines():
-                if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+                if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
                     match = re.match(".{23}.*(\s|\/)%s(\s|$).*" % process, line)
-                elif pymonkey.q.platform.isSolaris():
+                elif pylabs.q.platform.isSolaris():
                     match = re.match(".{22}.*(\s|\/)%s(\s|$).*" % process, line)
                 if match :
                     i= i+1
@@ -1654,9 +1654,9 @@ class SystemProcess:
                 return 0
             return 1
 
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
 
-            return pymonkey.q.system.windows.checkProcessForPid(process, pid)
+            return pylabs.q.system.windows.checkProcessForPid(process, pid)
 
     def setEnvironmentVariable(self, varnames, varvalues):
         """Set the value of the environment variables C{varnames}. Existing variable are overwritten
@@ -1681,9 +1681,9 @@ class SystemProcess:
         @return: full process name
         @rtype: string
         """
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             command = "netstat -ntulp | grep ':%s '" % port
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False,outputToStdout=False)
 
             # Not found if grep's exitcode  > 0
             if not exitcode == 0:
@@ -1712,7 +1712,7 @@ class SystemProcess:
             # Need to set $COLUMNS such that we can grep full commandline
             # Note: apparently this does not work on solaris
             command = "env COLUMNS=300 ps -ef"
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
             co = re.compile("\s*(?P<uid>[a-z]+)\s+(?P<pid>[0-9]+)\s+(?P<ppid>[0-9]+)\s+(?P<cpu>[0-9]+)\s+(?P<stime>\S+)\s+(?P<tty>\S+)\s+(?P<time>\S+)\s+(?P<cmd>.+)")
             for line in output.splitlines():
                 match = co.search(line)

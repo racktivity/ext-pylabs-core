@@ -1,7 +1,7 @@
-#import pymonkey
-from pymonkey import q
+#import pylabs
+from pylabs import q
 #from collections import defaultdict
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
 class MessageObject():
     """

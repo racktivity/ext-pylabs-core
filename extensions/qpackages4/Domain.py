@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 
 class Domain(): 
 
@@ -129,7 +129,7 @@ class Domain():
                     val = val.replace(passwordPattern, password)
             return val
 
-        # We can ask passwords now because pymonkey is not yet ready for
+        # We can ask passwords now because pylabs is not yet ready for
         self._metadataFromTgz=int(getCfgParam(cfg, self.domainname, 'metadataFromTgz').strip())
         self._bundleDownload=getCfgParam(cfg, self.domainname, 'bundleDownload')
         self._metadataBranch= cfg.getValue(self.domainname, 'metadataBranch') if cfg.checkParam(self.domainname, 'metadataBranch') else 'default'

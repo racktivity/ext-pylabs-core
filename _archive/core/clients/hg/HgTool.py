@@ -39,9 +39,9 @@
 import os.path
 from urlparse import urlparse, urlunparse
 import re
-import pymonkey
-from pymonkey import q
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
+import pylabs
+from pylabs import q
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
 
 class HgConnection:
   def __init__(self, url, username, password, destination=''):
@@ -68,13 +68,13 @@ class HgTool(CommandWrapper):
     @returns: Whether the given path contains a hg repository
     @rtype: bool
     '''
-    pymonkey.q.logger.log('Checking whether %s is a hg repository' % path)
-    isdir = pymonkey.q.system.fs.exists
-    join = pymonkey.q.system.fs.joinPaths
+    pylabs.q.logger.log('Checking whether %s is a hg repository' % path)
+    isdir = pylabs.q.system.fs.exists
+    join = pylabs.q.system.fs.joinPaths
     if ( not isdir(join(path, 'store')) or \
          not isdir(join(path, 'requires'))):
       return False
-    pymonkey.q.logger.log('Returning False Value ')
+    pylabs.q.logger.log('Returning False Value ')
     # This is most likely a hg repository
     return True
 
@@ -113,10 +113,10 @@ class HgTool(CommandWrapper):
     @param destination : Optional , local clone destination (default QBASE/var/hg/)
     @type destination : string
     '''
-    pymonkey.q.logger.log('Cloning (%s)' % \
+    pylabs.q.logger.log('Cloning (%s)' % \
                           (repository_path), 5)
 
-    hg_base = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    hg_base = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                              'var', 'hg')
     if not q.system.fs.exists(hg_base):
       q.system.fs.createDir(hg_base)
@@ -124,25 +124,25 @@ class HgTool(CommandWrapper):
     defaultDest = repository_path.rstrip('/').split('/')[-1]
     destination = destination or defaultDest
 
-    target = pymonkey.q.system.fs.joinPaths(hg_base, destination)
+    target = pylabs.q.system.fs.joinPaths(hg_base, destination)
 
     # Target should be a folder, if it exists
-    if pymonkey.q.system.fs.exists(target) and \
-       not pymonkey.q.system.fs.isDir(target):
+    if pylabs.q.system.fs.exists(target) and \
+       not pylabs.q.system.fs.isDir(target):
       raise RuntimeError(
         'Path %s exists, but is not a directory' % project_name)
 
     # If it exists, it's a folder which should have a .hg subfolder
-    if pymonkey.q.system.fs.exists(target) and \
-       not pymonkey.q.clients.hg.is_hg_repository(pymonkey.q.system.fs.joinPaths(target, '.hg')):
+    if pylabs.q.system.fs.exists(target) and \
+       not pylabs.q.clients.hg.is_hg_repository(pylabs.q.system.fs.joinPaths(target, '.hg')):
       raise RuntimeError('Folder %s exists, but is not a hg folder' % target)
 
     # Check whether the remote already exists
-    if pymonkey.q.system.fs.exists(
-      pymonkey.q.system.fs.joinPaths(target, '.hg', 'hgrc'
+    if pylabs.q.system.fs.exists(
+      pylabs.q.system.fs.joinPaths(target, '.hg', 'hgrc'
                                      )):
       command = 'hg paths'
-      ret, stdout, stderr = pymonkey.q.system.process.run(
+      ret, stdout, stderr = pylabs.q.system.process.run(
         command, stopOnError=False, cwd=target)
 
       if ret:
@@ -153,12 +153,12 @@ class HgTool(CommandWrapper):
       pattern = re.compile('default\s*=\s*')
 
       for line in stdout.splitlines():
-        pymonkey.q.logger.log('The Line %s' % line)
+        pylabs.q.logger.log('The Line %s' % line)
         split = pattern.split(line)
         if len(split) > 1:
           parsed = urlparse(split[-1])
           url = '%s://%s%s'%(parsed[0], parsed.hostname, parsed.path)
-          pymonkey.q.logger.log('Found remote URI %s' % url, 6)
+          pylabs.q.logger.log('Found remote URI %s' % url, 6)
           if url == repository_path:
             match = True
             break
@@ -180,14 +180,14 @@ class HgTool(CommandWrapper):
       if destination == defaultDest:
         base = hg_base
       else:
-        if os.path.isabs(pymonkey.q.system.fs.getDirName(destination)) and not pymonkey.q.system.fs.isDir(destination):
+        if os.path.isabs(pylabs.q.system.fs.getDirName(destination)) and not pylabs.q.system.fs.isDir(destination):
           base = destination
-        elif not pymonkey.q.system.fs.isDir(target):
+        elif not pylabs.q.system.fs.isDir(target):
           base = target
         else:
           raise RuntimeError('Destination Directory is not Empty . Error %s'%stderr)
         q.system.fs.createDir(base)
-      ret, _, stderr= pymonkey.q.system.process.run(command, stopOnError=False,
+      ret, _, stderr= pylabs.q.system.process.run(command, stopOnError=False,
                                                     cwd=base)
       if ret:
         raise RuntimeError('Unable to add clone remote. Error %s'%stderr)
@@ -211,11 +211,11 @@ class HgTool(CommandWrapper):
     @param source: Path to source object in the repository
     @type source: string
     '''
-    pymonkey.q.logger.log('Checking out object %s of head %s '
+    pylabs.q.logger.log('Checking out object %s of head %s '
                           'in repository %s ' % \
                           (source, head, repository_path ))
 
-    if not pymonkey.q.clients.hg.is_hg_repository(repository_path):
+    if not pylabs.q.clients.hg.is_hg_repository(repository_path):
       raise RuntimeError('Repository path %s does not look like '
                          'a hg repository' % repository_path)
 
@@ -225,38 +225,38 @@ class HgTool(CommandWrapper):
     #source = source.lstrip('/')
     #head = '%s:%s' % (head, source)
 
-    headpath = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    headpath = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                               'var', 'hg',
                                               project_name,head)
-    pymonkey.q.logger.log('headpath,head PATH: %s %s' % (headpath,head))
+    pylabs.q.logger.log('headpath,head PATH: %s %s' % (headpath,head))
 
 
-    if not pymonkey.q.system.fs.exists(headpath):
+    if not pylabs.q.system.fs.exists(headpath):
       raise RuntimeError('The branch does not exist')
 
-#    if pymonkey.q.system.fs.isDir(pymonkey.q.system.fs.joinPaths(headpath,source)):
+#    if pylabs.q.system.fs.isDir(pylabs.q.system.fs.joinPaths(headpath,source)):
 #       raise RuntimeError('The Source is a Directory Tree')
 
     command = 'hg locate %s' % source
 #
-    ret, stdout, stderr = pymonkey.q.system.process.run(command, stopOnError=False,cwd=headpath)
+    ret, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False,cwd=headpath)
 #    if ret:
 #    print ('Unable to find the source file %s in the local repo, checking the cloned repository for changes ')
     command = 'hg pull -u'
-    ret, stdout, stderr= pymonkey.q.system.process.run(command, stopOnError=False,
+    ret, stdout, stderr= pylabs.q.system.process.run(command, stopOnError=False,
                                                        cwd=headpath)
     if ret:
       raise RuntimeError('Unable to pull the changes from default repo. %s'%stderr)
     else:
       command = 'hg locate %s' % source
-      ret,stdout,stderr = pymonkey.q.system.process.run(command, stopOnError=False,cwd=headpath)
+      ret,stdout,stderr = pylabs.q.system.process.run(command, stopOnError=False,cwd=headpath)
       if ret:
         print ('Source Not found')
       else:
         print ('Source is Pulled')
 
 
-      pymonkey.q.logger.log('CHANGE RET : %s stdout: %s ' % (ret, stdout))
+      pylabs.q.logger.log('CHANGE RET : %s stdout: %s ' % (ret, stdout))
     #else:
     #   print ('The source exists in the local repo')
 
@@ -279,14 +279,14 @@ class HgTool(CommandWrapper):
     '''
     head = branch if not remote_name else '%s/%s' % (remote_name, branch)
 
-    pymonkey.q.logger.log('Checking out object %s of %s branch %s ' % \
+    pylabs.q.logger.log('Checking out object %s of %s branch %s ' % \
                           (source, project_name, head
                            ), 5)
 
-    repository_path = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    repository_path = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                                      'var', 'hg',
                                                      project_name, '.hg')
-    pymonkey.q.clients.hg._checkout(repository_path, project_name, head, source)
+    pylabs.q.clients.hg._checkout(repository_path, project_name, head, source)
 
   def checkin(self,project_name,remote_name,addsource,sourcepath,commit_message):
     ''' Checkin a file or commited source to the bitbucket repository
@@ -303,35 +303,35 @@ class HgTool(CommandWrapper):
     @type commit_message: string
     '''
 
-    repository_path=pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,'var','hg',
+    repository_path=pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,'var','hg',
                                                    project_name,remote_name)
-    hg_repo = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,'var','hg',
+    hg_repo = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,'var','hg',
                                              project_name,remote_name,'.hg')
 
-    if not pymonkey.q.clients.hg.is_hg_repository(hg_repo):
+    if not pylabs.q.clients.hg.is_hg_repository(hg_repo):
       raise RuntimeError('Repository path %s does not look like '
                          'a hg repository' % repository_path)
 
-    if not pymonkey.q.system.fs.exists(pymonkey.q.system.fs.joinPaths(repository_path,sourcepath)):
+    if not pylabs.q.system.fs.exists(pylabs.q.system.fs.joinPaths(repository_path,sourcepath)):
       raise RuntimeError('The add source does not exist in the repository')
 
-    source = pymonkey.q.system.fs.joinPaths(repository_path,sourcepath)
+    source = pylabs.q.system.fs.joinPaths(repository_path,sourcepath)
 
     command = 'hg add %s' % addsource
 
-    ret,stdout,_ = pymonkey.q.system.process.run(command, stopOnError=False,cwd=source)
+    ret,stdout,_ = pylabs.q.system.process.run(command, stopOnError=False,cwd=source)
 
     if ret:
       raise RuntimeError('Adding Source Failed')
     else:
       command = 'hg commit -m "%s" %s' % (commit_message,addsource)
-      ret,stdout,_ = pymonkey.q.system.process.run(command, stopOnError=False,cwd=source)
+      ret,stdout,_ = pylabs.q.system.process.run(command, stopOnError=False,cwd=source)
       if ret:
         raise RuntimeError('Committing %s failed' % addsource)
 
     command='hg push'
 
-    ret,stdout,_ = pymonkey.q.system.process.run(command, stopOnError=False,cwd=source)
+    ret,stdout,_ = pylabs.q.system.process.run(command, stopOnError=False,cwd=source)
 
     if ret:
       raise RuntimeError('Unable to Push the changes to repository')
@@ -354,29 +354,29 @@ class HgTool(CommandWrapper):
     @type source: string
     '''
 
-    repository_path=pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,'var','hg',
+    repository_path=pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,'var','hg',
                                                    project_name, remote_name)
-    hg_repo = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,'var','hg',
+    hg_repo = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,'var','hg',
                                              project_name,remote_name,'.hg')
 
-    if not pymonkey.q.clients.hg.is_hg_repository(hg_repo):
+    if not pylabs.q.clients.hg.is_hg_repository(hg_repo):
       raise RuntimeError('Repository path %s does not look like '
                          'a hg repository' % repository_path)
 
-    destination=pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,destination)
+    destination=pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,destination)
     archive = q.system.fs.joinPaths(q.dirs.tmpDir, 'hg', 'archive')
     if q.system.fs.exists(archive): q.system.fs.removeDirTree(archive)
 
     ###pull lastest changes first
     command = 'hg pull'
-    ret,stdout,stderror = pymonkey.q.system.process.run(command, stopOnError=False,cwd=repository_path)
+    ret,stdout,stderror = pylabs.q.system.process.run(command, stopOnError=False,cwd=repository_path)
 
     if ret:
       raise RuntimeError('Failed to update, %s'%stderror)
 
     command='hg archive -r %s %s' % ('default' if not branch_name else branch_name, archive)
 
-    ret,stdout,stderror = pymonkey.q.system.process.run(command, stopOnError=False,cwd=repository_path)
+    ret,stdout,stderror = pylabs.q.system.process.run(command, stopOnError=False,cwd=repository_path)
     if ret:
       raise RuntimeError('Unable to export, %s'%stderror)
 

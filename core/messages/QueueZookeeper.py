@@ -1,8 +1,8 @@
-#import pymonkey
-from pymonkey import q
+#import pylabs
+from pylabs import q
 import pprint
-from pymonkey.Shell import *
-from pymonkey.messages.MessageObject import MessageObject
+from pylabs.Shell import *
+from pylabs.messages.MessageObject import MessageObject
 from MessageTargetBase import MessageTargetBase
 
 class QueueZookeeper(MessageTargetBase):

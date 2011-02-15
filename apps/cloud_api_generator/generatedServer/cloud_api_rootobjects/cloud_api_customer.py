@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class customer:
     def getObject (self, rootobjectguid, jobguid = "", executionparams = {}):

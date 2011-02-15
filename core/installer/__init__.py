@@ -35,5 +35,5 @@
 
 __all__ = ['Event', 'EventHandler', ]
 
-from pymonkey.event.Event import Event
-from pymonkey.event.EventHandler import EventHandler
+from pylabs.event.Event import Event
+from pylabs.event.EventHandler import EventHandler

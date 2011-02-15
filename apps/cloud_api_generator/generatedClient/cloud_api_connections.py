@@ -1,8 +1,8 @@
 import inspect
 import xmlrpclib
 
-from pymonkey.config import ConfigManagementItem, ItemGroupClass
-from pymonkey import q
+from pylabs.config import ConfigManagementItem, ItemGroupClass
+from pylabs import q
 import cloud_api_clients
 SSL_PORT = 443
 

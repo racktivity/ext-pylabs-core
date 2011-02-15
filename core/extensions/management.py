@@ -35,9 +35,9 @@
 
 import os.path
 
-import pymonkey
-from pymonkey.extensions.PMExtensions import SYSTEM_EXTENSIONS, HOOK_POINTS
-from pymonkey.inifile.IniFile import IniFile
+import pylabs
+from pylabs.extensions.PMExtensions import SYSTEM_EXTENSIONS, HOOK_POINTS
+from pylabs.inifile.IniFile import IniFile
 
 def list():
     '''List all extensions known on the system'''
@@ -75,7 +75,7 @@ def _setExtensionEnabled(qlocation, value):
     '''
     hook = _findExtension(qlocation)
 
-    extension_config = pymonkey.q.system.fs.joinPaths(hook['extension_path'],
+    extension_config = pylabs.q.system.fs.joinPaths(hook['extension_path'],
                                                             'extension.cfg')
     ini = IniFile(extension_config)
 

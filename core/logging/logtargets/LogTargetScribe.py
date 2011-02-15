@@ -1,5 +1,5 @@
-from pymonkey.enumerators import AppStatusType
-from pymonkey import q
+from pylabs.enumerators import AppStatusType
+from pylabs import q
 from fb303_scripts import *
 from scribe import scribe
 from thrift.transport import TTransport, TSocket

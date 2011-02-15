@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class hypervisor:
     def startVMachine (self, machineguid, jobguid = "", executionparams = {}):

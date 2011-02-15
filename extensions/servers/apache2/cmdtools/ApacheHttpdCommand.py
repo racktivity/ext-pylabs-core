@@ -33,9 +33,9 @@
 #
 # </License>
  
-from pymonkey import q
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
-from pymonkey.enumerators import AppStatusType
+from pylabs import q
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
+from pylabs.enumerators import AppStatusType
 import time
 
 class ApacheHttpdCommand(CommandWrapper):

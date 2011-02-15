@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class machine:
     def exportMachine (self, machineGuid, destinationUri, executerMachineGuid = "", jobguid = "", executionparams = {}):

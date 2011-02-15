@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class systemnas:
     def getDiskImageInfo (self, sourceuri, format = "VDI", jobguid = "", executionparams = {}):

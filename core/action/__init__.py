@@ -35,5 +35,5 @@
 
 __all__ = ['ActionController', 'StartStopOutputCountException', ]
 
-from pymonkey.action.action import ActionController, \
+from pylabs.action.action import ActionController, \
         StartStopOutputCountException

@@ -40,10 +40,10 @@ import pkg_resources
 import sys
 import zipfile
 
-import pymonkey
-import pymonkey.inifile
-import pymonkey.extensions.PMExtensionsGroup as PMExtensionsGroup
-from pymonkey.extensions.PMExtension import PMExtension, EggPMExtension
+import pylabs
+import pylabs.inifile
+import pylabs.extensions.PMExtensionsGroup as PMExtensionsGroup
+from pylabs.extensions.PMExtension import PMExtension, EggPMExtension
 
 SYSTEM_EXTENSIONS = list()
 HOOK_POINTS = dict()
@@ -62,7 +62,7 @@ def find_eggs(path):
     )
     return eggs
 
-class PymonkeyZipFile(zipfile.ZipFile):
+class pylabsZipFile(zipfile.ZipFile):
     """Extends the Python 2.5 zipfile ZipFile class to add a Python 2.6 like
     open method that returns a file pointer"""
     def open(self, name, mode='r'):
@@ -87,7 +87,7 @@ class ExtensionFactory(object):
         @param pmExtensionName: name used to expose class under q.[one or more extensionsgroup's].[pmExtensionName]
         @type pmExtensionName: string
         @return: a freshly instantiated extension
-        @rtype: L{pymonkey.extensions.PMextension.BasePMExtension}
+        @rtype: L{pylabs.extensions.PMextension.BasePMExtension}
         """
         raise NotImplementedError
 
@@ -122,7 +122,7 @@ class ExtensionInfoFinder(object):
         to detect them.
 
         @param inifile: inifile of an extension
-        @type inifile: L{pymonkey.inifile.IniFile.IniFile}
+        @type inifile: L{pylabs.inifile.IniFile.IniFile}
         @return: wether the inifile contains old style sections
         @rtype: boolean
         """
@@ -135,7 +135,7 @@ class ExtensionInfoFinder(object):
         are extra parameters to be added to each information dict.
 
         @param inifile: inifile that should be scanned for extension information
-        @type inifile: L{pymonkey.inifile.IniFile.IniFile}
+        @type inifile: L{pylabs.inifile.IniFile.IniFile}
         @param path: internal extension path
         @type path: string
         @param factory: factory to create the extension described in the INI file
@@ -146,7 +146,7 @@ class ExtensionInfoFinder(object):
         sections = inifile.getSections()
         hookInformationList = list()
         for hookid in sorted(section for section in sections if section.startswith('hook')):
-            pymonkey.q.logger.log('Found hook %s in %s' % (hookid, inifile, ), 7)
+            pylabs.q.logger.log('Found hook %s in %s' % (hookid, inifile, ), 7)
             # Extract the information from the section
             hookInformation = self._extractHookInformation(inifile, hookid)
             if not hookInformation:
@@ -162,7 +162,7 @@ class ExtensionInfoFinder(object):
         Extract hook information from an INI file section
 
         @param inifile: INI file containing the section with the hook information
-        @type inifile: L{pymonkey.inifile.IniFile.IniFile}
+        @type inifile: L{pylabs.inifile.IniFile.IniFile}
         @param section: section of the INI file that contains the hook information
         @type section: string
         @return: hook information
@@ -172,7 +172,7 @@ class ExtensionInfoFinder(object):
             #This is most likely an old-style extension
             import warnings
             warnings.warn('Extension %s contains a main section in the extension.cfg file, please update it' % \
-                    dir[len(pymonkey.q.dirs.extensionsDir) + 1:] if dir.startswith(pymonkey.q.dirs.extensionsDir) else dir)
+                    dir[len(pylabs.q.dirs.extensionsDir) + 1:] if dir.startswith(pylabs.q.dirs.extensionsDir) else dir)
             # Explicit None for clarity
             return None
 
@@ -199,16 +199,16 @@ class PyExtensionInfoFinder(ExtensionInfoFinder):
         """
         extension_hooks = list()
         #Find all extension names
-        dirs = pymonkey.q.system.fs.listDirsInDir(self.rootDir, True,findDirectorySymlinks=True)
+        dirs = pylabs.q.system.fs.listDirsInDir(self.rootDir, True,findDirectorySymlinks=True)
         # Use a simple PMExtensionFactory
         factory = PMExtensionFactory()
-        for dir in (d for d in dirs if pymonkey.q.system.fs.exists(os.path.join(d, self.extensionConfigName))):
+        for dir in (d for d in dirs if pylabs.q.system.fs.exists(os.path.join(d, self.extensionConfigName))):
             #we found possible extension because extension.cfg file found
-            pymonkey.q.logger.log('Found extension in %s' % dir, 6)
+            pylabs.q.logger.log('Found extension in %s' % dir, 6)
             # Load extension ini file
             configfilePath = os.path.join(dir, self.extensionConfigName)
-            inifile = pymonkey.inifile.IniFile(configfilePath)
-            path = pymonkey.q.system.fs.getDirName(configfilePath)
+            inifile = pylabs.inifile.IniFile(configfilePath)
+            path = pylabs.q.system.fs.getDirName(configfilePath)
             hooks = self._getHookInformation(inifile, path, factory)
             extension_hooks.extend(hooks)
 
@@ -224,11 +224,11 @@ class EggExtensionInfoFinder(ExtensionInfoFinder):
         eggs = find_eggs(self.rootDir)
         factory = EggPMExtensionFactory()
         for egg in eggs:
-            # Add egg to path so other parts of pymonkey can import its contents
+            # Add egg to path so other parts of pylabs can import its contents
             eggfile = egg.location
             sys.path.append(eggfile)
             for filePointer, path in self._generateExtensionConfigFilePointers(eggfile):
-                inifile = pymonkey.inifile.IniFile(filePointer)
+                inifile = pylabs.inifile.IniFile(filePointer)
                 hooks = self._getHookInformation(inifile, path, factory)
                 extension_hooks.extend(hooks)
         return extension_hooks
@@ -249,12 +249,12 @@ class EggExtensionInfoFinder(ExtensionInfoFinder):
         """
         # Always use forward slashes in eggs
         sep = "/"
-        eggFile = PymonkeyZipFile(eggFileName)
+        eggFile = pylabsZipFile(eggFileName)
         for internalFileName in eggFile.namelist():
             parts = internalFileName.split(sep)
             if parts and parts[-1] == self.extensionConfigName:
                 # construct egg path i.e.
-                # /opt/qbase2/lib/pymonkey/extensions/my_extension.egg/my_first_extension/
+                # /opt/qbase2/lib/pylabs/extensions/my_extension.egg/my_first_extension/
                 # This format is supported by the eggfile module
                 path = sep.join([eggFileName] + parts[:-1])
                 yield eggFile.open(internalFileName), path
@@ -280,9 +280,9 @@ class PMExtensions:
         
     def init(self):
         self.__init_properties__()
-        if not pymonkey.q.system.fs.exists(pymonkey.q.dirs.extensionsDir):
+        if not pylabs.q.system.fs.exists(pylabs.q.dirs.extensionsDir):
             raise RuntimeError("Cannot find extensions dir")
-        self.extensionsRootPath = pymonkey.q.dirs.extensionsDir
+        self.extensionsRootPath = pylabs.q.dirs.extensionsDir
 
         self._extensionInfoFinders = [klass(self.extensionsRootPath) for klass in EXTENSION_INFO_FINDER_CLASSES]
 
@@ -301,7 +301,7 @@ class PMExtensions:
             self._populateExtensions()
             return
 
-        pymonkey.q.logger.log('Loading PyMonkey extensions from %s' % self.extensionsRootPath,7)
+        pylabs.q.logger.log('Loading pylabs extensions from %s' % self.extensionsRootPath,7)
 
         #Add extensions base dir to sys.path
         sys.path.append(self.extensionsRootPath)
@@ -322,7 +322,7 @@ class PMExtensions:
         enabled = hookInfo['enabled']
         extensionFactory = hookInfo['extension_factory']
 
-        pymonkey.q.logger.log('Found %s hook %s.%s to be hooked on %s' % (
+        pylabs.q.logger.log('Found %s hook %s.%s to be hooked on %s' % (
                                 'enabled' if enabled else 'disabled',
                                 modulename, classname,
                                 qlocation), 7)
@@ -330,14 +330,14 @@ class PMExtensions:
         if enabled == True:
             self._hook_extension(extensionFactory, extensionPath, modulename, classname, qlocation)
 
-        pymonkey.q.logger.log('Finished loading hook', 7)
+        pylabs.q.logger.log('Finished loading hook', 7)
 
     #We need this to be public
     populateExtension = _populateExtension
 
 
     def _hook_extension(self, extensionFactory, extensionPath, modulename, classname, qlocation):
-        pymonkey.q.logger.log('Hooking %s.%s of extension in %s on %s' % (
+        pylabs.q.logger.log('Hooking %s.%s of extension in %s on %s' % (
                                 modulename, classname,
                                 extensionPath,
                                 qlocation,
@@ -373,7 +373,7 @@ class PMExtensions:
                 "%s, because %s of similar type is already mounted"
                 " there" % (extension, qlocation, mountedExtension))
             else:
-                pymonkey.q.errorconditionhandler.raiseWarning("Cannot mount %s on "
+                pylabs.q.errorconditionhandler.raiseWarning("Cannot mount %s on "
                     "requested mountpoint %s, because %s of other type is "
                     "already mounted there." % (
                         extension, qlocation, mountedExtension

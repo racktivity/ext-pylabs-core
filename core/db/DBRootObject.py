@@ -33,8 +33,8 @@
 #
 # </License>
 
-from pymonkey.db import DBConnection
-from pymonkey.db import DBTableSpace
+from pylabs.db import DBConnection
+from pylabs.db import DBTableSpace
 
 class DBRootObject(object):
     name ##string

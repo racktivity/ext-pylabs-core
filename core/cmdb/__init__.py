@@ -36,5 +36,5 @@
 __all__ = ['CMDB', 'UnknownObjectException', 'DoubleLockException',
            'ObjectNotOwnedException']
 
-from pymonkey.cmdb.cmdb import CMDB, UnknownObjectException, \
+from pylabs.cmdb.cmdb import CMDB, UnknownObjectException, \
         DoubleLockException, ObjectNotOwnedException

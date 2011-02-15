@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class job:
     def getObject (self, rootobjectguid, jobguid = "", executionparams = {}):

@@ -81,7 +81,7 @@ Python process, types defined in it should be generated, registered, and used
 later on, right?
 
 Well, in a normal application this is the way it's supposed to work. Inside
-PyMonkey we got one extra catch though: lazy-loading of extensions.
+pylabs we got one extra catch though: lazy-loading of extensions.
 
 When an extension is lazy-loaded, this is done using the load_module function
 of the built-in imp module. This results in a complete reload of the module and
@@ -126,8 +126,8 @@ they should set, C{_INTERMEDIATE_CLASS}.
 import os.path
 import re
 import keyword
-#from pymonkey.Shell import *
-import pymonkey
+#from pylabs.Shell import *
+import pylabs
 
 IDENTIFIER_RE = re.compile('^[a-zA-Z_][a-zA-Z0-9_]*$')
 
@@ -340,10 +340,10 @@ class BaseEnumerationMeta(type):
         #Call class._initItems
         getattr(ret, '_initItems', lambda: None)()
 
-        #Since we can't hook enumerations on pymonkey.q directly, since 'q'
+        #Since we can't hook enumerations on pylabs.q directly, since 'q'
         #could be not initialized when the first enumeration type is created.
         #To get around this, we use a module-global container variable which
-        #gets populated, and should be hooked onto pymonkey.q whenever
+        #gets populated, and should be hooked onto pylabs.q whenever
         #applicable.
         #
         #For some reason, it was decided to use smallCapStarting names for

@@ -33,15 +33,15 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.qpackages.client.QPackageExecuterHelper import QPackageExecuterHelper
-from pymonkey.qpackages.client.QPackageInstallerHelper import QPackageInstallerHelper
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.client.QPackageManagement import QPackageManagement
-from pymonkey.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
-from pymonkey.qpackages.common.enumerators import DependencyType
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.qpackages.client.QPackageExecuterHelper import QPackageExecuterHelper
+from pylabs.qpackages.client.QPackageInstallerHelper import QPackageInstallerHelper
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.client.QPackageManagement import QPackageManagement
+from pylabs.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
+from pylabs.qpackages.common.enumerators import DependencyType
 
 class QPackageInstaller(BaseType):
     """

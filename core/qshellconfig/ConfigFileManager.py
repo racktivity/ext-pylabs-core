@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 import os
 
 
@@ -54,11 +54,11 @@ class ConfigFileManager():
 
     def _getConfigFile(self):
         if self._loaded==False:
-            cfgfile=pymonkey.q.dirs.cfgDir+os.sep+"%s.cfg" % self._configType
-            if pymonkey.q.system.fs.exists(cfgfile):
-                self.cfg=pymonkey.q.tools.inifile.open(cfgfile)
+            cfgfile=pylabs.q.dirs.cfgDir+os.sep+"%s.cfg" % self._configType
+            if pylabs.q.system.fs.exists(cfgfile):
+                self.cfg=pylabs.q.tools.inifile.open(cfgfile)
             else:
-                self.cfg=pymonkey.q.tools.inifile.new(cfgfile)
+                self.cfg=pylabs.q.tools.inifile.new(cfgfile)
             self._loaded=True
         return self.cfg
 
@@ -66,18 +66,18 @@ class ConfigFileManager():
         """
         show all settings from a specific section and ask for confirmation if correct, if not ask to change
         """
-        if pymonkey.q.qshellconfig.interactive==False:
+        if pylabs.q.qshellconfig.interactive==False:
             raise Exception("Running non interactive, script is asking to review a config file, please adjust section %s in configfile cfg/%s.cfg" % (section,self._configType))
 
         cfg=self._getConfigFile()
         params=cfg.getParams(section)
-        pymonkey.q.console.echo("")
+        pylabs.q.console.echo("")
         if descr=="" and confirm==False:
             descr="##### %s OF %s #####" % (section,self._configType)
         else:
             descr="##### REVIEW CONFIG SECTION %s OF %s #####" % (section,self._configType)
 
-        pymonkey.q.console.echo(descr)
+        pylabs.q.console.echo(descr)
         nr=0
         params2={}
         for param in params:
@@ -85,21 +85,21 @@ class ConfigFileManager():
             params2[nr]=ParamDetail(nr,param)
             value=cfg.getValue(section,param)
             params2[nr].value=value
-            pymonkey.q.console.echo("    %s : %s = %s " % (nr,param,value))
-        pymonkey.q.console.echo("")
+            pylabs.q.console.echo("    %s : %s = %s " % (nr,param,value))
+        pylabs.q.console.echo("")
         if confirm:
-            yesno=pymonkey.q.console.askYesNo("Is this correct?")
+            yesno=pylabs.q.console.askYesNo("Is this correct?")
             if yesno==False:
                 #mistakes in config, ask which line
-                nr=pymonkey.q.console.askInteger("Which line is not correct?")
+                nr=pylabs.q.console.askInteger("Which line is not correct?")
                 if params2.has_key(nr):
                     parameterName=params2[nr].name
-                    newvalue= pymonkey.q.console.askString("Give appropriate new value for parameter %s" % parameterName)
+                    newvalue= pylabs.q.console.askString("Give appropriate new value for parameter %s" % parameterName)
                     cfg.setParam(section,parameterName,newvalue)
                     cfg.write()
                     self.validateSectionInteractive(section)
                 else:
-                    pymonkey.q.console.echo ("ERROR: please specify appropriate line nr")
+                    pylabs.q.console.echo ("ERROR: please specify appropriate line nr")
                     self.validateSectionInteractive(section)
 
     def showSection(self,section,descr=""):
@@ -109,8 +109,8 @@ class ConfigFileManager():
         return self.validateSectionInteractive(section,descr,confirm=False)
 
     def _askString(self,description,section):
-        if pymonkey.q.qshellconfig.interactive:
-            pymonkey.q.console.askString(description)
+        if pylabs.q.qshellconfig.interactive:
+            pylabs.q.console.askString(description)
         else:
             raise 
 
@@ -147,8 +147,8 @@ class ConfigFileManager():
 
     def getParam(self,section,paramName,description="",defaultValue="",forceDefaultValue=False,forceAsk=False,password=False):
         """
-        is default configuration management which is personal per user of pymonkey e.g. personal svn connections
-        this method allows you to get a parameter, if not found it will interactive ask for that parameter and store it in the apropriate .cfg file in the pymonkey cfg dir
+        is default configuration management which is personal per user of pylabs e.g. personal svn connections
+        this method allows you to get a parameter, if not found it will interactive ask for that parameter and store it in the apropriate .cfg file in the pylabs cfg dir
         """
         self._getConfigFile()
         #if forceDefaultValue:
@@ -158,7 +158,7 @@ class ConfigFileManager():
         configType=self._configType
         if section=="" or configType=="":
             raise Exception("cannot get parameter when section or configType not specified")
-        pymonkey.q.logger.log("get param: configtype %s, section %s, param %s, defaulvalue %s, forceDefaultValue %s" % (configType,section,paramName,defaultValue,forceDefaultValue))
+        pylabs.q.logger.log("get param: configtype %s, section %s, param %s, defaulvalue %s, forceDefaultValue %s" % (configType,section,paramName,defaultValue,forceDefaultValue))
         maincfg=self._getConfigFile()
         maincfg.addSection(section)
         if maincfg.checkParam(section,paramName)==False or maincfg.getValue(section,paramName)=="" or forceAsk:
@@ -175,11 +175,11 @@ class ConfigFileManager():
             if forceDefaultValue==True and defaultValue==None:
                 value="*NONE*"
             if forceDefaultValue==False or defaultValue=="":
-                if pymonkey.q.qshellconfig.interactive:
+                if pylabs.q.qshellconfig.interactive:
                     if not password:
-                        value= pymonkey.q.console.askString(description)
+                        value= pylabs.q.console.askString(description)
                     else:
-                        value= pymonkey.q.console.askPassword(description)
+                        value= pylabs.q.console.askPassword(description)
                 else: 
                     raise Exception("Parameter not configured yet in config file: %s, section:%s , param:%s. Please fix. \nTIP You can also put qshell in interactive mode (q.qshellconfig.interactive=True):" %(self._configType,section,paramName))
                 if value=="":
@@ -222,7 +222,7 @@ class ConfigFileManager():
         return name
         """
         self._getConfigFile()
-        if pymonkey.q.qshellconfig.interactive==False:
+        if pylabs.q.qshellconfig.interactive==False:
             raise Exception("Running non interactive, script is asking for interactive input (choice of item), looking for %s in configfile %s" % (sectionDescription,self._configType))
         cfg=self._getConfigFile()
         sections=cfg.getSections()
@@ -235,13 +235,13 @@ class ConfigFileManager():
                 #Plain ascii sort
                 sections = sorted(sections)
 
-        pymonkey.q.console.echo("\nWhich %s do you want to choose: " % (sectionDescription))
+        pylabs.q.console.echo("\nWhich %s do you want to choose: " % (sectionDescription))
         nr=0
         for section in sections:
             nr=nr+1
-            pymonkey.q.console.echo("   %s: %s" % (nr, section))
-        pymonkey.q.console.echo("")
-        result=pymonkey.q.console.askInteger("   Select Nr")
+            pylabs.q.console.echo("   %s: %s" % (nr, section))
+        pylabs.q.console.echo("")
+        result=pylabs.q.console.askInteger("   Select Nr")
         if result>0 and result < nr+1:
             return sections[result-1]    
         else:

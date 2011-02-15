@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class cmc:
     def getRootPolicyJobList (self, joblimit = 40, jobguid = "", executionparams = {}):

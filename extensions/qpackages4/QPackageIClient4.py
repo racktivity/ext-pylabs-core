@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 from QPackageIObject4 import QPackageIObject4
 
 # Return QPackageIObject instead of the real package object
@@ -22,8 +22,8 @@ class QPackageIClient4():
     
     # builds the required directory structure
     # When repo is not None a default codemanagement tasklet is generated
-    # When isExtension is true the files are put under lib/pymonkey/extensions
-    # When create link is true a link is made in lib/pymonkey/extensions to the files.. for easy testing  
+    # When isExtension is true the files are put under lib/pylabs/extensions
+    # When create link is true a link is made in lib/pylabs/extensions to the files.. for easy testing  
     def createNewPackage(self):
         """ 
         Builds the required directory structure and generates the default files; 

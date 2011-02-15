@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
 
 class QPackageDomains(BaseType):
     """

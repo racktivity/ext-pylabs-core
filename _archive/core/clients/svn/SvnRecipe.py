@@ -41,8 +41,8 @@ try:
 except ImportError:
     import pickle
 
-import pymonkey
-from pymonkey import q
+import pylabs
+from pylabs import q
 class SvnRecipeItem:
     '''Build info for an SvnBuildRecipe (used to create buildinfo.ini)'''
     
@@ -145,8 +145,8 @@ class SvnRecipe:
         An optional SVN revision can be provided.        
 
         Example:
-        There is an existing svnconnection called pymonkey which connects to http://svn.pymonkey.org
-        files on serverhttp://svn.pymonkey.org in /trunk/myvapp/bin will
+        There is an existing svnconnection called pylabs which connects to http://svn.pylabs.org
+        files on serverhttp://svn.pylabs.org in /trunk/myvapp/bin will
         go into q.dirs.baseDir/apps/myapp/ if this method is called with arguments
         'http://svn.mine.tld', '/trunk/myvapp/bin', '/apps/myapp/'.        
 

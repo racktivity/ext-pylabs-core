@@ -33,21 +33,21 @@
 #
 # </License>
 
-from pymonkey import q,i
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
+from pylabs import q,i
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
 
-from pymonkey.qpackages.client.QPackageDomain import QPackageDomains
-from pymonkey.qpackages.client.QPackageServerConnection import QPackageServerConnection, QPackageServerConnections
-from pymonkey.qpackages.common.QPackagePackagesDir import QPackagePackagesDir
-from pymonkey.qpackages.common.VLists import VLists
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.common.DomainObject import DomainObject
-from pymonkey.qpackages.common.enumerators import VListType
-from pymonkey.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
-from pymonkey.qpackages.client.QPackageBuilder import QPackageBuilder
-from pymonkey.qpackages.client.QPackage import QPackage
-from pymonkey.qpackages.common.QPackageVersioning import QPackageVersioning
+from pylabs.qpackages.client.QPackageDomain import QPackageDomains
+from pylabs.qpackages.client.QPackageServerConnection import QPackageServerConnection, QPackageServerConnections
+from pylabs.qpackages.common.QPackagePackagesDir import QPackagePackagesDir
+from pylabs.qpackages.common.VLists import VLists
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.common.DomainObject import DomainObject
+from pylabs.qpackages.common.enumerators import VListType
+from pylabs.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
+from pylabs.qpackages.client.QPackageBuilder import QPackageBuilder
+from pylabs.qpackages.client.QPackage import QPackage
+from pylabs.qpackages.common.QPackageVersioning import QPackageVersioning
 
 class QPackageManagement(BaseType):
     """

@@ -6,12 +6,12 @@ import signal
 import sys
 import socket
 import SocketServer
-from pymonkey import q
+from pylabs import q
 
 from logtargets.LogTargetToPylabsLogConsole import LogTargetToPylabsLogConsole
 from LogConsoleServer import LogConsoleServer, ManagementProtocol
 
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
 class LogConsoleController(object):
     """

@@ -36,9 +36,9 @@
 import sys
 import os
 
-import pymonkey
+import pylabs
 
-# Set this variable before initialising PyMonkey when your application
+# Set this variable before initialising pylabs when your application
 # does not include a qshellbin. (i.e. a py2exed Q-Helper without shell.exe)
 # The value of this variable must be a qshellbin, or must behave like one
 # when called.
@@ -75,18 +75,18 @@ class _Vars:
         '''
         _qshellbin = qshellbin
         if not _qshellbin:
-            pymonkey.q.logger.log('Looking up qshell executable path', 7)
+            pylabs.q.logger.log('Looking up qshell executable path', 7)
             executables = None
 
-            if pymonkey.q.platform.isWindows():
+            if pylabs.q.platform.isWindows():
                 executables = ('qshell.exe', 'qshell.bat', )
                 '''Possible executable names'''
 
-            if pymonkey.q.platform.isUnix() and not pymonkey.q.platform.isDarwin():
+            if pylabs.q.platform.isUnix() and not pylabs.q.platform.isDarwin():
                 executables = ('qshell', )
                 '''Possible executable names'''
 
-            if pymonkey.q.platform.isDarwin():
+            if pylabs.q.platform.isDarwin():
                 executables = ('qshell.py', 'qshell')
 
             if not executables:
@@ -96,17 +96,17 @@ class _Vars:
                 _qshellbin = sys.executable
             else:
                 for executable in executables:
-                    executable = os.path.join(pymonkey.q.dirs.baseDir, executable)
-                    if pymonkey.q.system.fs.exists(executable):
+                    executable = os.path.join(pylabs.q.dirs.baseDir, executable)
+                    if pylabs.q.system.fs.exists(executable):
                         _qshellbin = executable
                         break
 
             if not _qshellbin:
                 raise RuntimeError('Unable to find qshell executable')
 
-            pymonkey.q.logger.log('Found qshell binary at %s' % _qshellbin, 7)
+            pylabs.q.logger.log('Found qshell binary at %s' % _qshellbin, 7)
         # If we're on Windows, make sure qshellbin is a short path name
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             import win32api
             _qshellbin = win32api.GetShortPathName(_qshellbin)
 

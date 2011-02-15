@@ -1,7 +1,7 @@
 
-from pymonkey import q
-from pymonkey import i
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs import i
+from pylabs.Shell import *
 import json
 
 class Bitbucket:    

@@ -33,8 +33,8 @@
 #
 # </License>
 
-from pymonkey.config import * 
-from pymonkey import q 
+from pylabs.config import * 
+from pylabs import q 
 import re 
 
 def cleanList(packagesString):
@@ -69,7 +69,7 @@ class QPackageLocalConfigItem(ConfigManagementItem):
     DESCRIPTION = 'QPackage Local Configuration'
 
     def ask(self):
-        packages = self.dialogAskString('qpackages_in_development_mode', 'Enter comma separated list of QPackages to be put in delopment mode.\nEnter *NONE* for no packages.\nFor example: (openvapps.org | pymonkey | 2.0),  (test.com | mypackage | 2.1)\nEnter List')
+        packages = self.dialogAskString('qpackages_in_development_mode', 'Enter comma separated list of QPackages to be put in delopment mode.\nEnter *NONE* for no packages.\nFor example: (openvapps.org | pylabs | 2.0),  (test.com | mypackage | 2.1)\nEnter List')
         result = cleanList(packages)
         if result == []:
             self.params['qpackages_in_development_mode'] = '*NONE*'

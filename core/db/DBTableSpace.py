@@ -33,10 +33,10 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 from pg import connect
-from pymonkey.db import DBTable
-from pymonkey.pmtypes import QTypeSystem
+from pylabs.db import DBTable
+from pylabs.pmtypes import QTypeSystem
 
 class DBTableSpace(object):
     name ##string
@@ -63,7 +63,7 @@ class DBTableSpace(object):
             owner=self.__dbconnection.defaultowner
         name=self.name
         path=path+"/"+name+"/"
-        pymonkey.q.system.fs.createDir(path)
+        pylabs.q.system.fs.createDir(path)
         sql="DROP TABLESPACE IF EXISTS %s;" % name
         self.__dbconnection.sqlexecute(sql)
         sql="CREATE TABLESPACE  %s OWNER %s LOCATION '%s';" % (name,owner,path)

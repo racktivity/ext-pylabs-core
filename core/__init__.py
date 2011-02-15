@@ -33,7 +33,7 @@
 #
 # </License>
 
-__version__ = (3, 0, 0)
+__version__ = (5, 0, 0)
 
 __all__ = ['__version__', 'q', 'i']
 
@@ -240,10 +240,10 @@ except Exception:
 del _setup_stacktrace_hook
 
 
-from pymonkey.PYMonkey import PYMonkey
-from pymonkey.interactive.Interactive import Interactive
+from pylabs.Pylabs import pylabs
+from pylabs.interactive.Interactive import Interactive
 
-q = PYMonkey()
+q = pylabs()
 i = Interactive()
 
-#from pymonkey.testing import PymonkeyTestCase
+#from pylabs.testing import pylabsTestCase

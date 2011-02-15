@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
+from pylabs import q
+from pylabs.baseclasses import BaseType
 from enumerators4 import DependencyType4
 
 class DependencyDef4(BaseType):

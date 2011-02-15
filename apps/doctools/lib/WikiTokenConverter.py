@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from pymonkey.InitBase import q
+from pylabs.InitBase import q
 from PyUnoWrapper import PyUnoWrapper
 import os
 from optparse import OptionParser

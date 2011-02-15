@@ -33,7 +33,7 @@
 #
 # </License>
 
-'''PyMonkey *tasklet* engine implementation'''
+'''pylabs *tasklet* engine implementation'''
  
 import os
 import os.path
@@ -50,7 +50,7 @@ try:
 except ImportError:
     threading = None
 
-import pymonkey
+import pylabs
 
 MATCH_FAILED = object()
 
@@ -62,7 +62,7 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
         @param path: Tasklet module location on filesystem
         @type path: string
         '''
-        pymonkey.q.logger.log('Loading tasklet %s from %s' % (name, path), 6)
+        pylabs.q.logger.log('Loading tasklet %s from %s' % (name, path), 6)
         self._name = name
         self._path = path
         self._loaded = False
@@ -111,7 +111,7 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
 
     def _loadModule(self):
         '''Load the Python module from disk using a random name'''
-        pymonkey.q.logger.log('Loading tasklet module %s' % self._path, 7)
+        pylabs.q.logger.log('Loading tasklet module %s' % self._path, 7)
         #Random name -> name in sys.modules
         def generate_module_name():
             '''Generate a random unused module name'''
@@ -210,12 +210,12 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
         assert callable(wrapper)
 
         params['taskletlastexecutiontime'] = self._lastexecutiontime
-        if self.match(pymonkey.q, pymonkey.i, params, tags):
-            pymonkey.q.logger.log('Executing tasklet %s' % self.name, 6)
+        if self.match(pylabs.q, pylabs.i, params, tags):
+            pylabs.q.logger.log('Executing tasklet %s' % self.name, 6)
             
             self._lastexecutiontime = time.time()
             wrapped = wrapper(self.methods['main'])
-            return wrapped(pymonkey.q, pymonkey.i, params, tags)
+            return wrapped(pylabs.q, pylabs.i, params, tags)
         else:
             return MATCH_FAILED
 
@@ -274,15 +274,15 @@ class TaskletsEngine(object):
         # This code is for backwards compatibility. If you do not define tasklet folders
         # you will fall back to two default folders. MUST BE REMOVED AND CLIENTS ADAPTED !
 
-        pymonkey.q.system.fs.createDir(pymonkey.q.system.fs.joinPaths(
-            pymonkey.q.dirs.baseDir, 'libexec', 'tasklets'))
-        self.addFromPath(pymonkey.q.system.fs.joinPaths(
-            pymonkey.q.dirs.baseDir, 'libexec', 'tasklets'))
+        pylabs.q.system.fs.createDir(pylabs.q.system.fs.joinPaths(
+            pylabs.q.dirs.baseDir, 'libexec', 'tasklets'))
+        self.addFromPath(pylabs.q.system.fs.joinPaths(
+            pylabs.q.dirs.baseDir, 'libexec', 'tasklets'))
 
-        pymonkey.q.system.fs.createDir(pymonkey.q.system.fs.joinPaths(
-            pymonkey.q.dirs.baseDir, 'tasklets'))
-        self.addFromPath(pymonkey.q.system.fs.joinPaths(
-            pymonkey.q.dirs.baseDir, 'tasklets'))
+        pylabs.q.system.fs.createDir(pylabs.q.system.fs.joinPaths(
+            pylabs.q.dirs.baseDir, 'tasklets'))
+        self.addFromPath(pylabs.q.system.fs.joinPaths(
+            pylabs.q.dirs.baseDir, 'tasklets'))
 
     @locked('_lock')
     def addFromPath(self, path):
@@ -291,7 +291,7 @@ class TaskletsEngine(object):
         @param path: Tasklet container folder
         @type path: string
         '''
-        pymonkey.q.logger.log('Loading tasklets in %s' % path, 6)
+        pylabs.q.logger.log('Loading tasklets in %s' % path, 6)
 
         #Make sure we got a dict
         self._tasklets = self._tasklets or dict()
@@ -300,11 +300,11 @@ class TaskletsEngine(object):
         #Use a generator instead of list concatenation for readability
         def listTaskletFiles():
             '''List all .py and .qshell files in *path*'''
-            for script in pymonkey.q.system.fs.listFilesInDir(path, True,
+            for script in pylabs.q.system.fs.listFilesInDir(path, True,
                                                      filter='*.py'):
                 yield script
 
-            for script in pymonkey.q.system.fs.listFilesInDir(path, True,
+            for script in pylabs.q.system.fs.listFilesInDir(path, True,
                     filter='*.qshell'):
                 yield script
 
@@ -315,7 +315,7 @@ class TaskletsEngine(object):
 
     def _registerTasklet(self, path):
         '''Register one tasklet in a given file in the system'''
-        pymonkey.q.logger.log('Loading tasklet %s' % path)
+        pylabs.q.logger.log('Loading tasklet %s' % path)
         if path in self._tasklets:
             raise RuntimeError('Tasklet in %s already registered' % path)
 
@@ -326,7 +326,7 @@ class TaskletsEngine(object):
     @staticmethod
     def _getPathInfo(path):
         '''Get tasklet name from the tasklet module path'''
-        filename = pymonkey.q.system.fs.getBaseName(path)
+        filename = pylabs.q.system.fs.getBaseName(path)
 
         return filename
 
@@ -334,16 +334,16 @@ class TaskletsEngine(object):
     def _check_reload(self, path):
         '''Check whether the tasklets in *path* should be reloaded'''
         if path not in self._path_load_times:
-            pymonkey.q.logger.log('Unknown folder %s, force reloading' % path,
+            pylabs.q.logger.log('Unknown folder %s, force reloading' % path,
                                   6)
             return True
 
-        tasklets_updated = pymonkey.q.system.fs.joinPaths(
+        tasklets_updated = pylabs.q.system.fs.joinPaths(
             path, 'tasklets_updated')
 
         #Don't reload if file is not touched
-        if not pymonkey.q.system.fs.exists(tasklets_updated):
-            pymonkey.q.logger.log('Not reloading tasklets in %s, ' \
+        if not pylabs.q.system.fs.exists(tasklets_updated):
+            pylabs.q.logger.log('Not reloading tasklets in %s, ' \
                                   '%s doesn\'t exist' % \
                                   (path, tasklets_updated), 6)
             return False
@@ -405,7 +405,7 @@ class TaskletsEngine(object):
 
         self._reload()
 
-        pymonkey.q.logger.log(
+        pylabs.q.logger.log(
             'Searching for tasklets, author=%s, name=%s, '
             'tags=%s, priority=%d' % (author, name, tags, priority), 7)
         #Some filter generators
@@ -504,11 +504,11 @@ class TaskletsEngine(object):
         realized = set()
 
         matches = self.find(author, name, tags, priority, path=path)
-        pymonkey.q.logger.log('Executing previously found tasklets', 6)
+        pylabs.q.logger.log('Executing previously found tasklets', 6)
 
         for tasklet in matches:
             if tasklet.realizes and tasklet.realizes in realized:
-                pymonkey.q.logger.log('%s already realized, ' \
+                pylabs.q.logger.log('%s already realized, ' \
                                       'skipping tasklet %s' % \
                                       (tasklet.realizes, tasklet.name), 6)
                 continue
@@ -516,7 +516,7 @@ class TaskletsEngine(object):
             ret = tasklet.executeIfMatches(params, tags or tuple(), wrapper)
 
             if ret is not MATCH_FAILED and tasklet.realizes:
-                pymonkey.q.logger.log('%s realized by %s' % (tasklet.realizes,
+                pylabs.q.logger.log('%s realized by %s' % (tasklet.realizes,
                                                     tasklet.name), 6)
                 realized.add(tasklet.realizes)
 
@@ -543,13 +543,13 @@ class TaskletsEngine(object):
         if not tasklet:
             raise RuntimeError('No matching tasklet found')
 
-        if not tasklet.match(pymonkey.q, pymonkey.i, params, tags or tuple()):
+        if not tasklet.match(pylabs.q, pylabs.i, params, tags or tuple()):
             raise RuntimeError(
                 'Found tasklet, but it does not accept the request')
 
-        pymonkey.q.logger.log('Executing previously found tasklet', 6)
+        pylabs.q.logger.log('Executing previously found tasklet', 6)
         wrapped = wrapper(tasklet.methods['main'])
-        return wrapped(pymonkey.q, pymonkey.i, params, tags or tuple())
+        return wrapped(pylabs.q, pylabs.i, params, tags or tuple())
 
 
 

@@ -35,5 +35,5 @@
 
 __all__ = ['Apps', 'PMApp', ]
 
-from pymonkey.apps.Apps import Apps
-from pymonkey.apps.App import PMApp
+from pylabs.apps.Apps import Apps
+from pylabs.apps.App import PMApp

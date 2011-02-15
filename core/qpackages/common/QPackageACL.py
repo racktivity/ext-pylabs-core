@@ -35,11 +35,11 @@
 
 import md5
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import QPackageQualityLevelType
-from pymonkey.qpackages.common.enumerators import ACLPermission
-from pymonkey.qpackages.common.DomainObject import DomainObject
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import QPackageQualityLevelType
+from pylabs.qpackages.common.enumerators import ACLPermission
+from pylabs.qpackages.common.DomainObject import DomainObject
 class QPackageACL(BaseType):
 
     domain = q.basetype.string(doc='Domain to where this QPackage belongs', allow_none=False)

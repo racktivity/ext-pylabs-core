@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey.System import System
+from pylabs.System import System
 import urllib
 
 class TemplateEngine(object):

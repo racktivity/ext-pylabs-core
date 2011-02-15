@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 from pg import connect
-from pymonkey.db import DBTableSpace
-from pymonkey.pmtypes import QTypeSystem
+from pylabs.db import DBTableSpace
+from pylabs.pmtypes import QTypeSystem
 
 
 class DBTable(object):

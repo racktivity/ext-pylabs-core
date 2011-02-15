@@ -33,59 +33,59 @@
 #
 # </License>
 
-'''Descriptors for PyMonkey custom types
+'''Descriptors for pylabs custom types
 
-See the documentation of pymonkey.properties.common for more info.
+See the documentation of pylabs.properties.common for more info.
 '''
 
-from pymonkey.properties import BaseDescriptor
+from pylabs.properties import BaseDescriptor
 
-from pymonkey.pmtypes.CustomTypes import Guid
-from pymonkey.pmtypes.CustomTypes import Path, DirPath, FilePath
-from pymonkey.pmtypes.CustomTypes import UnixDirPath, UnixFilePath
-from pymonkey.pmtypes.CustomTypes import WindowsDirPath, WindowsFilePath
-from pymonkey.pmtypes.CustomTypes import IPv4Address
+from pylabs.pmtypes.CustomTypes import Guid
+from pylabs.pmtypes.CustomTypes import Path, DirPath, FilePath
+from pylabs.pmtypes.CustomTypes import UnixDirPath, UnixFilePath
+from pylabs.pmtypes.CustomTypes import WindowsDirPath, WindowsFilePath
+from pylabs.pmtypes.CustomTypes import IPv4Address
 
 class Guid(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.Guid}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.Guid}'''
     PMTYPE = Guid
 
 
 class Path(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.Path}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.Path}'''
     PMTYPE = Path
 
 
 class DirPath(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.DirPath}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.DirPath}'''
     PMTYPE = DirPath
 
 
 class FilePath(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.FilePath}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.FilePath}'''
     PMTYPE = FilePath
 
 
 class UnixDirPath(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.UnixDirPath}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.UnixDirPath}'''
     PMTYPE = UnixDirPath
 
 
 class UnixFilePath(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.UnixFilePath}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.UnixFilePath}'''
     PMTYPE = UnixFilePath
 
 
 class WindowsDirPath(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.WindowsDirPath}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.WindowsDirPath}'''
     PMTYPE = WindowsDirPath
 
 
 class WindowsFilePath(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.WindowsFilePath}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.WindowsFilePath}'''
     PMTYPE = WindowsFilePath
 
 
 class IPv4Address(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CustomTypes.IPv4Address}'''
+    '''Descriptor for L{pylabs.pmtypes.CustomTypes.IPv4Address}'''
     PMTYPE = IPv4Address

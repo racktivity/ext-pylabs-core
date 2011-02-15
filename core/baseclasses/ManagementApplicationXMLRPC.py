@@ -33,8 +33,8 @@
 #
 # </License>
 
-from pymonkey.baseclasses.ManagementApplication import ManagementApplication
-import pymonkey
+from pylabs.baseclasses.ManagementApplication import ManagementApplication
+import pylabs
 from twisted.web import xmlrpc
 from twisted.internet import defer
 from twisted.internet import reactor
@@ -68,18 +68,18 @@ class CfgManagementApplicationXMLRPC(CfgManagementApplication):
     def __getattr__(self, attrname):
         #@todo my trick does not work with twisted, twisted does not use this function when xmlrpc server is called, see how we can get this to work
         #this method get's calledd if attribute or method does not exist
-        pymonkey.q.logger.log( "XMLRPC CALL: %s" % attrname)    
+        pylabs.q.logger.log( "XMLRPC CALL: %s" % attrname)    
         #@todo more checks & logging, which server do we wrap, which method called, more sanity checks
         found=False
         if "xmlrpc_"==attrname[0:7]:
             for method in self.allowedMethods:
                 if "xmlrpc_%s"%method==attrname:
-                    pymonkey.q.logger.log("XMLRPC SERVER calls method %s on class %s" % (method,self.wrapped.__class__))
+                    pylabs.q.logger.log("XMLRPC SERVER calls method %s on class %s" % (method,self.wrapped.__class__))
                     try:
                         result=getattr(self.wrapped, method)
                     except:
                         print "could not execute"
-                        pymonkey.q.application.stop()
+                        pylabs.q.application.stop()
                     found=True
 
                     def _result():
@@ -90,7 +90,7 @@ class CfgManagementApplicationXMLRPC(CfgManagementApplication):
                     return _result       # Delegate fetch to original class and pickle before returning
             if found==False:
                 #@todo have to find cleaner way of populating errors from server to client, do event mgmt, not just logging
-                pymonkey.q.logger.log( "ERROR in XMLRPCSERVER: call was %s, could not find allowed method, check if method is allowed in server." % (attrname))
+                pylabs.q.logger.log( "ERROR in XMLRPCSERVER: call was %s, could not find allowed method, check if method is allowed in server." % (attrname))
                 print ( "ERROR in XMLRPCSERVER: call was %s, could not find allowed method, check if method is allowed in server." % (attrname))
-                pymonkey.q.application.stop()
+                pylabs.q.application.stop()
                 return xmlrpclib.Fault(7, "Could not find required method %s" % attrname)

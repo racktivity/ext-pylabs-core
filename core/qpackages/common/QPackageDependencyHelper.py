@@ -33,14 +33,14 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import PlatformType
-from pymonkey.qpackages.common.enumerators import DependencyType
-from pymonkey.qpackages.common.VLists import VLists
-from pymonkey.qpackages.common.enumerators import VListType
-from pymonkey.qpackages.common.QPackageVersioning import QPackageVersioning
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import PlatformType
+from pylabs.qpackages.common.enumerators import DependencyType
+from pylabs.qpackages.common.VLists import VLists
+from pylabs.qpackages.common.enumerators import VListType
+from pylabs.qpackages.common.QPackageVersioning import QPackageVersioning
+from pylabs.qpackages.common.QPackageObject import QPackageObject
 
 class QPackageDependencyHelper(BaseType):
     vlists = q.basetype.object(VLists, default=VLists(VListType.CLIENT))

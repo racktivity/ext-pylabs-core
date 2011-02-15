@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class sso:
     def listSmartClientDevices (self, isfree = "", jobguid = "", executionparams = {}):

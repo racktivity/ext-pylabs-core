@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey.db import DBConnection
-from pymonkey.templateEngine import QTemplateEngine
-from pymonkey.QShell import QShell
-import pymonkey
+from pylabs.db import DBConnection
+from pylabs.templateEngine import QTemplateEngine
+from pylabs.QShell import QShell
+import pylabs
 import os
 
 class SqlFile(object):
@@ -58,7 +58,7 @@ class DBSQLPopulator(object):
         self.__dbconnection = dbconnection
 
     def __getSqlFiles(self,path):
-        list = pymonkey.q.system.fs.listFilesInDir(path)
+        list = pylabs.q.system.fs.listFilesInDir(path)
         list.sort()
         self.sqlfiles=[]
         for sqlfilepath in list:
@@ -70,7 +70,7 @@ class DBSQLPopulator(object):
                 raise ValueError("wrong fileformat of sql file, shoud be [priority nr]__[name].sql")
             filename=filename.split("__")[1]
             sqlfile.name=filename.rsplit(".")[0]
-            pymonkey.q.logger.log("*** Found sql script with name %s." % sqlfile.name, 7)
+            pylabs.q.logger.log("*** Found sql script with name %s." % sqlfile.name, 7)
             self.sqlfiles.append(sqlfile)
 
     def executeSqlFromDir(self, dirpath):
@@ -84,7 +84,7 @@ class DBSQLPopulator(object):
         """
         populate object with all sql files from dir
         """
-        if pymonkey.q.system.fs.exists(dirpath):
+        if pylabs.q.system.fs.exists(dirpath):
             self.__getSqlFiles(dirpath)
         self.__applyDefaultVarReplace()
 

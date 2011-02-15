@@ -37,8 +37,8 @@
 import warnings
 warnings.filterwarnings('ignore', r'.*sha.*')
 import paramiko, os, socket
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 import signal
 import SocketServer, select
 import threading

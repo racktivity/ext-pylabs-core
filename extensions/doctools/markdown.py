@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from pymonkey import q
+from pylabs import q
 import json
 
 KEYWORDS = ('HEADER', 'NL', 'P', 'T', 'CODEBLOCK', 'BOLD', '*', '#', 'IMAGE',

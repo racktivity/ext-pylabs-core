@@ -45,18 +45,18 @@ except:
     else:
         raise "python module pwd is not supported on this platform, please fix the dependency"
 import time,socket,random,tempfile
-import pymonkey
-from pymonkey.enumerators import PlatformType
-from pymonkey.Vars import Vars
-from pymonkey.system.fs import SystemFS
-from pymonkey.system.net import SystemNet
-from pymonkey.system.process import SystemProcess
+import pylabs
+from pylabs.enumerators import PlatformType
+from pylabs.Vars import Vars
+from pylabs.system.fs import SystemFS
+from pylabs.system.net import SystemNet
+from pylabs.system.process import SystemProcess
 if sys.platform.startswith('win'):
-    from pymonkey.system.windows import WindowsSystem
+    from pylabs.system.windows import WindowsSystem
 else:
-    from pymonkey.system.unix import UnixSystem
+    from pylabs.system.unix import UnixSystem
 
-from pymonkey.system.fswalker import FSWalker
+from pylabs.system.fswalker import FSWalker
 
 try:
     from functools import wraps
@@ -69,7 +69,7 @@ def _wrap_deprecated_fs(f):
     def wrapper(self, *args, **kwargs):
         #By the end of May (says Jochen) this should become
         #raise DeprecationWarning
-        pymonkey.q.logger.log('Using deprecated method %s on System' % f.__name__, 5)
+        pylabs.q.logger.log('Using deprecated method %s on System' % f.__name__, 5)
         s = SystemFS()
         return f(s, *args, **kwargs)
     return wrapper
@@ -79,7 +79,7 @@ def _wrap_deprecated_net(f):
     def wrapper(self, *args, **kwargs):
         #By the end of May (says Jochen) this should become
         #raise DeprecationWarning
-        pymonkey.q.logger.log('Using deprecated method %s on System' % f.__name__, 5)
+        pylabs.q.logger.log('Using deprecated method %s on System' % f.__name__, 5)
         s = SystemNet()
         return f(s, *args, **kwargs)
     return wrapper
@@ -89,14 +89,14 @@ def _wrap_deprecated_process(f):
     def wrapper(self, *args, **kwargs):
         #By the end of May (says Jochen) this should become
         #raise DeprecationWarning
-        pymonkey.q.logger.log('Using deprecated method %s on System' % f.__name__, 5)
+        pylabs.q.logger.log('Using deprecated method %s on System' % f.__name__, 5)
         s = SystemProcess()
         return f(s, *args, **kwargs)
     return wrapper
 
 
 class System:
-    #pymonkey internal object
+    #pylabs internal object
     #TODO DOTARRAY and PLUSARRAY seem to be unreferenced, can they be dropped?
     __DOTARRAY = [" ", ". ", ".. ", "... "]
     __PLUSARRAY = [" ", "+ ", "++ ", "+++ "]
@@ -141,7 +141,7 @@ class System:
     _qPlatformType=None
     '''PlatformType of currently running platform
 
-    @type: L{pymonkey.enumerators.PlatformType.PlatformType}
+    @type: L{pylabs.enumerators.PlatformType.PlatformType}
     '''
 
     fswalker = FSWalker
@@ -151,7 +151,7 @@ class System:
     def __init__(self):
         '''Initializes a new System instance
 
-        Binds currently running L{pymonkey.enumerators.PlatformType.PlatformType}
+        Binds currently running L{pylabs.enumerators.PlatformType.PlatformType}
         and initializes the C{fs}, C{net} and C{process} attributes.
         '''
         self._qPlatformType=PlatformType.findPlatformType()

@@ -37,7 +37,7 @@
 
 import types
 
-from pymonkey.pmtypes.base import BaseType
+from pylabs.pmtypes.base import BaseType
 
 class Boolean(BaseType):
     '''Generic boolean type'''

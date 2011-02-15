@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.baseclasses.ManagementApplication import ManagementApplication
+from pylabs import q
+from pylabs.baseclasses.ManagementApplication import ManagementApplication
 
 class OpenOfficeManage(ManagementApplication):
 

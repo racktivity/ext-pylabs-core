@@ -33,13 +33,13 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.common.VLists import VLists
-from pymonkey.qpackages.common.VListEntry import VListEntry
-from pymonkey.qpackages.common.enumerators import VListType
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.common.VLists import VLists
+from pylabs.qpackages.common.VListEntry import VListEntry
+from pylabs.qpackages.common.enumerators import VListType
 
 
 class QPackagePackagesDir(BaseType):

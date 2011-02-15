@@ -33,8 +33,8 @@
 #
 # </License>
  
-from pymonkey import q
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
+from pylabs import q
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
 
 class ApachePasswdCommand(CommandWrapper):
     """

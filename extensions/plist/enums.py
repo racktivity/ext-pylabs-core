@@ -33,9 +33,9 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
-class PFileType(pymonkey.baseclasses.EnumerationWithValue):
+class PFileType(pylabs.baseclasses.EnumerationWithValue):
     """
     Type of PFile
     
@@ -56,7 +56,7 @@ PFileType.finishItemRegistration()
 
 
 
-class PFileErrorCode(pymonkey.baseclasses.EnumerationWithValue):
+class PFileErrorCode(pylabs.baseclasses.EnumerationWithValue):
     """
     List of error codes of operations that can fail on a PFile
     """
@@ -72,7 +72,7 @@ PFileErrorCode.registerItem('COULD_NOT_SET_SECURITY', 6)
 PFileErrorCode.registerItem('COULD_NOT_SANDBOX', 7)
 PFileErrorCode.finishItemRegistration()
 
-class PFileFields(pymonkey.baseclasses.EnumerationWithValue):
+class PFileFields(pylabs.baseclasses.EnumerationWithValue):
     """
     List of error codes of operations that can fail on a PFile
     """

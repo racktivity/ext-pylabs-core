@@ -33,14 +33,14 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
 from enumerators4 import QPackageQualityLevelType4
 from DependencyDef4 import DependencyDef4
 from enumerators4 import DependencyType4
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
 
 class QPackageObject3(BaseType, DirtyFlaggingMixin):
@@ -299,7 +299,7 @@ class QPackageObject3(BaseType, DirtyFlaggingMixin):
         pass
 
     def __cmp__(self,other):
-        from pymonkey.qpackages.common.QPackageVersioning import QPackageVersioning
+        from pylabs.qpackages.common.QPackageVersioning import QPackageVersioning
         return self.name == other.name and str(self.domain) == str(other.domain) and QPackageVersioning.versionCompare(self.version, other.version)
 
     def __str__(self):

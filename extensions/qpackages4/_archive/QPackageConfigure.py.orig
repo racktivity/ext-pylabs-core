@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 
 class QPackageConfigure:
 
@@ -44,7 +44,7 @@ class QPackageConfigure:
         @param version: version of the QPackage
         @param domain: domain of the QPackage
         """
-        from pymonkey.qpackages.client.QPackageTasklets import QPackageTasklets
+        from pylabs.qpackages.client.QPackageTasklets import QPackageTasklets
         tasklets = QPackageTasklets()
         packageObject = q.qpackages.qpackagePackagesDir.qpackageFind(name=name, version=version, domain=domain, qualityLevels=q.qpackages.getDefaultQualityLevel())
         if not packageObject:raise ValueError('Failed to find qpackage (%s,%s,%s) on qualityLevel %s'%(name, version,domain, q.qpackages.getDefaultQualityLevel()))
@@ -116,7 +116,7 @@ class QPackageConfigure:
                     if choice == LEAVE_QSHELL:
                         # Leave Q-Shell immediately. Don't do sys.exit(.) because we want to leave
                         # as quickly as possible, without running the risk to have additional errors
-                        # in pymonkey exithandlers (registered in atexit module).
+                        # in pylabs exithandlers (registered in atexit module).
                         # We need this behaviour because we are already in an error scenario.
                         import os
                         os._exit(1)

@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class dssnamespace:
     def getSpreads (self, namespaceguid, jobguid = "", executionparams = {}):

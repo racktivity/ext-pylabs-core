@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
 
 class Apps:
@@ -44,9 +44,9 @@ class Apps:
     pmapps = None ##dict(appname,PMApp)
 
     def checkStatus(self):
-        """Check the status of all running PyMonkey applications
+        """Check the status of all running pylabs applications
 
-        Look at running processes, match them against the known PyMonkey
+        Look at running processes, match them against the known pylabs
         applications and change the status accordingly.
         """
         for app in self.pmapps.values():
@@ -64,34 +64,34 @@ class Apps:
         Same function as the function C{list} but with a nice format for usage in Q-Shell
         """
         for app in self.pmapps.itervalues():
-            pymonkey.q.console.echo( app.name, app.state)
+            pylabs.q.console.echo( app.name, app.state)
             
     def addApp(self,app):
-        '''Add an application to the PyMonkey applications dictionary'''
+        '''Add an application to the pylabs applications dictionary'''
         self.pmapps[app.name] = app
         
     def removeApp(self,appname):
-        '''Remove an application from the PyMonkey applications dictionary'''
+        '''Remove an application from the pylabs applications dictionary'''
         self.pmapps.pope(appname)
 
     def getApp(self,appname):
         """
-        Return the appropriate PyMonkey application
+        Return the appropriate pylabs application
         """
         return self.apps[appname]
         
     @staticmethod
     def loadFromPmdb():
-        '''Load the list of applications from the PyMonkey database'''
+        '''Load the list of applications from the pylabs database'''
         try:
-            apps = pymonkey.q.cmdb.getObject("Apps")
+            apps = pylabs.q.cmdb.getObject("Apps")
         except RuntimeError:
             apps = Apps()
         return apps
         
     def _save(self):
         """
-        Save the changes to the PyMonkey database
+        Save the changes to the pylabs database
         """
-        pymonkey.q.cmdb.registerObjectType("Apps")
-        pymonkey.q.cmdb.saveObject('Apps', self)
+        pylabs.q.cmdb.registerObjectType("Apps")
+        pylabs.q.cmdb.saveObject('Apps', self)

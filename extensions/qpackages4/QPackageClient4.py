@@ -1,5 +1,5 @@
 import math
-from pymonkey import q
+from pylabs import q
 from QPackageObject4 import QPackageObject4
 from ConvertQPackages import Convertor # temp
 from Domain import *
@@ -33,7 +33,7 @@ class QPackageClient4():
         q.system.fs.createDir(self._metadatadirTmp)
 
         # can't ask username here
-        # because pymonkey is not interactive yet
+        # because pylabs is not interactive yet
         # So we ask the username/passwd lazy in the domain object
         self.reloadconfig()
 

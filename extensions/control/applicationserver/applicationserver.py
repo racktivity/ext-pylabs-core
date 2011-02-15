@@ -36,15 +36,15 @@
 import re
 import sys
 
-import pymonkey
-from pymonkey import q
-from pymonkey.baseclasses.CMDBServerObject import CMDBServerObject
+import pylabs
+from pylabs import q
+from pylabs.baseclasses.CMDBServerObject import CMDBServerObject
 
 # Make sure we find the server
 sys.path.insert(0, q.system.fs.joinPaths(q.dirs.appDir, "applicationserver",
                                          'lib'))
-from applicationserver.pymonkey_bindings import Server, SubscriberException
-from applicationserver import pymonkey_bindings, CRON_JOB_STOP
+from applicationserver.pylabs_bindings import Server, SubscriberException
+from applicationserver import pylabs_bindings, CRON_JOB_STOP
 
 # Defines
 SERVERNAME_REGEX = re.compile('^[a-z_]+$')
@@ -90,6 +90,6 @@ class ApplicationserverCmdb(CMDBServerObject):
     def __str__(self):
         return self.cmdbtypename
 
-Applicationserver = pymonkey_bindings.Server
+Applicationserver = pylabs_bindings.Server
 
-ApplicationserverConfig = pymonkey_bindings.ApplicationserverConfigManagement
+ApplicationserverConfig = pylabs_bindings.ApplicationserverConfigManagement

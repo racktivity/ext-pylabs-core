@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class capacityplanning:
     def listCapacityUnitTypes (self, jobguid = "", executionparams = {}):

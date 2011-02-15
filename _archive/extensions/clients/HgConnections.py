@@ -1,6 +1,6 @@
-import pymonkey
-from pymonkey.config import *
-from pymonkey import q
+import pylabs
+from pylabs.config import *
+from pylabs import q
 import string
 class HgConnection(ConfigManagementItem):
     CONFIGTYPE = "hgconnection"
@@ -25,9 +25,9 @@ class HgConnection(ConfigManagementItem):
         """
         Optional implementation of retrieve() method, to be used by find()
         """
-#        return pymonkey.q.clients.hg.clone(self.params['url'], self.params['login'], self.params['passwd'], self.params['destination'])
+#        return pylabs.q.clients.hg.clone(self.params['url'], self.params['login'], self.params['passwd'], self.params['destination'])
 
-        from pymonkey.clients.hg.HgTool import HgConnection as HgConn
+        from pylabs.clients.hg.HgTool import HgConnection as HgConn
         return HgConn(self.params['url'], self.params['login'], self.params['passwd'], self.params['destination'])
 
 # Create configuration object for group of hgConnections,

@@ -34,7 +34,7 @@
 # </License>
  
 from ApacheSite import ApacheSite, SiteTemplate
-from pymonkey import q
+from pylabs import q
 
 TomcatTemplate = SiteTemplate.subclass(source="""
     #implements SiteTemplate.respond

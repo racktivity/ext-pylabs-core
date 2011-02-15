@@ -34,8 +34,8 @@
 # </License>
 
 from pg import connect
-from pymonkey.db import DBTable
-from pymonkey.pmtypes import QType
+from pylabs.db import DBTable
+from pylabs.pmtypes import QType
 
 class DBTableColumn(object):
     __dbtable ##DBTable

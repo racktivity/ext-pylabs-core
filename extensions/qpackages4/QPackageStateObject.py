@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
         
 class QPackageStateObject():
     

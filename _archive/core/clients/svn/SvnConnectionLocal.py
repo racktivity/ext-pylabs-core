@@ -40,7 +40,7 @@ import os.path
 
 import pysvn
 
-import pymonkey
+import pylabs
 
 #@todo do not use for now
 

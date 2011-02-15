@@ -33,24 +33,24 @@
 #
 # </License>
 
-'''Descriptors for PyMonkey collection types
+'''Descriptors for pylabs collection types
 
-See the documentation of pymonkey.properties.common for more info.
+See the documentation of pylabs.properties.common for more info.
 '''
 
-from pymonkey.properties import BaseDescriptor
-from pymonkey.pmtypes.CollectionTypes import Dictionary, List, Set
+from pylabs.properties import BaseDescriptor
+from pylabs.pmtypes.CollectionTypes import Dictionary, List, Set
 
 class Dictionary(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CollectionTypes.Dictionary}'''
+    '''Descriptor for L{pylabs.pmtypes.CollectionTypes.Dictionary}'''
     PMTYPE = Dictionary
 
 
 class List(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CollectionTypes.List}'''
+    '''Descriptor for L{pylabs.pmtypes.CollectionTypes.List}'''
     PMTYPE = List
 
 
 class Set(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.CollectionTypes.Set}'''
+    '''Descriptor for L{pylabs.pmtypes.CollectionTypes.Set}'''
     PMTYPE = Set

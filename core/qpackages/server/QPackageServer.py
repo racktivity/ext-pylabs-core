@@ -33,13 +33,13 @@
 #
 # </License>
 
-import pymonkey
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.server.ServerManagement import ServerManagement
-from pymonkey.qpackages.client.QPackageServerConnection import QPackageServerConnection, QPackageServerConnections
-from pymonkey.qpackages.common.QPackageVersioning import QPackageVersioning
+import pylabs
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.server.ServerManagement import ServerManagement
+from pylabs.qpackages.client.QPackageServerConnection import QPackageServerConnection, QPackageServerConnections
+from pylabs.qpackages.common.QPackageVersioning import QPackageVersioning
 import logging, logging.handlers
 
 class QPackageServer(BaseType):
@@ -77,15 +77,15 @@ class QPackageServer(BaseType):
 
         if not taskletPath:
             # Calculate 'default' path
-            components = (pymonkey.q.dirs.baseDir, 'apps',
+            components = (pylabs.q.dirs.baseDir, 'apps',
                           'applicationServer', 'services', 'qpackageserver',
                           'tasklets', )
-            taskletPath = pymonkey.q.system.fs.joinPaths(*components)
+            taskletPath = pylabs.q.system.fs.joinPaths(*components)
 
         # Just in case...
-        pymonkey.q.system.fs.createDir(taskletPath)
+        pylabs.q.system.fs.createDir(taskletPath)
 
-        self._taskletEngine = pymonkey.q.getTaskletEngine(taskletPath)
+        self._taskletEngine = pylabs.q.getTaskletEngine(taskletPath)
 
     @q.manage.applicationserver.expose
     def sessionLogin(self, login, password, applicationserver_request):
@@ -1120,12 +1120,12 @@ class QPackageServer(BaseType):
         else:
             build_folder = '%s_%s' % (build, qualitylevel)
 
-        container = pymonkey.q.system.fs.joinPaths(q.dirs.packageDir, domain,
+        container = pylabs.q.system.fs.joinPaths(q.dirs.packageDir, domain,
                                                    name, version, build_folder)
 
         final_params['path'] = container
 
         # Call tasklets
-        pymonkey.q.logger.log('Executing tasklets for package %s %s '
+        pylabs.q.logger.log('Executing tasklets for package %s %s '
                               'build %s' % (name, version, build, ))
         self._taskletEngine.execute(params=final_params, tags=final_tags)

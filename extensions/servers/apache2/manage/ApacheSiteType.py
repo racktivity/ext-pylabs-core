@@ -33,8 +33,8 @@
 #
 # </License>
  
-from pymonkey import q
-from pymonkey.baseclasses.BaseEnumeration import EnumerationWithValue
+from pylabs import q
+from pylabs.baseclasses.BaseEnumeration import EnumerationWithValue
 
 from ApacheHTMLSite import ApacheHTMLSite
 from ApacheTomcatSite import ApacheTomcatSite

@@ -33,8 +33,8 @@
 #
 # </License>
 
-import pymonkey
-from pymonkey.qshellconfig.ConfigFileManager import ConfigFileManager
+import pylabs
+from pylabs.qshellconfig.ConfigFileManager import ConfigFileManager
 import os
 
 class Group():
@@ -49,7 +49,7 @@ class QShellConfig():
         self.interactive=False
         
     def refresh(self):
-        configfiles= pymonkey.q.system.fs.listFilesInDir(pymonkey.q.dirs.cfgDir)
+        configfiles= pylabs.q.system.fs.listFilesInDir(pylabs.q.dirs.cfgDir)
         for file in configfiles:
             if file.find(".cfg")<>-1:
                 configType=os.path.basename(file.replace(".cfg",""))

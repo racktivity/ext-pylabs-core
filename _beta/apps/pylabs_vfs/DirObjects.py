@@ -1,5 +1,5 @@
-from pymonkey.Shell import *
-from pymonkey import q
+from pylabs.Shell import *
+from pylabs import q
 
 from PysyncWalker import *
 

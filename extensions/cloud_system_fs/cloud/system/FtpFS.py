@@ -1,6 +1,6 @@
-from pymonkey import q
+from pylabs import q
 from ftplib import FTP
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
 import os
 
 # maybe this could be switched to http://curlftpfs.sourceforge.net/ 

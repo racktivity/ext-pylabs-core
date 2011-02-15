@@ -35,8 +35,8 @@
  
 import xmlrpclib
 
-from pymonkey import q
-from pymonkey.baseclasses.BaseType import BaseType
+from pylabs import q
+from pylabs.baseclasses.BaseType import BaseType
 
 from Confluence import Confluence
 from UserManager import UserManager

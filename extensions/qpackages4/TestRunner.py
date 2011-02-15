@@ -7,7 +7,7 @@
 #                            /opt/tests/test1/afterFiles/...
 #
 
-from pymonkey import q,i
+from pylabs import q,i
 
 def assertTrue(value):
     if not value:

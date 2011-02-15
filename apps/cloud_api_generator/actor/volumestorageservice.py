@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class volumestorageservice:
     def validateDisk (self, diskguid, jobguid = "", executionparams = {}):

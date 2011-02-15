@@ -63,11 +63,11 @@ psapi = windll.psapi
 kernel = windll.kernel32
 from win32com.shell import shell, shellcon
 import _winreg as reg
-from pymonkey.enumerators.WinRegHiveType import WinRegHiveType
-from pymonkey.enumerators.WinRegValueType import WinRegValueType
+from pylabs.enumerators.WinRegHiveType import WinRegHiveType
+from pylabs.enumerators.WinRegValueType import WinRegValueType
 
-import pymonkey
-from pymonkey.inifile import IniFile
+import pylabs
+from pylabs.inifile import IniFile
 import shutil
 
 class WindowsSystem:
@@ -107,8 +107,8 @@ class WindowsSystem:
 
         # Add shortcut to startmenu
         startmenu = self.getStartMenuProgramsPath()
-        if not pymonkey.q.system.fs.exists("%s\\%s" % (startmenu, startMenuSubdir)):
-            pymonkey.q.system.fs.createDir("%s\\%s" % (startmenu, startMenuSubdir))
+        if not pylabs.q.system.fs.exists("%s\\%s" % (startmenu, startMenuSubdir)):
+            pylabs.q.system.fs.createDir("%s\\%s" % (startmenu, startMenuSubdir))
 
         shortcut_startmenu = pythoncom.CoCreateInstance(shell.CLSID_ShellLink, None, pythoncom.CLSCTX_INPROC_SERVER, shell.IID_IShellLink)
         shortcut_startmenu.SetPath(executable)
@@ -120,8 +120,8 @@ class WindowsSystem:
 
         if putInStartup:
             startupfolder = self.getStartupPath()
-            if not pymonkey.q.system.fs.exists(startupfolder):
-                pymonkey.q.system.fs.createDir(startupfolder)
+            if not pylabs.q.system.fs.exists(startupfolder):
+                pylabs.q.system.fs.createDir(startupfolder)
             shortcut_startup = pythoncom.CoCreateInstance(shell.CLSID_ShellLink, None, pythoncom.CLSCTX_INPROC_SERVER, shell.IID_IShellLink)
             shortcut_startup.SetPath(executable)
             shortcut_startup.SetDescription(description)
@@ -140,7 +140,7 @@ class WindowsSystem:
             shortcut_desktop.SetWorkingDirectory(workingDir)
             shortcut_desktop.QueryInterface(pythoncom.IID_IPersistFile).Save("%s\\%s.lnk" % (desktopfolder, description),0)
 
-        pymonkey.q.console.echo('Shortcuts created')
+        pylabs.q.console.echo('Shortcuts created')
 
     def isNTFSVolume(self, driveletter):
         """Boolean indicating whether a volume is NTFS
@@ -177,19 +177,19 @@ class WindowsSystem:
         fullpath = os.path.abspath(dirpath)
         driveLetter = os.path.splitdrive(fullpath)[0]
         if not self.isNTFSVolume(driveLetter):
-            pymonkey.q.logger.log("Skipped file permissions update - filesystem for [%s] is not NTFS" % dirpath, 6)
+            pylabs.q.logger.log("Skipped file permissions update - filesystem for [%s] is not NTFS" % dirpath, 6)
             return
 
         def _grantFile(fileName, securityDescriptor):
             '''Set security on a file'''
-            pymonkey.q.logger.log("granting all access to everyone on %s" % fileName, 6)
+            pylabs.q.logger.log("granting all access to everyone on %s" % fileName, 6)
             win32security.SetFileSecurity(fileName, win32security.DACL_SECURITY_INFORMATION, securityDescriptor)
 
         def _grantDir(dirpath, securityDescriptor):
             '''Set security on a folder'''
-            for dir in pymonkey.q.system.fs.listDirsInDir(dirpath):
+            for dir in pylabs.q.system.fs.listDirsInDir(dirpath):
                 _grantDir(dir, securityDescriptor)
-            for file in pymonkey.q.system.fs.listFilesInDir(dirpath):
+            for file in pylabs.q.system.fs.listFilesInDir(dirpath):
                 _grantFile(file, securityDescriptor)
             win32security.SetFileSecurity(dirpath, win32security.DACL_SECURITY_INFORMATION, securityDescriptor)
 
@@ -338,7 +338,7 @@ class WindowsSystem:
         @type path: string
         """
 
-        fileContent = pymonkey.q.system.fs.fileGetContents(path)
+        fileContent = pylabs.q.system.fs.fileGetContents(path)
         self.importRegKeysFromString(fileContent)
 
     def exportRegKeysToString(self, key):
@@ -365,7 +365,7 @@ class WindowsSystem:
         @param path: The path of the file to export to
         @type path: string
         """
-        pymonkey.q.system.fs.writeFile(path, self.exportRegKeysToString(key))
+        pylabs.q.system.fs.writeFile(path, self.exportRegKeysToString(key))
 
     def registryHasKey(self, key):
         """Check if the windows registry has the specified key
@@ -496,7 +496,7 @@ class WindowsSystem:
         @param passwd(optional): password of the user
         raise an exception if user already exists
         """
-        pymonkey.q.logger.log('Adding system user %s'%userName, 6)
+        pylabs.q.logger.log('Adding system user %s'%userName, 6)
 
         if self.isSystemUser(userName):
             raise ValueError('User %s Already Exist'%userName)
@@ -513,21 +513,21 @@ class WindowsSystem:
 
         if self.isSystemUser(userName):
 
-            pymonkey.q.logger.log('User %s Added successfully'%userName)
+            pylabs.q.logger.log('User %s Added successfully'%userName)
 
     def isSystemUser(self, userName):
         """
         Check if user is valid system User
         @param userName: name of the user
         """
-        pymonkey.q.logger.log('Checking if user %s exists'%userName, 6)
+        pylabs.q.logger.log('Checking if user %s exists'%userName, 6)
 
         if userName in self.listSystemUsers():
-            pymonkey.q.logger.log('User %s exists'%userName, 6)
+            pylabs.q.logger.log('User %s exists'%userName, 6)
 
             return True
 
-        pymonkey.q.logger.log('User %s doesnt exist'%userName, 6)
+        pylabs.q.logger.log('User %s doesnt exist'%userName, 6)
 
         return False
 
@@ -536,7 +536,7 @@ class WindowsSystem:
         List system users
         @return: list of system user names
         """
-        pymonkey.q.logger.log('Listing System Users', 6)
+        pylabs.q.logger.log('Listing System Users', 6)
 
         users = [entry['name'] for entry in win32net.NetUserEnum(None, 0)[0]]
 
@@ -547,17 +547,17 @@ class WindowsSystem:
         Delete a system user
         @param userName: name of the user to delete
         """
-        pymonkey.q.logger.log('Deleting User %s'%userName, 6)
+        pylabs.q.logger.log('Deleting User %s'%userName, 6)
 
         if self.isSystemUser(userName):
             win32net.NetUserDel(None, userName)
 
             if not self.isSystemUser(userName):
-                pymonkey.q.logger.log('User %s deleted successfully'%userName, 6)
+                pylabs.q.logger.log('User %s deleted successfully'%userName, 6)
 
                 return True
 
-            pymonkey.q.logger.log('Failed to delete user %s'%userName, 6)
+            pylabs.q.logger.log('Failed to delete user %s'%userName, 6)
 
         else:
             raise RuntimeError("User %s is not a system user"%userName)
@@ -569,7 +569,7 @@ class WindowsSystem:
         @return: security identifier of the user
         @rtype: string
         """
-        pymonkey.q.logger.log('Getting User %s\'s SID'%userName, 6)
+        pylabs.q.logger.log('Getting User %s\'s SID'%userName, 6)
 
         if self.isSystemUser(userName) or userName == 'everyone':
 
@@ -577,7 +577,7 @@ class WindowsSystem:
             pySid = info[0]
             sid = win32security.ConvertSidToStringSid(pySid)
 
-            pymonkey.q.logger.log('User\'s SID is %s'%str(sid), 6)
+            pylabs.q.logger.log('User\'s SID is %s'%str(sid), 6)
 
             return sid
 
@@ -598,9 +598,9 @@ class WindowsSystem:
         pgDataDir = q.system.fs.joinPathsq.dirs.baseDir, 'apps','postgresql8', 'Data')
         q.system.windows.createService(serviceName, displayName , '%s\\pg_ctl.exe','runservice -W -N %s -D %s'%(serviceName, pgDataDir))
         """
-        pymonkey.q.logger.log('Creating Service %s'%serviceName, 6)
+        pylabs.q.logger.log('Creating Service %s'%serviceName, 6)
 
-        if not pymonkey.q.system.fs.isFile(binPath):
+        if not pylabs.q.system.fs.isFile(binPath):
             raise ValueError('binPath %s is not a valid file'%binPath)
 
         executableString = binPath
@@ -645,7 +645,7 @@ class WindowsSystem:
             win32service.CloseServiceHandle(hscm)
 
         if self.isServiceInstalled(serviceName):
-            pymonkey.q.logger.log('Service %s Created Successfully'%serviceName, 6)
+            pylabs.q.logger.log('Service %s Created Successfully'%serviceName, 6)
             return True
 
     def removeService(self, serviceName):
@@ -666,7 +666,7 @@ class WindowsSystem:
         win32service.CloseServiceHandle(serviceHandler)
 
         if not self.isServiceInstalled(serviceName):
-            pymonkey.q.logger.log('Service %s removed Successfully'%serviceName, 6)
+            pylabs.q.logger.log('Service %s removed Successfully'%serviceName, 6)
 
             return True
 
@@ -678,7 +678,7 @@ class WindowsSystem:
         @rtype: boolean
         """
         isRunning =  win32serviceutil.QueryServiceStatus(serviceName)[1] == win32service.SERVICE_RUNNING
-        pymonkey.q.logger.log('Service %s isRunning = %s'%(serviceName, isRunning), 3)
+        pylabs.q.logger.log('Service %s isRunning = %s'%(serviceName, isRunning), 3)
 
         return isRunning
 
@@ -688,15 +688,15 @@ class WindowsSystem:
         Check if service is installed
         @rtype: boolean
         """
-        pymonkey.q.logger.log('Checking if service %s is installed'%serviceName, 6)
+        pylabs.q.logger.log('Checking if service %s is installed'%serviceName, 6)
 
         if serviceName in self.listServices():
 
-            pymonkey.q.logger.log('Service %s is installed'%serviceName, 6)
+            pylabs.q.logger.log('Service %s is installed'%serviceName, 6)
 
             return True
 
-        pymonkey.q.logger.log('Service %s is not installed'%serviceName, 6)
+        pylabs.q.logger.log('Service %s is not installed'%serviceName, 6)
 
         return False
 
@@ -705,7 +705,7 @@ class WindowsSystem:
         List all services installed
         @return: list of service names installed
         """
-        pymonkey.q.logger.log('Listing services installed', 6)
+        pylabs.q.logger.log('Listing services installed', 6)
 
         services = self._wmi.InstancesOf('Win32_Service')
         serviceNames = [service.Properties_('Name').Value for service in services]
@@ -728,10 +728,10 @@ class WindowsSystem:
             if self.isServiceRunning(serviceName):
                 return True
 
-            pymonkey.q.logger.log('Failed to start service %s '%serviceName, 1)
+            pylabs.q.logger.log('Failed to start service %s '%serviceName, 1)
 
         else:
-            pymonkey.q.logger.log('Service %s is already running'%serviceName, 1)
+            pylabs.q.logger.log('Service %s is already running'%serviceName, 1)
 
         return False
 
@@ -751,17 +751,17 @@ class WindowsSystem:
 
                 return True
 
-            pymonkey.q.logger.log('Failed to stop service %s'%serviceName, 1)
+            pylabs.q.logger.log('Failed to stop service %s'%serviceName, 1)
 
         else:
-            pymonkey.q.logger.log('Service %s is not running'%serviceName, 1)
+            pylabs.q.logger.log('Service %s is not running'%serviceName, 1)
 
     def listRunningProcessesIds(self):
         """
         List Running Processes Ids
         @return: list of running processes ids
         """
-        pymonkey.q.logger.log('Listing Running Processes ids', 6)
+        pylabs.q.logger.log('Listing Running Processes ids', 6)
 
         runningProcesses = win32process.EnumProcesses()
 
@@ -772,7 +772,7 @@ class WindowsSystem:
         List Running Processes names
         @return: list of running processes names
         """
-        pymonkey.q.logger.log('Listing Running processes names', 6)
+        pylabs.q.logger.log('Listing Running processes names', 6)
 
         processes = self._wmi.InstancesOf('Win32_Process')
         processesNames = [process.Properties_('Name').Value for process in processes]
@@ -786,14 +786,14 @@ class WindowsSystem:
         @type: int
         @rtype: boolean
         """
-        pymonkey.q.logger.log('Checking if pid %s is alive'%pid, 6)
+        pylabs.q.logger.log('Checking if pid %s is alive'%pid, 6)
 
         if pid in self.listRunningProcessesIds():
-            pymonkey.q.logger.log('Pid %s is alive'%pid, 6)
+            pylabs.q.logger.log('Pid %s is alive'%pid, 6)
 
             return True
 
-        pymonkey.q.logger.log('Pid %s is not alive'%pid, 6)
+        pylabs.q.logger.log('Pid %s is not alive'%pid, 6)
 
         return False
 
@@ -805,17 +805,17 @@ class WindowsSystem:
         @return: the pid (or None if Failed)
         @rtype: int
         """
-        pymonkey.q.logger.log('Retreiving the pid of process %s'%process, 6)
+        pylabs.q.logger.log('Retreiving the pid of process %s'%process, 6)
 
         processInfo = self._wmi.ExecQuery('select * from Win32_Process where Name="%s"'%process)
 
         if len(processInfo) > 0:
             pid = processInfo[0].Properties_('ProcessId').Value
-            pymonkey.q.logger.log('Process %s\'s id is %d'%(process, pid), 6)
+            pylabs.q.logger.log('Process %s\'s id is %d'%(process, pid), 6)
 
             return pid
 
-        pymonkey.q.logger.log('Failed to retreive the pid of process'%process, 6)
+        pylabs.q.logger.log('Failed to retreive the pid of process'%process, 6)
 
         return None
 
@@ -831,14 +831,14 @@ class WindowsSystem:
         processInfo = self._wmi.ExecQuery('select * from Win32_Process where Name="%s"'%process)
 
         if len(processInfo) >= min:
-            pymonkey.q.logger.log('Process %s is running with %d threads'%(process, min), 6)
+            pylabs.q.logger.log('Process %s is running with %d threads'%(process, min), 6)
             return 0
 
         elif len(processInfo)  == 0:
-            pymonkey.q.logger.log('Process %s is not running'%(process), 6)
+            pylabs.q.logger.log('Process %s is not running'%(process), 6)
 
         else:
-            pymonkey.q.logger.log('Process %s is running with %d thread(s)'%(process, len(processInfo)), 6)
+            pylabs.q.logger.log('Process %s is running with %d thread(s)'%(process, len(processInfo)), 6)
 
         return 1
 
@@ -849,7 +849,7 @@ class WindowsSystem:
         @param process: (str) the process that should have the pid
         @return status: (int) 0 when ok, 1 when not ok.
         """
-        pymonkey.q.logger.log('Check if process %s\'s Id is %d'%(process, pid), 6)
+        pylabs.q.logger.log('Check if process %s\'s Id is %d'%(process, pid), 6)
 
         processInfo = self._wmi.ExecQuery('select * from Win32_Process where Name="%s"'%process)
 
@@ -861,7 +861,7 @@ class WindowsSystem:
                 if processId == pid:
                     return 0
 
-        pymonkey.q.logger.log('Process %s\'s Id is %d and not %d'%(process, processId, pid), 6)
+        pylabs.q.logger.log('Process %s\'s Id is %d and not %d'%(process, processId, pid), 6)
 
         return 1
 
@@ -884,15 +884,15 @@ class WindowsSystem:
         @param dir: path of the dir
         @param userName: name of the user to add to the acl of the dir tree
         """
-        pymonkey.q.logger.log('Granting access to Dir Tree %s'%dirPath, 6)
+        pylabs.q.logger.log('Granting access to Dir Tree %s'%dirPath, 6)
 
-        if pymonkey.q.system.fs.isDir(dirPath):
+        if pylabs.q.system.fs.isDir(dirPath):
             self.grantAccessToFile(dirPath, userName)
 
-            for subDir in pymonkey.q.system.fs.WalkExtended(dirPath, recurse=1):
+            for subDir in pylabs.q.system.fs.WalkExtended(dirPath, recurse=1):
                 self.grantAccessToFile(subDir, userName)
         else:
-            pymonkey.q.logger.log('%s is not a valid directory'%dirPath, 6)
+            pylabs.q.logger.log('%s is not a valid directory'%dirPath, 6)
             raise IOError('Directory %s does not exist'%dirPath)
 
     def grantAccessToFile(self, filePath, userName='everyone'):
@@ -901,9 +901,9 @@ class WindowsSystem:
         @param file: path of the file/dir
         @param userName: name of the user to add to the acl of the file/dir
         """
-        pymonkey.q.logger.log('Granting access to file %s'%filePath, 6)
+        pylabs.q.logger.log('Granting access to file %s'%filePath, 6)
 
-        if pymonkey.q.system.fs.isFile(filePath) or pymonkey.q.system.fs.isDir(filePath):
+        if pylabs.q.system.fs.isFile(filePath) or pylabs.q.system.fs.isDir(filePath):
 
             info = win32security.DACL_SECURITY_INFORMATION
             sd = win32security.GetFileSecurity(filePath, info)
@@ -915,7 +915,7 @@ class WindowsSystem:
             win32security.SetFileSecurity (filePath, win32security.DACL_SECURITY_INFORMATION, sd)
 
         else:
-            pymonkey.q.logger.log('File/Directory %s is not valid'%filePath, 6)
+            pylabs.q.logger.log('File/Directory %s is not valid'%filePath, 6)
 
             raise IOError('FilePath %s does not exist'%filePath)
     def pm_removeDirTree(self, dirPath, force = False, errorHandler = None):
@@ -924,12 +924,12 @@ class WindowsSystem:
         @param dirPath: path of the dir
         @param force: boolean parameter indicating that folders containing hidden files will also be deleted
         """
-        if(pymonkey.q.system.fs.exists(dirPath)):
-            if pymonkey.q.system.fs.isDir(dirPath):
+        if(pylabs.q.system.fs.exists(dirPath)):
+            if pylabs.q.system.fs.isDir(dirPath):
                 if force:
                     fileMode = win32file.GetFileAttributesW(dirPath)
-                    for file in pymonkey.q.system.fs.Walk(dirPath,recurse=1):
-                        pymonkey.q.logger.log('Changing attributes on %s'%file)
+                    for file in pylabs.q.system.fs.Walk(dirPath,recurse=1):
+                        pylabs.q.logger.log('Changing attributes on %s'%file)
                         win32file.SetFileAttributesW(file, fileMode &  ~win32file.FILE_ATTRIBUTE_HIDDEN)
                 if errorHandler != None:
                     shutil.rmtree(dirPath, onerror = errorHandler)

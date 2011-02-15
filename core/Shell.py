@@ -48,7 +48,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-import pymonkey
+import pylabs
 
 from IPython.Shell import IPShellEmbed
 from IPython.ultraTB import FormattedTB
@@ -79,7 +79,7 @@ class SimpleInteractiveTB(FormattedTB):
             ####Fallback to str()
             ###print getattr(evalue, 'msg', str(evalue)), '(type %s)' % etype.__name__
 
-        pymonkey.q.errorconditionhandler._exceptionhook(etype, evalue, etb)
+        pylabs.q.errorconditionhandler._exceptionhook(etype, evalue, etb)
 
 
 class SimpleSyntaxTB(SyntaxTB, SimpleInteractiveTB):
@@ -109,16 +109,16 @@ def qexec(self, args):
     else:
         script, args = s[0], ''
 
-    if not pymonkey.q.system.fs.exists(script):
+    if not pylabs.q.system.fs.exists(script):
         print 'Script \'%s\' not found' % script
         return
 
     cmd = '%s %s %s' % (
-            pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir, 'qshell'),
+            pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir, 'qshell'),
             script,
             args)
 
-    pymonkey.q.system.process.executeWithoutPipe(cmd)
+    pylabs.q.system.process.executeWithoutPipe(cmd)
 
 
 def _complete(self, text, state, line_buffer=None):
@@ -250,7 +250,7 @@ def _attr_matches(self, text):
     n = len(attr)
     
     #MOD
-    from pymonkey.extensions.PMExtensionsGroup import PMExtensionsGroup
+    from pylabs.extensions.PMExtensionsGroup import PMExtensionsGroup
     words2 = list()
     for word in words:
         classobj = obj if inspect.isclass(obj) else getattr(obj, '__class__', None)
@@ -559,7 +559,7 @@ def page(strng,start=0,screen_lines=0,pager_cmd = None):
 
 
 class Shell:
-    '''PyMonkey-customized IPython shell class'''
+    '''pylabs-customized IPython shell class'''
 
     def __init__(self, debug=False, ns=None):
         '''Initialize a new shell instance
@@ -588,8 +588,8 @@ class Shell:
         *args and **kwargs are those you'd pass to
         C{IPython.Shell.IPShellEmbed.__call__}.
         '''
-        pymonkey.q.vars.setVar('DEBUG', self.debug)
-        pymonkey.q.qshellconfig.interactive=True
+        pylabs.q.vars.setVar('DEBUG', self.debug)
+        pylabs.q.qshellconfig.interactive=True
 
         argv = ['ipy_user_conf.py']
         banner = '''
@@ -614,7 +614,7 @@ Type i. and press [TAB] to list interactive commands
         }
 
         if hasattr(sys, 'frozen') and sys.platform.startswith('win'):
-            # This is a py2exed version of PyMonkey and we are on Windows
+            # This is a py2exed version of pylabs and we are on Windows
             from user import home
             home = home.decode(sys.getfilesystemencoding())
             rc_override['ipythondir'] = os.path.join(home, "_ipython")
@@ -666,7 +666,7 @@ Type i. and press [TAB] to list interactive commands
             return
         #set var for _ipython so we can know we are in an interactive
         #environment without having to run the same code again.
-        pymonkey.q.vars.setVar("_ipython", "True")
+        pylabs.q.vars.setVar("_ipython", "True")
         try:
             __IP
         except NameError:

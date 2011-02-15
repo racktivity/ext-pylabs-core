@@ -45,7 +45,7 @@
 
 INDENT = 4
 
-from pymonkey import q
+from pylabs import q
 from exceptions import SyntaxError
 
 from codetools.parser.PropertyDef import PropertyDef

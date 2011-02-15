@@ -1,10 +1,10 @@
-from pymonkey.Shell import *
+from pylabs.Shell import *
 import string
 #import sys
 #import inspect
 #import operator
 from Transaction import Transaction
-import pymonkey
+import pylabs
 
 class TransactionController(object):
     '''
@@ -36,9 +36,9 @@ class TransactionController(object):
         @param callbackparams dict of parameters
 
         '''
-        #pymonkey.q.logger.log('Starting transaction: %s' % description,5)
+        #pylabs.q.logger.log('Starting transaction: %s' % description,5)
         if self.hasRunningTransactions()==False:
-            self.originalwidth=pymonkey.q.console.width
+            self.originalwidth=pylabs.q.console.width
         
         transaction = Transaction(description, errormessage, resolutionmessage,\
                         maxloglevel=maxloglevel,maxloglevelcapture=maxloglevelcapture,\
@@ -51,11 +51,11 @@ class TransactionController(object):
         #msg="TRANSACTION START: %s" % transaction.description
         msg="%s" % transaction.description
         if self.send2console and silent==False:
-            pymonkey.q.console.echoListItem(msg)
+            pylabs.q.console.echoListItem(msg)
         else:
-            pymonkey.q.logger.log(msg,5)
+            pylabs.q.logger.log(msg,5)
         if silent==False:
-            pymonkey.q.console.indent+=1   
+            pylabs.q.console.indent+=1   
 
     def stop(self,failed=False):
         '''
@@ -70,21 +70,21 @@ class TransactionController(object):
                                   'running at all')
         
         transaction = self.transactions.pop()
-        _TransactionStatus=pymonkey.q.enumerators.TransactionStatus
+        _TransactionStatus=pylabs.q.enumerators.TransactionStatus
         status = _TransactionStatus.DONE if not failed else _TransactionStatus.FAILED
         if not failed and not self.transactions:
             status = _TransactionStatus.FINISHED
         if transaction.silent==False:
-            pymonkey.q.console.indent-=1                    
+            pylabs.q.console.indent-=1                    
         if status==_TransactionStatus.FINISHED:
             msg="TRANSACTION %s: %s" % (string.upper(str(status)),transaction.description)
             self.activeTransaction=None
         else:
             msg="TRANSACTION %s: %s" % (string.upper(str(status)),transaction.description)
         #if self.send2console:
-            #pymonkey.q.console.echoListItem(msg)
+            #pylabs.q.console.echoListItem(msg)
         #else:
-        pymonkey.q.logger.log(msg,5)
+        pylabs.q.logger.log(msg,5)
         
     def stopall(self):
         """
@@ -95,7 +95,7 @@ class TransactionController(object):
 
     def clean(self):
         '''Clean the list of running actions'''
-        pymonkey.q.logger.log('[ACTIONS] Clearing all actions', 5)
+        pylabs.q.logger.log('[ACTIONS] Clearing all actions', 5)
         self.transactions = list()
 
 

@@ -1,6 +1,6 @@
 
-from pymonkey.config import *
-from pymonkey import q
+from pylabs.config import *
+from pylabs import q
 
 
 class SvnConnection(ConfigManagementItem):

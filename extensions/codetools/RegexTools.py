@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey.System import System
+from pylabs.System import System
 import re
-from pymonkey.Shell import *
-from pymonkey import q
+from pylabs.Shell import *
+from pylabs import q
 
 class RegexTemplates_FindLines:
     """
@@ -105,7 +105,7 @@ class RegexTools:
         """
         if pattern=="" or text=="":
             raise RuntimeError("Cannot do .codetools.regex.match when pattern or text parameter is empty")     
-        #pymonkey.q.logger.log("Regextools: pattern:%s in text:%s" % (pattern,text),5)        
+        #pylabs.q.logger.log("Regextools: pattern:%s in text:%s" % (pattern,text),5)        
         #print "Regextools: pattern:%s in text:%s" % (pattern,text)
         pattern=self._patternFix(pattern)
         result=re.findall(pattern,text)
@@ -403,7 +403,7 @@ class RegexTools:
 
     
 if __name__ == '__main__':
-    content=pymonkey.q.system.fs.fileGetContents("examplecontent1.txt")
+    content=pylabs.q.system.fs.fileGetContents("examplecontent1.txt")
     rt=RegexTools()
     print rt.getClassName("class iets(test):")
     #content="class iets(test):"

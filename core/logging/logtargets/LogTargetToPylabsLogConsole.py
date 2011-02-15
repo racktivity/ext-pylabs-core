@@ -1,5 +1,5 @@
 import socket
-from pymonkey.logging.LogConsoleServer import ManagementProtocol
+from pylabs.logging.LogConsoleServer import ManagementProtocol
 
 
 DEFAULT_PORT = 9998

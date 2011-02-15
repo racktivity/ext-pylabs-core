@@ -45,7 +45,7 @@ def main():
     parser.add_option('-d', '--debug', dest='debug', action='store_true',
             default=False, help='run in debug mode')
     parser.add_option('-n', '--no-default-initialization', dest='init',
-            action='store_true', default=False, help='do not perform default PyMonkey initialization using pymonkey.InitBase.initialize')
+            action='store_true', default=False, help='do not perform default pylabs initialization using pylabs.InitBase.initialize')
     parser.add_option("-f", "--file", dest="filename", help="Execute file")
     parser.add_option("-c", "--command", dest="command", help="Execute command")
     parser.add_option("-l", "--logserver", dest="logserver", action='store_true', help="Start logserver")
@@ -69,12 +69,12 @@ def main():
     elif options.logserver:
         try:
             #@todo for backwards compatibility
-            from pymonkey.log.LogServer import startlogserver
+            from pylabs.log.LogServer import startlogserver
             startlogserver()
             sys.exit(0)
         except:
-            import pymonkey
-            from pymonkey.InitBaseCore import q, i
+            import pylabs
+            from pylabs.InitBaseCore import q, i
             print "Pylabs logconsole started:"
             q.logger.console.start()
             sys.exit(0)
@@ -82,15 +82,15 @@ def main():
 
     #execute command
     elif options.command:
-        import pymonkey
-        from pymonkey.InitBaseCore import q, i
+        import pylabs
+        from pylabs.InitBaseCore import q, i
         exec options.command
         sys.exit(0)
     ns = {}
     if not options.init:
-        import pymonkey
-        pymonkey.q.vars.setVar('DEBUG', options.debug)
-        from pymonkey.InitBaseCore import q, i
+        import pylabs
+        pylabs.q.vars.setVar('DEBUG', options.debug)
+        from pylabs.InitBaseCore import q, i
 
         ns['q'] = q
         ns['i'] = i
@@ -117,7 +117,7 @@ def main():
             q.logger.consoleloglevel=2
 
         # Run QPackage configure tasklets if any registered
-        #from pymonkey.qpackages.client.QPackageConfigure import QPackageConfigure
+        #from pylabs.qpackages.client.QPackageConfigure import QPackageConfigure
         #qpackageconfigure = QPackageConfigure()
         #qpackageconfigure.reconfigure()
 
@@ -125,7 +125,7 @@ def main():
         # Run QPackage4 configure tasklets if needed
         q.qp._runPendingReconfigeFiles()
         sys.path.append(q.system.fs.joinPaths(q.dirs.baseDir, 'var', 'tests'))
-        from pymonkey.Shell import Shell
+        from pylabs.Shell import Shell
         # Cannot use ipshell or ipshellDebug because I want to twiddle with the namespace as well...
         Shell(debug=options.debug, ns=ns)()
 

@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class location:
     def getXMLSchema (self, locationguid, jobguid = "", executionparams = {}):

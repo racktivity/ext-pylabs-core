@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class lan:
     def listVdcs (self, languid, jobguid = "", executionparams = {}):

@@ -33,12 +33,12 @@
 #
 # </License>
 
-#import pymonkey
-from pymonkey import q
-from pymonkey.Shell import *
+#import pylabs
+from pylabs import q
+from pylabs.Shell import *
 import os
 
-class PList(pymonkey.baseclasses.BaseType):
+class PList(pylabs.baseclasses.BaseType):
     """
     Meta-Data container for a collection of pfiles
     Data is  stored in a file on disk    

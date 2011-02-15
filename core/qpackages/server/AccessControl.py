@@ -33,11 +33,11 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.server.DomainACL import DomainsACL
-from pymonkey.qpackages.server.Users import Users
-from pymonkey.qpackages.server.Groups import Groups
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.server.DomainACL import DomainsACL
+from pylabs.qpackages.server.Users import Users
+from pylabs.qpackages.server.Groups import Groups
 
 class AccessControl(BaseType):
     domainsACL = q.basetype.object(DomainsACL, doc="DomainsACL object")

@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.server.Users import Users
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.server.Users import Users
 
 class Groups(BaseType):
 

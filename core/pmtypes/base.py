@@ -37,8 +37,8 @@ import inspect
 import types
 import operator
 
-import pymonkey
-from pymonkey.baseclasses.dirtyflaggingmixin import \
+import pylabs
+from pylabs.baseclasses.dirtyflaggingmixin import \
         DIRTY_PROPERTIES_ATTRIBUTE, DIRTY_AFTER_LAST_SAVE_ATTRIBUTE
 
 #Needed to handle default values
@@ -200,7 +200,7 @@ class BaseType(object):
             if not self._check_value(obj, value):
                 msg = ('Default value %r of property %s on %s is invalid' % \
                         (value, self._PM_NAME, obj.__class__.__name__))
-                pymonkey.q.logger.log(msg, 5)
+                pylabs.q.logger.log(msg, 5)
                 raise RuntimeError(msg)
 
             return value

@@ -33,8 +33,8 @@
 #
 # </License>
 
-from pymonkey.enumerators import PlatformType
-from pymonkey.decorators import deprecated
+from pylabs.enumerators import PlatformType
+from pylabs.decorators import deprecated
 
 class Clients(object):
     ssh = None
@@ -51,23 +51,23 @@ class Clients(object):
             pass
         
         def ssh():
-            from pymonkey.clients.ssh.SSHTool import SSHTool
+            from pylabs.clients.ssh.SSHTool import SSHTool
             return SSHTool()
 
         def svn():
-            from pymonkey.clients.svn.SvnTool import SvnTool
+            from pylabs.clients.svn.SvnTool import SvnTool
             return SvnTool()
 
         def git():
-            from pymonkey.clients.git.clone import clone as git_clone, \
+            from pylabs.clients.git.clone import clone as git_clone, \
                     checkout_tree as git_checkout_tree, \
                     checkout as git_checkout
 
         def hg():
-            from pymonkey.clients.hg.HgTool import HgTool
+            from pylabs.clients.hg.HgTool import HgTool
             return HgTool()
 
-            # We won't remove pymonkey.clients.git.clone.checkout_tree, but
+            # We won't remove pylabs.clients.git.clone.checkout_tree, but
             # it's not really useful to keep it on the q-tree since checkout()
             # is available and provides a more consistent interface
             deprecated_checkout_tree = deprecated(

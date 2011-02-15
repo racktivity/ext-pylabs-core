@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class disk:
     def restore (self, backupdiskguid, diskguid, jobguid = "", executionparams = {}):

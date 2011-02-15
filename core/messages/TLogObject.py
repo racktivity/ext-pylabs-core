@@ -1,11 +1,11 @@
-from pymonkey import q
+from pylabs import q
 from MessageObject import MessageObject
 import json
 
-from pymonkey import q
+from pylabs import q
 from MessageObject import MessageObject
-from pymonkey.Shell import *
-from pymonkey.baseclasses import BaseType
+from pylabs.Shell import *
+from pylabs.baseclasses import BaseType
 import json
 
 import string

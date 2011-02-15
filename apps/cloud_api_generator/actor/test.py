@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class test:
     def testTimeout (self, jobguid = "", executionparams = {}):

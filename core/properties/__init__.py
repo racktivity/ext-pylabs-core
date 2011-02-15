@@ -43,14 +43,14 @@ __all__ += ['UnixDirPath', 'UnixFilePath', ]
 __all__ += ['WindowsDirPath', 'WindowsFilePath', ]
 __all__ += ['IPv4Address', ]
 
-from pymonkey.properties.common import BaseDescriptor
+from pylabs.properties.common import BaseDescriptor
 
-from pymonkey.properties.primitives import Boolean, Integer, Float, String
+from pylabs.properties.primitives import Boolean, Integer, Float, String
 
-from pymonkey.properties.collections import Dictionary, List, Set
+from pylabs.properties.collections import Dictionary, List, Set
 
-from pymonkey.properties.customtypes import Guid
-from pymonkey.properties.customtypes import Path, DirPath, FilePath
-from pymonkey.properties.customtypes import UnixDirPath, UnixFilePath
-from pymonkey.properties.customtypes import WindowsDirPath, WindowsFilePath
-from pymonkey.properties.customtypes import IPv4Address
+from pylabs.properties.customtypes import Guid
+from pylabs.properties.customtypes import Path, DirPath, FilePath
+from pylabs.properties.customtypes import UnixDirPath, UnixFilePath
+from pylabs.properties.customtypes import WindowsDirPath, WindowsFilePath
+from pylabs.properties.customtypes import IPv4Address

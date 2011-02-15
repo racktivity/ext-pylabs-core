@@ -1,4 +1,4 @@
-import pymonkey
+import pylabs
 import pprint
 import time
 import sys,os
@@ -16,21 +16,21 @@ class LogTargetFS(object):
         """
         """
         self.enabled = False
-        #cannot use pymonkey primitives yet, not enabled yet
+        #cannot use pylabs primitives yet, not enabled yet
         self.name = "file"
         self.fileHandle = None
         self.logopenTime=self._gettime()
         self.logopenNrlines=0
         self.logfile=""
-        self.agentid=pymonkey.q.application.agentid
-        self.appname=pymonkey.q.application.appname.split(':')[0]
-        self.lastappstatus=pymonkey.q.application.state
+        self.agentid=pylabs.q.application.agentid
+        self.appname=pylabs.q.application.appname.split(':')[0]
+        self.lastappstatus=pylabs.q.application.state
         #except:
             #self.agentid="unknown"
-        logdir=os.path.join(pymonkey.q.dirs.varDir,'log',"pylabslogs")
+        logdir="/opt/qbase5/var/log/pylabslogs/"
         if not os.path.isdir(logdir):
             os.mkdir(logdir)
-        logdir=os.path.join(pymonkey.q.dirs.varDir,'log',"pylabslogs",pymonkey.q.application.agentid)
+        logdir=os.path.join("/opt/qbase5/var",'log',"pylabslogs",pylabs.q.application.agentid)
         if os.path.isdir(logdir)==False:
             os.mkdir(logdir)
             
@@ -61,23 +61,23 @@ class LogTargetFS(object):
             self.enabled = self.checkTarget()
 
         ttime=time.strftime("%H:%M:%S: ", time.gmtime())
-        message="%s %s %s%s" % (level, pymonkey.q.application.appname , ttime, message)
+        message="%s %s %s%s" % (level, pylabs.q.application.appname , ttime, message)
 
-        appLogname = pymonkey.q.application.appname.split(':')[0]
+        appLogname = pylabs.q.application.appname.split(':')[0]
 
         ##print self._gettime()>(self.logopenTime+60)
         if self._config['main']['logrotate_enable'] == 'True':
             if self._gettime() > (self.logopenTime + int(self._config['main']['logrotate_time'])) \
                 or self.logopenNrlines > int(self._config['main']['logrotate_number_of_lines']) \
                 or self.appname <> appLogname \
-                or pymonkey.q.application.state <> self.lastappstatus:
+                or pylabs.q.application.state <> self.lastappstatus:
                 
                 ##print "NEWLOG"
                 self.close()
                 self.open()
                 self.logopenTime=self._gettime()
                 self.logopenNrlines=0
-                self.lastappstatus=pymonkey.q.application.state
+                self.lastappstatus=pylabs.q.application.state
 
         try:
             #print "log:%s" % message
@@ -103,8 +103,8 @@ class LogTargetFS(object):
         if not self._is_initialized():
             self._initialize()
 
-        appLogname = pymonkey.q.application.appname.split(':')[0]
-        logdir=os.path.join(pymonkey.q.dirs.varDir,'log',"pylabslogs",appLogname)
+        appLogname = pylabs.q.application.appname.split(':')[0]
+        logdir=os.path.join(pylabs.q.dirs.varDir,'log',"pylabslogs",appLogname)
 
         if appLogname<>self.appname:
             if os.path.isdir(logdir)==False:
@@ -112,7 +112,7 @@ class LogTargetFS(object):
             self.appname=appLogname
 
         filename=time.strftime("%b_%d--%H_%M_%S", time.gmtime())
-        logfile=os.path.join(logdir,"%s_%s"%(filename,pymonkey.q.application.state))
+        logfile=os.path.join(logdir,"%s_%s"%(filename,pylabs.q.application.state))
         filenum = 1
         if os.path.isfile("%s.log" % logfile):
             logfile = "%s_%s"%(logfile, random.randint(1,10000))
@@ -161,21 +161,21 @@ class LogTargetFS(object):
         
         if self._config['main']['logremove_enable'] == 'True':
           
-            if int(self._lastcleanuptime) <= (pymonkey.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_check'])):
+            if int(self._lastcleanuptime) <= (pylabs.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_check'])):
         
-                self._lastcleanuptime=pymonkey.q.base.time.getTimeEpoch()
+                self._lastcleanuptime=pylabs.q.base.time.getTimeEpoch()
                 self.nolog=True
-                inifile=pymonkey.q.config.getInifile("main")
+                inifile=pylabs.q.config.getInifile("main")
                 inifile.setParam("main","lastlogcleanup",self._lastcleanuptime)
-                files= pymonkey.q.system.fs.listFilesInDir( \
-                            pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.logDir, 'pylabslogs'), \
+                files= pylabs.q.system.fs.listFilesInDir( \
+                            pylabs.q.system.fs.joinPaths(pylabs.q.dirs.logDir, 'pylabslogs'), \
                             recursive=True, \
-                            maxmtime=(pymonkey.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_age'])))
+                            maxmtime=(pylabs.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_age'])))
                 
                 for filepath in files:
-                    if pymonkey.q.system.fs.exists(filepath):
+                    if pylabs.q.system.fs.exists(filepath):
                         try:
-                            pymonkey.q.system.fs.removeFile(filepath)
+                            pylabs.q.system.fs.removeFile(filepath)
                         except Exception, ex:
                             pass # We don't want to fail on logging
             
@@ -193,7 +193,7 @@ class LogTargetFS(object):
         using the logging framework.
         """
         
-        mainfile = pymonkey.q.config.getInifile("main")
+        mainfile = pylabs.q.config.getInifile("main")
         if 'main' in mainfile.getSections() and mainfile.getValue('main', 'lastlogcleanup'):
             self._lastcleanuptime = mainfile.getValue('main', 'lastlogcleanup')
         else:
@@ -218,8 +218,8 @@ class LogTargetFS(object):
                   'logremove_check': '86400'}}
         
         cfg = None
-        if 'logtargetfs' in pymonkey.q.config.list():
-            logtargetfs_file = pymonkey.q.config.getInifile("logtargetfs")
+        if 'logtargetfs' in pylabs.q.config.list():
+            logtargetfs_file = pylabs.q.config.getInifile("logtargetfs")
             cfg = logtargetfs_file.getFileAsDict()
         
         if not cfg or not 'main' in cfg.keys():
@@ -237,7 +237,7 @@ class LogTargetFS(object):
         
 
 # Config
-from pymonkey.config import ConfigManagementItem, ItemSingleClass
+from pylabs.config import ConfigManagementItem, ItemSingleClass
 
 class LogTargetFSConfigManagementItem(ConfigManagementItem):
     """
@@ -266,7 +266,7 @@ class LogTargetFSConfigManagementItem(ConfigManagementItem):
         Optional customization of show() method
         """
         # Here we do not want to show the password, so a customized show() method
-        pymonkey.q.gui.dialog.message(self.params)
+        pylabs.q.gui.dialog.message(self.params)
         
     def retrieve(self):
         """

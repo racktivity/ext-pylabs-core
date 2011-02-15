@@ -33,9 +33,9 @@
 #
 # </License>
 
-'''PyMonkey initialization module
+'''pylabs initialization module
 
-This module sets up and exposes the PyMonkey q and i variables. Logging will be
+This module sets up and exposes the pylabs q and i variables. Logging will be
 set up according to the configuration, and any output to stdout or stderr will
 be relayed to the logging subsystem.
 
@@ -43,7 +43,7 @@ This module can be used in applications using pythonw.exe on Windows, which
 crashes whenever an application sends output to standard output.
 '''
 
-from pymonkey._init import initialize as _initialize
+from pylabs._init import initialize as _initialize
 q, i = _initialize(setup_logging=True, redirect_output=True,
                    hide_output=True)
 

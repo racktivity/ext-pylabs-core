@@ -31,7 +31,7 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 from EasyDialogWizardServer import WizardActions
 from EasyDialogWizardServer import EasyDialogWizardServer
 

@@ -40,7 +40,7 @@ import traceback
 import zipimport
 import threading
 
-import pymonkey
+import pylabs
 
 class BasePMExtension(object):
     """
@@ -62,12 +62,12 @@ class BasePMExtension(object):
         """
         self._activation_lock = threading.Lock()
 
-        if not pymonkey.q.basetype.dirpath.check(extensionPath):
+        if not pylabs.q.basetype.dirpath.check(extensionPath):
             raise ValueError('Invalid extension path %s, not a folder' %
                     extensionPath)
-        if not pymonkey.q.basetype.string.check(moduleName):
+        if not pylabs.q.basetype.string.check(moduleName):
             raise ValueError('Invalid moduleName provided, not a string')
-        if not pymonkey.q.basetype.string.check(className):
+        if not pylabs.q.basetype.string.check(className):
             raise ValueError('Invalid className provided, not a string')
 
         self.activated = False              #is extension already loaded or not
@@ -111,7 +111,7 @@ class BasePMExtension(object):
 
     def _handleCreateInstanceException(self, t, v, tb):
         #Send to logserver
-        pymonkey.q.errorconditionhandler._exceptionhook(t, v, tb)
+        pylabs.q.errorconditionhandler._exceptionhook(t, v, tb)
 
         #Display
         print 'An error occured while creating an instance of the %s extension' % self.moduleName
@@ -126,7 +126,7 @@ class BasePMExtension(object):
         last_code = last_frame[3]
         print 'The exception occurred in %s on line %d: %s' % (last_file, last_line, last_code)
         print
-        if not pymonkey.q.vars.getVar('DEBUG'):
+        if not pylabs.q.vars.getVar('DEBUG'):
             print 'To see a full error report, check your logserver or run Q-Shell using debug mode'
             # Reset TTY
             # See above for more info
@@ -136,15 +136,15 @@ class BasePMExtension(object):
             except:
                 pass
 
-            pymonkey.q.application.stop()
+            pylabs.q.application.stop()
         else:
             raise
 
     def _handleLoadClassModuleException(self, t, v, tb):
         #Send to logserver
-        if pymonkey.q.vars.getVar("_ipython"):
-            pymonkey.q.qshellconfig.interactive=True
-        pymonkey.q.errorconditionhandler._exceptionhook(t, v, tb)
+        if pylabs.q.vars.getVar("_ipython"):
+            pylabs.q.qshellconfig.interactive=True
+        pylabs.q.errorconditionhandler._exceptionhook(t, v, tb)
 
         #Display
         print 'An error occured while loading the %s extension' % self.moduleName
@@ -159,7 +159,7 @@ class BasePMExtension(object):
         last_code = last_frame[3]
         print 'The exception occurred in %s on line %d: %s' % (last_file, last_line, last_code)
         print
-        if not pymonkey.q.vars.getVar('DEBUG'):
+        if not pylabs.q.vars.getVar('DEBUG'):
             print 'To see a full error report, check your logserver or run Q-Shell using debug mode'
             # Reset TTY
             # We need to reset our TTY to the settings it had before
@@ -172,7 +172,7 @@ class BasePMExtension(object):
             except:
                 pass
 
-            pymonkey.q.application.stop()
+            pylabs.q.application.stop()
         else:
             raise
 
@@ -181,7 +181,7 @@ class BasePMExtension(object):
         raise NotImplementedError
 
     def __str__(self):
-        return "PyMonkey Extension %s (at %s)" % (self.pmExtensionName, self.extensionPath)
+        return "pylabs Extension %s (at %s)" % (self.pmExtensionName, self.extensionPath)
 
 class PMExtension(BasePMExtension):
     """Extension class for 'normal' (non-zipped) extensions"""
@@ -191,7 +191,7 @@ class PMExtension(BasePMExtension):
         sys.path.append(cleanedPath)
         self.moduleInfo = imp.find_module(self.moduleName, [self.extensionPath, ])
         extensionName = os.path.basename(self.extensionPath)
-        pymonkey.q.logger.log("loadmodule: extensionName:%s, moduleName:%s" % (extensionName, self.moduleName), 8)
+        pylabs.q.logger.log("loadmodule: extensionName:%s, moduleName:%s" % (extensionName, self.moduleName), 8)
         #load module as _pm_[extensionName]_[moduleName]
         #This could fail if the module loading errors out. We'll catch this,
         #display a message providing info about the failing extension, then
@@ -213,7 +213,7 @@ class EggPMExtension(BasePMExtension):
 
         # Zipped extension path:
         zippedExtensionPath = self.extensionPath
-        pymonkey.q.logger.log("Zipped extension path: '%s'" % (zippedExtensionPath), 5)
+        pylabs.q.logger.log("Zipped extension path: '%s'" % (zippedExtensionPath), 5)
 
         extensionImporter = zipimport.zipimporter(zippedExtensionPath)
         try:

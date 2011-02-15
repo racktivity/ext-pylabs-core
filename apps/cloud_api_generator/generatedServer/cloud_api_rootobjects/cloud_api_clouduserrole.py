@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class clouduserrole:
     def getXMLSchema (self, clouduserroleguid, jobguid = "", executionparams = {}):

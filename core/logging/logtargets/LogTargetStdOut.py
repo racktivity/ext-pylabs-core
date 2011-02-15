@@ -1,4 +1,4 @@
-import pymonkey
+import pylabs
 import pprint
 
 class LogTargetStdOut(object):
@@ -24,7 +24,7 @@ class LogTargetStdOut(object):
         example 1|754545|performancetester|5||copy file from a to b
         @param message string in format time(epoch)|source(string)|level(0-10)|tags|logmessage\n 
         """    
-        logobj=pymonkey.q.logger.getLogObject(message)
+        logobj=pylabs.q.logger.getLogObject(message)
         message = str(logobj)#will render differently for logs and events
         formattedOut = screenline = message[:self.screenwidth]
         message = message[self._screenWidth:]

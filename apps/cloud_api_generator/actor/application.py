@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class application:
     def restore (self, applicationguid, sourceuri, compressed = True, jobguid = "", executionparams = {}):

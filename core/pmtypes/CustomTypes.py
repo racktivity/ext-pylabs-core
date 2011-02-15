@@ -37,9 +37,9 @@
 
 import re
 
-from pymonkey.pmtypes import PrimitiveTypes
-from pymonkey.pmtypes.base import BaseType
-from pymonkey.pmtypes import IPv4Range, IPv4Address
+from pylabs.pmtypes import PrimitiveTypes
+from pylabs.pmtypes.base import BaseType
+from pylabs.pmtypes import IPv4Range, IPv4Address
 GUID_RE = re.compile('^[0-9a-fA-F]{8}[-:][0-9a-fA-F]{4}[-:][0-9a-fA-F]{4}[-:][0-9a-fA-F]{4}[-:][0-9a-fA-F]{12}$')
 class Guid(PrimitiveTypes.String):
     '''Generic GUID type'''

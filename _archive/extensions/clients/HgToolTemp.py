@@ -5,10 +5,10 @@
 import os.path
 from urlparse import urlparse, urlunparse
 import re
-import pymonkey
-from pymonkey import q
-from pymonkey.baseclasses.CommandWrapper import CommandWrapper
-from pymonkey.Shell import *
+import pylabs
+from pylabs import q
+from pylabs.baseclasses.CommandWrapper import CommandWrapper
+from pylabs.Shell import *
 
 class HgToolTemp:    
     

@@ -33,7 +33,7 @@
 #
 # </License>
 
-'''PyMonkey framework central class (of which the C{q} object is an instance)'''
+'''pylabs framework central class (of which the C{q} object is an instance)'''
 
 import sys
 import inspect
@@ -41,21 +41,21 @@ import os
 import imp
 import random
 if not (sys.platform.startswith("win32") or sys.platform.startswith("linux")  or sys.platform.startswith("darwin") or sys.platform.startswith("sunos")):
-    print "PyMonkey framework is only supported on win32, darwin and linux*. Current platform is [%s]. " % (sys.platform)
+    print "pylabs framework is only supported on win32, darwin and linux*. Current platform is [%s]. " % (sys.platform)
     sys.exit(1)
 
-import pymonkey
+import pylabs
 
 from Dirs import Dirs
-from pymonkey.base.time.Time import Time
-from pymonkey.base.idgenerator.IDGenerator import IDGenerator
-from pymonkey.enumerators.QPackageQualityLevelType import QPackageQualityLevelType
+from pylabs.base.time.Time import Time
+from pylabs.base.idgenerator.IDGenerator import IDGenerator
+##from pylabs.enumerators.QPackageQualityLevelType import QPackageQualityLevelType
 
-from pymonkey.extensions.PMExtensions import PMExtensions
+from pylabs.extensions.PMExtensions import PMExtensions
 
 #We'll only lazy-load all attributes here to save memory and launch time
 _DUMMY = object()
-class PYMonkeyContainerAttributeDescriptor(object):
+class pylabsContainerAttributeDescriptor(object):
     def __init__(self, name, generator):
         self.name = name
         self.generator = generator
@@ -86,169 +86,169 @@ class PYMonkeyContainerAttributeDescriptor(object):
         raise RuntimeError('This attribute can not be deleted')
 
 
-def _pymonkey_system():
+def _pylabs_system():
     from System import System
     return System()
 
-def _pymonkey_logger():
-    from pymonkey.logging.LogHandler import LogHandler
+def _pylabs_logger():
+    from pylabs.logging.LogHandler import LogHandler
     return LogHandler()
 
-def _pymonkey_eventhandler():
-    from pymonkey.logging.EventHandler import EventHandler
+def _pylabs_eventhandler():
+    from pylabs.logging.EventHandler import EventHandler
     return EventHandler()
 
-def _pymonkey_messagehandler():
-    from pymonkey.messages.MessageHandler import MessageHandler
+def _pylabs_messagehandler():
+    from pylabs.messages.MessageHandler import MessageHandler
     return MessageHandler()
 
-def _pymonkey_application():
+def _pylabs_application():
     from Application import Application
     return Application()
 
-def _pymonkey_vars():
-    from pymonkey.Vars import Vars
+def _pylabs_vars():
+    from pylabs.Vars import Vars
     return Vars
 
-def _pymonkey_platform():
-    from pymonkey.enumerators.PlatformType import PlatformType
+def _pylabs_platform():
+    from pylabs.enumerators.PlatformType import PlatformType
     return PlatformType.findPlatformType()
 
-def _pymonkey_cmdb():
-    from pymonkey.cmdb import CMDB
+def _pylabs_cmdb():
+    from pylabs.cmdb import CMDB
     return CMDB()
 
-def _pymonkey_transaction():
-    from pymonkey.transaction.TransactionController import TransactionController
+def _pylabs_transaction():
+    from pylabs.transaction.TransactionController import TransactionController
     return TransactionController()
 
-def _pymonkey_action():
-    from pymonkey.action import ActionController
+def _pylabs_action():
+    from pylabs.action import ActionController
     return ActionController()
 
-def _pymonkey_console():
-    from pymonkey.console import Console
+def _pylabs_console():
+    from pylabs.console import Console
     return Console()
 
-def _pymonkey_extensions():
-    import pymonkey.extensions.management
-    return pymonkey.extensions.management
+def _pylabs_extensions():
+    import pylabs.extensions.management
+    return pylabs.extensions.management
 
-def _pymonkey_qshellconfig():
-    from pymonkey.qshellconfig.QShellConfig import QShellConfig
+def _pylabs_qshellconfig():
+    from pylabs.qshellconfig.QShellConfig import QShellConfig
     return QShellConfig()
 
-def _pymonkey_tools():
-    from pymonkey.Tools import Tools
+def _pylabs_tools():
+    from pylabs.Tools import Tools
     return Tools
 
-def _pymonkey_clients():
-    from pymonkey.clients.Clients import Clients
+def _pylabs_clients():
+    from pylabs.clients.Clients import Clients
     return Clients()
 
-def _pymonkey_enumerators():
-    from pymonkey.baseclasses.BaseEnumeration import enumerations
+def _pylabs_enumerators():
+    from pylabs.baseclasses.BaseEnumeration import enumerations
     return enumerations
 
-def _pymonkey_errorconditionhandler():
-    from pymonkey.messages.ErrorconditionHandler import ErrorconditionHandler
+def _pylabs_errorconditionhandler():
+    from pylabs.messages.ErrorconditionHandler import ErrorconditionHandler
     return ErrorconditionHandler()
 
-def _pymonkey_config():
-    from pymonkey.config.QConfig import QConfig
+def _pylabs_config():
+    from pylabs.config.QConfig import QConfig
     return QConfig()
 
-def _pymonkey_gui():
-    from pymonkey.gui.Gui import Gui
+def _pylabs_gui():
+    from pylabs.gui.Gui import Gui
     return Gui()
 
-def _pymonkey_debugger():
-    from pymonkey.debugger import QHook
+def _pylabs_debugger():
+    from pylabs.debugger import QHook
     return QHook()
 
 
-def _pymonkey_qpackagetools():
-    from pymonkey.qpackages.client.QPackageTools import QPackageTools
+def _pylabs_qpackagetools():
+    from pylabs.qpackages.client.QPackageTools import QPackageTools
     return QPackageTools()
 
 
-class PYMonkey:
-    '''Central PyMonkey framework class, of which C{q} is an instance'''
+class pylabs:
+    '''Central pylabs framework class, of which C{q} is an instance'''
     # Construct the singleton objects
-    system = PYMonkeyContainerAttributeDescriptor('system',_pymonkey_system)
+    system = pylabsContainerAttributeDescriptor('system',_pylabs_system)
     '''Accessor to system methods'''
 
-    logger = PYMonkeyContainerAttributeDescriptor('logger',_pymonkey_logger)
+    logger = pylabsContainerAttributeDescriptor('logger',_pylabs_logger)
     '''Accessor to logging methods'''
 
-    eventhandler = PYMonkeyContainerAttributeDescriptor('eventhandler',_pymonkey_eventhandler)
+    eventhandler = pylabsContainerAttributeDescriptor('eventhandler',_pylabs_eventhandler)
     '''Accessor to event handling methods'''
 
-    application = PYMonkeyContainerAttributeDescriptor('application',_pymonkey_application)
+    application = pylabsContainerAttributeDescriptor('application',_pylabs_application)
     '''Accessor to application methods'''
 
-    #TODO Somehow the PYMonkeyContainerAttributeDescriptor trick can't be used
+    #TODO Somehow the pylabsContainerAttributeDescriptor trick can't be used
     #on the dirs attribute (test.system.test_fs.TestDirs.test_dir fails).
     dirs = Dirs()
     '''Accessor to directory configuration'''
 
-    vars = PYMonkeyContainerAttributeDescriptor('vars',_pymonkey_vars)
+    vars = pylabsContainerAttributeDescriptor('vars',_pylabs_vars)
     '''Accessor to shared variables'''
 
-    platform = PYMonkeyContainerAttributeDescriptor('platform',_pymonkey_platform)
+    platform = pylabsContainerAttributeDescriptor('platform',_pylabs_platform)
     '''Accessor to current platform information'''
 
-    cmdb = PYMonkeyContainerAttributeDescriptor('cmdb', _pymonkey_cmdb)
-    '''Accessor to the PyMonkey CMDB subsystem'''
+    cmdb = pylabsContainerAttributeDescriptor('cmdb', _pylabs_cmdb)
+    '''Accessor to the pylabs CMDB subsystem'''
 
 
-    transaction = PYMonkeyContainerAttributeDescriptor('transaction',_pymonkey_transaction)
-    '''Accessor to the PyMonkey transaction methods'''
+    transaction = pylabsContainerAttributeDescriptor('transaction',_pylabs_transaction)
+    '''Accessor to the pylabs transaction methods'''
 
-    action = PYMonkeyContainerAttributeDescriptor('action',_pymonkey_action)
-    '''Accessor to the PyMonkey action methods'''
+    action = pylabsContainerAttributeDescriptor('action',_pylabs_action)
+    '''Accessor to the pylabs action methods'''
 
-    console = PYMonkeyContainerAttributeDescriptor('console',_pymonkey_console)
-    ''' Accessor to the PYmonkey console methods'''
+    console = pylabsContainerAttributeDescriptor('console',_pylabs_console)
+    ''' Accessor to the pylabs console methods'''
 
-    extensions = PYMonkeyContainerAttributeDescriptor('extensions',
-            _pymonkey_extensions)
+    extensions = pylabsContainerAttributeDescriptor('extensions',
+            _pylabs_extensions)
     '''Extension management methods'''
 
-    qshellconfig = PYMonkeyContainerAttributeDescriptor('qshellconfig',_pymonkey_qshellconfig)
+    qshellconfig = pylabsContainerAttributeDescriptor('qshellconfig',_pylabs_qshellconfig)
 
     _extensionsInited = False
     '''Whether extensions are initialized'''
     _pmExtensions = None
     '''List of discovered extensions'''
 
-    tools = PYMonkeyContainerAttributeDescriptor('tools', _pymonkey_tools)
-    '''Accessor to PyMonkey tools'''
+    tools = pylabsContainerAttributeDescriptor('tools', _pylabs_tools)
+    '''Accessor to pylabs tools'''
 
-    clients = PYMonkeyContainerAttributeDescriptor('clients',_pymonkey_clients)
+    clients = pylabsContainerAttributeDescriptor('clients',_pylabs_clients)
     ''' Accessor to client applications '''
 
-    enumerators = PYMonkeyContainerAttributeDescriptor('enumerators',_pymonkey_enumerators)
+    enumerators = pylabsContainerAttributeDescriptor('enumerators',_pylabs_enumerators)
     '''Accessor to all registered enumeration types'''
 
-    config = PYMonkeyContainerAttributeDescriptor('config',_pymonkey_config)
+    config = pylabsContainerAttributeDescriptor('config',_pylabs_config)
 
-    gui = PYMonkeyContainerAttributeDescriptor('gui',_pymonkey_gui)
+    gui = pylabsContainerAttributeDescriptor('gui',_pylabs_gui)
 
-    debugger = PYMonkeyContainerAttributeDescriptor('debugger',_pymonkey_debugger)
+    debugger = pylabsContainerAttributeDescriptor('debugger',_pylabs_debugger)
 
-    qpackagetools = PYMonkeyContainerAttributeDescriptor('qpackagetools',_pymonkey_qpackagetools)
+    qpackagetools = pylabsContainerAttributeDescriptor('qpackagetools',_pylabs_qpackagetools)
     
-    messagehandler = PYMonkeyContainerAttributeDescriptor('messagehandler',_pymonkey_messagehandler)
+    messagehandler = pylabsContainerAttributeDescriptor('messagehandler',_pylabs_messagehandler)
 
-    errorconditionhandler = PYMonkeyContainerAttributeDescriptor('errorconditionhandler',_pymonkey_errorconditionhandler)
+    errorconditionhandler = pylabsContainerAttributeDescriptor('errorconditionhandler',_pylabs_errorconditionhandler)
 
 
 
     def __init__(self):
-        q = getattr(pymonkey, 'q', None)
+        q = getattr(pylabs, 'q', None)
         if q and q is not self:
-            raise RuntimeError('Creating a second PYMonkey instance')
+            raise RuntimeError('Creating a second pylabs instance')
         self._init_called = False
         self._init_final_called = False
         self.agentid="@"
@@ -264,9 +264,9 @@ class PYMonkey:
         @type path: string
 
         @return: A tasklet engine
-        @rtype: L{pymonkey.tasklets.TaskletsEngine}
+        @rtype: L{pylabs.tasklets.TaskletsEngine}
         '''
-        from pymonkey.taskletengine.TaskletEngine4 import TaskletEngine4
+        from pylabs.taskletengine.TaskletEngine4 import TaskletEngine4
 
         engine = TaskletEngine4(path)
 
@@ -275,15 +275,15 @@ class PYMonkey:
 
     def init(self):
         """
-        Core pymonkey functionality.
+        Core pylabs functionality.
         You cannot use q.dirs in here since it is not yet configured
         """
         if self._init_called:
             raise RuntimeError('q.init already called. Are you re-importing '
-                                'pymonkey.InitBase*?')
+                                'pylabs.InitBase*?')
 
         #We want to do this asap
-        self.basetype = pymonkey.pmtypes.register_types()
+        self.basetype = pylabs.pmtypes.register_types()
         class _dummy: pass
         d = _dummy()
         setattr(d, 'time', Time())
@@ -293,9 +293,9 @@ class PYMonkey:
         self.errorconditionhandler.__init__()
         self._init_called = True
 
-    def init_final(self): #@remark not lin line with pymonkey code conventions
+    def init_final(self): #@remark not lin line with pylabs code conventions
         '''Initializations which depend on other initializations should go here'''
-        agentconfig=pymonkey.q.config.getInifile("main")
+        agentconfig=pylabs.q.config.getInifile("main")
         agentconfig.addSection("main")
         if agentconfig.checkParam("main","nodename")==False:
             agentconfig.setParam("main","nodename","unknown")
@@ -303,27 +303,27 @@ class PYMonkey:
             agentconfig.setParam("main","domain","somewhere.com")
 
         self.agentid="%s.%s" % (agentconfig.getValue("main","nodename"),agentconfig.getValue("main","domain"))
-        pymonkey.q.application.agentid = self.agentid
+        pylabs.q.application.agentid = self.agentid
 
         
-        if len(pymonkey.q.application.agentid)<5:
-            raise RuntimeError("nodename and domain in $qbase/cfg/qconfig/main.cfg is not properly filled in, current id %s" % pymonkey.q.application.agentid)
+        if len(pylabs.q.application.agentid)<5:
+            raise RuntimeError("nodename and domain in $qbase/cfg/qconfig/main.cfg is not properly filled in, current id %s" % pylabs.q.application.agentid)
 
         if self._init_final_called:
             raise RuntimeError('q.init_final already called. Are you '
-                               're-importing pymonkey.InitBase*?')
+                               're-importing pylabs.InitBase*?')
 
         self.vars.pm_setSystemVars()
 
         self._initExtensionsIfNotDoneYet()
         self.qshellconfig.refresh()
         self.gui.dialog.pm_setDialogHandler()
-        pymonkey.q.logger._init()
+        pylabs.q.logger._init()
         self._init_final_called = True
 
 
-    def enablePYMonkeyTrace(self):
-        '''Enable tracing in PyMonkey methods'''
+    def enablepylabsTrace(self):
+        '''Enable tracing in pylabs methods'''
         file = inspect.getfile(System)
         folder = os.path.dirname(file)
         files = os.listdir(folder)
@@ -340,18 +340,18 @@ class PYMonkey:
             self.logger.logModuleUsage(mod, 10)
 
     def _initExtensionsIfNotDoneYet(self):
-        '''Initialize PyMonkey extensions if they are not initialized yet'''
+        '''Initialize pylabs extensions if they are not initialized yet'''
         if not self._extensionsInited:
             self._initDynamicExtensions()
             self._extensionsInited = True
 
     def _initDynamicExtensions(self):
         '''Initialize all extensions in self.dirs.extensionDir'''
-        self.logger.log('Loading PyMonkey extensions from %s' % self.dirs.extensionsDir, 7)
+        self.logger.log('Loading pylabs extensions from %s' % self.dirs.extensionsDir, 7)
 
         if not self.dirs.extensionsDir or not os.path.exists(self.dirs.extensionsDir):
             self.logger.log('Extension path %s does not exist, unable to load extensions' % self.dirs.extensionsDir, 6)
             return
-        self._pmExtensions = PMExtensions(pymonkey.q, 'q.')
+        self._pmExtensions = PMExtensions(pylabs.q, 'q.')
         self._pmExtensions.init()
         self._pmExtensions.findExtensions()

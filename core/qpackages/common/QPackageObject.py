@@ -33,15 +33,15 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.inifile import IniFile
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import PlatformType, QPackageQualityLevelType
-from pymonkey.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
-from pymonkey.enumerators import QPackageQualityLevelType
-from pymonkey.qpackages.common.DomainObject import DomainObject
-from pymonkey.qpackages.common.DependencyDef import DependencyDef
-from pymonkey.qpackages.common.enumerators import DependencyType
+from pylabs import q
+from pylabs.inifile import IniFile
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import PlatformType, QPackageQualityLevelType
+from pylabs.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
+from pylabs.enumerators import QPackageQualityLevelType
+from pylabs.qpackages.common.DomainObject import DomainObject
+from pylabs.qpackages.common.DependencyDef import DependencyDef
+from pylabs.qpackages.common.enumerators import DependencyType
 
 class QPackageObject(BaseType, DirtyFlaggingMixin):
     ''' Data representation of a QPackage, should contain all information contained in the qpackage.cfg '''
@@ -372,7 +372,7 @@ class QPackageObject(BaseType, DirtyFlaggingMixin):
 
     def _generateMain(self, inifile):
         ''' Generate the main section from the current object.
-        @param inifile: The Ini file for the object. Should be a PyMonkey IniFile
+        @param inifile: The Ini file for the object. Should be a pylabs IniFile
         '''
         inifile.addSection('main')
         inifile.setParam('main', 'domain', self.domain.name)
@@ -401,7 +401,7 @@ class QPackageObject(BaseType, DirtyFlaggingMixin):
         pass
 
     def __cmp__(self,other):
-        from pymonkey.qpackages.common.QPackageVersioning import QPackageVersioning
+        from pylabs.qpackages.common.QPackageVersioning import QPackageVersioning
         return self.name == other.name and str(self.domain) == str(other.domain) and QPackageVersioning.versionCompare(self.version, other.version)
 
     def __str__(self):

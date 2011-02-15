@@ -33,9 +33,9 @@
 #
 # </License>
 
-#import pymonkey
-from pymonkey import q
-from pymonkey.Shell import *
+#import pylabs
+from pylabs import q
+from pylabs.Shell import *
 import os 
 
 from PList import PList

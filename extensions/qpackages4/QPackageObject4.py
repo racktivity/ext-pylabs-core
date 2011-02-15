@@ -1,11 +1,11 @@
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
 from DependencyDef4 import DependencyDef4
-from pymonkey.Shell import *
+from pylabs.Shell import *
 from QPackageStateObject import QPackageStateObject
-from pymonkey.sync.Sync import SyncLocal
+from pylabs.sync.Sync import SyncLocal
 from QPackageIObject4 import QPackageIObject4
 from QPackageDefaultFilesGenerator import *
 

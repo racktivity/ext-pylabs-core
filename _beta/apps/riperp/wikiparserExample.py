@@ -1,10 +1,10 @@
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
+from pylabs.InitBase import *
+from pylabs.Shell import *
 
 q.application.appname="setup wizardrunner"
 q.application.start()
 
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
 q.qshellconfig.interactive=True
 
@@ -12,10 +12,10 @@ class Parser():
     def __init__(self, wikifilePath):
         self.wikifilePath=wikifilePath
         self.wikifilePathWorking="%s.working" % self.wikifilePath
-        self.content=pymonkey.q.system.fs.fileGetContents(wikifilePath)
+        self.content=pylabs.q.system.fs.fileGetContents(wikifilePath)
     
     def reload(self):
-        self.content=pymonkey.q.system.fs.fileGetContents(self.wikifilePathWorking)
+        self.content=pylabs.q.system.fs.fileGetContents(self.wikifilePathWorking)
         
     def do(self):
         self.step1RemoveComments()

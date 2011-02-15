@@ -1,5 +1,5 @@
-from pymonkey.InitBase import q, i
-from pymonkey.Shell import *
+from pylabs.InitBase import q, i
+from pylabs.Shell import *
 import os
 q.qshellconfig.interactive=True
 
@@ -24,10 +24,10 @@ class Parser(object):
             self.te = taskletengine
         else:
             raise RuntimeError("Either macrotaskletspath or taskletengine should be passed to %s" % self.__class__)
-        self.content=pymonkey.q.system.fs.fileGetContents(wikifilePath)
+        self.content=pylabs.q.system.fs.fileGetContents(wikifilePath)
     
     def reload(self):
-        self.content=pymonkey.q.system.fs.fileGetContents(self.wikifilePathWorking)
+        self.content=pylabs.q.system.fs.fileGetContents(self.wikifilePathWorking)
         
     def do(self, outputfile):
         self.stepRemoveComments()

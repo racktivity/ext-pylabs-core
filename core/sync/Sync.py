@@ -42,7 +42,7 @@ import os
 # this is great for properties
 from operator import attrgetter
 
-import pymonkey
+import pylabs
 
 """
 The Sync module provides three Sync classes to do various Sync operations
@@ -60,7 +60,7 @@ flawless in the Windows sandbox.
 """
 
 def log(msg, level=9):
-    return pymonkey.q.logger.log(msg, level)
+    return pylabs.q.logger.log(msg, level)
 
 class Endpoint(object):
     def clean(self, value):
@@ -70,29 +70,29 @@ class Endpoint(object):
 class LocalEndpoint(Endpoint):
     #@todo why so complicated, why not just methods on the base rsync class?
     def clean(self, value):
-        pymonkey.q.logger.log("Cleaning local endpoint '%s'" % (value, ), 8)
+        pylabs.q.logger.log("Cleaning local endpoint '%s'" % (value, ), 8)
 
-        if pymonkey.q.platform.isWindows():
-            cleaned = self._getCygwinPath(pymonkey.q.system.fs.pathShorten(value))
+        if pylabs.q.platform.isWindows():
+            cleaned = self._getCygwinPath(pylabs.q.system.fs.pathShorten(value))
         else:
             cleaned = value
 
-        pymonkey.q.logger.log("Cleaned local endpoint: '%s'" % (cleaned, ), 8)
+        pylabs.q.logger.log("Cleaned local endpoint: '%s'" % (cleaned, ), 8)
         return cleaned
 
     def _getCygwinPath(self, path):
-        pymonkey.q.logger.log("Converting path '%s' to a cygwin path" % (path, ), 5)
+        pylabs.q.logger.log("Converting path '%s' to a cygwin path" % (path, ), 5)
         driveLetter, path = os.path.splitdrive(path)
         convertedPath = "/".join(path.split(os.path.sep))
         if driveLetter:
-            pymonkey.q.logger.log("Found drive letter '%s'" % (driveLetter, ), 6)
+            pylabs.q.logger.log("Found drive letter '%s'" % (driveLetter, ), 6)
             # Make drive letter lowercase and remove the ":"
             driveLetter = driveLetter.lower()
             driveLetter = driveLetter.replace(":", "")
             # convertedPath already starts with a '/', so there is no need to
             # add one between driveLetter and convetedPath
             convertedPath = "/cygdrive/%s%s" % (driveLetter, convertedPath)
-        pymonkey.q.logger.log("Converted path to '%s'" % (convertedPath, ), 6)
+        pylabs.q.logger.log("Converted path to '%s'" % (convertedPath, ), 6)
         return convertedPath
 
 class RemoteEndpoint(Endpoint):
@@ -122,12 +122,12 @@ class Sync(object):
         """
         exitcode=1
         counter=0
-        pymonkey.q.logger.log("RSYNC: " + command, 5)
+        pylabs.q.logger.log("RSYNC: " + command, 5)
         while exitcode<>0 and counter < nrRetries:
-            (exitcode, output) = pymonkey.q.system.process.execute(command.strip(), dieOnNonZeroExitCode=False,outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command.strip(), dieOnNonZeroExitCode=False,outputToStdout=False)
             if exitcode<>0:
-                pymonkey.q.logger.log('RSYNC FAILED (%s): [%s]' % (str(exitcode), output), 2)
-                pymonkey.q.logger.log("RSYNC WILL TRY AGAIN: %s/%s" % (counter,nrRetries))
+                pylabs.q.logger.log('RSYNC FAILED (%s): [%s]' % (str(exitcode), output), 2)
+                pylabs.q.logger.log("RSYNC WILL TRY AGAIN: %s/%s" % (counter,nrRetries))
                 counter +=1
         if counter == nrRetries:
             q.eventhandler.raiseCriticalError("Cannot use rsync to sync content from or to server, have tried multiple times, please check log and try rsync command manually. \nProbably means server is no longer available.")
@@ -324,7 +324,7 @@ class Sync(object):
             command = command + "-lK "
         if dryRun:
             command = command + "-n "
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             command = command + "--perms --chmod=a=rwx,Da+x "
 
         if not len(self._includeFilter) == 0 :
@@ -358,7 +358,7 @@ class SyncLocal(Sync):
         if not sourcePrefix:
             raise TypeError('SyncLocal needs a sourcePrefix')
 
-        if not pymonkey.q.system.fs.exists(sourcePrefix):
+        if not pylabs.q.system.fs.exists(sourcePrefix):
             raise ValueError('SyncLocal: sourcePrefix needs to be existing dir')
 
         sourcePrefix = sourcePrefix.rstrip(os.sep)
@@ -380,9 +380,9 @@ class SyncLocal(Sync):
         return command.strip()
 
     def do(self, dryRun=False, ignoreErrorNr=0):
-        destSubs = pymonkey.q.system.fs.WalkExtended(self.destinationdir)
+        destSubs = pylabs.q.system.fs.WalkExtended(self.destinationdir)
         if self.sourcedir.rstrip(os.sep) in destSubs:
-            pymonkey.q.logger.log("SKIPPED local sync from [%s] to [%s]" % (self.sourcedir, self.destinationdir), 7)
+            pylabs.q.logger.log("SKIPPED local sync from [%s] to [%s]" % (self.sourcedir, self.destinationdir), 7)
             return
 
         command = self._constructRsyncCommand(dryRun)
@@ -392,10 +392,10 @@ class SyncLocal(Sync):
         #@todo looks like weard code, needs to be checked
         if isinstance(ignoreErrorNr, list):
             if exitcode != 0 and (not exitcode in ignoreErrorNr):
-                pymonkey.q.logger.log('RSYNC FAILED (%s): [%s]' % (str(exitcode), output), 2)
+                pylabs.q.logger.log('RSYNC FAILED (%s): [%s]' % (str(exitcode), output), 2)
         else:
             if exitcode != 0 and exitcode != ignoreErrorNr:
-                pymonkey.q.logger.log('RSYNC FAILED (%s): [%s]' % (str(exitcode), output), 2)
+                pylabs.q.logger.log('RSYNC FAILED (%s): [%s]' % (str(exitcode), output), 2)
 
 class SyncToServer(Sync):
     _destinationEndpoint = RemoteEndpoint()
@@ -416,12 +416,12 @@ class SyncToServer(Sync):
         # e.g cmd: "rsync 127.0.0.1::"   this will list all modules on local rsync server
         if self.port != 0:
             command = 'rsync --port=%d %s::' % (self.port, self.server)
-            pymonkey.q.logger.log("Checking connection: %s" % (command, ))
-            exitcode, output = pymonkey.q.system.process.execute(command, False, outputToStdout=False)
+            pylabs.q.logger.log("Checking connection: %s" % (command, ))
+            exitcode, output = pylabs.q.system.process.execute(command, False, outputToStdout=False)
         else:
             command = "rsync %s::" % (self.server, )
-            pymonkey.q.logger.log("Checking connection: %s" % (command, ))
-            exitcode, output=pymonkey.q.system.process.execute(command, False, outputToStdout=False)
+            pylabs.q.logger.log("Checking connection: %s" % (command, ))
+            exitcode, output=pylabs.q.system.process.execute(command, False, outputToStdout=False)
         if ( exitcode==0):
             modules = output
             lines = output.splitlines()
@@ -434,7 +434,7 @@ class SyncToServer(Sync):
                     modules.append(module)
             self.modulesOnServer = modules
         else:
-            pymonkey.q.errorconditionhandler.raiseCriticalError("there are no active connections")
+            pylabs.q.errorconditionhandler.raiseCriticalError("there are no active connections")
 
 
     #command format could be one of the following:
@@ -461,7 +461,7 @@ class SyncToServer(Sync):
 
     def do(self, dryRun=False):
         command = self._constructRsyncCommand(dryRun)
-        pymonkey.q.logger.log("Sync: %s" % (command, ), 5)
+        pylabs.q.logger.log("Sync: %s" % (command, ), 5)
         (exitcode, output) = self.executeCommand(command)
 
 class SyncFromServer(SyncToServer):
@@ -530,7 +530,7 @@ class SyncFromServer(SyncToServer):
         command = command + "::"
         command = command + self.rsyncmodule + "/" + path + " "
 
-        pymonkey.q.logger.log("Sync dir command: '%s'" % command,5)
+        pylabs.q.logger.log("Sync dir command: '%s'" % command,5)
 
         returncode, output = self.executeCommand(command)
 

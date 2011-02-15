@@ -34,15 +34,15 @@
 # </License>
 
 import os
-from pymonkey import PymonkeyTestCase
-from pymonkey import q
+from pylabs import pylabsTestCase
+from pylabs import q
 
-class TestGroups(PymonkeyTestCase):
+class TestGroups(pylabsTestCase):
     ''' Test Suite for the Groups.py in servers '''
 
     def init(self):
-        from pymonkey.qpackages.server.Groups import Groups
-        from pymonkey.qpackages.server.Users import Users
+        from pylabs.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Users import Users
         u = Users()
         u.addUser('test_user', 'test_password')
         u.addUser('test_user1', 'test_password1')
@@ -62,7 +62,7 @@ class TestGroups(PymonkeyTestCase):
     def test_add_group(self):
         ''' Testing whether we can add groups'''
         self.init()
-        from pymonkey.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Groups import Groups
         g = Groups()
         self.assert_(g)
         g.addGroup('test_group5')
@@ -71,7 +71,7 @@ class TestGroups(PymonkeyTestCase):
     def test_remove_group(self):
         ''' Testing whether we can remove a group '''
         self.init()
-        from pymonkey.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Groups import Groups
         g = Groups()
         self.assertRaises(RuntimeError, g.removeGroup, 'bleh')
         g.removeGroup('test_group2')
@@ -79,14 +79,14 @@ class TestGroups(PymonkeyTestCase):
 
     def test_exists(self):
         self.init()
-        from pymonkey.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Groups import Groups
         g = Groups()
         self.assert_(g.exists('test_group'))
         self.assert_(not g.exists('test_shouldnotexist'))
 
     def test_add_user_to_group(self):
         self.init()
-        from pymonkey.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Groups import Groups
         g = Groups()
         g.addUserToGroup('test_group1', 'test_user3')
         self.assert_(g.checkUserInGroup('test_group1', 'test_user3'))
@@ -94,14 +94,14 @@ class TestGroups(PymonkeyTestCase):
 
     def test_delete_user_from_group(self):
         self.init()
-        from pymonkey.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Groups import Groups
         g = Groups()
         g.removeUserFromGroup('test_group1', 'test_user1')
         self.assert_(not g.checkUserInGroup('test_group1', 'test_user1'))
 
     def test_listUsersInGroup(self):
         self.init()
-        from pymonkey.qpackages.server.Groups import Groups
+        from pylabs.qpackages.server.Groups import Groups
         g = Groups()
         uList = g.listUsersInGroup('test_group1')
         self.assertEquals(set(uList), set(('test_user', 'test_user1', 'test_user2',)))

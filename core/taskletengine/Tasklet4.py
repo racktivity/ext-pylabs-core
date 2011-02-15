@@ -35,7 +35,7 @@
 
 import sys,os
 import operator
-import pymonkey
+import pylabs
 import random
 import imp
 import inspect
@@ -49,7 +49,7 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
         @param path: Tasklet module location on filesystem
         @type path: string
         '''
-        pymonkey.q.logger.log('Loading tasklet %s from %s' % (name, path), 6)
+        pylabs.q.logger.log('Loading tasklet %s from %s' % (name, path), 6)
         self._name = name
         self._path = path
         self._loaded = False
@@ -98,7 +98,7 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
 
     def _loadModule(self):
         '''Load the Python module from disk using a random name'''
-        pymonkey.q.logger.log('Loading tasklet module %s' % self._path, 7)
+        pylabs.q.logger.log('Loading tasklet module %s' % self._path, 7)
         #Random name -> name in sys.modules
         def generate_module_name():
             '''Generate a random unused module name'''
@@ -197,12 +197,12 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
         assert callable(wrapper)
 
         params['taskletlastexecutiontime'] = self._lastexecutiontime
-        if self.match(pymonkey.q, pymonkey.i, params, tags):
-            pymonkey.q.logger.log('Executing tasklet %s' % self.name, 6)
+        if self.match(pylabs.q, pylabs.i, params, tags):
+            pylabs.q.logger.log('Executing tasklet %s' % self.name, 6)
 
             self._lastexecutiontime = time.time()
             wrapped = wrapper(self.methods['main'])
-            return wrapped(pymonkey.q, pymonkey.i, params, tags)
+            return wrapped(pylabs.q, pylabs.i, params, tags)
         else:
             return Tasklet4.MATCH_FAILED
 

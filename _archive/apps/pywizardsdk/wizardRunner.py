@@ -1,5 +1,5 @@
 from pyamf.remoting.gateway.wsgi import WSGIGateway
-from pymonkey.InitBase import *
+from pylabs.InitBase import *
 import traceback
 import sys
 from wizard import ApplicationserverWizardService

@@ -1,5 +1,5 @@
-from pymonkey.Shell import *
-from pymonkey import q
+from pylabs.Shell import *
+from pylabs import q
 
 class PysyncWalker:
     def __init__(self,startPath,dirobjects,processHiddenFiles=False,usemd5=False):

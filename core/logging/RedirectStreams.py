@@ -34,7 +34,7 @@
 # </License>
 
 import sys
-import pymonkey
+import pylabs
 
 original_stdout = None
 original_stderr = None
@@ -50,11 +50,11 @@ class _Redirector:
     def write(self, string):
         if not self.hideoutput:
             self.savedstream.write(string)
-        if pymonkey.q.logger.inlog==False:
+        if pylabs.q.logger.inlog==False:
             if self.stringBuff <> '':
-                pymonkey.q.logger.log(self.stringBuff, self.loglevel,dontprint=True)
+                pylabs.q.logger.log(self.stringBuff, self.loglevel,dontprint=True)
                 self.stringBuff=''
-            pymonkey.q.logger.log(string, self.loglevel,dontprint=True)
+            pylabs.q.logger.log(string, self.loglevel,dontprint=True)
 
     def flush(self):
         self.savedstream.flush()

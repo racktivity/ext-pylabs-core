@@ -39,26 +39,26 @@ import unittest
 import tempfile
 import shutil
 
-class PymonkeyTestCase(unittest.TestCase):
+class pylabsTestCase(unittest.TestCase):
     def setUp(self):
-        import pymonkey
-        from pymonkey.PYMonkey import PYMonkey
+        import pylabs
+        from pylabs.pylabs import pylabs
 
-        if hasattr(pymonkey, 'q'):
-            delattr(pymonkey, 'q')
-        pymonkey.q = PYMonkey()
+        if hasattr(pylabs, 'q'):
+            delattr(pylabs, 'q')
+        pylabs.q = pylabs()
 
-        from pymonkey import q
+        from pylabs import q
 
         baseDir = tempfile.mkdtemp()
         print 'Using base directory', baseDir
 
         #touch qshell 'executable' file
         #do not actually copy over the file (for now)
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             qshell = os.path.join(baseDir, 'qshell.bat')
 
-        if pymonkey.q.platform.isUnix():
+        if pylabs.q.platform.isUnix():
             qshell = os.path.join(baseDir, 'qshell')
 
         fd = os.open(qshell, os.O_WRONLY | os.O_CREAT, 0755)
@@ -100,24 +100,24 @@ class PymonkeyTestCase(unittest.TestCase):
 
         from sitecustomize import find_qbase_path
         q.dirs.extensionsDir = os.path.join(find_qbase_path(), \
-                'lib', 'pymonkey', 'extensions')
+                'lib', 'pylabs', 'extensions')
 
         q.dirs.binDir = os.path.join(find_qbase_path(), 'bin')
 
         q.init_final()
 
     def tearDown(self):
-        from pymonkey import q
+        from pylabs import q
         from sitecustomize import find_qbase_path
 
         if q.dirs.baseDir == find_qbase_path():
-            raise RuntimeError('q.dirs.baseDir is your QBase folder. I do not want to remove this, something is wrong in your test setup. Are you importing pymonkey.InitBase* somewhere?')
+            raise RuntimeError('q.dirs.baseDir is your QBase folder. I do not want to remove this, something is wrong in your test setup. Are you importing pylabs.InitBase* somewhere?')
 
         print 'Removing baseDir', q.dirs.baseDir
         shutil.rmtree(q.dirs.baseDir)
 
 
-from pymonkey.enumerators import PlatformType
+from pylabs.enumerators import PlatformType
 
 class DisabledTestCase(unittest.TestCase):
     def run(self, *args, **kwargs):

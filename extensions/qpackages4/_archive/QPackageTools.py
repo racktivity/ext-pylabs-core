@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.qpackages.client.QPackageInstallerHelper import QPackageInstallerHelper
-from pymonkey.qpackages.client.QPackageConfigure import QPackageConfigure
+from pylabs import q
+from pylabs.qpackages.client.QPackageInstallerHelper import QPackageInstallerHelper
+from pylabs.qpackages.client.QPackageConfigure import QPackageConfigure
 from zipfile import ZipFile
 import py_compile, os, re, sys
 

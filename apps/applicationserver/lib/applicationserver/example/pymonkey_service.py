@@ -38,7 +38,7 @@
 import time
 import os.path
 
-from pymonkey import q, i
+from pylabs import q, i
 from applicationserver import TaskletRunner
 
 class PMService:

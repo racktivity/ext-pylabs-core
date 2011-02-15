@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey import q, i
+from pylabs import q, i
 import sys
 import random
 import imp

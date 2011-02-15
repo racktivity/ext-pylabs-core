@@ -35,9 +35,9 @@
 
 import md5
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.common.DomainObject import DomainObject
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.common.DomainObject import DomainObject
 class Users(BaseType):
 
     def __init__(self):

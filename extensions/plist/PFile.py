@@ -33,32 +33,32 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
 from enums import PFileType, PFileErrorCode
 
-class PFile(pymonkey.baseclasses.BaseType):
+class PFile(pylabs.baseclasses.BaseType):
     """
     Data container for all properties of a file/folder/symlink registered in a plist
     
     @TODO: Checkout of we should map everything to a tuple with a fixed position for each field
     @TODO: Should paths be saved as lists split on os.sep to support cross-platform paths?     
     """
-    directoryPath  = pymonkey.q.basetype.dirpath(doc = 'directory path, relative to root path', allow_none = True)
-    fileName       = pymonkey.q.basetype.string(doc = 'name of the file', allow_none = True)
-    fileType       = pymonkey.q.basetype.enumeration(PFileType, doc = 'Type of file')
-    errorCode      = pymonkey.q.basetype.enumeration(PFileErrorCode, doc = 'Code indication error state of file')
-    protectionMode = pymonkey.q.basetype.integer(doc = 'Inode protection mode', allow_none = True)
-    inodeNumber    = pymonkey.q.basetype.integer(doc = 'Inode number', allow_none = True) # Will be different on different filesystems
-    device         = pymonkey.q.basetype.integer(doc = 'Device inode resides on', allow_none = True) # Will be different on different filesystems
-    numberOfLinks  = pymonkey.q.basetype.integer(doc = 'Number of links to the inode', allow_none = True)
-    uid            = pymonkey.q.basetype.integer(doc = 'User id of the owner', allow_none = True)
-    gid            = pymonkey.q.basetype.integer(doc = 'Group id of the owner', allow_none = True)
-    size           = pymonkey.q.basetype.integer(doc = 'Size in bytes of a plain file; amount of data waiting on some special files', allow_none = True)
-    atime          = pymonkey.q.basetype.integer(doc = 'Time of last access', allow_none = True) # Will be different on different filesystems
-    mtime          = pymonkey.q.basetype.integer(doc = 'Time of last modification', allow_none = True) # Will be different on different filesystems
-    ctime          = pymonkey.q.basetype.integer(doc = 'The ctime as reported by the operating system. On some systems (like Unix) is the time of the last metadata change, and, on others (like Windows), is the creation time (see platform documentation for details)', allow_none = True) # Will be different on different filesystems
-    md5            = pymonkey.q.basetype.string(doc = 'md5 checksum of the file', allow_none = True)
+    directoryPath  = pylabs.q.basetype.dirpath(doc = 'directory path, relative to root path', allow_none = True)
+    fileName       = pylabs.q.basetype.string(doc = 'name of the file', allow_none = True)
+    fileType       = pylabs.q.basetype.enumeration(PFileType, doc = 'Type of file')
+    errorCode      = pylabs.q.basetype.enumeration(PFileErrorCode, doc = 'Code indication error state of file')
+    protectionMode = pylabs.q.basetype.integer(doc = 'Inode protection mode', allow_none = True)
+    inodeNumber    = pylabs.q.basetype.integer(doc = 'Inode number', allow_none = True) # Will be different on different filesystems
+    device         = pylabs.q.basetype.integer(doc = 'Device inode resides on', allow_none = True) # Will be different on different filesystems
+    numberOfLinks  = pylabs.q.basetype.integer(doc = 'Number of links to the inode', allow_none = True)
+    uid            = pylabs.q.basetype.integer(doc = 'User id of the owner', allow_none = True)
+    gid            = pylabs.q.basetype.integer(doc = 'Group id of the owner', allow_none = True)
+    size           = pylabs.q.basetype.integer(doc = 'Size in bytes of a plain file; amount of data waiting on some special files', allow_none = True)
+    atime          = pylabs.q.basetype.integer(doc = 'Time of last access', allow_none = True) # Will be different on different filesystems
+    mtime          = pylabs.q.basetype.integer(doc = 'Time of last modification', allow_none = True) # Will be different on different filesystems
+    ctime          = pylabs.q.basetype.integer(doc = 'The ctime as reported by the operating system. On some systems (like Unix) is the time of the last metadata change, and, on others (like Windows), is the creation time (see platform documentation for details)', allow_none = True) # Will be different on different filesystems
+    md5            = pylabs.q.basetype.string(doc = 'md5 checksum of the file', allow_none = True)
 
     def __init__(self, directoryPath = None, fileName = None, fileType = PFileType.UNKNOWN, errorCode = PFileErrorCode.NO_ERROR, protectionMode = None, 
                  inodeNumber = None, device = None, numberOfLinks = None, uid = None, gid = None, size = None, atime = None, 

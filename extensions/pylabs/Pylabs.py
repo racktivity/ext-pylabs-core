@@ -1,8 +1,8 @@
 
 
-import pymonkey
-from pymonkey import q
-from pymonkey.Shell import *
+import pylabs
+from pylabs import q
+from pylabs.Shell import *
 
 class Pylabs():
     def __init__(self):        

@@ -1,4 +1,4 @@
-from pymonkey.InitBase import q
+from pylabs.InitBase import q
 import uno
 from com.sun.star.text.ControlCharacter import PARAGRAPH_BREAK
 from com.sun.star.beans import PropertyValue

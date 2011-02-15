@@ -33,16 +33,16 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.qpackages.server.SessionManager import SessionManager
-from pymonkey.qpackages.common.QPackageACL import QPackageACL
-from pymonkey.qpackages.server.DomainACL import DomainACL
-from pymonkey.qpackages.common.QPackagePackagesDir import QPackagePackagesDir
-from pymonkey.qpackages.common.VLists import VLists
-from pymonkey.qpackages.common.enumerators import VListType
-from pymonkey.qpackages.server.AccessControl import AccessControl
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.qpackages.server.SessionManager import SessionManager
+from pylabs.qpackages.common.QPackageACL import QPackageACL
+from pylabs.qpackages.server.DomainACL import DomainACL
+from pylabs.qpackages.common.QPackagePackagesDir import QPackagePackagesDir
+from pylabs.qpackages.common.VLists import VLists
+from pylabs.qpackages.common.enumerators import VListType
+from pylabs.qpackages.server.AccessControl import AccessControl
 
 class ServerManagement(BaseType):
     """

@@ -1,9 +1,9 @@
-#import pymonkey
+#import pylabs
 import pprint
-from pymonkey.Shell import *
-from pymonkey.messages.MessageObject import MessageObject
+from pylabs.Shell import *
+from pylabs.messages.MessageObject import MessageObject
 from MessageTargetBase import MessageTargetBase
-from pymonkey import q
+from pylabs import q
 
 class QueueRabbitMQ(MessageTargetBase):
     

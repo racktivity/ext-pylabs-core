@@ -33,13 +33,13 @@
 #
 # </License>
 
-'''PyMonkey initialization module
+'''pylabs initialization module
 
-This module sets up and exposes the PyMonkey q and i variables without setting
+This module sets up and exposes the pylabs q and i variables without setting
 up logging. Any output will be redirected to the logging subsystem.
 '''
 
-from pymonkey._init import initialize as _initialize
+from pylabs._init import initialize as _initialize
 q, i = _initialize(setup_logging=False, redirect_output=True,
                    hide_output=False)
 

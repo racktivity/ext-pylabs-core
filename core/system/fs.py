@@ -32,7 +32,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
-from pymonkey.Shell import *
+from pylabs.Shell import *
 import sys
 import os
 import os.path
@@ -48,10 +48,10 @@ import cPickle as pickle
 from stat import ST_MTIME
 
 
-# We import only pymonkey as the q.system.fs is used before pymonkey is initialized. Thus the q cannot be imported yet
+# We import only pylabs as the q.system.fs is used before pylabs is initialized. Thus the q cannot be imported yet
 
-import pymonkey
-from pymonkey.decorators import deprecated
+import pylabs
+from pylabs.decorators import deprecated
 
 # We do not use the q.platform here nor do we import the PlatformType as this would
 # lead to circular imports and raise an exception
@@ -90,7 +90,7 @@ def cleanupString(string, replacewith="_", regex="([^A-Za-z0-9])"):
 
 def lock(lockname, locktimeout=60):
     '''Take a system-wide interprocess exclusive lock. Default timeout is 60 seconds'''
-    pymonkey.q.logger.log('Lock with name: %s'% lockname,6)
+    pylabs.q.logger.log('Lock with name: %s'% lockname,6)
     try:
         result = lock_(lockname, locktimeout)
     except Exception, e:
@@ -111,14 +111,14 @@ def lock_(lockname, locktimeout=60):
     to unit-test.
     '''
     #TODO This no longer uses fnctl on Unix, why?
-    LOCKPATH = os.path.join(pymonkey.q.dirs.tmpDir, 'run')
+    LOCKPATH = os.path.join(pylabs.q.dirs.tmpDir, 'run')
     lockfile = os.path.join(LOCKPATH, cleanupString(lockname))
 
     if not islocked(lockname):
-        if not pymonkey.q.system.fs.exists(LOCKPATH):
-            pymonkey.q.system.fs.createDir(LOCKPATH)
+        if not pylabs.q.system.fs.exists(LOCKPATH):
+            pylabs.q.system.fs.createDir(LOCKPATH)
 
-        pymonkey.q.system.fs.writeFile(lockfile, str(os.getpid()))
+        pylabs.q.system.fs.writeFile(lockfile, str(os.getpid()))
         return True
     else:
         locked = False
@@ -127,7 +127,7 @@ def lock_(lockname, locktimeout=60):
             if not locked:
                 break
             else:
-                pymonkey.q.console.echo('waiting for lock... (%s)'%i)
+                pylabs.q.console.echo('waiting for lock... (%s)'%i)
                 time.sleep(1)
 
         if not locked:
@@ -138,12 +138,12 @@ def lock_(lockname, locktimeout=60):
 def islocked(lockname):
     '''Check if a system-wide interprocess exclusive lock is set'''
     isLocked = True
-    LOCKPATH = os.path.join(pymonkey.q.dirs.tmpDir, 'run')
+    LOCKPATH = os.path.join(pylabs.q.dirs.tmpDir, 'run')
     lockfile = os.path.join(LOCKPATH, cleanupString(lockname))
 
     try:
         # read the pid from the lockfile
-        if pymonkey.q.system.fs.exists(lockfile):
+        if pylabs.q.system.fs.exists(lockfile):
             pid = open(lockfile,'rb').read()
         else:
             return False
@@ -155,16 +155,16 @@ def islocked(lockname):
     else:
         # open succeeded without exceptions, continue
         # check if a process with pid is still running
-        if pymonkey.q.system.fs.exists(lockfile) and (not pid or not (pid.isdigit() and pymonkey.q.system.process.isPidAlive(int(pid)))):
+        if pylabs.q.system.fs.exists(lockfile) and (not pid or not (pid.isdigit() and pylabs.q.system.process.isPidAlive(int(pid)))):
             #cleanup system, pid not active, remove the lockfile
-            pymonkey.q.system.fs.removeFile(lockfile)
+            pylabs.q.system.fs.removeFile(lockfile)
             isLocked = False
 
     return isLocked
 
 def unlock(lockname):
     """Unlock system-wide interprocess lock"""
-    pymonkey.q.logger.log('UNLock with name: %s'% lockname,6)
+    pylabs.q.logger.log('UNLock with name: %s'% lockname,6)
     try:
         unlock_(lockname)
     except Exception, msg:
@@ -179,22 +179,22 @@ def unlock_(lockname):
     This refactoring was mainly done to make the lock implementation easier
     to unit-test.
     '''
-    LOCKPATH = os.path.join(pymonkey.q.dirs.tmpDir, 'run')
+    LOCKPATH = os.path.join(pylabs.q.dirs.tmpDir, 'run')
     lockfile = os.path.join(LOCKPATH, cleanupString(lockname))
 
     # read the pid from the lockfile
-    if pymonkey.q.system.fs.exists(lockfile):
+    if pylabs.q.system.fs.exists(lockfile):
         try:
             pid = open(lockfile,'rb').read()
         except:
             return
         if int(pid) != os.getpid():
-            pymonkey.q.errorconditionhandler.raiseWarning("Lock %r not owned by this process" %lockname)
+            pylabs.q.errorconditionhandler.raiseWarning("Lock %r not owned by this process" %lockname)
             return
 
-        pymonkey.q.system.fs.removeFile(lockfile)
+        pylabs.q.system.fs.removeFile(lockfile)
     else:
-        pymonkey.q.console.echo("Lock %r not found"%lockname)
+        pylabs.q.console.echo("Lock %r not found"%lockname)
 
 
 class FileLock(object):
@@ -235,11 +235,11 @@ class SystemFS:
         @param to: Destination file or folder path name
         @type to: string
         """
-        pymonkey.q.logger.log("Copy file from %s to %s" % (fileFrom,to),6)
+        pylabs.q.logger.log("Copy file from %s to %s" % (fileFrom,to),6)
         if ((fileFrom is None) or (to is None)):
             raise TypeError("No parameters given to system.fs.copyFile from %s, to %s" % (fileFrom, to))
         #try:
-        if pymonkey.q.system.fs.isFile(fileFrom):
+        if pylabs.q.system.fs.isFile(fileFrom):
             # Create target folder first, otherwise copy fails
             target_folder = os.path.dirname(to)
             self.createDir(target_folder)
@@ -257,12 +257,12 @@ class SystemFS:
         @param source: string (Source file path)
         @param destination: string (Destination path the file should be moved to )
         """
-        pymonkey.q.logger.log('Move file from %s to %s'% (source, destin),6)
+        pylabs.q.logger.log('Move file from %s to %s'% (source, destin),6)
         if ((source is None) or (destin is None)):
             raise TypeError("Not enough parameters given to system.fs.moveFile: move from %s, to %s" % (source, destin))
         try:
-            if(pymonkey.q.system.fs.isFile(source)):
-                pymonkey.q.system.fs.move(source, destin)
+            if(pylabs.q.system.fs.isFile(source)):
+                pylabs.q.system.fs.move(source, destin)
             else:
                 raise RuntimeError("The specified source path in system.fs.moveFile does not exist: %s" % source)
         except:
@@ -273,15 +273,15 @@ class SystemFS:
         @param filePath: string (Original file path)
         @param new_name: string (New file path)
         """
-        pymonkey.q.logger.log('Rename file of path: %s to new name: %s'%(filePath, new_name),6)
+        pylabs.q.logger.log('Rename file of path: %s to new name: %s'%(filePath, new_name),6)
         if filePath == new_name:
             return
         if ((filePath is None) or (new_name is None)):
             #@todo samaa:1 : urgent check all traperrors on right syntax
             raise TypeError('Not enough parameters passed to system.fs.renameFile from %s to %s'% (filePath, new_name))
         try:
-            if(pymonkey.q.system.fs.exists(filePath)):
-                if(pymonkey.q.system.fs.isFile(filePath)):
+            if(pylabs.q.system.fs.exists(filePath)):
+                if(pylabs.q.system.fs.isFile(filePath)):
                     os.rename(filePath, new_name)
                 else:
                     raise RuntimeError("The specified Path specified in system.fs.renameFile is not a File: %s"% (filePath, new_name))
@@ -296,14 +296,14 @@ class SystemFS:
         """Remove a File
         @param path: string (File path required to be removed
         """
-        pymonkey.q.logger.log('Removing file with path: %s'%path,6)
+        pylabs.q.logger.log('Removing file with path: %s'%path,6)
         if path is None:
             raise TypeError('Not enough parameters passed to system.fs.removeFile: %s'%path)
         try:
-            if(pymonkey.q.system.fs.exists(path)):
-                if(pymonkey.q.system.fs.isFile(path)):
+            if(pylabs.q.system.fs.exists(path)):
+                if(pylabs.q.system.fs.isFile(path)):
                     os.remove(path)
-                    pymonkey.q.logger.log('Done removing file with path: %s'%path)
+                    pylabs.q.logger.log('Done removing file with path: %s'%path)
                 else:
                     raise RuntimeError("Path: %s is not a file in system.fs.removeFile"%path)
             else:
@@ -315,16 +315,16 @@ class SystemFS:
         """Remove a File
         @param path: string (File path required to be removed
         """
-        pymonkey.q.logger.log('Removing file with path: %s'%path,6)
+        pylabs.q.logger.log('Removing file with path: %s'%path,6)
         if path is None:
             raise TypeError('Not enough parameters passed to system.fs.removeFile: %s'%path)
-        if not pymonkey.q.system.fs.exists(path):
+        if not pylabs.q.system.fs.exists(path):
             if onlyIfExists==False:
                 raise RuntimeError("Path: %s does not exist in system.fs.removeFile"%path)
         else:
             try:
                 os.remove(path)
-                pymonkey.q.logger.log('Done removing file with path: %s'%path)
+                pylabs.q.logger.log('Done removing file with path: %s'%path)
             except:
                 raise RuntimeError("File with path: %s could not be removed\nDetails: %s"%(path, sys.exc_type))
 
@@ -332,12 +332,12 @@ class SystemFS:
         """Create an empty file
         @param filename: string (file path name to be created)
         """
-        pymonkey.q.logger.log('creating an empty file with name & path: %s'%filename,9)
+        pylabs.q.logger.log('creating an empty file with name & path: %s'%filename,9)
         if filename is None:
             raise ArithmeticError('Not enough parameters passed to system.fs.createEmptyFile: %s'%filename)
         try:
             open(filename, "w").close()
-            pymonkey.q.logger.log('Empty file %s has been successfully created'%filename)
+            pylabs.q.logger.log('Empty file %s has been successfully created'%filename)
         except Exception:
             raise RuntimeError("Failed to create an empty file with the specified filename: %s"%filename)
 
@@ -347,24 +347,24 @@ class SystemFS:
         if newdir was only given as a directory name, the new directory will be created on the default path,
         if newdir was given as a complete path with the directory name, the new directory will be created in the specified path
         """
-        pymonkey.q.logger.log('Creating directory if not exists %s' % newdir.encode("utf-8"),8)
+        pylabs.q.logger.log('Creating directory if not exists %s' % newdir.encode("utf-8"),8)
         if newdir == '' or newdir == None:
             raise TypeError('The newdir-parameter of system.fs.createDir() is None or an empty string.')
         try:
-            if pymonkey.q.system.fs.isDir(newdir):
-                pymonkey.q.logger.log('Directory trying to create: [%s] already exists'%newdir.encode("utf-8"),8)
+            if pylabs.q.system.fs.isDir(newdir):
+                pylabs.q.logger.log('Directory trying to create: [%s] already exists'%newdir.encode("utf-8"),8)
                 pass
             else:
                 head, tail = os.path.split(newdir)
-                if head and not pymonkey.q.system.fs.isDir(head):
-                    pymonkey.q.system.fs.createDir(head)
+                if head and not pylabs.q.system.fs.isDir(head):
+                    pylabs.q.system.fs.createDir(head)
                 if tail:
                     try:
                         newDir = os.mkdir(newdir)
                     except OSError, e:
                         if e.errno != os.errno.EEXIST: #File exists
                             raise
-                pymonkey.q.logger.log('Created the directory [%s]' % newdir.encode("utf-8"),8)
+                pylabs.q.logger.log('Created the directory [%s]' % newdir.encode("utf-8"),8)
         except:
             raise RuntimeError("Failed to create the directory [%s]" % newdir.encode("utf-8"))
 
@@ -377,18 +377,18 @@ class SystemFS:
         @param keepsymlinks: bool (True keeps symlinks instead of copying the content of the file)
         @param overwriteDestination: bool (Set to True if you want to overwrite destination first, be carefull, this can erase directories)
         """
-        pymonkey.q.logger.log('Copy directory tree from %s to %s'% (src, dst),6)
+        pylabs.q.logger.log('Copy directory tree from %s to %s'% (src, dst),6)
         if ((src is None) or (dst is None)):
             raise TypeError('Not enough parameters passed in system.fs.copyDirTree to copy directory from %s to %s '% (src, dst))
-        if pymonkey.q.system.fs.isDir(src):
+        if pylabs.q.system.fs.isDir(src):
             names = os.listdir(src)
-            if not pymonkey.q.system.fs.exists(dst):
-                pymonkey.q.system.fs.createDir(dst)
+            if not pylabs.q.system.fs.exists(dst):
+                pylabs.q.system.fs.createDir(dst)
                     
             errors = []
             for name in names:
-                srcname = pymonkey.q.system.fs.joinPaths(src, name)
-                dstname = pymonkey.q.system.fs.joinPaths(dst, name)
+                srcname = pylabs.q.system.fs.joinPaths(src, name)
+                dstname = pylabs.q.system.fs.joinPaths(dst, name)
                 try:
                     if self.exists( dstname ):
                         if overwriteDestination :
@@ -402,11 +402,11 @@ class SystemFS:
                                 continue
                                 
                             
-                    if keepsymlinks and pymonkey.q.system.fs.isLink(srcname):
-                        linkto = pymonkey.q.system.fs.readlink(srcname)
-                        pymonkey.q.system.fs.symlink(linkto, dstname, overwriteDestination)
-                    elif pymonkey.q.system.fs.isDir(srcname):
-                        pymonkey.q.system.fs.copyDirTree(srcname, dstname, keepsymlinks, overwriteDestination)
+                    if keepsymlinks and pylabs.q.system.fs.isLink(srcname):
+                        linkto = pylabs.q.system.fs.readlink(srcname)
+                        pylabs.q.system.fs.symlink(linkto, dstname, overwriteDestination)
+                    elif pylabs.q.system.fs.isDir(srcname):
+                        pylabs.q.system.fs.copyDirTree(srcname, dstname, keepsymlinks, overwriteDestination)
                     else:
                         shutil.copy2(srcname, dstname)
                        
@@ -426,28 +426,28 @@ class SystemFS:
         """Recursively delete a directory tree.
             @param path: the path to be removed
         """
-        pymonkey.q.logger.log('Removing directory tree with path: %s'%path,6)
+        pylabs.q.logger.log('Removing directory tree with path: %s'%path,6)
         if path is None:
             raise ValueError('Path is None in system.fs.removeDir')
         try:
-            if(pymonkey.q.system.fs.exists(path)):
+            if(pylabs.q.system.fs.exists(path)):
                 if(self.isDir(path)):
                     if onlyLogWarningOnRemoveError:
                         def errorHandler(shutilFunc, shutilPath, shutilExc_info):
-                            pymonkey.q.logger.log('WARNING: could not remove %s while recursively deleting %s' % (shutilPath, path), 2)
-                        if pymonkey.q.platform.isWindows():
-                            pymonkey.q.system.windows.pm_removeDirTree(path, True, errorHandler)
+                            pylabs.q.logger.log('WARNING: could not remove %s while recursively deleting %s' % (shutilPath, path), 2)
+                        if pylabs.q.platform.isWindows():
+                            pylabs.q.system.windows.pm_removeDirTree(path, True, errorHandler)
                         else:
-                            pymonkey.q.logger.log('Trying to remove Directory tree with path: %s (warn on errors)'%path)
+                            pylabs.q.logger.log('Trying to remove Directory tree with path: %s (warn on errors)'%path)
                             shutil.rmtree(path, onerror = errorHandler)
                     else:
-                        if pymonkey.q.platform.isWindows():
-                            pymonkey.q.system.windows.pm_removeDirTree(path, True)
+                        if pylabs.q.platform.isWindows():
+                            pylabs.q.system.windows.pm_removeDirTree(path, True)
                         else:
-                            pymonkey.q.logger.log('Trying to remove Directory tree with path: %s'%path)
+                            pylabs.q.logger.log('Trying to remove Directory tree with path: %s'%path)
                             shutil.rmtree(path)
 
-                    pymonkey.q.logger.log('Directory tree with path: %s is successfully removed'%path)
+                    pylabs.q.logger.log('Directory tree with path: %s is successfully removed'%path)
                 else:
                     raise ValueError("Specified path: %s is not a Directory in system.fs.removeDirTree"%path)
         except Exception, e:
@@ -457,14 +457,14 @@ class SystemFS:
         """Remove a Directory
         @param path: string (Directory path that should be removed)
         """
-        pymonkey.q.logger.log('Removing the directory with path: %s'%path,6)
+        pylabs.q.logger.log('Removing the directory with path: %s'%path,6)
         if path is None:
             raise TypeError('Path is None in system.fs.removeDir')
         try:
-            if(pymonkey.q.system.fs.exists(path)):
-                if(pymonkey.q.system.fs.isDir(path)):
+            if(pylabs.q.system.fs.exists(path)):
+                if(pylabs.q.system.fs.isDir(path)):
                     os.rmdir(path)
-                    pymonkey.q.logger.log('Directory with path: %s is successfully removed'%path)
+                    pylabs.q.logger.log('Directory with path: %s is successfully removed'%path)
                 else:
                     raise ValueError("Path: %s is not a Directory in system.fs.removeDir"% path)
             else:
@@ -476,15 +476,15 @@ class SystemFS:
         """Changes Current Directory
         @param path: string (Directory path to be changed to)
         """
-        pymonkey.q.logger.log('Changing directory to: %s'%path,6)
+        pylabs.q.logger.log('Changing directory to: %s'%path,6)
         if path is None:
             raise TypeError('Path is not given in system.fs.changeDir')
         try:
-            if(pymonkey.q.system.fs.exists(path)):
-                if(pymonkey.q.system.fs.isDir(path)):
+            if(pylabs.q.system.fs.exists(path)):
+                if(pylabs.q.system.fs.isDir(path)):
                     os.chdir(path)
                     newcurrentPath = os.getcwd()
-                    pymonkey.q.logger.log('Directory successfully changed to %s'%path)
+                    pylabs.q.logger.log('Directory successfully changed to %s'%path)
                     return newcurrentPath
                 else:
                     raise ValueError("Path: %s in system.fs.changeDir is not a Directory"% path)
@@ -498,13 +498,13 @@ class SystemFS:
         @param source: string (Source path where the directory should be removed from)
         @param destin: string (Destination path where the directory should be moved into)
         """
-        pymonkey.q.logger.log('Moving directory from %s to %s'% (source, destin),6)
+        pylabs.q.logger.log('Moving directory from %s to %s'% (source, destin),6)
         if ((source is None) or (destin is None)):
             raise TypeError('Not enough passed parameters to moveDirectory from %s to %s in system.fs.moveDir '% (source, destin))
         try:
-            if(pymonkey.q.system.fs.isDir(source)):
-                pymonkey.q.system.fs.move(source, destin)
-                pymonkey.q.logger.log('Directory is successfully moved from %s to %s'% (source, destin))
+            if(pylabs.q.system.fs.isDir(source)):
+                pylabs.q.system.fs.move(source, destin)
+                pylabs.q.logger.log('Directory is successfully moved from %s to %s'% (source, destin))
             else:
                 raise RuntimeError("Specified Source path: %s does not exist in system.fs.moveDir"% source)
         except:
@@ -520,7 +520,7 @@ class SystemFS:
         @rtype: Concatenation of path1, and optionally path2, etc...,
         with exactly one directory separator (os.sep) inserted between components, unless path2 is empty.
         """
-        pymonkey.q.logger.log('Join paths %s'%(str(args)),9)
+        pylabs.q.logger.log('Join paths %s'%(str(args)),9)
         if args is None:
             raise TypeError('Not enough parameters %s'%(str(args)))
         try:
@@ -538,7 +538,7 @@ class SystemFS:
          e.g. ...getDirName("/opt/qbase/bin/something/test.py", levelsUp=1) would return bin
          e.g. ...getDirName("/opt/qbase/bin/something/test.py", levelsUp=10) would raise an error
         """
-        pymonkey.q.logger.log('Get directory name of path: %s' % path,9)
+        pylabs.q.logger.log('Get directory name of path: %s' % path,9)
         if path is None:
             raise TypeError('Path is not passed in system.fs.getDirName')
         #try:
@@ -562,7 +562,7 @@ class SystemFS:
 
     def getBaseName(self, path):
         """Return the base name of pathname path."""
-        pymonkey.q.logger.log('Get basename for path: %s'%path,9)
+        pylabs.q.logger.log('Get basename for path: %s'%path,9)
         if path is None:
             raise TypeError('Path is not passed in system.fs.getDirName')
         try:
@@ -581,7 +581,7 @@ class SystemFS:
         @rtype: string
         """
         cleanedPath = os.path.normpath(path)
-        if pymonkey.q.platform.isWindows() and self.exists(cleanedPath):
+        if pylabs.q.platform.isWindows() and self.exists(cleanedPath):
             # Only execute on existing paths, otherwise an error will be raised
             import win32api
             cleanedPath = win32api.GetShortPathName(cleanedPath)
@@ -642,7 +642,7 @@ class SystemFS:
         """
         path=self.pathDirClean(path)
         if len(path.split(os.sep))>2:
-            return pymonkey.q.system.fs.getDirName(path,lastOnly=True,levelsUp=1) #go 1 level up to find name of parent
+            return pylabs.q.system.fs.getDirName(path,lastOnly=True,levelsUp=1) #go 1 level up to find name of parent
         else:
             return ""
 
@@ -692,25 +692,25 @@ class SystemFS:
             path=self.getDirName(path)
             #find extension
             regexToFindExt="\.\w*$"
-            if pymonkey.q.codetools.regex.match(regexToFindExt,name):
-                extension=pymonkey.q.codetools.regex.findOne(regexToFindExt,name).replace(".","")
+            if pylabs.q.codetools.regex.match(regexToFindExt,name):
+                extension=pylabs.q.codetools.regex.findOne(regexToFindExt,name).replace(".","")
                 #remove extension from name
-                name=pymonkey.q.codetools.regex.replace(regexToFindExt,regexFindsubsetToReplace=regexToFindExt, replaceWith="", text=name)
+                name=pylabs.q.codetools.regex.replace(regexToFindExt,regexFindsubsetToReplace=regexToFindExt, replaceWith="", text=name)
 
         if baseDir<>"":
             path=self.pathRemoveDirPart(path,baseDir)
 
         if name=="":
-            dirOrFilename=pymonkey.q.system.fs.getDirName(path,lastOnly=True)
+            dirOrFilename=pylabs.q.system.fs.getDirName(path,lastOnly=True)
         else:
             dirOrFilename=name
         #check for priority
         regexToFindPriority="^\d*_"
-        if pymonkey.q.codetools.regex.match(regexToFindPriority,dirOrFilename):
+        if pylabs.q.codetools.regex.match(regexToFindPriority,dirOrFilename):
             #found priority in path
-            priority=pymonkey.q.codetools.regex.findOne(regexToFindPriority,dirOrFilename).replace("_","")
+            priority=pylabs.q.codetools.regex.findOne(regexToFindPriority,dirOrFilename).replace("_","")
             #remove priority from path
-            name=pymonkey.q.codetools.regex.replace(regexToFindPriority,regexFindsubsetToReplace=regexToFindPriority, replaceWith="", text=name)
+            name=pylabs.q.codetools.regex.replace(regexToFindPriority,regexFindsubsetToReplace=regexToFindPriority, replaceWith="", text=name)
         else:
             priority=0
 
@@ -721,7 +721,7 @@ class SystemFS:
         """get current working directory
         @rtype: string (current working directory path)
         """
-        pymonkey.q.logger.log('Get current working directory',9)
+        pylabs.q.logger.log('Get current working directory',9)
         try:
             return os.getcwd()
         except Exception, e:
@@ -731,13 +731,13 @@ class SystemFS:
         """Works only for unix
         Return a string representing the path to which the symbolic link points.
         """
-        pymonkey.q.logger.log('Read link with path: %s'%path,8)
+        pylabs.q.logger.log('Read link with path: %s'%path,8)
         if path is None:
             raise TypeError('Path is not passed in system.fs.readLink')
         try:
-            if pymonkey.q.platform.isUnix():
+            if pylabs.q.platform.isUnix():
                 return os.readlink(path)
-            elif pymonkey.q.platform.isWindows():
+            elif pylabs.q.platform.isWindows():
                 raise RuntimeError('Cannot readLink on windows')
         except Exception, e:
             raise RuntimeError('Falied to read link with path: %s \nERROR: %s'%(path, str(e)))
@@ -749,8 +749,8 @@ class SystemFS:
         if path is None:
             raise TypeError('Path is not passed in system.fs.listDir')
         try:
-            if(pymonkey.q.system.fs.exists(path)):
-                if(pymonkey.q.system.fs.isDir(path)) or (followSymlinks and self.checkDirOrLink(path)):
+            if(pylabs.q.system.fs.exists(path)):
+                if(pylabs.q.system.fs.isDir(path)) or (followSymlinks and self.checkDirOrLink(path)):
                     names = os.listdir(path)
                     return names
                 else:
@@ -775,7 +775,7 @@ class SystemFS:
         @rtype: list
         """
 
-        pymonkey.q.logger.log('List files in directory with path: %s' % path,9)
+        pylabs.q.logger.log('List files in directory with path: %s' % path,9)
         dircontent = self._listInDir(path)
         filesreturn = []
         for direntry in dircontent:
@@ -807,11 +807,11 @@ class SystemFS:
         """
         check if path is dir or link to a dir
         """
-        if(pymonkey.q.system.fs.isDir(fullpath)):
+        if(pylabs.q.system.fs.isDir(fullpath)):
             return True
-        if pymonkey.q.system.fs.isLink(fullpath):
-            link=pymonkey.q.system.fs.readlink(fullpath)
-            if pymonkey.q.system.fs.isDir(link):
+        if pylabs.q.system.fs.isLink(fullpath):
+            link=pylabs.q.system.fs.readlink(fullpath)
+            if pylabs.q.system.fs.isDir(link):
                 return True
         return False
 
@@ -820,12 +820,12 @@ class SystemFS:
         @param path: string represents directory path to search in
         @rtype: list
         """
-        pymonkey.q.logger.log('List directories in directory with path: %s, recursive = %s' % (path, str(recursive)),9)
+        pylabs.q.logger.log('List directories in directory with path: %s, recursive = %s' % (path, str(recursive)),9)
 
         #if recursive:
-            #if not pymonkey.q.system.fs.exists(path):
+            #if not pylabs.q.system.fs.exists(path):
                 #raise ValueError('Specified path: %s does not exist' % path)
-            #if not pymonkey.q.system.fs.isDir(path):
+            #if not pylabs.q.system.fs.isDir(path):
                 #raise ValueError('Specified path: %s is not a directory' % path)
             #result = []
             #os.path.walk(path, lambda a, d, f: a.append('%s%s' % (d, os.path.sep)), result)
@@ -850,7 +850,7 @@ class SystemFS:
         @rtype: list
         """
         result = []
-        for file in pymonkey.q.system.fs.listFilesInDir(path,recursive=recursive, filter=filter):
+        for file in pylabs.q.system.fs.listFilesInDir(path,recursive=recursive, filter=filter):
             if file.endswith(".py"):
                 filename = file.split(os.sep)[-1]
                 scriptname = filename.rsplit(".", 1)[0]
@@ -862,7 +862,7 @@ class SystemFS:
         @param source: string (If the specified source is a File....Calls moveFile function)
         (If the specified source is a Directory....Calls moveDir function)
         """
-        if not pymonkey.q.system.fs.exists(source):
+        if not pylabs.q.system.fs.exists(source):
             raise IOError('%s does not exist'%source)
         shutil.move(source, destin)
 
@@ -875,9 +875,9 @@ class SystemFS:
             raise TypeError('Path is not passed in system.fs.exists')
 
         if(os.path.exists(path)):
-            pymonkey.q.logger.log('path %s exists' % str(path.encode("utf-8")),8)
+            pylabs.q.logger.log('path %s exists' % str(path.encode("utf-8")),8)
             return True
-        pymonkey.q.logger.log('path %s does not exist' % str(path.encode("utf-8")),8)
+        pylabs.q.logger.log('path %s does not exist' % str(path.encode("utf-8")),8)
         return False
 
 
@@ -887,7 +887,7 @@ class SystemFS:
         @param target: destination path required to create the symbolic link at
         @param overwriteTarget: boolean indicating whether target can be overwritten
         """
-        pymonkey.q.logger.log('Getting symlink for path: %s to target %s'% (path, target),7)
+        pylabs.q.logger.log('Getting symlink for path: %s to target %s'% (path, target),7)
         if ( path is None):
             raise TypeError('Path is None in system.fs.symlink')
         
@@ -903,14 +903,14 @@ class SystemFS:
             else:
                 self.removeFile(target)
 
-        dir = pymonkey.q.system.fs.getDirName(target)
-        if not pymonkey.q.system.fs.exists(dir):
-            pymonkey.q.system.fs.createDir(dir)
+        dir = pylabs.q.system.fs.getDirName(target)
+        if not pylabs.q.system.fs.exists(dir):
+            pylabs.q.system.fs.createDir(dir)
             
-        if pymonkey.q.platform.isUnix():
-            pymonkey.q.logger.log(  "Creating link from %s to %s" %( path, target) )
+        if pylabs.q.platform.isUnix():
+            pylabs.q.logger.log(  "Creating link from %s to %s" %( path, target) )
             os.symlink(path, target)
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
             raise RuntimeError('Cannot create a symbolic link on windows')
 
     def hardlinkFile(self, source, destin):
@@ -920,11 +920,11 @@ class SystemFS:
         @rtype: concatenation of dirname, and optionally linkname, etc.
         with exactly one directory separator (os.sep) inserted between components, unless path2 is empty
         """
-        pymonkey.q.logger.log('Create a hard link pointing to %s named %s'% (source, destin),7)
+        pylabs.q.logger.log('Create a hard link pointing to %s named %s'% (source, destin),7)
         if (source is None):
             raise TypeError('Source path is not passed in system.fs.hardlinkFile')
         try:
-            if pymonkey.q.platform.isUnix():
+            if pylabs.q.platform.isUnix():
                 return os.link(source, destin)
             else:
                 raise RuntimeError('Cannot create a hard link on windows')
@@ -957,7 +957,7 @@ class SystemFS:
         
         if(os.path.isdir(path)):
             return True
-        pymonkey.q.logger.log('path [%s] is not a directory' % path.encode("utf-8"),8)
+        pylabs.q.logger.log('path [%s] is not a directory' % path.encode("utf-8"),8)
         return False
 
     def isEmptyDir(self, path):
@@ -969,9 +969,9 @@ class SystemFS:
             raise TypeError('Directory path is None in system.fs.isEmptyDir')
         try:
             if(self._listInDir(path) == []):
-                pymonkey.q.logger.log('path %s is an empty directory'%path,9)
+                pylabs.q.logger.log('path %s is an empty directory'%path,9)
                 return True
-            pymonkey.q.logger.log('path %s is not an empty directory'%path,9)
+            pylabs.q.logger.log('path %s is not an empty directory'%path,9)
             return False
         except:
             raise RuntimeError('Failed to check if the specified path: %s is an empty directory...in system.fs.isEmptyDir'% path)
@@ -982,21 +982,21 @@ class SystemFS:
         @param followSoftlink: boolean 
         @rtype: boolean (True if file exists for the given path)
         """
-        pymonkey.q.logger.log("isfile:%s" % path,8)
+        pylabs.q.logger.log("isfile:%s" % path,8)
         
         
         if ( path is None):
             raise TypeError('File path is None in system.fs.isFile')
         try:
             if not followSoftlink and self.isLink( path ) :
-                pymonkey.q.logger.log('path %s is a file'%path,8)
+                pylabs.q.logger.log('path %s is a file'%path,8)
                 return True
             
             if(os.path.isfile(path)):
-                pymonkey.q.logger.log('path %s is a file'%path,8)
+                pylabs.q.logger.log('path %s is a file'%path,8)
                 return True
             
-            pymonkey.q.logger.log('path %s is not a file'%path,8)
+            pylabs.q.logger.log('path %s is not a file'%path,8)
             return False
         except:
             raise RuntimeError('Failed to check if the specified path: %s is a file...in system.fs.isFile'% path)
@@ -1010,9 +1010,9 @@ class SystemFS:
             raise TypeError('Link path is None in system.fs.isLink')
         try:
             if(os.path.islink(path)):
-                pymonkey.q.logger.log('path %s is a link'%path,8)
+                pylabs.q.logger.log('path %s is a link'%path,8)
                 return True
-            pymonkey.q.logger.log('path %s is not a link'%path,8)
+            pylabs.q.logger.log('path %s is not a link'%path,8)
             return False
         except:
             raise RuntimeError('Failed to check if the specified path: %s is a link...in system.fs.isDir'% path)
@@ -1021,7 +1021,7 @@ class SystemFS:
         """Return true if pathname path is a mount point:
         A point in a file system where a different file system has been mounted.
         """
-        pymonkey.q.logger.log('Check if path %s is a mount point'%path,8)
+        pylabs.q.logger.log('Check if path %s is a mount point'%path,8)
         if path is None:
             raise TypeError('Path is passed null in system.fs.isMount')
         try:
@@ -1045,7 +1045,7 @@ class SystemFS:
         @param dirname: string (Directory original name)
         @param newname: string (Directory new name to be changed to)
         """
-        pymonkey.q.logger.log('Renaming directory %s to %s'% (dirname, newname),7)
+        pylabs.q.logger.log('Renaming directory %s to %s'% (dirname, newname),7)
         if dirname == newname:
             return
         if ((dirname is None) or (newname is None)):
@@ -1062,7 +1062,7 @@ class SystemFS:
         """Remove the file path (only for files, not for symlinks)
         @param filename: File path to be removed
         """
-        pymonkey.q.logger.log('Unlink file with path: %s'%filename, 6)
+        pylabs.q.logger.log('Unlink file with path: %s'%filename, 6)
 
         if (filename is None):
             raise TypeError('File name is None in QSstem.unlinkFile')
@@ -1078,7 +1078,7 @@ class SystemFS:
         @param filename: File path to be removed
         @type filename: string
         '''
-        pymonkey.q.logger.log('Unlink path: %s' % filename, 6)
+        pylabs.q.logger.log('Unlink path: %s' % filename, 6)
 
         if not filename:
             raise TypeError('File name is None in system.fs.unlink')
@@ -1094,16 +1094,16 @@ class SystemFS:
         """
         if filename is None:
             raise TypeError('File name is None in system.fs.fileGetContents')
-        pymonkey.q.logger.log('Opened file %s for reading'% filename,6)
+        pylabs.q.logger.log('Opened file %s for reading'% filename,6)
         fp = open(filename,"r")
         try:
-            pymonkey.q.logger.log('Reading file %s'% filename,9)
+            pylabs.q.logger.log('Reading file %s'% filename,9)
             data = fp.read()
             # replace BOM characters from utf files
             if data and data[0] in (unicode(codecs.BOM_UTF8, "utf8"), codecs.BOM_UTF8): data = data[1:]
 
         finally:
-            pymonkey.q.logger.log('File %s is closed after reading'%filename,9)
+            pylabs.q.logger.log('File %s is closed after reading'%filename,9)
             fp.close()
         return data
 
@@ -1114,13 +1114,13 @@ class SystemFS:
         """
         if (filename is None) or (contents is None):
             raise TypeError('Passed None parameters in system.fs.writeFile')
-        pymonkey.q.logger.log('Opened file %s for writing'% filename,6)
+        pylabs.q.logger.log('Opened file %s for writing'% filename,6)
         if append==False:
             fp = open(filename,"wb")
         else:
             fp = open(filename,"ab")
         try:
-            pymonkey.q.logger.log('Writing contents in file %s'%filename,9)
+            pylabs.q.logger.log('Writing contents in file %s'%filename,9)
             #if filename.find("avahi")<>-1:
             #    ipshell()
             fp.write(contents)
@@ -1132,7 +1132,7 @@ class SystemFS:
         @param filename: the file u want to know the filesize of
         @return: int representing file size
         """
-        pymonkey.q.logger.log('Getting filesize of file: %s'%filename,8)
+        pylabs.q.logger.log('Getting filesize of file: %s'%filename,8)
         if not self.exists(filename):
             raise RuntimeError("Specified file: %s does not exist"% filename)
         try:
@@ -1149,12 +1149,12 @@ class SystemFS:
         """
         if not filelocation or not obj:
             raise ValueError("You should provide a filelocation or a object as parameters")
-        pymonkey.q.logger.log("Creating pickle and write it to file: %s" % filelocation,6)
+        pylabs.q.logger.log("Creating pickle and write it to file: %s" % filelocation,6)
         try:
             pcl = pickle.dumps(obj)
         except Exception, e:
             raise Exception("Could not create pickle from the object \nError: %s" %(str(e)))
-        pymonkey.q.system.fs.writeFile(filelocation,pcl)
+        pylabs.q.system.fs.writeFile(filelocation,pcl)
         if not self.exists(filelocation):
             raise Exception("File isn't written to the filesystem")
 
@@ -1166,10 +1166,10 @@ class SystemFS:
         """
         if not filelocation:
             raise ValueError("You should provide a filelocation as a parameter")
-        pymonkey.q.logger.log("Opening file %s for reading" % filelocation,6)
-        contents = pymonkey.q.system.fs.fileGetContents(filelocation)
+        pylabs.q.logger.log("Opening file %s for reading" % filelocation,6)
+        contents = pylabs.q.system.fs.fileGetContents(filelocation)
         try:
-            pymonkey.q.logger.log("creating object",9)
+            pylabs.q.logger.log("creating object",9)
             obj = pickle.loads(contents)
         except Exception, e:
             raise Exception("Could not create the object from the file contents \n Error: %s" %(str(e)))
@@ -1180,7 +1180,7 @@ class SystemFS:
         @param filename: string (filename to get the hex digest of it)
         @rtype: md5 of the file
         """
-        pymonkey.q.logger.log('Get the hex digest of file %s without loading it all into memory'%filename,8)
+        pylabs.q.logger.log('Get the hex digest of file %s without loading it all into memory'%filename,8)
         if filename is None:
             raise('File name is None in system.fs.md5sum')
         try:
@@ -1203,7 +1203,7 @@ class SystemFS:
         """
         Extended Walk version: seperate dir and file pattern
         """
-        pymonkey.q.logger.log('Scanning directory (walk) %s'%root,6)
+        pylabs.q.logger.log('Scanning directory (walk) %s'%root,6)
         result = []
         try:
             names = os.listdir(root)
@@ -1245,7 +1245,7 @@ class SystemFS:
         It is going to be used wherever some one wants to list all files and subfolders
         under one given directlry with specific or none matchers
         """
-        pymonkey.q.logger.log('Scanning directory (walk)%s'%root,6)
+        pylabs.q.logger.log('Scanning directory (walk)%s'%root,6)
         # initialize
         result = []
 
@@ -1285,7 +1285,7 @@ class SystemFS:
         @rtype: string representing the path of the temp file generated
         """
         #return tempfile.mktemp())
-        tmpdir=pymonkey.q.dirs.tmpDir
+        tmpdir=pylabs.q.dirs.tmpDir
         fd, path = tempfile.mkstemp(dir=tmpdir)
         try:
             real_fd = os.fdopen(fd)
@@ -1303,7 +1303,7 @@ class SystemFS:
         @param prefix: string to start the generated name with
         @rtype: string representing the generated temp file path
         """
-        dir = dir or pymonkey.q.dirs.tmpDir
+        dir = dir or pylabs.q.dirs.tmpDir
         return tempfile.mktemp('', prefix, dir)
 
     def isAsciiFile(self, filename, checksize=4096):
@@ -1386,7 +1386,7 @@ class SystemFS:
         @returns: Whether the filename is valid on the given platform
         @rtype: bool
         '''
-        from pymonkey.enumerators import PlatformType
+        from pylabs.enumerators import PlatformType
         platform = platform or PlatformType.findPlatformType()
 
         if not filename:
@@ -1448,8 +1448,8 @@ class SystemFS:
         @param file: File to convert
         @type file: string
         '''
-        pymonkey.q.logger.log("fileConvertLineEndingCRLF "+file, 8)
-        content=pymonkey.q.system.fs.fileGetContents(file)
+        pylabs.q.logger.log("fileConvertLineEndingCRLF "+file, 8)
+        content=pylabs.q.system.fs.fileGetContents(file)
         lines=content.split("\n")
         out=""
         for line in lines:
@@ -1466,7 +1466,7 @@ class SystemFS:
         @param fileregex: The regex pattern to match
         @type fileregex: string
         """
-        pymonkey.q.system.fs.changeDir(startDir)
+        pylabs.q.system.fs.changeDir(startDir)
         import glob
         return glob.glob(fileregex)
 
@@ -1493,7 +1493,7 @@ class SystemFS:
         for item in array:
             path=path+os.sep+item
         path=path+os.sep
-        if pymonkey.q.platform.isUnix():
+        if pylabs.q.platform.isUnix():
             path=path.replace("//","/")
             path=path.replace("//","/")
         return path
@@ -1516,7 +1516,7 @@ class SystemFS:
         @return: unicode path
         @rtype: unicode
         """
-        from pymonkey import Dirs
+        from pylabs import Dirs
         return Dirs.pathToUnicode(path)
 
     def targzCompress(self, sourcedirpath, destinationpath,followlinks=False,destInTar="",pathRegexIncludes=['.[a-zA-Z0-9]*'], \
@@ -1538,9 +1538,9 @@ class SystemFS:
         import tarfile
         
 
-        pymonkey.q.logger.log("Compressing directory %s to %s"%(sourcedirpath, destinationpath))
-        if not pymonkey.q.system.fs.exists(pymonkey.q.system.fs.getDirName(destinationpath)):
-            pymonkey.q.system.fs.createDir(pymonkey.q.system.fs.getDirName(destinationpath))
+        pylabs.q.logger.log("Compressing directory %s to %s"%(sourcedirpath, destinationpath))
+        if not pylabs.q.system.fs.exists(pylabs.q.system.fs.getDirName(destinationpath)):
+            pylabs.q.system.fs.createDir(pylabs.q.system.fs.getDirName(destinationpath))
         t = tarfile.open(name = destinationpath, mode = 'w:gz')
         if not(followlinks<>False or destInTar<>"" or pathRegexIncludes<>['.*'] or pathRegexExcludes<>[] or contentRegexIncludes<>[] or contentRegexExcludes<>[] or depths<>[]):
             t.add(sourcedirpath, "/")
@@ -1548,15 +1548,15 @@ class SystemFS:
             def addToTar(params,path):
                 tarfile=params["t"]
                 destInTar=params["destintar"]
-                destpath=pymonkey.q.system.fs.joinPaths(destInTar,pymonkey.q.system.fs.pathRemoveDirPart(path, sourcedirpath))
-                if pymonkey.q.system.fs.isLink(path) and followlinks:
-                    path=pymonkey.q.system.fs.readlink('/opt/test/apps/hg')
-                pymonkey.q.logger.log("fstar: add file %s to tar" % path,7)
+                destpath=pylabs.q.system.fs.joinPaths(destInTar,pylabs.q.system.fs.pathRemoveDirPart(path, sourcedirpath))
+                if pylabs.q.system.fs.isLink(path) and followlinks:
+                    path=pylabs.q.system.fs.readlink('/opt/test/apps/hg')
+                pylabs.q.logger.log("fstar: add file %s to tar" % path,7)
                 tarfile.add(path,destpath)
             params={}
             params["t"]=t
             params["destintar"]=destInTar
-            pymonkey.q.system.fswalker.walk(sourcedirpath, addToTar, params,\
+            pylabs.q.system.fswalker.walk(sourcedirpath, addToTar, params,\
                                 True, False, \
                                 pathRegexIncludes, pathRegexExcludes, contentRegexIncludes, \
                                 contentRegexExcludes, depths)
@@ -1564,7 +1564,7 @@ class SystemFS:
                 for extrafile in extrafiles:
                     source=extrafile[0]
                     destpath=extrafile[1]
-                    t.add(source,pymonkey.q.system.fs.joinPaths(destInTar,destpath))
+                    t.add(source,pylabs.q.system.fs.joinPaths(destInTar,destpath))
                     
         t.close()
 
@@ -1575,16 +1575,16 @@ class SystemFS:
         @param destinationpath: path of to destiniation dir, sourcefile will end up uncompressed in destination dir
         """
         if removeDestinationdir:
-            pymonkey.q.system.fs.removeDirTree(destinationdir)
-        if not pymonkey.q.system.fs.exists(destinationdir):
-            pymonkey.q.system.fs.createDir(destinationdir)
+            pylabs.q.system.fs.removeDirTree(destinationdir)
+        if not pylabs.q.system.fs.exists(destinationdir):
+            pylabs.q.system.fs.createDir(destinationdir)
         import tarfile
-        if not pymonkey.q.system.fs.exists(destinationdir):
-            pymonkey.q.system.fs.createDir(destinationdir)
+        if not pylabs.q.system.fs.exists(destinationdir):
+            pylabs.q.system.fs.createDir(destinationdir)
 
         # The tar of python does not create empty directories.. this causes manny problem while installing so we choose to use the linux tar here
         # tar = tarfile.open(sourceFile)
         # tar.extractall(destinationdir)
         # tar.close()
         cmd = "tar xzf '%s' -C '%s'" % (sourceFile, destinationdir)
-        pymonkey.q.system.process.execute(cmd)
+        pylabs.q.system.process.execute(cmd)

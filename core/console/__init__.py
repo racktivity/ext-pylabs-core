@@ -35,4 +35,4 @@
 
 __all__ = ['Console',]
 
-from pymonkey.console.Console import Console
+from pylabs.console.Console import Console

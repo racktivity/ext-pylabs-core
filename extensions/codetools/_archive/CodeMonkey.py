@@ -33,17 +33,17 @@
 #
 # </License>
 
-from pymonkey import q
+from pylabs import q
 #from QCodeGenerator import QCodeGenerator
 #from CodeFormatterSQL import CodeFormatterSQL
 #from CodeFormatterSQLDiff import CodeFormatterSQLDiff_fromDB, CodeFormatterSQLDiff_fromOldSpecFiles
 #@todo refactor to use new  q.codetools.... for codeformatters
 from codetools.parser.CodeParser import CodeParser
 from codetools.parser.TypeDef import TypeDef, TypeDefs
-from pymonkey.inifile import IniFile
+from pylabs.inifile import IniFile
 from codetools.parser.CodeStructure import CodeStructure
 
-from pymonkey.db.DBConnection import DBConnection
+from pylabs.db.DBConnection import DBConnection
 #from DBFetcher import DBFetcher
 import os
 
@@ -104,7 +104,7 @@ class CodeMonkey:
     # TODO: Code below is only used by CodeFormatterStd, which should be refactored.
     
     #def __init__(self):
-    #    codeModelDirPath=q.dirs.getBaseDir()+os.sep+"lib"+os.sep+"pymonkey"+os.sep+"parser"+os.sep+"CodeFormatters"+os.sep+"CodeTemplateStd"+os.sep
+    #    codeModelDirPath=q.dirs.getBaseDir()+os.sep+"lib"+os.sep+"pylabs"+os.sep+"parser"+os.sep+"CodeFormatters"+os.sep+"CodeTemplateStd"+os.sep
     #    self.codeformatter=CodeFormatterStd.CodeFormatterStd(codeModelDirPath)   
 
     def addCurrentDir(self):
@@ -112,7 +112,7 @@ class CodeMonkey:
 
     def addDir(self,dir):
         if q.system.fs.exists(dir)==False:
-            raise "Cannot find dir for pymonkey processing"
+            raise "Cannot find dir for pylabs processing"
         self._dirs.append(dir)
 
         

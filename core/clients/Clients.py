@@ -1,6 +1,6 @@
 
-from pymonkey.enumerators import PlatformType
-from pymonkey.decorators import deprecated
+from pylabs.enumerators import PlatformType
+from pylabs.decorators import deprecated
 
 class Clients(object):
     ssh = None
@@ -14,7 +14,7 @@ class Clients(object):
             pass
         
         def ssh():
-            from pymonkey.clients.ssh.SSHTool import SSHTool
+            from pylabs.clients.ssh.SSHTool import SSHTool
             return SSHTool()
 
         if name in locals():

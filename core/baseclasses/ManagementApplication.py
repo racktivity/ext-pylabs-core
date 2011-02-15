@@ -33,9 +33,9 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
-from pymonkey.cmdb.cmdb import MAX_LOCK_TIMEOUT, DEFAULT_LOCK_TIMEOUT, DEFAULT_WAIT_TIMEOUT
+from pylabs.cmdb.cmdb import MAX_LOCK_TIMEOUT, DEFAULT_LOCK_TIMEOUT, DEFAULT_WAIT_TIMEOUT
 from ManagementConfiguration import ManagementConfiguration
 
 try:
@@ -54,7 +54,7 @@ class ManagementApplication(ManagementConfiguration):
     on the system using e.g. cmdtools
     """
     
-    #status = pymonkey.q.basetype.enumeration()
+    #status = pylabs.q.basetype.enumeration()
     
     def __init__(self):
         ManagementConfiguration.__init__(self)
@@ -131,7 +131,7 @@ class CMDBLockMixin:
         '''
 
         if locktimeout is None:
-            if pymonkey.q.qshellconfig.interactive:
+            if pylabs.q.qshellconfig.interactive:
                 locktimeout = MAX_LOCK_TIMEOUT
             else:
                 locktimeout = DEFAULT_LOCK_TIMEOUT
@@ -139,10 +139,10 @@ class CMDBLockMixin:
         self.reloadCMDB(True, locktimeout, waittimeout)
 
     def reloadCMDB(self, lock=False, locktimeout=None, waittimeout=DEFAULT_WAIT_TIMEOUT):
-        if not pymonkey.q.cmdb.existsObject(self.cmdb.cmdbtypename):
+        if not pylabs.q.cmdb.existsObject(self.cmdb.cmdbtypename):
             # The SAL CMDB object wasn't created yet, save it
             self.cmdb.save()
         if lock:
-            self.cmdb = pymonkey.q.cmdb.getObjectWithLock(self.cmdb.cmdbtypename, locktimeout, waittimeout)
+            self.cmdb = pylabs.q.cmdb.getObjectWithLock(self.cmdb.cmdbtypename, locktimeout, waittimeout)
         else:
-            self.cmdb = pymonkey.q.cmdb.getObject(self.cmdb.cmdbtypename)
+            self.cmdb = pylabs.q.cmdb.getObject(self.cmdb.cmdbtypename)

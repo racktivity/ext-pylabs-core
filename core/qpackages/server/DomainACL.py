@@ -35,13 +35,13 @@
 
 import md5
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.common.enumerators import ACLPermission
-from pymonkey.qpackages.common.DomainObject import DomainObject
-from pymonkey.qpackages.server.Groups import Groups
-from pymonkey.qpackages.server.Users import Users
-from pymonkey.qpackages.common.QPackageACL import QPackageACL
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.common.enumerators import ACLPermission
+from pylabs.qpackages.common.DomainObject import DomainObject
+from pylabs.qpackages.server.Groups import Groups
+from pylabs.qpackages.server.Users import Users
+from pylabs.qpackages.common.QPackageACL import QPackageACL
 
 class DomainsACL(BaseType):
     domains = q.basetype.list(doc="list of known domain with acls", allow_none=True, default=dict())
@@ -296,7 +296,7 @@ class DomainACL(BaseType):
 
     def qpackageACLRemove(self, qpackageName, userName, qualityLevel=None):
         """
-        Remove a user from pymonkey.qpackage acl
+        Remove a user from pylabs.qpackage acl
         @param qpackageName: name of the qpackage to remove user from
         @param username: username of the user you wish to remove
         @param qualityLevel: qualityLevel that you wish to remove the permission for

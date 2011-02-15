@@ -36,9 +36,9 @@
 import os
 import imp
 
-import pymonkey
-import pymonkey.extensions.PMExtensions
-from pymonkey.extensions.PMExtension import BasePMExtension
+import pylabs
+import pylabs.extensions.PMExtensions
+from pylabs.extensions.PMExtension import BasePMExtension
 
 class _ModulePlaceholder: pass
 ModulePlaceholder = _ModulePlaceholder
@@ -56,7 +56,7 @@ class PMExtensionsGroup(object):
         
     def __init__(self,pm_pmExtensionsOrPMExtensionsGroup=None):
         self.__init_properties__()
-        if isinstance(pm_pmExtensionsOrPMExtensionsGroup, pymonkey.extensions.PMExtensions.PMExtensions):
+        if isinstance(pm_pmExtensionsOrPMExtensionsGroup, pylabs.extensions.PMExtensions.PMExtensions):
             self.pm_pmExtensions=pm_pmExtensionsOrPMExtensionsGroup
         if isinstance(pm_pmExtensionsOrPMExtensionsGroup,PMExtensionsGroup):
             self.pm_parentPMExtensionsGroup=pm_pmExtensionsOrPMExtensionsGroup

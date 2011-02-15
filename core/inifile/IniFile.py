@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey 
+import pylabs 
 from ConfigParser import ConfigParser
 import os,sys
 
@@ -70,10 +70,10 @@ class IniFile(object):
         if isinstance(iniFile, basestring): # iniFile is a filepath
             self.__inifilepath = iniFile
             if create:
-                pymonkey.q.system.fs.createDir(pymonkey.q.system.fs.getDirName(iniFile))
-                pymonkey.q.logger.log("Create config file: "+iniFile,7)
-                pymonkey.q.system.fs.writeFile(iniFile, '')
-            if not pymonkey.q.system.fs.isFile(iniFile):
+                pylabs.q.system.fs.createDir(pylabs.q.system.fs.getDirName(iniFile))
+                pylabs.q.logger.log("Create config file: "+iniFile,7)
+                pylabs.q.system.fs.writeFile(iniFile, '')
+            if not pylabs.q.system.fs.isFile(iniFile):
                 raise RuntimeError("Inifile could not be found on location %s" %  iniFile)
         else: # iniFile is a file-like object
             self.__file = iniFile
@@ -88,7 +88,7 @@ class IniFile(object):
 
     def __del__(self):
         if self.__inifilepath and self.__removeWhenDereferenced:
-            pymonkey.q.system.fs.removeFile(self.__inifilepath)
+            pylabs.q.system.fs.removeFile(self.__inifilepath)
 
     def __readFile(self):
         fp = None
@@ -144,7 +144,7 @@ class IniFile(object):
         @return: The value"""
         try:
             result=self.__configParser.get(sectionName, paramName, raw)
-            pymonkey.q.logger.log("Inifile: get %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
+            pylabs.q.logger.log("Inifile: get %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
             return result
         except Exception, err:
             raise LookupError('Failed to get value of the parameter: %s under section: %s \nERROR: %s'%(paramName, sectionName, str(err)))
@@ -155,7 +155,7 @@ class IniFile(object):
         @param paramName:   name of the parameter"""
         try:
             result= self.__configParser.getboolean(sectionName, paramName)
-            pymonkey.q.logger.log("Inifile: get boolean %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
+            pylabs.q.logger.log("Inifile: get boolean %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
             return result
 
         except Exception, e:
@@ -167,7 +167,7 @@ class IniFile(object):
         @param paramName:   name of the parameter"""
         try:
             result= self.__configParser.getint(sectionName, paramName)
-            pymonkey.q.logger.log("Inifile: get integer %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
+            pylabs.q.logger.log("Inifile: get integer %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
             return result
         except Exception, e:
             raise LookupError('Failed to get integer value of parameter:%s under section:%s \nERROR: %'%(paramName, sectionName, e))
@@ -178,7 +178,7 @@ class IniFile(object):
         @param paramName:   name of the parameter"""
         try:
             result=self.__configParser.getfloat(sectionName, paramName)
-            pymonkey.q.logger.log("Inifile: get integer %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
+            pylabs.q.logger.log("Inifile: get integer %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
             return result
         except Exception, e:
             raise LookupError('Failed to get float value of parameter:%s under section:%s \nERROR: %'%(paramName, sectionName, e))
@@ -189,7 +189,7 @@ class IniFile(object):
         try:
             if(self.checkSection(sectionName)):
                 return
-            pymonkey.q.logger.log("Inifile: add section %s to %s" % (sectionName,self.__inifilepath))
+            pylabs.q.logger.log("Inifile: add section %s to %s" % (sectionName,self.__inifilepath))
             self.__configParser.add_section(sectionName)
             if self.checkSection(sectionName):
                 return True
@@ -205,7 +205,7 @@ class IniFile(object):
             if str(newvalue)=="none": 
                 newvalue=="*NONE*"
             self.__configParser.set(sectionName, paramName, str(newvalue))
-            pymonkey.q.logger.log("Inifile: set %s:%s=%s on %s" % (sectionName,paramName,str(newvalue),self.__inifilepath))
+            pylabs.q.logger.log("Inifile: set %s:%s=%s on %s" % (sectionName,paramName,str(newvalue),self.__inifilepath))
             #if self.checkParam(sectionName, paramName):
             #    return True
             self.write()
@@ -226,7 +226,7 @@ class IniFile(object):
         if not self.checkSection(sectionName): return False
         try:
             self.__configParser.remove_section(sectionName)
-            pymonkey.q.logger.log("inifile: remove section %s on %s" % (sectionName,self.__inifilepath))
+            pylabs.q.logger.log("inifile: remove section %s on %s" % (sectionName,self.__inifilepath))
             if self.checkSection(sectionName):
                 return False
             return True
@@ -240,7 +240,7 @@ class IniFile(object):
         if not self.checkParam(sectionName, paramName): return False
         try:
             self.__configParser.remove_option(sectionName, paramName)
-            pymonkey.q.logger.log("Inifile:remove %s:%s from %s" % (sectionName,paramName,self.__inifilepath))
+            pylabs.q.logger.log("Inifile:remove %s:%s from %s" % (sectionName,paramName,self.__inifilepath))
             return True
         except Exception, err:
             raise RuntimeError('Failed to remove parameter: %s under section: %s \nERROR: %s'%(paramName, sectionName, str(err)))
@@ -252,7 +252,7 @@ class IniFile(object):
         """
         closeFileHandler = True
         fp = None
-        pymonkey.q.logger.log("Inifile: Write configfile %s to disk" % (self.__inifilepath))
+        pylabs.q.logger.log("Inifile: Write configfile %s to disk" % (self.__inifilepath))
         if not filePath:
             if self.__inifilepath: # Use the inifilepath that was set in the constructor
                 filePath = self.__inifilepath
@@ -280,7 +280,7 @@ class IniFile(object):
     def getContent(self):
         """ Get the Inifile content to a string
         """
-        #@todo pymonkey primitives should be used (no fp...)
+        #@todo pylabs primitives should be used (no fp...)
         fp = None
         if self.__file and not self.__file.closed:
             fp = self.__file

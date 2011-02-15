@@ -2,7 +2,7 @@ import time, traceback
 
 from LogTypes import LogType
 from LogTypes import *
-from pymonkey import q
+from pylabs import q
 
 class EventObject(object):
     @classmethod

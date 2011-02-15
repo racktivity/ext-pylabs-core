@@ -35,9 +35,9 @@
 
 '''
 ==============================
-PyMonkey Git bindings overview
+pylabs Git bindings overview
 ==============================
-Since PyMonkey and related projects are hosted in Git repositories, PyMonkey
+Since pylabs and related projects are hosted in Git repositories, pylabs
 provides bindings to the Git version control system. This documents gives an
 overview of the provided features and how they are implemented.
 
@@ -70,26 +70,26 @@ empty string as remote name.
 
 Example usage
 -------------
-In this example we will export the PyMonkey package twice, once from the
+In this example we will export the pylabs package twice, once from the
 *mainline* repository (using the *master* branch), and once from the *trunk*
 repository::
 
     >>> # Register the remote repository
-    >>> q.clients.git.clone('pymonkey', 'mainline',
-    ...                 'git://staging.pymonkey.org/pymonkey/mainline.git')
+    >>> q.clients.git.clone('pylabs', 'mainline',
+    ...                 'git://staging.pylabs.org/pylabs/mainline.git')
 
-    >>> # Create a checkout in /tmp/pm_mainline/pymonkey
-    >>> q.clients.git.checkout_tree('pymonkey', '/tmp/pm_mainline/pymonkey',
+    >>> # Create a checkout in /tmp/pm_mainline/pylabs
+    >>> q.clients.git.checkout_tree('pylabs', '/tmp/pm_mainline/pylabs',
     ...                             'mainline', 'master',
-    ...                             subtree='/packages/pymonkey/core')
+    ...                             subtree='/packages/pylabs/core')
 
-    >>> # Register another repository for the 'pymonkey' project
-    >>> q.clients.git.clone('pymonkey', 'trunk',
-    ...                     'git://staging.pymonkey.org/pymonkey/trunk.git')
+    >>> # Register another repository for the 'pylabs' project
+    >>> q.clients.git.clone('pylabs', 'trunk',
+    ...                     'git://staging.pylabs.org/pylabs/trunk.git')
 
-    >>> # Create a checkout in /tmp/pm_trunk/pymonkey
-    >>> q.clients.git.checkout_tree('pymonkey', '/tmp/pm_trunk/pymonkey',
+    >>> # Create a checkout in /tmp/pm_trunk/pylabs
+    >>> q.clients.git.checkout_tree('pylabs', '/tmp/pm_trunk/pylabs',
     ...                             'trunk', 'master',
-    ...                             subtree='/packages/pymonkey/core')
+    ...                             subtree='/packages/pylabs/core')
 
 '''

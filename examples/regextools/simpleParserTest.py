@@ -33,15 +33,15 @@
 #
 # </License>
 
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
+from pylabs.InitBase import *
+from pylabs.Shell import *
 
 
 q.application.appname="simpleparser"
 
 q.application.start()
 
-content=pymonkey.q.system.fs.fileGetContents("examplecontent1.txt")
+content=pylabs.q.system.fs.fileGetContents("examplecontent1.txt")
 
 class Parser:
     

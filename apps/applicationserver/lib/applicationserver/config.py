@@ -66,8 +66,8 @@ class IniConfigReader:
         self.config_name = config_name
 
     def parseConfig(self):
-        from pymonkey_bindings import Server, SERVICE_ROOT
-        from pymonkey import q
+        from pylabs_bindings import Server, SERVICE_ROOT
+        from pylabs import q
 
         qconfig = q.config.getConfig(self.config_name)['main']
 
@@ -222,12 +222,12 @@ class FakeConfigReader:
         }
 
         try:
-            from pymonkey import q
+            from pylabs import q
         except ImportError:
             pass
         else:
             ret['service_pmplatform'] = {
-                    'class': example('pymonkey_service.py:PMService'),
+                    'class': example('pylabs_service.py:PMService'),
                     'options': None,
                 }
 

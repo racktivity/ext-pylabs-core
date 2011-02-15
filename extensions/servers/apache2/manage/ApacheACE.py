@@ -33,8 +33,8 @@
 #
 # </License>
  
-from pymonkey import q
-from pymonkey.baseclasses.CMDBSubObject import CMDBSubObject
+from pylabs import q
+from pylabs.baseclasses.CMDBSubObject import CMDBSubObject
 
 class ApacheACE(CMDBSubObject):
     userName      = q.basetype.string(doc="Unique username for the ACE")

@@ -37,7 +37,7 @@
 
 import os.path
 
-import pymonkey
+import pylabs
 
 def is_git_repository(path):
     '''Check whether a given folder is a git repository
@@ -48,9 +48,9 @@ def is_git_repository(path):
     @returns: Whether the given path contains a Git repository
     @rtype: bool
     '''
-    pymonkey.q.logger.log('Checking whether %s is a Git repository' % path)
-    isdir = pymonkey.q.system.fs.isDir
-    join = pymonkey.q.system.fs.joinPaths
+    pylabs.q.logger.log('Checking whether %s is a Git repository' % path)
+    isdir = pylabs.q.system.fs.isDir
+    join = pylabs.q.system.fs.joinPaths
     if not isdir(join(path, 'refs')) or \
        not isdir(join(path, 'objects')):
         return False
@@ -80,8 +80,8 @@ def clone(project_name, remote_name, repository_path):
 
     Example usage:
 
-        >>> clone('pymonkey', 'mainline',
-        ...       'git://staging.pymonkey.org/pymonkey/mainline.git')
+        >>> clone('pylabs', 'mainline',
+        ...       'git://staging.pylabs.org/pylabs/mainline.git')
 
     @param project_name: Repository name
     @type project_name: string
@@ -90,38 +90,38 @@ def clone(project_name, remote_name, repository_path):
     @param repository_path: Path to the remote repository
     @type repository_path: string
     '''
-    pymonkey.q.logger.log('Cloning %s remote %s (%s)' % \
+    pylabs.q.logger.log('Cloning %s remote %s (%s)' % \
                           (project_name, remote_name, repository_path), 5)
 
-    git_base = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    git_base = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                               'var', 'git')
-    target = pymonkey.q.system.fs.joinPaths(git_base, project_name)
+    target = pylabs.q.system.fs.joinPaths(git_base, project_name)
 
     # Target should be a folder, if it exists
-    if pymonkey.q.system.fs.exists(target) and \
-       not pymonkey.q.system.fs.isDir(target):
+    if pylabs.q.system.fs.exists(target) and \
+       not pylabs.q.system.fs.isDir(target):
         raise RuntimeError(
             'Path %s exists, but is not a directory' % project_name)
 
     # If it exists, it's a folder which should have a .git subfolder
-    if pymonkey.q.system.fs.exists(target) and \
-        not is_git_repository(pymonkey.q.system.fs.joinPaths(target, '.git')):
-            answer = pymonkey.q.gui.dialog.askYesNo('Export location %s exists. Do you want the folder to be removed before exporting?' % target)
+    if pylabs.q.system.fs.exists(target) and \
+        not is_git_repository(pylabs.q.system.fs.joinPaths(target, '.git')):
+            answer = pylabs.q.gui.dialog.askYesNo('Export location %s exists. Do you want the folder to be removed before exporting?' % target)
             if answer:
-                pymonkey.q.system.fs.removeDirTree(target)
+                pylabs.q.system.fs.removeDirTree(target)
                 clone(project_name, remote_name, repository_path)
             else:
                 raise RuntimeError('Folder %s exists, but is not a Git folder' % target)
 
     # If target doesn't exist
-    if not pymonkey.q.system.fs.exists(target):
-        pymonkey.q.logger.log(
+    if not pylabs.q.system.fs.exists(target):
+        pylabs.q.logger.log(
             'Unknown project %s, creating environment' % project_name, 5)
         # Create it
-        pymonkey.q.system.fs.createDir(target)
+        pylabs.q.system.fs.createDir(target)
         # And make it a Git folder
         command = 'git init-db'
-        ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False,
+        ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False,
                                                   cwd=target)
         if ret:
             raise RuntimeError('Unable to initialize %s as a Git folder' % \
@@ -129,18 +129,18 @@ def clone(project_name, remote_name, repository_path):
 
     # If target exists (and it should once we reached this point), it's a
     # folder which should have a .git subfolder
-    if not is_git_repository(pymonkey.q.system.fs.joinPaths(target, '.git')):
+    if not is_git_repository(pylabs.q.system.fs.joinPaths(target, '.git')):
         raise RuntimeError('Folder %s exists, but is not a Git folder' % target)
 
     # Check whether the remote already exists
-    if pymonkey.q.system.fs.exists(
-        pymonkey.q.system.fs.joinPaths(target, '.git', 'refs', 'remotes',
+    if pylabs.q.system.fs.exists(
+        pylabs.q.system.fs.joinPaths(target, '.git', 'refs', 'remotes',
                                        remote_name)):
-        pymonkey.q.logger.log('Remote %s exists, checking URI' % remote_name, 6)
+        pylabs.q.logger.log('Remote %s exists, checking URI' % remote_name, 6)
 
         # The remote exists, find it's path
         command = 'git remote show %s' % remote_name
-        ret, stdout, _ = pymonkey.q.system.process.run(
+        ret, stdout, _ = pylabs.q.system.process.run(
             command, stopOnError=False, cwd=target)
 
         if ret:
@@ -152,7 +152,7 @@ def clone(project_name, remote_name, repository_path):
         for line in lines:
             if line.strip().startswith('URL:'):
                 url = line.lstrip()[4:].lstrip()
-                pymonkey.q.logger.log('Found remote URI %s' % url, 6)
+                pylabs.q.logger.log('Found remote URI %s' % url, 6)
                 urls.append(url)
 
         if not urls:
@@ -168,24 +168,24 @@ def clone(project_name, remote_name, repository_path):
                                'but with another path' % remote_name)
     else:
         # Create the remote
-        pymonkey.q.logger.log('Adding remote %s as %s' % \
+        pylabs.q.logger.log('Adding remote %s as %s' % \
                               (remote_name, repository_path), 5)
         command = 'git remote add %s %s' % (remote_name, repository_path)
-        ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False,
+        ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False,
                                                   cwd=target)
         if ret:
             raise RuntimeError('Unable to add remote')
 
     # Perform fetch
-    pymonkey.q.logger.log('Fetching remote %s' % remote_name, 5)
+    pylabs.q.logger.log('Fetching remote %s' % remote_name, 5)
     command = 'git fetch %s' % remote_name
-    ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False,
+    ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False,
                                               cwd=target)
     if ret:
         raise RuntimeError('Unable to fetch remote')
 
     command = 'git fetch -t %s' % remote_name
-    ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False,
+    ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False,
                                               cwd=target)
     if ret:
         raise RuntimeError('Unable to fetch remote tags')
@@ -207,12 +207,12 @@ def _checkout_tree(repository_path, target_path, head, subtree='/'):
     @param tree: Path to subtree to check out
     @type tree: string
     '''
-    pymonkey.q.logger.log('Checking out subtree %s of head %s '
+    pylabs.q.logger.log('Checking out subtree %s of head %s '
                           'in repository %s into %s' % \
                           (subtree, head, repository_path, target_path))
 
-    isdir = pymonkey.q.system.fs.isDir
-    join = pymonkey.q.system.fs.joinPaths
+    isdir = pylabs.q.system.fs.isDir
+    join = pylabs.q.system.fs.joinPaths
     if not isdir(join(repository_path, 'refs')) or \
        not isdir(join(repository_path, 'objects')):
         raise RuntimeError('Repository path %s does not look like '
@@ -223,24 +223,24 @@ def _checkout_tree(repository_path, target_path, head, subtree='/'):
     head = '%s:%s' % (head, subtree)
 
     command = 'git --git-dir=%s cat-file -e %s' % (repository_path, head)
-    ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False)
+    ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False)
     if ret:
         raise RuntimeError('Unknown refspec %s' % head)
 
     command = 'git --git-dir=%s cat-file -t %s' % (repository_path, head)
-    ret, stdout, _ = pymonkey.q.system.process.run(command, stopOnError=False)
+    ret, stdout, _ = pylabs.q.system.process.run(command, stopOnError=False)
     if ret:
         raise RuntimeError('Unable to retrieve object type of %s' % head)
     if stdout.strip() != 'tree':
         raise RuntimeError('Object %s is not a tree' % head)
 
-    if pymonkey.q.system.fs.exists(target_path):
+    if pylabs.q.system.fs.exists(target_path):
         raise RuntimeError('Target path %s should not exist' % target_path)
 
-    pymonkey.q.system.fs.createDir(target_path)
+    pylabs.q.system.fs.createDir(target_path)
     command = 'git --git-dir=%s --work-tree=. read-tree -u --reset %s' % \
                   (repository_path, head)
-    ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False,
+    ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False,
                                               cwd=target_path)
 
     if ret:
@@ -269,11 +269,11 @@ def checkout_tree(project_name, target_path, remote_name, branch, subtree='/'):
     '''
     head = branch if not remote_name else '%s/%s' % (remote_name, branch)
 
-    pymonkey.q.logger.log('Checking out subtree %s of %s branch %s to %s' % \
+    pylabs.q.logger.log('Checking out subtree %s of %s branch %s to %s' % \
                           (subtree, project_name, head,
                            target_path), 5)
 
-    repository_path = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    repository_path = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                                      'var', 'git',
                                                      project_name, '.git')
     _checkout_tree(repository_path, target_path, head, subtree)
@@ -296,7 +296,7 @@ def _checkout_blob(repository_path, target_path, head, source):
     @param source: Path to blob to check out
     @type source: string
     '''
-    pymonkey.q.logger.log('Checking out blob %s of head %s '
+    pylabs.q.logger.log('Checking out blob %s of head %s '
                           'in repository %s into %s' % \
                           (source, head, repository_path, target_path))
 
@@ -309,33 +309,33 @@ def _checkout_blob(repository_path, target_path, head, source):
     head = '%s:%s' % (head, source)
 
     command = 'git --git-dir=%s cat-file -e %s' % (repository_path, head)
-    ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False)
+    ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False)
     if ret:
         raise RuntimeError('Unknown refspec %s' % head)
 
     command = 'git --git-dir=%s cat-file -t %s' % (repository_path, head)
-    ret, stdout, _ = pymonkey.q.system.process.run(command, stopOnError=False)
+    ret, stdout, _ = pylabs.q.system.process.run(command, stopOnError=False)
     if ret:
         raise RuntimeError('Unable to retrieve object type of %s' % head)
     if stdout.strip() != 'blob':
         raise RuntimeError('Object %s is not a blob' % head)
 
-    if pymonkey.q.system.fs.exists(target_path):
+    if pylabs.q.system.fs.exists(target_path):
         raise RuntimeError('Target path %s should not exist' % target_path)
 
     # Make sure the target folder exists
     target_folder = os.path.dirname(target_path)
-    pymonkey.q.system.fs.createDir(target_folder)
+    pylabs.q.system.fs.createDir(target_folder)
     command = 'git --git-dir=%s --work-tree=. cat-file -p %s' % \
                   (repository_path, head)
-    ret, stdout, _ = pymonkey.q.system.process.run(command, stopOnError=False,
+    ret, stdout, _ = pylabs.q.system.process.run(command, stopOnError=False,
                                                    cwd=target_folder)
 
     if ret:
         raise RuntimeError('Extracting blob failed')
 
     # Dump file content
-    pymonkey.q.system.fs.writeFile(target_path, stdout)
+    pylabs.q.system.fs.writeFile(target_path, stdout)
 
 
 def checkout_blob(project_name, target_path, remote_name, branch, blob_path):
@@ -361,11 +361,11 @@ def checkout_blob(project_name, target_path, remote_name, branch, blob_path):
     '''
     head = branch if not remote_name else '%s/%s' % (remote_name, branch)
 
-    pymonkey.q.logger.log('Checking out blob %s of %s branch %s to %s' % \
+    pylabs.q.logger.log('Checking out blob %s of %s branch %s to %s' % \
                           (blob_path, project_name, head,
                            target_path), 5)
 
-    repository_path = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    repository_path = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                                      'var', 'git',
                                                      project_name, '.git')
     _checkout_blob(repository_path, target_path, head, blob_path)
@@ -388,7 +388,7 @@ def _checkout(repository_path, target_path, head, source):
     @param source: Path to source object in the repository
     @type source: string
     '''
-    pymonkey.q.logger.log('Checking out object %s of head %s '
+    pylabs.q.logger.log('Checking out object %s of head %s '
                           'in repository %s into %s' % \
                           (source, head, repository_path, target_path))
 
@@ -403,12 +403,12 @@ def _checkout(repository_path, target_path, head, source):
     head = '%s:%s' % (head, source)
 
     command = 'git --git-dir=%s cat-file -e %s' % (repository_path, head)
-    ret, _, _ = pymonkey.q.system.process.run(command, stopOnError=False)
+    ret, _, _ = pylabs.q.system.process.run(command, stopOnError=False)
     if ret:
         raise RuntimeError('Unknown refspec %s' % head)
 
     command = 'git --git-dir=%s cat-file -t %s' % (repository_path, head)
-    ret, stdout, _ = pymonkey.q.system.process.run(command, stopOnError=False)
+    ret, stdout, _ = pylabs.q.system.process.run(command, stopOnError=False)
     if ret:
         raise RuntimeError('Unable to retrieve object type of %s' % head)
     object_type = stdout.strip()
@@ -445,11 +445,11 @@ def checkout(project_name, target_path, remote_name, branch, source):
     '''
     head = branch if not remote_name else '%s/%s' % (remote_name, branch)
 
-    pymonkey.q.logger.log('Checking out object %s of %s branch %s to %s' % \
+    pylabs.q.logger.log('Checking out object %s of %s branch %s to %s' % \
                           (source, project_name, head,
                            target_path), 5)
 
-    repository_path = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.baseDir,
+    repository_path = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.baseDir,
                                                      'var', 'git',
                                                      project_name, '.git')
     _checkout(repository_path, target_path, head, source)

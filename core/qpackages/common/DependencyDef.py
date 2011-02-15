@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import PlatformType
-from pymonkey.qpackages.common.enumerators import DependencyType
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import PlatformType
+from pylabs.qpackages.common.enumerators import DependencyType
 
 class DependencyDef(BaseType):
  

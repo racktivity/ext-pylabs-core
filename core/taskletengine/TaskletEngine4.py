@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
-'''PyMonkey *tasklet* engine implementation'''
+'''pylabs *tasklet* engine implementation'''
 
 import os
 import os.path
@@ -52,7 +52,7 @@ try:
 except ImportError:
     threading = None
 
-import pymonkey
+import pylabs
 
 MATCH_FAILED = object()
 
@@ -114,7 +114,7 @@ class TaskletEngine4(object):
         @param path: Tasklet container folder
         @type path: string
         '''
-        pymonkey.q.logger.log('Loading tasklets in %s' % path, 6)
+        pylabs.q.logger.log('Loading tasklets in %s' % path, 6)
 
         #Make sure we got a dict
         self._tasklets = self._tasklets or dict()
@@ -123,11 +123,11 @@ class TaskletEngine4(object):
         #Use a generator instead of list concatenation for readability
         def listTaskletFiles():
             '''List all .py and .qshell files in *path*'''
-            for script in pymonkey.q.system.fs.listFilesInDir(path, True,
+            for script in pylabs.q.system.fs.listFilesInDir(path, True,
                                                      filter='*.py'):
                 yield script
 
-            for script in pymonkey.q.system.fs.listFilesInDir(path, True,
+            for script in pylabs.q.system.fs.listFilesInDir(path, True,
                     filter='*.qshell'):
                 yield script
 
@@ -138,7 +138,7 @@ class TaskletEngine4(object):
 
     def _registerTasklet(self, path):
         '''Register one tasklet in a given file in the system'''
-        pymonkey.q.logger.log('Loading tasklet %s' % path)
+        pylabs.q.logger.log('Loading tasklet %s' % path)
         if path in self._tasklets:
             raise RuntimeError('Tasklet in %s already registered' % path)
 
@@ -149,7 +149,7 @@ class TaskletEngine4(object):
     @staticmethod
     def _getPathInfo(path):
         '''Get tasklet name from the tasklet module path'''
-        filename = pymonkey.q.system.fs.getBaseName(path)
+        filename = pylabs.q.system.fs.getBaseName(path)
 
         return filename
 
@@ -157,15 +157,15 @@ class TaskletEngine4(object):
     def _check_reload(self, path):
         '''Check whether the tasklets in *path* should be reloaded'''
         if path not in self._path_load_times:
-            pymonkey.q.logger.log('Unknown folder %s, force reloading' % path,
+            pylabs.q.logger.log('Unknown folder %s, force reloading' % path,
                                   6)
             return True
 
-        tasklets_updated = pymonkey.q.system.fs.joinPaths(path, 'tasklets_updated')
+        tasklets_updated = pylabs.q.system.fs.joinPaths(path, 'tasklets_updated')
 
         #Don't reload if file is not touched
-        if not pymonkey.q.system.fs.exists(tasklets_updated):
-            pymonkey.q.logger.log('Not reloading tasklets in %s, ' \
+        if not pylabs.q.system.fs.exists(tasklets_updated):
+            pylabs.q.logger.log('Not reloading tasklets in %s, ' \
                                   '%s doesn\'t exist' % \
                                   (path, tasklets_updated), 6)
             return False
@@ -221,7 +221,7 @@ class TaskletEngine4(object):
 
         self._reload()
 
-        pymonkey.q.logger.log(
+        pylabs.q.logger.log(
             'Searching for tasklets, author=%s, name=%s, '
             'tags=%s, priority=%d' % (author, name, tags, priority), 7)
         #Some filter generators
@@ -311,11 +311,11 @@ class TaskletEngine4(object):
         realized = set()
 
         matches = self.find(author, name, tags, priority)
-        pymonkey.q.logger.log('Executing previously found tasklets', 6)
+        pylabs.q.logger.log('Executing previously found tasklets', 6)
 
         for tasklet in matches:
             if tasklet.realizes and tasklet.realizes in realized:
-                pymonkey.q.logger.log('%s already realized, ' \
+                pylabs.q.logger.log('%s already realized, ' \
                                       'skipping tasklet %s' % \
                                       (tasklet.realizes, tasklet.name), 6)
                 continue
@@ -323,7 +323,7 @@ class TaskletEngine4(object):
             ret = tasklet.executeIfMatches(params, tags or tuple(), wrapper)
 
             if ret is not MATCH_FAILED and tasklet.realizes:
-                pymonkey.q.logger.log('%s realized by %s' % (tasklet.realizes,
+                pylabs.q.logger.log('%s realized by %s' % (tasklet.realizes,
                                                     tasklet.name), 6)
                 realized.add(tasklet.realizes)
 
@@ -350,11 +350,11 @@ class TaskletEngine4(object):
         if not tasklet:
             raise RuntimeError('No matching tasklet found')
 
-        if not tasklet.match(pymonkey.q, pymonkey.i, params, tags or tuple()):
+        if not tasklet.match(pylabs.q, pylabs.i, params, tags or tuple()):
             raise RuntimeError(
                 'Found tasklet, but it does not accept the request')
 
-        pymonkey.q.logger.log('Executing previously found tasklet', 6)
+        pylabs.q.logger.log('Executing previously found tasklet', 6)
         wrapped = wrapper(tasklet.methods['main'])
-        return wrapped(pymonkey.q, pymonkey.i, params, tags or tuple())
+        return wrapped(pylabs.q, pylabs.i, params, tags or tuple())
 

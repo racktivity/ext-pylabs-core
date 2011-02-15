@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class cloudspace:
     def listVdcs (self, cloudspaceguid, jobguid = "", executionparams = {}):

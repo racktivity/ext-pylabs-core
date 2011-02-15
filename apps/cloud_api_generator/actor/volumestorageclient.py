@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class volumestorageclient:
     def diskConnect (self, diskguid, restartlocal = False, ignorelock = False, usefailovercache = False, jobguid = "", executionparams = {}):

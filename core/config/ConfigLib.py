@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey.config import ConfigManagementItem, GroupConfigManagement, SingleConfigManagement
+from pylabs.config import ConfigManagementItem, GroupConfigManagement, SingleConfigManagement
 
 def checkItemClass(itemclass):
     import inspect

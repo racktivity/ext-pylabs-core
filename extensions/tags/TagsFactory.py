@@ -33,11 +33,11 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 from Tags import Tags
 
 
-class TagsFactory(pymonkey.baseclasses.BaseType):
+class TagsFactory(pylabs.baseclasses.BaseType):
     """
     Factory Class of dealing with TAGS     
     """

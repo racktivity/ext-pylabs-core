@@ -33,13 +33,13 @@
 #
 # </License>
 
-from pymonkey import q, i
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.client.QPackageInstallerHelper import QPackageInstallerHelper
-#from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
-from pymonkey.qpackages.common.enumerators import DependencyType
-from pymonkey.tasklets import TaskletsEngine
+from pylabs import q, i
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.client.QPackageInstallerHelper import QPackageInstallerHelper
+#from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
+from pylabs.qpackages.common.enumerators import DependencyType
+from pylabs.tasklets import TaskletsEngine
 import exceptions
 
 class QPackageTasklets(BaseType):
@@ -156,7 +156,7 @@ class QPackageTasklets(BaseType):
 
         self._installQPackage(qpackageObject, processRuntimeDependencies, reInstall=reInstall)
 
-        from pymonkey.qpackages.client.QPackageConfigure import QPackageConfigure
+        from pylabs.qpackages.client.QPackageConfigure import QPackageConfigure
         configure = QPackageConfigure()
         reconfigureDict = configure.getIniFile().getFileAsDict()
         if len(reconfigureDict)>0:
@@ -194,7 +194,7 @@ class QPackageTasklets(BaseType):
         """
         return a client.QPackage object based on common.QPackageObject object
         """
-        from pymonkey.qpackages.client.QPackage import QPackage
+        from pylabs.qpackages.client.QPackage import QPackage
         qPackage = QPackage(qpackage.domain, qpackage.name, qpackage.version)
         qPackage.tags = qpackage.tags
         qPackage.supportedPlatforms = qpackage.supportedPlatforms

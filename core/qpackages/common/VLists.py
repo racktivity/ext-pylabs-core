@@ -35,15 +35,15 @@
 
 import os
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import QPackageQualityLevelType
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import QPackageQualityLevelType
 
-from pymonkey.qpackages.common.enumerators import VListType
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
-from pymonkey.qpackages.common.VList import VList
-from pymonkey.qpackages.common.VListEntry import VListEntry
-from pymonkey.qpackages.common.DomainObject import DomainObject
+from pylabs.qpackages.common.enumerators import VListType
+from pylabs.qpackages.common.QPackageObject import QPackageObject
+from pylabs.qpackages.common.VList import VList
+from pylabs.qpackages.common.VListEntry import VListEntry
+from pylabs.qpackages.common.DomainObject import DomainObject
 
 class VLists(BaseType):
     ''' This class will generate VLists and provide the logic to reload them.

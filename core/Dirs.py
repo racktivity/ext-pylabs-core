@@ -36,7 +36,7 @@
 import sys, os
 from user import home
 
-import pymonkey
+import pylabs
 
 def pathToUnicode(path):
     """
@@ -63,7 +63,7 @@ class Dirs(object):
     '''
 
     baseDir = None ##string
-    '''PyMonkey sandbox base folder
+    '''pylabs sandbox base folder
 
     @type: string
     '''
@@ -117,7 +117,7 @@ class Dirs(object):
     '''
 
     extensionsDir = None ##string
-    '''PyMonkey extensions base folder (basedir/lib/pymonkey/extensions)
+    '''pylabs extensions base folder (basedir/lib/pylabs/extensions)
 
     @type: string
     '''
@@ -173,16 +173,16 @@ class Dirs(object):
             self.homeDir = pathToUnicode(os.path.join(home, ".qbase"))
 
         if not self.extensionsDir:
-            self.extensionsDir = os.path.join(self.baseDir, 'lib', 'pymonkey','extensions')
+            self.extensionsDir = os.path.join(self.baseDir, 'lib', 'pylabs','extensions')
         if not self.binDir:
             self.binDir = os.path.join(self.baseDir, 'bin')
 
-        pymonkey.q.system.fs.createDir(self.tmpDir)
-        pymonkey.q.system.fs.createDir(self.varDir)
-        pymonkey.q.system.fs.createDir(self.logDir)
-        pymonkey.q.system.fs.createDir(self.cmdbDir)
-        pymonkey.q.system.fs.createDir(self.packageDir)
-        pymonkey.q.system.fs.createDir(self.homeDir)
+        pylabs.q.system.fs.createDir(self.tmpDir)
+        pylabs.q.system.fs.createDir(self.varDir)
+        pylabs.q.system.fs.createDir(self.logDir)
+        pylabs.q.system.fs.createDir(self.cmdbDir)
+        pylabs.q.system.fs.createDir(self.packageDir)
+        pylabs.q.system.fs.createDir(self.homeDir)
 
         # TODO: Should check for basedir also and barf if it is not set properly!
 

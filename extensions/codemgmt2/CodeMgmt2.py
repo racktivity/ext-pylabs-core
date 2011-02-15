@@ -1,6 +1,6 @@
-from pymonkey import *
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import *
+from pylabs import q
+from pylabs.Shell import *
 
 class CodeMgmt2():
 
@@ -246,15 +246,15 @@ class CodeMgmt2():
         name="pylabs-core"
         base="%s___%s" % (name,branch)
         codedir = q.system.fs.joinPaths(q.dirs.baseDir, "../", "code")
-        link('%s/%s/code/packages/pymonkey/core/' % (codedir,base), '%slib/pymonkey/core/pymonkey' % q.dirs.baseDir,remove,link)
+        link('%s/%s/code/packages/pylabs/core/' % (codedir,base), '%slib/pylabs/core/pylabs' % q.dirs.baseDir,remove,link)
         link('%s/%s/code/utils/' % (codedir,base), '%sutils' % q.dirs.baseDir,remove,link)
         link('%s/%s/code/examples' % (codedir,base), '%sapps/pylabsexamples' % q.dirs.baseDir,remove,link)
         link('%s/%s/code/utils/ssodebug' % (codedir,base), '%sssodebug' % q.dirs.baseDir, remove, link=False, ask=True)
-        extensionpath="%s/pylabs-core___%s/code/packages/pymonkey/extensions/"% (codedir,branch)
+        extensionpath="%s/pylabs-core___%s/code/packages/pylabs/extensions/"% (codedir,branch)
         extensions=q.system.fs.listDirsInDir(extensionpath, recursive=False, dirNameOnly=True, findDirectorySymlinks=True)
         for extension in extensions:
-            link('%s/%s/code/packages/pymonkey/extensions/%s/' % (codedir,base,extension),\
-                 '%slib/pymonkey/extensions/%s' % (q.dirs.baseDir,extension),\
+            link('%s/%s/code/packages/pylabs/extensions/%s/' % (codedir,base,extension),\
+                 '%slib/pylabs/extensions/%s' % (q.dirs.baseDir,extension),\
                  remove,link)
 
 

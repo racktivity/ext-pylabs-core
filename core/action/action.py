@@ -38,8 +38,8 @@ import inspect
 import textwrap
 import operator
 
-import pymonkey
-from pymonkey.decorators import deprecated
+import pylabs
+from pylabs.decorators import deprecated
 
 class StartStopOutputCountException(Exception):
     '''Exception raised when an action.startOutput/action.stopOutput count
@@ -52,7 +52,7 @@ class StartStopOutputCountException(Exception):
 def _deprecated_attrgetter(public_name, name):
     def _getter(self):
         '''Return attribute %(name)s'''
-        pymonkey.q.logger.log('[DEPRECATION] Accessing deprecated '
+        pylabs.q.logger.log('[DEPRECATION] Accessing deprecated '
                               'attribute %s' % (public_name), 6)
         return getattr(self, name)
 
@@ -261,10 +261,10 @@ class ActionController(object):
         '''
         #TODO Be more verbose / raise in time
         if show is not _DEPRECATED:
-            pymonkey.q.logger.log('[ACTIONS] Using deprecated/unused argument '
+            pylabs.q.logger.log('[ACTIONS] Using deprecated/unused argument '
                                   '\'show\'', 4)
         if messageLevel is not _DEPRECATED:
-            pymonkey.q.logger.log('[ACTIONS] Using deprecated/unused argument '
+            pylabs.q.logger.log('[ACTIONS] Using deprecated/unused argument '
                                   '\'messageLevel\'', 4)
 
         if self._actions and not self._actions[-1].interrupted:
@@ -272,7 +272,7 @@ class ActionController(object):
                                            self._width)
             self._actions[-1].interrupted = True
 
-        pymonkey.q.logger.log('[ACTIONS] Starting action: %s' % description,
+        pylabs.q.logger.log('[ACTIONS] Starting action: %s' % description,
                               5)
         action = _Action(description, errormessage, resolutionmessage,
                         indent=len(self._actions))
@@ -281,7 +281,7 @@ class ActionController(object):
         action.write(self._output, self._width)
 
         #TODO Get rid of this when reworking console handling properly
-        pymonkey.q.console.hideOutput()
+        pylabs.q.console.hideOutput()
 
     def stop(self, failed=False):
         '''Stop the currently running action
@@ -294,7 +294,7 @@ class ActionController(object):
         '''
         if not self._actions:
             #TODO Raise some exception?
-            pymonkey.q.logger.log('[ACTIONS] Stop called while no actions are '
+            pylabs.q.logger.log('[ACTIONS] Stop called while no actions are '
                                   'running at all', 3)
             return
 
@@ -315,20 +315,20 @@ class ActionController(object):
         status = _ActionStatus.DONE if not failed else _ActionStatus.FAILED
         if not failed and not self._actions and action.interrupted:
             status = _ActionStatus.FINISHED
-        pymonkey.q.logger.log('[ACTIONS] Stopping action \'%s\', result '
+        pylabs.q.logger.log('[ACTIONS] Stopping action \'%s\', result '
                               'is %s' % (action.description, status), 5)
         action.writeResult(self._output, status, self._width)
 
         if not self._actions:
             #TODO Get rid of this when reworking console handling properly
-            pymonkey.q.console.showOutput()
+            pylabs.q.console.showOutput()
 
     def clean(self):
         '''Clean the list of running actions'''
-        pymonkey.q.logger.log('[ACTIONS] Clearing all actions', 5)
+        pylabs.q.logger.log('[ACTIONS] Clearing all actions', 5)
         self._actions = list()
         #TODO Get rid of this when reworking console handling properly
-        pymonkey.q.console.showOutput()
+        pylabs.q.console.showOutput()
 
     def hasRunningActions(self):
         '''Check whether actions are currently running
@@ -357,7 +357,7 @@ class ActionController(object):
         """
         Enable q.console output. Format such that it is nicely shown between action start/stop.
         """
-        pymonkey.q.console.showOutput()
+        pylabs.q.console.showOutput()
 
         self._output_start_count += 1
         if self.hasRunningActions():
@@ -387,7 +387,7 @@ class ActionController(object):
             self._handleStartStopOutputCountMismatch()
 
         if self.hasRunningActions() and (self._output_start_count == 0):
-            pymonkey.q.console.hideOutput()
+            pylabs.q.console.hideOutput()
 
 
     def _handleStartStopOutputCountMismatch(self):
@@ -397,7 +397,7 @@ class ActionController(object):
 
         This will break running actions or might break future actions.
         '''
-        pymonkey.q.logger.log(
+        pylabs.q.logger.log(
             '[ACTIONS] Warning: start/stop output count mismatch', 4)
         self._actions = list()
         self._output_start_count = 0

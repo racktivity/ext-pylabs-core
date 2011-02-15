@@ -41,7 +41,7 @@ import re
 if sys.platform.startswith('linux') or sys.platform.startswith('sunos'):
     import fcntl
 
-import pymonkey
+import pylabs
 
 # THIS METHOD IS NOT THREADSAFE
 
@@ -72,11 +72,11 @@ class Util:
         if locktimeout < 0:
             raise RuntimeError("Cannot take lock [%s] with negative timeout [%d]" % (lockname, locktimeout))
 
-        if pymonkey.q.platform.isUnix():
+        if pylabs.q.platform.isUnix():
             # linux implementation
             lockfile = self._LOCKPATHLINUX + os.sep + self.cleanupString(lockname)
-            pymonkey.q.system.fs.createDir(Util._LOCKPATHLINUX)
-            pymonkey.q.system.fs.createEmptyFile(lockfile)
+            pylabs.q.system.fs.createDir(Util._LOCKPATHLINUX)
+            pylabs.q.system.fs.createEmptyFile(lockfile)
 
             # Do the locking
             lockAcquired = False
@@ -94,12 +94,12 @@ class Util:
                 myfile.close()
                 raise RuntimeError("Cannot acquire lock [%s]" % (lockname))
 
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
             raise NotImplementedError
 
     def unlock(self, lockname):
         """ Unlock system-wide interprocess lock """
-        if pymonkey.q.platform.isUnix():
+        if pylabs.q.platform.isUnix():
             try:
                 myfile = self.__LOCKDICTIONARY.pop(lockname)
                 fcntl.flock(myfile.fileno(), fcntl.LOCK_UN)
@@ -107,5 +107,5 @@ class Util:
             except Exception, exc:
                 raise RuntimeError("Cannot unlock [%s] with ERROR:%s" % (lockname, str(exc)))
 
-        elif pymonkey.q.platform.isWindows():
+        elif pylabs.q.platform.isWindows():
             raise NotImplementedError

@@ -1,18 +1,18 @@
 import time
-import pymonkey
-from pymonkey.Shell import *
+import pylabs
+from pylabs.Shell import *
 from logtargets.LogTargetFS import LogTargetFS
-from pymonkey.logging.LogConsoleController import LogConsoleController
+from pylabs.logging.LogConsoleController import LogConsoleController
 
 try:
-    from pymonkey.logging.logtargets.LogTargetScribe import LogTargetScribe
+    from pylabs.logging.logtargets.LogTargetScribe import LogTargetScribe
 except ImportError:
     pass
 
-from pymonkey.logging.logtargets.LogTargetToPylabsLogConsole import LogTargetToPylabsLogConsole
-from pymonkey.messages import toolStripNonAsciFromText
-from pymonkey.messages.LogObject import LogObject
-from pymonkey.decorators import deprecated
+from pylabs.logging.logtargets.LogTargetToPylabsLogConsole import LogTargetToPylabsLogConsole
+from pylabs.messages import toolStripNonAsciFromText
+from pylabs.messages.LogObject import LogObject
+from pylabs.decorators import deprecated
 
 class LogHandler(object):
 
@@ -39,7 +39,7 @@ class LogHandler(object):
         """       
         self._lastinittime=0
         self.nolog=True
-        inifile=pymonkey.q.config.getInifile("main")
+        inifile=pylabs.q.config.getInifile("main")
         if inifile.checkParam("main","lastlogcleanup")==False:
             inifile.setParam("main","lastlogcleanup",0)
         self._lastcleanuptime=int(inifile.getValue("main","lastlogcleanup"))
@@ -48,14 +48,14 @@ class LogHandler(object):
         try:
             self.logTargetAdd(LogTargetScribe())
         except:
-            pymonkey.q.logger.log("Could not add logtarget scribe")
+            pylabs.q.logger.log("Could not add logtarget scribe")
 
 
     def _inittargets(self):
         """
         only execute this every 5 secs
         """
-        if self._lastinittime<pymonkey.q.base.time.getTimeEpoch()-5:
+        if self._lastinittime<pylabs.q.base.time.getTimeEpoch()-5:
             
             #check which loggers are not working
             for target in self.logTargets:
@@ -65,7 +65,7 @@ class LogHandler(object):
                     except:
                         target.enabled = False
             self.cleanupLogsOnFilesystem()
-            self._lastinittime=pymonkey.q.base.time.getTimeEpoch()
+            self._lastinittime=pylabs.q.base.time.getTimeEpoch()
             
 
     def log(self, message, level=5, tags="",dontprint=False):
@@ -78,30 +78,30 @@ class LogHandler(object):
                 self._fallbackLogger.log(message,level,tags)
         self._inittargets()
         if level<self.consoleloglevel+1 and dontprint==False:
-            pymonkey.q.console.echo(message,log=False)
+            pylabs.q.console.echo(message,log=False)
         if self.nolog:
             return
         #if message<>"" and message[-1]<>"\n":
         #    message+="\n"
         if level<self.maxlevel+1:
     
-            #print pymonkey.q.application.state
-            #if pymonkey.q.application.state==pymonkey.q.enumerators.AppStatusType.RUNNING:
+            #print pylabs.q.application.state
+            #if pylabs.q.application.state==pylabs.q.enumerators.AppStatusType.RUNNING:
             logobject=LogObject()
             logobject.init(message,level,tags)
             
             #add to active transaction when there is one
-            if pymonkey.q.transaction.activeTransaction<>None:
-                if len (pymonkey.q.transaction.activeTransaction.logs)>250:
-                    pymonkey.q.transaction.activeTransaction.logs=pymonkey.q.transaction.activeTransaction.logs[-200:]
-                pymonkey.q.transaction.activeTransaction.logs.append(logobject)
+            if pylabs.q.transaction.activeTransaction<>None:
+                if len (pylabs.q.transaction.activeTransaction.logs)>250:
+                    pylabs.q.transaction.activeTransaction.logs=pylabs.q.transaction.activeTransaction.logs[-200:]
+                pylabs.q.transaction.activeTransaction.logs.append(logobject)
                 
             self.logs.append(logobject)
             if len (self.logs)>550:
                     self.logs=self.logs[-500:]
 
             #log to old logtargets
-            source= pymonkey.q.application.agentid+"_"+pymonkey.q.application.appname
+            source= pylabs.q.application.agentid+"_"+pylabs.q.application.appname
             messageold=self._encodeLog(message, level, logtype=1, source=source, tags=tags)
             for logtarget in self.logTargets:
                 if (hasattr(logtarget, 'maxlevel') and level > logtarget.maxlevel):continue

@@ -1,6 +1,6 @@
 import os
-from pymonkey import q
-from pymonkey.taskletengine.TaskletEngine4 import TaskletEngine4
+from pylabs import q
+from pylabs.taskletengine.TaskletEngine4 import TaskletEngine4
 
 class MessageHandler(object):
     """
@@ -47,7 +47,7 @@ class MessageHandler(object):
         Return a MessageObject oebject(never used for logging purposes only for review and printing)
         @param messagestring: message
         """
-        from pymonkey.messages.MessageObject import MessageObject
+        from pylabs.messages.MessageObject import MessageObject
         return MessageObject(messagestring)
 
     def getLogObject(self,messagestring=""):
@@ -55,7 +55,7 @@ class MessageHandler(object):
         Return a LogObject
         @param messagestring: message
         """
-        from pymonkey.messages.LogObject import LogObject
+        from pylabs.messages.LogObject import LogObject
         return LogObject(messagestring)
 
     def getErrorconditionObject(self,messagestring=""):
@@ -63,7 +63,7 @@ class MessageHandler(object):
         Return a ErrorconditionObject
         @param messagestring: message
         """
-        from pymonkey.messages.ErrorconditionObject import ErrorconditionObject
+        from pylabs.messages.ErrorconditionObject import ErrorconditionObject
         return ErrorconditionObject(messagestring)
 
     def getRPCMessageObject(self,messagestring=""):
@@ -71,7 +71,7 @@ class MessageHandler(object):
         Return a RPCMessageObject
         @param messagestring: message
         """
-        from pymonkey.messages.RPCMessageObject import RPCMessageObject
+        from pylabs.messages.RPCMessageObject import RPCMessageObject
         return RPCMessageObject(messagestring)
 
 #    def getTLogMessageObject(self,messagestring=""):
@@ -79,7 +79,7 @@ class MessageHandler(object):
 #        Return a TLogMessageObject
 #        @param messagestring: message
 #        """
-#        from pymonkey.messages.TLogObject import TLogObject
+#        from pylabs.messages.TLogObject import TLogObject
 #        return TLogObject(messagestring)    
     
     def getJobMessageObject(self,messagestring=""):
@@ -87,6 +87,6 @@ class MessageHandler(object):
         Return a JobMessageObject
         @param messagestring: message
         """
-        from pymonkey.messages.JobMessageObject import JobMessageObject
+        from pylabs.messages.JobMessageObject import JobMessageObject
         return JobMessageObject(messagestring)
 

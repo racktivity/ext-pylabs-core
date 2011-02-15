@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class resourcegroup:
     def removeDevice (self, resourcegroupguid, deviceguid, jobguid = "", executionparams = {}):

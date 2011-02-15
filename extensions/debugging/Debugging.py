@@ -1,5 +1,5 @@
-from pymonkey import *
-from pymonkey.Shell import *
+from pylabs import *
+from pylabs.Shell import *
 
 
 class Debugging:

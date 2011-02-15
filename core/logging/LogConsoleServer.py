@@ -7,9 +7,9 @@ import socket
 import SocketServer
 import pprint
 
-from pymonkey.logging.LogObject import LogObject
-from pymonkey.logging.LogTypes import LogType
-from pymonkey import q
+from pylabs.logging.LogObject import LogObject
+from pylabs.logging.LogTypes import LogType
+from pylabs import q
 
 DEFAULT_PORT = 9998
 

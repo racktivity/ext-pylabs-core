@@ -1,5 +1,5 @@
 from ApacheSite import ApacheSite, SiteTemplate
-from pymonkey.baseclasses.CMDBSubObject import CMDBSubObject
+from pylabs.baseclasses.CMDBSubObject import CMDBSubObject
 
 class ApacheAuth(CMDBSubObject):
     """

@@ -57,7 +57,7 @@ class CodeDir:
         self.codedir=codedir
         self.codeFiles=[]   
         self.specFiles=[]
-        self.q=PYMonkey.PYMonkey()
+        self.q=pylabs.pylabs()
     
     def importCode(self):
         """

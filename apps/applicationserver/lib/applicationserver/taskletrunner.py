@@ -37,7 +37,7 @@ class TaskletRunner(object):
     '''Queue and run tasklets
 
     This is just a dummy implementation, since the applicationserver got no 
-    Tasklet concept itself, only when running in a PyMonkey2 environment.
+    Tasklet concept itself, only when running in a pylabs2 environment.
     '''
     def __init__(self, engine, threadpoolsize=10):
         '''Initialize an asynchronous tasklet runner
@@ -53,7 +53,7 @@ class TaskletRunner(object):
               logname=None):
         '''Schedule a tasklet run
 
-        All tasklets matching the given arguments (see the PyMonkey2 tasklet
+        All tasklets matching the given arguments (see the pylabs2 tasklet
         documentation) will be executed asynchronous.
         '''
         raise NotImplementedError

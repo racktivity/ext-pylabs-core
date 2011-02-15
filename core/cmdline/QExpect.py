@@ -38,7 +38,7 @@ import subprocess
 import errno
 import time
 import sys
-import pymonkey
+import pylabs
 
 PIPE = subprocess.PIPE
 
@@ -261,13 +261,13 @@ class QExpect:
         
         If that still fails then we return False.
         """
-        if not pymonkey.q.platform.isLinux():
+        if not pylabs.q.platform.isLinux():
             raise RuntimeError('pexpect/pxssh not supported on this platform')
 
         if not self._pxssh.login(ip, login, password, login_timeout=login_timeout):
             raise ValueError('Could not connect to %s, check either login/password are not correct or host is not reacheable over SSH.'%ip)
         else:
-            pymonkey.q.logger.log('SSH %s@%s session login successful' % (login, ip), 6)
+            pylabs.q.logger.log('SSH %s@%s session login successful' % (login, ip), 6)
 
     def logout(self):
         """This sends exit. If there are stopped jobs then this sends exit twice.
@@ -280,15 +280,15 @@ class QExpect:
         This function also remembers these data for later usage in the 
         classes C{_out} & C{_error}.
         """
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             out=self.receiveOut()
             err=self.receiveError()
             return out,err
         
-        elif pymonkey.q.platform.isLinux() and not self._expect:
+        elif pylabs.q.platform.isLinux() and not self._expect:
             return self._pxssh.before
 
-        elif pymonkey.q.platform.isUnix() and self._expect:
+        elif pylabs.q.platform.isUnix() and self._expect:
             
             if self._expect.match:
                 return '%s%s'%(self._expect.after, self._expect.buffer)
@@ -314,7 +314,7 @@ class QExpect:
         if self._cleanStringEnabled:
             out=self._cleanStr(out)
         self._add2lastOutput(out)
-        pymonkey.q.logger.log("stdout:%s" % out, 9)
+        pylabs.q.logger.log("stdout:%s" % out, 9)
         return out
 
     def receiveError(self):
@@ -335,9 +335,9 @@ class QExpect:
         out=self._ignoreLinesBasedOnFilter(self._lastOutput)
         error=self._lastError
         if(error<>""):
-            pymonkey.q.console.echo("%s/nerror:%s" % (out,error))
+            pylabs.q.console.echo("%s/nerror:%s" % (out,error))
         else:
-            pymonkey.q.console.echo(out)
+            pylabs.q.console.echo(out)
 
     def _receive(self,checkError=False):
         #stdin=self._stdin
@@ -436,28 +436,28 @@ class QExpect:
         After sending a command, one of the receive functions must be called to 
         check for the result on C{stdout} or C{stderr}.
         """
-        pymonkey.q.logger.log("Executor send: %s" % data, 9)
+        pylabs.q.logger.log("Executor send: %s" % data, 9)
         self._lastsend=data
         self._lastOutput=""
         self._lastError=""
         
-        if pymonkey.q.platform.isUnix():
+        if pylabs.q.platform.isUnix():
             if self._expect:
                 if self._expect.sendline(data):
                     return
             
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             data=data+"\r\n"
 
         p=self._p
 
         if len(data) != 0:
-            if pymonkey.q.platform.isWindows():
+            if pylabs.q.platform.isWindows():
                 sent = p.send(data)
                 if sent is None:
                     raise Exception("ERROR: Data sent is none")
                 data = buffer(data, sent)
-            elif pymonkey.q.platform.isLinux():
+            elif pylabs.q.platform.isLinux():
                 self._pxssh.sendline(data)
 
     def prompt(self, timeout=20):
@@ -466,7 +466,7 @@ class QExpect:
         Return C{True} if the prompt was matched.
         Returns C{False} if there was a time out.
         """
-        if pymonkey.q.platform.isLinux():
+        if pylabs.q.platform.isLinux():
             self._pxssh.prompt()
         else:
             raise RuntimeError('pexpect/pxssh module not supported on this platform')
@@ -511,7 +511,7 @@ class QExpect:
             token=token.lower()
             if text.find(token)<>-1:
                 #token found
-                pymonkey.q.logger.log("Found token:%s" % token, 9)
+                pylabs.q.logger.log("Found token:%s" % token, 9)
                 return tokennr
         return 0
 
@@ -524,7 +524,7 @@ class QExpect:
                 #print line
                 #print filter
                 if line.find(filter)<>-1:
-                    pymonkey.q.logger.log("Found ignore line:%s:%s" % (filter,line), 9)
+                    pylabs.q.logger.log("Found ignore line:%s:%s" % (filter,line), 9)
                     foundmatch=True
             if foundmatch==False:
                 returnstr=returnstr+line+"\n"
@@ -536,9 +536,9 @@ class QExpect:
 
         @param timeoutval: time in seconds we maximum will wait
         """
-        pymonkey.q.logger.log("Waiting for receive with timeout:%s " % (timeoutval), 7)
+        pylabs.q.logger.log("Waiting for receive with timeout:%s " % (timeoutval), 7)
         timeout=False
-        starttime=pymonkey.q.system.getTimeEpoch()
+        starttime=pylabs.q.system.getTimeEpoch()
         r="" #full return
         returnpart="" #one time return after receive
         done=False #status param
@@ -550,10 +550,10 @@ class QExpect:
             #q.logger.log("tokenfound:%s"%tokenfound)
             returnpart=self._ignoreLinesBasedOnFilter(returnpart)
             r= r+returnpart
-            curtime=pymonkey.q.system.getTimeEpoch()
-            pymonkey.q.logger.log("TimeoutCheck on waitreceive: %s %s %s" % (curtime,starttime,timeoutval),8)
+            curtime=pylabs.q.system.getTimeEpoch()
+            pylabs.q.logger.log("TimeoutCheck on waitreceive: %s %s %s" % (curtime,starttime,timeoutval),8)
             if(curtime-starttime>timeoutval):
-                pymonkey.q.logger.log("WARNING: execute %s timed out (timeout was %s)" % (self._lastsend,timeoutval), 6)
+                pylabs.q.logger.log("WARNING: execute %s timed out (timeout was %s)" % (self._lastsend,timeoutval), 6)
                 timeout=True
             if tokenfound>0:
                 done=True
@@ -583,11 +583,11 @@ class QExpect:
             q.console.echo(qexpect.receive())
         
         """
-        pymonkey.q.logger.log('Expect %s '%outputToExpect, 7)
+        pylabs.q.logger.log('Expect %s '%outputToExpect, 7)
         
         try:
             self._expect.expect(outputToExpect, 2)
             return True
         except:
-            pymonkey.q.logger.log('Failed to expect \"%s\", found \"%s\" instead'%(outputToExpect, self.receive()), 7)
+            pylabs.q.logger.log('Failed to expect \"%s\", found \"%s\" instead'%(outputToExpect, self.receive()), 7)
         return False

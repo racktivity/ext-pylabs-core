@@ -1,12 +1,12 @@
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
 from enumerators4 import QPackageQualityLevelType4
 from DependencyDef4 import DependencyDef4
 #from enumerators4 import DependencyType4
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
 
 class QPackageTaskletHandler4():

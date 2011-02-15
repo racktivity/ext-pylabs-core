@@ -34,7 +34,7 @@
 # </License>
 
 import re, functools, types, inspect
-from pymonkey import q
+from pylabs import q
 
 try:
     import termios

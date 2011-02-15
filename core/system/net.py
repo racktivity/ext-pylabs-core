@@ -37,7 +37,7 @@ import time
 import socket
 import re
 
-import pymonkey
+import pylabs
 
 class SystemNet:
 
@@ -55,13 +55,13 @@ class SystemNet:
         @raise NotImplementedError: Non-Unix systems
         @raise RuntimeError: No nameserver could be found in /etc/resolv.conf
         """
-        if not pymonkey.q.platform.isUnix():
+        if not pylabs.q.platform.isUnix():
             raise NotImplementedError(
                 'This function is only supported on Unix systems')
 
-        nameserverlines = pymonkey.q.codetools.regex.findAll(
+        nameserverlines = pylabs.q.codetools.regex.findAll(
             "^\s*nameserver\s+(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\s*$",
-            pymonkey.q.system.fs.fileGetContents('/etc/resolv.conf')
+            pylabs.q.system.fs.fileGetContents('/etc/resolv.conf')
         )
 
         if not nameserverlines:
@@ -94,21 +94,21 @@ class SystemNet:
         niclist = []
         regex = ''
         output = ''
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
-            exitcode,output = pymonkey.q.system.process.execute("ip l", outputToStdout=False)
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
+            exitcode,output = pylabs.q.system.process.execute("ip l", outputToStdout=False)
             if not up:
                 regex = "^\d+:\s(?P<name>[\w\d]*):.*$"
             else:
                 regex = "^\d+:\s(?P<name>[\w\d]*):\s<.*UP.*>.*$"
             return list(set(re.findall(regex,output,re.MULTILINE)))
-        elif pymonkey.q.platform.isSolaris():
-            exitcode,output = pymonkey.q.system.process.execute("ifconfig -a", outputToStdout=False)
+        elif pylabs.q.platform.isSolaris():
+            exitcode,output = pylabs.q.system.process.execute("ifconfig -a", outputToStdout=False)
             if up:
                 regex = "^([\w:]+):\sflag.*<.*UP.*>.*$"
             else:
                 regex = "^([\w:]+):\sflag.*$"
             nics = set(re.findall(regex,output,re.MULTILINE))
-            exitcode,output = pymonkey.q.system.process.execute("dladm show-phys", outputToStdout=False)
+            exitcode,output = pylabs.q.system.process.execute("dladm show-phys", outputToStdout=False)
             lines = output.splitlines()
             for line in lines[1:]:
                 nic = line.split()
@@ -127,19 +127,19 @@ class SystemNet:
 
         @raise RuntimeError: On linux if ethtool is not present on the system
         """
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             output=''
-            if pymonkey.q.system.fs.exists("/sys/class/net/%s"%interface):
-                output = pymonkey.q.system.fs.fileGetContents("/sys/class/net/%s/type"%interface)
+            if pylabs.q.system.fs.exists("/sys/class/net/%s"%interface):
+                output = pylabs.q.system.fs.fileGetContents("/sys/class/net/%s/type"%interface)
             if output.strip() == "32":
                 return "INFINIBAND"
             else:
-                if pymonkey.q.system.fs.exists('/proc/net/vlan/%s'%(interface)):
+                if pylabs.q.system.fs.exists('/proc/net/vlan/%s'%(interface)):
                     return 'VLAN'
-                exitcode,output = pymonkey.q.system.process.execute("which ethtool", False, outputToStdout=False)
+                exitcode,output = pylabs.q.system.process.execute("which ethtool", False, outputToStdout=False)
                 if exitcode != 0:
                     raise RuntimeError("Ethtool is not installed on this system!")
-                exitcode,output = pymonkey.q.system.process.execute("ethtool -i %s"%(interface),False,outputToStdout=False)
+                exitcode,output = pylabs.q.system.process.execute("ethtool -i %s"%(interface),False,outputToStdout=False)
                 if exitcode !=0:
                     return 'VIRTUAL'
                 match = re.search("^driver:\s+(?P<driver>\w+)\s*$",output,re.MULTILINE)
@@ -148,15 +148,15 @@ class SystemNet:
                 if match and match.group("driver") == "bridge" :
                     return "VLAN"
                 return "ETHERNET_GB"
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             command = "ifconfig %s"%interface
-            exitcode,output = pymonkey.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
+            exitcode,output = pylabs.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
             if exitcode != 0:
                 # temporary plumb the interface to lookup its mac
-                pymonkey.q.logger.log("Interface %s is down. Temporarily plumbing it to be able to lookup its nic type" % interface, 1)
-                pymonkey.q.system.process.execute('%s plumb' % command, outputToStdout=False)
-                (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False)
-                pymonkey.q.system.process.execute('%s unplumb' % command, outputToStdout=False)
+                pylabs.q.logger.log("Interface %s is down. Temporarily plumbing it to be able to lookup its nic type" % interface, 1)
+                pylabs.q.system.process.execute('%s plumb' % command, outputToStdout=False)
+                (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False)
+                pylabs.q.system.process.execute('%s unplumb' % command, outputToStdout=False)
             if output.find("ipib") >=0:
                 return "INFINIBAND"
             else:
@@ -179,23 +179,23 @@ class SystemNet:
     def getVlanTag(self,interface,nicType=None):
         """Get VLan tag on the specified interface and vlan type"""
         if nicType == None:
-            nicType=pymonkey.q.system.net.getNicType(interface)
+            nicType=pylabs.q.system.net.getNicType(interface)
         if nicType == "INFINIBAND" or nicType=="ETHERNET_GB" or nicType == "VIRTUAL":
             return "0"
-        if pymonkey.q.platform.isLinux():
+        if pylabs.q.platform.isLinux():
             #check if its a vlan
             vlanfile = '/proc/net/vlan/%s'%(interface)
-            if pymonkey.q.system.fs.exists(vlanfile):
-                return pymonkey.q.system.net.getVlanTagFromInterface(interface)
+            if pylabs.q.system.fs.exists(vlanfile):
+                return pylabs.q.system.net.getVlanTagFromInterface(interface)
             bridgefile = '/sys/class/net/%s/brif/'%(interface)
-            for brif in pymonkey.q.system.fs.listDirsInDir(bridgefile):
-                brif = pymonkey.q.system.fs.getBaseName(brif)
+            for brif in pylabs.q.system.fs.listDirsInDir(bridgefile):
+                brif = pylabs.q.system.fs.getBaseName(brif)
                 vlanfile = '/proc/net/vlan/%s'%(brif)
-                if pymonkey.q.system.fs.exists(vlanfile):
-                    return pymonkey.q.system.net.getVlanTagFromInterface(brif)
+                if pylabs.q.system.fs.exists(vlanfile):
+                    return pylabs.q.system.net.getVlanTagFromInterface(brif)
             return "0"
-        elif pymonkey.q.platform.isSolaris():
-            return pymonkey.q.system.net.getVlanTagFromInterface(interface)
+        elif pylabs.q.platform.isSolaris():
+            return pylabs.q.system.net.getVlanTagFromInterface(interface)
         else:
             raise RuntimeError("Not supported on this platform!")
 
@@ -204,10 +204,10 @@ class SystemNet:
         @param interface: string interface to get vlan tag on
         @rtype: integer representing the vlan tag
         """
-        if pymonkey.q.platform.isLinux():
+        if pylabs.q.platform.isLinux():
             vlanfile = '/proc/net/vlan/%s'%(interface)
-            if pymonkey.q.system.fs.exists(vlanfile):
-                content = pymonkey.q.system.fs.fileGetContents(vlanfile)
+            if pylabs.q.system.fs.exists(vlanfile):
+                content = pylabs.q.system.fs.fileGetContents(vlanfile)
                 match = re.search("^%s\s+VID:\s+(?P<vlantag>\d+)\s+.*$"%(interface),content,re.MULTILINE)
                 if match:
                     return match.group('vlantag')
@@ -215,7 +215,7 @@ class SystemNet:
                     raise ValueError("Could not find vlantag for interface %s"%(interface))
             else:
                 raise ValueError("This is not a vlaninterface %s"%(interface))
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             #work with interfaces which are subnetted on vlans eq e1000g5000:1
             interface = interface.split(':')[0]
             match = re.search("^\w+?(?P<interfaceid>\d+)$",interface,re.MULTILINE)
@@ -235,9 +235,9 @@ class SystemNet:
 
     def getIpAddress(self, interface):
         """Return a list of ip addresses and netmasks assigned to this interface"""
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             command = "ip a s %s" % interface
-            (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
             if exitcode != 0:
                 return []
             nicinfo = re.findall("^\s+inet\s+(.*)\/(\d+)\s(?:brd\s)?(\d+\.\d+\.\d+\.\d+)?\s?scope.*$",output,re.MULTILINE)
@@ -251,9 +251,9 @@ class SystemNet:
                     mask += str(int(hex(pow(2,32)-pow(2,32-masknumber))[2:][i*2:i*2+2],16)) + "."
                 result.append([ip, mask[:-1], broadcast])
             return result
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             command = "ifconfig %s"%(interface)
-            (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
             if exitcode != 0:
                 return []
             result = []
@@ -274,26 +274,26 @@ class SystemNet:
         """Return the MAC address of this interface"""
         if not interface in self.getNics():
             raise LookupError("Interface %s not found on the system" % interface)
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
-            if pymonkey.q.system.fs.exists("/sys/class/net"):
-                return pymonkey.q.system.fs.fileGetContents('/sys/class/net/%s/address' % interface).strip()
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
+            if pylabs.q.system.fs.exists("/sys/class/net"):
+                return pylabs.q.system.fs.fileGetContents('/sys/class/net/%s/address' % interface).strip()
             else:
                 command = "ifconfig %s | grep HWaddr| awk '{print $5}'"% interface
-                (exitcode,output)=pymonkey.q.system.process.execute(command, outputToStdout=False)
+                (exitcode,output)=pylabs.q.system.process.execute(command, outputToStdout=False)
                 return self.pm_formatMacAddress(output)
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             # check if interface is a logical inteface ex: bge0:1
             tokens = interface.split(':')
             if len(tokens) > 1 :
                 interface = tokens[0]
             command = "ifconfig %s" % interface
-            (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
             if exitcode != 0:
                 # temporary plumb the interface to lookup its mac
-                pymonkey.q.logger.log("Interface %s is down. Temporarily plumbing it to be able to lookup its MAC address" % interface, 1)
-                pymonkey.q.system.process.execute('%s plumb' % command, outputToStdout=False)
-                (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
-                pymonkey.q.system.process.execute('%s unplumb' % command, outputToStdout=False)
+                pylabs.q.logger.log("Interface %s is down. Temporarily plumbing it to be able to lookup its MAC address" % interface, 1)
+                pylabs.q.system.process.execute('%s plumb' % command, outputToStdout=False)
+                (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
+                pylabs.q.system.process.execute('%s unplumb' % command, outputToStdout=False)
             if exitcode == 0:
                 match = re.search(r"^\s*(ipib|ether)\s*(?P<mac>\S*)", output, re.MULTILINE)
                 if match:
@@ -313,9 +313,9 @@ class SystemNet:
         return mac
 
     def isIpInDifferentNetwork(self, ipaddress):
-        for nic in pymonkey.q.system.net.getNics():
-            for ip in pymonkey.q.system.net.getIpAddress(nic):
-                if pymonkey.pmtypes.IPv4Address(ipaddress) in pymonkey.pmtypes.IPv4Range(netIp=ip[0], netMask=ip[1]):
+        for nic in pylabs.q.system.net.getNics():
+            for ip in pylabs.q.system.net.getIpAddress(nic):
+                if pylabs.pmtypes.IPv4Address(ipaddress) in pylabs.pmtypes.IPv4Range(netIp=ip[0], netMask=ip[1]):
                     return False
         return True
 
@@ -329,11 +329,11 @@ class SystemNet:
         """
         def doArp(ipaddress):
             args = list()
-            if pymonkey.q.platform.isLinux():
+            if pylabs.q.platform.isLinux():
                 # We do not want hostnames to show up in the ARP output
                 args.append("-n")
 
-            return pymonkey.q.system.process.execute(
+            return pylabs.q.system.process.execute(
                 'arp %s %s' % (" ".join(args), ipaddress),
                 dieOnNonZeroExitCode=False,
                 outputToStdout=False
@@ -342,10 +342,10 @@ class SystemNet:
         def noEntry(output):
             return ("no entry" in output) or ("(incomplete)" in output)
 
-        if pymonkey.q.platform.isUnix():
+        if pylabs.q.platform.isUnix():
             if self.isIpInDifferentNetwork(ipaddress):
                 warning = 'The IP address %s is from a different subnet. This means that the macaddress will be the one of the gateway/router instead of the correct one.'
-                pymonkey.q.errorconditionhandler.raiseWarning(warning % ipaddress)
+                pylabs.q.errorconditionhandler.raiseWarning(warning % ipaddress)
 
             exitcode, output = doArp(ipaddress)
             # Output of arp is 1 when no entry found is 1 on solaris but 0
@@ -355,7 +355,7 @@ class SystemNet:
                 self.pingMachine(ipaddress, pingtimeout=1)
                 exitcode, output = doArp(ipaddress)
 
-            if not noEntry(output) and pymonkey.q.platform.isSolaris():
+            if not noEntry(output) and pylabs.q.platform.isSolaris():
                 mac = output.split()[3]
                 return self.pm_formatMacAddress(mac)
             else:
@@ -366,7 +366,7 @@ class SystemNet:
                     # On Linux the arp will not show local configured ip's in the table.
                     # That's why we try to find the ip with "ip a" and match for the mac there.
 
-                    output, stdout, stderr = pymonkey.q.system.process.run('ip a', stopOnError=False)
+                    output, stdout, stderr = pylabs.q.system.process.run('ip a', stopOnError=False)
                     if exitcode:
                         raise RuntimeError('Could not get the MAC address for [%s] because "ip" is not found'%s)
                     mo = re.search('\d:\s+\w+:\s+.*\n\s+.+\s+(?P<mac>([a-fA-F0-9]{2}[:|\-]?){6}).+\n\s+inet\s%s[^0-9]+'%ipaddress, stdout, re.MULTILINE)
@@ -382,29 +382,29 @@ class SystemNet:
         return socket.gethostname()
 
     def isNicConnected(self,interface):
-        if pymonkey.q.platform.isLinux():
+        if pylabs.q.platform.isLinux():
             carrierfile = '/sys/class/net/%s/carrier'%(interface)
-            if not pymonkey.q.system.fs.exists(carrierfile):
+            if not pylabs.q.system.fs.exists(carrierfile):
                 return False
             try:
-                return int(pymonkey.q.system.fs.fileGetContents(carrierfile)) != 0
+                return int(pylabs.q.system.fs.fileGetContents(carrierfile)) != 0
             except IOError:
                 return False
-        elif pymonkey.q.platform.isESX():
-            nl = pymonkey.q.system.net.getNics(up=True)
+        elif pylabs.q.platform.isESX():
+            nl = pylabs.q.system.net.getNics(up=True)
             if interface not in nl:
                 return False
             else:
                 return True
-        elif pymonkey.q.platform.isSolaris():
-            if pymonkey.q.platform.getVersion() < 100:
+        elif pylabs.q.platform.isSolaris():
+            if pylabs.q.platform.getVersion() < 100:
                 command = "dladm show-dev -p -o STATE %s" % interface
                 expectResults = ['STATE="up"', 'STATE="unknown"']
             else:
                 command = "dladm show-phys -p -o STATE %s" % interface
                 expectResults = ['up', 'unknown']
 
-            (exitcode, output) = pymonkey.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
             if exitcode != 0:
                 return False
             output = output.strip()
@@ -420,13 +420,13 @@ class SystemNet:
         """Get default router
         @rtype: string representing the router interface
         """
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             command = "ip r | grep 'default' | awk {'print $3'}"
-            (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False)
             return output.strip()
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             command = "netstat -rn | grep default | awk '{print $2}'"
-            (exitcode, output) = pymonkey.q.system.process.execute(command, outputToStdout=False)
+            (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False)
             return output.strip()
         else:
             raise RuntimeError("q.system.net.getDefaultRouter not supported on this platform")
@@ -445,19 +445,19 @@ class SystemNet:
                     except:
                         return False
                     if not isinstance(ipList[i], int):
-                        pymonkey.q.logger.log('[%s] is not a valid ip address, octects should be integers'%ipaddress, 7)
+                        pylabs.q.logger.log('[%s] is not a valid ip address, octects should be integers'%ipaddress, 7)
                         return False
                 if max(ipList) < 256:
-                    pymonkey.q.logger.log('[%s] is a valid ip address'%ipaddress, 9)
+                    pylabs.q.logger.log('[%s] is a valid ip address'%ipaddress, 9)
                     return True
                 else:
-                    pymonkey.q.logger.log('[%s] is not a valid ip address, octetcs should be less than 256'%ipaddress, 7)
+                    pylabs.q.logger.log('[%s] is not a valid ip address, octetcs should be less than 256'%ipaddress, 7)
                     return False
             else:
-                pymonkey.q.logger.log('[%s] is not a valid ip address, ip should contain 4 octets'%ipaddress, 7)
+                pylabs.q.logger.log('[%s] is not a valid ip address, ip should contain 4 octets'%ipaddress, 7)
                 return False
         else:
-            pymonkey.q.logger.log('[%s] is not a valid ip address'%ipaddress, 7)
+            pylabs.q.logger.log('[%s] is not a valid ip address'%ipaddress, 7)
             return False
 
     def pingMachine(self, ip, pingtimeout=60, recheck = False, allowhostname = False):
@@ -469,36 +469,36 @@ class SystemNet:
         @rtype: True if machine is pingable, False otherwise
         """
         if not allowhostname:
-            if not pymonkey.q.system.net.validateIpAddress(ip):
+            if not pylabs.q.system.net.validateIpAddress(ip):
                 raise ValueError('ERROR: invalid ip address passed:[%s]'%ip)
 
-        pymonkey.q.logger.log('pingMachine %s, timeout=%d, recheck=%s' % (ip, pingtimeout, str(recheck)), 8)
+        pylabs.q.logger.log('pingMachine %s, timeout=%d, recheck=%s' % (ip, pingtimeout, str(recheck)), 8)
 
         start = time.time()
         pingsucceeded = False
         while time.time() - start < pingtimeout:
-            if pymonkey.q.platform.isSolaris():
+            if pylabs.q.platform.isSolaris():
                 #ping -c 1 IP 1
                 #Last 1 is timeout in seconds
-                exitcode, output = pymonkey.q.system.process.execute(
+                exitcode, output = pylabs.q.system.process.execute(
                                     'ping -c 1 %s 1' % ip, False, False)
-            elif pymonkey.q.platform.isLinux():
+            elif pylabs.q.platform.isLinux():
                 #ping -c 1 -W 1 IP
-                exitcode, output = pymonkey.q.system.process.execute(
+                exitcode, output = pylabs.q.system.process.execute(
                                     'ping -c 1 -W 1 %s' % ip, False, False)
-            elif pymonkey.q.platform.isUnix():
-                exitcode, output = pymonkey.q.system.process.execute('ping -c 1 %s'%ip, False, False)
-            elif pymonkey.q.platform.isWindows():
-                exitcode, output = pymonkey.q.system.process.execute('ping -w %d %s'%(pingtimeout, ip), False, False)
+            elif pylabs.q.platform.isUnix():
+                exitcode, output = pylabs.q.system.process.execute('ping -c 1 %s'%ip, False, False)
+            elif pylabs.q.platform.isWindows():
+                exitcode, output = pylabs.q.system.process.execute('ping -w %d %s'%(pingtimeout, ip), False, False)
             else:
                 raise RuntimeError('Platform is not supported')
             if exitcode == 0:
                 pingsucceeded = True
-                pymonkey.q.logger.log('Machine with ip:[%s] is pingable'%ip, 9)
+                pylabs.q.logger.log('Machine with ip:[%s] is pingable'%ip, 9)
                 return True
             time.sleep(1)
         if not pingsucceeded:
-            pymonkey.q.logger.log("Could not ping machine with ip:[%s]"%ip, 7)
+            pylabs.q.logger.log("Could not ping machine with ip:[%s]"%ip, 7)
             return False
 
 
@@ -508,7 +508,7 @@ class SystemNet:
         @param ip: Ip of the machine to check
         """
         # get content of hostsfile
-        filecontents = pymonkey.q.system.fs.fileGetContents(hostsfile)
+        filecontents = pylabs.q.system.fs.fileGetContents(hostsfile)
         res = re.search('^%s\s' %ip, filecontents, re.MULTILINE)
         if res:
             return True
@@ -520,15 +520,15 @@ class SystemNet:
         @param hostsfile: File where hosts are defined
         @param ip: Ip of the machine to remove
         """
-        pymonkey.q.logger.log('Updating hosts file %s: Removing %s' % (hostsfile, ip), 8)
+        pylabs.q.logger.log('Updating hosts file %s: Removing %s' % (hostsfile, ip), 8)
         # get content of hostsfile
-        filecontents = pymonkey.q.system.fs.fileGetContents(hostsfile)
+        filecontents = pylabs.q.system.fs.fileGetContents(hostsfile)
         searchObj = re.search('^%s\s.*\n' %ip, filecontents, re.MULTILINE)
         if searchObj:
             filecontents = filecontents.replace(searchObj.group(0), '')
-            pymonkey.q.system.fs.writeFile(hostsfile, filecontents)
+            pylabs.q.system.fs.writeFile(hostsfile, filecontents)
         else:
-            pymonkey.q.logger.log('Ip address %s not found in hosts file' %ip, 1)
+            pylabs.q.logger.log('Ip address %s not found in hosts file' %ip, 1)
             
     def getHostNamesForIP(self, hostsfile, ip):
         """Get hostnames for ip address
@@ -536,10 +536,10 @@ class SystemNet:
         @param ip: Ip of the machine to get hostnames from
         @return: List of machinehostnames
         """
-        pymonkey.q.logger.log('Get hostnames from hosts file %s for ip %s' % (hostsfile, ip), 8)
+        pylabs.q.logger.log('Get hostnames from hosts file %s for ip %s' % (hostsfile, ip), 8)
         # get content of hostsfile
         if self.isIpInHostsFile(hostsfile, ip):
-            filecontents = pymonkey.q.system.fs.fileGetContents(hostsfile)
+            filecontents = pylabs.q.system.fs.fileGetContents(hostsfile)
             searchObj = re.search('^%s\s.*\n' %ip, filecontents, re.MULTILINE)
             hostnames = searchObj.group(0).strip().split()
             hostnames.pop(0)
@@ -555,9 +555,9 @@ class SystemNet:
         """
         if isinstance(hostname, str):
             hostname = hostname.split()
-        pymonkey.q.logger.log('Updating hosts file %s: %s -> %s' % (hostsfile, hostname, ip), 8)
+        pylabs.q.logger.log('Updating hosts file %s: %s -> %s' % (hostsfile, hostname, ip), 8)
         # get content of hostsfile
-        filecontents = pymonkey.q.system.fs.fileGetContents(hostsfile)
+        filecontents = pylabs.q.system.fs.fileGetContents(hostsfile)
         searchObj = re.search('^%s\s.*\n' %ip, filecontents, re.MULTILINE)
         
         hostnames = ' '.join(hostname)
@@ -566,7 +566,7 @@ class SystemNet:
         else:
             filecontents += '%s %s\n' %(ip, hostnames)
 
-        pymonkey.q.system.fs.writeFile(hostsfile, filecontents)
+        pylabs.q.system.fs.writeFile(hostsfile, filecontents)
 
 
     def download(self, url, localpath, username=None, passwd=None):
@@ -585,14 +585,14 @@ class SystemNet:
         if not localpath:
             raise ValueError('Local path to download the url to can not be None or empty string')
         filename = ''
-        if pymonkey.q.system.fs.isDir(localpath):
-            filename = pymonkey.q.system.fs.joinPaths(localpath, pymonkey.q.system.fs.getBaseName(url))
+        if pylabs.q.system.fs.isDir(localpath):
+            filename = pylabs.q.system.fs.joinPaths(localpath, pylabs.q.system.fs.getBaseName(url))
         else:
-            if pymonkey.q.system.fs.isDir(pymonkey.q.system.fs.getDirName(localpath)) and not pymonkey.q.system.fs.exists(localpath):
+            if pylabs.q.system.fs.isDir(pylabs.q.system.fs.getDirName(localpath)) and not pylabs.q.system.fs.exists(localpath):
                 filename = localpath
             else:
                 raise ValueError('Local path is an invalid path')
-        pymonkey.q.logger.log('Downloading url %s to local path %s'%(url, filename), 4)
+        pylabs.q.logger.log('Downloading url %s to local path %s'%(url, filename), 4)
 
         from urllib import FancyURLopener, splittype
         class myURLOpener(FancyURLopener):
@@ -615,17 +615,17 @@ class SystemNet:
         if username and passwd and splittype(url)[0] == 'ftp':
             url = url.split('://')[0]+'://%s:%s@'%(username,passwd)+url.split('://')[1]
         urlopener.retrieve(url, filename, None, None)
-        pymonkey.q.logger.log('URL %s is downloaded to local path %s'%(url, filename), 4)
+        pylabs.q.logger.log('URL %s is downloaded to local path %s'%(url, filename), 4)
 
     def getDomainName(self):
         """
         Retrieve the dns domain name
         """
-        cmd= "dnsdomainname" if pymonkey.q.platform.isLinux() else "domainname" if pymonkey.q.platform.isSolaris() else ""
+        cmd= "dnsdomainname" if pylabs.q.platform.isLinux() else "domainname" if pylabs.q.platform.isSolaris() else ""
         if not cmd:
-            raise PlatformNotSupportedError('Platform "%s" is not supported. Command is only supported on Linux and Solaris'%pymonkey.q.platform.name)
+            raise PlatformNotSupportedError('Platform "%s" is not supported. Command is only supported on Linux and Solaris'%pylabs.q.platform.name)
 
-        exitCode, domainName=pymonkey.q.system.process.execute(cmd, outputToStdout=False)
+        exitCode, domainName=pylabs.q.system.process.execute(cmd, outputToStdout=False)
         domainName = domainName.splitlines()[0]
 
         if not domainName:

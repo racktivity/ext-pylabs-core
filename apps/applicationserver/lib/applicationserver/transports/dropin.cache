@@ -139,7 +139,7 @@ g8
 S'applicationserver.transports.amf'
 p52
 sg10
-S'Adobe AMF transport for the PyMonkey Applicationserver'
+S'Adobe AMF transport for the pylabs Applicationserver'
 p53
 sg11
 (lp54

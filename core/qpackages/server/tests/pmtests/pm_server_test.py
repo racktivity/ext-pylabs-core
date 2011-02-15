@@ -36,13 +36,13 @@
 import sys
 import time
 
-from pymonkey.InitBase import q
+from pylabs.InitBase import q
 
-from pymonkey.qpackages.common.DomainObject import DomainObject
-from pymonkey.qpackages.common.VLists import VLists
+from pylabs.qpackages.common.DomainObject import DomainObject
+from pylabs.qpackages.common.VLists import VLists
 
-from pymonkey.qpackages.server.Users import Users
-from pymonkey.qpackages.server.DomainACL import DomainACL
+from pylabs.qpackages.server.Users import Users
+from pylabs.qpackages.server.DomainACL import DomainACL
 
 ''' Setup domain '''
 def setupDomain(domain):
@@ -92,16 +92,16 @@ def testQPackageCreate(name, version, domain):
     return True
 
 try:
-    q.qpackages.qpackageServerConnections.qpackageServerConnectionAdd('unittest.pymonkey.org', '192.168.11.114', domains=['unittest.pymonkey.org',], port=8088, login='test', password='test')
+    q.qpackages.qpackageServerConnections.qpackageServerConnectionAdd('unittest.pylabs.org', '192.168.11.114', domains=['unittest.pylabs.org',], port=8088, login='test', password='test')
 except (ValueError): # pass the error if it already exists
     pass
 q.qpackages.qpackageServerConnections.refresh()
 # connect to the QPackageServer
 
-conn = q.qpackages.qpackageServerConnections.getConnectionFromDomain('unittest.pymonkey.org')
+conn = q.qpackages.qpackageServerConnections.getConnectionFromDomain('unittest.pylabs.org')
 if not conn.isConnected():
     conn.connect()
 ''' Test to create a QPackage '''
-if not testQPackageCreate('test_qpackage_%s'%int(time.time()), '1.3.1','unittest.pymonkey.org'):
+if not testQPackageCreate('test_qpackage_%s'%int(time.time()), '1.3.1','unittest.pylabs.org'):
     raise RuntimeError('could not create the test qpackage')
 q.console.echo('Test successfull')

@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.qpackages.client.QPackageExecuterHelper import QPackageExecuterHelper
-from pymonkey.qpackages.client.QPackageBuilderHelper import QPackageBuilderHelper
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
+from pylabs import q
+from pylabs.qpackages.client.QPackageExecuterHelper import QPackageExecuterHelper
+from pylabs.qpackages.client.QPackageBuilderHelper import QPackageBuilderHelper
+from pylabs.qpackages.common.QPackageObject import QPackageObject
 
 class QPackageBuilder(object):
     """

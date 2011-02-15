@@ -1,8 +1,8 @@
-from pymonkey.Shell import *
+from pylabs.Shell import *
 import warnings
 warnings.filterwarnings('ignore', r'.*sha.*')
 import paramiko
-from pymonkey import q
+from pylabs import q
 
 class SSHClient:
 

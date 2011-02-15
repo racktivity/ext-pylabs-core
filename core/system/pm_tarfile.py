@@ -37,8 +37,8 @@
 
 import tarfile
 
-import pymonkey
-from pymonkey.baseclasses import BaseEnumeration, BaseType
+import pylabs
+from pylabs.baseclasses import BaseEnumeration, BaseType
 
 #NOTE: We use this enumeration so we can add tar file creation and others
 #later on. This enumeration is used when constructing a new TarFile object,
@@ -58,8 +58,8 @@ class TarFileAction(BaseEnumeration):
 class TarFile(BaseType):
     '''Handle tar files'''
 
-    path = pymonkey.q.basetype.filepath(doc='Path of the on-disk tar file')
-    action = pymonkey.q.basetype.enumeration(TarFileAction,
+    path = pylabs.q.basetype.filepath(doc='Path of the on-disk tar file')
+    action = pylabs.q.basetype.enumeration(TarFileAction,
                 doc='Access method of tar file')
 
     def __init__(self, path, action=TarFileAction.READ):
@@ -70,10 +70,10 @@ class TarFile(BaseType):
         @prarm action: Action to perform on the tar file
         @type action: TarFileAction
         '''
-        if not pymonkey.q.basetype.filepath.check(path):
+        if not pylabs.q.basetype.filepath.check(path):
             raise ValueError('Provided string "%s" is not a valid path' % path)
         if action is TarFileAction.READ:
-            if not pymonkey.q.system.fs.isFile(path):
+            if not pylabs.q.system.fs.isFile(path):
                 raise ValueError(
                         'Provided path "%s" is not an existing file' % path)
             if not tarfile.is_tarfile(path):
@@ -103,9 +103,9 @@ class TarFile(BaseType):
         if not self.action is TarFileAction.READ:
             raise RuntimeError('Can only extract archives opened for reading')
 
-        if not pymonkey.q.basetype.dirpath.check(destination_path):
+        if not pylabs.q.basetype.dirpath.check(destination_path):
             raise ValueError('Not a valid folder name provided')
-        if not pymonkey.q.system.fs.exists(destination_path):
+        if not pylabs.q.system.fs.exists(destination_path):
             raise ValueError('Destination folder "%s" does not exist'
                     % destination_path)
 

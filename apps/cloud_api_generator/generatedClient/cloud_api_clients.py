@@ -31,6 +31,6 @@ from client_policy import policy
 from client_machine import machine
 from client_cloudspace import cloudspace
 
-from pymonkey import q
+from pylabs import q
 from osis import init
 init(q.system.fs.joinPaths(q.dirs.baseDir, 'libexec', 'osis'))

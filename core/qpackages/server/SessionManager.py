@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.server.Session import Session
-from pymonkey.qpackages.common.QPackageObject import QPackageObject
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.server.Session import Session
+from pylabs.qpackages.common.QPackageObject import QPackageObject
 
 class SessionManager(BaseType):
     """

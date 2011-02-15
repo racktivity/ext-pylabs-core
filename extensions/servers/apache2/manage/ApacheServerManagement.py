@@ -33,9 +33,9 @@
 #
 # </License>
  
-from pymonkey import q
-from pymonkey.baseclasses.ManagementApplication import ManagementApplication, CMDBLockMixin
-from pymonkey.enumerators import AppStatusType
+from pylabs import q
+from pylabs.baseclasses.ManagementApplication import ManagementApplication, CMDBLockMixin
+from pylabs.enumerators import AppStatusType
 # Suppress warning by Cheetah about non-C NameMapper
 import warnings
 import urllib

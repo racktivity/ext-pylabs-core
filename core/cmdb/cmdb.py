@@ -33,7 +33,7 @@
 #
 # </License>
 
-'''Implementation of CMDB, the PyMonkey Database (object persistance layer)'''
+'''Implementation of CMDB, the pylabs Database (object persistance layer)'''
 
 from __future__ import with_statement
 
@@ -51,9 +51,9 @@ try:
 except ImportError:
     import pickle
 
-import pymonkey
+import pylabs
 
-from pymonkey.system.fs import lock_ as _lock, unlock_ as _unlock
+from pylabs.system.fs import lock_ as _lock, unlock_ as _unlock
 
 #Some helper variables for ThreadLocalLock
 _LOCK_DICT = dict() #Lock store
@@ -187,7 +187,7 @@ class CMDBLock(object):
     @property
     def lock_path(self):
         '''Path of CMDB lock lockfile path'''
-        return pymonkey.q.system.fs.joinPaths(
+        return pylabs.q.system.fs.joinPaths(
                 self.base_dir, self.type_name, 'lock')
 
     def _safe(self, take_lock):
@@ -203,7 +203,7 @@ class CMDBLock(object):
 
         try:
             #Lock file exists AND owned by this thread
-            if not pymonkey.q.system.fs.exists(self.lock_path):
+            if not pylabs.q.system.fs.exists(self.lock_path):
                 return False
 
             pid, tid, _, _ = self._read()
@@ -271,8 +271,8 @@ class CMDBLock(object):
         args = (os.getpid(), thread.get_ident(), start, start + timeout)
 
         lockdir = os.path.abspath(os.path.join(self.lock_path, '..'))
-        if not pymonkey.q.system.fs.exists(lockdir):
-            pymonkey.q.system.fs.createDir(lockdir)
+        if not pylabs.q.system.fs.exists(lockdir):
+            pylabs.q.system.fs.createDir(lockdir)
 
         data = struct.pack(self.STRUCT_FORMAT, *args)
         with open(self.lock_path, 'wb') as fd:
@@ -307,7 +307,7 @@ class CMDBLock(object):
             if not self._safe(False):
                 raise ObjectNotOwnedException( \
                     'Object not owned by current thread')
-            pymonkey.q.system.fs.removeFile(self.lock_path)
+            pylabs.q.system.fs.removeFile(self.lock_path)
 
     #These are used to use CMDBLock as a context manager
     def __enter__(self):
@@ -333,22 +333,22 @@ class CMDBObject(object):
     @property
     def dir_path(self):
         '''Storage folder of this object'''
-        return pymonkey.q.system.fs.joinPaths(self.base_dir, self.type_name)
+        return pylabs.q.system.fs.joinPaths(self.base_dir, self.type_name)
 
     @property
     def config_path(self):
         '''Path to configuration file of this object'''
-        return pymonkey.q.system.fs.joinPaths(self.dir_path, 'main.cfg')
+        return pylabs.q.system.fs.joinPaths(self.dir_path, 'main.cfg')
 
     def object_path(self, version):
         '''Path to object file of a given version of this object'''
-        return pymonkey.q.system.fs.joinPaths(
+        return pylabs.q.system.fs.joinPaths(
                 self.dir_path, 'versions', '%s.db' % version)
 
     @property
     def exists(self):
         '''Check whether an object is stored in CMDB'''
-        return pymonkey.q.system.fs.exists(self.config_path)
+        return pylabs.q.system.fs.exists(self.config_path)
 
     @property
     def value(self):
@@ -371,8 +371,8 @@ class CMDBObject(object):
     def register(self):
         '''Register a new object type'''
         if not self.exists:
-            pymonkey.q.system.fs.createDir(
-                    pymonkey.q.system.fs.joinPaths(self.dir_path, 'versions'))
+            pylabs.q.system.fs.createDir(
+                    pylabs.q.system.fs.joinPaths(self.dir_path, 'versions'))
 
     def save(self, object_, register):
         '''Save an object to disk
@@ -461,7 +461,7 @@ class CMDBContextManager(object):
         self.object_type_name = object_type_name
 
     def __enter__(self):
-        return pymonkey.q.cmdb.getObjectWithLock(self.object_type_name)
+        return pylabs.q.cmdb.getObjectWithLock(self.object_type_name)
 
     def __exit__(self, *exc_info):
         #We can ignore ObjectNotOwnedException here, since it is possible the
@@ -470,7 +470,7 @@ class CMDBContextManager(object):
         #the with context, the exception will be propagated upstream, so that's
         #not an issue.
         try:
-            pymonkey.q.cmdb.releaseObjectLock(self.object_type_name)
+            pylabs.q.cmdb.releaseObjectLock(self.object_type_name)
         except ObjectNotOwnedException:
             pass
 
@@ -490,14 +490,14 @@ def getObject(objectTypeName, version=None):
 
     @raise UnknownObjectException: Object type unknown
     '''
-    pymonkey.q.logger.log('[CMDB] Get object %s' % objectTypeName, 4)
+    pylabs.q.logger.log('[CMDB] Get object %s' % objectTypeName, 4)
     if version:
         raise NotImplementedError
 
-    object_ = CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir)
+    object_ = CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir)
     if not object_.exists:
         raise UnknownObjectException('Unknown object %s in %s' % \
-                    (objectTypeName, pymonkey.q.dirs.cmdbDir, ))
+                    (objectTypeName, pylabs.q.dirs.cmdbDir, ))
 
     return object_.value
 
@@ -523,8 +523,8 @@ def saveObject(objectTypeName, object_, register=True):
     @param register: Register the object type if unknown
     @type register: bool
     '''
-    pymonkey.q.logger.log('[CMDB] Save object %s' % objectTypeName, 4)
-    cmdb_object = CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir)
+    pylabs.q.logger.log('[CMDB] Save object %s' % objectTypeName, 4)
+    cmdb_object = CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir)
     cmdb_object.save(object_, register)
 
 def existsObject(objectTypeName):
@@ -536,9 +536,9 @@ def existsObject(objectTypeName):
     @return: Whether the object type exists
     @rtype: bool
     '''
-    pymonkey.q.logger.log(
+    pylabs.q.logger.log(
             '[CMDB] Check whether object %s exists' % objectTypeName, 5)
-    return CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir).exists
+    return CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir).exists
 
 def releaseObjectLock(objectTypeName):
     '''Release the lock on an object
@@ -546,9 +546,9 @@ def releaseObjectLock(objectTypeName):
     @param objectTypeName: Name of the object type
     @type objectTypeName: string
     '''
-    pymonkey.q.logger.log(
+    pylabs.q.logger.log(
             '[CMDB] Release lock on object %s' % objectTypeName, 4)
-    cmdb_object = CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir)
+    cmdb_object = CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir)
     try:
         cmdb_object.unlock()
     except ObjectNotOwnedException:
@@ -574,18 +574,18 @@ def getObjectWithLock(objectTypeName, locktimeout=DEFAULT_LOCK_TIMEOUT, \
     @raise LockWaitTimeoutException: Lock acquisition timed out
     @raise ValueError: The locktimeout exceeds the maximum timeout value
     '''
-    pymonkey.q.logger.log('[CMDB] Get object %s with lock' % objectTypeName, 4)
+    pylabs.q.logger.log('[CMDB] Get object %s with lock' % objectTypeName, 4)
     if version:
         raise NotImplementedError
 
     if locktimeout > MAX_LOCK_TIMEOUT:
         raise ValueError("Maximum lock timeout is %d seconds" % MAX_LOCK_TIMEOUT)
 
-    cmdb_object = CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir)
+    cmdb_object = CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir)
 
     if not cmdb_object.exists:
         raise UnknownObjectException('Unknown object %s in %s' % \
-                    (objectTypeName, pymonkey.q.dirs.cmdbDir, ))
+                    (objectTypeName, pylabs.q.dirs.cmdbDir, ))
 
     start = time.time()
     locked = False
@@ -612,7 +612,7 @@ def isLocked(objectTypeName):
     @return: Whether the object is locked
     @rtype: bool
     '''
-    cmdb_object = CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir)
+    cmdb_object = CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir)
     return cmdb_object.is_locked()
 
 def isSafe(objectTypeName):
@@ -624,7 +624,7 @@ def isSafe(objectTypeName):
     @return: Whether the object can be saved safely
     @rtype: bool
     '''
-    cmdb_object = CMDBObject(objectTypeName, pymonkey.q.dirs.cmdbDir)
+    cmdb_object = CMDBObject(objectTypeName, pylabs.q.dirs.cmdbDir)
     return cmdb_object.is_safe()
 
 

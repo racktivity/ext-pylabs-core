@@ -1,9 +1,9 @@
-from pymonkey.InitBase import *
+from pylabs.InitBase import *
 
 q.application.appname="setup wizardrunner"
 q.application.start()
 
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
 q.qshellconfig.interactive=True
 

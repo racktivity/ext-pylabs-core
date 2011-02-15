@@ -1,7 +1,7 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 from ClusterNode import ClusterNode
-from pymonkey.baseclasses import BaseType
+from pylabs.baseclasses import BaseType
 import os
 
                     

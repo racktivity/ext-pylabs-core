@@ -1,9 +1,9 @@
-#import pymonkey
+#import pylabs
 import pprint
-from pymonkey.Shell import *
-from pymonkey.messages.MessageObject import MessageObject
+from pylabs.Shell import *
+from pylabs.messages.MessageObject import MessageObject
 from MessageTargetBase import MessageTargetBase
-from pymonkey import q
+from pylabs import q
 
 #@todo question, please let despiegk know why we have this object and where and how it is being used, what is relation with LogObject? Seems to be in wrong location.
 

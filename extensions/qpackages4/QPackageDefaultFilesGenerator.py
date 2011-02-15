@@ -1,5 +1,5 @@
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 
     
 class QPackageDefaultFilesGenerator:
@@ -100,7 +100,7 @@ __tags__   = 'codemanagement',
 
 def main(q, i, params, tags):
     #Use this to checkout from mercurial
-    #from pymonkey.clients.hg.HgRecipe import HgRecipe
+    #from pylabs.clients.hg.HgRecipe import HgRecipe
     #recipe = HgRecipe()
     
     # Or just extract the files from the bundle
@@ -124,7 +124,7 @@ def main(q, i, params, tags):
     qpackage = params['qpackage']
     qpackage.copyFiles()
     #q.platform.ubuntu.check()
-    #from pymonkey.Shell import *
+    #from pylabs.Shell import *
     #ipshell()
     #q.platform.ubuntu.updatePackageMetadata()
     #q.platform.ubuntu.checkInstall("eric","eric")

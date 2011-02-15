@@ -33,10 +33,10 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.enumerators import QPackageQualityLevelType
-from pymonkey.qpackages.common.enumerators import VListType
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.enumerators import QPackageQualityLevelType
+from pylabs.qpackages.common.enumerators import VListType
 
 class DomainObject(BaseType):
 

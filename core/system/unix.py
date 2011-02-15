@@ -41,9 +41,9 @@ import commands
 import sys
 import math
 
-import pymonkey
-from pymonkey.Time import TimeIntervalUnit
-from pymonkey.decorators import deprecated
+import pylabs
+from pylabs.Time import TimeIntervalUnit
+from pylabs.decorators import deprecated
 
 def user_in_group(username, groupname):
     '''Check whether a given user is member of a given group
@@ -82,7 +82,7 @@ class UnixSystem:
         @param var: Variable name
         @type var: string
         '''
-        exitcode, output = pymonkey.q.system.process.execute(". %s > /dev/null && echo $%s"%(file,var))
+        exitcode, output = pylabs.q.system.process.execute(". %s > /dev/null && echo $%s"%(file,var))
         if exitcode !=0:
             return ""
         else:
@@ -97,8 +97,8 @@ class UnixSystem:
         mem = 0
         cpumhz = 0
         nrcpu = 0
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
-            memcontent = pymonkey.q.system.fs.fileGetContents("/proc/meminfo")
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
+            memcontent = pylabs.q.system.fs.fileGetContents("/proc/meminfo")
             match = re.search("^MemTotal\:\s+(\d+)\s+kB$",memcontent, re.MULTILINE)
             if match:
                 #algorithme to round the memory again
@@ -106,18 +106,18 @@ class UnixSystem:
                 percisions = 2 # means 1 / 2 GB precision
                 #we use ceil because we can only loose memory used by system
                 mem = int((math.ceil((mem_in_gb*percisions))/percisions)*1024)
-            cpucontent = pymonkey.q.system.fs.fileGetContents("/proc/cpuinfo")
+            cpucontent = pylabs.q.system.fs.fileGetContents("/proc/cpuinfo")
             matches = re.findall("^cpu\sMHz\s+:\s(\d+)\.\d+$", cpucontent, re.MULTILINE)
             if matches:
                 nrcpu = len(matches)
                 cpumhz = int(matches[0])
             return mem,cpumhz,nrcpu
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             command = "prtconf | grep Memory | awk '{print $3}'"
-            (exitcoude, output) = pymonkey.q.system.process.execute(command)
+            (exitcoude, output) = pylabs.q.system.process.execute(command)
             mem = output.strip()
             command = "psrinfo -v | grep 'processor operates' | awk '{print $6}'"
-            (exitcoude, output) = pymonkey.q.system.process.execute(command)
+            (exitcoude, output) = pylabs.q.system.process.execute(command)
             tuples = output.strip().split("\n")
             nrcpu = len(tuples)
             cpumhz = int(tuples[0])
@@ -163,10 +163,10 @@ class UnixSystem:
             raise ValueError("This function only supports following intervals: " + str(allowedIntervals))
 
         # Construct timing options
-        if pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             crontabFilePath = "/etc/crontab"
             crontabItem = "*/" + str(interval)
-        elif pymonkey.q.platform.isSolaris():
+        elif pylabs.q.platform.isSolaris():
             crontabFilePath = "/var/spool/cron/crontabs/root"
             if interval == 1:
                 crontabItem = "*"
@@ -183,7 +183,7 @@ class UnixSystem:
             crontabOptions = crontabOptions + " "
         crontabOptions = crontabOptions + crontabItem + " "
         crontabOptions = crontabOptions + "* " * (5 - unitPlace)
-        if pymonkey.q.platform.isLinux():
+        if pylabs.q.platform.isLinux():
             crontabOptions = crontabOptions + "root    " # The Vixie cron (for Linux) has an extra option: username of running process.
 
         # Construct output redirection
@@ -191,12 +191,12 @@ class UnixSystem:
             crontabOutputRedir = " >/dev/null"
         else:
             if not self.exists(self.getDirName(logFilePath)):
-                pymonkey.q.system.fs.createDir(self.getDirName(logFilePath))
+                pylabs.q.system.fs.createDir(self.getDirName(logFilePath))
             crontabOutputRedir = " >>" + logFilePath
         crontabOutputRedir = crontabOutputRedir + " 2>&1"
 
         # Check if command already present.
-        crontabLines = pymonkey.q.system.fs.fileGetContents(crontabFilePath).splitlines()
+        crontabLines = pylabs.q.system.fs.fileGetContents(crontabFilePath).splitlines()
         commandFoundInCrontab = -1
         for i in range(len(crontabLines)):
             if crontabLines[i].find(commandToExecute) > -1 and not crontabLines[i].lstrip().startswith("#"):
@@ -210,15 +210,15 @@ class UnixSystem:
             crontabLines[commandFoundInCrontab] = (crontabOptions + commandToExecute + crontabOutputRedir)
 
         # Backup old crontab file and write modifications new crontab file.
-        pymonkey.q.system.fs.copyFile(crontabFilePath, crontabFilePath + ".backup") # Create backup
-        if pymonkey.q.platform.isSolaris():
+        pylabs.q.system.fs.copyFile(crontabFilePath, crontabFilePath + ".backup") # Create backup
+        if pylabs.q.platform.isSolaris():
             self.writeFile(crontabFilePath + "_new", "\n".join(crontabLines) + "\n")
             # On Solaris, we need to call the crontab command to activate the changes.
             self.execute("crontab " + crontabFilePath + "_new")
             self.removeFile(crontabFilePath + "_new")
-        elif pymonkey.q.platform.isLinux() or pymonkey.q.platform.isESX():
+        elif pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             # On Linux, we edit the system-wide crontab of Vixie Cron, so don't have to run the "crontab" command to be sure changes have effect.
-            pymonkey.q.system.fs.writeFile(crontabFilePath, "\n".join(crontabLines) + "\n")
+            pylabs.q.system.fs.writeFile(crontabFilePath, "\n".join(crontabLines) + "\n")
         else:
             raise RuntimeError("Platform not supported.")
 
@@ -231,7 +231,7 @@ class UnixSystem:
         @param pid: process id
         """
 
-        pymonkey.q.logger.log('Killing process group of %d' % pid, 7)
+        pylabs.q.logger.log('Killing process group of %d' % pid, 7)
         import signal
         os.killpg(os.getpgid(pid), signal.SIGKILL)
 
@@ -249,12 +249,12 @@ class UnixSystem:
         """
         if not group:
             group = 'root'
-        pymonkey.q.logger.log('Chown %s:%s %s'%(user,group,path),8)
+        pylabs.q.logger.log('Chown %s:%s %s'%(user,group,path),8)
         uid=pwd.getpwnam(user).pw_uid
         gid=grp.getgrnam(group).gr_gid
         os.chown(path, uid, gid)
         if recursive:
-            files=pymonkey.q.system.fs.walk(path,return_folders=1,return_files=1,recurse=-1)
+            files=pylabs.q.system.fs.walk(path,return_folders=1,return_files=1,recurse=-1)
             for file in files:
                 os.chown(file,uid,gid)
 
@@ -263,8 +263,8 @@ class UnixSystem:
         """
         Chmod based on system.fs.walk
         """
-        pymonkey.q.logger.log('Chmod %s'%root,8)
-        items = pymonkey.q.system.fs.walkExtended( root, recurse, dirPattern, filePattern)
+        pylabs.q.logger.log('Chmod %s'%root,8)
+        items = pylabs.q.system.fs.walkExtended( root, recurse, dirPattern, filePattern)
         for item in items:
             os.chmod(item,mode)
 
@@ -290,14 +290,14 @@ class UnixSystem:
         @raises RuntimeError: If /bin/su is not available on the system
         @raises ValueError: When the provided username can't be resolved
 
-        @see: pymonkey.system.process.SystemProcess.execute
+        @see: pylabs.system.process.SystemProcess.execute
         '''
         command = self._prepareCommand(command, username)
 
         kwargs = kwargs.copy()
         kwargs['command'] = command
 
-        return pymonkey.q.system.process.execute(**kwargs)
+        return pylabs.q.system.process.execute(**kwargs)
 
     @deprecated('q.system.unix.executeDaemonAsUser',
                 alternative='q.system.process.runDaemon', version='3.2')
@@ -323,17 +323,17 @@ class UnixSystem:
         @raises RuntimeError: If /bin/su is not available on the system
         @raises ValueError: When the provided username can't be resolved
 
-        @see: pymonkey.system.process.runDaemon
+        @see: pylabs.system.process.runDaemon
         '''
 
         command = self._prepareCommand(command, username)
         kwargs = kwargs.copy()
         kwargs['commandline'] = command
 
-        return pymonkey.q.system.process.runDaemon(**kwargs)
+        return pylabs.q.system.process.runDaemon(**kwargs)
 
     def _prepareCommand(self, command, username):
-        pymonkey.q.logger.log('Attempt to run %s as user %s' % (command, username), 6)
+        pylabs.q.logger.log('Attempt to run %s as user %s' % (command, username), 6)
         try:
             pwent = pwd.getpwnam(username)
         except KeyError:
@@ -344,7 +344,7 @@ class UnixSystem:
 
         subin = '/bin/su'
 
-        if not pymonkey.q.system.fs.exists(subin):
+        if not pylabs.q.system.fs.exists(subin):
             raise RuntimeError('%s not found on this system, I need it there' % subin)
 
         command = '%s --login --command %s %s' % (subin, commands.mkarg(command), username)
@@ -357,10 +357,10 @@ class UnixSystem:
         @param path: Path to chroot() to
         @type path: string
         '''
-        if not path or not pymonkey.q.basetype.unixdirpath.check(path):
+        if not path or not pylabs.q.basetype.unixdirpath.check(path):
             raise ValueError('Path %s is invalid' % path)
 
-        pymonkey.q.logger.log('Change root to %s' % path, 5)
+        pylabs.q.logger.log('Change root to %s' % path, 5)
         os.chroot(path)
 
     def addSystemUser(self, username, groupname=None, shell=None):
@@ -374,20 +374,20 @@ class UnixSystem:
         @type username: string
         '''
         
-        if not pymonkey.q.system.unix.unixUserExists(username):
-            pymonkey.q.logger.log(
+        if not pylabs.q.system.unix.unixUserExists(username):
+            pylabs.q.logger.log(
                 "User [%s] does not exist, creating an entry" % username, 5)
 
             command = "useradd"
             options = []
-            if groupname and not pymonkey.q.system.unix.unixGroupExists(groupname):
+            if groupname and not pylabs.q.system.unix.unixGroupExists(groupname):
                 raise RuntimeError('Failed to add user because group %s does not exist' %groupname)
-            if groupname and pymonkey.q.system.unix.unixGroupExists(groupname):
+            if groupname and pylabs.q.system.unix.unixGroupExists(groupname):
                 options.append("-g %s" %(groupname))
             if shell:
                 options.append("-s %s" % shell)
             command = "%s %s %s" % (command, " ".join(options), username)
-            exitCode, stdout, stderr = pymonkey.q.system.process.run(command, stopOnError=False)
+            exitCode, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False)
 
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
@@ -395,7 +395,7 @@ class UnixSystem:
                                     (username,output))
 
         else:
-            pymonkey.q.logger.log("User %s already exists" % username, 4)
+            pylabs.q.logger.log("User %s already exists" % username, 4)
 
     def addSystemGroup(self, groupname):
         ''' Add a group to the system
@@ -405,15 +405,15 @@ class UnixSystem:
         @param groupname: Name of the group to add
         @type groupname : string
         '''
-        if not pymonkey.q.system.unix.unixGroupExists(groupname):
-            pymonkey.q.logger.log("Group [%s] does not exist, creating an entry" %groupname, 5)
-            exitCode, stdout, stderr = pymonkey.q.system.process.run("groupadd %s" %groupname, stopOnError=False)
+        if not pylabs.q.system.unix.unixGroupExists(groupname):
+            pylabs.q.logger.log("Group [%s] does not exist, creating an entry" %groupname, 5)
+            exitCode, stdout, stderr = pylabs.q.system.process.run("groupadd %s" %groupname, stopOnError=False)
             
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
                 raise RuntimeError('Failed to add group %s, error: %s' %(groupname,output))
         else:
-            pymonkey.q.logger.log("Group %s already exists" % groupname, 4)
+            pylabs.q.logger.log("Group %s already exists" % groupname, 4)
 
     def unixUserExists(self, username):
         """Checks if a given user already exists in the system
@@ -452,11 +452,11 @@ class UnixSystem:
         @type username: string
 
         """
-        if not pymonkey.q.system.unix.unixUserExists(username):
+        if not pylabs.q.system.unix.unixUserExists(username):
             raise ValueError("User [%s] does not exist, cannot disable user" % username)
         else:
             command = 'passwd %s -l' %username
-            exitCode, stdout, stderr = pymonkey.q.system.process.run(command, stopOnError=False)
+            exitCode, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False)
 
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
@@ -470,11 +470,11 @@ class UnixSystem:
         @type username: string
 
         """
-        if not pymonkey.q.system.unix.unixUserExists(username):
+        if not pylabs.q.system.unix.unixUserExists(username):
             raise ValueError("User [%s] does not exist, cannot enable user" % username)
         else:
             command = 'passwd %s -u' %username
-            exitCode, stdout, stderr = pymonkey.q.system.process.run(command, stopOnError=False)
+            exitCode, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False)
 
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
@@ -488,12 +488,12 @@ class UnixSystem:
         @type username: string
 
         """
-        if not pymonkey.q.system.unix.unixUserExists(username):
+        if not pylabs.q.system.unix.unixUserExists(username):
             raise ValueError("User [%s] does not exist, cannot remove user" % username)
         else:
             removehome = "-r" if removehome else ""
             command = 'userdel %s %s' % (removehome, username)
-            exitCode, stdout, stderr = pymonkey.q.system.process.run(command, stopOnError=False)
+            exitCode, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False)
 
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
@@ -510,11 +510,11 @@ class UnixSystem:
         @type username: string        
 
         """
-        if not pymonkey.q.system.unix.unixUserExists(username):
+        if not pylabs.q.system.unix.unixUserExists(username):
             raise ValueError("User [%s] does not exist, cannot set password" % username)
         else:
             command = "echo '%s:%s' | chpasswd" %(username, password)
-            exitCode, stdout, stderr = pymonkey.q.system.process.run(command, stopOnError=False)
+            exitCode, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False)
 
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
@@ -585,7 +585,7 @@ class UnixSystem:
 
         import threading
         if threading.activeCount() > 1:
-            pymonkey.q.errorconditionhandler.raiseWarning(
+            pylabs.q.errorconditionhandler.raiseWarning(
                 'You application got running threads, this can cause issues when using fork')
 
         pid = os.fork()

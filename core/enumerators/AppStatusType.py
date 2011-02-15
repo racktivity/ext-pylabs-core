@@ -1,6 +1,6 @@
 
 
-from pymonkey.baseclasses import BaseEnumeration
+from pylabs.baseclasses import BaseEnumeration
 
 class AppStatusType(BaseEnumeration):
     """Application status"""

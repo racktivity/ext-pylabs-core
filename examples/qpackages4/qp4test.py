@@ -1,5 +1,5 @@
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
+from pylabs.InitBase import *
+from pylabs.Shell import *
 from pprint import pprint
 
 q.application.appname = "qp4test"

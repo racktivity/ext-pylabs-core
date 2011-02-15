@@ -33,12 +33,12 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
-from pymonkey.cmdb import cmdb
-from pymonkey.baseclasses.BaseCMDBObject import BaseCMDBObject
-from pymonkey.pmtypes.PrimitiveTypes import String, Integer, Boolean
-from pymonkey.pmtypes.CustomTypes import Guid
+from pylabs.cmdb import cmdb
+from pylabs.baseclasses.BaseCMDBObject import BaseCMDBObject
+from pylabs.pmtypes.PrimitiveTypes import String, Integer, Boolean
+from pylabs.pmtypes.CustomTypes import Guid
 
 class CMDBObject(BaseCMDBObject):
     """
@@ -64,8 +64,8 @@ class CMDBObject(BaseCMDBObject):
 
         # Initialize properties if not already initialized
         if self.cmdbid is None:
-            self.cmdbid=pymonkey.q.base.idgenerator.generateRandomInt(1,10000000)        
-            self.cmdbguid=pymonkey.q.base.idgenerator.generateGUID()
+            self.cmdbid=pylabs.q.base.idgenerator.generateRandomInt(1,10000000)        
+            self.cmdbguid=pylabs.q.base.idgenerator.generateGUID()
         
        
     
@@ -77,20 +77,20 @@ class CMDBObject(BaseCMDBObject):
         in cmdb.
         """
         
-        pymonkey.q.logger.log('Checking if we already have an instance for class %s' % cls.__name__, 5)
+        pylabs.q.logger.log('Checking if we already have an instance for class %s' % cls.__name__, 5)
         
-        #pymonkey.q.logger.log('_instance is %s' % str(hasattr(cls, '_instance')), 5)
+        #pylabs.q.logger.log('_instance is %s' % str(hasattr(cls, '_instance')), 5)
         
         if hasattr(cls, '_instance'):
-            pymonkey.q.logger.log('returning existing instance', 5)
+            pylabs.q.logger.log('returning existing instance', 5)
             return cls._instance
         
         o = None
         
-        pymonkey.q.logger.log('Checking if we already have a saved %s object in the cmdb' % cls.cmdbtypename, 5)
-        if pymonkey.q.cmdb.existsObject(cls.cmdbtypename):
-            pymonkey.q.logger.log('object found, retrieving it from the cmdb', 5)
-            o = pymonkey.q.cmdb.getObject(cls.cmdbtypename)
+        pylabs.q.logger.log('Checking if we already have a saved %s object in the cmdb' % cls.cmdbtypename, 5)
+        if pylabs.q.cmdb.existsObject(cls.cmdbtypename):
+            pylabs.q.logger.log('object found, retrieving it from the cmdb', 5)
+            o = pylabs.q.cmdb.getObject(cls.cmdbtypename)
         
         if o == None:
             o = BaseCMDBObject.__new__(cls)
@@ -107,7 +107,7 @@ class CMDBObject(BaseCMDBObject):
         Save configuration to the database
         """
                               
-        pymonkey.q.cmdb.saveObject(self.cmdbtypename, self)
+        pylabs.q.cmdb.saveObject(self.cmdbtypename, self)
         
  
     def __str__(self):

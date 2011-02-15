@@ -33,9 +33,9 @@
 #
 # </License>
 
-import pymonkey
-from pymonkey.baseclasses.CMDBApplicationObject import CMDBApplicationObject
-from pymonkey.pmtypes.PrimitiveTypes import Boolean
+import pylabs
+from pylabs.baseclasses.CMDBApplicationObject import CMDBApplicationObject
+from pylabs.pmtypes.PrimitiveTypes import Boolean
 
 class CMDBServerObject(CMDBApplicationObject):
     """

@@ -52,16 +52,16 @@ class Options(usage.Options):
 class ApplicationserverServiceFactory(object):
     implements(IPlugin, IServiceMaker)
     tapname = 'applicationserver'
-    description = 'The PyMonkey Applicationserver'
+    description = 'The pylabs Applicationserver'
     options = Options
 
     def makeService(self, options):
-        #Local import to defeat PyMonkey logging threading issues
-        from pymonkey.InitBaseCore import q
+        #Local import to defeat pylabs logging threading issues
+        from pylabs.InitBaseCore import q
 
         from applicationserver import Controller
         from applicationserver.config import IniConfigReader
-        from applicationserver.pymonkey_bindings import setup
+        from applicationserver.pylabs_bindings import setup
         setup()
 
         if not options['config']:

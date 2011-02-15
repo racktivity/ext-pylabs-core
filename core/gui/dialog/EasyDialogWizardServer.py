@@ -39,7 +39,7 @@ import functools
 
 import simplejson
 
-from pymonkey import q
+from pylabs import q
 
 from EasyDialogGeneric import EasyDialogGeneric
 

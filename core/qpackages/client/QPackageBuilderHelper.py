@@ -33,8 +33,8 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
+from pylabs import q
+from pylabs.baseclasses import BaseType
 
 class QPackageBuilderHelper(BaseType):
     """
@@ -56,16 +56,16 @@ class QPackageBuilderHelper(BaseType):
     def buildFromSvn(self, svnUri, svnPackage, destinationDir='files', exportTo='', userName = None, password=None, platform='generic'):
         """
         Build qpackage from svn. Files will be exported to the upload folder of the qpackage in packageDir 
-        e.g. buildFromSvn('http://svn.pymonkey.org/svn/code/trunk/', '/utils', exportTo='utils')
-        will export http://svn.pymonkey.org/svn/code/trunk/utils/ to upload_<qualityLevel>/files/generic/utils/
+        e.g. buildFromSvn('http://svn.pylabs.org/svn/code/trunk/', '/utils', exportTo='utils')
+        will export http://svn.pylabs.org/svn/code/trunk/utils/ to upload_<qualityLevel>/files/generic/utils/
 
-        buildFromSvn('http://svn.pymonkey.org/svn/code/trunk/','/test', 'unitTests', q.system.fs.joinPaths('share', 'tests'))
-        will export http://svn.pymonkey.org/svn/code/trunk/test/ to upload_<qualityLevel>/unitTests/generic/share/tests/
+        buildFromSvn('http://svn.pylabs.org/svn/code/trunk/','/test', 'unitTests', q.system.fs.joinPaths('share', 'tests'))
+        will export http://svn.pylabs.org/svn/code/trunk/test/ to upload_<qualityLevel>/unitTests/generic/share/tests/
 
-        @param svnUri: uri of svn e.g. http://svn.pymonkey.org/svn/code
-        @param svnPackage: name of the package to export. e.g. /trunk/pymonkey
+        @param svnUri: uri of svn e.g. http://svn.pylabs.org/svn/code
+        @param svnPackage: name of the package to export. e.g. /trunk/pylabs
         @param destinationDir: name of the folder to export files to. if none specified, will be set to files
-        @param exportTo: dir path to export to. e.g q.system.fs.joinPaths('lib', 'pymonkey', 'core')
+        @param exportTo: dir path to export to. e.g q.system.fs.joinPaths('lib', 'pylabs', 'core')
         @param userName: login for svn. if repository requires authentication
         @param password: password of the user..if repository requires authentication
         @param platform: platform to build QPackage for. 
@@ -76,8 +76,8 @@ class QPackageBuilderHelper(BaseType):
     def exportFromSvn(self, svnUri, svnPackage, destinationDir, userName=None, password=None):
         """
         Export files from svn
-        @param svnUri: uri of svn e.g. http://svn.pymonkey.org/svn/code
-        @param svnPackage: name of the package to export. e.g. /trunk/pymonkey
+        @param svnUri: uri of svn e.g. http://svn.pylabs.org/svn/code
+        @param svnPackage: name of the package to export. e.g. /trunk/pylabs
         @param destinationDir: name of the folder to export files to
         @param userName: login for svn. if repository requires authentication
         @param password: password of the user..if repository requires authentication
@@ -92,8 +92,8 @@ class QPackageBuilderHelper(BaseType):
     def checkOutFromSvn(self, svnUri, svnPackage, destinationDir, userName=None, password=None):
         """
         Checkout files from svn
-        @param svnUri: uri of svn e.g. http://svn.pymonkey.org/svn/code
-        @param svnPackage: name of the package to export. e.g. /trunk/pymonkey
+        @param svnUri: uri of svn e.g. http://svn.pylabs.org/svn/code
+        @param svnPackage: name of the package to export. e.g. /trunk/pylabs
         @param destinationDir: name of the folder to checkout files to
         @param userName: login for svn. if repository requires authentication
         @param password: password of the user..if repository requires authentication

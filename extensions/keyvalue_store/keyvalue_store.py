@@ -3,9 +3,9 @@ Created on Aug 7, 2010
 
 @author: abdelrahman, despiegk
 '''
-from pymonkey.Shell import *
+from pylabs.Shell import *
 
-from pymonkey import q
+from pylabs import q
 import cPickle
 
 class DBConnection(object):

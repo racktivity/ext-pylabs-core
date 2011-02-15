@@ -35,8 +35,8 @@
  
 import re
 
-from pymonkey.testing import PymonkeyTestCase
-from pymonkey.InitBase import q
+from pylabs.testing import pylabsTestCase
+from pylabs.InitBase import q
 
 join = q.system.fs.joinPaths
 
@@ -46,12 +46,12 @@ Unit tests for the Apache manage extension.
 Please make sure all module files are installed (php, python, ...)
 """
 
-class ApacheServerConfigTest(PymonkeyTestCase):
+class ApacheServerConfigTest(pylabsTestCase):
     apacheDir = join(q.dirs.appDir, "apache")
     apacheConfigDir = join(apacheDir, "conf")
 
     def setUp(self):
-        PymonkeyTestCase.setUp(self)
+        pylabsTestCase.setUp(self)
         cmdb = q.manage.apache.cmdb
         self._defaults = dict()
         attrs = ('name', 'configFileDir', 'configFileName', 'extraConfigFile',
@@ -126,7 +126,7 @@ class ApacheServerConfigTest(PymonkeyTestCase):
         return match
 
     def tearDown(self):
-        PymonkeyTestCase.tearDown(self)
+        pylabsTestCase.tearDown(self)
         q.manage.apache.startChanges()
         cmdb = q.manage.apache.cmdb
 

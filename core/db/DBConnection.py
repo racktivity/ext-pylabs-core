@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 import pg
 
 class DBConnection(object):

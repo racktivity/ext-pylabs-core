@@ -4,10 +4,10 @@
 #import os.path
 import httplib
 from urlparse import urlparse, urlunparse
-#import pymonkey
-from pymonkey import q
-from pymonkey import i
-from pymonkey.Shell import *
+#import pylabs
+from pylabs import q
+from pylabs import i
+from pylabs.Shell import *
 
 
 class HgClient4:    

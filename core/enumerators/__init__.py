@@ -34,14 +34,14 @@
 # </License>
 
 __all__ = ['PlatformType', 'AppStatusType', 'ErrorconditionLevel', 'LogLevel', 'MessageType','ActionStatus','SeverityType', 'AppStatusType','JobStatusType']
-from pymonkey.enumerators.PlatformType import PlatformType
-from pymonkey.enumerators.SeverityType import SeverityType
-from pymonkey.enumerators.AppStatusType import AppStatusType
-from pymonkey.enumerators.ErrorconditionLevel import ErrorconditionLevel
-from pymonkey.enumerators.LogLevel import LogLevel
-from pymonkey.enumerators.MessageType import MessageType
-from pymonkey.enumerators.TransactionStatus import TransactionStatus
-from pymonkey.enumerators.QPackageQualityLevelType import QPackageQualityLevelType
-from pymonkey.enumerators.JobStatusType import JobStatusType
-#from pymonkey.enumerators.TlogType import TlogType
+from pylabs.enumerators.PlatformType import PlatformType
+from pylabs.enumerators.SeverityType import SeverityType
+from pylabs.enumerators.AppStatusType import AppStatusType
+from pylabs.enumerators.ErrorconditionLevel import ErrorconditionLevel
+from pylabs.enumerators.LogLevel import LogLevel
+from pylabs.enumerators.MessageType import MessageType
+from pylabs.enumerators.TransactionStatus import TransactionStatus
+from pylabs.enumerators.QPackageQualityLevelType import QPackageQualityLevelType
+from pylabs.enumerators.JobStatusType import JobStatusType
+#from pylabs.enumerators.TlogType import TlogType
 

@@ -45,8 +45,8 @@ from datetime import date
 #import commctrl
 #import Queue
 
-from pymonkey import q
-from pymonkey.Shell import *
+from pylabs import q
+from pylabs.Shell import *
 #import win32gui
 #from win32com.shell import shell, shellcon
 import EasyDialogs

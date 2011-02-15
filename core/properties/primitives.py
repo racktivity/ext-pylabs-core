@@ -33,29 +33,29 @@
 #
 # </License>
 
-'''Descriptors for PyMonkey primitive types
+'''Descriptors for pylabs primitive types
 
-See the documentation of pymonkey.properties.common for more info.
+See the documentation of pylabs.properties.common for more info.
 '''
 
-from pymonkey.properties import BaseDescriptor
-from pymonkey.pmtypes.PrimitiveTypes import Boolean, Integer, Float, String
+from pylabs.properties import BaseDescriptor
+from pylabs.pmtypes.PrimitiveTypes import Boolean, Integer, Float, String
 
 class Boolean(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.PrimitiveTypes.Boolean}'''
+    '''Descriptor for L{pylabs.pmtypes.PrimitiveTypes.Boolean}'''
     PMTYPE = Boolean
 
 
 class Integer(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.PrimitiveTypes.Integer}'''
+    '''Descriptor for L{pylabs.pmtypes.PrimitiveTypes.Integer}'''
     PMTYPE = Integer
 
 
 class Float(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.PrimitiveTypes.Float}'''
+    '''Descriptor for L{pylabs.pmtypes.PrimitiveTypes.Float}'''
     PMTYPE = Float
 
 
 class String(BaseDescriptor):
-    '''Descriptor for L{pymonkey.pmtypes.PrimitiveTypes.String}'''
+    '''Descriptor for L{pylabs.pmtypes.PrimitiveTypes.String}'''
     PMTYPE = String

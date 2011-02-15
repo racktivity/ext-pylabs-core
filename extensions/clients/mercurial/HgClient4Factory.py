@@ -3,9 +3,9 @@
 #import os.path
 #import httplib
 #from urlparse import urlparse, urlunparse
-#import pymonkey
-from pymonkey import q
-from pymonkey.Shell import *
+#import pylabs
+from pylabs import q
+from pylabs.Shell import *
 from HgClient4 import HgClient4
 
 class HgClient4Factory:

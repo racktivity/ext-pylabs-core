@@ -33,38 +33,38 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
 class QConfig():
     """
-    pymonkey singleton class available under q.config
+    pylabs singleton class available under q.config
     Meant for non interactive access to configuration items
     """
     def getInifile(self, configtype):
-        fileAlreadyExists = pymonkey.q.system.fs.exists(self._buildPath(configtype))
-        return pymonkey.inifile.IniFile(self._buildPath(configtype), create=(not fileAlreadyExists))
+        fileAlreadyExists = pylabs.q.system.fs.exists(self._buildPath(configtype))
+        return pylabs.inifile.IniFile(self._buildPath(configtype), create=(not fileAlreadyExists))
     
     def getConfig(self, configtype):
         """
         Return dict of dicts for this configuration.
-        E.g. { 'pymonkey.org'    : {url:'http://pymonkey.org', login='test'} ,
+        E.g. { 'pylabs.org'    : {url:'http://pylabs.org', login='test'} ,
                'trac.qlayer.com' : {url:'http://trac.qlayer.com', login='mylogin'} }
         """
         ini = self.getInifile(configtype)
         return ini.getFileAsDict()
     
     def remove(self, configtype):
-        pymonkey.q.system.fs.removeFile(self._buildPath(configtype))
+        pylabs.q.system.fs.removeFile(self._buildPath(configtype))
         
     def list(self):
         """
         List all configuration types available.
         """
-        qconfigPath = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.cfgDir, "qconfig")
-        if not pymonkey.q.system.fs.exists(qconfigPath):
+        qconfigPath = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.cfgDir, "qconfig")
+        if not pylabs.q.system.fs.exists(qconfigPath):
             return []
-        fullpaths = pymonkey.q.system.fs.listFilesInDir(qconfigPath)
-        return [pymonkey.q.system.fs.getBaseName(path)[:-4] for path in fullpaths if path.endswith(".cfg")]
+        fullpaths = pylabs.q.system.fs.listFilesInDir(qconfigPath)
+        return [pylabs.q.system.fs.getBaseName(path)[:-4] for path in fullpaths if path.endswith(".cfg")]
 
     def _buildPath(self, configtype):
-        return pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.cfgDir, "qconfig", configtype + ".cfg")
+        return pylabs.q.system.fs.joinPaths(pylabs.q.dirs.cfgDir, "qconfig", configtype + ".cfg")

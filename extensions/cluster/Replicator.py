@@ -1,5 +1,5 @@
-from pymonkey import *
-from pymonkey.Shell import *
+from pylabs import *
+from pylabs.Shell import *
 import time
 import os
 import re
@@ -98,7 +98,7 @@ class Replicator():
         cluster = q.cluster.get(clustername)
         self.loadRecipe()
         if not 'all' in self.dirs2monitor.keys(): self.dirs2monitor['all'] = []
-        self.dirs2monitor['all'].append(q.system.fs.joinPaths("%s_all"%self.baseDir,"lib","pymonkey"))
+        self.dirs2monitor['all'].append(q.system.fs.joinPaths("%s_all"%self.baseDir,"lib","pylabs"))
         self.dirs2monitor['all'].append(q.system.fs.joinPaths("%s_all"%self.baseDir,"utils"))
 
         if copyFiles:

@@ -33,10 +33,10 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 import sys, os, atexit, types
 
-from pymonkey.enumerators import AppStatusType
+from pylabs.enumerators import AppStatusType
 
 #@todo Need much more protection: cannot change much of the state (e.g. dirs) once the app is running!
 #@todo Need to think through - when do we update the qpidfile (e.g. only when app is started ?)
@@ -47,6 +47,7 @@ class Application:
 
     def __init__(self):
         self.state = AppStatusType.UNKNOWN
+        #self.state = None
         self.appname = 'starting'
         self.agentid= "starting"
         self._calledexit=False
@@ -68,7 +69,7 @@ class Application:
 
         # Set state
         self.state = AppStatusType.RUNNING
-        pymonkey.q.logger.log("Application %s started" % self.appname, 8)
+        pylabs.q.logger.log("Application %s started" % self.appname, 8)
 
     def stop(self, exitcode=0):
         
@@ -83,14 +84,14 @@ class Application:
         if self.state == AppStatusType.UNKNOWN:
             # Consider this a normal exit
             self.state = AppStatusType.HALTED
-            pymonkey.q.logger.close()
+            pylabs.q.logger.close()
             sys.exit(exitcode)
 
         
         # Since we call os._exit, the exithandler of IPython is not called.
         # We need it to save command history, and to clean up temp files used by
         # IPython itself.
-        pymonkey.q.logger.log("Stopping Application %s" % self.appname, 8)
+        pylabs.q.logger.log("Stopping Application %s" % self.appname, 8)
         try:
             __IPYTHON__.atexit_operations()
         except:
@@ -98,12 +99,12 @@ class Application:
 
         # Write exitcode
         if self.writeExitcodeOnExit:
-            exitcodefilename= pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.tmpDir, 'qapplication.%d.exitcode'%os.getpid())
-            pymonkey.q.logger.log("Writing exitcode to %s" % exitcodefilename, 5)
-            pymonkey.q.system.fs.writeFile(exitcodefilename, str(exitcode))
+            exitcodefilename= pylabs.q.system.fs.joinPaths(pylabs.q.dirs.tmpDir, 'qapplication.%d.exitcode'%os.getpid())
+            pylabs.q.logger.log("Writing exitcode to %s" % exitcodefilename, 5)
+            pylabs.q.system.fs.writeFile(exitcodefilename, str(exitcode))
 
         # Closing the LogTargets
-        pymonkey.q.logger.close()
+        pylabs.q.logger.close()
 
         # was probably done like this so we dont end up in the _exithandler
         #os._exit(exitcode) Exit to the system with status n, without calling cleanup handlers, flushing stdio buffers, etc. Availability: Unix, Windows.
@@ -117,10 +118,10 @@ class Application:
         # Abnormal exit
         # You can only come here if an application has been started, and if
         # an abnormal exit happened, i.e. somebody called sys.exit or the end of script was reached
-        # Both are wrong! One should call pymonkey.q.application.stop(<exitcode>)
+        # Both are wrong! One should call pylabs.q.application.stop(<exitcode>)
         #@todo can we get the line of code which called sys.exit here?
-        pymonkey.q.logger.log("UNCLEAN EXIT OF APPLICATION, SHOULD HAVE USED q.application.stop()", 4)
-        pymonkey.q.logger.close()
+        pylabs.q.logger.log("UNCLEAN EXIT OF APPLICATION, SHOULD HAVE USED q.application.stop()", 4)
+        pylabs.q.logger.close()
         if not self._calledexit:
             self.stop(1)
 
@@ -132,17 +133,17 @@ class Application:
         """
         try:
             pid = os.getpid()
-            if pymonkey.q.platform.isWindows():
+            if pylabs.q.platform.isWindows():
                 return 0
-            if pymonkey.q.platform.isLinux():
+            if pylabs.q.platform.isLinux():
                 command = "ps -o pcpu %d | grep -E --regex=\"[0.9]\""%pid
-                pymonkey.q.logger.log("getCPUusage on linux with: %s" %command,8)
-                exitcode,output = pymonkey.q.system.process.execute(command, True, False)
+                pylabs.q.logger.log("getCPUusage on linux with: %s" %command,8)
+                exitcode,output = pylabs.q.system.process.execute(command, True, False)
                 return output
-            elif pymonkey.q.platform.isSolaris():
+            elif pylabs.q.platform.isSolaris():
                 command = 'ps -efo pcpu,pid |grep %d'%pid
-                pymonkey.q.logger.log("getCPUusage on linux with: %s" %command,8)
-                exitcode,output = pymonkey.q.system.process.execute(command, True, False)
+                pylabs.q.logger.log("getCPUusage on linux with: %s" %command,8)
+                exitcode,output = pylabs.q.system.process.execute(command, True, False)
                 cpuUsage = output.split(' ')[1]
                 return cpuUsage
         except Exception, e:
@@ -156,18 +157,18 @@ class Application:
         """
         try:
             pid = os.getpid()
-            if pymonkey.q.platform.isWindows():
+            if pylabs.q.platform.isWindows():
                 # Not supported on windows
                 return "0 K"
-            elif pymonkey.q.platform.isLinux():
+            elif pylabs.q.platform.isLinux():
                 command = "ps -o pmem %d | grep -E --regex=\"[0.9]\""%pid
-                pymonkey.q.logger.log("getMemoryUsage on linux with: %s" %command,8)
-                exitcode,output = pymonkey.q.system.process.execute(command, True, False)
+                pylabs.q.logger.log("getMemoryUsage on linux with: %s" %command,8)
+                exitcode,output = pylabs.q.system.process.execute(command, True, False)
                 return output
-            elif pymonkey.q.platform.isSolaris():
+            elif pylabs.q.platform.isSolaris():
                 command = "ps -efo pcpu,pid |grep %d"%pid
-                pymonkey.q.logger.log("getMemoryUsage on linux with: %s" %command,8)
-                exitcode, output = pymonkey.q.system.process.execute(command, True, False)
+                pylabs.q.logger.log("getMemoryUsage on linux with: %s" %command,8)
+                exitcode, output = pylabs.q.system.process.execute(command, True, False)
                 memUsage = output.split(' ')[1]
                 return memUsage
         except Exception, e:
@@ -175,12 +176,12 @@ class Application:
         return 0
     
     def _setWriteExitcodeOnExit(self, value):
-        if not pymonkey.q.basetype.boolean.check(value):
+        if not pylabs.q.basetype.boolean.check(value):
             raise TypeError
-        pymonkey.q.logger.log("Setting q.application.writeExitcodeOnExit = %s"%str(value), 5)
-        exitcodefilename = pymonkey.q.system.fs.joinPaths(pymonkey.q.dirs.tmpDir, 'qapplication.%d.exitcode'%os.getpid())
-        if value and pymonkey.q.system.fs.exists(exitcodefilename):
-            pymonkey.q.system.fs.remove(exitcodefilename)
+        pylabs.q.logger.log("Setting q.application.writeExitcodeOnExit = %s"%str(value), 5)
+        exitcodefilename = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.tmpDir, 'qapplication.%d.exitcode'%os.getpid())
+        if value and pylabs.q.system.fs.exists(exitcodefilename):
+            pylabs.q.system.fs.remove(exitcodefilename)
         self._writeExitcodeOnExit = value
         
     def _getWriteExitcodeOnExit(self):

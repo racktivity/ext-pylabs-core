@@ -1,6 +1,6 @@
-from pymonkey.logging.EventObject import EventObject
+from pylabs.logging.EventObject import EventObject
 from LogTypes import LogType
-from pymonkey import q
+from pylabs import q
 from collections import defaultdict
 
 

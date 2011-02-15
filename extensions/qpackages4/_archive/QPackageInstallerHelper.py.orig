@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.sync.Sync import SyncLocal
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.sync.Sync import SyncLocal
 
 class QPackageInstallerHelper(BaseType):
     """

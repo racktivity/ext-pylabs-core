@@ -37,9 +37,9 @@ import inspect
 import re
 from operator import attrgetter
 
-from pymonkey.baseclasses import BaseType
-from pymonkey.inifile import IniFile
-import pymonkey
+from pylabs.baseclasses import BaseType
+from pylabs.inifile import IniFile
+import pylabs
 
 """
 Note: does not support defaults (yet)
@@ -48,14 +48,14 @@ Note: does not support defaults (yet)
 class AutoCreateIniFile(IniFile):
     def __init__(self, path, auto_create=False):
         self._pmd_path = path
-        if auto_create and not pymonkey.q.system.fs.isFile(path):
+        if auto_create and not pylabs.q.system.fs.isFile(path):
             create=True
         else:
             create=False
         IniFile.__init__(self, path, create=create)
 
     def remove(self):
-        pymonkey.q.system.fs.removeFile(self._pmd_path)
+        pylabs.q.system.fs.removeFile(self._pmd_path)
 
 class ConfigSection(BaseType):
     def __init__(self, config, name):
@@ -106,7 +106,7 @@ class ConfigSection(BaseType):
         self._config.setParam(self._section_name, name, val)
 
     def __str__(self):
-        config_basename = pymonkey.q.system.fs.getBaseName(self._config._pmd_path)
+        config_basename = pylabs.q.system.fs.getBaseName(self._config._pmd_path)
         return "Config Section '%s' of %s" % (self._section_name, config_basename)
 
     def __repr__(self):
@@ -158,7 +158,7 @@ class Config(object):
         self._config.remove()
 
     def __str__(self):
-        config_basename = pymonkey.q.system.fs.getBaseName(self._filename)
+        config_basename = pylabs.q.system.fs.getBaseName(self._filename)
         return "Config %s" % (config_basename)
 
     def __repr__(self):

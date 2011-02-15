@@ -33,7 +33,7 @@
 #
 # </License>
 
-import pymonkey
+import pylabs
 
 from DialogType import DialogType
 from EasyDialogConsole import EasyDialogConsole
@@ -41,7 +41,7 @@ from EasyDialogConsole import EasyDialogConsole
 class EasyDialog():
 
     def pm_setDialogHandler(self):
-        if pymonkey.q.platform.isWindows():
+        if pylabs.q.platform.isWindows():
             self.chooseDialogType(DialogType.WIN32)
         else:
             self.chooseDialogType(None)
@@ -56,7 +56,7 @@ class EasyDialog():
         if self.type==DialogType.WIZARDSERVER:
             from EasyDialogWizardServer import EasyDialogWizardServer
             self.easyDialog=EasyDialogWizardServer()
-        if self.type==DialogType.WIN32 and pymonkey.q.platform.isWindows():
+        if self.type==DialogType.WIN32 and pylabs.q.platform.isWindows():
             try:
                 import EasyDialogs
                 easyDialogsInstalled = True
@@ -85,7 +85,7 @@ class EasyDialog():
         """
 
         filepath=self.easyDialog.askFilePath(message, startPath)
-        if not pymonkey.q.system.fs.exists(filepath):
+        if not pylabs.q.system.fs.exists(filepath):
             raise RuntimeError ("Could not find selected file path %s." % filepath)
         return filepath
 
@@ -99,7 +99,7 @@ class EasyDialog():
         """
 
         filepath=self.easyDialog.askDirPath(message, startPath)
-        if not pymonkey.q.system.fs.exists(filepath):
+        if not pylabs.q.system.fs.exists(filepath):
             raise RuntimeError ("Could not find selected folder path %s." % filepath)
         return filepath
 
@@ -118,7 +118,7 @@ class EasyDialog():
         """
         Asks user the supplied question and prompt for an answer, if none given the default value is used, the response and the default value one of the values [y|Y|yes|Yes..n|N|No..]
 
-        Note:For the EasyDialogConol implementation, currently the default value effect is ignored since it would require changing the pymonkey vapp
+        Note:For the EasyDialogConol implementation, currently the default value effect is ignored since it would require changing the pylabs vapp
         @param question: question to be prompted
         @param defaultValue: if the user did not provide a response this value is used as an answer
         @return: response answer or the default value

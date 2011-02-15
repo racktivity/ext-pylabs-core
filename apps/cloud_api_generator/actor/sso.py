@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class sso:
     def sendMail (self, smtpserver, subject, body = "", sender = "", to = "", smtplogin = "", smtppassword = "", jobguid = "", executionparams = {}):

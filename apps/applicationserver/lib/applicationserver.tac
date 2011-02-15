@@ -5,7 +5,7 @@ from twisted.python.logfile import DailyLogFile, BaseLogFile
 
 import os
 import time
-from pymonkey import q
+from pylabs import q
 
 class ApplicationserverLogFile(DailyLogFile):
     '''

@@ -39,8 +39,8 @@ import sys
 import os.path
 import zipfile
 
-import pymonkey
-from pymonkey.baseclasses import BaseEnumeration, BaseType
+import pylabs
+from pylabs.baseclasses import BaseEnumeration, BaseType
 
 #NOTE: We use this enumeration so we can add zip file creation and others
 #later on. This enumeration is used when constructing a new ZipFile object,
@@ -58,8 +58,8 @@ class ZipFileAction(BaseEnumeration):
 class ZipFile(BaseType):
     '''Handle zip files'''
 
-    path = pymonkey.q.basetype.filepath(doc='Path of the on-disk zip file')
-    action = pymonkey.q.basetype.enumeration(ZipFileAction,
+    path = pylabs.q.basetype.filepath(doc='Path of the on-disk zip file')
+    action = pylabs.q.basetype.enumeration(ZipFileAction,
                 doc='Access method of zip file')
 
     def __init__(self, path, action=ZipFileAction.READ):
@@ -70,10 +70,10 @@ class ZipFile(BaseType):
         @prarm action: Action to perform on the zip file
         @type action: ZipFileAction
         '''
-        if not pymonkey.q.basetype.filepath.check(path):
+        if not pylabs.q.basetype.filepath.check(path):
             raise ValueError('Provided string %s is not a valid path' % path)
         if action is ZipFileAction.READ:
-            if not pymonkey.q.system.fs.isFile(path):
+            if not pylabs.q.system.fs.isFile(path):
                 raise ValueError(
                         'Provided path %s is not an existing file' % path)
             if not zipfile.is_zipfile(path):
@@ -120,9 +120,9 @@ class ZipFile(BaseType):
             dirname = os.path.dirname(f)
             basename = os.path.basename(f)
 
-            outdir = pymonkey.q.system.fs.joinPaths(destination_path, dirname)
-            pymonkey.q.system.fs.createDir(outdir)
-            outfile_path = pymonkey.q.system.fs.joinPaths(outdir, basename)
+            outdir = pylabs.q.system.fs.joinPaths(destination_path, dirname)
+            pylabs.q.system.fs.createDir(outdir)
+            outfile_path = pylabs.q.system.fs.joinPaths(outdir, basename)
 
             #On Windows we get some \ vs / in path issues. Check whether the
             #provided filename works, if not, retry replacing \ with /, and use
@@ -142,7 +142,7 @@ class ZipFile(BaseType):
 
             data = self._zip.read(f)
             #We need binary write
-            pymonkey.q.logger.log('Writing file %s' % outfile_path)
+            pylabs.q.logger.log('Writing file %s' % outfile_path)
             fd = open(outfile_path, 'wb')
             fd.write(data)
             fd.close()

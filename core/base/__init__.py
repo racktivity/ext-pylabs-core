@@ -37,5 +37,5 @@
 
 __all__ = ['Time','IDgenerator', ]
 
-from pymonkey.base.time.Time import Time
-from pymonkey.base.idgenerator.IDGenerator import IDGenerator
+from pylabs.base.time.Time import Time
+from pylabs.base.idgenerator.IDGenerator import IDGenerator

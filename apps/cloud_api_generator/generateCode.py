@@ -1,4 +1,4 @@
-from pymonkey.InitBase import q,i
+from pylabs.InitBase import q,i
 from xml.dom.minidom import parse, parseString
 from Cheetah.Template import Template
 

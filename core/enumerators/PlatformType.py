@@ -35,8 +35,8 @@
 
 # Preparation for returning the platformtype of the system
 import sys, os, re
-import pymonkey
-from pymonkey.baseclasses import BaseEnumeration
+import pylabs
+from pylabs.baseclasses import BaseEnumeration
 
 def _useELFtrick(file):
     fd=os.open(file, os.O_RDONLY)
@@ -100,7 +100,7 @@ class PlatformType(BaseEnumeration):
     def findSandboxType():
         '''Discovers the platform and sets the C{PlatformType} to the retrieved platform'''
         _platform = None
-        from pymonkey import q
+        from pylabs import q
         _pythonPath = q.system.fs.joinPaths(q.dirs.baseDir, "bin", "python")
         if sys.platform.startswith("linux"):
             bits = _useELFtrick(_pythonPath)
@@ -143,7 +143,7 @@ class PlatformType(BaseEnumeration):
         Only Solaris is currently supported. Executing <uname -v>
         """
         if self.isSolaris():
-            exitcode, output = pymonkey.q.system.process.execute("uname -v", outputToStdout=False)
+            exitcode, output = pylabs.q.system.process.execute("uname -v", outputToStdout=False)
 
             matchresult = re.search("[snv_|osce-](\d+)", output)
             if matchresult:
@@ -151,7 +151,7 @@ class PlatformType(BaseEnumeration):
             else:
                 raise ValueError("Executed [uname -v] Expected output ." % output)
         else:
-            raise OSError('Unsupported Platform (%s)'%pymonkey.q.platform)
+            raise OSError('Unsupported Platform (%s)'%pylabs.q.platform)
 
     def __init__(self, vappFolderName, parent=None):
         '''Initialization

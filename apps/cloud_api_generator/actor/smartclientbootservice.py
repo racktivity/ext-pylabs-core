@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class smartclientbootservice:
     def initialize (self, applicationguid = "", jobguid = "", executionparams = {}):

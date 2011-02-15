@@ -33,7 +33,7 @@
 #
 # </License>
 
-'''Code to bind the applicationserver into the PyMonkey framework
+'''Code to bind the applicationserver into the pylabs framework
 
 This sets up logging, event handling, configuration reading and others.
 '''
@@ -49,10 +49,10 @@ from operator import attrgetter
 from twisted.internet import reactor
 from twisted.python.threadpool import ThreadPool
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseEnumeration
-from pymonkey.qshellconfig.DeclarativeConfig import Config, ConfigSection
-from pymonkey.config import ConfigManagementItem, ItemSingleClass, ItemGroupClass
+from pylabs import q
+from pylabs.baseclasses import BaseEnumeration
+from pylabs.qshellconfig.DeclarativeConfig import Config, ConfigSection
+from pylabs.config import ConfigManagementItem, ItemSingleClass, ItemGroupClass
 from applicationserver import CRON_JOB_STOP
 
 # Defines
@@ -224,7 +224,7 @@ from twisted.python.log import addObserver, removeObserver
 
 from applicationserver import dispatcher, signals, crond
 
-from pymonkey.Application import Application
+from pylabs.Application import Application
 
 try:
     from twisted.python.log import textFromEventDict
@@ -265,7 +265,7 @@ except ImportError:
         return text
 
 class ThreadLocalApplication(object, Application):
-    '''PyMonkey application type which keeps the application name per-thread
+    '''pylabs application type which keeps the application name per-thread
 
     Since the C{q} object is normally shared between threads per process, but
     services running in the applicationserver should have service-local
@@ -306,11 +306,11 @@ class ThreadLocalApplication(object, Application):
         os._exit = oldexit
 
 
-# Link Twisted logging to PyMonkey logging
-class PymonkeyLogObserver:
-    '''Observer for Twisted logs to hook in the PyMonkey log subsystem'''
+# Link Twisted logging to pylabs logging
+class pylabsLogObserver:
+    '''Observer for Twisted logs to hook in the pylabs log subsystem'''
     def emit(self, eventDict):
-        from pymonkey import q
+        from pylabs import q
         if eventDict['isError']:
             level = 3
         else:
@@ -346,11 +346,11 @@ def log_method_failure(failure, request, service, method, args, kwargs):
     q.logger.log(msg, 4)
 
 def handle_failure_event(failure):
-    '''Handle a cron or method call failure as a PyMonkey event'''
+    '''Handle a cron or method call failure as a pylabs event'''
     import traceback
 
     # Commented out for pylabs_core 4 compliance
-    #from pymonkey.enumerators import SeverityType
+    #from pylabs.enumerators import SeverityType
 
     type_, value, tb = failure.type, failure.value, failure.tb
 
@@ -373,9 +373,9 @@ def log_cronjob_failure(service, func, failure):
     q.logger.log(msg, 4)
 
 
-# Set up PyMonkey stuff in applicationserver
+# Set up pylabs stuff in applicationserver
 def setup():
-    '''Set up PyMonkey hooks in the applicationserver'''
+    '''Set up pylabs hooks in the applicationserver'''
 
     def _load_init():
         # Try to import init.py
@@ -403,13 +403,13 @@ def setup():
     # alike
     reactor.addSystemEventTrigger('after', 'startup', _load_init)
 
-    q.logger.log('Setting up PyMonkey bindings in the applicationserver', 6)
+    q.logger.log('Setting up pylabs bindings in the applicationserver', 6)
 
     q.application = ThreadLocalApplication()
 
     #reactor.addSystemEventTrigger('after', 'shutdown', q.application.stop)
 
-    observer = PymonkeyLogObserver()
+    observer = pylabsLogObserver()
     observer.start()
 
     pydispatcher.connect(log_method_failure, sender=dispatcher,
@@ -430,26 +430,26 @@ def setup():
                         q.dirs.appDir, 'applicationserver', 'services'))
     #q.application.start()
 
-    # Install PyMonkey2 tasklet runner
-    PyMonkeyTaskletRunner.install()
+    # Install pylabs2 tasklet runner
+    pylabsTaskletRunner.install()
 
-    # Setup PyMonkey at an appropriate time
-    setup_pymonkey_start_and_stop()
+    # Setup pylabs at an appropriate time
+    setup_pylabs_start_and_stop()
 
 
-def setup_pymonkey_start_and_stop():
-    '''Hook into the Twisted reactor to start and stop PyMonkey
+def setup_pylabs_start_and_stop():
+    '''Hook into the Twisted reactor to start and stop pylabs
 
-    We only want to start the PyMonkey application after reactor startup, and
+    We only want to start the pylabs application after reactor startup, and
     stop it before the reactor shuts down. This method registers some callables
     to achieve this.
     '''
     def _start():
-        q.logger.log('[PMBINDINGS] Starting PyMonkey stuff', 3)
+        q.logger.log('[PMBINDINGS] Starting pylabs stuff', 3)
         q.application.start()
 
     def _stop():
-        q.logger.log('[PMBINDINGS] Stopping PyMonkey stuff', 3)
+        q.logger.log('[PMBINDINGS] Stopping pylabs stuff', 3)
         q.application.stop()
 
     reactor.addSystemEventTrigger('after', 'startup', _start)
@@ -457,8 +457,8 @@ def setup_pymonkey_start_and_stop():
 
 
 def _run_with_logger(func, *args, **kwargs):
-    '''Decorator to change a callable to set up PyMonkey logging names'''
-    from pymonkey import q
+    '''Decorator to change a callable to set up pylabs logging names'''
+    from pylabs import q
 
     oldname = q.application.appname
     kwargs = kwargs.copy()
@@ -504,14 +504,14 @@ expose_authenticated.__doc__ = _expose_authenticated.__doc__
 
 from applicationserver.cron import Job, CronJob
 
-class PymonkeyJob(Job):
+class pylabsJob(Job):
     def __call__(self, *args, **kwargs):
         return _run_with_logger(self.func, *args, **kwargs)
 
-class PymonkeyCronJob(CronJob):
-    JOBCLASS = PymonkeyJob
+class pylabsCronJob(CronJob):
+    JOBCLASS = pylabsJob
 
-cronjob = PymonkeyCronJob
+cronjob = pylabsCronJob
 
 from applicationserver.services import service_close_handler \
         as _service_close_handler
@@ -525,7 +525,7 @@ def service_close_handler(func):
     
     return logged_func
         
-#TaskletRunner implementation for PyMonkey2 tasklets
+#TaskletRunner implementation for pylabs2 tasklets
 import Queue
 
 from twisted.python import log
@@ -596,7 +596,7 @@ class TaskletRunnerThread(object):
             tb = None
 
 
-class PyMonkeyTaskletRunner(TaskletRunner):
+class pylabsTaskletRunner(TaskletRunner):
     def __init__(self, engine, threadpoolsize=10):
         self.engine = engine
         # Job queue
@@ -641,20 +641,20 @@ class PyMonkeyTaskletRunner(TaskletRunner):
         def logwrapper(func):
             @functools.wraps(func)
             def _wrapped(*args, **kwargs):
-                import pymonkey
+                import pylabs
 
-                oldappname = pymonkey.q.application.appname
+                oldappname = pylabs.q.application.appname
                 if logname:
-                    pymonkey.q.application.appname = \
+                    pylabs.q.application.appname = \
                             'applicationserver:pmtasklets:%s' % logname
                 else:
-                    pymonkey.q.application.appname = \
+                    pylabs.q.application.appname = \
                             'applicationserver:pmtasklets'
 
                 try:
                     ret = func(*args, **kwargs)
                 finally:
-                    pymonkey.q.application.appname = oldappname
+                    pylabs.q.application.appname = oldappname
 
                 return ret
 
@@ -684,7 +684,7 @@ class PyMonkeyTaskletRunner(TaskletRunner):
 
     @classmethod
     def install(cls):
-        log.msg('Installing PyMonkey tasklet runner')
+        log.msg('Installing pylabs tasklet runner')
         import applicationserver
 
         applicationserver.TaskletRunner = cls
@@ -875,7 +875,7 @@ class Server:
         Check the status of this applicationserver
 
         @return: The status of this applicationserver
-        @rtype: L{applicationserver.pymonkey_bindings.ApplicationserverStatus}
+        @rtype: L{applicationserver.pylabs_bindings.ApplicationserverStatus}
         """
         if not q.config.getConfig('applicationserver').has_key("main"):  # INI-file is empty, applicationserver isn't configured yet.
             return ApplicationserverStatus.NOT_CONFIGURED

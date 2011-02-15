@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey.extensions.PMExtensions import PMExtensions
+from pylabs.extensions.PMExtensions import PMExtensions
 
 
 # This is the class providing the i namespace
@@ -56,7 +56,7 @@ class Interactive():
         try:
             return self._svn
         except AttributeError:
-            from pymonkey.clients.svn.SvnConfigManagement import SvnConnections
+            from pylabs.clients.svn.SvnConfigManagement import SvnConnections
             self._svnConnections = SvnConnections()
             self._svn = svn()
             self._svn.connections = self._svnConnections
@@ -69,7 +69,7 @@ class Interactive():
         try:
             return self._hg
         except AttributeError:
-            from pymonkey.clients.hg.HgConnections import HgConnections
+            from pylabs.clients.hg.HgConnections import HgConnections
             self._hgConnections = HgConnections()
             self._hg = hg()
             self._hg.connections = self._hgConnections

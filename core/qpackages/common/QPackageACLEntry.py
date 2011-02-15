@@ -33,9 +33,9 @@
 #
 # </License>
 
-from pymonkey import q
-from pymonkey.baseclasses import BaseType
-from pymonkey.qpackages.common.DomainObject import DomainObject
+from pylabs import q
+from pylabs.baseclasses import BaseType
+from pylabs.qpackages.common.DomainObject import DomainObject
 class QPackageACLEntry(BaseType):
 
     identifier =  q.basetype.string(doc='identifier of the user or group (can also be *)', allow_none=False)

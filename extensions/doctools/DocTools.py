@@ -1,6 +1,6 @@
 from WikiParser import Parser
-from pymonkey.Shell import *
-from pymonkey import q, i
+from pylabs.Shell import *
+from pylabs import q, i
 
 class DocTools:
 

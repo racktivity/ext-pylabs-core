@@ -35,21 +35,21 @@
 
 __all__ = ['IPv4Address', 'IPv4Range']
 
-from pymonkey.pmtypes.IPAddress import IPv4Address, IPv4Range
+from pylabs.pmtypes.IPAddress import IPv4Address, IPv4Range
 
 __all__ += ['Boolean', 'Integer', 'Float', 'String']
-from pymonkey.pmtypes.PrimitiveTypes import Boolean, Integer, Float, String
+from pylabs.pmtypes.PrimitiveTypes import Boolean, Integer, Float, String
 
 __all__ += ['List', 'Set', 'Dictionary']
-from pymonkey.pmtypes.CollectionTypes import List, Set, Dictionary
+from pylabs.pmtypes.CollectionTypes import List, Set, Dictionary
 
 __all__ += ['Guid', 'Path', 'DirPath', 'FilePath', 'UnixDirPath',
             'UnixFilePath', 'WindowsDirPath', 'WindowsFilePath', ]
-from pymonkey.pmtypes.CustomTypes import Guid, Path, DirPath, FilePath, \
+from pylabs.pmtypes.CustomTypes import Guid, Path, DirPath, FilePath, \
         UnixDirPath, UnixFilePath, WindowsDirPath, WindowsFilePath
 
 __all__ += ['Object', 'Enumeration']
-from pymonkey.pmtypes.GenericTypes import Object, Enumeration
+from pylabs.pmtypes.GenericTypes import Object, Enumeration
 
 # Type registration starts here
 
@@ -62,7 +62,7 @@ def register_types():
 
     #All modules we want to load types from
     #This is inline not to clutter package namespace
-    from pymonkey.pmtypes import PrimitiveTypes, CollectionTypes, CustomTypes
+    from pylabs.pmtypes import PrimitiveTypes, CollectionTypes, CustomTypes
     TYPEMODS = (PrimitiveTypes, CollectionTypes, CustomTypes, )
 
     class TypeContainer: pass
@@ -110,7 +110,7 @@ def register_types():
                         raise RuntimeError('Type %s is already registered on type base' % function.qtypename)
                     setattr(base, function.qtypename, function)
 
-    from pymonkey.pmtypes import GenericTypes
+    from pylabs.pmtypes import GenericTypes
     GENERICMODS = (GenericTypes, )
     for mod in GENERICMODS:
         _register_generic_types_from_module(mod, base)

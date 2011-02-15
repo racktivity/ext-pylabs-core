@@ -1,5 +1,5 @@
-from pymonkey.InitBase import *
-from pymonkey.Shell import *
+from pylabs.InitBase import *
+from pylabs.Shell import *
 
 q.application.appname = "testApp"
 q.application.start()
@@ -23,7 +23,7 @@ q.eventhandler.raiseCritical('very critical, i can not ping my network service',
 #    main()
 #  File "/opt/qbase3/utils/shell.py", line 115, in main
 #    Shell(debug=options.debug, ns=ns)()
-#  File "/opt/qbase3/lib/pymonkey/core/pymonkey/Shell.py", line 703, in __call__
+#  File "/opt/qbase3/lib/pylabs/core/pylabs/Shell.py", line 703, in __call__
 #    myshell(*args, **kwargs)
 #
 #*************************

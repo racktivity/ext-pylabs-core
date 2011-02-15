@@ -33,4 +33,4 @@
 #
 # </License>
 
-from pymonkey.inifile.IniFile import IniFile
+from pylabs.inifile.IniFile import IniFile

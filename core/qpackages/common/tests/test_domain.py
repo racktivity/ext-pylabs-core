@@ -34,15 +34,15 @@
 # </License>
 
 import os
-from pymonkey import PymonkeyTestCase
-from pymonkey import q
+from pylabs import pylabsTestCase
+from pylabs import q
 
-class TestDomain(PymonkeyTestCase):
+class TestDomain(pylabsTestCase):
     def test_init(self):
         ''' Test if we can initialize the object
         '''
-        from pymonkey.qpackages.common.DomainObject import DomainObject
-        domain = DomainObject('test.pymonkey.org')
+        from pylabs.qpackages.common.DomainObject import DomainObject
+        domain = DomainObject('test.pylabs.org')
         self.assert_(domain)
 
         # trying to create a domain with an empty string will fail.
@@ -50,14 +50,14 @@ class TestDomain(PymonkeyTestCase):
 
     def test_getVLists(self):
         #setup needed:
-        from pymonkey.qpackages.common.DomainObject import DomainObject
-        q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.packageDir, 'test.pymonkey.org', 'vlists'))
+        from pylabs.qpackages.common.DomainObject import DomainObject
+        q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.packageDir, 'test.pylabs.org', 'vlists'))
         content = '''1
 2
-pymonkey|2.0|152|generic|pymonkey,base|This is the core framework
-pexpect |2.3|1|unix|pexpect,pymonkey|External framework that allows to work with interactive commandline tools
+pylabs|2.0|152|generic|pylabs,base|This is the core framework
+pexpect |2.3|1|unix|pexpect,pylabs|External framework that allows to work with interactive commandline tools
 '''
-        q.system.fs.writeFile(q.system.fs.joinPaths(q.dirs.packageDir, 'test.pymonkey.org', 'vlists', 'unstable.vlist'), content)
+        q.system.fs.writeFile(q.system.fs.joinPaths(q.dirs.packageDir, 'test.pylabs.org', 'vlists', 'unstable.vlist'), content)
 
-        domain = DomainObject('test.pymonkey.org')
+        domain = DomainObject('test.pylabs.org')
         self.assert_(domain.getVListFiles)

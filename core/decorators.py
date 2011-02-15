@@ -33,7 +33,7 @@
 #
 # </License>
 
-'''Module providing several decorators used inside PyMonkey.
+'''Module providing several decorators used inside pylabs.
 
 A decorator is a function 'wrapped around' another function or method: it
 allows us to perform actions before or after the decorated method is
@@ -117,7 +117,7 @@ import warnings
 import functools
 import inspect
 
-import pymonkey
+import pylabs
 
 class Version:
     '''Helper class to perform version calculations'''
@@ -155,7 +155,7 @@ class Version:
     def is_previous(self, other):
         return self.major == other.major and self.minor == other.minor + 1
 
-PYMONKEY_VERSION = Version(str_='.'.join(map(str, pymonkey.__version__)))
+pylabs_VERSION = Version(str_='.'.join(map(str, pylabs.__version__)))
 
 
 class deprecated(object):
@@ -188,9 +188,9 @@ class deprecated(object):
 
         if version:
             self.version = Version(str_=version)
-            if self.version <= PYMONKEY_VERSION:
+            if self.version <= pylabs_VERSION:
                 self.removed = True
-            if self.version.is_previous(PYMONKEY_VERSION):
+            if self.version.is_previous(pylabs_VERSION):
                 self.show_warning = True
         else:
             self.version = None
@@ -202,7 +202,7 @@ class deprecated(object):
         msg = 'Call to %s function %s' % \
                 ('deprecated' if not self.removed else 'removed', name)
         if self.version:
-            msg = '%s (removed in PyMonkey version %s)' % (msg, self.version)
+            msg = '%s (removed in pylabs version %s)' % (msg, self.version)
 
         if self.alternative:
             msg = '%s, use %s instead' % (msg, self.alternative)
@@ -213,18 +213,17 @@ class deprecated(object):
         if self.removed:
             name = self.name or \
                 '%s.%s' % (inspect.getmodule(func).__name__, func.__name__)
-            if hasattr(pymonkey, 'q'):
-                pymonkey.q.logger.log('[DEPRECATION] Found deprecated method '
-                                  '%s.%s, this can be removed' % name, 5)
+            if hasattr(pylabs, 'q'):
+                pylabs.q.logger.log('[DEPRECATION] Found deprecated method %s, this can be removed' % name, 5)
 
         @functools.wraps(func)
         def newfunc(*args, **kwargs):
             message = self.calculate_message(func)
 
-            pymonkey.q.logger.log('[DEPRECATION] %s' % message, 4)
+            pylabs.q.logger.log('[DEPRECATION] %s' % message, 4)
 
             # TODO Display this in non-debug mode as well one day
-            if pymonkey.q.vars.getVar('DEBUG') or self.show_warning:
+            if pylabs.q.vars.getVar('DEBUG') or self.show_warning:
                 warnings.warn(message, category=DeprecationWarning)
 
             if 'PM_DISABLE_DEPRECATED' in os.environ or self.removed:
@@ -234,7 +233,7 @@ class deprecated(object):
 
         extra_doc = 'Note: this function is deprecated'
         if self.version:
-            extra_doc = '%s and will be removed in PyMonkey version %s' % \
+            extra_doc = '%s and will be removed in pylabs version %s' % \
                     (extra_doc, self.version)
         if self.alternative:
             extra_doc = '%s, use %s' % (extra_doc, self.alternative)

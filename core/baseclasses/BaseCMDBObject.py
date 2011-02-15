@@ -35,11 +35,11 @@
 
 import os 
 
-import pymonkey
+import pylabs
 
-from pymonkey.baseclasses.BaseType import BaseType
-from pymonkey.pmtypes.PrimitiveTypes import String, Integer, Boolean
-from pymonkey.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
+from pylabs.baseclasses.BaseType import BaseType
+from pylabs.pmtypes.PrimitiveTypes import String, Integer, Boolean
+from pylabs.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
 
 class BaseCMDBObject(BaseType, DirtyFlaggingMixin):
     """
@@ -56,8 +56,8 @@ class BaseCMDBObject(BaseType, DirtyFlaggingMixin):
         BaseType.__init__(self)
        
         # Initialize fake data if requested        
-        if pymonkey.q.vars.getVar('fakeData') or 'fakeData' in os.environ.keys() :
-            pymonkey.q.logger.log('fakeData variable set - loading fake data', 5)
+        if pylabs.q.vars.getVar('fakeData') or 'fakeData' in os.environ.keys() :
+            pylabs.q.logger.log('fakeData variable set - loading fake data', 5)
             self.__fake_data__()
     
     #rootcmdbtypename = ""  ##string, name like q.servers.apache , identifies uniquely the CMDB entry of the root object (CMDBObject)

@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 class dsspolicy:
     def getXMLSchema (self, dsspolicyguid, jobguid = "", executionparams = {}):

@@ -33,7 +33,7 @@
 #
 # </License>
 
-from pymonkey.baseclasses import BaseEnumeration
+from pylabs.baseclasses import BaseEnumeration
 
 class QPackageQualityLevelType(BaseEnumeration):
     """ QPackage quality level """
