@@ -374,8 +374,10 @@ class Console:
 
     def askChoice(self,choicearray, descr=None, sort=False):
         #choicearray=["aabbccdd","aaddccaa","1","2","3","4","5","kristof","kristof3","kristof5","10","11","12","13","14","15","16"]
-        if len(choicearray)>5 and pylabs.q.platform.isLinux():
-            descr2 = descr or "\nMake a selection please, start typing, we will try to do auto completion, ? prints the list, * turns on wildcard search."
+        maxchoice=20
+        
+        if len(choicearray)>maxchoice and pylabs.q.platform.isLinux():
+            descr2 = "%s\nMake a selection please, start typing, we will try to do auto completion.\n     ? prints the list, * turns on wildcard search." % descr
             self.echo(descr2)
             print
             print "        ",
@@ -392,11 +394,13 @@ class Console:
                 #print (char,"","")
                 sys.stdout.write(char)
                 if char=="*":
-                    wildcard=True
+                    params=[True,chars] #set wildcard
+                    return True,[],params
                 else:
                     chars="%s%s" %(chars,char)
                 result=[]
                 for choice in choicearray:
+                    choice=str(choice)
                     choice=choice.lower()
                     if wildcard and choice.find(chars)<>-1:
                         result.append(choice)                    
@@ -407,10 +411,11 @@ class Console:
                         return False,["99999"],params
                 params=[wildcard,chars] 
                 #print str(len(result)) + " " + chars + " " + str(wildcard)
-                if len(result)<5 or wildcard:
-                    print
+                if len(result)<maxchoice and len(result)>0:
+                    #more than 1 result but not too many to show and ask choice with nr's
                     return False,result,params
                 return True,result,params
+
             if len(choicearray)==0:
                 raise RuntimeError("Could not find choice with input %s" % chars)
             choicearray2=[]
@@ -423,10 +428,14 @@ class Console:
                     chars=""
                     params=[wildcard,chars]
 
-            if len(choicearray2)==1:
+            if len(choicearray2)==1 and not choicearray2==["99999"]:
                 sys.stdout.write(choicearray2[0][len(chars):])
             if choicearray2==["99999"]:
-                print choicearray
+                self.echo("\n")
+                for choice in choicearray:
+                    choice=str(choice)                    
+                    self.echoListItem(choice)                    
+                self.echo("\n")
                 return self.askChoice(choicearray, descr, sort)            
             else:
                 return self._askChoice(choicearray2, descr, sort)            
