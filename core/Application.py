@@ -175,6 +175,21 @@ class Application:
             pass
         return 0
     
+    def getUniqueMachineId(self):
+        """
+        will look for network interface and return a hash calculated from lowest mac address from all physical nics
+        """
+        nics=pylabs.q.system.net.getNics()
+        macaddr=[]
+        for nic in nics:
+            if nic.find("lo")==-1:
+                nicmac=pylabs.q.system.net.getMacAddress(nic)
+                macaddr.append(nicmac.replace(":", ""))
+        macaddr.sort()
+        if len(macaddr)<1:
+            raise RuntimeError("Cannot find macaddress of nics in machine.")
+        return macaddr[0]
+    
     def _setWriteExitcodeOnExit(self, value):
         if not pylabs.q.basetype.boolean.check(value):
             raise TypeError

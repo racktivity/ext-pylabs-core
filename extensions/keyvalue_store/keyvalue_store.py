@@ -29,6 +29,7 @@ class DBConnection(object):
         """
         if not q.system.fs.isDir(self.dbDir):
             q.system.fs.createDir(self.dbDir)        
+        self.id=q.application.getUniqueMachineId()
     
     def _getDbRecordPath(self, category, key):
         """
@@ -45,7 +46,112 @@ class DBConnection(object):
         path = q.system.fs.joinPaths(dirpath,key+".db")
         return path
 
-    def put(self, category, key, value):
+    def _lockParse(self, value):
+        """
+        @return machineid, time, value,locktimeout
+        """
+        if value.find("*_*LOCK*_*")==-1:
+            raise RuntimeError("Cannot parse lock value %s, not well constructed."%(value))
+        splitted=value.split("*_*LOCK*_*")
+        if len(splitted)==4:
+            return splitted #machineid, time, value,locktimeout
+        else:
+            RuntimeError("Cannot parse lock value %s, not well constructed."%(value))
+
+    def lockcheck(self, category, key):
+        """
+        @return lockedTrueFalse,machineid, time, value,locktimeout
+        """
+        value=self.get(category, key)
+        if value.find("*_*LOCK*_*")<>-1:
+            return true, _lockParse(value)
+        else:
+            return False, 0, 0, value, 0
+
+    def lockWaitFreeOrOurLock(self,category, key, timeout=5, force=False):
+        """
+        if locked will wait for time specified
+        @param force, if force will erase lock when timeout is reached
+        @return status,value    status=True when locked, False when free
+        """
+        value=self.get(category, key)
+        start=q.base.time.getTimeEpoch()
+        timedout=False
+        while value.find("*_*LOCK*_*")<>-1 and timedout==False:     
+            machineid, time, value2, locktimeout=self._lockParse(value)
+            if machineid==self.id:
+                #is our lock
+                return True, value2
+            if time+locktimeout<start:
+                #the lock was already timed out we will remove
+                self.settest(category, key, value2)
+                return False, value2
+            now=q.base.time.getTimeEpoch()
+            if now-start>timeout:
+                timedout=True
+        if timedout:
+            if force==False:
+                raise RuntimeError("Cannot lock %s %s"%(category, key))
+            else:
+                machineid, time, value2, locktimeout=self. _lockParse(value)
+                self.set(category, key, value2)
+                return False, value2
+        return False, value
+
+    def lock(self, category, key, timeout=5, force=False):
+        """
+        will lock for max time specified (in sec)
+        @param newvalue if specified will lock and set this value
+        """
+        locked, value=self.lockWaitFreeOrOurLock(category, key, timeout, force)
+        valnew= "%s*_*LOCK*_*%s*_*LOCK*_*%s*_*LOCK*_*%s" % (self.id, q.base.time.getTimeEpoch(), value, timeout)
+        self.set(category, key,valnew)
+        if self.get(category, key)<>valnew:
+            print "LOCK COLLISSION"
+            return self.lock(category, key, timeout, force)
+        return value
+        
+    def unlock(self, category, key,timeout=5,  force=False, newvalue=None):
+        """
+        will unlock if lock is from us, if force will take lock after timeout
+        """
+        locked, value=self.lockWaitFreeOrOurLock(category, key, timeout, force)
+        if locked:
+            if newvalue<>None:
+                self.settest(category, key, newvalue)
+            else:
+                self.settest(category, key, value)
+        else:
+            if newvalue<>None:
+                self.settest(category, key, newvalue)
+        
+    def incrementReset(self, category, newint=0):
+        self.set("increment", category, newint)
+            
+    def increment(self, category):
+        if not self.exists("increment", category):
+            self.set("increment", category, 0)
+            value=0
+        else:
+            value=self.lock("increment", category)
+        try:
+            integer=q.basetype.integer.fromString(value)
+        except:
+            raise RuntimeError("Could not increment category: %s, there was no integer in keyvalue store increment:category"%category)
+        integer=integer+1
+        self.unlock("increment", category,timeout=5,  force=False, newvalue=integer)
+        return integer
+
+    def settest(self, category, key, value):
+        """
+        if well stored return True
+        """
+        self.set(category, key, value)
+        if self.get(category, key)==value:
+            return True
+        return False
+
+    def set(self, category, key, value):
         """
         @param category: the category of the store, something like table in the relational db
         @param key: a key to identify the object that will be stored
@@ -53,6 +159,7 @@ class DBConnection(object):
         """
         path=self._getDbRecordPath(category,key)
         q.system.fs.writeFile(path, "%s"%value)
+        return True
 
     def exists(self, category, key):
         """

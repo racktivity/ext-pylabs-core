@@ -87,6 +87,7 @@ class Tags():
         tagsString = " ".join(["%s:%s" % (quote(k), quote(v)) for k, v in self.tags.iteritems()])
         
         self.tagstring = " ".join((labelsString, tagsString)).strip()
+        self.tagstring=self.tagstring.replace("%2C", ",")
         
         if self._setFunction4Tagstring<>None:
             self._setFunction4Tagstring(self.tagstring)
@@ -166,7 +167,7 @@ class Tags():
         @param tagValue: e.g kristof
         @type tagValue: string        
         """
-        self.tags[tagName] = tagValue
+        self.tags[tagName] = str(tagValue)
         self._toString()
         
     def labelSet(self, labelName):

@@ -13,12 +13,13 @@ def protectall(arg, path):
     content=q.system.fs.fileGetContents(path)
     te=q.codetools.getTextFileEditor(path)
     te.replaceLines("",["{pyaccess.*}"])
-    te.content="{pyaccess:tags=%s}\r\n%s{pyaccess}\r\n" % (arg,te.content)
+    #te.content="{pyaccess:tags=%s}\r\n%s{pyaccess}\r\n" % (arg,te.content)
+    te.content="{pyaccess}\r\n%s{pyaccess}\r\n" % (te.content)
     te.save()
     
 #remove all guci statements, arg is the tags
 startpath="guciconfluence/"
-startpath="/mnt/confluence/incubaid/Global/GUCI/Home"
+startpath="/mnt/confluence/incubaid/Global/extra/Content"
 q.system.fswalker.walk(root=startpath,callback=protectall,recursive=True,pathRegexIncludes=[".*\.txt\\b"],arg="super")
 
 q.application.stop()
