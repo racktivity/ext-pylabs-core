@@ -92,16 +92,17 @@ class FakeService(ServiceWrapper):
    '''A fake/proxy service wrapper'''
    expose_request = True
 
-   def __init__(self, request, dispatcher, servicename):
+   def __init__(self, request, dispatcher, domain, servicename):
       ServiceWrapper.__init__(self, None)
 
       self.request = request
       self.dispatcher = dispatcher
+      self.domain = domain
       self.servicename = servicename
 
    def _get_service_func(self, method, params):
       try:
-         self.dispatcher.getServiceMethod(self.servicename, method)
+         self.dispatcher.getServiceMethod(self.domain, self.servicename, method)
       except NoSuchService:
          raise UnknownServiceError('Unknown service %s' % self.servicename)
       except NoSuchMethod:
@@ -118,7 +119,7 @@ class FakeService(ServiceWrapper):
 
          request = AMFRequest(http_request, username, password)
          try:
-            return self.dispatcher.callServiceMethod(request,
+            return self.dispatcher.callServiceMethod(request, self.domain,
                                                      self.servicename,
                                                      method, *args)
          except NoSuchService:
@@ -138,19 +139,23 @@ class ApplicationserverAMFGateway(TwistedGateway):
    def getServiceRequest(self, request, target):
       '''Translate a request into a handling FakeService'''
       parts = target.split('.')
-      if len(parts) != 2:
+      if len(parts) not in [2, 3]:
          raise UnknownServiceError('Unknown service %s' % target)
-
-      service, method = parts
+      
+      
+      if len(parts) == 2:
+          parts.insert(0, None)
+      domain, service, method = parts
 
       return self._request_class(request.envelope,
-                                 FakeService(request, self.dispatcher,
+                                 FakeService(request, self.dispatcher, domain,
                                              service),
                                  method)
 
    def getAuthenticator(self, service_request):
       def checkAuth(username, password):
          service, func = self.dispatcher.getServiceMethod(
+            service_request.service.domain,
             service_request.service.servicename,
             service_request.method)
 

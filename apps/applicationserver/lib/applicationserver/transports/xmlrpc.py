@@ -70,14 +70,16 @@ class XMLRPCTransport(xmlrpc.XMLRPC):
         except Exception:
             pass
 
-        if functionPath.count(self.separator) != 1:
+        if functionPath.count(self.separator) not in [1, 2]:
             raise NoSuchFunction(self.NOT_FOUND, 'No such function')
+        
+        items = functionPath.split(self.separator)
+        if len(items) == 2:
+            items.insert(0, None)
 
-        service, method = functionPath.split(self.separator, 1)
+        service, func = self.dispatcher.getServiceMethod(*items)
 
-        self.dispatcher.getServiceMethod(service, method)
-
-        return functools.partial(self.dispatcher.callServiceMethod, request, service, method)
+        return functools.partial(self.dispatcher.callServiceMethod, request, *items)
 
     def render_POST(self, request):
         # Find out the user agent. User agent 'applicationserver-client' gets

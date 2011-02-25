@@ -51,6 +51,7 @@ from applicationserver.dispatcher import NoSuchMethod
 
 FAILURE_CODE = 8002
 JSON_MIME = 'application/json'
+SCRIPT_MIME = 'text/javascript'
 
 class JSONException:
     def __init__(self, message, exception):
@@ -106,23 +107,37 @@ class RESTTransport(Resource):
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
-        return RESTService(self.dispatcher, name)
+        if len(request.postpath) > 1:
+            return RESTDomain(self.dispatcher, name)
+        return RESTService(self.dispatcher, None, name)
 
+
+class RESTDomain(Resource):
+    def __init__(self, dispatcher, domain):
+        Resource.__init__(self)
+        self.dispatcher = dispatcher
+        self.domain = domain
+    
+    def getChild(self, name, request):
+        if not name:
+            return Resource.getChild(self, name, request)
+        return RESTService(self.dispatcher, self.domain, name)
 
 class RESTService(Resource):
     '''REST service handler
 
     This handles requests to '/myservice/'.
     '''
-    def __init__(self, dispatcher, service):
+    def __init__(self, dispatcher, domain, service):
         Resource.__init__(self)
         self.dispatcher = dispatcher
         self.service = service
+        self.domain = domain
 
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
-        return RESTMethod(self.dispatcher, self.service, name)
+        return RESTMethod(self.dispatcher, self.domain, self.service, name)
 
     def render_GET(self, request):
         if request.uri == "/crossdomain.xml":
@@ -138,9 +153,10 @@ class RESTMethod(Resource):
 
     This handles requests to '/myservice/mymethod/'.
     '''
-    def __init__(self, dispatcher, service, method):
+    def __init__(self, dispatcher, domain, service, method):
         Resource.__init__(self)
         self.dispatcher = dispatcher
+        self.domain = domain
         self.service = service
         self.method = method
 
@@ -180,19 +196,28 @@ class RESTMethod(Resource):
             return JSONException(
                 'The server was unable to parse your request parameters: %s' %\
                     str(e), e).dumps()
-
+        callback = None
+        contenttype = JSON_MIME
+        if 'jsonp_callback' in args:
+            callback = args.pop('jsonp_callback')
+            contenttype = SCRIPT_MIME
         try:
-            d = self.dispatcher.callServiceMethod(request, self.service, self.method, **args)
+            d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
         except AuthenticationError, e:
             request.setResponseCode(http.UNAUTHORIZED)
-            request.setHeader('Content-Type', JSON_MIME)
+            request.setHeader('Content-Type', contenttype)
             request.setHeader('WWW-authenticate', 'basic realm="Applicationserver"')
             return JSONException(e.MESSAGE, e).dumps()
         except (NoSuchService, NoSuchMethod), e:
             request.setResponseCode(http.NOT_FOUND)
-            request.setHeader('Content-Type', JSON_MIME)
+            request.setHeader('Content-Type', contenttype)
             return JSONException(e.MESSAGE, e).dumps()
-
+        
+        def write(data):
+            if callback:
+                data = "%s(%s)" % (callback, data)
+            request.write(data)
+        
         def finish_render(data):
             try:
                 json = simplejson.dumps(data, indent=2)
@@ -200,21 +225,21 @@ class RESTMethod(Resource):
                 #Auch, unable to serialize data
                 log.msg("Unable to serialize data to JSON: %s" % e)
                 request.setResponseCode(http.INTERNAL_SERVER_ERROR)
-                request.setHeader('Content-Type', JSON_MIME)
-                request.write(JSONException(
+                request.setHeader('Content-Type', contenttype)
+                write(JSONException(
                     'The server was unable to serialize the method result',
                     e).dumps())
             else:
-                request.setHeader('Content-Type', JSON_MIME)
-                request.write(json)
+                request.setHeader('Content-Type', contenttype)
+                write(json)
 
             request.finish()
 
         def error_render(data):
             log.msg("An error occurred in the service method: %s" % data)
             request.setResponseCode(http.INTERNAL_SERVER_ERROR)
-            request.setHeader('Content-Type', JSON_MIME)
-            request.write(JSONException('Internal server error',
+            request.setHeader('Content-Type', contenttype)
+            write(JSONException('Internal server error',
                 getattr(data, 'value', None)).dumps())
             request.finish()
 

@@ -136,7 +136,7 @@ class Dispatcher:
         self.services.pop(name)
         self.services.pop(service)
 
-    def callServiceMethod(self, request, service_name, method, *args,
+    def callServiceMethod(self, request, domain, service_name, method, *args,
             **kwargs):
         '''Call a method on service exposed by this dispatcher
 
@@ -169,7 +169,7 @@ class Dispatcher:
         request = IApplicationserverRequest(request)
 
         #Fetch the actual service and method callable
-        service, func = self.getServiceMethod(service_name, method)
+        service, func = self.getServiceMethod(domain, service_name, method)
 
         #Check authentication
         if exposed_authenticated(func):
@@ -244,7 +244,7 @@ class Dispatcher:
 
         return defer
 
-    def getServiceMethod(self, service_name, method):
+    def getServiceMethod(self, domain, service_name, method):
         '''Resolve a function given a service and method name
 
         @param service_name: Name of the service to resolve
@@ -262,6 +262,8 @@ class Dispatcher:
         #        (method, service_name))
 
         try:
+            if domain:
+                service_name = "%s.%s" % (domain, service_name)
             service = self.services[service_name]
         except KeyError:
             raise NoSuchService(

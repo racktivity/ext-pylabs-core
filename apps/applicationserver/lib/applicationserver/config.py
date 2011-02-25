@@ -36,6 +36,7 @@
 import os
 
 from zope.interface import implements, Interface
+from pylabs import q
 
 class IConfigReader(Interface):
     def parseConfig():
@@ -64,22 +65,35 @@ class IniConfigReader:
         @type config: string
         '''
         self.config_name = config_name
+    
+    def getServiceRoot(self):
+        from pymonkey_bindings import SERVICE_ROOT
+        items = self.config_name.split(".", 1)
+        if len(items) > 1:
+            path = q.system.fs.joinPaths(q.dirs.baseDir, items[1], 'services')
+            q.system.fs.createDir(path)
+            return path
+        else:
+            return SERVICE_ROOT
 
     def parseConfig(self):
-        from pylabs_bindings import Server, SERVICE_ROOT
+        from pylabs_bindings import Server, getConfig
         from pylabs import q
 
-        qconfig = q.config.getConfig(self.config_name)['main']
-
-        def service_to_path(service):
+        qconfig = getConfig(self.config_name, 'applicationserver')['main']
+        service_root = self.getServiceRoot()
+        def service_to_path(domain, service):
             if '.' not in service:
                 return service
             module, klass = service.rsplit('.', 1)
             module = "%s.py" % module.replace('.', os.sep)
-            return "%s:%s" % (os.path.join(SERVICE_ROOT, module), klass)
+            root = service_root
+            if domain:
+                root = os.path.join(root, domain)
+            return "%s:%s" % (os.path.join(root, module), klass)
 
         config = dict()
-        config['name'] = 'applicationserver'
+        config['name'] = self.config_name
 
         if qconfig['xmlrpc_port']:
             config["transport_xmlrpc"] = {
@@ -128,10 +142,14 @@ class IniConfigReader:
                 }
             }
 
-        services = q.config.getConfig('applicationserverservice')
+        services = getConfig(self.config_name, 'applicationserverservice')
         for servicename, serviceconfig in services.iteritems():
+            items = servicename.split(".")
+            domain = None
+            if len(items) > 1:
+                domain = items[0]
             config['service_%s' % servicename] = {
-                'class': service_to_path(serviceconfig['classspec']),
+                'class': service_to_path(domain, serviceconfig['classspec']),
                 'options': None,
             }
 

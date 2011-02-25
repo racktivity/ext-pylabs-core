@@ -690,6 +690,15 @@ class pylabsTaskletRunner(TaskletRunner):
         applicationserver.TaskletRunner = cls
 
 
+def getConfig(name, configtype):
+    items = name.split(".", 1)
+    if len(items) > 1:
+        path = q.system.fs.joinPaths(q.dirs.baseDir, items[1], 'cfg', '%s.cfg' % configtype)
+        ini = q.tools.inifile.open(path)
+        return ini.getFileAsDict()
+    else:
+        return q.config.getConfig(configtype)
+
 class Server:
     """
     Management functionality for an applicationserver
@@ -704,31 +713,40 @@ class Server:
     CRON_JOB_STOP = CRON_JOB_STOP
     service_close_handler = staticmethod(service_close_handler)
 
-    def start(self):
+    def _checkName(self, name):
+        if not name:
+            name = "applicationserver"
+        else:
+            if not name.startswith("applicationserver"):
+                name = "applicationserver.%s" % name
+        return name
+
+    def start(self, name=None):
         """
         Start this applicationserver
 
         @param atreboot: Check the main.startatreboot setting before starting
         @type atreboot: bool
         """
-        if self.isRunning():
-            q.console.echo("Server %s is already running" % self)
+        name = self._checkName(name)
+        if self.isRunning(name):
+            q.console.echo("Server %s is already running" % name)
             return
 
         # xmlrpc_port must be > 0
-        if int(q.config.getConfig('applicationserver')['main'] \
+        if int(getConfig(name, 'applicationserver')['main'] \
                ['xmlrpc_port']) <= 0:
             raise ApplicationserverException(
                 "xmlrpc.port must be set before starting the server")
 
-        q.console.echo("Starting applicationserver %s..." % self)
+        q.console.echo("Starting %s..." % name)
 
         # Needed to put the folder with twisted/plugins/ in it into the pythonpath
         applicationserver_dir = q.system.fs.joinPaths(q.dirs.baseDir, 'apps',
                                                       'applicationserver', 'lib')
         # pid, log
-        pidfile = self._getPIDFilename()
-        logfile = q.system.fs.joinPaths(q.dirs.logDir, 'applicationserver.log')
+        pidfile = self._getPIDFilename(name)
+        logfile = q.system.fs.joinPaths(q.dirs.logDir, '%s.log' % name)
 
         # If twisted was killed by eg power failure, stale pidfile should be removed
         if q.system.fs.exists(pidfile):
@@ -741,6 +759,7 @@ class Server:
 
 
         # Start a twistd
+        os.environ['TWISTED_NAME'] = name
         if not q.platform.isWindows():
             # This code is suboptimal since it overrules previously-set values
             # of PYTHONPATH, which might not be the intention
@@ -791,56 +810,57 @@ class Server:
                 (code, stdout, stderr)
             )
 
-    def stop(self):
+    def stop(self, name=None):
         """
         Stop this applicationserver
         """
-        q.console.echo("Stopping applicationserver %s..." % self)
-        self._callWithStatusCheck('stop', self._getProxy().stopServer)
+        name = self._checkName(name)
+        q.console.echo("Stopping %s..." % name)
+        self._callWithStatusCheck('stop', self._getProxy(name).stopServer)
 
         # same way as the restart() function
         countdown = 5
-        pidfile = self._getPIDFilename()
+        pidfile = self._getPIDFilename(name)
         pid = int(q.system.fs.fileGetContents(pidfile)) if q.system.fs.isFile(pidfile) else None
-        while countdown and (self.isRunning() or (pid and q.system.process.isPidAlive(pid))):
-            q.console.echo("%s is still running, waiting for %d more seconds" % (self, countdown))
+        while countdown and (self.isRunning(name) or (pid and q.system.process.isPidAlive(pid))):
+            q.console.echo("%s is still running, waiting for %d more seconds" % (name, countdown))
             time.sleep(1)
             countdown -= 1
 
         if countdown == 0:
             if pid:
-                q.console.echo("Applicationserver with pid [%s] is still alive, killing it..." % pid)
+                q.console.echo("%s with pid [%s] is still alive, killing it..." % (name,pid))
                 q.system.process.kill(pid)
 
-
-    def restart(self):
+    def restart(self, name=None):
         """
         Restart this applicationserver
         """
-        q.console.echo("Restarting applicationserver %s..." % self)
+        name = self._checkName(name)
+        q.console.echo("Restarting %s..." % name)
         self.stop()
 
-        pidfile = self._getPIDFilename()
+        pidfile = self._getPIDFilename(name)
         countdown = 5
         # Check both using XMLRPC (isRunning()) and the PID file. If the PID
         # file is present, the server is still shutting down.
         pid = int(q.system.fs.fileGetContents(pidfile)) if q.system.fs.isFile(pidfile) else None
         while countdown and \
               (self.isRunning() or (pid and q.system.process.isPidAlive(pid))):
-            q.console.echo("%s is still running, waiting for %d more seconds" % (self, countdown))
+            q.console.echo("%s is still running, waiting for %d more seconds" % (name, countdown))
             time.sleep(1)
             countdown -= 1
 
         if countdown == 0:
             if not pid:
-                q.gui.dialog.message("Failed to stop applicationserver")
+                q.gui.dialog.message("Failed to stop %s" % name)
                 return
             q.gui.dialog.message('Killing process %s'%pid)
             q.system.process.kill(pid)
 
         self.start()
 
-    def reload(self, printWarningIfNotRunning=True):
+    def reload(self, printWarningIfNotRunning=True, name=None):
         """
         Reload the services of this applicationserver. Enabled services will
         be loaded. Disabled services will be unloaded. Transport settings
@@ -849,7 +869,8 @@ class Server:
         A change in transport settings (xmlrpc, rest, mail) requires a server
         restart.
         """
-        self._callWithStatusCheck('reload', self._getProxy().reloadConfig, printWarningIfNotRunning)
+        name = self._checkName(name)
+        self._callWithStatusCheck('reload', self._getProxy(name).reloadConfig, printWarningIfNotRunning)
          
 
     def _callWithStatusCheck(self, commandname, func, printWarning=True):
@@ -870,16 +891,18 @@ class Server:
             if printWarning:
                 q.console.echo("Cannot %s server %s in status %s" % (commandname, self, status))
 
-    def checkStatus(self):
+    def checkStatus(self, name=None):
         """
         Check the status of this applicationserver
 
         @return: The status of this applicationserver
         @rtype: L{applicationserver.pylabs_bindings.ApplicationserverStatus}
         """
-        if not q.config.getConfig('applicationserver').has_key("main"):  # INI-file is empty, applicationserver isn't configured yet.
+        name = self._checkName(name)
+        config = getConfig(name, 'applicationserver')
+        if 'main' not in config:  # INI-file is empty, applicationserver isn't configured yet.
             return ApplicationserverStatus.NOT_CONFIGURED
-        proxy = self._getProxy()
+        proxy = self._getProxy(name)
         try:
             status_string = proxy.getStatus()
             status = ApplicationserverStatus.getByName(status_string)
@@ -891,27 +914,29 @@ class Server:
             # Server exists, but method not found?
             # Or some other server is running on that port
             q.eventhandler.raiseWarning(
-                "Applicationserver is in UNKNOWN status")
+                "%s is in UNKNOWN status" % name)
             return ApplicationserverStatus.UNKNOWN
         except KeyError, e:
             q.eventhandler.raiseWarning(
-                "Applicationserver is in UNKNOWN status: %s")
+                "%s is in UNKNOWN status: %s" % name)
             return ApplicationserverStatus.UNKNOWN
         return status
 
-    def isRunning(self):
+    def isRunning(self, name=None):
         """
         Check whether or not this applicationserver is running
         """
-        running = bool(self.checkStatus() == ApplicationserverStatus.RUNNING)
+        name = self._checkName(name)
+        running = bool(self.checkStatus(name) == ApplicationserverStatus.RUNNING)
         return running
 
-    def listServices(self):
+    def listServices(self, name):
         """
         List of deployed applications
         """
+        name = self._checkName(name)
         q.console.echo("List of deployed services")
-        proxy = self._getProxy()
+        proxy = self._getProxy(name)
         try:
             status_string = proxy.getStatus()
             status = ApplicationserverStatus.getByName(status_string)
@@ -921,15 +946,16 @@ class Server:
             return ApplicationserverStatus.NOT_RUNNING
         return proxy.listServices()
 
-    def reloadService(self, appName,targetRole='restart'):
+    def reloadService(self, appName,targetRole='restart', name=None):
         """
         Reload the specificied service on the application server
 
         @param appName: The appName can be retrieved via q.manage.applicationserver.listServices()
         @param targetRole: restart,stop,start
         """
+        name = self._checkName(name)
         q.console.echo("Reloading service %s" % appName)
-        proxy = self._getProxy()
+        proxy = self._getProxy(name)
         try:
             status_string = proxy.getStatus()
             status = ApplicationserverStatus.getByName(status_string)
@@ -939,15 +965,18 @@ class Server:
             return ApplicationserverStatus.NOT_RUNNING
         return proxy.reloadService(appName,targetRole)
 
-    def _getProxy(self):
-        ip = q.config.getConfig('applicationserver')['main'] \
+    def _getProxy(self, name=None):
+        name = self._checkName(name)
+        config = getConfig(name, 'applicationserver')
+        ip = config['main'] \
                 ['xmlrpc_ip']
-        portAsString = q.config.getConfig('applicationserver')['main']['xmlrpc_port']
+        portAsString = config['main']['xmlrpc_port']
         port = int(portAsString) if portAsString else 0
         return xmlrpclib.Server('http://%s:%d/' % (ip, port))._controller
 
-    def _getPIDFilename(self):
-        return q.system.fs.joinPaths(q.dirs.pidDir, 'applicationserver.pid')
+    def _getPIDFilename(self, name=None):
+        name = self._checkName(name)
+        return q.system.fs.joinPaths(q.dirs.pidDir, '%s.pid' % name)
 
     def __str__(self):
         return "Applicationserver"

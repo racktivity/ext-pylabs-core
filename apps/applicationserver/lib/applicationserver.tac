@@ -33,9 +33,10 @@ class ApplicationserverLogFile(DailyLogFile):
         q.system.fs.moveFile(self.path, newpath)
         self._openFile()
 
-application = Application("applicationserver")
+name = os.environ['TWISTED_NAME']
+application = Application(name)
 
-ser = serviceMaker.makeService({'config':'applicationserver'})
+ser = serviceMaker.makeService({'config':name})
 ser.setServiceParent(application)
-logfile = ApplicationserverLogFile("applicationserver.log", q.dirs.logDir)
+logfile = ApplicationserverLogFile("%s.log" % name, q.dirs.logDir)
 application.setComponent(ILogObserver, FileLogObserver(logfile).emit)
