@@ -4,6 +4,11 @@ from DirObjects import *
 
 
 class VirtualFileSystemMetadata():
+    """
+    a userfriendly layer on top of DirObjectsStore
+    allows manipulation of virtual filesystem e.g. walk over it, compare 2 versions of a filesystem, ...
+    
+    """
     
     def __init__(self,metadataPath,rootpath=""):
         """
@@ -28,7 +33,7 @@ class VirtualFileSystemMetadata():
         scan filesystem and populate the VFS will create a new version of the metadata (each scan results in a new version)
         """
         self.state="SCAN"
-        self.dirObjects=self.dirObjectsStore.new(processHiddenFiles,usemd5)
+        self.dirObjects=self.dirObjectsStore.new(processHiddenFiles,usemd5)  #the walk happens here
         self.walk=self.dirObjects.walk        
         self.state="OK"
         
@@ -132,7 +137,7 @@ class VirtualFileSystemMetadata():
                             if  (md5hash2=="" or md5hash==""):
                                 raiseError(dirObjectOlder.getFilePath(name),"Cannot compare because hashing code is not known for file")
                             if md5hash<>md5hash2:
-                                q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True)
+                                q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
                         else:
                             if modDate<>modDate2:
                                 #file potentially changed
@@ -140,14 +145,14 @@ class VirtualFileSystemMetadata():
                                     #can use md5 to check
                                     if md5hash<>md5hash2:
                                         #we now know for sure files are different
-                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True)
+                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
                                 else:
                                     #cannot use md5
-                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True)
+                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
                     for file in deletedfiles:
-                        q.system.fs.writeFile(changefilePath,"D|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True)
+                        q.system.fs.writeFile(changefilePath,"D|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
                     for file in newfiles:
-                        q.system.fs.writeFile(changefilePath,"N|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True)
+                        q.system.fs.writeFile(changefilePath,"N|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
                 else:
                     #new dir, does not exist in old metadata
                     q.system.fs.writeFile(changefilePath,"N|D||||%s\n"%dirObject.getDirPath(name),True)
