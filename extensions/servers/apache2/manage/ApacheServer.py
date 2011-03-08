@@ -302,9 +302,9 @@ class VirtualHost(CMDBSubObject):
 
 class ApacheServer(CMDBServerObject):
     cmdbtypename = "apache"
-    _apacheDir = q.system.fs.joinPaths(q.dirs.appDir, "apache")
+    _apacheDir = "etc"#q.system.fs.joinPaths(q.dirs.appDir, "apache")
     # subdir for the config files
-    _configSubDir = "conf"
+    _configSubDir = "apache2" #"conf"
     # subdir for the vhost config files (insie _configSubDir)
     _vhostSubDir = "vhost.d"
     # subdir for the JkWorker config file
@@ -313,9 +313,9 @@ class ApacheServer(CMDBServerObject):
     name =  q.basetype.string(doc="The name of the server", default="Apache")
     configFileDir = q.basetype.dirpath(
         doc="The configuration directory of the apache server",
-        default=q.system.fs.joinPaths(_apacheDir, _configSubDir),
+        default=q.system.fs.joinPaths(os.sep, _apacheDir, _configSubDir),
     )
-    configFileName = q.basetype.filepath(doc="The configuration file of the apache server", default="httpd.conf")
+    configFileName = q.basetype.filepath(doc="The configuration file of the apache server", default="apache2.conf")
     extraConfigFile = q.basetype.filepath(doc="The location of the extra configuration of the apache server", allow_none=True)
     documentRoot = q.basetype.dirpath(
         doc="The root location for the websites",
@@ -324,13 +324,13 @@ class ApacheServer(CMDBServerObject):
 
     pidFile = q.basetype.filepath(
         doc="location of the server pid file",
-        default=q.system.fs.joinPaths(q.dirs.pidDir, "httpd.pid")
+        default=q.system.fs.joinPaths(os.sep, "var", "run","apache2.pid")
     )
     apacheUser = q.basetype.string(doc="apache system user", default="qbase")
     apacheGroup = q.basetype.string(doc="apache group", default="qbase")
     serverRoot = q.basetype.string(
         doc="Base serverroot should point to the apache base installation dir",
-        default=q.system.fs.joinPaths(q.dirs.appDir, "apache", "")
+        default=q.system.fs.joinPaths(os.sep, "usr", 'lib',  "apache2")
     )
     complexConfig = q.basetype.dictionary(
         doc="is full apache config file but for one virtualhost (allows "
@@ -362,18 +362,18 @@ class ApacheServer(CMDBServerObject):
         ("cache_module", "modules/mod_cache.so"),
         ("disk_cache_module", "modules/mod_disk_cache.so"),
         ("mem_cache_module", "modules/mod_mem_cache.so"),
-        ("bucketeer_module", "modules/mod_bucketeer.so"),
+#        ("bucketeer_module", "modules/mod_bucketeer.so"),
         ("dumpio_module", "modules/mod_dumpio.so"),
-        ("echo_module", "modules/mod_echo.so"),
-        ("case_filter_module", "modules/mod_case_filter.so"),
-        ("case_filter_in_module", "modules/mod_case_filter_in.so"),
+#        ("echo_module", "modules/mod_echo.so"),
+#        ("case_filter_module", "modules/mod_case_filter.so"),
+#        ("case_filter_in_module", "modules/mod_case_filter_in.so"),
         ("ext_filter_module", "modules/mod_ext_filter.so"),
         ("include_module", "modules/mod_include.so"),
         ("filter_module", "modules/mod_filter.so"),
         ("charset_lite_module", "modules/mod_charset_lite.so"),
         ("deflate_module", "modules/mod_deflate.so"),
-        ("log_config_module", "modules/mod_log_config.so"),
-        ("logio_module", "modules/mod_logio.so"),
+#        ("log_config_module", "modules/mod_log_config.so"),
+#        ("logio_module", "modules/mod_logio.so"),
         ("env_module", "modules/mod_env.so"),
         ("cern_meta_module", "modules/mod_cern_meta.so"),
         ("expires_module", "modules/mod_expires.so"),
@@ -392,6 +392,7 @@ class ApacheServer(CMDBServerObject):
         ("autoindex_module", "modules/mod_autoindex.so"),
         ("dir_module", "modules/mod_dir.so"),
         ("alias_module", "modules/mod_alias.so"),
+        ("log_forensic_module"," modules/mod_log_forensic.so"),
     ], allow_none=False)
 
     def addVirtualHost(self, name, ipaddress='0.0.0.0', port=80):
@@ -451,7 +452,7 @@ class ApacheServer(CMDBServerObject):
         """
         Add an apache module to the list of loaded modules
         """
-        if not q.system.fs.exists(q.system.fs.joinPaths(q.dirs.appDir, 'apache' , 'modules', q.system.fs.getBaseName(filename))):
+        if not q.system.fs.exists(q.system.fs.joinPaths(os.sep, 'usr', 'lib', 'apache2' , 'modules', q.system.fs.getBaseName(filename))):
             raise RuntimeError("Module %s does not exist or is not installed" % name)
         if (name, filename) in self.modules:
             raise ValueError('Module %s is already loaded'%name)
@@ -613,7 +614,7 @@ PidFile $pidFile
 </IfModule>
 
 LogLevel error
-ErrorLog ../../var/log/apache/error.log
+ErrorLog /var/log/apache2/error.log
 
 <IfModule log_config_module>
     #
@@ -635,7 +636,7 @@ ErrorLog ../../var/log/apache/error.log
     # define per-<VirtualHost> access logfiles, transactions will be
     # logged therein and *not* in this file.
     #
-    CustomLog ../../var/log/apache/access.log common
+    CustomLog /var/log/apache2/access.log common
 
     #
     # If you prefer a logfile with access, agent, and referer information
@@ -647,7 +648,7 @@ ErrorLog ../../var/log/apache/error.log
 DefaultType text/plain
 
 <IfModule mime_module>
-    TypesConfig conf/mime.types
+    TypesConfig /etc/mime.types
     #AddType application/x-gzip .tgz
     #AddEncoding x-compress .Z
     #AddEncoding x-gzip .gz .tgz
