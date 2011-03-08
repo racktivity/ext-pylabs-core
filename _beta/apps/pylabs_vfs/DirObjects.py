@@ -5,7 +5,10 @@ from PysyncWalker import *
 
 class DirObjectsStore():
     """
-    serialized format on disk read code )-:  #@todo despiegk: spec format
+    Is store for metadata for a filesystem
+    We store dirobjects in a key/value store
+    
+    serialized format on disk read code )-:  #@todo spec format
     {key:MetadataForDirObject} #key=last name of dir, will make sure we have no hash collissions, 
     """
     def __init__(self,metadataPath,rootpath=""):
@@ -19,7 +22,7 @@ class DirObjectsStore():
                 raise RuntimeError("Cannot create a dirobjectStore if the rootobject is not specified or know from previous state")
         else:
             self.root=rootpath
-            self.db.put("main","rootpath",rootpath)
+            self.db.set("main","rootpath",rootpath)
         
     def get(self,versionEpoch=0):
         """
@@ -118,18 +121,18 @@ class DirObjects():
             self._metadatapathCurrent=q.system.fs.joinPaths(self.metadatapath,"fsmetadata_%s"%self.scantimeId)
         #q.system.fs.createDir(self._metadatapathCurrent)        
         self.stateSetError()#metadata without population is error
-        self.db.put("stateEpochToId",ttime,self.scantimeId) #remember the id's starting from epoch  (epoch to id mapping)
-        self.db.put("main","latestScanId",self.scantimeId) #remember the latest id
+        self.db.set("stateEpochToId",ttime,self.scantimeId) #remember the id's starting from epoch  (epoch to id mapping)
+        self.db.set("main","latestScanId",self.scantimeId) #remember the latest id
         q.system.fs.symlink(self._metadatapathCurrent,q.system.fs.joinPaths(self.metadatapath,"fsmetadata_current") , overwriteTarget=True)
         
     def stateSetError(self):
-        self.db.put(self._getDBCat(),"STATE","ERROR")
+        self.db.set(self._getDBCat(),"STATE","ERROR")
     
     def stateSetActive(self):
-        self.db.put(self._getDBCat(),"STATE","ACTIVE")
+        self.db.set(self._getDBCat(),"STATE","ACTIVE")
 
     def stateSetDeleted(self):
-        self.db.put(self._getDBCat(),"STATE","DELETED")
+        self.db.set(self._getDBCat(),"STATE","DELETED")
         
     def stateGet(self):
         self.db.get(self._getDBCat(),"STATE")
@@ -160,11 +163,11 @@ class DirObjects():
         """        
         return self.deserialize(key,self.db.get("fsmetadata_%s"%self.scantimeId,key))
 
-    def _put(self,dirObject):
+    def _set(self,dirObject):
         """
         get object from disk, fail if  not there
         """        
-        self.db.put("fsmetadata_%s"%self.scantimeId,dirObject.key,self.serialize(dirObject))
+        self.db.set("fsmetadata_%s"%self.scantimeId,dirObject.key,self.serialize(dirObject))
     
     def _exists(self,key):
         """
@@ -183,7 +186,7 @@ class DirObjects():
             return DirObject(key,dirPath)
         else:
             raise RuntimeError("Dirobject %s does already exist" % dirPath)
-            #self._put(dirObject)
+            #self._set(dirObject)
 
     def getCreateIfNotExist(self,dirPath):
         if self.exists(dirPath):
@@ -202,7 +205,7 @@ class DirObjects():
         return dirObject
     
     def save(self,dirObject):
-        self._put(dirObject)
+        self._set(dirObject)
         
     def serialize(self,dirObject):
         dirObject.updateModdate()
@@ -231,6 +234,7 @@ class DirObjects():
 
     def walk(self,function,args,path,recursive=True):
         """
+        walks over dirobjects collection (virtual metadata, not on a real filesystem)
         pass function, argements given to function are 
             for file $args, $fullpath, "F", moddate, size, md5
             for dir $args, $fullpath, "D", 0,0,""
@@ -249,6 +253,13 @@ class DirObjects():
             function(args,fullpath,"D",0,0,"")
             if recursive:
                 self.walk(function,args,fullpath,recursive)
+            
+    def __str__(self):
+        raise RuntimeError("NOT IMPLEMENTED @todo please implement")
+        
+    def __repr__(self):
+        return self.__str__()
+            
             
 class DirObject():
     """
@@ -285,7 +296,7 @@ class DirObject():
             return False
 
     def getFilePath(self,filename):
-        
+        pass #@todo ???
 
     def addFileObject(self,name,size,modDate,md5hash=""):
         name=name.strip()

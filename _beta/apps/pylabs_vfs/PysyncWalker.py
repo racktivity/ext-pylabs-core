@@ -2,6 +2,9 @@ from pylabs.Shell import *
 from pylabs import q
 
 class PysyncWalker:
+    """
+    walker for filesystem will populate dirobjects
+    """
     def __init__(self,startPath,dirobjects,processHiddenFiles=False,usemd5=False):
         if not q.system.fs.exists(startPath):
             raise RuntimeError("Cannot start walker for dir '%s', make sure it exist and is not empty." % startPath)
