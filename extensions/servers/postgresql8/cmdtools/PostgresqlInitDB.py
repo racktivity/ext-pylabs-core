@@ -33,7 +33,7 @@
 #
 # </License>
  
-import re
+import re, os
 
 from pylabs import q
 from pylabs.baseclasses.CommandWrapper import CommandWrapper
@@ -56,46 +56,50 @@ class PostgresqlInitDB(CommandWrapper):
         @param username:  username to use when initializing the server
         @param  dataDir: data directory to be used to initialize system databases
         """
-        name = "pgsql-8.3"
-        cmdbtypename    = 'postgresql8server'
-        configFileDir = dataDir and dataDir or q.system.fs.joinPaths(os.sep, 'etc', "postgresql")
-        binDir = q.system.fs.joinPaths(os.sep, 'usr', 'lib', 'postgresql', '8.4', 'bin')
-        exitCode = 1
-        output = ''
+        try:
+            name = "pgsql-8.3"
+            cmdbtypename    = 'postgresql8server'
+            configFileDir = dataDir and dataDir or q.system.fs.joinPaths(os.sep, 'etc', 'postgresql', '8.4', 'main')
+            binDir = q.system.fs.joinPaths(os.sep, 'usr', 'lib', 'postgresql', '8.4', 'bin')
+            exitCode = 1
+            output = ''
 
-        q.logger.log("Applying %s credentials for [%s]"%(username, name))
+            q.logger.log("Applying %s credentials for [%s]"%(username, name))
 
-        if not q.system.fs.isDir(configFileDir):
+            if not q.system.fs.isDir(configFileDir):
 
-                q.logger.log("Creating configuration directory [%s]"%configFileDir, 1)
-                q.system.fs.createDir(configFileDir)
+                    q.logger.log("Creating configuration directory [%s]"%configFileDir, 1)
+                    q.system.fs.createDir(configFileDir)
 
-                if q.platform.isUnix():
-                    q.logger.log("Setting owner for [%s] to [%s]"%(configFileDir, username), 5)
-                    q.system.unix.chown(configFileDir, username, None)
-                    q.logger.log("Setting owner for [%s] to [%s]"%(q.dirs.baseDir, username), 5)
-                    q.system.unix.chown(binDir, username, None)
+                    if q.platform.isUnix():
+                        q.logger.log("Setting owner for [%s] to [%s]"%(configFileDir, username), 5)
+                        q.system.unix.chown(configFileDir, username, None)
+                        q.logger.log("Setting owner for [%s] to [%s]"%(q.dirs.baseDir, username), 5)
+                        q.system.unix.chown(binDir, username, None)
 
-        binPath  = q.system.fs.joinPaths(binDir,"initdb")
-        initDBCommand = "%s -E=%s --no-locale -D %s"%(binPath, "UTF-8", configFileDir)
+            binPath  = q.system.fs.joinPaths(binDir,"initdb")
+            initDBCommand = "%s -E=%s --no-locale -D %s"%(binPath, "UTF-8", configFileDir)
 
-        if q.platform.isUnix():
-                exitCode, output = q.system.unix.executeAsUser("%(initDBCommand)s"%{"initDBCommand":initDBCommand},username, dieOnNonZeroExitCode = False)
-                if exitCode:
-                    raise RuntimeError,('initdb failed with error %s'%output, exitCode)
-
-        elif q.platform.isWindows():
-                if not q.system.windows.isServiceInstalled(name):
-                    q.logger.log("Registering [%s] that located at [%s]as a windows service"%(name, q.system.fs.joinPaths(binDir,"pg_ctl.exe")), 1)
-                    result = q.system.windows.createService(name, name, binDir+"\pg_ctl.exe", 'runservice -W -N %(serviceName)s -D \"%(configFileDir)s\"'%{'serviceName':name, 'configFileDir':configFileDir})
-                    if result :
-                        q.system.windows.startService(name)
-                    else:
-                        q.logger.log("cannot regsiter service %s"%name, 6)
-
-                if q.system.fs.isEmptyDir(configFileDir):
-                    command = "%(initDBCommand)s -U %(login)s"%{"login":username, "initDBCommand":initDBCommand}
-                    exitCode, output = q.system.process.execute(command, dieOnNonZeroExitCode = False)
+            if q.platform.isUnix():
+                    exitCode, output = q.system.unix.executeAsUser("%(initDBCommand)s"%{"initDBCommand":initDBCommand},username, dieOnNonZeroExitCode = False)
                     if exitCode:
                         raise RuntimeError,('initdb failed with error %s'%output, exitCode)
-        return exitCode, output
+
+            elif q.platform.isWindows():
+                    if not q.system.windows.isServiceInstalled(name):
+                        q.logger.log("Registering [%s] that located at [%s]as a windows service"%(name, q.system.fs.joinPaths(binDir,"pg_ctl.exe")), 1)
+                        result = q.system.windows.createService(name, name, binDir+"\pg_ctl.exe", 'runservice -W -N %(serviceName)s -D \"%(configFileDir)s\"'%{'serviceName':name, 'configFileDir':configFileDir})
+                        if result :
+                            q.system.windows.startService(name)
+                        else:
+                            q.logger.log("cannot regsiter service %s"%name, 6)
+
+                    if q.system.fs.isEmptyDir(configFileDir):
+                        command = "%(initDBCommand)s -U %(login)s"%{"login":username, "initDBCommand":initDBCommand}
+                        exitCode, output = q.system.process.execute(command, dieOnNonZeroExitCode = False)
+                        if exitCode:
+                            raise RuntimeError,('initdb failed with error %s'%output, exitCode)
+            return exitCode, output
+        except:
+            print q.errorconditionhandler.getCurrentExceptionString()
+            raise

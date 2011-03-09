@@ -32,8 +32,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
- 
-import re
 
 from pylabs import q
 from pylabs.baseclasses.ManagementApplication import ManagementApplication, CMDBLockMixin
@@ -42,7 +40,6 @@ from pylabs.enumerators import AppStatusType
 
 from PostgresqlServer import PostgresqlServer
 from PostgresqlEnums import PostgresqlAccessRightType
-
 
 class PostgresqlManager(ManagementApplication, CMDBLockMixin):
 
@@ -61,6 +58,7 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         """
         Start Postgresql Server
         """
+        q.logger.log('************Start************', 1)
         if self.getStatus() == AppStatusType.HALTED:
             try:
                 q.cmdtools.postgresql8.pg_ctl.start(self.cmdb.rootLogin, self.configFileDir)
@@ -104,6 +102,7 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         """
         Get Status of Postgresql Server (Running/ Stopped) by using the Postgresql command wrapper
         """
+        q.logger.log(self.cmdb.initialized, 1)
         if self.cmdb.initialized:
             try:
                 if q.cmdtools.postgresql8.pg_ctl.getStatus(self.cmdb.rootLogin, self.configFileDir) == AppStatusType.RUNNING:
