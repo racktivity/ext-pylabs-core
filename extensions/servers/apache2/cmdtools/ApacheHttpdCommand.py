@@ -32,7 +32,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
- 
+import os
 from pylabs import q
 from pylabs.baseclasses.CommandWrapper import CommandWrapper
 from pylabs.enumerators import AppStatusType
@@ -44,13 +44,15 @@ class ApacheHttpdCommand(CommandWrapper):
     """
 
     def _getPidFile(self):
-        return q.system.fs.joinPaths(q.dirs.pidDir, "httpd.pid")
+        return q.system.fs.joinPaths(os.sep, "var", "run","apache2.pid")
         
     def _getHttpdBinary(self):
-        return q.system.fs.joinPaths(q.dirs.appDir, "apache", "bin","httpd")
+#        return q.system.fs.joinPaths(os.sep,"etc", "init.d", "apache2")
+        return q.system.fs.joinPaths(os.sep,"usr",  "sbin", "apache2ctl")
+#        return q.system.fs.joinPaths(os.sep,"usr",  "sbin", "apache2")
         
     def _getDefaultConfigFile(self):
-        return q.system.fs.joinPaths(q.dirs.cfgDir, "apache", "httpd.conf")
+        return q.system.fs.joinPaths(os.sep, "etc", "apache2", "apache2.conf")
         
     def start(self, configFile=None, timeout=30):
         """
@@ -72,7 +74,7 @@ class ApacheHttpdCommand(CommandWrapper):
             if q.system.fs.exists(self._getPidFile()):
                 pid = int(q.system.fs.fileGetContents(self._getPidFile()))
                 if q.system.process.isPidAlive(pid):
-                    if q.system.process.checkProcess('apps/apache/bin/httpd') == 0:
+                    if q.system.process.checkProcess('apache2') == 0:
                         started = True
                         break
             t = t - 1
@@ -109,7 +111,7 @@ class ApacheHttpdCommand(CommandWrapper):
             raise RuntimeError("Apache (pidfile [%s]) could not be stopped in %d seconds" % (self._getPidFile(), timeout))
         
         # Check if process is still running
-        if not q.system.process.checkProcess(self._getHttpdBinary()):
+        if not q.system.process.checkProcess("apache2"):#self._getHttpdBinary()):
             raise RuntimeError("Apache process is still running")
 
         q.console.echo("Apache stopped")
@@ -132,7 +134,7 @@ class ApacheHttpdCommand(CommandWrapper):
         if pid == None:
             pid = self.getPidfile()
             
-        if pid != None and q.system.process.isPidAlive(pid) == True and q.system.process.checkProcessForPid(int(pid), q.system.fs.getBaseName(self._getHttpdBinary())) == 0:
+        if pid != None and q.system.process.isPidAlive(pid) == True and q.system.process.checkProcessForPid(int(pid), "apache2") == 0:
             return AppStatusType.RUNNING
             
         return AppStatusType.HALTED
@@ -141,7 +143,7 @@ class ApacheHttpdCommand(CommandWrapper):
         if configFile == None:
             configFile = self._getDefaultConfigFile()
         
-        pidLocation = q.system.fs.joinPaths(q.dirs.pidDir, "httpd.pid")
+        pidLocation = q.system.fs.joinPaths(os.sep, "var", "run","apache2.pid")
         pid = None
         
         if q.system.fs.isFile(pidLocation):

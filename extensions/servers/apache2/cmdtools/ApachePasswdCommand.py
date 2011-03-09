@@ -41,7 +41,7 @@ class ApachePasswdCommand(CommandWrapper):
     The Apache htpasswd commandWrapper to update passwords
     """
     def _getHtpasswdBinary(self):
-        return q.system.fs.joinPaths(q.dirs.appDir, "apache", "bin", "htpasswd")
+        return q.system.fs.joinPaths(os.sep, "usr", "bin", "htpasswd")
             
     def createACE(self, accessFilePath, userName, passwd, createPwdFile):
         """

@@ -32,7 +32,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
- 
+import os
 from pylabs import q
 from pylabs.baseclasses.ManagementApplication import ManagementApplication, CMDBLockMixin
 from pylabs.enumerators import AppStatusType
@@ -66,7 +66,7 @@ class ApacheServerManagement(ManagementApplication,CMDBLockMixin):
         """
         check system what current status of the application is
         """
-        pidLocation = q.system.fs.joinPaths(q.dirs.pidDir, "httpd.pid")
+        pidLocation = q.system.fs.joinPaths(os.sep, "var", "run","apache2.pid")
         pid = None
     
         if q.system.fs.isFile(pidLocation):
@@ -168,4 +168,4 @@ class ApacheServerManagement(ManagementApplication,CMDBLockMixin):
         return siteNames
 
     def _getConfigFileName(self):
-        return q.system.fs.joinPaths(self.cmdb._configSubDir, self.cmdb.configFileName)
+        return q.system.fs.joinPaths(os.sep, self.cmdb._apacheDir, self.cmdb._configSubDir, self.cmdb.configFileName)
