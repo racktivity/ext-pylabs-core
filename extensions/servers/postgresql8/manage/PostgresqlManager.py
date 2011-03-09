@@ -107,7 +107,7 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
             try:
                 if q.cmdtools.postgresql8.pg_ctl.getStatus(self.cmdb.rootLogin, self.configFileDir) == AppStatusType.RUNNING:
                     sqlquery = "select count(d.datname) as name from pg_catalog.pg_database d;"
-                    ret = q.cmdtools.postgresql8.query._executeSQL('qbase', sqlquery, database='postgres', options='-t')
+                    ret = q.cmdtools.postgresql8.query._executeSQL(self.cmdb.rootLogin, sqlquery, database='postgres', options='-t')
                     ret = ret.split()
                     if len(ret) == 1:
                         try:

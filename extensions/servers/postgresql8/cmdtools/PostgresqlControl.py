@@ -35,6 +35,7 @@ class PostgresqlControl(CommandWrapper):
 
         elif q.platform.isLinux():
             commandString = "%s start -D '%s' -w -l '%s' -o -i" % (self._daemon, self._configFileDir, self._pgLogFile)
+            q.logger.log('commmand: %s' % commandString, 1)
             q.system.process.runDaemon(commandline = commandString, user = username)
 
         elif q.platform.isSolaris():
@@ -129,11 +130,10 @@ class PostgresqlControl(CommandWrapper):
         @param  dataDir: data directory used to initialize system databases
         """
 
-        approotuser = q.config.getConfig('qbaseusermanagement')['main']['app_root_user']
         if q.system.process.checkListenPort(5432): # 0 if running, 1 if not running
             return AppStatusType.HALTED
         try:
-            dbCon = DBConnection('127.0.0.1', 'postgres', approotuser)
+            dbCon = DBConnection('127.0.0.1', 'postgres', username)
             result = dbCon.sqlexecute("select datname from pg_database;")
         except Exception, e:
             q.logger.log("The following exception occurred while checking the postgres status.", 5)
