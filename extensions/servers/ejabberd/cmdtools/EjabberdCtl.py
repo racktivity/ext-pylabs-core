@@ -100,10 +100,8 @@ class EjabberdCtl(CommandWrapper):
         cmd = self._formCommand(EJABBERDCTL, 'status', nodeName)
         status, stdout, stderr = q.system.process.run(cmd, stopOnError=False)
         if not status:
-            q.logger.log('Running', 1)
             return AppStatusType.RUNNING
         else:
-            q.logger.log('Not Running', 1)
             return AppStatusType.HALTED
 
     def restart(self, nodeName="", cfgFile="", ctlCfgFile="", logsDir="", spoolDir=""):
@@ -228,7 +226,6 @@ class EjabberdCtl(CommandWrapper):
                 ejabberdctl += ' %s "%s"'%(option, value)
 
         ejabberdctl += ' %s'%command
-        print 'FORM COMMAND', ejabberdctl
         return ejabberdctl
 
     def _checkParams(self, params):

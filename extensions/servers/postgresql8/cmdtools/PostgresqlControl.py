@@ -35,7 +35,6 @@ class PostgresqlControl(CommandWrapper):
 
         elif q.platform.isLinux():
             commandString = "%s start -D '%s' -w -l '%s' -o -i" % (self._daemon, self._configFileDir, self._pgLogFile)
-            q.logger.log('commmand: %s' % commandString, 1)
             q.system.process.runDaemon(commandline = commandString, user = username)
 
         elif q.platform.isSolaris():

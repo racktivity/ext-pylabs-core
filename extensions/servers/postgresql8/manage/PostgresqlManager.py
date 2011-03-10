@@ -58,7 +58,6 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         """
         Start Postgresql Server
         """
-        q.logger.log('************Start************', 1)
         if self.getStatus() == AppStatusType.HALTED:
             try:
                 q.cmdtools.postgresql8.pg_ctl.start(self.cmdb.rootLogin, self.configFileDir)
@@ -102,7 +101,6 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         """
         Get Status of Postgresql Server (Running/ Stopped) by using the Postgresql command wrapper
         """
-        q.logger.log(self.cmdb.initialized, 1)
         if self.cmdb.initialized:
             try:
                 if q.cmdtools.postgresql8.pg_ctl.getStatus(self.cmdb.rootLogin, self.configFileDir) == AppStatusType.RUNNING:
