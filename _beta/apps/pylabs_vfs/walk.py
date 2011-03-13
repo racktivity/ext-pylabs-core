@@ -18,6 +18,8 @@ vfs.reset()
 vfs.populateFromFilesystem()        
 vfs.getLatest()
 
+ipshell()
+
 #for file in vfs.listFilesInDir("",True,False):
 #    print file
 
