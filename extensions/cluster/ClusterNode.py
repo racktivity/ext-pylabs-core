@@ -32,8 +32,8 @@ class ClusterNode():
         # p = """ some texts %s blabla """ % 'insert me' 
         # does not work so we do a replace.
         template="""
-from pylabs.InitBase import *
-from pylabs.Shell import *
+from pymonkey.InitBase import *
+from pymonkey.Shell import *
 
 q.application.appname = "qshellexecute"
 q.application.start()
