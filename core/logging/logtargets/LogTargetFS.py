@@ -27,10 +27,10 @@ class LogTargetFS(object):
         self.lastappstatus=pylabs.q.application.state
         #except:
             #self.agentid="unknown"
-        logdir="/opt/qbase5/var/log/pylabslogs/"
+        logdir=os.path.join(pylabs.q.dirs.baseDir,"var",'log',"pylabslogs")
         if not os.path.isdir(logdir):
             os.mkdir(logdir)
-        logdir=os.path.join("/opt/qbase5/var",'log',"pylabslogs",pylabs.q.application.agentid)
+        logdir=os.path.join(pylabs.q.dirs.baseDir,"var",'log',"pylabslogs",pylabs.q.application.agentid)
         if os.path.isdir(logdir)==False:
             os.mkdir(logdir)
             
