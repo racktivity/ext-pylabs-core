@@ -11,7 +11,7 @@ q.logger.maxlevel=6
 q.logger.consoleloglevel=2
 q.qshellconfig.interactive=True
 
-root= "/opt/qbase5/var/vfs/var_log/"
+root = "/opt/qbase5/var/vfs/var_log/"
 
 vfs=VirtualFileSystemMetadata(root,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
 vfs.reset()
@@ -46,7 +46,9 @@ vfs.populateFromFilesystem(processHiddenFiles=False,usemd5=False)
 versions= vfs.listVersions()
 print versions
 versionToCompareOld=versions[0]
-vfs.compareWithOlderVersion(versionToCompareOld,"changes.txt")
+changeFilePath = "/opt/qbase5/changes.txt"
+q.system.fs.createEmptyFile(changeFilePath)
+vfs.compareWithOlderVersion(versionToCompareOld, changeFilePath)
 #versionToCompareNew=versions[-1]
 ipshell()
 

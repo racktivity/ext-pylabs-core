@@ -20,6 +20,7 @@ class VirtualFileSystemMetadata():
         self.dirObjectsStore=DirObjectsStore(metadataPath,self.root)
         if self.root=="":
             self.root=self.dirObjectsStore.root
+        q.system.fs.changeDir(self.root)
         self.state="INIT"
 
     def _checkActive(self):
@@ -123,21 +124,22 @@ class VirtualFileSystemMetadata():
         def compare(args, path, type, moddate, size, md5):
             if type=="D":
                 if vfsOlder.dirObjectExists(path):
-                    dirObjectOlder=vfsOlder.dirObjectGet(path)
                     dirObject=self.dirObjectGet(path)
+                    dirObjectOlder=vfsOlder.dirObjectGet(path)
                     setfilesOlder=set(dirObjectOlder.getFileNames())
                     setfiles=set(dirObject.getFileNames())
                     deletedfiles=setfilesOlder-setfiles
                     newfiles=setfiles-setfilesOlder
                     commonfiles=setfiles & setfilesOlder
                     for file in commonfiles:
-                        name2,size2,modDate2,md5hash2=dirObjectOlder.getFileInfo(file)
-                        name,size,modDate,md5hash=dirObject.getFileInfo(file)
+                        size2,modDate2,md5hash2=dirObjectOlder.getFileInfo(file)
+                        size,modDate,md5hash=dirObject.getFileInfo(file)
+                        name = file
                         if ignoreDate:
                             if  (md5hash2=="" or md5hash==""):
                                 raiseError(dirObjectOlder.getFilePath(name),"Cannot compare because hashing code is not known for file")
                             if md5hash<>md5hash2:
-                                q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
+                                q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name)),True)
                         else:
                             if modDate<>modDate2:
                                 #file potentially changed
@@ -145,17 +147,19 @@ class VirtualFileSystemMetadata():
                                     #can use md5 to check
                                     if md5hash<>md5hash2:
                                         #we now know for sure files are different
-                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
+                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
                                 else:
                                     #cannot use md5
-                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
+                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
                     for file in deletedfiles:
-                        q.system.fs.writeFile(changefilePath,"D|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
+                        size,modDate,md5hash=dirObject.getFileInfo(file)
+                        q.system.fs.writeFile(changefilePath,"D|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
                     for file in newfiles:
-                        q.system.fs.writeFile(changefilePath,"N|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name),True))
+                        size,modDate,md5hash=dirObject.getFileInfo(file)
+                        q.system.fs.writeFile(changefilePath,"N|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
                 else:
                     #new dir, does not exist in old metadata
-                    q.system.fs.writeFile(changefilePath,"N|D||||%s\n"%dirObject.getDirPath(name),True)
+                    q.system.fs.writeFile(changefilePath,"N|D||||%s\n"%path,True)
                     
         self.walk(compare,args,"",recursive=True)
     
