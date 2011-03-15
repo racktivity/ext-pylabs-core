@@ -1,9 +1,9 @@
-from pymonkey import q
 import mimetypes
 from urllib2 import HTTPError
 from SugarsyncObjects import Hook
 from SugarsyncObjects import xml2Dic as reformat
 from SugarsyncObjects import cleanString
+from pylabs import q
 from functools import partial
 import SugarsyncClient 
 class Sugarsync(object):

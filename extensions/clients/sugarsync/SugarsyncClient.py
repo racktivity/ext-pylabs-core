@@ -6,7 +6,7 @@ import base64
 import mimetypes
 import mimetools
 
-from pymonkey import q
+from pylabs import q
 #sugarsync status codes: http://www.sugarsync.com/developers/rest-api-reference/responseCodes/index.html
 
 HTTP_CREATED = 201 #from practical examples, authorization created returns 201
