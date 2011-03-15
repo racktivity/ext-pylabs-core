@@ -1,5 +1,5 @@
 set -ex
-apt-get install python2.6 mc python-openssl python-pycurl python-pygresql mercurial wget ipython -y
+apt-get install python2.6 mc python-openssl python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah -y
 
 cd /tmp
 rm -f opt.tar.gz
