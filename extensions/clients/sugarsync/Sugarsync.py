@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 import mimetypes
 from urllib2 import HTTPError
 from SugarsyncObjects import Hook
@@ -10,23 +10,6 @@ class Sugarsync(object):
     '''
     High level client for Sugarsync APIs
     '''
-    
-    def connect(self):
-        '''
-        Authenticate to sugarsync REST webservices
-        
-        The connect method uses the sugarsync.cfg ini file that should hold valid username, password, AccessKeyID and privateAccessKey
-        the method populates the q.clients.sugarsync.user object with user information upon sucessful login
-        
-        @return: None
-        '''
-        self.client = q.clients.sugarsyncapi 
-        cfgpath = q.system.fs.joinPaths(q.dirs.extensionsDir, 'clients', 'sugarsync', 'sugarsync.cfg')
-        cfgfile = q.tools.inifile.open(cfgpath)
-        credentials = cfgfile.getSectionAsDict('sugarsync_account')
-        self.client.authenticate(**credentials)
-        self.user = self.client.user
-        self._copyMethods()
         
     def listHomeFolders(self):
         '''
@@ -100,12 +83,12 @@ class Sugarsync(object):
     
 class SugarsyncConnection(object):
     def __init__(self, email, password=None, accesskeyid=None, privateaccesskey=None, saveCredentials=False):
-        resp = None
+        sessionDict = None
         cfgpath = q.system.fs.joinPaths(q.dirs.extensionsDir, 'clients', 'sugarsync', 'sugarsync.cfg')
         cfgfile = q.tools.inifile.open(cfgpath)
         if password and accesskeyid and privateaccesskey:
             try:
-                resp = q.clients.sugarsyncapi.authenticate(email, password, accesskeyid, privateaccesskey)
+                sessionDict = q.clients.sugarsyncapi.authenticate(email, password, accesskeyid, privateaccesskey)
             except HTTPError, ex:
                 q.logger.log(ex)
                 if ex.code == SugarsyncClient.HTTP_AUTH_REQUIRED:
@@ -118,18 +101,18 @@ class SugarsyncConnection(object):
         else:
             if cfgfile.checkSection(email):
                 credentials = cfgfile.getSectionAsDict(email)
-                resp = q.clients.sugarsyncapi.authenticate(**credentials)
+                sessionDict = q.clients.sugarsyncapi.authenticate(**credentials)
             else:
                 raise RuntimeError('Credentials not stored, please enter full credentials')    
-        self._initConnection(resp)
+        self._initConnection(sessionDict)
                     
-    def _initConnection(self, resp):                
-        bodyDic = reformat(resp.read())
-        self._auth_token_expiration = bodyDic['authorization'].expiration
-        self.user = bodyDic['authorization'].user
-        self._auth_token = resp.headers['location']
+    def _initConnection(self, sessionDict):                
+        self._auth_token_expiration = sessionDict['auth_token_expiration']
+        self.user = sessionDict['user']
+        self._auth_token = sessionDict['auth_token']
         self._user_session = q.clients.sugarsyncapi.getUserInfo(self._auth_token)
         self.folders = Folder(self, self._user_session.webArchive, 'home')
+        self.albums = Album(self, self._user_session.webArchive, 'albums')
             
         
 class Folder(object):
@@ -211,3 +194,37 @@ class File(object):
             q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
         else:
             return False
+        
+class Album(object):
+   def __init__(self, conn, baseurl, displayName):
+       self._conn = conn
+       self._baseurl = baseurl
+       self._displayName = displayName
+       setattr(self, 'photos', Photos(self._conn, self._baseurl))
+
+class Photos(object):
+   def __init__(self, conn, parentUrl):
+       self._conn = conn
+       self._parentUrl = parentUrl
+       children = q.clients.sugarsyncapi.getAlbumContents(self._conn._auth_token, self._parentUrl)
+       map(lambda photoObj: setattr(self, cleanString(photoObj._displayName), photoObj),
+           map(lambda initArgs: Photo(*initArgs),
+               [(self._conn, col.ref, col.displayName) for col in
+                   map(lambda attr: getattr(children, attr),
+                       filter(lambda attr: attr.startswith('file'),dir(children))
+                   )
+               ]
+           )
+       )
+
+class Photo(object):
+   def __init(self, conn, baseurl, displayName):
+       self._conn = conn
+       self._baseurl = baseurl
+       self._displayName = displayName
+       self.__dict__.update(q.clients.sugarsyncapi.getFileInfo(self._conn._auth_token, self._baseurl).__dict__)
+   def download(self, localFilePath):
+       if self.presentOnServer:
+           q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
+       else:
+           return False
