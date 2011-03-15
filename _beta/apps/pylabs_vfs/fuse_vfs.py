@@ -270,9 +270,10 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
 
     server = Xmp(version="%prog " + fuse.__version__, usage=usage)
 
-    server.parser.add_option(mountopt="root", metavar="PATH", default='/opt/qbase5/dir1', help="mirror filesystem from under PATH [default: %default]")
+    server.parser.add_option(mountopt="root", metavar="PATH", default='/', help="mirror filesystem from under PATH [default: %default]")
     server.parse(values=server, errex=1)
     server.fuse_args.fuse_modifiers["foreground"]=True
+
     try:
         if server.fuse_args.mount_expected():
             os.chdir(server.root)
