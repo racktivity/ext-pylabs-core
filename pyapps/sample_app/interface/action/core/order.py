@@ -1,4 +1,4 @@
-class order
+class order:
     """
     Order actions API
     """

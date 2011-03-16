@@ -1,4 +1,4 @@
-class customer
+class customer:
     """
     Customer actions API
     """

@@ -1,4 +1,4 @@
-class mailprocessor
+class mailprocessor:
     """
     Mail Processor actions API
     """

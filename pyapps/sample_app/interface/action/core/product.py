@@ -1,4 +1,4 @@
-class product
+class product:
     """
     Product actions API
     """

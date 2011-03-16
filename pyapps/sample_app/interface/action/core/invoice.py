@@ -1,4 +1,4 @@
-class invoice
+class invoice:
     """
     Invoice actions API
     """
