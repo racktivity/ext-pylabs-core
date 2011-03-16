@@ -39,19 +39,16 @@ This sets up logging, event handling, configuration reading and others.
 '''
 
 import os
-import re
 import sys
 import time
 import xmlrpclib
 import socket
-from operator import attrgetter
 
 from twisted.internet import reactor
 from twisted.python.threadpool import ThreadPool
 
 from pylabs import q
 from pylabs.baseclasses import BaseEnumeration
-from pylabs.qshellconfig.DeclarativeConfig import Config, ConfigSection
 from pylabs.config import ConfigManagementItem, ItemSingleClass, ItemGroupClass
 from applicationserver import CRON_JOB_STOP
 
@@ -219,7 +216,6 @@ import functools
 
 from pydispatch import dispatcher as pydispatcher
 
-from twisted.internet import reactor
 from twisted.python.log import addObserver, removeObserver
 
 from applicationserver import dispatcher, signals, crond
@@ -298,7 +294,6 @@ class ThreadLocalApplication(object, Application):
 
     def stop(self, *args, **kwargs):
         # We don't want q.application.stop to kill our process
-        import os
         oldexit = os._exit
         # Monkey-patch os._exit with some harmless function
         os._exit = lambda *args, **kwargs: None
@@ -544,9 +539,6 @@ class TaskletRunnerThread(object):
         self.keep_running = True
 
     def run(self):
-        #Placeholder
-        empty = list()
-
         #As long as we should be running...
         while self.keep_running:
             try:
@@ -593,6 +585,7 @@ class TaskletRunnerThread(object):
             finally:
                 if tb:
                     del tb
+            # This is intentional
             tb = None
 
 
@@ -918,7 +911,7 @@ class Server:
             return ApplicationserverStatus.UNKNOWN
         except KeyError, e:
             q.eventhandler.raiseWarning(
-                "%s is in UNKNOWN status: %s" % name)
+                "%s is in UNKNOWN status: %s" % (name, e))
             return ApplicationserverStatus.UNKNOWN
         return status
 
@@ -939,8 +932,8 @@ class Server:
         proxy = self._getProxy(name)
         try:
             status_string = proxy.getStatus()
-            status = ApplicationserverStatus.getByName(status_string)
-        except socket.error, e:
+            ApplicationserverStatus.getByName(status_string)
+        except socket.error:
             # Server is propably not running
             # TODO: check pid?
             return ApplicationserverStatus.NOT_RUNNING
@@ -958,8 +951,8 @@ class Server:
         proxy = self._getProxy(name)
         try:
             status_string = proxy.getStatus()
-            status = ApplicationserverStatus.getByName(status_string)
-        except socket.error, e:
+            ApplicationserverStatus.getByName(status_string)
+        except socket.error:
             # Server is propably not running
             # TODO: check pid?
             return ApplicationserverStatus.NOT_RUNNING
