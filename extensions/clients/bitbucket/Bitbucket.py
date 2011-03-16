@@ -1,21 +1,46 @@
-
+import json
 from pylabs import q
+from pylabs.baseclasses import BaseEnumeration
 from pylabs import i
 from pylabs.Shell import *
-import json
 
-class Bitbucket:    
+class RESTResultFormat(BaseEnumeration):
+    """
+    Enumerator of all supported Bitbucket REST result formats
+    """
+
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('json')
+        cls.registerItem('yaml')
+        cls.finishItemRegistration()
+
+class BitbucketRESTCall(BaseEnumeration):
+    """
+    Enumerator of all supported Bitbucket REST calls
+    """
+
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('groups')
+        cls.registerItem('users')
+        cls.finishItemRegistration()
+
+class Bitbucket:
     """
     @property accounts = account on bitbucket e.g. despieg, value is array of mercurial repo's
     """
+
     def __init__(self):
-        self.accountsLocalRepoNames={}
-        self.accountsRemoteRepoNames={}
-        self._accountnames=[]
-        
-        self._initialized=False
-        self.codedir=q.system.fs.joinPaths(q.dirs.baseDir,"..","code")
-        q.system.fs.createDir(self.codedir)   
+        self._accountnames= list()
+        self._initialized = False
+        self.accountsLocalRepoNames = dict()
+        self.accountsRemoteRepoNames = dict()
+        self.apiVersion = '1.0'
+        self.apiURI = 'https://api.bitbucket.org'
+        self.resultFormat = RESTResultFormat.JSON
+        self.codedir = q.system.fs.joinPaths(q.dirs.baseDir, ".." , "code")
+        q.system.fs.createDir(self.codedir)
 
     def init(self,force=False):
         if force or not self._initialized:
@@ -23,38 +48,39 @@ class Bitbucket:
             for account in self._accountnames:
                 repos=self._getRepoNamesFromCodeDir(account)
                 self.accountsLocalRepoNames[account]=repos
-                
-                
 
     def _getAccountNames(self):
-        names=q.clients.bitbucket._config.list()
-        self._accountnames=names
+        names = q.clients.bitbucket._config.list()
+        self._accountnames = names
         return names
-        
+
     def accountAdd(self,account="",login="",passwd=""):
         """
-        all params need to be filled in, when 1 not filled in will ask all of them
+        All params need to be filled in, when 1 not filled in will ask all of them
         """
         if account<>"" and login<>"" and passwd<>"":
             try:
                 self._config.remove(account)
             except:
                 pass            
-            self._config.add(account,{"login":login,"passwd":passwd})
+            self._config.add(account, {"login": login, "passwd": passwd})
         else:
             self._config.add()
-#        self._syncBitbucketConfigToMercurialConfig()
-        
+        # TODO - MNour: Uncomment when _syncBitbucketConfigToMercurialConfig is done.
+        # self._syncBitbucketConfigToMercurialConfig()
+
     def accountsReview(self):
         self._config.review()
-        self._syncBitbucketConfigToMercurialConfig()
+        # TODO - MNour: Uncomment when _syncBitbucketConfigToMercurialConfig is done.
+        # self._syncBitbucketConfigToMercurialConfig()
         
     def accountsShow(self):
         self._config.show()
 
     def accountsRemove(self,accountName=""):
         self._config.remove(accountName)
-        self._syncBitbucketConfigToMercurialConfig()
+        # TODO - MNour: Uncomment when _syncBitbucketConfigToMercurialConfig is done.
+        # self._syncBitbucketConfigToMercurialConfig()
 
     def accountGetConfig(self,accountName=""):
         return self._config.getConfig(accountName)
@@ -72,7 +98,7 @@ class Bitbucket:
             self.accountsReview(accountName)
         url=" https://%s:%s@bitbucket.org/%s/" % (login,passwd,accountName)
         return url,login,passwd        
-        
+
 ##    def _syncBitbucketConfigToMercurialConfig(self):
 ##        mercurialconnections=q.clients.mercurial.config.list()
 ##        for mercurialconnection in mercurialconnections:
@@ -84,7 +110,8 @@ class Bitbucket:
 ##            url = "http://bitbucket.org/%s/" % account
 ##            q.clients.mercurial.config.add("bitbucket_%s"%account,{"url":url,"login":login,"passwd":passwd})
 ##            #print "bitbucket_%s"%account
-##        
+##
+
     def _getAccountPathLocal(self,accountName):
         return q.system.fs.joinPaths(self.codedir,"bitbucket_%s"%accountName) 
 
@@ -118,41 +145,46 @@ class Bitbucket:
         if repoName=="":
             repoName=q.gui.dialog.askChoice("Select repo from bitbucket",self.getRepoNamesFromBitbucket(accountName))
         return "%s%s" % (url,repoName)
-    
-        
-######################################################################################################
-#this is a private method, which i mad public for easy test 
-######################################################################################################
-    #def _callBitbucketRestAPI(self,accountName, call):
-    def callBitbucketRestAPI(self,accountName, call):
-        url,login,passwd=self.accountGetLoginInfo(accountName)
+
+    def accountGetRepos(self, accountName):
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.USERS)
+
+    def _callBitbucketRestAPI(self, accountName, call):
+        # TODO - MNour: Think about a generic REST client that can be configured and used from different components.
+        url,login,passwd = self.accountGetLoginInfo(accountName)
         #http=q.clients.http.getconnection()
         #http.addAuthentication(login,passwd)
         #url="https://api.bitbucket.org/1.0/users/%s/" % self._getBitbucketUsernameFromUrl(url)
         #content=http.get(url)
-        #@todo need better way then curl, the authentication doesnt seem to work when using the http pylabs extension
+        # TODO - KDS: Need a better way than curl, the authentication doesnt seem to work when using the http pylabs extension.
         q.platform.ubuntu.checkInstall("curl","curl")
-        tmpfile=q.system.fs.joinPaths(q.dirs.tmpDir,q.base.idgenerator.generateGUID())
-        url,login,passwd=self.accountGetLoginInfo(accountName)
-        cmd="curl -u %s:%s https://api.bitbucket.org/1.0/%s > %s" % (login, passwd,call,  tmpfile)
-#        cmd="curl -u %s:%s https://api.bitbucket.org/1.0/%s > %s" % ("omohammad", "1234",call,  tmpfile)
-        resultcode,  content=q.system.process.execute(cmd, False, True)
+        resultTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
+        headerTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
+        url, login, passwd = self.accountGetLoginInfo(accountName)
+        cmd = "curl --dump-header %(headerTmpfile)s --user %(login)s:%(password)s %(apiURI)s/%(apiVersion)s/%(call)s/%(accountName)s/?format=%(resultFormat)s > %(resultTmpfile)s" %{'headerTmpfile': headerTmpfile, 'login': login, 'password': passwd, 'call': call, 'resultFormat': self.resultFormat, 'resultTmpfile': resultTmpfile, 'apiURI': self.apiURI, 'apiVersion': self.apiVersion, 'accountName': accountName}
+        resultcode, content = q.system.process.execute(cmd, False, True)
         if resultcode>0:
-            raise RuntimeError("Cannot get reponames from repo. Cannot execute %s"% cmd)
-        content=q.system.fs.fileGetContents(tmpfile )
-        q.system.fs.removeFile(tmpfile)
+            q.errorconditionhandler.raiseError("Cannot get reponames from repo. Cannot execute %s" %cmd)
+
+        # TODO - MNour: Add error checking and handling.
+        content = q.system.fs.fileGetContents(resultTmpfile )
+        q.system.fs.removeFile(resultTmpfile)
+        q.system.fs.removeFile(headerTmpfile)
+
         try:
-            object=json.loads(content)
+            object = json.loads(content)
         except:
-            raise RuntimeError("Cannot call rest api of bitbicket, call was %s" % cmd)
+            q.errorconditionhandler.raiseError("Cannot call rest api of bitbicket, call was %s" %cmd)
+
+        # TODO - MNour: Do we need to construct Bitbucket resources classes out of json deserialized object ?
         return object
 
-    def _getBitbucketRepoInfo(self,accountName):
+    def _getBitbucketRepoInfo(self, accountName):
         if accountName=="":
             raise RuntimeError("Cannot get repo info when account name not specified. Please call this function with accountName")
-        call="users/%s/" %  accountName
-        return self._callBitbucketRestAPI(accountName, call)
-    
+
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.USERS)
+
     def findRepoFromBitbucket(self,accountName="",partofName=None,reload=False):
         """
         will use bbitbucket api to retrieven all repo information
@@ -245,14 +277,13 @@ class Bitbucket:
 #    bitbucket REST
 #########################################################################################################################
 
-
     def checkGroup(self,group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password):
         command = "curl -u %s:%s -X GET %sgroups/%s/"%(bitbucket_login, bitbucket_password, bitbucket_api_url, bitbucket_login)
 #        curl -u omohammad:1234 -X GET https://api.bitbucket.org/1.0/groups/omohammad/
         try:
             groups = q.system.process.run(command)[1]
         except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s"%command)
+            q.errorconditionhandler.raiseError("Error while executing command : %s" %command)
         else:
             groups_list = json.loads(groups)
             for group in groups_list:
@@ -271,7 +302,7 @@ class Bitbucket:
         try:
             group_added = q.system.process.run(command)[1]
         except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s"%command)
+            q.errorconditionhandler.raiseError("Error while executing command : %s" %command)
         else:# making sure that group is added
             return True
 
@@ -284,7 +315,7 @@ class Bitbucket:
         try:
             group_added = q.system.process.run(command)[1]
         except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s"%command)
+            q.errorconditionhandler.raiseError("Error while executing command : %s" %command)
         else:
                 return True
 
@@ -422,14 +453,3 @@ class Bitbucket:
         
         if self.crowdCheck_group(crowd_api_url, crowd_login, crowd_password, crowd_group_to_sync):
             pass
-
-
-
-
-
-
-
-
-
-
-
