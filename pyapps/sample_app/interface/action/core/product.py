@@ -33,7 +33,7 @@ class product:
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, productguid, jobguid="", executionparams=dict())
+    def delete(self, productguid, jobguid="", executionparams=dict()):
        """
         Delete a product
  
@@ -54,7 +54,7 @@ class product:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, code="", description="", price="", duration="", jobguid="", executionparams=dict())
+    def find(self, code="", description="", price="", duration="", jobguid="", executionparams=dict()):
         """
         Returns a list of products which met the find criteria.
  
@@ -90,7 +90,7 @@ class product:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-      def getObject(self, productguid, jobguid="",executionparams=dict()):
+    def getObject(self, productguid, jobguid="",executionparams=dict()):
         """
         Gets the rootobject.
  

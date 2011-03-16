@@ -39,7 +39,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, customerguid, jobguid="", executionparams=dict())
+    def delete(self, customerguid, jobguid="", executionparams=dict()):
        """
         Delete a customer
  
@@ -60,7 +60,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, name="", login="", email="", address="", vat="", jobguid="", executionparams=dict())
+    def find(self, name="", login="", email="", address="", vat="", jobguid="", executionparams=dict()):
         """
         Returns a list of customers which met the find criteria.
  
@@ -99,7 +99,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-      def getObject(self, customerguid, jobguid="",executionparams=dict()):
+    def getObject(self, customerguid, jobguid="",executionparams=dict()):
         """
         Gets the rootobject.
  
