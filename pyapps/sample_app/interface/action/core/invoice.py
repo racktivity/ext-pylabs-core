@@ -1,4 +1,4 @@
-class invoice
+class invoice:
     """
     Invoice actions API
     """
@@ -41,7 +41,7 @@ class invoice
         @raise e:                      In case an error occurred, exception is raised
         """
       
-    def find(self, customerguid="", orderguid="", code="", description="", amountvatexcl="", amountvatincl="", vatpercentage="", invoicedate="", jobguid="", executionparams=dict())
+    def find(self, customerguid="", orderguid="", code="", description="", amountvatexcl="", amountvatincl="", vatpercentage="", invoicedate="", jobguid="", executionparams=dict()):
         """
         Returns a list of invoices which met the find criteria.
  
@@ -89,7 +89,7 @@ class invoice
         @raise e:                      In case an error occurred, exception is raised
         """
         
-      def getObject(self, invoiceguid, jobguid="",executionparams=dict()):
+    def getObject(self, invoiceguid, jobguid="",executionparams=dict()):
         """
         Gets the rootobject.
  

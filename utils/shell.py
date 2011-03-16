@@ -83,17 +83,18 @@ def main():
     #execute command
     elif options.command:
         import pylabs
-        from pylabs.InitBaseCore import q, i
+        from pylabs.InitBaseCore import q, i, p
         exec options.command
         sys.exit(0)
     ns = {}
     if not options.init:
         import pylabs
         pylabs.q.vars.setVar('DEBUG', options.debug)
-        from pylabs.InitBaseCore import q, i
+        from pylabs.InitBaseCore import q, i, p
 
         ns['q'] = q
         ns['i'] = i
+        ns['p'] = p
         q.application.appname = 'qshell'
         q.qshellconfig.interactive=True
         q.application.start()
