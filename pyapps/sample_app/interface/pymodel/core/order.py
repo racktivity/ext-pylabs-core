@@ -1,5 +1,5 @@
 from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
-from osis import model
+import pymodel as model
  
 # @doc Order status enumeration
 class orderstatus(BaseEnumeration):

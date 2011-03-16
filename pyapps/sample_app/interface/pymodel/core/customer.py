@@ -1,5 +1,5 @@
 from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
-from osis import model
+import pymodel as model
  
 # @doc Customer status enumeration
 class customerstatus(BaseEnumeration):
