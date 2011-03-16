@@ -75,7 +75,7 @@ class Xmp(Fuse):
         #thread.start_new_thread(self.mythread, ())
         q.logger.log(args)
         q.logger.log(kw)
-        self.root = '/opt/qbase5/var/log/'
+        self.root = '/tmp/fuse/'
         self.file_class = self.XmpFile
 
 
@@ -331,10 +331,9 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
 
     #ipshell()
     server.main()
-
-
-    root= "/opt/qbase5/var/vfs/var_log/"
-    vfs=VirtualFileSystemMetadata(root,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
+    q.logger.log('Fuse system mounted successfuly, loading vfs metadata ...')
+    metadatapath= "/opt/qbase5/var/vfs/var_log/"
+    vfs=VirtualFileSystemMetadata(metadatapath,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
     vfs.reset()
     vfs.populateFromFilesystem()        
     vfs.getLatest()
