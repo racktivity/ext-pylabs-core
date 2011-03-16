@@ -7,21 +7,6 @@
 #    See the file COPYING.
 #
 
-from pylabs.InitBase import *
-from pylabs.Shell import *
-from PysyncWalker import *
-from VirtualFileSystemMetadata import *
-import fnmatch
-
-q.application.appname = "VFSTestMetadata"
-q.application.start()
-
-q.logger.maxlevel=6 
-q.logger.consoleloglevel=2
-q.qshellconfig.interactive=True
-
-
-
 import os, sys
 from errno import *
 from stat import *
@@ -60,7 +45,7 @@ class Xmp(Fuse):
         # do stuff to set up your filesystem here, if you want
         #import thread
         #thread.start_new_thread(self.mythread, ())
-        self.root = '/opt/'
+        self.root = '/'
         self.file_class = self.XmpFile
 
 #    def mythread(self):
@@ -81,9 +66,7 @@ class Xmp(Fuse):
         return os.readlink("." + path)
 
     def readdir(self, path, offset):
-        q.logger.log( "path %s, offset %s" % (path,offset))
         for e in os.listdir("." + path):
-            q.logger.log("direntry %s" % e)
             yield fuse.Direntry(e)
 
     def unlink(self, path):
@@ -179,8 +162,6 @@ class Xmp(Fuse):
     class XmpFile(object):
 
         def __init__(self, path, flags, *mode):
-            #look for file and get path from elsewhere
-            
             self.file = os.fdopen(os.open("." + path, flags, *mode),
                                   flag2mode(flags))
             self.fd = self.file.fileno()
@@ -268,11 +249,13 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
 
 """ + Fuse.fusage
 
-    server = Xmp(version="%prog " + fuse.__version__, usage=usage)
+    server = Xmp(version="%prog " + fuse.__version__,
+                 usage=usage)
 
-    server.parser.add_option(mountopt="root", metavar="PATH", default='/', help="mirror filesystem from under PATH [default: %default]")
+    server.parser.add_option(mountopt="root", metavar="PATH", default='/',
+                             help="mirror filesystem from under PATH [default: %default]")
     server.parse(values=server, errex=1)
-    server.fuse_args.fuse_modifiers["foreground"]=True
+    server.root = '/opt/qbase5/dir1'
 
     try:
         if server.fuse_args.mount_expected():
@@ -281,21 +264,8 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
         print >> sys.stderr, "can't enter root of underlying filesystem"
         sys.exit(1)
 
-    #ipshell()
     server.main()
 
 
-    root= "/opt/qbase5/var/vfs/var_log/"
-    vfs=VirtualFileSystemMetadata(root,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
-    vfs.reset()
-    vfs.populateFromFilesystem()        
-    vfs.getLatest()
-
-    #ipshell()
-
-    
-
 if __name__ == '__main__':
     main()
-
-q.application.stop()

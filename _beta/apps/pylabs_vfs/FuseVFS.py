@@ -13,6 +13,7 @@ from PysyncWalker import *
 from VirtualFileSystemMetadata import *
 import fnmatch
 
+
 q.application.appname = "VFSTestMetadata"
 q.application.start()
 
@@ -40,6 +41,18 @@ fuse.fuse_python_api = (0, 2)
 # We use a custom file class
 fuse.feature_assert('stateful_files', 'has_init')
 
+class VFSStat(fuse.Stat):
+    def __init__(self):
+        self.st_mode = 0
+        self.st_ino = 0
+        self.st_dev = 0
+        self.st_nlink = 0
+        self.st_uid = 0
+        self.st_gid = 0
+        self.st_size = 0
+        self.st_atime = 0
+        self.st_mtime = 0
+        self.st_ctime = 0
 
 def flag2mode(flags):
     md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
@@ -60,8 +73,12 @@ class Xmp(Fuse):
         # do stuff to set up your filesystem here, if you want
         #import thread
         #thread.start_new_thread(self.mythread, ())
-        self.root = '/opt/'
+        q.logger.log(args)
+        q.logger.log(kw)
+        self.root = '/tmp/fuse/'
         self.file_class = self.XmpFile
+
+
 
 #    def mythread(self):
 #
@@ -75,16 +92,44 @@ class Xmp(Fuse):
 #            print "mythread: ticking"
 
     def getattr(self, path):
-        return os.lstat("." + path)
+        ret = -ENOENT
+        st = VFSStat()
+        q.logger.log('getattr(%s)'%path)
+        #how to handle files, while the VFS holds only size?
+        try:
+            dirobject = self.vfs.dirObjectGet(path[1:])
+            st.st_mode = S_IFDIR | 0755
+            st.st_nlink = 2
+            st.st_mtime = dirobject.moddate
+            st.st_atime = getattr(dirobject, 'accessdate', dirobject.moddate)
+            ret = st
+        except NoEntryError, ex:
+            #assume the path is file path and get its parent folder
+            parentPath = q.system.fs.getDirName(path)
+            try:
+                dirobject = self.vfs.dirObjectGet(parentPath[1:])
+                fileName = q.system.fs.getBaseName(path)
+                if fileName in dirobject.files:
+                    st.st_mode = S_IFREG | 0555
+                    st.st_nlink = 1
+                    st.st_size = dirobject.files[fileName][0]
+                    st.st_mtime = dirobject.files[fileName][1]
+            except NoEntryError, ex:
+                pass #return -ENOTENT
+        return ret
 
     def readlink(self, path):
         return os.readlink("." + path)
 
     def readdir(self, path, offset):
         q.logger.log( "path %s, offset %s" % (path,offset))
-        for e in os.listdir("." + path):
-            q.logger.log("direntry %s" % e)
-            yield fuse.Direntry(e)
+        try:
+            dirobject = self.vfs.dirObjectGet(path[1:])
+            for subdir in dirobject.dirs:
+                q.logger.log("direntry %s" % subdir)
+                yield fuse.Direntry(subdir)
+        except NoEntryError, ex:  
+            q.logger.log(ex)
 
     def unlink(self, path):
         os.unlink("." + path)
@@ -174,7 +219,10 @@ class Xmp(Fuse):
         return os.statvfs(".")
 
     def fsinit(self):
-        os.chdir(self.root)
+        self.vfs=VirtualFileSystemMetadata(self.root,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
+        self.vfs.reset()
+        self.vfs.populateFromFilesystem()        
+        self.vfs.getLatest()
 
     class XmpFile(object):
 
@@ -268,12 +316,12 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
 
 """ + Fuse.fusage
 
-    server = Xmp(version="%prog " + fuse.__version__, usage=usage)
+    server = Xmp(dash_s_do='setsingle', version="%prog " + fuse.__version__, usage=usage)
 
-    server.parser.add_option(mountopt="root", metavar="PATH", default='/', help="mirror filesystem from under PATH [default: %default]")
-    server.parse(values=server, errex=1)
+#    server.parser.add_option(mountopt="root", metavar="PATH", default='/opt/qbase5/dir1', help="mirror filesystem from under PATH [default: %default]")
+    server.parse(errex=1)
+    server.multithreaded = 0
     server.fuse_args.fuse_modifiers["foreground"]=True
-
     try:
         if server.fuse_args.mount_expected():
             os.chdir(server.root)
@@ -283,10 +331,9 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
 
     #ipshell()
     server.main()
-
-
-    root= "/opt/qbase5/var/vfs/var_log/"
-    vfs=VirtualFileSystemMetadata(root,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
+    q.logger.log('Fuse system mounted successfuly, loading vfs metadata ...')
+    metadatapath= "/opt/qbase5/var/vfs/var_log/"
+    vfs=VirtualFileSystemMetadata(metadatapath,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
     vfs.reset()
     vfs.populateFromFilesystem()        
     vfs.getLatest()
