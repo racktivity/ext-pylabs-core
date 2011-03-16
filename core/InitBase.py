@@ -41,6 +41,6 @@ relayed to the logging subsystem and sent to the original stdout and stderr.
 '''
 
 from pylabs._init import initialize as _initialize
-q, i = _initialize(redirect_output=True,hide_output=False)
+q, i, p = _initialize(redirect_output=True,hide_output=False)
 
-__all__ = ['q', 'i', ]
+__all__ = ['q', 'i', 'p']

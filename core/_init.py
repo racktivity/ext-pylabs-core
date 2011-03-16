@@ -140,6 +140,10 @@ def initialize_i():
 
     return i
 
+def initialize_p():
+    from pylabs import q, p
+    p._initExtensions()
+    return p
 
 def initialize(redirect_output, hide_output=False, verbose=False):
     '''Initialize the C{q} and C{i} objects
@@ -152,5 +156,6 @@ def initialize(redirect_output, hide_output=False, verbose=False):
     '''
     q = initialize_q(redirect_output, hide_output=False, verbose=verbose)
     i = initialize_i()
+    p = initialize_p()
 
-    return q, i
+    return q, i, p

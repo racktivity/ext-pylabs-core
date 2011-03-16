@@ -35,7 +35,7 @@
 
 __version__ = (3, 1, 0)
 
-__all__ = ['__version__', 'q', 'i']
+__all__ = ['__version__', 'q', 'i', 'p']
 
 def _setup_stacktrace_hook():
     '''Set up SIGUSR2 signal handler which dumps stack traces of all threads'''
@@ -245,5 +245,16 @@ from pylabs.interactive.Interactive import Interactive
 
 q = Pylabs()
 i = Interactive()
+
+#########
+from pylabs.extensions.PMExtensions import PMExtensions
+class PylabsNS():
+
+    def _initExtensions(self):
+        self._pmExtensions = PMExtensions(self, 'p.')
+        self._pmExtensions.init()
+        self._pmExtensions.findExtensions()
+        
+p = PylabsNS()
 
 #from pylabs.testing import pylabsTestCase

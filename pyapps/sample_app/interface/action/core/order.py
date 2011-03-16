@@ -107,7 +107,7 @@ class order:
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, orderguid, jobguid="", executionparams=dict())
+    def delete(self, orderguid, jobguid="", executionparams=dict()):
        """
         Delete a order
  
@@ -128,7 +128,7 @@ class order:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, customerguid="", price="", jobguid="", executionparams=dict())
+    def find(self, customerguid="", price="", jobguid="", executionparams=dict()):
         """
         Returns a list of orders which met the find criteria.
  
@@ -158,7 +158,7 @@ class order:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-      def getObject(self, orderguid, jobguid="",executionparams=dict()):
+    def getObject(self, orderguid, jobguid="",executionparams=dict()):
         """
         Gets the rootobject.
  
