@@ -758,16 +758,17 @@ class Server:
             # of PYTHONPATH, which might not be the intention
             tacfile = q.system.fs.joinPaths(applicationserver_dir, 'applicationserver.tac')
             code, stdout, stderr = q.system.process.run(
-                "PYTHONPATH=\"%s\" %s "
+                "PYTHONPATH=\"%s\" twistd "
                 "--pidfile=%s -y %s --savestats"% (
                     applicationserver_dir,
-                    q.system.fs.joinPaths(q.dirs.binDir, 'twistd'),
                     pidfile,
                     tacfile,
                 ),
                 showOutput=False,
                 captureOutput=True,
                 stopOnError=False,
+                # Use shell so the system's twistd can be found
+                shell=True,
             )
         else:
             # Windows hack
