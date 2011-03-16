@@ -693,7 +693,7 @@ class pylabsTaskletRunner(TaskletRunner):
 def getConfig(name, configtype):
     items = name.split(".", 1)
     if len(items) > 1:
-        path = q.system.fs.joinPaths(q.dirs.baseDir, items[1], 'cfg', '%s.cfg' % configtype)
+        path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', items[1], 'cfg', '%s.cfg' % configtype)
         ini = q.tools.inifile.open(path)
         return ini.getFileAsDict()
     else:
