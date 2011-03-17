@@ -29,19 +29,36 @@ class Connection(object):
         
     def get(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='GET', **params)
-        return response.read()
+        return response#.read()
     
     def post(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='POST', **params)
-        return response.read()
+        return response#.read()
     
     def put(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='PUT', **params)
-        return response.read()
+        return response#.read()
         
     def delete(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='DELETE', **params)
-        return response.read()
+        return response#.read()
+    
+    def download(self, fileUrl, downloadPath, customHeaders=None):
+        '''
+        Download a file from server to a local path
+        
+        @param fileUrl: url of an existing file that has its data available on server (sent earlier)
+        @param downloadPath: local directory to download into
+        @param customHeaders: allows this method to be used to retrieve edited copies of an image
+        @return: True
+        '''
+        
+        _urlopener = urllib.FancyURLopener()
+        if customHeaders:
+            for k, v in customHeaders.items():
+                _urlopener.addheader(k, v)
+        _urlopener.retrieve(fileUrl, downloadPath, None, None)
+        return True
     
     def _updateUrlParams(self, url, **kwargs):
         _scheme, _netloc, _url, _params, _query, _fragment = urllib2.urlparse.urlparse(url)
