@@ -1,51 +1,45 @@
-class customer:
+class product:
     """
-    Customer actions API
+    Product actions API
     """
  
-    def create(self, name, login, password, email, address="", vat="", jobguid="", executionparams=dict()):
+    def create(self, code, description, price, duration, jobguid="", executionparams=dict()):
         """
-        Create a customer
+        Create a product
  
         @security administrators
  
-        @param name:  name of the customer
-        @type name: string
+        @param code:  code of the product
+        @type code: string
  
-        @param login: login of the customer
-        @type login: string
+        @param description: description of the product
+        @type description: string
 
-        @param password: password of the customer
-        @type password: string
+        @param price: price of the product
+        @type price: float
 
-        @param email: email of the customer
-        @type email: string
+        @param duration: duration of the product
+        @type duration: string
 
-        @param address: address of the customer
-        @type address: string
-
-        @param vat: vat of the customer
-        @type vat: string
- 
         @param jobguid: guid of the job if available else empty string
         @type jobguid: guid
         
         @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
         @type executionparams:         dictionary
  
-        @return:                       dictionary with the customer guid as result and jobguid: {'result': guid, 'jobguid': guid}
+        @return:                       dictionary with the product guid as result and jobguid: {'result': guid, 'jobguid': guid}
         @rtype:                        dictionary
  
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, customerguid, jobguid="", executionparams=dict())
+    def delete(self, productguid, jobguid="", executionparams=dict()):
        """
-        Delete a customer
+        Delete a product
  
         @security administrators
  
-        @param customerguid:  guid of the customer to be deleted
+        @param productguid:  guid of the product to be deleted
         @type name: guid
         
         @param jobguid: guid of the job if available else empty string
@@ -60,27 +54,24 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, name="", login="", email="", address="", vat="", jobguid="", executionparams=dict())
+    def find(self, code="", description="", price="", duration="", jobguid="", executionparams=dict()):
         """
-        Returns a list of customers which met the find criteria.
+        Returns a list of products which met the find criteria.
  
         @execution_method = sync
         @security administrators
  
-        @param name:  name of the customer
-        @type name: string
+        @param code:  code of the product
+        @type code: string
  
-        @param login: login of the customer
-        @type login: string
+        @param description: description of the product
+        @type description: string
 
-        @param email: email of the customer
-        @type email: string
+        @param price: price of the product
+        @type price: float
 
-        @param address: address of the customer
-        @type address: string
-
-        @param vat: vat of the customer
-        @type vat: string
+        @param duration: duration of the product
+        @type duration: string
  
         @param jobguid: guid of the job if available else empty string
         @type jobguid: guid
@@ -99,14 +90,14 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-      def getObject(self, customerguid, jobguid="",executionparams=dict()):
+    def getObject(self, productguid, jobguid="",executionparams=dict()):
         """
         Gets the rootobject.
  
         @execution_method = sync
          
-        @param customerguid:      	guid of the customer
-        @type customerguid:       	guid
+        @param productguid:      	guid of the product
+        @type productguid:       	guid
  
         @return:                    PyModel object
         @rtype:                     Object
@@ -116,7 +107,7 @@ class customer:
  
     def list(self, jobguid="", executionparams=dict()):
         """
-        Filtered list which returns main parameters of every customer in dict format
+        Filtered list which returns main parameters of every product in dict format
    
         @execution_method = sync
         @security administrators
@@ -127,14 +118,14 @@ class customer:
         @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
         @type executionparams:        dictionary
  
-        @return:                      dictionary with array of customer info as result and jobguid: {'result': array, 'jobguid': guid}
+        @return:                      dictionary with array of product info as result and jobguid: {'result': array, 'jobguid': guid}
         @rtype:                       dictionary
         @note:                              {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
         @note:                               'result: [{ 'guid': '33544B07-4129-47B1-8690-B92C0DB21434',
-        @note:                                           'name': 'Steve Jobs',
-        @note:                                           'login': 'jobss',        
-        @note:                                           'address': 'Apple Avenue',                
-        @note:                                           'vat': 'BE 000.000.000'}]}      
+        @note:                                           'code': 'VMWIN2K8_16GB_250GB',
+        @note:                                           'description': 'Windows 2008 Server / 16GB RAM / 250GB storage',        
+        @note:                                           'price': 10,                
+        @note:                                           'duration': '1y'}]}      
  
         @raise e:                     In case an error occurred, exception is raised
         """

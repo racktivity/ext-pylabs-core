@@ -26,6 +26,7 @@ class AuthorizationError(Exception):
 class SugarsyncClient(object):
 
     def authenticate(self, username, password, accesskeyid, privateaccesskey):
+        
         '''Creating an Authorization Token
         
         After successful authentication, the method calls getUserInfo and populates the q.clients.sugarsync.user object with essential info about user and folders
@@ -35,6 +36,8 @@ class SugarsyncClient(object):
         @param privateaccesskey: second key of the key-pair
         @return: True if successful
         '''
+        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = 'https://api.sugarsync.com/authorization'
         params = {'username':username, 'password':password, 'accessKeyId':accesskeyid, 'privateAccessKey':privateaccesskey}
         template = '''<?xml version="1.0" encoding="UTF-8" ?>
@@ -48,7 +51,13 @@ class SugarsyncClient(object):
         headers = {'Content-Type' : 'application/xml'
                    ,'Content-Length' : len(data)
                    ,'Authorization' : None}
-        return self._http_request(_baseurl, None, data=data, headers=headers)                                                                                          
+        resp = httpClientConnection.post(_baseurl, data=data, headers=headers)
+        #resp = self._http_request(_baseurl, None, data=data, headers=headers)
+        bodyDic = reformat(resp.read())
+        auth_token_expiration = bodyDic['authorization'].expiration
+        user = bodyDic['authorization'].user
+        auth_token = resp.headers['location']
+        return {'auth_token':auth_token, 'user':user, 'auth_token_expiration':auth_token_expiration}                                                                                          
         
     def getUserInfo(self, auth_token):
         '''Retrieving User Information
@@ -56,13 +65,15 @@ class SugarsyncClient(object):
         There is no need to call this method explicitly since it is invoked during authentication to populate q.client.sugarsync.user object
         @return: user object
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = 'https://api.sugarsync.com/user'
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, headers={'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return User(resp.read())
 
     def _crudFolder(self, auth_token, folderUrl, displayName, method):
         
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = folderUrl #'https://api.sugarsync.com/folder/myfolder'
         if method == 'DELETE':
             params, data = None, None
@@ -77,7 +88,9 @@ class SugarsyncClient(object):
                    ,'Content-Length' : len(data) if data else 0
                    ,'Authorization' : auth_token}
 
-        resp = self._http_request(_baseurl, data=data, headers=headers, method=method)
+        method = method.lower()
+        resp = httpClientConnection.__getattribute__(method)(_baseurl, data=data, headers=headers)
+        #resp = self._http_request(_baseurl, data=data, headers=headers, method=method)
         if method == 'DELETE': 
             return True #resp headers don't carry any info and body is empty
         else:
@@ -114,6 +127,7 @@ class SugarsyncClient(object):
     
     def _crudFile(self, auth_token, fileUrl, displayName, mediaType, method, opt=None):
         
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = fileUrl
         if method == 'DELETE':
             params, data = None, None
@@ -130,7 +144,10 @@ class SugarsyncClient(object):
         headers = {'Content-Type' : 'application/xml'
                    ,'Content-Length' : len(data) if data else 0
                    ,'Authorization' : auth_token}
-        resp = self._http_request(_baseurl, data=data, headers=headers, method=method)
+        
+        method = method.lower()
+        resp = httpClientConnection.__getattribute__(method)(_baseurl, data=data, headers=headers)
+        #resp = self._http_request(_baseurl, data=data, headers=headers, method=method)
         if method == 'DELETE': 
             return True #resp headers don't carry any info and body is empty
         else:
@@ -175,7 +192,7 @@ class SugarsyncClient(object):
         @param targetFolder: url of an existing folder
         @param targetFileName: name of the target file 
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = targetFolder
         params = {'source' : sourceFileUrl, 'displayName' : targetFileName}
         template = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -186,10 +203,11 @@ class SugarsyncClient(object):
         headers = {'Content-Type' : 'application/xml'
                    ,'Content-Length' : len(data)
                    ,'Authorization' : auth_token}
-        return self._http_request(_baseurl, data=data, headers=headers, method='POST')
+        resp = httpClientConnection.post(_baseurl, data=data, headerse=headers)
+        return resp #self._http_request(_baseurl, data=data, headers=headers, method='POST')
     
     def _crudPublicFileLink(self, auth_token, fileUrl, enable=True):
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = fileUrl
         params = {'enabled' : str(enable).lower()}
         template = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -200,7 +218,8 @@ class SugarsyncClient(object):
         headers = {'Content-Type' : 'application/xml'
                    ,'Content-Length' : len(data)
                    ,'Authorization' : auth_token}
-        resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
+        #resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
+        resp = httpClientConnection.post(_baseurl, data=data, headers=headers)
         return File(resp.read())
     
     def filePublicLinkCreate(self, auth_token, fileUrl):
@@ -226,9 +245,10 @@ class SugarsyncClient(object):
         @param folderUrl: url of an existing folder
         @return: Folder object
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = folderUrl
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, data=None, headers = {'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return Folder(resp.read())
 
     def getFileInfo(self, auth_token, fileUrl):
@@ -237,9 +257,10 @@ class SugarsyncClient(object):
         @param fileUrl: url of an existing file
         @return: File object
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = fileUrl
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, data=None, headers = {'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return File(resp.read())
 
     def getWorkspaceInfo(self, auth_token, workspaceUrl):
@@ -249,9 +270,10 @@ class SugarsyncClient(object):
         @param workspaceUrl: url of an existing workspace, Note workspaces cannot be created using the REST APIs
         @return: Workspace object
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = workspaceUrl
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, data=None, headeres={'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return Workspace(resp.read())
     
     def getAlbumsCollectionInfo(self, auth_token, albumsUrl):
@@ -261,9 +283,10 @@ class SugarsyncClient(object):
         @param albumsUrl: url of albums collection, albums are folder that contain image files
         @return: Collection object 
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = albumsUrl
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, data = None, headers={'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return Albums(resp.read())
     
     def getAlbumInfo(self, auth_token, albumUrl):
@@ -273,15 +296,16 @@ class SugarsyncClient(object):
         @param albumUrl: url of an existing album of an albums collection
         @return: Album object 
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = albumUrl
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, data=None, headers={'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return Album(resp.read())
 
     def _updateUrlParams(self, url, **kwargs):
         _scheme, _netloc, _url, _params, _query, _fragment = urllib2.urlparse.urlparse(url)
         params = urllib2.urlparse.parse_qs(_query)
-        for k, v in params:#parse_qs puts the values in a list which corrupts the url later on
+        for k, v in params.items():#parse_qs puts the values in a list which corrupts the url later on
             params[k] = v.pop() if isinstance(v, list) else v
             
         for k, v in kwargs.items():
@@ -299,10 +323,11 @@ class SugarsyncClient(object):
         @param max: numeric value to specify the size of the returned collection to facilitate enumerating the contents in pages
         @return: CollectionContents object
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = contentsUrl if contentsUrl.split('/')[-1].startswith('contents') else '%s/contents'%contentsUrl
         _baseurl = self._updateUrlParams(_baseurl, type=type, start=start, max=max_)
-        resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
+        resp = httpClientConnection.get(_baseurl, data=None, headers={'Authorization' : auth_token})
+        #resp = self._http_request(_baseurl, headers={'Authorization' : auth_token})
         return CollectionContents(resp.read())
 
     def getFolderContents(self, auth_token, folderUrl, start=0, max_=500):
@@ -359,20 +384,6 @@ class SugarsyncClient(object):
         @return: CollectionContents object representing the album contents
         '''           
         return self.getCollectionContents(auth_token, albumUrl, type=None, start=start, max_=max_)
-
-    def _http_request(self, url, args=None, data=None, headers=None, method=None):
-        request = urllib2.Request(url, data=data)
-        if headers:
-            for key, value in headers.iteritems():
-                request.add_header(key, value)
-        if not method:
-            method = 'POST' if data else 'GET'
-        request.get_method = lambda: method
-        resp = urllib2.urlopen(request)
-        if resp.code in STATUS_AUTH_REQ: raise AuthorizationError('Not logged in or token expired')
-        if resp.code not in (STATUS_OK):
-            raise Exception('unexpected HTTP response status %s: %s'%resp.code, resp)
-        return resp
         
     def putFileData(self, auth_token, fileUrl, localFilePath):
         '''
@@ -382,17 +393,18 @@ class SugarsyncClient(object):
         @param localFilePath: path to a local file
         @return: True
         '''
-        
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = fileUrl if fileUrl.split('/')[-1].startswith('data') else '%s/data'%fileUrl
         data = open(localFilePath).read()
         content_type = mimetypes.guess_type(localFilePath)[0]
         headers = {'Content-Type' : content_type
                    ,'Content-Length' : len(data)
                    ,'Authorization' : auth_token}
-        resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
+        resp = httpClientConnection.get(_baseurl, data=data, headers=headers)
+        #resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
         return True
             
-    def retrieveFileData(self, auth_token, fileUrl, downloadPath, customHeaders=None):
+    def retrieveFileData(self, auth_token, fileUrl, downloadPath, customHeaders={}):
         '''
         Download a file from server to a local path
         
@@ -401,15 +413,11 @@ class SugarsyncClient(object):
         @param customHeaders: allows this method to be used to retrieve edited copies of an image
         @return: True
         '''
+        httpClientConnection = q.clients.http.getConnection()
         _baseurl = fileUrl if fileUrl.split('/')[-1].startswith('data') else '%s/data'%fileUrl        
         
-        _urlopener = urllib.FancyURLopener()
-        _urlopener.addheader('Authorization', auth_token)
-        if customHeaders:
-            for k, v in customHeaders.items():
-                _urlopener.addheader(k, v)
-        _urlopener.retrieve(_baseurl, downloadPath, None, None)
-        return True
+        customHeaders['Authorization'] = auth_token
+        return httpClientConnection.download(fileUrl, downloadPath, customHeaders)
     
     def retrieveEditedImage(self, auth_token, imageUrl, downloadPath, widthPixels, heightPixels, square=False, clockWiseRotationCount=0):
         '''

@@ -40,6 +40,6 @@ up redirection. Logging will be set up according to the configuration.
 '''
 
 from pylabs._init import initialize as _initialize
-q, i = _initialize( redirect_output=False)
+q, i, p = _initialize( redirect_output=False)
 
-__all__ = ['q', 'i', ]
+__all__ = ['q', 'i', 'p']
