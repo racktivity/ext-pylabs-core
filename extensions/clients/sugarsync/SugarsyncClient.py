@@ -48,7 +48,12 @@ class SugarsyncClient(object):
         headers = {'Content-Type' : 'application/xml'
                    ,'Content-Length' : len(data)
                    ,'Authorization' : None}
-        return self._http_request(_baseurl, None, data=data, headers=headers)                                                                                          
+        resp = self._http_request(_baseurl, None, data=data, headers=headers)
+        bodyDic = reformat(resp.read())
+        auth_token_expiration = bodyDic['authorization'].expiration
+        user = bodyDic['authorization'].user
+        auth_token = resp.headers['location']
+        return {'auth_token':auth_token, 'user':user, 'auth_token_expiration':auth_token_expiration}                                                                                          
         
     def getUserInfo(self, auth_token):
         '''Retrieving User Information
