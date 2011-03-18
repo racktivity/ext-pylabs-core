@@ -1,0 +1,9 @@
+#for $iimport in $imports:
+from $iimport.modulename import $iimport.classname
+#end for
+
+class ${classname}(object):
+    def __init__(self):
+#for $iimport in $imports:
+        self.$iimport.classname = ${iimport.classname}()
+#end for 
