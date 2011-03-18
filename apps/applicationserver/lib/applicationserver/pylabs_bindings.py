@@ -852,7 +852,7 @@ class Server:
             q.gui.dialog.message('Killing process %s'%pid)
             q.system.process.kill(pid)
 
-        self.start()
+        self.start(name)
 
     def reload(self, printWarningIfNotRunning=True, name=None):
         """
