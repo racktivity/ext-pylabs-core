@@ -67,10 +67,10 @@ class IniConfigReader:
         self.config_name = config_name
     
     def getServiceRoot(self):
-        from pymonkey_bindings import SERVICE_ROOT
+        from pylabs_bindings import SERVICE_ROOT
         items = self.config_name.split(".", 1)
         if len(items) > 1:
-            path = q.system.fs.joinPaths(q.dirs.baseDir, items[1], 'services')
+            path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', items[1], 'impl', 'service')
             q.system.fs.createDir(path)
             return path
         else:
