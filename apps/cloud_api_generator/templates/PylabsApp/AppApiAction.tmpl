@@ -1,0 +1,34 @@
+from pylabs import q
+
+class $className:
+#for $method in $methods:
+    def $method.name (self, $method.args):
+        """
+        $method.docs
+        """
+        params = dict()
+        
+#for $key, $value in $method.params.iteritems():
+        params['$key'] = $value
+#if $key == $className+'guid'
+        executionparams['rootobjectguid'] = $value
+#end if
+#end for
+        executionparams['rootobjecttype'] = '$className'
+#for $key in  $method.properties.keys()
+    #if $key.startswith('execution_param_')
+        #set param_name = $key.split('_')[-1]
+        if not '$param_name' in executionparams:  executionparams['$param_name'] = $method.properties[$key]
+    #end if
+#end for
+
+        
+#if 'execution_method' in $method.properties and $method.properties.execution_method == 'async'
+        return q.workflowengine.actionmanager.startRootobjectActionAsynchronous('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+#elif 'execution_method' in $method.properties and $method.properties.execution_method == 'sync'
+        return q.workflowengine.actionmanager.startRootobjectActionSynchronous('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+#else
+        return q.workflowengine.actionmanager.startRootobjectAction('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+#end if
+
+#end for

@@ -59,7 +59,7 @@ class ClusterFactory():
             else:
                 i.cluster.config.configure(clustername,{'domain': domainname, 'ip': ipaddresses2, 'master': str(masteripaddress), 'rootpasswd': superadminpassword})
         if q.qshellconfig.interactive:
-            if domainname=="" or ipaddresses==[] or superadminpassword=="" or superadminpasswords==[] or masteripaddress=="":
+            if domainname=="" or ipaddresses==[] or superadminpassword=="":
                 if clustername=="":
                     #import pdb
                     #pdb.set_trace()

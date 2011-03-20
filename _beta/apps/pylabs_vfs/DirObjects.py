@@ -1,7 +1,12 @@
 from pylabs.Shell import *
 from pylabs import q
-
 from PysyncWalker import *
+
+import errno
+class NoEntryError(RuntimeError):
+    def __init__(self, *args):
+        self.msg = args[0]
+        self.errno = errno.ENOENT 
 
 class DirObjectsStore():
     """
@@ -197,7 +202,7 @@ class DirObjects():
     def get(self,dirPath):
         key=self.getKey(dirPath)        
         if self._exists(key)==False:
-            raise RuntimeError("Dirobject %s does not exist" % dirPath)
+            raise NoEntryError("Dirobject %s does not exist" % dirPath, )
         else:
             dirObject=self._get(key)
             #if dirObject.dirPath<>dirPath:                
