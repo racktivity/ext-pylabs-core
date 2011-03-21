@@ -31,7 +31,7 @@ class ApplicationAPI(object):
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._app_path = app_path
         
-        api_path = q.system.fs.joinPaths(app_path, 'impl')
+        api_path = q.system.fs.joinPaths(app_path, 'client')
         sys.path.append(api_path)
         
         # @todo:  load depending on context
