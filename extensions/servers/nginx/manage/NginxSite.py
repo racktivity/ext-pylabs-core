@@ -40,7 +40,7 @@ class NginxSite(CMDBSubObject):
         """
         if key in self.options.keys():
             raise KeyError('Option [%s] already exists' % key)
-        self.options[key] = ' '.join(set(value))
+        self.options[key] = value
 
     def removeOption(self, key):
         """

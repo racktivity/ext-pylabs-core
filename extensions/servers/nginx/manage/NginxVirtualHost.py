@@ -70,6 +70,7 @@ class VirtualHost(CMDBSubObject):
     symlinkDir = q.basetype.dirpath(doc="The directory for files shortcuts to the virtualhost configuration files", 
                                     default=q.system.fs.joinPaths(os.sep, 'etc', 'nginx', 'sites-enabled'), 
                                     allow_none=False)
+    enabled = q.basetype.boolean(doc="Boolean indicating weather this virtualhost is enabled in sites-enabled or not", default=True)
     sitesDir = q.basetype.dirpath(doc="The directory where virtual host site files are stored",
                                   default=q.system.fs.joinPaths(os.sep, 'var', 'www'))
     reverseproxies = q.basetype.dictionary(doc="dictionary of reverse proxies configured in this virtual host", allow_none=True, default=dict())
@@ -87,6 +88,8 @@ class VirtualHost(CMDBSubObject):
         self.rootDir = q.system.fs.joinPaths(self.sitesDir, name)
         if not q.system.fs.isDir(self.configFileDir):
             q.system.fs.createDir(self.configFileDir)
+        if not q.system.fs.isDir(self.symlinkDir):
+            q.system.fs.createDir(self.symlinkDir)
 
     def addSite(self, name, location='/'):
         """
@@ -102,6 +105,10 @@ class VirtualHost(CMDBSubObject):
         """
         if name in self.sites:
             raise ValueError("Site with name '%s' already exists" % (name))
+
+        locations = [(site.location, site.name) for site in self.sites]
+        if location in locations:
+            raise ValueError('Location "%s" already exists in site "%s"' %(location, locations[location]))
 
         site = NginxSite(name, location)
         self.sites[name] = site
@@ -170,6 +177,13 @@ class VirtualHost(CMDBSubObject):
         template = VirtualHostTemplate()
         filePath = q.system.fs.joinPaths(self.configFileDir, '%s.conf' % self.name)
         q.system.fs.writeFile(filePath, template.render(context))
-        q.logger.log("Config written to '%s'" % (filePath, ), 3)
+        q.logger.log("Config written to '%s'" % (filePath), 3)
+        
+        if self.enabled:
+            filetolink = q.system.fs.joinPaths(self.symlinkDir, q.system.fs.getBaseName(filePath))
+            if not q.system.fs.exists(filetolink):
+                q.system.fs.symlink(filePath, q.system.fs.joinPaths(self.symlinkDir, q.system.fs.getBaseName(filePath)), overwriteTarget=True)
+        else:
+            q.system.fs.remove(filetolink, True)
 
         return filePath
