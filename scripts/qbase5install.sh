@@ -42,4 +42,10 @@ cp /opt/code/incubaid/pylabs-core/utils/system/sitecustomize.py /etc/python2.6/s
 
 ln -s /opt/code/incubaid/pylabs-core/apps/exampleapp /opt/qbase5/apps/pylabsExampleApp
 
+cd /opt/code
+hg clone --branch pylabs5 https://bitbucket.org/despiegk/pymodel pymodel
+hg clone --branch 0.5 https://bitbucket.org/despiegk/osis osis
+ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
+ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
+
 cd /opt/qbase5/apps/pylabsExampleApp
