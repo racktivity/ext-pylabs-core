@@ -6,7 +6,7 @@ import errno
 class NoEntryError(RuntimeError):
     def __init__(self, *args):
         self.msg = args[0]
-        self.errno = errno.ENOENT 
+        self.errno = errno.ENOENT
 
 class DirObjectsStore():
     """
@@ -202,7 +202,7 @@ class DirObjects():
     def get(self,dirPath):
         key=self.getKey(dirPath)        
         if self._exists(key)==False:
-            raise NoEntryError("Dirobject %s does not exist" % dirPath, )
+            raise NoEntryError("Dirobject %s does not exist" % dirPath)
         else:
             dirObject=self._get(key)
             #if dirObject.dirPath<>dirPath:                
@@ -285,7 +285,7 @@ class DirObject():
         ttime=q.base.time.getTimeEpoch()
         #self.creationdate=ttime
         self.moddate=ttime
-        #self.accessdate=ttime
+        self.accessdate=ttime
         
     def updateAccessdate(self):
         self.accessdate=q.base.time.getTimeEpoch()

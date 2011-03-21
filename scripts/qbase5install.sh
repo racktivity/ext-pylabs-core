@@ -1,10 +1,22 @@
 set -ex
+ARAKOON_DEB="arakoon_0.9.0-1_amd64.deb"
+ARAKOON_EGG="arakoon-0.9.0-1-py2.6.egg"
+
 apt-get install python2.6 mc python-openssl python-pycurl python-pygresql mercurial \
 	wget ipython python-epydoc python-cheetah python-twisted -y
 
+
 cd /tmp
 rm -f opt.tar.gz
+rm -f "${ARAKOON_DEB}"
+rm -f "${ARAKOON_EGG}"
+
 wget http://files.incubaid.com/pub/opt.tar.gz
+wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
+wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
+
+dpkg -i "${ARAKOON_DEB}"
+easy_install "${ARAKOON_EGG}"
 
 tar -xf opt.tar.gz
 mkdir -p /opt
@@ -31,4 +43,3 @@ cp /opt/code/incubaid/pylabs-core/utils/system/sitecustomize.py /etc/python2.6/s
 ln -s /opt/code/incubaid/pylabs-core/apps/exampleapp /opt/qbase5/apps/pylabsExampleApp
 
 cd /opt/qbase5/apps/pylabsExampleApp
-
