@@ -3,7 +3,7 @@
        #this is for files < 1 MB
        #store immediately in kevalue store use q.db.getConnection(pathForFileStorSmallFiles)
        #when open for RW or W use locking implemented on keyvalue store
-       #key = md5 of file in category filedata
+       #key = md5 of file in category filedata? how would this work with read()
        #locking key = $md5 but in category lock
 
         def __init__(self, path, flags, *mode):
