@@ -3,7 +3,8 @@ ARAKOON_DEB="arakoon_0.9.0-1_amd64.deb"
 ARAKOON_EGG="arakoon-0.9.0-1-py2.6.egg"
 
 apt-get install python2.6 mc python-openssl python-pycurl python-pygresql mercurial \
-	wget ipython python-epydoc python-cheetah python-twisted -y
+	wget ipython python-epydoc python-cheetah python-twisted python-setuptools \
+	"postgresql-8.4" -y
 
 
 cd /tmp
