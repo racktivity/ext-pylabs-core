@@ -47,7 +47,7 @@ import socket
 from twisted.internet import reactor
 from twisted.python.threadpool import ThreadPool
 
-from pylabs import q
+from pylabs import q, p
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config import ConfigManagementItem, ItemSingleClass, ItemGroupClass
 from applicationserver import CRON_JOB_STOP
@@ -430,6 +430,13 @@ def setup():
 
     # Setup pylabs at an appropriate time
     setup_pylabs_start_and_stop()
+    
+    # get pyapps API
+    appname = os.environ.get('TWISTED_NAME', None)
+    if appname and appname.find('.'):
+        appname = appname.split('.')[-1]
+        p.api = p.application.getAPI(appname, context=q.enumerators.AppContext.APPSERVER)
+    
 
 
 def setup_pylabs_start_and_stop():
