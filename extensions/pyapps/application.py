@@ -8,8 +8,8 @@ class AppContext(BaseEnumeration):
     def __repr__(self):
         return str(self)
 
-AppContext.registerItem('action')
-AppContext.registerItem('actor')
+AppContext.registerItem('appserver')
+AppContext.registerItem('wfe')
 AppContext.registerItem('client')
 AppContext.finishItemRegistration()
 
@@ -37,8 +37,13 @@ class ApplicationAPI(object):
         # @todo:  load depending on context
         self.appname = appname
         self.action = self._get_actions(appname, context)
-        self.actor = self._get_actors(appname, context)
-        self.model = self._get_model(appname, context)
+        
+        if not context == q.enumerators.AppContext.CLIENT:
+            self.model = self._get_model(appname, context)
+            
+            if context == q.enumerators.AppContext.WFE:
+                self.actor = self._get_actors(appname, context)
+            
         
     def _get_actors(self, appname, context):
         from actor import actors
