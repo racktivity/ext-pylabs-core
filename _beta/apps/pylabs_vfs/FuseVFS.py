@@ -13,7 +13,7 @@ from PysyncWalker import *
 from VirtualFileSystemMetadata import *
 import fnmatch
 
-
+#
 q.application.appname = "VFSTestMetadata"
 q.application.start()
 
@@ -57,10 +57,8 @@ class VFSStat(fuse.Stat):
 def flag2mode(flags):
     md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
     m = md[flags & (os.O_RDONLY | os.O_WRONLY | os.O_RDWR)]
-
     if flags | os.O_APPEND:
         m = m.replace('w', 'a', 1)
-
     return m
 
 
@@ -76,9 +74,6 @@ class Xmp(Fuse):
         q.logger.log(args)
         q.logger.log(kw)
         self.root = '/tmp/fuse/'
-        self.file_class = self.XmpFile
-
-
 
 #    def mythread(self):
 #
@@ -90,81 +85,136 @@ class Xmp(Fuse):
 #        while 1:
 #            time.sleep(120)
 #            print "mythread: ticking"
-
-    def getattr(self, path):
-        ret = -ENOENT
+    def _findPath(self, path):
+        '''
+        raise NoEntryError if path doesn't correspond for a dir or a file
+        return isDir, DirObject(path is isDie, otherwise parent dir of file), dict {'filename':name, 'filestat':stat, 'dirstat':stat}
+        '''
+        isDir, dirObject, info = False, None, {'filename' : None, 'filestat' : -ENOENT, 'dirstat' : None}
         st = VFSStat()
-        q.logger.log('getattr(%s)'%path)
+        q.logger.log('_findPath(%s)'%path)
         #how to handle files, while the VFS holds only size?
         try:
-            dirobject = self.vfs.dirObjectGet(path[1:])
-            st.st_mode = S_IFDIR | 0755
+            dirObject = self.vfs.dirObjectGet(path[1:])
+            st.st_mode = S_IFDIR | 0777
             st.st_nlink = 2
-            st.st_mtime = dirobject.moddate
-            st.st_atime = getattr(dirobject, 'accessdate', dirobject.moddate)
-            ret = st
-        except NoEntryError, ex:
+            st.st_mtime = dirObject.moddate
+            st.st_atime = dirObject.accessdate
+            isDir = True
+            info['dirstat'] = st
+        except NoEntryError, ex:      
             #assume the path is file path and get its parent folder
-            parentPath = q.system.fs.getDirName(path)
+            parentPath = os.path.dirname(path)
+            fileName = q.system.fs.getBaseName(path)
+            q.logger.log('No dir found with name: %s, looking for files with name: %s under dir: %s'%(path[1:], fileName, parentPath[1:]))
             try:
-                dirobject = self.vfs.dirObjectGet(parentPath[1:])
-                fileName = q.system.fs.getBaseName(path)
-                if fileName in dirobject.files:
-                    st.st_mode = S_IFREG | 0555
+                dirObject = self.vfs.dirObjectGet(parentPath[1:])
+                q.logger.log('DEBUG: files under %s: %s'%(parentPath, dirObject.files))
+                if fileName in dirObject.files:
+                    q.logger.log('Found file with name: %s under dir: %s'%(path[1:], parentPath[1:]))
+                    st.st_mode = S_IFREG | 0666
                     st.st_nlink = 1
-                    st.st_size = dirobject.files[fileName][0]
-                    st.st_mtime = dirobject.files[fileName][1]
+                    st.st_size = dirObject.files[fileName][0]
+                    st.st_mtime = dirObject.files[fileName][1]
+                    info['filename'] = fileName
+                    info['filestat'] = st
             except NoEntryError, ex:
-                pass #return -ENOTENT
+                q.logger.log('No file found with name: %s under dir: %s'%(fileName, parentPath[1:]))
+                raise
+        return isDir, dirObject, info
+    
+    def getattr(self, path):
+        q.logger.log('getattr(%s)'%path)
+        ret = -ENOENT
+        try:
+            isDir, dirObject, info = self._findPath(path)
+            ret = info['dirstat'] if isDir else info['filestat'] 
+        except NoEntryError, ex:
+            pass
+        q.logger.log('getattr return: %s'%(ret if isinstance(ret, int) else ret.__dict__))
         return ret
 
     def readlink(self, path):
-        return os.readlink("." + path)
+        q.logger.log('readling(%s)%'%(path))
 
     def readdir(self, path, offset):
-        q.logger.log( "path %s, offset %s" % (path,offset))
+        q.logger.log("readdir(%s, %s)" % (path, offset))
         try:
-            dirobject = self.vfs.dirObjectGet(path[1:])
-            for subdir in dirobject.dirs:
-                q.logger.log("direntry %s" % subdir)
-                yield fuse.Direntry(subdir)
+            dirObject = self.vfs.dirObjectGet(path[1:])
+            entries = dirObject.dirs + dirObject.files.keys()
+            for entry in sorted(entries):
+                q.logger.log("direntry %s" % entry)
+                yield fuse.Direntry(entry)
         except NoEntryError, ex:  
             q.logger.log(ex)
 
     def unlink(self, path):
-        os.unlink("." + path)
-
+        q.logger.log('unlink(%s)'%(path))
+    
     def rmdir(self, path):
-        os.rmdir("." + path)
-
+        q.logger.log('rmdir(%s)%'%(path))
+    
+    
     def symlink(self, path, path1):
-        os.symlink(path, "." + path1)
-
+        q.logger.log('symlink(%s, %s)%'%(path, path1))
+    
     def rename(self, path, path1):
-        os.rename("." + path, "." + path1)
-
+        q.logger.log('rename(%s, %s)%'%(path, path1))
+    
     def link(self, path, path1):
-        os.link("." + path, "." + path1)
+        q.logger.log('link(%s, %s)%'%(path, path1))
 
     def chmod(self, path, mode):
-        os.chmod("." + path, mode)
+        q.logger.log('chmod(%s, %s)%'%(path, mode))
 
     def chown(self, path, user, group):
-        os.chown("." + path, user, group)
+        q.logger.log('chown(%s, %s, %s)%'%(path, user, group))
 
     def truncate(self, path, len):
-        f = open("." + path, "a")
-        f.truncate(len)
-        f.close()
+        q.logger.log('truncate(%s, %s)%'%(path, len))
 
     def mknod(self, path, mode, dev):
-        os.mknod("." + path, mode, dev)
+        q.logger.log('mknod(%s, %s, %s)'%(path, mode, dev))
+        self.create(path, mode, dev)
+        
+    def create(self, path, flags, *mode):
+        q.logger.log('create(%s, %s, %s)'%(path, flags, mode))
+        q.logger.log('creating new file entry: %s'%path)
+        parentPath = os.path.dirname(path) #q.system.fs.getDirName returns double /
+        parentDirObject = None
+        try:
+            q.logger.log('DEBUG vfs.dirObjectGet(%s)'%parentPath[1:])
+            parentDirObject = self.vfs.dirObjectGet(parentPath[1:])
+            q.logger.log('DEBUG parent dir found %s'%parentPath[1:])
+            parentDirObject.addFileObject(path[1:], 0, q.base.time.getTimeEpoch(), '')
+            self.vfs.dirObjects.save(parentDirObject)
+        except NoEntryError, ex:
+            q.logger.log('DEBUG parent dir not found %s'%parentPath[1:])    
+
+    def read(self, path, length, offset, *args):
+        fileObj = args[0] if args else None
+        q.logger.log('XMP: read(%s, %s, %s, %s)'%(path, length, offset, fileObj))
+        data = '01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890'
+        return 'A'*length
 
     def mkdir(self, path, mode):
-        os.mkdir("." + path, mode)
-
+        q.logger.log('mkdir(%s, %s)'%(path, mode))
+    
     def utime(self, path, times):
-        os.utime("." + path, times)
+        atime, mtime = times
+        try:
+            isDir, dirObject, info = self._findPath(path)
+        except NoEntryError, ex:
+            return -ENOENT
+        if isDir:
+            dirObject.moddate = mtime
+            dirObject.accessdate = atime
+            self.vfs.dirObjects.save(dirObject)
+        else:
+            size, moddate, md5hash = dirObject.files[info['filename']] 
+            dirObject.files[info['filename']] = size, mtime, md5hash
+            self.vfs.dirObjects.save(dirObject)
+        
 
 #    The following utimens method would do the same as the above utime method.
 #    We can't make it better though as the Python stdlib doesn't know of
@@ -174,8 +224,7 @@ class Xmp(Fuse):
 #      os.utime("." + path, (ts_acc.tv_sec, ts_mod.tv_sec))
 
     def access(self, path, mode):
-        if not os.access("." + path, mode):
-            return -EACCES
+        q.logger.log('access(%s, %s)%'%(path, mode))
 
 #    This is how we could add stub extended attribute handlers...
 #    (We can't have ones which aptly delegate requests to the underlying fs
@@ -215,58 +264,101 @@ class Xmp(Fuse):
             - f_files - total number of file inodes
             - f_ffree - nunber of free file inodes
         """
-
-        return os.statvfs(".")
+        q.logger.log('statfs')
 
     def fsinit(self):
         self.vfs=VirtualFileSystemMetadata(self.root,"/opt/qbase5/var/log")  #scan log dir and create metadata store for it
         self.vfs.reset()
         self.vfs.populateFromFilesystem()        
         self.vfs.getLatest()
-
+        
+        
+    def XmpFileFactory(self, path, flags, *mode):
+        q.logger.log('File Factory (%s, %s, %s)'%(path, flags, mode))
+        Xmp.XmpFile.vfs = self.vfs #set the vfs ref on class level since it's required too early during __init__
+        return Xmp.XmpFile(path, flags, *mode)
+        
     class XmpFile(object):
 
         def __init__(self, path, flags, *mode):
             #look for file and get path from elsewhere
+            q.logger.log('file_class init')
+            self._accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR | os.O_APPEND
+            st = VFSStat()
+            st.st_mode = S_IFREG | 0666
+            st.st_nlink = 1
+            st.st_size = 0
+            self._stat = st
+            self.path = path
+            self.mode = mode
             
-            self.file = os.fdopen(os.open("." + path, flags, *mode),
-                                  flag2mode(flags))
-            self.fd = self.file.fileno()
+        def open(self, path, flags):
+            q.logger.log('open(%s, %s, %s)'%(path, flags))
+            #self._stat.st_mtime = q.base.time.getTimeEpoch()
+            parentPath = os.path.dirname(path) #q.system.fs.getDirName returns double /
+            self.parentDirObject = None
+            self.fileName = q.system.fs.getBaseName(path)
+            try:
+                q.logger.log('DEBUG vfs.dirObjectGet(%s)'%parentPath[1:])
+                self.parentDirObject = self.vfs.dirObjectGet(parentPath[1:])
+                q.logger.log('DEBUG parent dir found %s'%parentPath[1:])
+                if self.fileName in self.parentDirObject.files:
+                    self._stat.st_size = self.parentDirObject.files[self.fileName][0]
+                    self._stat.st_mtime = self.parentDirObject.files[self.fileName][1]
+                else:
+                    return -ENOENT
+            except NoEntryError, ex:
+                q.logger.log(ex)
+                return -ENOENT
+            
+            q.logger.log('files: %s'%self.vfs.dirObjectGet(parentPath[1:]).files)
+            self.fd = hash(path) #might come handy later, otherwise will be removed
 
         def read(self, length, offset):
-            self.file.seek(offset)
-            return self.file.read(length)
+            q.logger.log('XmpFile:read(%s, %s)'%(length, offset))
+            data = '01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890'
+            slen = len(data)
+            if offset < slen:
+                if offset + length > slen:
+                    size = slen - offset
+                buf = data[offset:offset+size]
+            else:
+                buf = ''
+            return buf
 
         def write(self, buf, offset):
-            self.file.seek(offset)
-            self.file.write(buf)
+            q.logger.log('write(%s, %s)%'%(buf, offset))
             return len(buf)
-
+        
         def release(self, flags):
-            self.file.close()
+            q.logger.log('release(%s)%'%(flags))
 
         def _fflush(self):
-            if 'w' in self.file.mode or 'a' in self.file.mode:
-                self.file.flush()
+#            if 'w' in self.file.mode or 'a' in self.file.mode:
+#                self.file.flush()
+            pass
 
         def fsync(self, isfsyncfile):
-            self._fflush()
-            if isfsyncfile and hasattr(os, 'fdatasync'):
-                os.fdatasync(self.fd)
-            else:
-                os.fsync(self.fd)
+#            self._fflush()
+#            if isfsyncfile and hasattr(os, 'fdatasync'):
+#                os.fdatasync(self.fd)
+#            else:
+#                os.fsync(self.fd)
+            q.logger.log('fsync(%s)%'%(isfsyncfile))
 
         def flush(self):
-            self._fflush()
-            # cf. xmp_flush() in fusexmp_fh.c
-            os.close(os.dup(self.fd))
+#            self._fflush()
+#            # cf. xmp_flush() in fusexmp_fh.c
+#            os.close(os.dup(self.fd))
+            q.logger.log('flush()')
 
         def fgetattr(self):
-            return os.fstat(self.fd)
+            q.logger.log('fgetattr()')
+            return self._stat
 
         def ftruncate(self, len):
-            self.file.truncate(len)
-
+            q.logger.log('ftruncate(%s)%'%(len))
+        
         def lock(self, cmd, owner, **kw):
             # The code here is much rather just a demonstration of the locking
             # API than something which actually was seen to be useful.
@@ -330,6 +422,7 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
         sys.exit(1)
 
     #ipshell()
+#    server.file_class = server.XmpFileFactory
     server.main()
     q.logger.log('Fuse system mounted successfuly, loading vfs metadata ...')
     metadatapath= "/opt/qbase5/var/vfs/var_log/"

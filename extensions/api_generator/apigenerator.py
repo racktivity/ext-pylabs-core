@@ -167,13 +167,13 @@ def getMethodTypedArgument(specFile):
 class CloudApiGenerator:
 
     rootobject_clientTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','template.tmpl')
-    rootobject_serverTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','servertemplate.tmpl')
+    rootobject_serverTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','PylabsApp', 'AppApiActionService.tmpl')
     baseSpecDir = q.system.fs.joinPaths(q.dirs.tmpDir, 'ssospecs')
     specDir = q.system.fs.joinPaths(baseSpecDir, '1.1', 'codepackages', 'Actions_Interface_Rootobject')
     specDirActors = q.system.fs.joinPaths(baseSpecDir, '1.1', 'codepackages', 'Actions_Interface_Actor')
     rootobject_clientOutputDir = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'generatedClient')
     rootobject_serverOutputDir = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'generatedServer')
-    rootobject_serverExtensionTemplate=q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'serverextensiontemplate.tmpl')
+    rootobject_serverExtensionTemplate=q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'PylabsApp', 'AppApiAction.tmpl')
     rootobject_serverExtensionDest=q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'generatedServer','extensions')
     extensionTemplate=q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates', 'extensionTemplate.tmpl')
     cloudapiqconfig=q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates', 'connectionTemplate.tmpl')
@@ -185,7 +185,8 @@ class CloudApiGenerator:
     basecloudapitemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates', 'BaseCloudAPI.tmpl')
     taskletTemplate=q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','tasklets.tmpl')
     wizardTemplate =q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','wizardTemplate.tmpl')
-    actorTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','actortemplate.tmpl')
+    actorTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates', 'PylabsApp', 'AppApiActor.tmpl')
+    importSubModulesTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates', 'PylabsApp', 'AppImportSubmodules.tmpl')
     actorOutputDir =q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'actor')
     flexClientTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','cloudapiFlexClient.tmpl')
     flexClientOutputDir = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'generatedFlexClient')
@@ -201,9 +202,15 @@ class CloudApiGenerator:
     roDirRest = q.system.fs.joinPaths(documentationDest,'REST')
     roDirXmlrpc = q.system.fs.joinPaths(documentationDest, 'XMLRPC')
     wikiType = 'markdown'
+    
 
     def _generateCode(self, templatePath, params, destPath):
+        
+        if not q.system.fs.exists(q.system.fs.getDirName(destPath)):
+            q.system.fs.createDir(q.system.fs.getDirName(destPath))
+                                        
         template = Template(q.system.fs.fileGetContents(templatePath), params)
+        
         contents = str(template)
         q.system.fs.writeFile(destPath, contents)
 
@@ -231,21 +238,28 @@ class CloudApiGenerator:
             self._generateCode(self.xmlrpcMdDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.md'%name))
         return name
 
-    def _generateServerCode(self, specFile, templatePath, destPath, serverExtensionTemplate="", serverExtensionDest="",rootobjectslibDest="", rootobjectlibTemplate="", className="", wizards=True):
+    def _generateServerCode(self, specFile, templatePath, destPath, serverExtensionTemplate="", serverExtensionDest="",rootobjectslibDest="", rootobjectlibTemplate="", className="", wizards=True, params=None):
         claZ = getClass(specFile, className)
         methods = getClassMethods(specFile, className)
         name = getClassName(claZ)
-        self._generateCode(templatePath,  {'className': name, 'methods':methods}, destPath)
+        
+        params = params or {}
+        params.update({'className': name, 'methods':methods})
+        
+        self._generateCode(templatePath,  params, destPath)
 
         if serverExtensionDest and serverExtensionTemplate:
-            self._generateCode(serverExtensionTemplate,  {'className': name, 'methods':methods}, serverExtensionDest)
-            self._generateCode(rootobjectlibTemplate, {'className':name, 'methods':methods}, rootobjectslibDest)
+            self._generateCode(serverExtensionTemplate,  params, serverExtensionDest)
+            self._generateCode(rootobjectlibTemplate, params, rootobjectslibDest)
 
+        """
         taskletsDir = q.system.fs.joinPaths(q.system.fs.getDirName(destPath), 'tasklets', str(name))
         if q.system.fs.exists(taskletsDir):
             q.system.fs.removeDirTree(taskletsDir)
         q.system.fs.createDir(taskletsDir)
         self._generateTasklets(str(name), methods, taskletsDir, self.taskletTemplate)
+        """
+        
         return name
 
     def _generateTasklets(self, rootobject, listOfMethods, outputDir, template):
@@ -285,34 +299,65 @@ class CloudApiGenerator:
         q.system.fs.createDir(self.rootobject_serverOutputDir)
         q.system.fs.createDir(self.rootobject_serverExtensionDest)
         q.system.fs.createDir(self.rootobjects_libDir)
-        modules = dict()
-        extensions = list()
+        
+        #modules = dict()
+        #extensions = list()
+        
         ##generate root object actions
-        for spec in q.system.fs.listFilesInDir(self.specDir, filter='*.py'):
-            fileName = q.system.fs.getBaseName(spec)
-            if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
-                continue
-            rootObject = fileName.split('.')[0].split('ro_')[-1]
-            className = self._generateClientCode(spec, 'cloud_api_%s'%rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'client_%s.py'%rootObject))
-            services['cloud_api_%s'%rootObject] = 'cloud_api.%s.%s'%(rootObject, className)
+        
+        domains = list()
+        
+        for domain_spec in q.system.fs.listDirsInDir(self.specDir):
+            
+            domain = domain_spec.split(os.sep)[-1]
+            domains.append({'modulename': domain, 'classname': domain})
+            
+            #domain_path = q.system.fs.joinPaths(self.actorOutputDir, domain)
+            #q.system.fs.createDir(domain_path)
+            #if not q.system.fs.exists(q.system.fs.joinPaths(domain_path, '__init__.py')):
+            #    q.system.fs.createEmptyFile(q.system.fs.joinPaths(domain_path, '__init__.py'))
+            
+            actions = list()
+            
+            for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
+                
+                fileName = q.system.fs.getBaseName(spec)
+                if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
+                    continue
+                #rootObject = fileName.split('.')[0].split('ro_')[-1]
+                rootObject = fileName.split('.')[0]
+                
+                #className = self._generateClientCode(spec, rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, domain, 'client_%s.py' % rootObject))
+                
+                
+                
+                #services[rootObject] = '%s.%s.%s' % (rootObject, domain, className)
+                
+                params = {'domain': domain}
+    
+                className = self._generateServerCode(spec,self.rootobject_serverTemplate, q.system.fs.joinPaths(self.rootobject_serverOutputDir, domain, '%s.py'%rootObject), \
+                                                     self.rootobject_serverExtensionTemplate, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, domain, '%s.py'%rootObject),\
+                                                     q.system.fs.joinPaths(self.rootobjects_libDir, 'cloud_api_%s.py'%rootObject), self.rootobject_libTemplate, params=params)
+                
+                actions.append({'modulename': rootObject, 'classname': className})
+            
+            self._generateCode(self.importSubModulesTemplate, {'imports':actions, 'classname': domain}, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, domain, '__init__.py'))
+                
+                #modules['client_%s'%rootObject] = className
+                #extensions.append(Extension(className, className, 'q.actions.rootobject.%s'%className))
+        self._generateCode(self.importSubModulesTemplate, {'imports':domains, 'classname': 'actions'}, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, '__init__.py'))
 
-            className = self._generateServerCode(spec,self.rootobject_serverTemplate, q.system.fs.joinPaths(self.rootobject_serverOutputDir, '%s.py'%rootObject), \
-                                                 self.rootobject_serverExtensionTemplate, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, '%s.py'%rootObject),\
-                                                 q.system.fs.joinPaths(self.rootobjects_libDir, 'cloud_api_%s.py'%rootObject), self.rootobject_libTemplate)
-            modules['client_%s'%rootObject] = className
-            extensions.append(Extension(className, className, 'q.actions.rootobject.%s'%className))
-
-        self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, 'extension.cfg'))
-        extensions = list()
-        self._generateCode(self.basecloudapitemplate, {},  q.system.fs.joinPaths(self.rootobject_serverOutputDir, 'BaseCloudAPI.py'))
-        self._generateCode(self.serviceTemplate, {'services':services},  q.system.fs.joinPaths(self.rootobject_serverOutputDir, 'applicationserverservice.cfg'))
+        #self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, 'extension.cfg'))
+        #extensions = list()
+        #self._generateCode(self.basecloudapitemplate, {},  q.system.fs.joinPaths(self.rootobject_serverOutputDir, 'BaseCloudAPI.py'))
+        #self._generateCode(self.serviceTemplate, {'services':services},  q.system.fs.joinPaths(self.rootobject_serverOutputDir, 'applicationserverservice.cfg'))
         ####
-        self._generateCode(self.exceptionTemplate, {}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'Exceptions.py'))
-        extensions.append(Extension('CloudApiConnectionsConfig', 'cloud_api_connections', 'i.config.cloudApiConnection'))
-        self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'extension.cfg'))
-        self._generateCode(self.cloudapiClientsTemplate, {'modules':modules}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'cloud_api_clients.py'))
+        #self._generateCode(self.exceptionTemplate, {}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'Exceptions.py'))
+        #extensions.append(Extension('CloudApiConnectionsConfig', 'cloud_api_connections', 'i.config.cloudApiConnection'))
+        #self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'extension.cfg'))
+        #self._generateCode(self.cloudapiClientsTemplate, {'modules':modules}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'cloud_api_clients.py'))
 
-        self._generateCode(self.cloudapiqconfig, {}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'cloud_api_connections.py'))
+        #self._generateCode(self.cloudapiqconfig, {}, q.system.fs.joinPaths(self.rootobject_clientOutputDir, 'cloud_api_connections.py'))
 
     def generatePythonActor(self):
         """
@@ -328,20 +373,39 @@ class CloudApiGenerator:
         """
         ##generate actor actions
         q.system.fs.createDir(self.actorOutputDir)
-        extensions = list()
-        for spec in q.system.fs.listFilesInDir(self.specDirActors, filter='*.py'):
-            fileName = q.system.fs.getBaseName(spec)
-            if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
-                continue
-            moduleName =  fileName.split('.')[0]
-            rootObject = moduleName
+        #extensions = list()
+        domains = list()
+        
+        
+        for domain_spec in q.system.fs.listDirsInDir(self.specDirActors):
+            
+            domain = domain_spec.split(os.sep)[-1]
+            domain_path = q.system.fs.joinPaths(self.actorOutputDir, domain)
+            q.system.fs.createDir(domain_path)
+            
+            domains.append({'modulename': domain, 'classname': domain})
+            
+            for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
+                
+                actors = list()
+                
+                fileName = q.system.fs.getBaseName(spec)
+                if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
+                    continue
+                moduleName =  fileName.split('.')[0]
+                rootObject = moduleName
+    
+                className = self._generateServerCode(spec,self.actorTemplate, q.system.fs.joinPaths(domain_path, fileName), wizards=False)
 
-            className = self._generateServerCode(spec,self.actorTemplate, q.system.fs.joinPaths(self.actorOutputDir, fileName), wizards=False)
-
-            #modules['client_ro_%s'%rootObject] = className/
-            extensions.append(Extension(className, moduleName, 'q.actions.actor.%s'%moduleName))
-        ##
-        self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.actorOutputDir, 'extension.cfg'))
+                #modules['client_ro_%s'%rootObject] = className/
+                actors.append({'modulename': moduleName, 'classname': className})
+                #extensions.append(Extension(className, moduleName, 'p.api.actor.%s.%s' % (domain, moduleName)))
+            ##
+            self._generateCode(self.importSubModulesTemplate, {'imports':actors, 'classname': domain}, q.system.fs.joinPaths(self.actorOutputDir, domain_path, '__init__.py'))
+        #self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.actorOutputDir, 'extension.cfg'))
+            
+        
+        self._generateCode(self.importSubModulesTemplate, {'imports':domains, 'classname': 'actors'}, q.system.fs.joinPaths(self.actorOutputDir, '__init__.py'))
 
 
     def generateFlexRoot(self):
@@ -435,6 +499,50 @@ class CloudApiGenerator:
             rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(dir, "%s.txt"%rootobject))
             self._forceCreatePage(space, xmlrpcid, rootobject, _encode(rootobjectcontent))
             
+            
+class AppAPIGenerator(object):
+    
+    def __init__(self):
+        self._generator = CloudApiGenerator()
+        
+    
+    def generate(self, appname):
+        
+        q.action.start('Generating API for %s application' % appname)
+        app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
+        if not q.system.fs.exists(app_path):
+            raise ValueError('Application %s not found', appname)
+        
+        interface_path = q.system.fs.joinPaths(app_path, 'interface')
+        if not q.system.fs.exists(interface_path):
+            raise ValueError('Interfaces for application %s not found' % appname)
+        
+        q.action.start('Generating action API')
+        spec_path = q.system.fs.joinPaths(interface_path, 'action')
+        if not q.system.fs.exists(spec_path):
+            raise ValueError('Interfaces of type "action" for application %s not found' % appname)
+        
+        self._generator.specDir = spec_path
+        self._generator.rootobject_clientOutputDir = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'client')
+        self._generator.rootobjects_libDir  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'lib')
+        self._generator.rootobject_serverOutputDir  = q.system.fs.joinPaths(app_path, 'impl', 'service')
+        self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'client', 'action')
+        #self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'extension')
+        self._generator.generatePythonRoot()
+        q.action.stop()
+        
+        q.action.start('Generating actor API')
+        spec_path = q.system.fs.joinPaths(interface_path, 'actor')
+        if not q.system.fs.exists(spec_path):
+            raise ValueError('Interfaces of type "actor" for application %s not found' % appname)
+        
+        self._generator.specDirActors = spec_path
+        self._generator.actorOutputDir = q.system.fs.joinPaths(app_path, 'client', 'actor')
+        self._generator.generatePythonActor()
+        q.action.stop()
+        
+        q.action.stop()
+    
             
             
             
