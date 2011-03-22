@@ -61,6 +61,8 @@ class Dirs(object):
 
     @type: string
     '''
+    
+    pyAppsDir = None
 
     baseDir = None ##string
     '''pylabs sandbox base folder
@@ -153,6 +155,8 @@ class Dirs(object):
             return True
         if not self.appDir:
             self.appDir = os.path.join(self.baseDir,"apps")
+        if not self.pyAppsDir:
+            self.pyAppsDir = os.path.join(self.baseDir,"pyapps")
         if not self.tmpDir:
             self.tmpDir = os.path.join(self.appDir,"tmp")
         if not self.varDir:
@@ -183,6 +187,7 @@ class Dirs(object):
         pylabs.q.system.fs.createDir(self.cmdbDir)
         pylabs.q.system.fs.createDir(self.packageDir)
         pylabs.q.system.fs.createDir(self.homeDir)
+        pylabs.q.system.fs.createDir(self.pyAppsDir)
 
         # TODO: Should check for basedir also and barf if it is not set properly!
 
