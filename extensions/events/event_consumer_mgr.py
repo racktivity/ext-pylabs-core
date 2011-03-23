@@ -37,9 +37,9 @@ class EventConsumerMgr:
             bindingKey = cfgFile.getValue('main','eventKey')
             queueName = q.tools.hash.md5_string(workerPool)
             cmd = buildCmd(bindingKey, workerPool, queueName)
-            for i in xrange(workers) :
-                sub = subprocess.Popen(cmd)
-                self._savePid(sub.pid, workerPool, i)
+            for i in xrange(workers):
+                pid = q.system.process.runDaemon(" ".join(cmd))
+                self._savePid(pid, workerPool, i)
     
     def stop(self):
         for pidfile in q.system.fs.listFilesInDir(self.piddir):
