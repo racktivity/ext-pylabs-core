@@ -1,0 +1,7 @@
+import os.path 
+import functools    
+import pkg_resources   
+
+tasklet_path = os.path.join('/opt/qbase5/pyapps/$appname/impl/osis')  
+from osis.server.applicationserver import OsisServer    
+osissvc = functools.partial(OsisServer, tasklet_path=tasklet_path)
