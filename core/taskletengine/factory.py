@@ -33,15 +33,12 @@
 #
 # </License>
 
+from engine import TaskletEngine
 
-import pylabs
-from TaskletEngine4 import TaskletEngine4
-
-class TaskletEngineFactory4:
-    def get(self,taskletsDir):
+class TaskletEngineFactory:
+    def get(self, tasklets_dir):
         """
-        @param taskletsDir is directory in which tasklets live
-        @return taskletsengine object
+        @param tasklets_dir is directory in which tasklets live
+        @return TaskletEngine object
         """
-        return TaskletEngine4(taskletsDir)
-    
+        return TaskletEngine(tasklets_dir)

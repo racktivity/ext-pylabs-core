@@ -15,7 +15,11 @@ class Events(object):
         return q.system.fs.joinPaths(q.dirs.pyAppsDir, appName, 'impl', 'events')
 
     def startConsumers(self, appName):
-        EventConsumerMgr(self._getConsumerPath(appName)).start()
+        path = self._getConsumerPath(appName)
+        if q.system.fs.exists(path):
+            EventConsumerMgr(path).start()
     
     def stopConsumers(self, appName):
-        EventConsumerMgr(self._getConsumerPath(appName)).stop()
+        path = self._getConsumerPath(appName)
+        if q.system.fs.exists(path):
+            EventConsumerMgr(path).stop()
