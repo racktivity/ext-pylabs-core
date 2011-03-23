@@ -1,4 +1,5 @@
 from pylabs import q
+join = q.system.fs.joinPaths
 
 class ArakoonPyApps:
 
@@ -24,8 +25,10 @@ class ArakoonPyApps:
         arakoonCfg.addParam(node, 'log_level', 'debug')
         arakoonCfg.addParam(node, 'name', 'sturdy_0')
         arakoonCfg.addParam(node, 'ip', '127.0.0.1')
-        logDir = '/opt/qbase5/var/log/' + 'arakoon_' + self.appName + '/' + self.appName + '_0.log'
-        home = '/opt/qbase5/var/db/' + 'arakoon_' + self.appName + '/' + self.appName + '_0.db'
+        logDir = join(q.dirs.logDir, 'arakoon_%s' % self.appName,  
+                                    "%s_0.log" % self.appName)
+        home = join(q.dirs.varDir, 'db', 'arakoon_%s' % self.appName, 
+                                    '%s_0.db' % self.appName)
         arakoonCfg.addParam(node, 'log_dir', logDir)
         arakoonCfg.addParam(node, 'home', home)
         arakoonCfg.addParam(node, 'client_port', client_port)

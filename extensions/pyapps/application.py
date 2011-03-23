@@ -1,5 +1,5 @@
 import sys
-from pylabs import q
+from pylabs import q, p
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
 import pymodel
@@ -25,10 +25,18 @@ class AppManager(object):
         return ApplicationAPI(appname, host, context)
     
     def initialize(self, appname):
+        p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         gen.generateAll()
+        gen.configure()
         
-        
+    def start(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.start()
+    
+    def stop(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.stop()
         
 class ApplicationAPI(object):
     
