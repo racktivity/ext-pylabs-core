@@ -36,10 +36,8 @@
 '''pylabs framework central class (of which the C{q} object is an instance)'''
 
 import sys
-import inspect
 import os
-import imp
-import random
+
 if not (sys.platform.startswith("win32") or sys.platform.startswith("linux")  or sys.platform.startswith("darwin") or sys.platform.startswith("sunos")):
     print "pylabs framework is only supported on win32, darwin and linux*. Current platform is [%s]. " % (sys.platform)
     sys.exit(1)
@@ -166,10 +164,13 @@ def _pylabs_debugger():
     from pylabs.debugger import QHook
     return QHook()
 
-
 def _pylabs_qpackagetools():
     from pylabs.qpackages.client.QPackageTools import QPackageTools
     return QPackageTools()
+
+def _pylabs_taskletengine():
+    from pylabs.taskletengine.factory import TaskletEngineFactory
+    return TaskletEngineFactory()
 
 
 class Pylabs:
@@ -243,7 +244,8 @@ class Pylabs:
 
     errorconditionhandler = pylabsContainerAttributeDescriptor('errorconditionhandler',_pylabs_errorconditionhandler)
 
-
+    taskletengine = pylabsContainerAttributeDescriptor('taskletengine', _pylabs_taskletengine)
+    '''Accessor to the tasklet engine factory'''
 
     def __init__(self):
         q = getattr(pylabs, 'q', None)
@@ -252,26 +254,6 @@ class Pylabs:
         self._init_called = False
         self._init_final_called = False
         self.agentid="@"
-
-    @staticmethod
-    def getTaskletEngine(path=None):
-        '''Get a tasklet engine instance
-
-        If a C{path} is provided, this is passed to the C{addFromPath} method of
-        the new tasklet engine.
-
-        @param path: Path passed to addFromPath
-        @type path: string
-
-        @return: A tasklet engine
-        @rtype: L{pylabs.tasklets.TaskletsEngine}
-        '''
-        from pylabs.taskletengine.TaskletEngine4 import TaskletEngine4
-
-        engine = TaskletEngine4(path)
-
-        return engine
-
 
     def init(self):
         """
@@ -320,24 +302,6 @@ class Pylabs:
         self.gui.dialog.pm_setDialogHandler()
         pylabs.q.logger._init()
         self._init_final_called = True
-
-
-    def enablepylabsTrace(self):
-        '''Enable tracing in pylabs methods'''
-        file = inspect.getfile(System)
-        folder = os.path.dirname(file)
-        files = os.listdir(folder)
-        for f in files:
-            if not f.endswith(".py"):
-                continue
-            if f.endswith("Logger.py"):
-                continue
-            if f.endswith("LogHandler.py"):
-                continue
-            if f.endswith("LogServer.py"):
-                continue
-            mod = __import__(os.path.splitext(os.path.basename(f))[0], globals(), locals(), "*")
-            self.logger.logModuleUsage(mod, 10)
 
     def _initExtensionsIfNotDoneYet(self):
         '''Initialize pylabs extensions if they are not initialized yet'''

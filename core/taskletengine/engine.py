@@ -33,16 +33,10 @@
 #
 # </License>
 
-from pylabs.Shell import *
-
 '''pylabs *tasklet* engine implementation'''
 
 import os
 import os.path
-import sys
-import imp
-import random
-import inspect
 import operator
 import time
 import stat
@@ -56,9 +50,9 @@ import pylabs
 
 MATCH_FAILED = object()
 
-from Tasklet4 import Tasklet4
+from tasklet import Tasklet
 
-Tasklet4.MATCH_FAILED = MATCH_FAILED
+Tasklet.MATCH_FAILED = MATCH_FAILED
 
 #@feedback (kds) everywhere we use priority 1 as highest, here it is the reverse
 
@@ -84,13 +78,13 @@ class locked(object): #pylint: disable-msg=R0903
         return wrapped
 
 
-class TaskletEngine4(object):
+class TaskletEngine(object):
     '''Tasklet engine as bound on q.tasklets'''
 
     STOP = object()
     CONTINUE = object()
 
-    def __init__(self,taskletsDir):
+    def __init__(self, taskletsDir):
         """
         @param taskletsDir is directory in which tasklets live
         """
@@ -144,7 +138,7 @@ class TaskletEngine4(object):
 
         name = self._getPathInfo(path)
 
-        self._tasklets[path] = Tasklet4(name, path)
+        self._tasklets[path] = Tasklet(name, path)
 
     @staticmethod
     def _getPathInfo(path):
@@ -243,11 +237,10 @@ class TaskletEngine4(object):
 
         def tagFilter(tasklets):
             '''Filter tasklets based on tags'''
-            if tags<>None:
+            if tags is not None:
                 _tags = set(tags or tuple())
-            #qshell()
             for tasklet in tasklets:
-                if tags==None or _tags in (set(t) for t in tasklet.tags):
+                if tags is None or _tags in (set(t) for t in tasklet.tags):
                     yield tasklet
 
         def priorityFilter(tasklets):
@@ -346,15 +339,7 @@ class TaskletEngine4(object):
         wrapper = wrapper or (lambda func: func)
         assert callable(wrapper)
         tasklet = self.findFirst(author, name, tags, priority)
-
-        if not tasklet:
-            raise RuntimeError('No matching tasklet found')
-
-        if not tasklet.match(pylabs.q, pylabs.i, params, tags or tuple()):
-            raise RuntimeError(
-                'Found tasklet, but it does not accept the request')
-
-        pylabs.q.logger.log('Executing previously found tasklet', 6)
-        wrapped = wrapper(tasklet.methods['main'])
-        return wrapped(pylabs.q, pylabs.i, params, tags or tuple())
-
+        if tasklet:
+            return tasklet.execute(params, tags, wrapper)
+        else:
+            return None

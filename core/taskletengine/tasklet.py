@@ -33,7 +33,9 @@
 #
 # </License>
 
-import sys,os
+import os
+import re
+import sys
 import operator
 import pylabs
 import random
@@ -41,7 +43,20 @@ import imp
 import inspect
 import time
 
-class Tasklet4(object): #pylint: disable-msg=R0902,R0903
+TAGS_ATTR = '__tags__'
+PRIORITY_ATTR = '__priority__'
+
+DEFAULT_PRIORITY = 1
+
+PRIORITY_REGEX = re.compile("(?P<priority>\d+)_.+.py$")
+
+class InvalidTaskletFunction(RuntimeError):
+    def __init__(self, name, path):
+        RuntimeError.__init__(self,
+                    'Function %s in %s doesn\'t match required '
+                    'argument specification' % (name, path))
+
+class Tasklet(object): #pylint: disable-msg=R0902,R0903
     '''Representation of a single tasklet'''
     def __init__(self, name, path):
         '''Initialize a new tasklet
@@ -74,15 +89,20 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
 
         #Figure out metadata
         self._author = str(getattr(module, '__author__', ''))
-        tags = getattr(module, '__tags__', tuple())
-        tags = self._parseTags(tags)
+        if hasattr(module, TAGS_ATTR):
+            tags = getattr(module, TAGS_ATTR, tuple())
+            tags = self._parseTags(tags)
+        else:
+            tags = tags_from_path(self._path)
+            tags = self._parseTags(tags)
+
         self._tags = set(tags)
 
         self._priority = self._loadPriority(module)
         self._realizes = self._loadRealizes(module)
 
         #Load main function
-        self._methods['main'] = self._loadFunction(module,'main')
+        self._methods['main'] = self._loadFunction(module, 'main')
 
         #Load callback function(s)
         methods = [method for method in dir(module) if method.startswith('callback_')]
@@ -140,16 +160,20 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
         for combination in unfold(tags):
             yield combination
 
-    @staticmethod
-    def _loadPriority(module):
+    def _loadPriority(self, module):
         '''Retrieve the tasklet priority from its module
 
-        If no priority is defined, use 1.
+        If no priority is defined, try to get the priority from the file path.
+        If the file path does not match the expected regex, return the
+        DEFAULT_PRIORITY.
 
         @param module: Tasklet module
         @type module: module
         '''
-        return getattr(module, '__priority__', 1)
+        if hasattr(module, PRIORITY_ATTR):
+            return getattr(module, PRIORITY_ATTR, DEFAULT_PRIORITY)
+        else:
+            return priority_from_path(self._path)
 
     @staticmethod
     def _loadRealizes(module):
@@ -182,11 +206,11 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
                     (name, self._path))
 
         if checkSignature:
-            if not inspect.getargspec(func) == \
-                    (['q', 'i', 'params', 'tags'], None, None, None):
-                raise RuntimeError(
-                    'Function %s in %s doesn\'t match required '
-                    'argument specification' % (name, self._path))
+            if inspect.getargspec(func) not in (
+                    (['q', 'i', 'params', 'tags'], None, None, None),
+                    (['q', 'i', 'p', 'params', 'tags'], None, None, None)
+                    ):
+                raise InvalidTaskletFunction(name, self._path)
 
         return func
 
@@ -198,13 +222,39 @@ class Tasklet4(object): #pylint: disable-msg=R0902,R0903
 
         params['taskletlastexecutiontime'] = self._lastexecutiontime
         if self.match(pylabs.q, pylabs.i, params, tags):
-            pylabs.q.logger.log('Executing tasklet %s' % self.name, 6)
-
-            self._lastexecutiontime = time.time()
-            wrapped = wrapper(self.methods['main'])
-            return wrapped(pylabs.q, pylabs.i, params, tags)
+            return self.execute(params, tags, wrapper)
         else:
-            return Tasklet4.MATCH_FAILED
+            return Tasklet.MATCH_FAILED
+
+    def execute(self, params, tags, wrapper=None):
+        """
+        Execute this tasklet with the passed params and tags. If a wrapper
+        function is passed, the main tasklet function will be wrapped with it.
+
+        @param params: The params that should be passed to the main tasklet function
+        @type params: dict
+        @param tags: The tasklet tags tuple
+        @type tags: tuple
+        @param wrapper: An optional wrapper function for the main tasklet function
+        @type wrapper: callable
+        @return: The return value of the (wrapped) main tasklet function
+        @rtype: object
+        """
+        wrapper = wrapper or (lambda func: func)
+        name = 'main'
+        func = self.methods[name]
+        pylabs.q.logger.log('Executing tasklet %s' % self.name, 6)
+
+        if inspect.getargspec(func) == (['q', 'i', 'params', 'tags'], None, None, None):
+            args = (pylabs.q, pylabs.i, params, tags or tuple())
+        elif inspect.getargspec(func) == (['q', 'i', 'p', 'params', 'tags'], None, None, None):
+            args = (pylabs.q, pylabs.i, pylabs.p, params, tags or tuple())
+        else:
+            raise InvalidTaskletFunction(name, self._path)
+
+        self._lastexecutiontime = time.time()
+        wrapped = wrapper(func)
+        return wrapped(*args)
 
     name = property(fget=operator.attrgetter('_name'))
     priority = property(fget=operator.attrgetter('_priority'))
@@ -280,6 +330,38 @@ def unfold(tags):
     # tuple and yield that tuple
     for result in unfold_helper(list(), tags):
         yield tuple(result)
+
+def clean_path_parts(path):
+    return [part for part in path.split(os.path.sep) if part]
+
+def tags_from_path(path):
+    parts = clean_path_parts(path)
+    if len(parts) < 3:
+        return tuple()
+    else:
+        return tuple(parts[-3:-1])
+
+def priority_from_path(path):
+    parts = clean_path_parts(path)
+    if not parts:
+        return DEFAULT_PRIORITY
+    else:
+        filename = parts[-1]
+        match = PRIORITY_REGEX.match(filename)
+        if not match:
+            return DEFAULT_PRIORITY
+        else:
+            groupdict = match.groupdict()
+            priority_string = groupdict['priority']
+            return int(priority_string)
+
+def test_tags_from_short_path():
+    tags = tags_from_path("/etc/1_tasklet.py")
+    assert tags == (), "Expected empty tags tuple, but was %s" % tags
+
+def test_tags_from_ok_path():
+    tags = tags_from_path("/opt/qbase5/pyapps/sampleapp/impl/action/core/machine/start/1_start.py")
+    assert set(tags) == set(("core", "machine")), 'Expected tags "core" and "machine", but was %s' % tags
 
 def test_unfold():
     '''Testcase for the unfold function'''

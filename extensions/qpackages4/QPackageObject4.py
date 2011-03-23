@@ -444,7 +444,7 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             taskletspath=q.system.fs.joinPaths(metadatapath,"generic")
         else:
             taskletspath=q.system.fs.joinPaths(metadatapath,"tasklets")
-        return q.getTaskletEngine(taskletspath)
+        return q.taskletengine.get(taskletspath)
 
     def _hasTasklet(self, tag):
         engine = self._getTaskletEngine()

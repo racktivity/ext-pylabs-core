@@ -848,7 +848,7 @@ class ApplicationserverWizardService(object):
         # Tasklets go into (folder containing this service file)/tasklets
         tasklet_path = q.system.fs.joinPaths(
                         os.path.dirname(__file__), 'tasklets')
-        self.taskletengine = q.getTaskletEngine(tasklet_path)
+        self.taskletengine = q.taskletengine.get(tasklet_path)
 
     @q.manage.applicationserver.expose
     def start(self, customerGuid, wizardName, extra=None, applicationserver_request=None):
