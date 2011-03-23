@@ -531,6 +531,15 @@ class AppAPIGenerator(object):
         
         self._generator.importSubModulesTemplate = q.system.fs.joinPaths(self._template_path, 'AppImportSubmodules.tmpl')
         
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'service'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'action'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'actor'))
+        
+        self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, '__init__.py'))
+        self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, '__init__.py'))
+        self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'client', '__init__.py'))
+                          
+        
         self._generator.specDir = spec_path
         self._generator.rootobject_serverTemplate = q.system.fs.joinPaths(self._template_path, 'AppApiActionService.tmpl')
         self._generator.rootobject_serverExtensionTemplate =q.system.fs.joinPaths(self._template_path, 'AppApiAction.tmpl')
@@ -563,16 +572,33 @@ class AppAPIGenerator(object):
         # Generate default services
         params = {'appname': appname}
         
+        # Scheduler
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'schedule'))        
         self._generate_file('SchedulerService.tmpl', params, 
                             q.system.fs.joinPaths(service_path, 'Scheduler.py'))
         
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
         self._generate_file('OsisService.tmpl', params, 
                             q.system.fs.joinPaths(service_path, 'osissvc.py'))
+        
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui'))
+        self._generate_file('WizardService.tmpl', params, 
+                            q.system.fs.joinPaths(service_path, 'wizard.py'))
         
     def _generate_file(self, template, params, path):
         self._generator._generateCode(
             q.system.fs.joinPaths(self._template_path, template), 
             params, path)
+        
+    def _create_folder(self, path):
+        if not q.system.fs.exists(path):
+            q.system.fs.createDir(path)
+            
+    def _create_file(self, path):
+        if not q.system.fs.exists(path):
+            q.system.fs.createEmptyFile(path)
+        
+        
             
     
    
