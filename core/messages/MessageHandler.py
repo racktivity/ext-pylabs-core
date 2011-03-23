@@ -1,6 +1,4 @@
-import os
 from pylabs import q
-from pylabs.taskletengine.TaskletEngine4 import TaskletEngine4
 
 class MessageHandler(object):
     """
@@ -11,9 +9,10 @@ class MessageHandler(object):
         taskletsDir = q.system.fs.joinPaths(q.dirs.appDir, 'pylabs_messagehandler', 'tasklets')
         if not q.system.fs.exists(taskletsDir): q.system.fs.createDir(taskletsDir)
         try:
-            self._engine = TaskletEngine4(taskletsDir)
+            self._engine = q.taskletengine.get(taskletsDir)
             self._tasklets_loaded = True
         except Exception as ex:
+            q.logger.log("Failed to get a tasklet engine for path '%s': %s" % (taskletsDir, ex), 3)
             self._tasklets_loaded = False
 
     

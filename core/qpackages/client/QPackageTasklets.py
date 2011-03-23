@@ -39,7 +39,6 @@ from pylabs.qpackages.client.QPackageInstallerHelper import QPackageInstallerHel
 #from pylabs.qpackages.common.QPackageObject import QPackageObject
 from pylabs.qpackages.common.QPackageDependencyHelper import QPackageDependencyHelper
 from pylabs.qpackages.common.enumerators import DependencyType
-from pylabs.tasklets import TaskletsEngine
 import exceptions
 
 class QPackageTasklets(BaseType):
@@ -429,7 +428,7 @@ class QPackageTasklets(BaseType):
         taskletsDirs = self._getTaskletsPlatformDirs(qpackageObject.domain, qpackageObject.name, qpackageObject.version, qpackageObject.buildNr)
 
         q.logger.log("Instantiating tasklet engine", 9)
-        engine = TaskletsEngine()
+        engine = q.taskletengine.get()
         for taskletDir in taskletsDirs:
             q.logger.log("Adding tasklet dir [%s] to tasklet engine" % taskletDir, 10)
             engine.addFromPath(taskletDir)
