@@ -1,6 +1,7 @@
 import sys
 from pylabs import q
 from pylabs.baseclasses import BaseEnumeration
+from pylabs.config.generator import PyAppsConfigGen
 import pymodel
 import osis
 
@@ -22,6 +23,10 @@ class AppManager(object):
     def getAPI(self, appname, host=None, context=None):
         '''Retrieve api object for an application'''
         return ApplicationAPI(appname, host, context)
+    
+    def initialize(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.generateAll()
         
         
         
