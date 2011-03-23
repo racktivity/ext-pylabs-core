@@ -6,7 +6,7 @@ dirname = os.path.dirname(__file__)
 path = os.path.abspath(dirname)
 pyapp = os.path.abspath(os.path.join(path, '..', '..'))
 
-tasklet_path = os.path.join('pyapp', 'impl', 'ui')
+tasklet_path = os.path.join(pyapp, 'impl', 'ui')
   
 from wizardservice import ApplicationserverWizardService    
 wizard = functools.partial(ApplicationserverWizardService, taskletPath=tasklet_path)
