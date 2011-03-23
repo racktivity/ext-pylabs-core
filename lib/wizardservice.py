@@ -525,9 +525,9 @@ import simplejson
 
 # We require this for the tests to run fine
 if __name__ == '__main__':
-    from pylabs.InitBase import q, i #pylint: disable-msg=F0401
+    from pylabs.InitBase import q, i, p #pylint: disable-msg=F0401
 else:
-    from pylabs import q, i #pylint: disable-msg=F0401
+    from pylabs import q, i, p #pylint: disable-msg=F0401
 
 class UnknownSessionException(Exception):
     '''Exception raised when an invalid session ID is used'''
@@ -850,12 +850,12 @@ class ApplicationserverWizardService(object):
             # Tasklets go into (folder containing this service file)/tasklets
             taskletPath = q.system.fs.joinPaths(os.path.dirname(__file__), 'tasklets')
             
-        self.taskletengine = q.getTaskletEngine(taskletPath)
+        self.taskletengine = q.taskletengine.get(taskletPath)
 
     @q.manage.applicationserver.expose
-    def start(self, customerGuid, wizardName, extra=None, applicationserver_request=None):
-        q.logger.log('Start new wizard %s for customer %s' % \
-                (wizardName, customerGuid), 7)
+    def start(self, domain, wizardName, extra=None, applicationserver_request=None):
+        q.logger.log('Start new wizard %s in domain %s' % \
+                (wizardName, domain), 7)
 
         login = applicationserver_request.username
         passwd = applicationserver_request.password
@@ -869,7 +869,7 @@ class ApplicationserverWizardService(object):
             raise RuntimeError('No matching wizard found')
 
         params = {
-                'customerGuid': customerGuid,
+                'domain': domain,
                 'extra': extra,
                 'login':login, 'password': passwd,
 
@@ -878,7 +878,7 @@ class ApplicationserverWizardService(object):
 
         for tasklet in tasklets:
             if tasklet.match(q, i, params, tags):
-                session = self._manager.register(tasklet.methods['main'], q, i, params, tags)
+                session = self._manager.register(tasklet.methods['main'], q, i, p, params, tags)
 
                 try:
                     step = self._manager.start(session)
