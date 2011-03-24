@@ -66,8 +66,12 @@ class PyAppsConfigGen:
     def start(self):
         if 'appserver' in self.components:
             q.manage.applicationserver.start(self.appName)
+            q.manage.nginx.start()
         if 'wfe' in self.components:
             q.manage.workflowengine.start(self.appName)
+        if 'postgresql' in self.components:
+            q.manage.postgresql.start()
+
     
     def stop(self):
         if 'appserver' in self.components:
