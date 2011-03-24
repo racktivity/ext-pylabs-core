@@ -3,6 +3,8 @@ from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
 from applicationserver_cfg import AppServerPyApps
+POSTGRESUSER = "postgres"
+
 join = q.system.fs.joinPaths
 
 def min_range(pyappsCfg):
@@ -21,10 +23,12 @@ class PyAppsConfigGen:
     def __init__(self, appName):
         self.appName = appName
         self.config = None
+        self.components = None
         self._load_config()
     
     def _load_config(self):
         self.config = q.config.getConfig('pyapps').get(self.appName)
+        self.components = self.list_needed_components()
 
     def pyapps_configuration(self):
         pyappsCfg = q.config.getInifile('pyapps')
@@ -41,25 +45,34 @@ class PyAppsConfigGen:
             pyappsCfg.write()
             self._load_config()
     
-    def configure(self):
-        for tasklet_type in ('config', ):
-            taskletpath = join(q.dirs.pyAppsDir, self.appName, tasklet_type)
-            if q.system.fs.exists(taskletpath):
-                te = q.getTaskletEngine(taskletpath)
-                te.execute({})
+    def setup(self):
+        if 'postgresql' in self.components:
+            if self.appName not in q.manage.postgresql8.cmdb.databases:
+                q.manage.postgresql8.startChanges()
+                if not q.manage.postgresql8.cmdb.initialized:
+                    q.manage.postgresql8.cmdb.initialized = True
+                    q.manage.postgresql8.cmdb.rootLogin = POSTGRESUSER
+                    q.manage.postgresql8.cmdb.addLogin(POSTGRESUSER)
+                q.manage.postgresql8.cmdb.addLogin
+                q.manage.postgresql8.cmdb.addDatabase(self.appName)
+                q.manage.postgresql8.save()
+                q.manage.postgresql8.applyConfig()
+            
+        taskletpath = join(q.dirs.pyAppsDir, self.appName, 'setup')
+        if q.system.fs.exists(taskletpath):
+            te = q.getTaskletEngine(taskletpath)
+            te.execute({})
 
     def start(self):
-        components = self.list_needed_components()
-        if 'appserver' in components:
+        if 'appserver' in self.components:
             q.manage.applicationserver.start(self.appName)
-        if 'wfe' in components:
+        if 'wfe' in self.components:
             q.manage.workflowengine.start(self.appName)
     
     def stop(self):
-        components = self.list_needed_components()
-        if 'appserver' in components:
+        if 'appserver' in self.components:
             q.manage.applicationserver.stop(self.appName)
-        if 'wfe' in components:
+        if 'wfe' in self.components:
             q.manage.workflowengine.stop(self.appName)
     
     def generateAll(self):
@@ -106,23 +119,23 @@ class PyAppsConfigGen:
         if 'osis' in dirBaseNames:
             params.add('arakoon')
             params.add('osis')
+            params.add('postgresql')
         types = ('osis', 'pymodel', 'service')
         if any( (type_ in dirBaseNames) for type_ in  types):
             params.add('appserver')
         return params
     
     def get_needed_params(self, minRange):
-        components = self.list_needed_components()
         params = dict()
-        if 'wfe' in components:
+        if 'wfe' in self.components:
             value = minRange + 200
-            params.add(('wfe_port', value))
-        if 'arakoon' in components:
+            params['wfe_port'] = value
+        if 'arakoon' in self.components:
             value = minRange + 100
             params['arakoon_client_port'] = value
             value = minRange + 101
             params['arakoon_server_port'] = value
-        if 'appserver' in components:
+        if 'appserver' in self.components:
             value = minRange + 300
             params['app_server_xmlrpc_port'] = value
             value = minRange + 301

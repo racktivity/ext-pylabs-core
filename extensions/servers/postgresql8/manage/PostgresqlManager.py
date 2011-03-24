@@ -127,6 +127,31 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         # TODO: implement nicely using self.name and self.status
         print "Application [%s] is %s" % (self.cmdb.name, self.getStatus())
 
+    
+    def _generateHBA(self):
+        fileLocation = q.system.fs.joinPaths(self.configFileDir, 'pg_hba.conf')
+        contents = "# TYPE        DATABASE        USER        CIDR-ADDRESS         METHOD\n"
+        unix     = "local           all        %(rootLogin)s                        trust\n"%{'rootLogin':self.cmdb.rootLogin}
+        ip4Entry = "host            all        %(rootLogin)s       127.0.0.1/32        trust\n"%{'rootLogin':self.cmdb.rootLogin}
+        ip6Entry = "host            all        %(rootLogin)s       ::1/128        trust\n"%{'rootLogin':self.cmdb.rootLogin}
+        contents += unix
+        contents += ip4Entry
+        contents += ip6Entry
+        for login in self.cmdb.logins:
+            contents += "%(type)s           %(database)s        %(login)s       %(cidr_address)s        %(method)s\n" % login
+        pgDatabases = self.cmdb.databases.values()
+        for pgDatabase in pgDatabases:
+            if not pgDatabase.deleted:
+                acl = pgDatabase.acl
+                for aclEntry in acl.values():
+                    if not aclEntry.deleted:
+                        hbaEntries = self._generateACLEntry(aclEntry, pgDatabase.name)
+                        for hbaEntry in hbaEntries:
+                            contents += str(hbaEntry)
+                            contents +="\n"
+        q.system.fs.writeFile(fileLocation, contents)
+        
+
     def applyConfig(self):
         """
         Save configurations of users (ACL) to pg_hba config file and Database
@@ -144,20 +169,11 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
 
         q.logger.log("Applying configuration", 5)
         q.logger.log("Initializing server", 5)
+        self._generateHBA()
         self.init()
 
-        fileLocation = q.system.fs.joinPaths(self.configFileDir, 'pg_hba.conf')
         newDictOfDBs = dict()
 
-        contents = "# TYPE        DATABASE        USER        CIDR-ADDRESS         METHOD\n"
-        unix     = "local           all        %(rootLogin)s                        trust\n"%{'rootLogin':self.cmdb.rootLogin}
-        ip4Entry = "host            all        %(rootLogin)s       127.0.0.1/32        trust\n"%{'rootLogin':self.cmdb.rootLogin}
-        ip6Entry = "host            all        %(rootLogin)s       ::1/128        trust\n"%{'rootLogin':self.cmdb.rootLogin}
-        contents += unix
-        contents += ip4Entry
-        contents += ip6Entry
-        for login in self.cmdb.logins:
-            contents += "%(type)s           %(database)s        %(login)s       %(cidr_address)s        %(method)s\n" % login
 
         q.logger.log("running %s server"%self.name, 5)
         if self.getStatus() == AppStatusType.RUNNING:
@@ -183,11 +199,6 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
 
                     if not aclEntry.deleted:
                         newACLEntryDict[aclEntry.userName] = aclEntry
-                        hbaEntries = self._generateACLEntry(aclEntry, pgDatabase.name)
-                        for hbaEntry in hbaEntries:
-                            contents += str(hbaEntry)
-                            contents +="\n"
-
 
                 self._applyACL(pgDatabase.name, self.cmdb.rootLogin, acl)
                 acl = newACLEntryDict
@@ -196,7 +207,6 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         self.startChanges()
         self.cmdb.databases = newDictOfDBs
         self.save()
-        q.system.fs.writeFile(fileLocation, contents)
 
         self.reload()
 

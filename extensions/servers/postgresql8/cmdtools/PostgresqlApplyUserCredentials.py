@@ -62,7 +62,7 @@ class PostgresqlApplyUserCredentials(CommandWrapper):
             fileContents = q.system.fs.fileGetContents(fileLocation)
 
             if userName.search(fileContents):
-                dBConnection = DBConnection("localhost", "template1", username, password)
+                dBConnection = DBConnection(None, "template1", username, password)
                 result = dBConnection.sqlexecute("ALTER ROLE \"%s\" WITH PASSWORD '%s'"%(username, password))
                 return
 
