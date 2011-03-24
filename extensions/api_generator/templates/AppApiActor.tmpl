@@ -10,7 +10,7 @@ class $className:
 #for $key, $value in $method.params.iteritems():
         params['$key'] = $value
 #end for
-        return q.workflowengine.actionmanager.startActorAction('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+        return q.workflowengine.actionmanager.startActorAction('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 
 #end for
 

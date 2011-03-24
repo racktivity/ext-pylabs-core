@@ -50,7 +50,7 @@ class PMService:
         # We need one tasklet runner for synchronous execution
         tasklet_path = q.system.fs.joinPaths(
             os.path.dirname(__file__), 'tasklets')
-        self.taskletengine = q.getTaskletEngine(tasklet_path)
+        self.taskletengine = q.taskletengine.get(tasklet_path)
 
         # And one for async execution
         self.asynctaskletrunner = TaskletRunner(self.taskletengine)

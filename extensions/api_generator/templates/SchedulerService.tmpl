@@ -1,0 +1,23 @@
+import os.path
+
+from pylabs import q
+
+INTERVAL = 60
+
+class Scheduler(object):
+    def __init__(self):
+        dirname = os.path.dirname(__file__)
+        path = os.path.abspath(dirname)
+        pyapp = os.path.abspath(os.path.join(path, '..', '..'))
+
+        tasklet_path = os.path.join(pyapp, 'impl', 'schedule')
+
+        q.logger.log('Initializing scheduler tasklet engine in %s' % \
+                tasklet_path, 6)
+        self._engine = q.taskletengine.get(tasklet_path)
+
+    @q.manage.applicationserver.cronjob(INTERVAL)
+    def run(self):
+        q.logger.log('Executing schedule tasklets')
+
+        self._engine.execute({}, tags=('schedule', ))

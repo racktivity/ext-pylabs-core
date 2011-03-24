@@ -1,5 +1,5 @@
 import sys
-from pylabs import q
+from pylabs import q, p
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
 import pymodel
@@ -25,10 +25,18 @@ class AppManager(object):
         return ApplicationAPI(appname, host, context)
     
     def initialize(self, appname):
+        p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         gen.generateAll()
+        gen.setup()
         
-        
+    def start(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.start()
+    
+    def stop(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.stop()
         
 class ApplicationAPI(object):
     
@@ -36,10 +44,9 @@ class ApplicationAPI(object):
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._app_path = app_path
         
-        api_path = q.system.fs.joinPaths(app_path, 'client')
+        api_path = q.system.fs.joinPaths(app_path)
         sys.path.append(api_path)
-        
-        # @todo:  load depending on context
+
         self.appname = appname
         self.action = self._get_actions(appname, context)
         
@@ -51,11 +58,11 @@ class ApplicationAPI(object):
             
         
     def _get_actors(self, appname, context):
-        from actor import actors
+        from client.actor import actors
         return actors()
 
     def _get_actions(self, appname, context):
-        from action import actions
+        from client.action import actions
         return actions()
     
     def _get_model(self, appname, context):
@@ -68,7 +75,7 @@ class ApplicationAPI(object):
         from osis.client import OsisConnection
         
         transporturl = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
-        transport = XMLRPCTransport(transporturl, 'osis')
+        transport = XMLRPCTransport(transporturl, 'osissvc')
         connection = OsisConnection(transport, ThriftSerializer)
 
         return connection

@@ -24,11 +24,11 @@ class $className:
 
         
 #if 'execution_method' in $method.properties and $method.properties.execution_method == 'async'
-        return q.workflowengine.actionmanager.startRootobjectActionAsynchronous('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+        return q.workflowengine.actionmanager.startRootobjectActionAsynchronous('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 #elif 'execution_method' in $method.properties and $method.properties.execution_method == 'sync'
-        return q.workflowengine.actionmanager.startRootobjectActionSynchronous('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+        return q.workflowengine.actionmanager.startRootobjectActionSynchronous('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 #else
-        return q.workflowengine.actionmanager.startRootobjectAction('$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+        return q.workflowengine.actionmanager.startRootobjectAction('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 #end if
 
 #end for

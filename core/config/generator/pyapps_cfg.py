@@ -3,31 +3,81 @@ from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
 from applicationserver_cfg import AppServerPyApps
+POSTGRESUSER = "postgres"
+
 join = q.system.fs.joinPaths
+
+def min_range(pyappsCfg):
+    sections = pyappsCfg.getSections()
+    if sections == []:
+        return 20000
+    minRange = [21000]
+    for section in sections:
+        portrange = pyappsCfg.getValue(section, 'port_range')
+        minRange.append(int(portrange.split(':')[0]))
+    return max(minRange)
+
 
 class PyAppsConfigGen:
 
     def __init__(self, appName):
         self.appName = appName
+        self.config = None
+        self.components = None
         self._load_config()
     
     def _load_config(self):
         self.config = q.config.getConfig('pyapps').get(self.appName)
+        self.components = self.list_needed_components()
 
     def pyapps_configuration(self):
         pyappsCfg = q.config.getInifile('pyapps')
         exists = pyappsCfg.checkSection(self.appName)
         if not exists:
-            min_ = self.min_range(pyappsCfg)
+            min_ = min_range(pyappsCfg)
             max_ = min_ + 1000
             port_range = "%s:%s" % (min_, max_)
             pyappsCfg.addSection(self.appName)
             pyappsCfg.addParam(self.appName, 'port_range', port_range)
-            params = self.list_needed_components(min_)
-            for key, value in params:
+            params = self.get_needed_params(min_)
+            for key, value in params.iteritems():
                 pyappsCfg.addParam(self.appName, key, value)
             pyappsCfg.write()
             self._load_config()
+    
+    def setup(self):
+        if 'postgresql' in self.components:
+            if self.appName not in q.manage.postgresql8.cmdb.databases:
+                q.manage.postgresql8.startChanges()
+                if not q.manage.postgresql8.cmdb.initialized:
+                    q.manage.postgresql8.cmdb.initialized = True
+                    q.manage.postgresql8.cmdb.rootLogin = POSTGRESUSER
+                    q.manage.postgresql8.cmdb.addLogin(POSTGRESUSER)
+                q.manage.postgresql8.cmdb.addLogin
+                q.manage.postgresql8.cmdb.addDatabase(self.appName)
+                q.manage.postgresql8.save()
+                q.manage.postgresql8.applyConfig()
+            
+        taskletpath = join(q.dirs.pyAppsDir, self.appName, 'setup')
+        if q.system.fs.exists(taskletpath):
+            te = q.getTaskletEngine(taskletpath)
+            te.execute({})
+
+    def start(self):
+        if 'appserver' in self.components:
+            q.manage.applicationserver.start(self.appName)
+            q.manage.nginx.start()
+        if 'wfe' in self.components:
+            q.manage.workflowengine.start(self.appName)
+        if 'postgresql' in self.components:
+            q.manage.postgresql.start()
+
+    
+    def stop(self):
+        if 'appserver' in self.components:
+            q.manage.applicationserver.stop(self.appName)
+        if 'wfe' in self.components:
+            q.manage.workflowengine.stop(self.appName)
     
     def generateAll(self):
         self.pyapps_configuration()
@@ -58,7 +108,7 @@ class PyAppsConfigGen:
                                 self.config['app_server_rest_port'],
                                 self.config['app_server_amf_port'])
     
-    def list_needed_components(self, minRange):
+    def list_needed_components(self):
         implPath =  join(q.dirs.pyAppsDir, self.appName, 'impl')
         interfacePath = join(q.dirs.pyAppsDir, self.appName, 'interface')
         dirs = set()
@@ -69,29 +119,31 @@ class PyAppsConfigGen:
         dirBaseNames = set([q.system.fs.getBaseName(dir_) for dir_ in dirs])
         params = set()
         if 'actor' in dirBaseNames or 'action' in dirBaseNames:
-            value = minRange + 200
-            params.add(('wfe_port', value))
+            params.add('wfe')
         if 'osis' in dirBaseNames:
-            value = minRange + 100
-            params.add(('arakoon_client_port', value))
-            value = minRange + 101
-            params.add(('arakoon_server_port', value))
-        if 'osis' in dirBaseNames or 'pymodel' in dirBaseNames or 'service' in dirBaseNames:
-            value = minRange + 300
-            params.add(('app_server_xmlrpc_port', value))
-            value = minRange + 301
-            params.add(('app_server_rest_port', value))
-            value = minRange + 302
-            params.add(('app_server_amf_port', value))
+            params.add('arakoon')
+            params.add('osis')
+            params.add('postgresql')
+        types = ('osis', 'pymodel', 'service')
+        if any( (type_ in dirBaseNames) for type_ in  types):
+            params.add('appserver')
         return params
-
-
-    def min_range(self, pyappsCfg):
-        sections = pyappsCfg.getSections()
-        if sections == []:
-            return 20000
-        minRange = [21000]
-        for section in sections:
-            portrange = pyappsCfg.getValue(section, 'port_range')
-            minRange.append(int(portrange.split(':')[0]))
-        return max(minRange)
+    
+    def get_needed_params(self, minRange):
+        params = dict()
+        if 'wfe' in self.components:
+            value = minRange + 200
+            params['wfe_port'] = value
+        if 'arakoon' in self.components:
+            value = minRange + 100
+            params['arakoon_client_port'] = value
+            value = minRange + 101
+            params['arakoon_server_port'] = value
+        if 'appserver' in self.components:
+            value = minRange + 300
+            params['app_server_xmlrpc_port'] = value
+            value = minRange + 301
+            params['app_server_rest_port'] = value
+            value = minRange + 302
+            params['app_server_amf_port'] = value
+        return params
