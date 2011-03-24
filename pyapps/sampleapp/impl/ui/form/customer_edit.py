@@ -24,7 +24,7 @@ MSGBOX_CUSTOMER_CREATE_FAILED_TITLE = "Customer update failed"
 
 
 def callCloudAPI(api, name, email, login, password, address, vat):
-    result = api.customer.crm.update(name, email, login, password, address, vat)['result']    
+    result = api.crm.customer.update(name, email, login, password, address, vat)['result']    
     return result
 
 
@@ -35,12 +35,12 @@ def main(q, i, p, params, tags):
     # General information tab #
     ###########################
     customer = p.api.action.crm.customer.getObject(params['customerguid'], executionparams={'description': 'Retrieving customer information'})
-    tab.addText(name='name', text = TAB_GENERAL_NAME, value=customer.name, helpText = TAB_GENERAL_NAME_HELPTEXT)
-    tab.addText(name='email', text = TAB_GENERAL_EMAIL, value=customer.email, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
-    tab.addText(name='login', text = TAB_GENERAL_LOGIN, value=customer.login, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
-    tab.addPassword(name='password', text = TAB_GENERAL_PASSWORD, value=customer.password, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
-    tab.addText(name='address', text = TAB_GENERAL_ADDRESS, value=customer.address, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
-    tab.addText(name='vat', text = TAB_GENERAL_VAT, value=customer.vat, helpText = TAB_GENERAL_VAT_HELPTEXT)
+    tab_general.addText(name='name', text = TAB_GENERAL_NAME, value=customer.name, helpText = TAB_GENERAL_NAME_HELPTEXT)
+    tab_general.addText(name='email', text = TAB_GENERAL_EMAIL, value=customer.email, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
+    tab_general.addText(name='login', text = TAB_GENERAL_LOGIN, value=customer.login, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
+    tab_general.addPassword(name='password', text = TAB_GENERAL_PASSWORD, value=customer.password, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
+    tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, value=customer.address, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
+    tab_general.addText(name='vat', text = TAB_GENERAL_VAT, value=customer.vat, helpText = TAB_GENERAL_VAT_HELPTEXT)
 
     answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
 	                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
