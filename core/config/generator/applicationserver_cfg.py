@@ -37,9 +37,9 @@ class AppServerPyApps:
         appServerCfg.addParam('main', 'mail_incoming_server', '')
         appServerCfg.write()
         self.generate_services()
-        self.configure_reversieproxy(xmlrpc_port=xmlrpc_port, 
-                                     rest_port=rest_port,
-                                     amf_port=amf_port)
+        self.configure_reversieproxy(xmlrpc=xmlrpc_port, 
+                                     rest=rest_port,
+                                     amf=amf_port)
 
     def configure_reversieproxy(self, **kwargs):
         q.manage.nginx.startChanges()
@@ -51,7 +51,7 @@ class AppServerPyApps:
             if reverseproxyname not in vhost.reverseproxies:
                 if port:
                     url = "http://127.0.0.1:%s" % port
-                    location = "%s/appserver/%s" % (self.appName, name)
+                    location = "/%s/appserver/%s" % (self.appName, name)
                     vhost.addReverseProxy(reverseproxyname, url, location)
         q.manage.nginx.cmdb.save()
         q.manage.nginx.applyConfig()
