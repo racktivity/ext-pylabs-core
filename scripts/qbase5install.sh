@@ -1,6 +1,8 @@
 set -ex
 ARAKOON_DEB="arakoon_0.9.0-1_amd64.deb"
 ARAKOON_EGG="arakoon-0.9.0-1-py2.6.egg"
+THRIFT_BDIST_VERSION="0.5.0"
+THRIFT_BDIST="Thrift-${THRIFT_BDIST_VERSION}.linux-x86_64.tar.gz"
 # NOTE: Leave this var on one line, the hudson job greps it out to provide its local mirror
 APT_PACKAGES="python2.6 mc python-openssl python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx"
 
@@ -11,16 +13,23 @@ cd /tmp
 rm -f opt.tar.gz
 rm -f "${ARAKOON_DEB}"
 rm -f "${ARAKOON_EGG}"
+rm -f "${THRIFT_BDIST}"
 
 wget http://fileserver.incubaid.com/pylabs5/opt.tar.gz
 wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
 wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
+wget "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIFT_BDIST_VERSION}/${THRIFT_BDIST}" -O "${THRIFT_BDIST}"
 
 dpkg -i "${ARAKOON_DEB}"
 easy_install "${ARAKOON_EGG}"
 
 tar -xf opt.tar.gz
 mkdir -p /opt
+
+echo "Install thrift bdist: ${THRIFT_BDIST}"
+cd /
+tar -xvzf "/tmp/${THRIFT_BDIST}"
+cd -
 
 cp -rf opt/code/ /opt/
 cp -rf opt/qbase5/ /opt/
