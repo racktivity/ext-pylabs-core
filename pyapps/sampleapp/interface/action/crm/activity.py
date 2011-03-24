@@ -105,7 +105,7 @@ class activity:
         @rtype:                       dictionary
         
         @note:     {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
-        @note:      'result: [{ 'guid': '75416B07-9665-69D1-0874-BB6520DC1434',
+        @note:      'result': [{ 'guid': '75416B07-9665-69D1-0874-BB6520DC1434',
         @note:                  'customerguid': '378dd50c-5491-11e0-97a0-f04da266f098'
         @note:                  'name': 'My Activity'
         @note:                  'description': 'This is a sample activity'
@@ -116,7 +116,7 @@ class activity:
         @note:                  'endtime': '18:00'
         @note:                  'status': 'HELD'
         @note:                  'priority': 'MEDIUM'
-        @note:                  'location': 'IT-Valley Lochristi'
+        @note:                  'location': 'IT-Valley Lochristi'}]}
         
         @raise e:                      in case of an error, raise an exception
         """

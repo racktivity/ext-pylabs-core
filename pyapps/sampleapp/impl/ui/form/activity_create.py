@@ -19,22 +19,22 @@ MSGBOX_CONFIRMATION_TITLE = 'Confirm activity?'
 
 
 def callCloudAPI(api, name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime):
-    result = api.customer.crm.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
+    result = api.crm.activity.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
     return result
 
-def getCustomer(q, api):
+def getCustomers(q, api):
     customers = dict()
     result = api.action.crm.customer.list()['result']
     
     map(lambda x: customers.__setitem__(x['guid'], x['name']), result)
     return customers
 
-def getLead(q, api):
-    lead = dict()
+def getLeads(q, api):
+    leads = dict()
     result = api.action.crm.lead.list()['result']
     
     map(lambda x: lead.__setitem__(x['guid'], x['name']), result)
-    return lead
+    return leads
 
 def getType(q):
     type = q.enumerators.activitytype._pm_enumeration_items
@@ -53,6 +53,12 @@ def main(q, i, p, params, tags):
     
     cloudAPI = i.config.cloudApiConnection.find('main')
     cloudAPI.setCredentials(params['login'],params['password'])
+    
+    type = getType(q)
+    status= getStatus(q)
+    priority = getPriority(q)
+    customers = getCustomers(q, cloudAPI)
+    leads = getLeads(q, cloudAPI)
     
     form = q.gui.form.createForm()
     tab_general = form.addTab('general', TAB_GENERAL_TITLE)
@@ -86,7 +92,7 @@ def main(q, i, p, params, tags):
     
     tab_general.addDropDown(name = 'lead',
                             text = TAB_GENERAL_LEAD,
-                            values = lead,
+                            values = leads,
                             selectedValue = 0)
     
     tab_general.addDateTime(name = 'starttime',

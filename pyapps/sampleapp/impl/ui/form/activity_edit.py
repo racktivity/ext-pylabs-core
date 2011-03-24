@@ -19,7 +19,7 @@ MSGBOX_CONFIRMATION_TITLE = 'Confirm activity?'
 
 
 def callCloudAPI(api, name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime):
-    result = api.customer.crm.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
+    result = api.crm.activity.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
     return result
 
 def getCustomer(q, api):
