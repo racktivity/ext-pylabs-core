@@ -72,13 +72,13 @@ class NginxManage(ManagementApplication, CMDBLockMixin):
         if self.getStatus() == AppStatusType.RUNNING:
             q.console.echo('Nginx restarted successfully')
 
-    def applyConfig(self, restart=True):
+    def applyConfig(self):
         """
-        Generates the site configuration file and restarts the nginx server
+        Generates the site configuration file and reloads the nginx server
 
         This will clean out some config directories!
         """ 
         self.cmdb.pm_write()
 
-        if restart:
-            self.restart()
+        if self.getStatus() == AppStatusType.RUNNING:
+            q.cmdtools.nginx.reload()

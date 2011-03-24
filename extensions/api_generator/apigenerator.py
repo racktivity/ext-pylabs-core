@@ -537,6 +537,7 @@ class AppAPIGenerator(object):
         
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, '__init__.py'))
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, '__init__.py'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'client'))
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'client', '__init__.py'))
                           
         

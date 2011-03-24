@@ -24,7 +24,7 @@ MSGBOX_CUSTOMER_CREATE_FAILED_TITLE = "Customer creation failed"
 
 
 def callCloudAPI(api, name, email, login, password, address, vat):
-	result = api.customer.crm.create(name, email, login, password, address, vat)['result']    
+	result = api.crm.customer.create(name, email, login, password, address, vat)['result']    
 	return result
 
 
@@ -37,12 +37,12 @@ def main(q, i, p, params, tags):
     # General information tab #
     ###########################
 
-	tab.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
-	tab.addText(name='email', text = TAB_GENERAL_EMAIL, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
-	tab.addText(name='login', text = TAB_GENERAL_LOGIN, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
-	tab.addPassword(name='password', text = TAB_GENERAL_PASSWORD, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
-	tab.addText(name='address', text = TAB_GENERAL_ADDRESS, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
-	tab.addText(name='vat', text = TAB_GENERAL_VAT, helpText = TAB_GENERAL_VAT_HELPTEXT)
+	tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
+	tab_general.addText(name='email', text = TAB_GENERAL_EMAIL, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
+	tab_general.addText(name='login', text = TAB_GENERAL_LOGIN, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
+	tab_general.addPassword(name='password', text = TAB_GENERAL_PASSWORD, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
+	tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
+	tab_general.addText(name='vat', text = TAB_GENERAL_VAT, helpText = TAB_GENERAL_VAT_HELPTEXT)
 
 	answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                          title=MSGBOX_CREATE_CONFIRMATION_TITLE,

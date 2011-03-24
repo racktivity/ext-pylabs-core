@@ -138,8 +138,6 @@ class EjabberdManage(ManagementApplication, CMDBLockMixin):
                 q.cmdtools.ejabberd.register(user.name, user.server, user.password, self.cmdb.nodeName if not self.cmdb.ejabberdUser else "%s@%s"%(self.cmdb.ejabberdUser, self.cmdb.nodeName), self.cmdb.configFile, self.cmdb.ctlCfgFile, self.cmdb.logsDir, self.cmdb.spoolDir)
             users[key] = user
         for user in removeusers:
-            print 'remove', removeusers
-            print 'USER', user
             self.cmdb.users.pop(user)
 
         self.cmdb.dirtyProperties.clear()

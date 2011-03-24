@@ -10,6 +10,7 @@ def main(q, i, p, params, tags):
     customer.address = params.get('address')
     customer.vat = params.get('vat')
     p.api.model.crm.customer.save(customer)
+    params['result'] = True
     
 def match(q, i, p, params, tags):
 	return True

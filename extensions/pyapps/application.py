@@ -28,7 +28,7 @@ class AppManager(object):
         p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         gen.generateAll()
-        gen.configure()
+        gen.setup()
         
     def start(self, appname):
         gen = PyAppsConfigGen(appname)

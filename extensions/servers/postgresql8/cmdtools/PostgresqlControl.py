@@ -34,8 +34,7 @@ class PostgresqlControl(CommandWrapper):
             result = q.system.windows.startService(self._serviceName)
 
         elif q.platform.isLinux():
-            commandString = "%s start -D '%s' -w -l '%s' -o -i" % (self._daemon, self._configFileDir, self._pgLogFile)
-            q.system.process.runDaemon(commandline = commandString, user = username)
+            extitCode, output = q.system.process.execute("/etc/init.d/postgresql start", dieOnNonZeroExitCode=False)
 
         elif q.platform.isSolaris():
             commandString = "%s %s start -D '%s' -s -l '%s' -o -i" % (self._SKEL, self._daemon, self._configFileDir, self._pgLogFile)
@@ -71,8 +70,7 @@ class PostgresqlControl(CommandWrapper):
              result = q.system.windows.stopService(self._serviceName)
 
         elif q.platform.isLinux():
-            commandString = "%s stop -D '%s' -s -m fast" % (self._daemon, self._configFileDir)
-            exitCode, output = q.system.unix.executeAsUser(command = commandString, username = username, dieOnNonZeroExitCode = False)
+            extitCode, output = q.system.process.execute("/etc/init.d/postgresql stop", dieOnNonZeroExitCode=False)
 
         elif q.platform.isSolaris():
             commandString = "%s %s stop -D '%s' -s -m fast" % (self._SKEL, self._daemon, self._configFileDir)
@@ -111,8 +109,7 @@ class PostgresqlControl(CommandWrapper):
              raise NotImplementedError("Postgres reload is not implemented on Windows")
 
         elif q.platform.isLinux():
-            commandString = "%s reload -D '%s' -s" % (self._daemon, self._configFileDir)
-            exitCode, output = q.system.unix.executeAsUser(command = commandString, username = username, dieOnNonZeroExitCode = False)
+            extitCode, output = q.system.process.execute("/etc/init.d/postgresql reload", dieOnNonZeroExitCode=False)
 
         elif q.platform.isSolaris():
             commandString = "%s %s reload -D '%s' -s" % (self._SKEL, self._daemon, self._configFileDir)
@@ -132,7 +129,7 @@ class PostgresqlControl(CommandWrapper):
         if q.system.process.checkListenPort(5432): # 0 if running, 1 if not running
             return AppStatusType.HALTED
         try:
-            dbCon = DBConnection('127.0.0.1', 'postgres', username)
+            dbCon = DBConnection(None, 'postgres', username)
             result = dbCon.sqlexecute("select datname from pg_database;")
         except Exception, e:
             q.logger.log("The following exception occurred while checking the postgres status.", 5)

@@ -21,5 +21,5 @@ class PostgresqlQuery(CommandWrapper):
                                                                                    'query'  : sqlquery,
                                                                                    'db'     : database,
                                                                                    }
-        exitCode, output = q.system.process.execute(cmd, dieOnNonZeroExitCode=False)
+        exitCode, output, _ = q.system.process.run(cmd, showOutput=False, captureOutput=True, maxSeconds=0, stopOnError=False, user=username)
         return output

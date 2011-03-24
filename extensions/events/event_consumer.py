@@ -1,4 +1,3 @@
-from pylabs import q
 from pylabs.InitBase import q
 import rabbitmqclient as rmq
 import events
@@ -23,16 +22,13 @@ class EventConsumer :
             params = dict() 
             params['eventKey'] = event.routing_key
             params['eventBody'] = event.body
-            print params
             self._taskletEngine.execute( params )
 
-        print self._queueName
         self._connection.consume( self._queueName, handle_one_event )
         
           
 if __name__ == '__main__':
     import sys
-    
     cmdArgs = sys.argv
     if len( cmdArgs ) != 4:
         print cmdArgs

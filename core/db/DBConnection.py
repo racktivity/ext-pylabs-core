@@ -42,10 +42,16 @@ class DBConnection(object):
     """
 
     def __init__(self, ip, dbname, login, passwd=None):
-        if(passwd == None):
-            self._connection = pg.connect(dbname='%s'%(dbname), host='%s'%(ip), user='%s'%(login))
-        else:
-            self._connection = pg.connect(dbname='%s'%(dbname), host='%s'%(ip), user='%s'%(login), passwd='%s'%(passwd))
+        kwargs = dict()
+        if ip:
+            kwargs['host'] = ip
+        if dbname:
+            kwargs['dbname'] = dbname
+        if login:
+            kwargs['user'] = login
+        if passwd:
+            kwargs['passwd'] = passwd
+        self._connection = pg.connect(**kwargs)
         self.__db = pg.DB(self._connection)
         self.defaultowner="postgres"
         self.metadatapopulated=False

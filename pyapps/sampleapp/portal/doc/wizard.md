@@ -58,7 +58,7 @@ Example:
     form = q.gui.form.createForm()
 
 
-###askForm()
+### askForm()
 
 This method presents the constructed form to the end-user and wait until this user completes the wizard.
 
