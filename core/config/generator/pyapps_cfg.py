@@ -53,18 +53,14 @@ class PyAppsConfigGen:
         if 'appserver' in components:
             q.manage.applicationserver.start(self.appName)
         if 'wfe' in components:
-            pass
-        if 'wfe' in components:
-            pass
+            q.manage.workflowengine.start(self.appName)
     
     def stop(self):
         components = self.list_needed_components()
         if 'appserver' in components:
             q.manage.applicationserver.stop(self.appName)
         if 'wfe' in components:
-            pass
-        if 'wfe' in components:
-            pass
+            q.manage.workflowengine.stop(self.appName)
     
     def generateAll(self):
         self.pyapps_configuration()
