@@ -59,7 +59,7 @@ def main(q, i, p, params, tags):
     tab_general.addChoice(name='customer', text = TAB_GENERAL_CUSTOMER, values = getCustomers(p.api), selectValue=lead.customerguid, helpText = TAB_GENERAL_CUSTOMER_HELPTEXT, optional = True)
     tab_general.addChoice(name='source', text = TAB_GENERAL_SOURCE, values = getSources(p.api), value=lead.source, helpText = TAB_GENERAL_SOURCE_HELPTEXT, optional = True)
     tab_general.addChoice(name='type', text = TAB_GENERAL_TYPE, values = getTypes(p.api), value=lead.type, helpText = TAB_GENERAL_TYPE_HELPTEXT, optional = True)
-    tab_general.addInteger(name='amount', text = TAB_GENERAL_AMOUNT, minValue=0, value=0, value=lead.amount, helpText=TAB_GENERAL_AMOUNT_HELPTEXT)
+    tab_general.addInteger(name='amount', text = TAB_GENERAL_AMOUNT, minValue=0, value=lead.amount, helpText=TAB_GENERAL_AMOUNT_HELPTEXT)
     tab_general.addInteger(name='probability', text = TAB_GENERAL_PROBABILITY, minValue=0, maxValue=100, value=lead.probability, helpText=TAB_GENERAL_PROBABILITY_HELPTEXT)    
 
     answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
