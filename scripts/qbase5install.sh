@@ -4,7 +4,7 @@ ARAKOON_EGG="arakoon-0.9.0-1-py2.6.egg"
 THRIFT_BDIST_VERSION="0.5.0"
 THRIFT_BDIST="Thrift-${THRIFT_BDIST_VERSION}.linux-x86_64.tar.gz"
 # NOTE: Leave this var on one line, the hudson job greps it out to provide its local mirror
-APT_PACKAGES="python2.6 mc python-openssl python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx"
+APT_PACKAGES="python2.6 mc python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx"
 
 apt-get install ${APT_PACKAGES} -y
 
