@@ -58,4 +58,13 @@ hg clone --branch 0.5 https://bitbucket.org/despiegk/osis osis
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 
+echo "Symlink wizard service"
+ln -s /opt/code/incubaid/pylabs-core/lib/wizardservice.py /opt/qbase5/lib/python/site-packages/wizardservice.py
+
+echo "Disable system postgres"
+/etc/init.d/postgresql stop
+update-rc.d -f postgresql remove
+
+
+echo "Setup done"
 cd /opt/qbase5/apps/pylabsExampleApp
