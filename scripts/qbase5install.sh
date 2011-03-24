@@ -12,7 +12,7 @@ rm -f opt.tar.gz
 rm -f "${ARAKOON_DEB}"
 rm -f "${ARAKOON_EGG}"
 
-wget http://files.incubaid.com/pub/opt.tar.gz
+wget http://fileserver.incubaid.com/pylabs5/opt.tar.gz
 wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
 wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
 
