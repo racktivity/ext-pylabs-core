@@ -79,6 +79,10 @@ ln -s "`pwd`/workflowengine/workflowengine/manage/" "/opt/code/incubaid/pylabs-c
 mkdir -p /opt/qbase5/apps/workflowengine/
 ln -s "`pwd`/workflowengine/workflowengine/bin/" "/opt/qbase5/apps/workflowengine/bin"
 
+hg clone https://bitbucket.org/despiegk/lfw lfw
+mkdir -p /opt/qbase5/www
+ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
+
 echo "Symlink wizard service"
 ln -s /opt/code/incubaid/pylabs-core/lib/wizardservice.py /opt/qbase5/lib/python/site-packages/wizardservice.py
 
