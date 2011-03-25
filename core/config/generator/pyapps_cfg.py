@@ -194,3 +194,34 @@ class PyAppsConfigGen:
 
         nginx.cmdb.save()
         nginx.applyConfig()
+
+        config_template = '''
+LFW_CONFIG = {
+    'uris': {
+        'listSpaces': '/%(appname)s/appserver/rest/lfw/spaces',
+        'completion': '/%(appname)s/appserver/rest/lfw/tags',
+        'search': '/%(appname)s/appserver/rest/lfw/search',
+        'tags': '/%(appname)s/appserver/rest/lfw/tags',
+        'title': '/%(appname)s/appserver/rest/lfw/pages',
+        'pages': '/%(appname)s/appserver/rest/lfw/page',
+        'macros': '/%(appname)s/js/macros/'
+    }
+};
+'''
+
+        config = config_template % {
+            'appname': self.appName,
+        }
+
+        config_dir = os.path.join(root, 'js')
+        config_file = os.path.join(config_dir, 'config.js')
+
+        if not os.path.exists(config_file):
+            if not os.path.isdir(config_dir):
+                os.makedirs(config_dir, 0755)
+
+            fd = open(config_file, 'w')
+            try:
+                fd.write(config)
+            finally:
+                fd.close()
