@@ -7,8 +7,9 @@ CONCURRENCE_BDIST_VERSION="0.3.1"
 CONCURRENCE_BDIST="concurrence-${CONCURRENCE_BDIST_VERSION}.linux-x86_64.tar.gz"
 POSIX_IPC_BDIST_VERSION="0.9.0"
 POSIX_IPC_BDIST="posix_ipc-${POSIX_IPC_BDIST_VERSION}.linux-x86_64.tar.gz"
+WGET="wget -nv "
 # NOTE: Leave this var on one line, the hudson job greps it out to provide its local mirror
-APT_PACKAGES="python2.6 mc python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx python-yaml python-pyrex python-greenlet"
+APT_PACKAGES="python2.6 mc python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx python-yaml python-pyrex python-greenlet libevent-1.4-2"
 
 apt-get install ${APT_PACKAGES} -y
 
@@ -19,12 +20,12 @@ rm -f "${ARAKOON_DEB}"
 rm -f "${ARAKOON_EGG}"
 rm -f "${THRIFT_BDIST}"
 
-wget -q http://fileserver.incubaid.com/pylabs5/opt.tar.gz
-wget -q "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
-wget -q "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
-wget -q "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIFT_BDIST_VERSION}/${THRIFT_BDIST}" -O "${THRIFT_BDIST}"
-wget -q "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${CONCURRENCE_BDIST_VERSION}/${CONCURRENCE_BDIST}" -O "${CONCURRENCE_BDIST}"
-wget -q "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/posix_ipc/${POSIX_IPC_BDIST_VERSION}/${POSIX_IPC_BDIST}" -O "${POSIX_IPC_BDIST}"
+${WGET} http://fileserver.incubaid.com/pylabs5/opt.tar.gz
+${WGET} "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
+${WGET} "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
+${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIFT_BDIST_VERSION}/${THRIFT_BDIST}" -O "${THRIFT_BDIST}"
+${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${CONCURRENCE_BDIST_VERSION}/${CONCURRENCE_BDIST}" -O "${CONCURRENCE_BDIST}"
+${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/posix_ipc/${POSIX_IPC_BDIST_VERSION}/${POSIX_IPC_BDIST}" -O "${POSIX_IPC_BDIST}"
 
 dpkg -i "${ARAKOON_DEB}"
 easy_install "${ARAKOON_EGG}"
