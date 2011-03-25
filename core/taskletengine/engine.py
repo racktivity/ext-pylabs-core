@@ -187,7 +187,7 @@ class TaskletEngine(object):
                 self.addFromPath(path)
 
     #pylint: disable-msg=R0912,R0913
-    def find(self, author="*", name="*", tags=None, priority=-1):
+    def find(self, author="*", name="*", tags=None, priority=-1,  path="*"):
         '''Find all matching tasklets
 
         Tasklets can be filtered on author, name, tags and priority. If author
@@ -207,6 +207,8 @@ class TaskletEngine(object):
         @type tags: iterable
         @param priority: Priority filter
         @type priority: number
+        @param path: Path filter
+        @type path: string
 
         @returns: All matching tasklets, sorted on priority
         @rtype: tuple<Tasklet>
@@ -248,6 +250,12 @@ class TaskletEngine(object):
             for tasklet in tasklets:
                 if priority < 0 or tasklet.priority == priority:
                     yield tasklet
+        
+        def pathFilter(tasklets):
+            '''Filter tasklets based on path'''
+            for tasklet in tasklets:
+                if path == '*' or tasklet.path.startswith(path):
+                    yield tasklet
 
         #Master filter
         def filterTasklets(tasklets):
@@ -256,7 +264,9 @@ class TaskletEngine(object):
             name_matches = nameFilter(author_matches)
             tag_matches = tagFilter(name_matches)
             priority_matches = priorityFilter(tag_matches)
-            for tasklet in priority_matches:
+            path_matches = pathFilter(priority_matches)
+            
+            for tasklet in path_matches:
                 yield tasklet
 
         #Apply all filters on all known tasklets
@@ -267,7 +277,8 @@ class TaskletEngine(object):
         return tuple(tasklets)
 
     #pylint: disable-msg=R0913
-    def findFirst(self, author="*" , name="*", tags=None, priority=-1):
+    def findFirst(self, author="*" , name="*", tags=None, priority=-1, 
+                  path='*'):
         '''Find the first matching tasklet (highest priority)
 
         @see: TaskletsEngine.find
@@ -275,7 +286,7 @@ class TaskletEngine(object):
         @return: Matching tasklet, or None
         @rtype: Tasklet
         '''
-        matches = self.find(author, name, tags, priority)
+        matches = self.find(author, name, tags, priority, path=path)
 
         if not matches:
             return None
@@ -290,7 +301,8 @@ class TaskletEngine(object):
         return matches[0]
 
     #pylint: disable-msg=R0913
-    def execute(self, params, author="*", name="*", tags=None, priority=-1, wrapper=None):
+    def execute(self, params, author="*", name="*", tags=None, priority=-1,
+                path='*', wrapper=None):
         '''Execute all matching tasklets
 
         @param params: Params to pass to the tasklet function,is a dict
@@ -303,7 +315,7 @@ class TaskletEngine(object):
         '''
         realized = set()
 
-        matches = self.find(author, name, tags, priority)
+        matches = self.find(author, name, tags, priority, path=path)
         pylabs.q.logger.log('Executing previously found tasklets', 6)
 
         for tasklet in matches:
@@ -325,7 +337,7 @@ class TaskletEngine(object):
 
     #pylint: disable-msg=R0913
     def executeFirst(self, params, author="*", name="*", tags=None,
-            priority=-1, wrapper=None):
+            priority=-1, path='*', wrapper=None):
         '''Execute the first matching tasklet
 
         @return: Tasklet function return value
@@ -338,7 +350,7 @@ class TaskletEngine(object):
         '''
         wrapper = wrapper or (lambda func: func)
         assert callable(wrapper)
-        tasklet = self.findFirst(author, name, tags, priority)
+        tasklet = self.findFirst(author, name, tags, priority, path=path)
         if tasklet:
             return tasklet.execute(params, tags, wrapper)
         else:

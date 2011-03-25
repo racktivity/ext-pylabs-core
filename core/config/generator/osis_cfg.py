@@ -6,13 +6,13 @@ class OsisPyApps:
 
     def __init__(self, appName):
         self.appName = appName
-        self.components = [('passwd', 'pass123'), ('login', 'postgres'),
+        self.components = [('passwd', ''), ('login', 'postgres'),
                         ('database', self.appName),('ip', '127.0.0.1')]
 
     def generate_cfg(self):
         iniFile = q.system.fs.joinPaths(q.dirs.cfgDir, 'osisdb.cfg')
         if os.path.isfile(iniFile):
-            ini = q.tools.inifile.get(iniFile)
+            ini = q.tools.inifile.open(iniFile)
         else:
             ini = q.tools.inifile.new(iniFile)
 
