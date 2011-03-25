@@ -2,6 +2,8 @@ from pylabs import q
 from pylabs.baseclasses.CommandWrapper import CommandWrapper
 from pylabs.enumerators import AppStatusType
 import os
+import time
+
 EJABBERDCTL = q.system.fs.joinPaths(os.sep,'usr','sbin', 'ejabberdctl')
 EJABBERD = q.system.fs.joinPaths(os.sep,'usr','sbin', 'ejabberd')
 class EjabberdCtl(CommandWrapper):
@@ -15,7 +17,6 @@ class EjabberdCtl(CommandWrapper):
         @param spoolDir: Database spool dir
         """
         errorMessage = 'Failed to start EJabberd'
-        #print nodeName
         if self.getStatus(nodeName, cfgFile, ctlCfgFile, logsDir, spoolDir) is AppStatusType.RUNNING:
             q.logger.log("Start aborted! EJabberd already running", 2)
             return 1, "EJabberd already running"
@@ -31,7 +32,6 @@ class EjabberdCtl(CommandWrapper):
                 return 1, stdout
 
             times = 10
-            import time
             while times > 0 and q.enumerators.AppStatusType.RUNNING != q.manage.ejabberd.getStatus():
                 time.sleep(1)
                 times = times - 1
@@ -65,28 +65,22 @@ class EjabberdCtl(CommandWrapper):
             if status != 0:
                 q.logger.log("Error executing ['%s'] - output %s" % (cmd, stdout), 3)
                 return 1, stdout
-        except:
-            q.logger.log("Error executing ['%s']" % (stop), 3)
+        except Exception, ex:
+            q.logger.log("Error executing ['%s']: %s" % (cmd, ex), 3)
             return 1, errorMessage
 
         timeout = 60
         while timeout > 0 and self.getStatus() is AppStatusType.RUNNING:
-            q.logger.log("waiting on EJabberd to stop running...", 5)
+            q.logger.log("Waiting for EJabberd to stop...", 5)
             time.sleep(1)
             timeout -= 1
-            if result and result != 0:
-                q.logger.log("Error executing ['%s'] - output %s" % (cmd, output), 3)
-                return 1, output
 
         if timeout > 0:
             q.logger.log("EJabberd stopped.", 2)
             return 0, "EJabberd stopped"
         else:
-            q.logger.log("Timed out [%s] seconds, while stopping EJabberd"%timeout, 3)
+            q.logger.log("Timed out [%s] seconds, while stopping EJabberd" % timeout, 3)
             return 1, errorMessage
-
-        if q.system.process.checkProcess('epmd'):
-            q.system.process.run('pkill epmd')
 
     def getStatus(self, nodeName="", cfgFile="", ctlCfgFile="", logsDir="", spoolDir=""):
         """
