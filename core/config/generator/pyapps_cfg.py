@@ -77,7 +77,7 @@ class PyAppsConfigGen:
         if 'wfe' in self.components:
             q.manage.workflowengine.start(self.appName)
         if 'postgresql' in self.components:
-            q.manage.postgresql.start()
+            q.manage.postgresql8.start()
 
     
     def stop(self):
