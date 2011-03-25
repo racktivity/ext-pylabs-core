@@ -1,3 +1,6 @@
+import os
+import os.path
+
 from pylabs import q
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
@@ -65,6 +68,9 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.cmdb.addUser('agentcontroller', self.appName, 'agentcontroller')
                 q.manage.ejabberd.save()
                 q.manage.ejabberd.applyConfig()
+
+        self._configurePortal()
+
         taskletpath = join(q.dirs.pyAppsDir, self.appName, 'setup')
         if q.system.fs.exists(taskletpath):
             te = q.getTaskletEngine(taskletpath)
@@ -154,3 +160,37 @@ class PyAppsConfigGen:
             value = minRange + 302
             params['app_server_amf_port'] = value
         return params
+
+    def _configurePortal(self):
+        nginx = q.manage.nginx
+
+        nginx.startChanges()
+
+        vhost = nginx.cmdb.virtualHosts.get('80')
+        if not vhost:
+            vhost = nginx.cmdb.addVirtualHost('80')
+
+        if '@lfw' not in vhost.sites:
+            lfw = vhost.addSite('@lfw', '@lfw')
+            lfw.addOption('root', '/opt/qbase5/www/lfw/')
+
+        root = os.path.join(q.dirs.pyAppsDir, self.appName, 'portal', 'static')
+        if not os.path.isdir(root):
+            os.makedirs(root, 0755)
+
+        if not self.appName in vhost.sites:
+            site = vhost.addSite(self.appName, '/%s' % self.appName)
+            site.addOption('root', root)
+            site.addOption('try_files', '$uri $uri/ @lfw')
+            # Since the nginx manage 'extension' doesn't like users to set the
+            # same option multiple times (which is perfectly allowed in nginx
+            # configuration files for some options), we use this 1337 'space'
+            # trick
+            site.addOption('rewrite', '^/%s$ /%s/ permanent' % \
+                (self.appName, self.appName))
+            site.addOption('rewrite ', '^/%s/$ /index.html break' % \
+                self.appName)
+            site.addOption('rewrite  ', '^/%s/(.*) /$1 break' % self.appName)
+
+        nginx.cmdb.save()
+        nginx.applyConfig()
