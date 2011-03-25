@@ -106,9 +106,9 @@ class VirtualHost(CMDBSubObject):
         if name in self.sites:
             raise ValueError("Site with name '%s' already exists" % (name))
 
-        locations = [(site.location, site.name) for site in self.sites]
-        if location in locations:
-            raise ValueError('Location "%s" already exists in site "%s"' %(location, locations[location]))
+        #locations = [(site.location, site.name) for site in self.sites]
+        #if location in locations:
+        #    raise ValueError('Location "%s" already exists in site "%s"' %(location, locations[location]))
 
         site = NginxSite(name, location)
         self.sites[name] = site
