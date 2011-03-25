@@ -8,16 +8,12 @@ class OsisPyApps:
                         ('database', self.appName),('ip', '127.0.0.1')]
 
     def generate_cfg(self):
-        cfgPath = '/opt/qbase5/pyapps/' + self.appName + '/cfg'
-        if not q.system.fs.exists(cfgPath):
-            q.system.fs.createDir(cfgPath)
-        osisCfgPath =  '/opt/qbase5/pyapps/' + self.appName + '/cfg/osisdb'
-        osisCfg = q.config.getInifile(osisCfgPath)
-        exists = osisCfg.checkSection(self.appName)
+        iniFile = q.system.fs.joinPaths(q.dirs.cfgDir, 'osisdb.cfg')
+        ini = q.tools.inifile.new(iniFile)
+
+        exists = ini.checkSection(self.appName)
         if not exists:
-            osisCfg.addSection(self.appName)
+            ini.addSection(self.appName)
             for key, value in self.components:
-                osisCfg.addParam(self.appName, key, value)
-        osisCfg.write()
-
-
+                ini.addParam(self.appName, key, value)
+        ini.write()
