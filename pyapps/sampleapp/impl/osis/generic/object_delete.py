@@ -3,6 +3,6 @@ __priority__= 1 # Lowest priority
 
 def main(q, i, params, tags):
     key  = 'osis.%s.%s.%s'  % (params['domain'], params['rootobjecttype'], params['rootobjectguid'])
-    arakoonClient = q.clients.arakoon.getClient('sample_app')
+    arakoonClient = q.clients.arakoon.getClient(p.api.appname)
     if arakoonClient.exists(key): 
         arakoonClient.delete(key)
