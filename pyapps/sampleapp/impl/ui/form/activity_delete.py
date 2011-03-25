@@ -28,10 +28,7 @@ def getActivities(q, api):
 
 def main(q, i, p, params, tags):
     
-    cloudAPI = i.config.cloudApiConnection.find('main')
-    cloudAPI.setCredentials(params['login'],params['password'])
-    
-    activities = getActivities(q, cloudAPI)
+    activities = getActivities(q, p.api)
     
     form = q.gui.form.createForm()
     tab_general = form.addTab('general', TAB_GENERAL_TITLE)
@@ -50,7 +47,7 @@ def main(q, i, p, params, tags):
         return
     
     form.loadForm(q.gui.dialog.askForm(form))
-    selection = form.tabs['general'].elements['select'].value
+    selection = form.tabs['general'].elements['select'].value #value is list of all selected items
     
     if not selection:
         q.gui.dialog.showMessageBox(message = NO_ACTIVITIES_SELECTED,

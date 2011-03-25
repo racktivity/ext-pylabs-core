@@ -51,18 +51,21 @@ def getPriority(q):
 
 def main(q, i, p, params, tags):
     
-    cloudAPI = i.config.cloudApiConnection.find('main')
-    cloudAPI.setCredentials(params['login'],params['password'])
-    
     type = getType(q)
     status= getStatus(q)
     priority = getPriority(q)
-    customers = getCustomers(q, cloudAPI)
-    leads = getLeads(q, cloudAPI)
+    customers = getCustomers(q, p.api)
+    leads = getLeads(q, p.api)
     
     form = q.gui.form.createForm()
+    
+    #alternative way
+    #form.addTab('general',TAB_GENERAL_TITLE)
+    #form.tabs['general'].addText blablabla
+    
     tab_general = form.addTab('general', TAB_GENERAL_TITLE)
     
+    #define fields of tab
     tab_general.addText(name = 'name',
                         text = TAB_GENERAL_NAME)
     
@@ -101,6 +104,8 @@ def main(q, i, p, params, tags):
     tab_general.addDateTime(name = 'endtime',
                         question = TAB_GENERAL_ENDTIME)
     
+    
+    #below shows up when clicked button in tab after entering all values
     answer = q.gui.dialog.showMessageBox(message = MSGBOX_CONFIRMATION,
                                          title = MSGBOX_CONFIRMATION_TITLE,
                                          msgboxButtons = 'YesNo',
