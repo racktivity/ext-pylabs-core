@@ -1,7 +1,35 @@
 from pylabs import q
 
-class $className:
+class ${className}(object):
+    
+    def __init__(self, proxy=None):
+        self._proxy = proxy or ${className}ActionManagerProxy()
+                
 #for $method in $methods:
+    def $method.name (self, $method.args):
+        """
+        $method.docs
+        """        
+#set $line = ','.join($method.argNames)
+        return self._proxy('$domain', '$className', '$method.name', $line)
+        
+#end for
+
+
+
+
+class ${className}ActionManagerProxy(object):
+#for $method in $methods:
+    def __call__(self, domainname, classname, methodname, *args):        
+        try:
+            m = getattr(self,  methodname)
+            m(*args)
+        except AttributeError, ae:
+            raise 
+        except Exception, e:
+            raise
+         
+    
     def $method.name (self, $method.args):
         """
         $method.docs
@@ -30,5 +58,7 @@ class $className:
 #else
         return q.workflowengine.actionmanager.startRootobjectAction('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 #end if
+
+    
 
 #end for

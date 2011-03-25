@@ -67,7 +67,7 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.applyConfig()
         taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'setup')
         if q.system.fs.exists(taskletpath):
-            te = q.getTaskletEngine(taskletpath)
+            te = q.taskletengine.get(taskletpath)
             te.execute({})
 
     def start(self):
@@ -77,7 +77,7 @@ class PyAppsConfigGen:
         if 'wfe' in self.components:
             q.manage.workflowengine.start(self.appName)
         if 'postgresql' in self.components:
-            q.manage.postgresql.start()
+            q.manage.postgresql8.start()
 
     
     def stop(self):

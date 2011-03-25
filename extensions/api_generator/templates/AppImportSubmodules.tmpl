@@ -3,7 +3,7 @@ from $iimport.modulename import $iimport.classname
 #end for
 
 class ${classname}(object):
-    def __init__(self):
+    def __init__(self, proxy=None):
 #for $iimport in $imports:
-        self.$iimport.classname = ${iimport.classname}()
+        self.$iimport.classname = ${iimport.classname}(proxy=proxy)
 #end for 

@@ -41,6 +41,7 @@ class AppManager(object):
 class ApplicationAPI(object):
     
     def __init__(self, appname, host=None, context=None):
+        print 'Context is %s' % context
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._app_path = app_path
         
@@ -62,8 +63,13 @@ class ApplicationAPI(object):
         return actors()
 
     def _get_actions(self, appname, context):
+        
+        proxy = None
+        if context == q.enumerators.AppContext.CLIENT:
+            proxy = XmlRpcActionProxy('http://127.0.0.1/%s/appserver/xmlrpc/' % appname)           
+        
         from client.action import actions
-        return actions()
+        return actions(proxy=proxy)
     
     def _get_model(self, appname, context):
         
@@ -81,10 +87,24 @@ class ApplicationAPI(object):
         return connection
 
         
-        
-        
+import xmlrpclib
+class XmlRpcActionProxy(object):
     
+    def __init__(self, url):
+        self.client = xmlrpclib.ServerProxy(url) 
+    
+    def __call__(self, domainname, classname, methodname, *args):
+
+        try:
+            m = getattr(self.client, domainname)
+            m = getattr(m, classname)
+            m = getattr(m, methodname)
+            
+            return m(*args)
+        except AttributeError, ae:
+            raise 
+        except Exception, e:
+            raise
         
-        
-        
+
         
