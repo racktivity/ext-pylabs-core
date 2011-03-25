@@ -58,6 +58,10 @@ hg clone --branch 0.5 https://bitbucket.org/despiegk/osis osis
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 
+hg clone https://bitbucket.org/despiegk/lfw lfw
+mkdir -p /opt/qbase5/www
+ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
+
 echo "Symlink wizard service"
 ln -s /opt/code/incubaid/pylabs-core/lib/wizardservice.py /opt/qbase5/lib/python/site-packages/wizardservice.py
 
