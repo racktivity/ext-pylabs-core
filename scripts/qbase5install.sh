@@ -71,7 +71,7 @@ ln -s /opt/code/incubaid/pylabs-core/apps/exampleapp /opt/qbase5/apps/pylabsExam
 cd /opt/code
 hg clone --branch pylabs5 https://bitbucket.org/despiegk/pymodel pymodel
 hg clone --branch 0.5 https://bitbucket.org/despiegk/osis osis
-hg clone --branch pylabs5 https://bitbucket.org/despiegk/pylabs_workflowengine workflowengine
+hg clone --branch pylabs5 https://ci_incubaid:diabucni@bitbucket.org/despiegk/pylabs_workflowengine workflowengine
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 ln -s "`pwd`/workflowengine/workflowengine/lib/" "/opt/qbase5/lib/python/site-packages/workflowengine"
