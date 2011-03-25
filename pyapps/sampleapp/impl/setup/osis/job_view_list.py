@@ -11,7 +11,7 @@ def main(q, i, params, tags):
     view_name = '%s_view_%s_list' % (domain, rootobject)
     connection = OsisDB().getConnection(appname)
     if not connection.viewExists(domain, rootobject, view_name):
-        view = connection.viewCreate(rootobject, view_name)
+        view = connection.viewCreate(domain, rootobject, view_name)
         view.setCol('parentjobguid', q.enumerators.OsisType.UUID, True)
         view.setCol('joborder', q.enumerators.OsisType.INTEGER,True)
         view.setCol('name', q.enumerators.OsisType.STRING, True)
