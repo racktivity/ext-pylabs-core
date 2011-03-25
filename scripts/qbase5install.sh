@@ -24,7 +24,7 @@ wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-
 wget "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
 wget "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIFT_BDIST_VERSION}/${THRIFT_BDIST}" -O "${THRIFT_BDIST}"
 wget "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${CONCURRENCE_BDIST_VERSION}/${CONCURRENCE_BDIST}" -O "${CONCURRENCE_BDIST}"
-wget "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${POSIX_IPC_BDIST_VERSION}/${POSIX_IPC_BDIST}" -O "${POSIX_IPC_BDIST}"
+wget "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/posix_ipc/${POSIX_IPC_BDIST_VERSION}/${POSIX_IPC_BDIST}" -O "${POSIX_IPC_BDIST}"
 
 dpkg -i "${ARAKOON_DEB}"
 easy_install "${ARAKOON_EGG}"
