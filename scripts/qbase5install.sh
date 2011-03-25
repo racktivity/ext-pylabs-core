@@ -1,4 +1,25 @@
 set -ex
+
+while [ $# -gt 0 ]
+do
+  case $1
+  in
+    --hg-prefix)
+      HG_PREFIX="$2"
+      shift 2
+    ;;
+
+    *)
+      echo "The arguments to use are"
+      echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket"
+    ;;
+  esac
+done
+
+if [ "${HG_PREFIX}" == "" ]; then
+	HG_PREFIX="https://bitbucket.org"
+fi
+
 ARAKOON_DEB="arakoon_0.9.0-1_amd64.deb"
 ARAKOON_EGG="arakoon-0.9.0-1-py2.6.egg"
 THRIFT_BDIST_VERSION="0.5.0"
@@ -70,9 +91,9 @@ cp /opt/code/incubaid/pylabs-core/utils/system/sitecustomize.py /etc/python2.6/s
 ln -s /opt/code/incubaid/pylabs-core/apps/exampleapp /opt/qbase5/apps/pylabsExampleApp
 
 cd /opt/code
-hg clone --branch pylabs5 https://bitbucket.org/despiegk/pymodel pymodel
-hg clone --branch 0.5 https://bitbucket.org/despiegk/osis osis
-hg clone --branch pylabs5 https://ci_incubaid:diabucni@bitbucket.org/despiegk/pylabs_workflowengine workflowengine
+hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pymodel" pymodel
+hg clone --branch 0.5 "${HG_PREFIX}/despiegk/osis" osis
+hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_workflowengine" workflowengine
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 ln -s "`pwd`/workflowengine/workflowengine/lib/" "/opt/qbase5/lib/python/site-packages/workflowengine"
@@ -80,7 +101,7 @@ ln -s "`pwd`/workflowengine/workflowengine/manage/" "/opt/code/incubaid/pylabs-c
 mkdir -p /opt/qbase5/apps/workflowengine/
 ln -s "`pwd`/workflowengine/workflowengine/bin/" "/opt/qbase5/apps/workflowengine/bin"
 
-hg clone https://bitbucket.org/despiegk/lfw lfw
+hg clone "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 
