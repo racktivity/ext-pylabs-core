@@ -65,7 +65,7 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.cmdb.addUser('agentcontroller', self.appName, 'agentcontroller')
                 q.manage.ejabberd.save()
                 q.manage.ejabberd.applyConfig()
-        taskletpath = join(q.dirs.pyAppsDir, self.appName, 'setup')
+        taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'setup')
         if q.system.fs.exists(taskletpath):
             te = q.getTaskletEngine(taskletpath)
             te.execute({})
