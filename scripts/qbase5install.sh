@@ -50,7 +50,7 @@ ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIF
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${CONCURRENCE_BDIST_VERSION}/${CONCURRENCE_BDIST}" -O "${CONCURRENCE_BDIST}"
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/posix_ipc/${POSIX_IPC_BDIST_VERSION}/${POSIX_IPC_BDIST}" -O "${POSIX_IPC_BDIST}"
 
-dpkg -i "${ARAKOON_DEB}"
+#dpkg -i "${ARAKOON_DEB}"
 easy_install "${ARAKOON_EGG}"
 
 tar -xf opt.tar.gz
