@@ -85,6 +85,9 @@ class PyAppsConfigGen:
             q.manage.workflowengine.start(self.appName)
         if 'postgresql' in self.components:
             q.manage.postgresql8.start()
+        if 'arakoon' in self.components:
+            cluster = q.manage.arakoon.getCluster(self.appName)
+            cluster.start()
 
     
     def stop(self):
@@ -92,12 +95,15 @@ class PyAppsConfigGen:
             q.manage.applicationserver.stop(self.appName)
         if 'wfe' in self.components:
             q.manage.workflowengine.stop(self.appName)
+        if 'arakoon' in self.components:
+            cluster = q.manage.arakoon.getCluster(self.appName)
+            cluster.stop()
     
     def generateAll(self):
         self.pyapps_configuration()
         if 'wfe_port' in self.config:
             self.generateWfeConfig()
-        if 'arakoon_client_port' in self.config:
+        if 'arakoon_baseport' in self.config:
             self.generateArakoonConfig()
             self.generateOsisConfig()
         if 'app_server_xmlrpc_port' in self.config:
@@ -109,8 +115,7 @@ class PyAppsConfigGen:
     
     def generateArakoonConfig(self):
         arakoon = ArakoonPyApps(self.appName)
-        arakoon.generate_cfg(self.config['arakoon_client_port'], 
-                        self.config['arakoon_server_port'])
+        arakoon.generate_cfg(self.config['arakoon_baseport'])
     
     def generateOsisConfig(self):
         osis = OsisPyApps(self.appName)
@@ -150,9 +155,7 @@ class PyAppsConfigGen:
             params['wfe_port'] = value
         if 'arakoon' in self.components:
             value = minRange + 100
-            params['arakoon_client_port'] = value
-            value = minRange + 101
-            params['arakoon_server_port'] = value
+            params['arakoon_baseport'] = value
         if 'appserver' in self.components:
             value = minRange + 300
             params['app_server_xmlrpc_port'] = value
