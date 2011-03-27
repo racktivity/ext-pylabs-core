@@ -7,6 +7,7 @@ class ArakoonPyApps:
         self.appName = appName
     
     def generate_cfg(self, baseport):
+        baseport = int(baseport)
         s = q.manage.arakoon.getCluster(self.appName)
         if not s.listNodes():
             s.setUp(1, baseport)
