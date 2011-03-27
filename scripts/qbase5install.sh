@@ -42,7 +42,9 @@ rm -f "${ARAKOON_EGG}"
 rm -f "${THRIFT_BDIST}"
 
 ${WGET} http://fileserver.incubaid.com/pylabs5/opt.tar.gz
-${WGET} "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
+#${WGET} "http://confluence.incubaid.com/download/attachments/2326551/arakoon_0.9.0-1_amd64.deb" -O "${ARAKOON_DEB}"
+${WGET} "http://cimaster.incubaid.com/job/arakoon-tip/lastBuild/artifact/arakoond" -O /usr/bin/arakoond
+chmod 755 /usr/bin/arakoond
 ${WGET} "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIFT_BDIST_VERSION}/${THRIFT_BDIST}" -O "${THRIFT_BDIST}"
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${CONCURRENCE_BDIST_VERSION}/${CONCURRENCE_BDIST}" -O "${CONCURRENCE_BDIST}"

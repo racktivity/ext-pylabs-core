@@ -143,7 +143,7 @@ class ArakoonCluster:
     def __init__(self, clusterId):
         self.__validateName(clusterId)
         self._clusterId = clusterId
-        self._binary = q.system.fs.joinPaths(q.dirs.appDir, "arakoon", "bin", "arakoond")
+        self._binary = "arakoond"
         self._arakoonDir = q.system.fs.joinPaths(q.dirs.cfgDir, "arakoon")
         
         clusterConfig = q.config.getInifile("arakoonclusters")
