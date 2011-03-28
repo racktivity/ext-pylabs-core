@@ -5,6 +5,7 @@ from pylabs import q
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
+from agent_cfg import AgentPyApps
 from applicationserver_cfg import AppServerPyApps
 POSTGRESUSER = "postgres"
 
@@ -109,6 +110,7 @@ class PyAppsConfigGen:
         self.pyapps_configuration()
         if 'wfe_port' in self.config:
             self.generateWfeConfig()
+            AgentPyApps(self.appName).generate_cfg()
         if 'arakoon_baseport' in self.config:
             self.generateArakoonConfig()
             self.generateOsisConfig()
