@@ -36,3 +36,8 @@ define the parameters of the RO
 possible thrift\_id
 enumerator
 add doc for each parameter
+
+##How to Use the Model
+explain how model is to be used
+where is the model used
+link between model and DRP

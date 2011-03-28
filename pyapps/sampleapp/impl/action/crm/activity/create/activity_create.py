@@ -14,6 +14,7 @@ def main(q, i, p, params, tags):
     activity.leadguid = params['leadguid']
     activity.starttime = params['starttime']
     activity.endtime = params['endtime']
+    activity.save()
     params['result'] = True
     
 def match(q, i, p, params, tags):

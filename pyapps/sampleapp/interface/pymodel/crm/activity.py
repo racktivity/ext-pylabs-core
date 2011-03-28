@@ -54,14 +54,8 @@ class activity(model.RootObjectModel):
     #@doc guid of customer in case of customer
     customerguid = model.GUID(thrift_id=8)
 
-    #@doc start date of activity
-    startdate = model.DateTime(thrift_id=9)
-
     #@doc start time of activity
-    starttime = mode.DateTime(thrift_id=10)
-    
-    #@doc end date of activity
-    enddate = model.DateTime(thrift_id=11)
+    starttime = mode.DateTime(thrift_id=9)
     
     #@doc end time of activity
-    endtime = model.DateTime(thrift_id=12)
+    endtime = model.DateTime(thrift_id=10)
