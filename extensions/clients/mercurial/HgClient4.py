@@ -152,7 +152,7 @@ class HgClient4:
     def _hgCmdExecutor(self,cmd,recursivedepth=0, autoCheckFix=True,die=True):
         
         self._log("executing command: '" + cmd + "' in dir " + self.basedir)
-        (exitCode,output,error) = q.system.process.run('%s%s 2>&1' % (q.system.fs.joinPaths(q.dirs.binDir, ''), cmd), stopOnError=False, cwd=self.basedir)
+        (exitCode,output,error) = q.system.process.run('%s 2>&1' % (cmd), stopOnError=False, cwd=self.basedir)
         #print "DDD:"+output
         if output.find("authorization failed") <> -1:
             raise RuntimeError("ERROR: hgclient %s\nAuthorization failed cannot execute mercurial command: %s" % (self.reponame,cmd))
