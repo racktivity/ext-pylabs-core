@@ -277,7 +277,6 @@ class QPackageClient4():
         """
         q.logger.log("Find qpackage domain:%s name:%s version:%s platform:%s" %(domain,name,version,platform))
         #work with some functional methods works faster than doing the check everytime
-
         def findPartial(pattern,text):
             pattern=pattern.replace("*","")
             if text.lower().find(pattern.lower().strip())<>-1:
