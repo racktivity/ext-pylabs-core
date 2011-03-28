@@ -6,7 +6,7 @@ class OsisPyApps:
 
     def __init__(self, appName):
         self.appName = appName
-        self.components = [('passwd', ''), ('login', 'postgres'),
+        self.components = [('passwd', ''), ('login', self.appName),
                         ('database', self.appName),('ip', '127.0.0.1')]
 
     def generate_cfg(self):

@@ -49,17 +49,23 @@ class PyAppsConfigGen:
             self._load_config()
     
     def setup(self):
+        #create user with applicationname
+        if not q.system.unix.unixUserExists(self.appName):
+            q.system.unix.addSystemUser(self.appName)
         if 'postgresql' in self.components:
-            if self.appName not in q.manage.postgresql8.cmdb.databases:
-                q.manage.postgresql8.startChanges()
-                if not q.manage.postgresql8.cmdb.initialized:
-                    q.manage.postgresql8.cmdb.initialized = True
-                    q.manage.postgresql8.cmdb.rootLogin = POSTGRESUSER
-                    q.manage.postgresql8.cmdb.addLogin(POSTGRESUSER)
-                q.manage.postgresql8.cmdb.addLogin
-                q.manage.postgresql8.cmdb.addDatabase(self.appName)
-                q.manage.postgresql8.save()
-                q.manage.postgresql8.applyConfig()
+            postgres = q.manage.postgresql8
+            if self.appName not in postgres.cmdb.databases:
+                postgres.startChanges()
+                if not postgres.cmdb.initialized:
+                    postgres.cmdb.initialized = True
+                    postgres.cmdb.rootLogin = POSTGRESUSER
+                    postgres.cmdb.addLogin(POSTGRESUSER)
+                db = postgres.cmdb.addDatabase(self.appName, self.appName)
+                db.addACE(self.appName, '', q.enumerators.PostgresqlAccessRightType.WRITE)
+                postgres.cmdb.addLogin(self.appName,  type='host', 
+                        cidr_address='127.0.0.1/32',database=self.appName)
+                postgres.save()
+                postgres.applyConfig()
         if 'wfe' in self.components:
             if self.appName not in q.manage.ejabberd.cmdb.hosts:
                 q.manage.ejabberd.startChanges()

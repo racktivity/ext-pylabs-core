@@ -189,18 +189,16 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
 
             else:
                 self.startChanges()
+                acl = pgDatabase.acl
+                for aclEntry in acl.values():
+                    if not aclEntry.deleted:
+                        newACLEntryDict[aclEntry.userName] = aclEntry
+                self._applyACL(self.cmdb.rootLogin, acl)
+                
                 newDictOfDBs[pgDatabase.name] = pgDatabase
                 if not pgDatabase.initDone:
                     q.cmdtools.postgresql8.createdb(pgDatabase.name,self.cmdb.rootLogin, pgDatabase.owner)
 
-                acl = pgDatabase.acl
-
-                for aclEntry in acl.values():
-
-                    if not aclEntry.deleted:
-                        newACLEntryDict[aclEntry.userName] = aclEntry
-
-                self._applyACL(pgDatabase.name, self.cmdb.rootLogin, acl)
                 acl = newACLEntryDict
                 pgDatabase.initDone = True
                 self.save() #saving with each iteration is the most basic & correct way of keeping cmdb and reality in sync
@@ -286,16 +284,16 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
 
         return hbaEntryList
 
-    def _applyACL(self, name, owner, aclList):
+    def _applyACL(self, owner, aclList):
         """
         Add users roles to the database
         """
-        dbConnection = DBConnection("localhost", name, owner, "")
+        dbConnection = DBConnection("localhost", "postgres", owner, "")
         createCommand = "CREATE USER \"%s\""
         dropCommand = "DROP USER \"%s\""
         command = ""
 
-        listOfUsers = self._listDBUsers(name, owner)
+        listOfUsers = self._listDBUsers(owner)
 
         for aclEntry in aclList.values():
             userName = aclEntry.userName
@@ -320,9 +318,9 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
                 command = dropCommand%userName
                 output = dbConnection.sqlexecute(command)
 
-    def _listDBUsers(self, name, owner):
+    def _listDBUsers(self, owner):
         sqlCommand = 'SELECT usename FROM pg_shadow'
-        dbConnection = DBConnection("localhost", name, owner, "")
+        dbConnection = DBConnection("localhost", "postgres", owner, "")
         output = dbConnection.sqlexecute(sqlCommand)
 
         return output.getresult()
