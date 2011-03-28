@@ -20,8 +20,8 @@ if [ "${HG_PREFIX}" == "" ]; then
 	HG_PREFIX="https://bitbucket.org"
 fi
 
-ARAKOON_DEB="arakoon_0.9.0-1_amd64.deb"
-ARAKOON_EGG="arakoon-0.9.0-1-py2.6.egg"
+ARAKOON_DEB="arakoon_tip_amd64.deb"
+ARAKOON_EGG="arakoon-tip_-py2.6.egg"
 THRIFT_BDIST_VERSION="0.5.0"
 THRIFT_BDIST="Thrift-${THRIFT_BDIST_VERSION}.linux-x86_64.tar.gz"
 CONCURRENCE_BDIST_VERSION="0.3.1"
@@ -42,13 +42,13 @@ rm -f "${ARAKOON_EGG}"
 rm -f "${THRIFT_BDIST}"
 
 ${WGET} http://fileserver.incubaid.com/pylabs5/opt.tar.gz
-${WGET} "http://cimaster.incubaid.com/job/arakoon-tip/lastBuild/artifact/arakoond" -O /usr/bin/arakoond
-chmod 755 /usr/bin/arakoond
-${WGET} "http://confluence.incubaid.com/download/attachments/2326551/arakoon-0.9.0-1-py2.6.egg" -O "${ARAKOON_EGG}"
+${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/arakoon/tip/arakoon_tip_amd64.deb" -O "${ARAKOON_DEB}"
+${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/python-arakoon/tip/arakoon-tip_-py2.6.egg" -O "${ARAKOON_EGG}"
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/thrift/${THRIFT_BDIST_VERSION}/${THRIFT_BDIST}" -O "${THRIFT_BDIST}"
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/concurrence/${CONCURRENCE_BDIST_VERSION}/${CONCURRENCE_BDIST}" -O "${CONCURRENCE_BDIST}"
 ${WGET} "http://fileserver.incubaid.com/pylabs5/qpackages/pylabs5/posix_ipc/${POSIX_IPC_BDIST_VERSION}/${POSIX_IPC_BDIST}" -O "${POSIX_IPC_BDIST}"
 
+dpkg -i "${ARAKOON_DEB}"
 easy_install "${ARAKOON_EGG}"
 
 tar -xf opt.tar.gz
