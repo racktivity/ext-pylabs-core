@@ -157,6 +157,7 @@ class Folder(object):
         self._baseurl = baseurl
         self._displayName = displayName
         self.files = None
+        self.__setattr__('new', partial(self._new, self._baseurl))
         self.__setattr__('_children', q.clients.sugarsyncapi.getSubFolders(self._conn._auth_token, self._baseurl))
         self._hasChildren = hasChildren
         
@@ -171,40 +172,49 @@ class Folder(object):
         
     def __getattribute__(self, name):
         if name == 'files' and object.__getattribute__(self, 'files') == None:
-            q.logger.log('getting attribute files for folder',5)
+            q.logger.log('getting attribute "files" for folder %s'%object.__getattribute__(self, '_displayName'),5)
             self.files = Files(object.__getattribute__(self, '_conn'), object.__getattribute__(self, '_baseurl'))
             return self.files
         elif object.__getattribute__(self, '_subFolders') and name in object.__getattribute__(self, '_subFolders').keys() and object.__getattribute__(self, name) == None:
-            q.logger.log('getting attribute folder named %s for folder' % name,5)
+            q.logger.log('getting attribute "folder" named %s for folder %s' %(name, object.__getattribute__(self, '_displayName')),5)
             folderRef = object.__getattribute__(self, '_subFolders')[name]
             self.__setattr__(name, Folder(object.__getattribute__(self, '_conn'), folderRef, name))
             return object.__getattribute__(self, name)
         elif name in object.__getattribute__(self, '__dict__'):
-            q.logger.log('getting attribute %s for folder' % name)
+            q.logger.log('getting attribute %s for folder %s' %(name, object.__getattribute__(self, '_displayName')))
             return object.__getattribute__(self, '__dict__')[name]
         else:
-            q.logger.log('getting attribute %s for folder' % name)
+            q.logger.log('getting attribute %s for folder %s' %(name, object.__getattribute__(self, '_displayName')))
             return object.__getattribute__(self, name)
-            
+        
+        
+    def _new(self, parentUrl, displayName):
+        q.logger.log('in _new',5)
+        newfolderUrl = q.clients.sugarsyncapi.createFolder(self._conn._auth_token, parentUrl, displayName)
+        self.__setattr__(cleanString(displayName), Folder(self._conn, newfolderUrl, displayName, False))
+        
+        
     def __iter__(self):
         return SugarsyncIterator(self.__dict__)
     
     def __setattr__(self, name, value):
         object.__setattr__(self, name, value)
-            
-    """def _new(self, parentUrl, displayName):
-        newfolderUrl = q.clients.sugarsyncapi.createFolder(self._conn._auth_token, parentUrl, displayName)
-        setattr(self, cleanString(displayName), Folder(self._conn, newfolderUrl, displayName, False))"""
         
     def __getitem__(self, key):
         key = cleanString(key)
         q.logger.log('getting item %s'%key, 5)
-        if key in self.files._files.keys():
-            q.logger.log('found item %s in files'%key, 5)
+        if not self.files == None and key in self.files._files.keys():
+            q.logger.log('found item in files', 5)
             return self.files[key]
         else:
-            q.logger.log('item %s not found in files'%key, 5)
+            self.__getattribute__('files')
+            if key in self.files._files.keys():
+                q.logger.log('found item in files', 5)
+                return self.files.__getattribute__(key)
         return self.__dict__[key]
+    
+    def __repr__(self):
+        return '<Folder "%s" for user "%s" on Sugarsync>'%(self._displayName, self._conn._user_session.username)
     
 class Folders(object):
     def __init__(self, conn, baseurl):
@@ -280,15 +290,6 @@ class Files(object):
                                         map(lambda attr: getattr(attr, 'ref'),
                                             filter(lambda child: hasattr(child, 'mediaType'), self._children.__dict__.values()))))
         
-        
-        """
-        self._files = dict(zip(
-                                map(lambda attr: cleanString(getattr(attr, 'displayName')),
-                                    filter(lambda child: hasattr(child, 'displayName'), self._children.__dict__.values())),
-                                        map(lambda attr: getattr(attr, 'ref'),
-                                            filter(lambda child: hasattr(child, 'mediaType'), self._children.__dict__.values()))))
-        """
-        
     def __getattribute__(self, name):
         if name in object.__getattribute__(self, '_files').keys() and object.__getattribute__(self, name) == None:
             q.logger.log('files %s' % name)
@@ -308,19 +309,6 @@ class Files(object):
         q.logger.log('adding attribute %s to folders' % name)
         object.__setattr__(self, name, value)
         q.logger.log('done adding attribute %s to folders' % name)
-        
-        """        
-        map(lambda fileObj: setattr(self, cleanString(fileObj.displayName), fileObj),
-            map(lambda initArgs: File(*initArgs),
-                [(self._conn, col.ref, col.displayName) for col in 
-                    map(lambda attr: getattr(children, attr), 
-                        filter(lambda attr: attr.startswith('file'), dir(children))
-                    )
-                ]
-            )
-        )
-        """
-        
         
     def new(self, localFilePath, displayName=None, mediaType='application/octet-stream'):
         self._putFile(localFilePath, self._parentUrl, displayName, mediaType)
@@ -368,14 +356,26 @@ class File(object):
         self.__dict__.update(q.clients.sugarsyncapi.getFileInfo(self._conn._auth_token, self._baseurl).__dict__)
 
     def download(self, localFilePath):
+        """
+        download the selected file to a local location.
+        You can enter a folder path for the file to be downloaded in or a file path to rename the file manually.
+        """
+        
         if self.presentOnServer:
-            q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
+            try:
+                q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
+            except IOError:
+                localFilePath = localFilePath+'/%s'%self.displayName
+                q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
         else:
             return False
         
     def __getitem__(self, key):
         key = cleanString(key)
-        return self.__dict__[key]  
+        return self.__dict__[key]
+    
+    def __repr__(self):
+        return '<File "%s" for user "%s" on Sugarsync>'%(self.displayName, self._conn._user_session.username)
        
 class Albums(object):
     def __init__(self, conn, baseurl, displayName):
@@ -420,19 +420,6 @@ class Albums(object):
         object.__setattr__(self, name, value)
         q.logger.log('done adding attribute %s to folders' % name)
        
-       
-        """
-        map(lambda folderObj: setattr(self, cleanString(folderObj.displayName), folderObj),
-             map(lambda initArgs: Album(*initArgs),
-                 [(self._conn, col.ref, col.displayName) for col in 
-                     map(lambda attr: getattr(children, attr), 
-                         filter(lambda attr: attr.startswith('collection'), dir(children))
-                     )
-                 ]
-             )
-         )
-        """
-        
     def __getitem__(self, key):
         key = cleanString(key)
         return self.__getattribute__(key)
@@ -444,7 +431,6 @@ class Album(object):
         self._baseurl = baseurl
         self._displayName = displayName
         self.photos = None
-        #setattr(self, 'photos', Photos(self._conn, self._baseurl))
         
     def __getattribute__(self, name):
         if name == 'photos' and object.__getattribute__(self, 'photos') == None:
@@ -465,11 +451,19 @@ class Album(object):
         
     def __getitem__(self, key):
         key = cleanString(key)
-        q.logger.log('getting item %s'%key, 2)
-        if key in self.photos._photos.keys():
-            q.logger.log('found item in files', 2)
+        q.logger.log('getting item %s'%key, 5)
+        if not self.photos == None and key in self.photos._photos.keys():
+            q.logger.log('found item in files', 5)
             return self.photos[key]
+        else:
+            self.__getattribute__('photos')
+            if key in self.photos._photos.keys():
+                q.logger.log('found item in photos', 5)
+                return self.photos.__getattribute__(key)
         return self.__dict__[key]
+    
+    def __repr__(self):
+        return '<Album "%s" for user "%s" on Sugarsync>'%(self._displayName, self._conn._user_session.username)
 
 class Photos(object):
     def __init__(self, conn, parentUrl):
@@ -495,7 +489,7 @@ class Photos(object):
             q.logger.log('photos %s' % name)
             q.logger.log('getting attribute photo named %s for photos' % name,5)
             fileRef = object.__getattribute__(self, '_photos')[name]
-            self.__setattr__(name, File(object.__getattribute__(self, '_conn'), fileRef, name))
+            self.__setattr__(name, Photo(object.__getattribute__(self, '_conn'), fileRef, name))
             return object.__getattribute__(self, name)
         elif name in object.__getattribute__(self, '__dict__'):
             q.logger.log('getting attribute %s for folder' % name,5)
@@ -510,18 +504,6 @@ class Photos(object):
         q.logger.log('adding attribute %s to folders' % name)
         object.__setattr__(self, name, value)
         q.logger.log('done adding attribute %s to folders' % name)
-       
-    """
-       map(lambda photoObj: setattr(self, cleanString(photoObj.displayName), photoObj),
-           map(lambda initArgs: Photo(*initArgs),
-               [(self._conn, col.ref, col.displayName) for col in
-                   map(lambda attr: getattr(children, attr),
-                       filter(lambda attr: attr.startswith('file'), dir(children))
-                   )
-               ]
-           )
-       )
-       """
        
     def __iter__(self):
         return SugarsyncIterator(self.__dict__)
@@ -541,14 +523,25 @@ class Photo(object):
         return SugarsyncIterator(self.__dict__)
 
     def download(self, localFilePath):
+        """
+        download the selected photo to a local location.
+        You can enter a folder path for the file to be downloaded in or a file path to rename the photo manually.
+        """
         if self.presentOnServer:
-            q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
+            try:
+                q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
+            except IOError:
+                localFilePath = localFilePath+'/%s'%self.displayName
+                q.clients.sugarsyncapi.retrieveFileData(self._conn._auth_token, self.fileData, localFilePath)
         else:
             return False
         
     def __getitem__(self, key):
         key = cleanString(key)
         return self.__dict__[key]
+    
+    def __repr__(self):
+        return '<Photo "%s" for user "%s" on Sugarsync>'%(self.displayName, self._conn._user_session.username)
     
 class SugarsyncIterator(object):
     def __init__(self, dict):

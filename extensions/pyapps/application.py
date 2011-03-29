@@ -41,7 +41,10 @@ class AppManager(object):
 class ApplicationAPI(object):
     
     def __init__(self, appname, host=None, context=None):
-        print 'Context is %s' % context
+        
+        # Default to client context
+        context = context or q.enumerators.AppContext.CLIENT
+        
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._app_path = app_path
         
