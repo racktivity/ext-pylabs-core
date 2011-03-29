@@ -6,7 +6,6 @@ def main(q, i, p, params, tags):
     sql= '''SELECT 
 	JOBLIST.guid, 
 	JOBLIST.parentjobguid, 
-	CLOUDUSER.login as cloudusername,  
 	JOBLIST.actionname, 
 	JOBLIST.description, 
 	JOBLIST.name ,
@@ -14,8 +13,7 @@ def main(q, i, p, params, tags):
 	JOBLIST.starttime, 
 	JOBLIST.endtime, 
 	JOBLIST.jobstatus
-FROM job.view_job_list JOBLIST
-LEFT JOIN clouduser.view_clouduser_list as CLOUDUSER on JOBLIST.clouduserguid = CLOUDUSER.guid
+FROM core_job.core_view_job_list JOBLIST
 WHERE JOBLIST.jobStatus in (%(jobstatus)s) and JOBLIST.parentjobguid IS NULL
 AND (JOBLIST.rootobjecttype IS NULL OR JOBLIST.rootobjecttype NOT IN ('job','cmc'))
 ORDER BY JOBLIST.starttime DESC LIMIT %(maxrows)s'''

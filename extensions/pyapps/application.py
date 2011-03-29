@@ -52,7 +52,9 @@ class ApplicationAPI(object):
         self.action = self._get_actions(appname, context)
         
         if not context == q.enumerators.AppContext.CLIENT:
-            self.model = self._get_model(appname, context)
+            self.model = self._get_osis_client(appname, 'model')
+            self.config = self._get_osis_client(appname, 'config')
+            self.monitoring = self._get_osis_client(appname, 'monitoring')
             
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
@@ -71,9 +73,9 @@ class ApplicationAPI(object):
         from client.action import actions
         return actions(proxy=proxy)
     
-    def _get_model(self, appname, context):
+    def _get_osis_client(self, appname, modeltype):
         
-        pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', 'pymodel'))
+        pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', modeltype))
         osis.init()
         
         from pymodel.serializers import ThriftSerializer
@@ -81,7 +83,7 @@ class ApplicationAPI(object):
         from osis.client import OsisConnection
         
         transporturl = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
-        transport = XMLRPCTransport(transporturl, 'osissvc')
+        transport = XMLRPCTransport(transporturl, modeltype)
         connection = OsisConnection(transport, ThriftSerializer)
 
         return connection

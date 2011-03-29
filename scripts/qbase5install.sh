@@ -94,12 +94,14 @@ cd /opt/code
 hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pymodel" pymodel
 hg clone --branch 0.5 "${HG_PREFIX}/despiegk/osis" osis
 hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_workflowengine" workflowengine
+hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_agent" pylabs_agent
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 ln -s "`pwd`/workflowengine/workflowengine/lib/" "/opt/qbase5/lib/python/site-packages/workflowengine"
 ln -s "`pwd`/workflowengine/workflowengine/manage/" "/opt/code/incubaid/pylabs-core/extensions/servers/workflowengine"
 mkdir -p /opt/qbase5/apps/workflowengine/
 ln -s "`pwd`/workflowengine/workflowengine/bin/" "/opt/qbase5/apps/workflowengine/bin"
+ln -s "`pwd`/pylabs_agent/agent_service" "/opt/qbase5/lib/python/site-packages/"
 
 hg clone "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
