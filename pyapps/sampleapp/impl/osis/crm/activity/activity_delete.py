@@ -9,7 +9,7 @@ DOMAIN = "crm"
 VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = OsisDB().getConnection(p.api.appname)
 
     rootobjectguid = params['rootobjectguid']
     rootobjectversionguid = params['rootobjectversionguid']
