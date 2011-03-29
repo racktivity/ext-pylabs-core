@@ -1,0 +1,57 @@
+from pylabs import q, i, p
+
+configfile = q.config.getInifile('agent')
+get = lambda k: configfile.getValue(p.api.appname, k, True)
+
+AGENTGUID = get('agentguid')
+XMPPSERVER = get('xmppserver')
+PASSWORD = get('password')
+AGENTCONTROLLERGUID = get('agentcontrollerguid')
+HOSTNAME = get('hostname')
+
+class ConfigAgentStub:
+    @staticmethod
+    def list():
+        return ('main', )
+
+    @staticmethod
+    def getConfig(name):
+        assert name == 'main'
+
+        return {
+            'cron_interval': 10,
+            'agentguid': AGENTGUID,
+            'xmppserver': XMPPSERVER,
+            'password': PASSWORD,
+            'hostname': HOSTNAME,
+            'agentcontrollerguid': AGENTCONTROLLERGUID,
+            'subscribed': True,
+            'enable_cron': False,
+            'passwd': None,
+            'login': None,
+            'domain': None,
+        }
+
+    @staticmethod
+    def remove(name):
+        assert name == 'main'
+
+    @staticmethod
+    def add(name, _):
+        assert name == 'main'
+
+# Monkey-patching mocking magic
+i.config.agent = ConfigAgentStub()
+
+try:
+    from agent_service import WFLAgent, agent
+finally:
+    pass
+
+class AgentSVC(WFLAgent.WFLAgent):
+    def __init__(self):
+        # Cron task should be disabled...
+        self.taskletEngine = None
+
+        self.__agent = agent.Agent(AGENTGUID, XMPPSERVER, PASSWORD,
+            AGENTCONTROLLERGUID, HOSTNAME, None)

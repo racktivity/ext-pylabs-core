@@ -198,10 +198,12 @@ class Folder(object):
         
     def __getitem__(self, key):
         key = cleanString(key)
-        q.logger.log('getting item %s'%key, 2)
+        q.logger.log('getting item %s'%key, 5)
         if key in self.files._files.keys():
-            q.logger.log('found item in files', 2)
-            return self.files._files[key]
+            q.logger.log('found item %s in files'%key, 5)
+            return self.files[key]
+        else:
+            q.logger.log('item %s not found in files'%key, 5)
         return self.__dict__[key]
     
 class Folders(object):
@@ -270,13 +272,22 @@ class Files(object):
         
         map(lambda fileObj: self.__setattr__(cleanString(fileObj.displayName), None),
             filter(lambda attr: hasattr(attr, 'mediaType'), self._children.__dict__.values()))
-
+        
+        
         self._files = dict(zip(
                                 map(lambda attr: cleanString(getattr(attr, 'displayName')),
                                     filter(lambda child: hasattr(child, 'displayName'), self._children.__dict__.values())),
                                         map(lambda attr: getattr(attr, 'ref'),
                                             filter(lambda child: hasattr(child, 'mediaType'), self._children.__dict__.values()))))
         
+        
+        """
+        self._files = dict(zip(
+                                map(lambda attr: cleanString(getattr(attr, 'displayName')),
+                                    filter(lambda child: hasattr(child, 'displayName'), self._children.__dict__.values())),
+                                        map(lambda attr: getattr(attr, 'ref'),
+                                            filter(lambda child: hasattr(child, 'mediaType'), self._children.__dict__.values()))))
+        """
         
     def __getattribute__(self, name):
         if name in object.__getattribute__(self, '_files').keys() and object.__getattribute__(self, name) == None:
@@ -401,6 +412,9 @@ class Albums(object):
             return object.__getattribute__(self, name)
            
            
+    def __iter__(self):
+        return SugarsyncIterator(self.__dict__)
+           
     def __setattr__(self, name, value):
         q.logger.log('adding attribute %s to folders' % name)
         object.__setattr__(self, name, value)
@@ -446,9 +460,16 @@ class Album(object):
     def __setattr__(self, name, value):
         object.__setattr__(self, name, value)
         
+    def __iter__(self):
+        return SugarsyncIterator(self.__dict__)
+        
     def __getitem__(self, key):
         key = cleanString(key)
-        return self.photos._photos[key]
+        q.logger.log('getting item %s'%key, 2)
+        if key in self.photos._photos.keys():
+            q.logger.log('found item in files', 2)
+            return self.photos[key]
+        return self.__dict__[key]
 
 class Photos(object):
     def __init__(self, conn, parentUrl):
