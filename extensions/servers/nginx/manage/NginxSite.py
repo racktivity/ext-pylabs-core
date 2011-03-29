@@ -6,8 +6,8 @@ from Cheetah.Template import Template as CheetahTemplate
 #Default template for an nginx site (location)
 SiteTemplate = CheetahTemplate.compile(source="""
         location $location {
-          #for $key, $value in $options.iteritems()
-          $key    $value;
+          #for $option in $options
+          $option[0]    $option[1];
           #end for
         }
 """)
@@ -18,7 +18,7 @@ class NginxSite(CMDBSubObject):
     """
     name = q.basetype.string(doc="The name of the site", allow_none=True)
     location = q.basetype.string(doc="location of the site files")
-    options = q.basetype.dictionary(doc="site specific options", default=dict())
+    options = q.basetype.list(doc="site specific options", default=list())
 
     # Overload this attribute if you wish to use your own template
     template = SiteTemplate
@@ -28,29 +28,32 @@ class NginxSite(CMDBSubObject):
         self.name = name
         self.location = location
 
-    def addOption(self, key, value):
+    def addOption(self, option_type, option_settings):
         """
         Add an option to Site Configuration
         
-        @param key: Key name of the option to add
-        @type key: string
-        @param value: Value of the option to add
-        @type value: list
-        @raise KeyError if key with the same name already exists
+        @param option_type: Name of the option to add
+        @type option_type: string
+        @param option_settings: Settings of the option to add
+        @type option_settings: string
+        @raise KeyError if key with the same tuple of (option_type, option_settings) already exists
         """
-        if key in self.options.keys():
-            raise KeyError('Option [%s] already exists' % key)
-        self.options[key] = value
+        option = (option_type, option_settings)
+        if option in self.options:
+            raise KeyError('Option tuple already exists')
+        self.options.append(option)
 
-    def removeOption(self, key):
+    def removeOption(self, option_type, option_settings):
         """
         Remove an Option
         
-        @param key: Key name of the option to remove
-        @type key: string
-        @raise KeyError: if key not found in options dict
+        @param option_type: Name of the option to remove
+        @type option_type: string
+        @param option_settings: Settings of the option to add
+        @type option_settings: string
+        @raise KeyError: if option tuple (option_type, option_settings) not found in options dict
         """
-        del self.options[key]
+        self.options.remove((option_type, option_settings))
 
     def pm_getTemplateContext(self):
         """
