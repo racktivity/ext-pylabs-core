@@ -3,7 +3,7 @@ class pop3:
     in job embedded there are all jobsteps + logging info
     """
 
-    def create(self, server, login, password, jobguid="", executionparams=dict()):
+    def create(self, server, login, password, jobguid="", executionparams=None):
         """
         Create a new POP3 configuration object.
 
@@ -28,7 +28,7 @@ class pop3:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self, server="", login="", jobguid="", executionparams=dict()):
+    def find(self, server="", login="", jobguid="", executionparams=None):
         """
         Returns a list of POP3 configuration objects which met the find criteria.
  
@@ -58,7 +58,7 @@ class pop3:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, jobguid="",executionparams=None):
         """
         Gets the rootobject.
 
@@ -79,7 +79,7 @@ class pop3:
         @warning:                Only usable using the python client.
         """
         
-    def delete(self, pop3guid, jobguid="",executionparams=dict()):
+    def delete(self, pop3guid, jobguid="",executionparams=None):
         """
         Delete the POP3 configuration object with the guid specified.
         
