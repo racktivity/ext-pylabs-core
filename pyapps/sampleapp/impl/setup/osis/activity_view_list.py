@@ -4,7 +4,7 @@ __priority__= 3
 
 from osis.store.OsisDB import OsisDB
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     rootobject = 'activity'
     domain = "crm"
     view_name = '%s_view_%s_list' % (domain, rootobject)
