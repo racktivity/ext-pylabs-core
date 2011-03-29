@@ -39,12 +39,15 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def update(self, name="", login="", password="", email="", address="", vat="", jobguid="", executionparams=dict()):
+    def update(self, customerguid, name="", login="", password="", email="", address="", vat="", jobguid="", executionparams=dict()):
         """
         Update a customer
  
         @security administrators
- 
+
+        @param customerguid:          guid of the customer
+        @type customerguid:           guid
+         
         @param name:  name of the customer
         @type name: string
  
