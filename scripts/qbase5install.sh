@@ -107,8 +107,8 @@ hg clone "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 
-echo "Symlink wizard service"
-ln -s /opt/code/incubaid/pylabs-core/lib/wizardservice.py /opt/qbase5/lib/python/site-packages/wizardservice.py
+echo "Symlink extra libs"
+ln -s /opt/code/incubaid/pylabs-core/lib/* /opt/qbase5/lib/python/site-packages/
 
 echo "Disable system postgres"
 /etc/init.d/postgresql stop

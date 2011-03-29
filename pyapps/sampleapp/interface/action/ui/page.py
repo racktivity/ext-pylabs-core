@@ -119,4 +119,40 @@ class page:
 
         @raise e:                        In case an error occurred, exception is raised
         """
-        
+
+    def update(self, pageguid, name, space, category, parent="", tags="", content="", jobguid="", executionparams=dict()):
+        """
+        Create a new page object.
+
+        @param pageguid:         guid of the page object
+        @type pageguid:          guid
+
+        @param name:             name of the page
+        @type name:              string
+
+        @param space:            space of the page
+        @type space:             string
+
+        @param category:         category of the page
+        @type category:          string
+
+        @param parent:           parent of the page
+        @type parent:            string
+
+        @param tags:             tags of the page
+        @type tags:              string
+
+        @param content:          content of the page
+        @type content:           string
+
+        @param jobguid:          guid of the job if available else empty string
+        @type jobguid:           guid
+
+        @param executionparams:  dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:   dictionary
+
+        @return:                 dictionary with POP configuration object guid as result and jobguid: {'result': guid, 'jobguid': guid}
+        @rtype:                  dictionary
+
+        @raise e:                In case an error occurred, exception is raised
+        """
