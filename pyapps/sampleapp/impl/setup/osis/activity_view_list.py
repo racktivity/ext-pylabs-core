@@ -8,7 +8,7 @@ def main(q, i, params, tags):
     rootobject = 'activity'
     domain = "crm"
     view_name = '%s_view_%s_list' % (domain, rootobject)
-    connection = OsisDB().getConnection('main')
+    connection = OsisDB().getConnection(p.api.appname)
     if not connection.viewExists(domain, rootobject, view_name):
         view = connection.viewCreate(rootobject, view_name)
         view.setCol('name', q.enumerators.OsisType.STRING, False)
