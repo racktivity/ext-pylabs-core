@@ -543,7 +543,7 @@ class AppAPIGenerator(object):
         
         self._generator.specDir = spec_path
         self._generator.rootobject_serverTemplate = q.system.fs.joinPaths(self._template_path, 'AppApiActionService.tmpl')
-        self._generator.rootobject_serverExtensionTemplate =q.system.fs.joinPaths(self._template_path, 'AppApiAction.tmpl')
+        self._generator.rootobject_serverExtensionTemplate = q.system.fs.joinPaths(self._template_path, 'AppApiAction.tmpl')
         self._generator.rootobject_clientOutputDir = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'client')
         self._generator.rootobjects_libDir  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'lib')
         self._generator.rootobject_serverOutputDir  = q.system.fs.joinPaths(app_path, 'impl', 'service')

@@ -4,18 +4,22 @@ __priority__= 3
 
 from osis.store.OsisDB import OsisDB
 
-ROOTOBJECT_TYPE = 'eventqueue'
-DOMAIN = "monitoring"
+ROOTOBJECT_TYPE = 'activity'
+DOMAIN = "crm"
 VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
-def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection(p.api.appname)
+def main(q, i, params, tags):
+    osis = OsisDB().getConnection('main')
 
     rootobject = params['rootobject']
 
-    values = {'server': rootobject.server}
-    values = {'login': rootobject.login}
-    values = {'password': rootobject.password}
+    values = {'name': rootobject.name, 
+              'customer': rootobject.customer,
+              'lead': rootobject.lead,
+              'type': rootobject.type, 
+              'priority': rootobject.priority,
+              'starttime': rootobject.starttime,
+              'endtime': rootobject.endtime}
 
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
 

@@ -174,8 +174,8 @@ class Dispatcher:
         #Check authentication
         if exposed_authenticated(func):
             #log.msg('[DISPATCHER] Checking authentication')
-            if not self.checkAuthentication(service, request, method, args,
-                                            kwargs):
+            if not self.checkAuthentication(domain, service, request, method, 
+                                            args, kwargs):
                 raise AuthenticationError('Authentication failed')
             request.user_authenticated = True
         else:
@@ -189,7 +189,8 @@ class Dispatcher:
             else:
                 auth_categories = {}
 
-            if not self.checkAuthorization(auth_categories,service,request,method,args,kwargs):
+            if not self.checkAuthorization(auth_categories, domain,
+                                        service, request, method, args, kwargs):
                 raise AuthorizationError('Authorization failed')
         else:
             pass
@@ -282,7 +283,7 @@ class Dispatcher:
 
         return service, func
 
-    def checkAuthentication(self, service, request, methodname, args, kwargs):
+    def checkAuthentication(self, domain, service, request, methodname, args, kwargs):
         '''Check authentication for a given service
 
         @param service: Service instance to check authentication for
@@ -326,17 +327,15 @@ class Dispatcher:
                             'or a method')
 
         if len(checker_args) == 2:
-            # checkAuthentication(self, username, password)
             return checker(request.username, request.password)
-        elif len(checker_args) == 4:
-            # checkAuthentication(self, request, methodname, args, kwargs)
-            return checker(request, methodname, args, kwargs)
+        elif len(checker_args) == 6:
+            return checker(request, domain, service, methodname, args, kwargs)
         else:
             raise ValueError('checkAuthentication should take two or three '
                              'arguments')
 
 
-    def checkAuthorization(self, auth_categories, service, request, methodname, args, kwargs):
+    def checkAuthorization(self, auth_categories, domain, service, request, methodname, args, kwargs):
         '''Check authorization for a given service
 
         @param auth_categories: Parameters; they are the keyword parameters to the decorator expose_authorized
@@ -382,7 +381,7 @@ class Dispatcher:
         if len(checker_args) == 2:
             return checker(auth_categories,request.username)
         else :
-            return checker(auth_categories, request, methodname, args, kwargs)
+            return checker(auth_categories, request, domain, service, methodname, args, kwargs)
 
 
     def tupleToHumanReadable(self, t):
