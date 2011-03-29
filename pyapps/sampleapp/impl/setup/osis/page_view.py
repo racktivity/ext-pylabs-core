@@ -15,7 +15,7 @@ def main(q, i, params, tags):
         view.setCol('name', q.enumerators.OsisType.STRING, True)
         view.setCol('space', q.enumerators.OsisType.STRING, True)
         view.setCol('category', q.enumerators.OsisType.STRING, True)        
-        view.setCol('parent', q.enumerators.OsisType.GUID, True)
+        view.setCol('parent', q.enumerators.OsisType.UUID, True)
         view.setCol('tags', q.enumerators.OsisType.STRING, True)        
         connection.viewAdd(view)
 
