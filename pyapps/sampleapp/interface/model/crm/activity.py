@@ -55,7 +55,7 @@ class activity(model.RootObjectModel):
     customerguid = model.GUID(thrift_id=8)
 
     #@doc start time of activity
-    starttime = mode.DateTime(thrift_id=9)
+    starttime = model.DateTime(thrift_id=9)
     
     #@doc end time of activity
     endtime = model.DateTime(thrift_id=10)
