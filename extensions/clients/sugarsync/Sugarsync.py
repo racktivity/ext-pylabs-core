@@ -157,6 +157,7 @@ class Folder(object):
         self._baseurl = baseurl
         self._displayName = displayName
         self.files = None
+        self.__setattr__('new', partial(self._new, self._baseurl))
         self.__setattr__('_children', q.clients.sugarsyncapi.getSubFolders(self._conn._auth_token, self._baseurl))
         self._hasChildren = hasChildren
         
@@ -185,7 +186,14 @@ class Folder(object):
         else:
             q.logger.log('getting attribute %s for folder %s' %(name, object.__getattribute__(self, '_displayName')))
             return object.__getattribute__(self, name)
-            
+        
+        
+    def _new(self, parentUrl, displayName):
+        q.logger.log('in _new',5)
+        newfolderUrl = q.clients.sugarsyncapi.createFolder(self._conn._auth_token, parentUrl, displayName)
+        self.__setattr__(cleanString(displayName), Folder(self._conn, newfolderUrl, displayName, False))
+        
+        
     def __iter__(self):
         return SugarsyncIterator(self.__dict__)
     
