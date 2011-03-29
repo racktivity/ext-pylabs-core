@@ -1,7 +1,6 @@
 import json
 from pylabs import q
 from pylabs.baseclasses import BaseEnumeration
-from pylabs import i
 from pylabs.Shell import *
 import urllib
 
@@ -16,17 +15,6 @@ class RESTResultFormat(BaseEnumeration):
         cls.registerItem('yaml')
         cls.finishItemRegistration()
 
-class BitbucketRESTCall(BaseEnumeration):
-    """
-    Enumerator of all supported Bitbucket REST calls
-    """
-
-    @classmethod
-    def _initItems(cls):
-        cls.registerItem('groups')
-        cls.registerItem('users')
-        cls.finishItemRegistration()
-
 class RESTMethod(BaseEnumeration):
     """
     Enumerator of all supported REST methods
@@ -38,6 +26,45 @@ class RESTMethod(BaseEnumeration):
         cls.registerItem('GET')
         cls.registerItem('PUT')
         cls.registerItem('DELETE')
+        cls.finishItemRegistration()
+
+class BitbucketRESTCall(BaseEnumeration):
+    """
+    Enumerator of all supported Bitbucket REST calls
+    """
+
+    def __init__(self, value=None):
+        self.value = value
+
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('groups')
+        cls.registerItem('group_privileges', value='group-privileges')
+        cls.registerItem('users')
+        cls.finishItemRegistration()
+
+class BitbucketSettingsParam(BaseEnumeration):
+    """
+    Enumerator of all supported Bitbucket permissions
+    """
+
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('name')
+        cls.registerItem('permission')
+        cls.registerItem('auto_add')
+        cls.finishItemRegistration()
+
+class BitbucketPermission(BaseEnumeration):
+    """
+    Enumerator of all supported Bitbucket permissions
+    """
+
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('read')
+        cls.registerItem('write')
+        cls.registerItem('admin')
         cls.finishItemRegistration()
 
 class Bitbucket:
@@ -160,7 +187,7 @@ class Bitbucket:
             repoName=q.gui.dialog.askChoice("Select repo from bitbucket",self.getRepoNamesFromBitbucket(accountName))
         return "%s%s" % (url,repoName)
 
-    def _callBitbucketRestAPI(self, accountName, call, method=RESTMethod.GET, **kwargs):
+    def _callBitbucketRestAPI(self, accountName, call, method=RESTMethod.GET, uriParts=None, params=None, data=None):
         """
         Make a call to one of the Bitbucket REST API(s)
 
@@ -170,12 +197,17 @@ class Bitbucket:
         @type call:             L{BitbucketRESTCall}
         @param method:          REST method used to initiate the call
         @type method:           L{RESTMethod}
-        @param kwargs:          Optional data to be sent through the call
-        @type kwargs:           dict
-        @return 
+        @param uriParts:        Addtional parts to be added to the URI
+        @type uriParts:         list
+        @param params:          Optional params to be sent URL encoded in the REST request URI
+        @type params:           dict
+        @param data:            Optional data to be sent through the call
+        @type data:             list or dict
+        @return A deserialized result from JSON to its Python represemtation
+        @raise Exception in case of errors
         """
         # TODO - MNour: Think about a generic REST client that can be configured and used from different components.
-        url,login,passwd = self.accountGetLoginInfo(accountName)
+        # url, login, passwd = self.accountGetLoginInfo(accountName)
         #http=q.clients.http.getconnection()
         #http.addAuthentication(login,passwd)
         #url="https://api.bitbucket.org/1.0/users/%s/" % self._getBitbucketUsernameFromUrl(url)
@@ -185,12 +217,25 @@ class Bitbucket:
         resultTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
         headerTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
         accountConfig = self.accountGetConfig(accountName)
-        cmd = "curl --dump-header %(headerTmpfile)s --user %(login)s:%(password)s --request %(method)s %(apiURI)s/%(apiVersion)s/%(call)s/%(accountName)s/?format=%(resultFormat)s --data '%(data)s' > %(resultTmpfile)s" %{'headerTmpfile': headerTmpfile,
-              'login': accountConfig['login'], 'password': accountConfig['passwd'], 'call': call, 'resultFormat': self.resultFormat, 'resultTmpfile': resultTmpfile, 'apiURI': self.apiURI, 'apiVersion': self.apiVersion,
-              'accountName': accountConfig['login'], 'method': method, 'data': urllib.urlencode(kwargs) if kwargs else ''}
+        uriPartsString = '%s/' %'/'.join(uriParts) if uriParts else ''
+        parameters = params if params else dict()
+        parameters['format'] = self.resultFormat
+
+        dataString = ''
+        if data:
+            if type(data) is list:
+                dataString = ','.join(data)
+            elif type(data) is dict:
+                dataString = urllib.urlencode(data)
+            else:
+                q.errorconditionhandler.raiseError("Invalid data type '%s', data value is '%s'." %(type(data), data))
+
+        cmd = "curl --dump-header %(headerTmpfile)s --user %(login)s:%(password)s --request %(method)s '%(apiURI)s/%(apiVersion)s/%(call)s/%(accountName)s/%(uriParts)s?%(parameters)s' --data '%(data)s' > %(resultTmpfile)s" %{'headerTmpfile': headerTmpfile,
+              'login': accountConfig['login'], 'password': accountConfig['passwd'], 'call': call, 'resultTmpfile': resultTmpfile, 'apiURI': self.apiURI, 'apiVersion': self.apiVersion,
+              'accountName': accountConfig['login'], 'method': method, 'data': dataString, 'uriParts': uriPartsString, 'parameters': urllib.urlencode(parameters)}
 
         resultcode, content = q.system.process.execute(cmd, False, True)
-        if resultcode>0:
+        if resultcode > 0:
             q.errorconditionhandler.raiseError("Cannot get reponames from repo. Cannot execute %s" %cmd)
 
         # TODO - MNour: Add error checking and handling.
@@ -199,7 +244,7 @@ class Bitbucket:
         q.system.fs.removeFile(headerTmpfile)
 
         try:
-            object = json.loads(content)
+            object = json.loads(content) if content else dict()
         except:
             q.errorconditionhandler.raiseError("Cannot call rest api of bitbicket, call was %s" %cmd)
 
@@ -304,6 +349,9 @@ class Bitbucket:
 #    bitbucket REST
 #########################################################################################################################
 
+#    def accountGetRepos(self, accountName):
+#        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.USERS)
+
     def getGroups(self, accountName):
         """
         Retrieve all Bitbucket groups for the given account.
@@ -312,8 +360,46 @@ class Bitbucket:
         @type accountName:      string
         @return List of Bitbucket groups
         @rtype list
+        @raise Exception in case of errors
         """
+        # TODO - MNour: Objectization of returned values.
+        self._validateValues(accountName=accountName)
         return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS)
+
+    def getGroup(self, groupName, accountName):
+        """
+        Retrieve a Bitbucket group that has the same exact specified group name
+
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return Bitbucket L{Group}
+        @rtype L{Group}
+        @raise Exception in case of errors
+        """
+        self._validateValues(groupName=groupName, accountName=accountName)
+        groups = [group for group in self.getGroups(accountName) if group['name'] == groupName]
+        if not groups:
+            q.errorconditionhandler.raiseError('No group found with name [%s].' %groupName)
+
+        return groups[0] if len(groups) == 1 else q.errorconditionhandler.raiseError('Found more than group with name [%s].' %groupName)
+
+    # TODO - MNour: Implement this method
+    def findGroup(self, regex, accountName):
+        """
+        Find Bitbucket group which matches the specified regular expression
+
+        @param regex:       Regular expression using using which to match group names
+        @type regex:        string
+        @param accountName: Bitbucket account name
+        @type accountName:  string
+        @return List of Bitbucket L{Groups}
+        @rtype list
+        @raise Exception in case of errors
+        """
+        self._validateAccountName(accountName)
+        q.errorconditionhandler.raiseError('Method not yet implemented.')
 
     def addGroup(self, groupName, accountName):
         """
@@ -323,95 +409,275 @@ class Bitbucket:
         @type groupName:        string
         @param accountName:     Bitbucket account name
         @type accountName:      string
-        @return The newly created Bitbucket Group
+        @return The newly created Bitbucket L{Group}
+        @rtype L{Group}
         @raise Exception in case of errors
         """
-        if not groupName or not accountName:
-            q.errorconditionhandler.raiseError('Invalid value of either group name: [%s], or account name: [%s]' %(groupName, accountName))
-
+        self._validateGroupAndAccountNames(groupName, accountName)
         return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, RESTMethod.POST, name=groupName)
 
-    def accountGetRepos(self, accountName):
-        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.USERS)
+    def checkGroup(self, groupName, accountName):
+        """
+        Check whether group exists or not
 
-    def checkGroup(self, group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password):
-        command = "curl -u %s:%s -X GET %sgroups/%s/"%(bitbucket_login, bitbucket_password, bitbucket_api_url, bitbucket_login)
-        try:
-            groups = q.system.process.run(command)[1]
-        except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s" %command)
-        else:
-            groups_list = json.loads(groups)
-            for group in groups_list:
-                group_name = str(group.get("name"))
-                print group_name
-                if group_name == group_to_sync:
-                    return True
-                else:
-                    continue
-            return False
+        @param groupName:       Bitbucket group to lookup if exists
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return True if group exists, False otherwise
+        """
+        return len([group for group in self.getGroups(accountName) if group['name'] == groupName]) > 0
 
-    def addGroupMember(self, group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password, member):
-        group_slug = str()
-        group_slug = self.getGroupSlug(group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password)
-        command = "curl -u %s:%s -X PUT %sgroups/%s/%s/members/%s/ -H Content-Length:0"%(bitbucket_login, bitbucket_password, bitbucket_api_url, bitbucket_login, group_slug, member)
-#        curl -u omohammad:1234 -XPUT https://api.bitbucket.org/1.0/groups/omohammad/bbtest01/members/smedhat/ -H Content-Length:0
-        try:
-            group_added = q.system.process.run(command)[1]
-        except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s" %command)
-        else:
-                return True
+    def deleteGroup(self, groupName, accountName):
+        """
+        Delete the specified Bitbucket group
 
-    def getGroupMembers(self, group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password):
-        group_slug = str()
-        group_slug = self.getGroupSlug(group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password)
-        members_names = list()
-        command = "curl -u %s:%s -X GET %sgroups/%s/%s/members/"%(bitbucket_login, bitbucket_password, bitbucket_api_url, bitbucket_login, group_slug)
-#        curl -u omohammad:1234 -X GET https://api.bitbucket.org/1.0/groups/omohammad/designers/members/
-        try:
-            group_members = q.system.process.run(command)[1]
-        except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s"%command)
-        else:
-            members_list = json.loads(group_members)
-            for member in members_list:
-                first_name = str(member.get("first_name"))
-                last_name = str(member.get("last_name"))
-                user_name = str(member.get("username"))
-                
-                members_names.append("%s %s(%s)"%(first_name, last_name, user_name))
-            
-            return members_names
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @raise Exception in case of errors
+        """
+        self._validateGroupAndAccountNames(groupName, accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, RESTMethod.DELETE, [groupSlug])
 
-    def getGroupSlug(self, group_to_sync,bitbucket_api_url, bitbucket_login, bitbucket_password):
-        slug = str()
-        command = "curl -u %s:%s -X GET %sgroups/%s/"%(bitbucket_login, bitbucket_password, bitbucket_api_url, bitbucket_login)
-        try:
-            groups = q.system.process.run(command)[1]
-        except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s"%command)
-        else:
-            groups_list = json.loads(groups)
-            for group in groups_list:
-                group_name = group.get("name")
-                if group_name == group_to_sync:
-                    slug = str(group.get('slug'))
-                    break
-            return slug
+    def getGroupMembers(self, groupName, accountName):
+        """
+        Retrieve Bitbucket group members
 
-    def removeGroupMember(self,group_to_sync, bitbucket_api_url, bitbucket_login, bitbucket_password, member):
-        
-        group_slug = str()
-        group_slug = self.getGroupSlug(group_to_sync,bitbucket_api_url, bitbucket_login, bitbucket_password)
-        command = "curl -u %s:%s -X DELETE %sgroups/%s/%s/members/%s/"%(bitbucket_login, bitbucket_password, bitbucket_api_url, bitbucket_login, group_slug, member)
-#        curl -u omohammad:1234 -X DELETE https://api.bitbucket.org/1.0/groups/omohammad/bbtest03/members/smedhat/
-        try:
-            groups = q.system.process.run(command)[1]
-        except:
-            q.errorconditionhandler.raiseError("Error while executing command : %s"%command)
-        else:
-            return True
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return Bitbucket group members, empty if no members exist
+        @rtype list
+        @raise Exception in case of errors
+        """
+        self._validateGroupAndAccountNames(groupName, accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, uriParts=[groupSlug, 'members'])
+
+    def addGroupMember(self, memberLogin, groupName, accountName):
+        """
+        Add a new member to a Bitbucket group
+
+        @param memberLogin:     Bitbucket member login
+        @type memberLogin:      string
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return The L{Member} if it has been added successfully
+        @rtype L{Member}
+        @raise Exception in case of errors
+        """
+        self._validateMemberAndGroupAndAccountNames(memberLogin, groupName, accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, RESTMethod.PUT, uriParts=[groupSlug, 'members', memberLogin])
+
+    def updateGroup(self, groupName, accountName, **kwargs):
+        """
+        Update Bitbucket group settings
+
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @param kwargs:          Bitbucket group setteings required to be updated\
+        @type kwargs:           dict
+        @return The L{Group} after update if update has been done successfully
+        @rtype L{Group}
+        @raise Exception in case of errors
+        """
+        self._validateGroupAndAccountNames(groupName, accountName)
+        group = self.getGroup(groupName, accountName)
+        if kwargs:
+            if not str(BitbucketSettingsParam.NAME) in kwargs:
+                kwargs[str(BitbucketSettingsParam.NAME)] = group[str(BitbucketSettingsParam.NAME)]
+
+            if not BitbucketSettingsParam.PERMISSION in kwargs:
+                kwargs[str(BitbucketSettingsParam.PERMISSION)] = group[str(BitbucketSettingsParam.PERMISSION)]
+
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, RESTMethod.PUT, [group['slug']], **kwargs)
+
+    def deleteGroupMember(self, memberLogin, groupName, accountName):
+        """
+        Delete a member from a Bitbucket group
+
+        @param memberLogin:     Bitbucket member login
+        @type memberLogin:      string
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @raise Exception in case of errors
+        """
+        self._validateMemberAndGroupAndAccountNames(memberLogin, groupName, accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, RESTMethod.DELETE, uriParts=[groupSlug, 'members', memberLogin])
+
+    def getGroupPrivileges(self, accountName, filter=None, private=None):
+        """
+        Retrieve all group privileges specified by that Bitbucket account
+
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @param filter:          Filtering the permissions of privileges we are looking for
+        @type filter:           L{BitbucketPermission}
+        @param private:         Defines whether to retrieve privileges defined on private repositories or not
+        @type private:          boolean
+        @return All L{Privilege}s specified by that Bitbucket account name
+        @rtype list
+        @raise Exception in case of errors
+        """
+        self._validateValues(accountName=accountName)
+        params = dict()
+        if filter:
+            params['filter'] = filter
+
+        if private != None:
+            params['private'] = private
+
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, params=params)
+
+    def getRepoGroupPrivileges(self, repoName, accountName):
+        """
+        Retrieve all group privileges specified by that Bitbucket account on that Bitbucket repository
+
+        @param repoName:        Bitbucket repository name
+        @type repoName:         string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return All L{Privilege}s specified by that Bitbucket account name on that Bitbucket repository
+        @rtype list
+        @raise Exception in case of errors
+        """
+        self._validateValues(repoName=repoName, accountName=accountName)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, uriParts=[repoName])
+
+    def grantGroupPrivileges(self, groupName, repoName, privilege, accountName):
+        """
+        Grant a group privilege to the specified Bitbucket repository
+
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param repoName:        Bitbucket repository
+        @type repoName:         string
+        @param privilege:       Group privilege
+        @type privilege:        L{BitbucketPermission}
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return List L{Privilege}s granted to the specified repository
+        @rtype list
+        @raise Exception in case of errors
+        """
+        self._validateValues(groupName=groupName, repoName=repoName, accountName=accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, RESTMethod.PUT, uriParts=[repoName, accountName, groupSlug], data=[str(privilege)])
+
+    def revokeRepoGroupPrivileges(self, groupName, repoName, accountName):
+        """
+        Revoke group privileges on the defined Bitbucket repository
+
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param repoName:        Bitbucket repository name
+        @type repoName:         string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @raise Exception in case of errors
+        """
+        self._validateValues(groupName=groupName, repoName=repoName, accountName=accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, RESTMethod.DELETE, uriParts=[repoName, accountName, groupSlug])
+
+    def revokeGroupPrivileges(self, groupName, accountName):
+        """
+        Revoke all group privileges
+
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param repoName:        Bitbucket repository name
+        @type repoName:         string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @raise Exception in case of errors
+        """
+        self._validateValues(groupName=groupName, accountName=accountName)
+        groupSlug = self._getGroupSlug(groupName, accountName)
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, RESTMethod.DELETE, uriParts=[accountName, groupSlug])
+
+    def _getGroupSlug(self, groupName, accountName):
+        """
+        Retriev Bitbucket group slug name
+
+        @param groupName:       Bitbucket group name
+        @type groupName:        string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return Bitbucket group slug name or Exception in case of errors
+        @rtype string
+        """
+        self._validateValues(groupName=groupName, accountName=accountName)
+        group = self.getGroup(groupName, accountName)
+        return group['slug']
+
+    def _validateValues(self, **kwargs):
+        """
+        Validate values that they are not neither None nor empty valued
+
+        @param kwargs:          Values to be validated
+        @type kwargs:           dict
+        @raise Exception in case one or more values do not satisfy the conditions specified above
+        """
+        invalidValues = dict()
+        for key in kwargs:
+            if not kwargs[key]:
+                invalidValues[key] = kwargs[key]
+
+        if invalidValues:
+            q.errorconditionhandler.raiseError('Invalid values: %s' %invalidValues)
+
+    # TODO - MNour : We need a proper validation mechanism. @see http://jcp.org/en/jsr/detail?id=303
+#    def _validateAccountName(self, accountName):
+#        """
+#        Validates both Bitbucket account name
+#
+#        @param accountName:     Bitbucket account name
+#        @type accountName:      string
+#        @raise Exception if account name is not valid
+#        """
+#        if not accountName:
+#            q.errorconditionhandler.raiseError('Invalid account name: [%s].' %accountName)
+#
+#    def _validateGroupAndAccountNames(self, groupName, accountName):
+#        """
+#        Validates both Bitbucket account and group names
+#
+#        @param groupName:       Bitbucket group name
+#        @type groupName:        string
+#        @param accountName:     Bitbucket account name
+#        @type accountName:      string
+#        @raise Exception if account/group names or both are not valid
+#        """
+#        if not groupName or not accountName:
+#            q.errorconditionhandler.raiseError('Invalid group name: [%s], or account name: [%s].' %(groupName, accountName))
+#
+#    def _validateMemberAndGroupAndAccountNames(self, memberLogin, groupName, accountName):
+#        """
+#        Validates both Bitbucket account and group names
+#
+#        @param memberLogin:     Bitbucket member login
+#        @type memberLogin:      string
+#        @param groupName:       Bitbucket group name
+#        @type groupName:        string
+#        @param accountName:     Bitbucket account name
+#        @type accountName:      string
+#        @raise Exception if account/group names or both are not valid
+#        """
+#        if not memberLogin or not groupName or not accountName:
+#            q.errorconditionhandler.raiseError('Invalid member login: [%s], or group name: [%s], or account name: [%s].' %(memberLogin, groupName, accountName))
 
 #####################################################################################################################
 #crowd m                                                                                                            #
@@ -496,3 +762,4 @@ class Bitbucket:
         
         if self.crowdCheck_group(crowd_api_url, crowd_login, crowd_password, crowd_group_to_sync):
             pass
+        
