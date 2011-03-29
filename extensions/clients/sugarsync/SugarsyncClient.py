@@ -400,7 +400,7 @@ class SugarsyncClient(object):
         headers = {'Content-Type' : content_type
                    ,'Content-Length' : len(data)
                    ,'Authorization' : auth_token}
-        resp = httpClientConnection.get(_baseurl, data=data, headers=headers)
+        resp = httpClientConnection.put(_baseurl, data=data, headers=headers)
         #resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
         return True
             
