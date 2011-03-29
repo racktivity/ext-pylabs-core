@@ -3,7 +3,7 @@ class activity:
     Activity actions API
     """
     
-    def create(self, name, description="", location, type, priority, status, customerguid="", leadguid="", \
+    def create(self, name, description, location, type, priority, status, customerguid="", leadguid="", \
                starttime="", endtime="", jobguid="", executionparams=dict()):
         """
         Create an activity
@@ -11,7 +11,7 @@ class activity:
         @param name: name for the activity
         @type name: string
         
-        @param description: description of the activity, default empty string
+        @param description: description of the activity
         @type description: string
         
         @param location: location where the activity will be held
@@ -121,8 +121,8 @@ class activity:
         @raise e:                      in case of an error, raise an exception
         """
         
-    def find(self, activityguid="", customerguid="", leadguid="", name="", description="", type="", startdate="", enddate="", status="", priority="",\
-             location="", jobguid="", executionparams=dict()):
+    def find(self, activityguid=None, customerguid=None, leadguid=None, name=None, description=None, type=None, startdate=None, enddate=None, status=None, 
+             priority=None, location=None, jobguid=None, executionparams=dict()):
         """
         Find activities by using find criteria
         
