@@ -11,7 +11,7 @@ def main(q, i, p, params, tags):
     *Type:* %(type)s
     *Status:* %(status)s    
     """
-    activity = p.api.action.crm.customer.getObject(guid)
+    activity = p.api.action.crm.activity.getObject(guid)
     searchresult = p.action.ui.page.find(name="activity_detail_%s"%guid)['result']
     if searchresult:
         p.action.ui.page.update(guid, "activity_detail_%s"%guid, "crm", "activity", "crm activity", 
