@@ -20,7 +20,7 @@ def main(q, i, p, params, tags):
     The Incubaid team.
     """
     params['result'] = p.api.actor.crm.mailprocessor.sendMail(sender='crm@incubaid.com', replyto='crm@incubaid.com', to=customer.email, 
-                                                              subject='Welcome!', message%{"name": customer.name})['result']
+                                                              subject='Welcome!', message=message%{"name": customer.name})['result']
     
 def match(q, i, p, params, tags):
 	return True
