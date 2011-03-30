@@ -1,4 +1,3 @@
-__tags__ = 'pop3','find'
 __author__ = 'incubaid'
 
 def main(q, i, p, params, tags):

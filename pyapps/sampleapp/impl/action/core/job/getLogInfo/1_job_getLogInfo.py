@@ -1,5 +1,4 @@
-__author__ = 'aserver'
-__tags__ = 'job', 'getXML'
+__author__ = 'incubaid'
 __priority__= 3
 
 def main(q, i, p, params, tags):

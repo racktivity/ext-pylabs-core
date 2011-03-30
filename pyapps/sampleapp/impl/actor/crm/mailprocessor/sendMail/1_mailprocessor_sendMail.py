@@ -1,4 +1,3 @@
-__tags__ = 'mailprocessor','sendMail'
 __author__ = 'incubaid'
 
 def main(q, i, p, params, tags):

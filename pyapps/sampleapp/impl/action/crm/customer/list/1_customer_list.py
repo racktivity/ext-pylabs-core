@@ -1,4 +1,3 @@
-__tags__ = 'customer','list'
 __author__ = 'incubaid'
 
 from osis.store.OsisDB import OsisDB

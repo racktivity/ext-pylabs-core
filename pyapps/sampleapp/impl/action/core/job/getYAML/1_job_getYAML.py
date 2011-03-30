@@ -1,5 +1,4 @@
-__author__ = 'aserver'
-__tags__ = 'job', 'getYAML'
+__author__ = 'incubaid'
 __priority__= 3
 
 import osis

@@ -1,5 +1,4 @@
-__author__ = 'aserver'
-__tags__ = 'job', 'getXMLSchema'
+__author__ = 'incubaid'
 __priority__= 3
 
 def main(q, i, p, params, tags):
@@ -7,3 +6,4 @@ def main(q, i, p, params, tags):
 
 def match(q, i, params, tags):
     return True
+

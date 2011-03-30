@@ -1,5 +1,4 @@
 __author__ = 'incubaid'
-__tags__ = 'customer', 'find'
 __priority__ = 3
 
 def main(q, i, p, params, tags):
