@@ -3,7 +3,7 @@ class mailprocessor:
     Mail Processor actions API
     """
  
-    def sendMail(self, sender, replyto, to, cc, bcc, subject, message):
+    def sendMail(self, sender, replyto, to, cc, bcc, subject, message, jobguid="", executionparams=None):
         """
         Create a mailprocessor
 
