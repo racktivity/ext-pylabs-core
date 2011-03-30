@@ -3,7 +3,7 @@ class mailprocessor:
     Mail Processor actions API
     """
  
-    def sendMail(self, sender, replyto, to, cc, bcc, subject, message, jobguid="", executionparams=None):
+    def sendMail(self, sender, replyto, to, subject, message, cc="", bcc="", jobguid="", executionparams=None):
         """
         Create a mailprocessor
 
@@ -16,17 +16,17 @@ class mailprocessor:
         @param to:  to address for the email
         @type to: string
 
-        @param cc:  cc address for the email
-        @type cc: string
-
-        @param bcc: bcc address for the email
-        @type bcc: string
-
         @param subject: subject for the email
         @type subject: string
 
         @param message: message body for the email
         @type message: string
+
+        @param cc:  cc address for the email
+        @type cc: string
+
+        @param bcc: bcc address for the email
+        @type bcc: string
  
         @param jobguid: guid of the job if available else empty string
         @type jobguid: guid
