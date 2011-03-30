@@ -91,7 +91,7 @@ class SugarsyncClient(object):
         method = method.lower()
         resp = httpClientConnection.__getattribute__(method)(_baseurl, data=data, headers=headers)
         #resp = self._http_request(_baseurl, data=data, headers=headers, method=method)
-        if method == 'DELETE': 
+        if method == 'delete':
             return True #resp headers don't carry any info and body is empty
         else:
             newFolderUrl = resp.headers['location'] 
@@ -395,14 +395,17 @@ class SugarsyncClient(object):
         '''
         httpClientConnection = q.clients.http.getConnection()
         _baseurl = fileUrl if fileUrl.split('/')[-1].startswith('data') else '%s/data'%fileUrl
-        data = open(localFilePath).read()
-        content_type = mimetypes.guess_type(localFilePath)[0]
-        headers = {'Content-Type' : content_type
-                   ,'Content-Length' : len(data)
-                   ,'Authorization' : auth_token}
-        resp = httpClientConnection.put(_baseurl, data=data, headers=headers)
-        #resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
-        return True
+        try:
+            data = open(localFilePath).read()
+            content_type = mimetypes.guess_type(localFilePath)[0]
+            headers = {'Content-Type' : content_type
+                       ,'Content-Length' : len(data)
+                       ,'Authorization' : auth_token}
+            resp = httpClientConnection.put(_baseurl, data=data, headers=headers)
+            #resp = self._http_request(_baseurl, data=data, headers=headers, method='PUT')
+            return True
+        except:
+            return Falses
             
     def retrieveFileData(self, auth_token, fileUrl, downloadPath, customHeaders={}):
         '''
