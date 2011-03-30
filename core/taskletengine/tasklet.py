@@ -221,7 +221,14 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
         assert callable(wrapper)
 
         params['taskletlastexecutiontime'] = self._lastexecutiontime
-        if self.match(pylabs.q, pylabs.i, params, tags):
+
+        if inspect.getargspec(self.match) == (['q', 'i', 'p', 'params', 'tags'], None, None, None):
+            args = (pylabs.q, pylabs.i, pylabs.p, params, tags or tuple())
+        else:
+            # Default to the old argspec
+            args = (pylabs.q, pylabs.i, params, tags or tuple())
+
+        if self.match(*args):
             return self.execute(params, tags, wrapper)
         else:
             return Tasklet.MATCH_FAILED
