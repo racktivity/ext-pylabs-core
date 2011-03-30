@@ -58,7 +58,7 @@ class InvalidTaskletFunction(RuntimeError):
 
 class Tasklet(object): #pylint: disable-msg=R0902,R0903
     '''Representation of a single tasklet'''
-    def __init__(self, name, path):
+    def __init__(self, name, path, tasklet_root):
         '''Initialize a new tasklet
 
         @param path: Tasklet module location on filesystem
@@ -67,6 +67,7 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
         pylabs.q.logger.log('Loading tasklet %s from %s' % (name, path), 6)
         self._name = name
         self._path = path
+        self._tasklet_root = tasklet_root
         self._loaded = False
         self._main = None
         self._methods = {}
@@ -93,7 +94,7 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
             tags = getattr(module, TAGS_ATTR, tuple())
             tags = self._parseTags(tags)
         else:
-            tags = tags_from_path(self._path)
+            tags = tags_from_path(self._path, self._tasklet_root)
             tags = self._parseTags(tags)
 
         self._tags = set(tags)
@@ -341,12 +342,26 @@ def unfold(tags):
 def clean_path_parts(path):
     return [part for part in path.split(os.path.sep) if part]
 
-def tags_from_path(path):
-    parts = clean_path_parts(path)
-    if len(parts) < 3:
+def tags_from_path(path, tasklet_root):
+    """
+    Return the tuple of tags from path for a tasklet root
+
+    Path "/some/path/tag1/tag2/tag3/1_tasklet.py" will return
+    ("tag1", "tag2", "tag3") for tasklet root "/some/path".
+
+    @param path: the path of the tasklet
+    @type path: string
+    @param tasklet_root: the root of the tasklets tree
+    @type tasklet_root: string
+    @return: the list of tags
+    @rtype: tuple(string)
+    """
+    relpath = os.path.relpath(path, tasklet_root)
+    parts = relpath.split(os.path.sep)
+    if not parts:
         return tuple()
-    else:
-        return tuple(parts[-3:-1])
+
+    return tuple(parts[:-1])
 
 def priority_from_path(path):
     parts = clean_path_parts(path)
@@ -361,14 +376,6 @@ def priority_from_path(path):
             groupdict = match.groupdict()
             priority_string = groupdict['priority']
             return int(priority_string)
-
-def test_tags_from_short_path():
-    tags = tags_from_path("/etc/1_tasklet.py")
-    assert tags == (), "Expected empty tags tuple, but was %s" % tags
-
-def test_tags_from_ok_path():
-    tags = tags_from_path("/opt/qbase5/pyapps/sampleapp/impl/action/core/machine/start/1_start.py")
-    assert set(tags) == set(("core", "machine")), 'Expected tags "core" and "machine", but was %s' % tags
 
 def test_unfold():
     '''Testcase for the unfold function'''

@@ -147,9 +147,9 @@ class TaskletEngine(object):
         self._path_load_times[path] = time.time()
 
         for taskletfile in listTaskletFiles():
-            self._registerTasklet(taskletfile)
+            self._registerTasklet(taskletfile, path)
 
-    def _registerTasklet(self, path):
+    def _registerTasklet(self, path, tasklet_root):
         '''Register one tasklet in a given file in the system'''
         pylabs.q.logger.log('Loading tasklet %s' % path)
         if path in self._tasklets:
@@ -157,7 +157,7 @@ class TaskletEngine(object):
 
         name = self._getPathInfo(path)
 
-        tasklet = self._tasklets[path] = Tasklet(name, path)
+        tasklet = self._tasklets[path] = Tasklet(name, path, tasklet_root)
 
         if self._cluster_fun:
             for key in self._cluster_fun(tasklet):
