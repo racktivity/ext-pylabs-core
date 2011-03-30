@@ -45,6 +45,8 @@ class BitbucketPermission(BaseEnumeration):
 
 class Bitbucket:
     """
+    Bitbucket client enables administrators and developers leveraging Bitbucket services through PyLabs
+
     @property accounts = account on bitbucket e.g. despieg, value is array of mercurial repo's
     """
 
@@ -107,14 +109,14 @@ class Bitbucket:
         """
         self.init()
         if accountName=="":
-            accountName=q.gui.dialog.askChoice("Select bitbucket accountName",self._getAccountNames())      
+            accountName=q.gui.dialog.askChoice("Select Bitbucket account name",self._getAccountNames())
         config=self.accountGetConfig(accountName)
         login=config["login"]
         passwd=config["passwd"]
         if login=="" or passwd=="":
             self.accountsReview(accountName)
         url=" https://%s:%s@bitbucket.org/%s/" % (login,passwd,accountName)
-        return url,login,passwd        
+        return url,login,passwd
 
 ##    def _syncBitbucketConfigToMercurialConfig(self):
 ##        mercurialconnections=q.clients.mercurial.config.list()
