@@ -73,16 +73,16 @@ cp -rf opt/code/ /opt/
 cp -rf opt/qbase5/ /opt/
 
 cd /opt/code/incubaid/pylabs-core
-hg pull -u "${HG_PREFIX}/despiegk/pylabs-core"
+hg pull -u "${HG_PREFIX}/incubaid/pylabs-core"
 
 cd /opt/code/incubaid/qp5_-unstable-_pylabs5
-hg pull -u "${HG_PREFIX}/despiegk/qp5_-unstable-_pylabs5"
+hg pull -u "${HG_PREFIX}/incubaid/qp5_-unstable-_pylabs5"
 
 cd /opt/code/incubaid/qp5_-unstable-_pylabs5_test
-hg pull -u "${HG_PREFIX}/despiegk/qp5_-unstable-_pylabs5_test"
+hg pull -u "${HG_PREFIX}/incubaid/qp5_-unstable-_pylabs5_test"
 
 cd /opt/code/incubaid/qp5_-unstable-_qpackages5
-hg pull -u "${HG_PREFIX}/despiegk/qp5_-unstable-_qpackages5"
+hg pull -u "${HG_PREFIX}/incubaid/qp5_-unstable-_qpackages5"
 
 
 mkdir -p /etc/python2.6
