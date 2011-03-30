@@ -850,8 +850,8 @@ class ApplicationserverWizardService(object):
             # Tasklets go into (folder containing this service file)/tasklets
             taskletPaths = [q.system.fs.joinPaths(os.path.dirname(__file__), 'tasklets')]
             
-        self.taskletengine = q.taskletengine.get(taskletPath[0])
-        for tDir in taskletDirs[1:]:
+        self.taskletengine = q.taskletengine.get(taskletPaths[0])
+        for tDir in taskletPaths[1:]:
             self.taskletengine.addFromPath( tDir )
 
     @q.manage.applicationserver.expose
