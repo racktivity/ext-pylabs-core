@@ -10,6 +10,8 @@ class ${className}(object):
         """
         $method.docs
         """        
+        if executionparams is None:
+            executionparams = dict()
 #set $line = ','.join($method.argNames)
         return self._proxy('$domain', '$className', '$method.name', $line)
         
