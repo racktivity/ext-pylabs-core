@@ -45,11 +45,14 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def update(self, name="", code="", customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=None):
+    def update(self, leadguid, name="", code="", customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=None):
         """
         Update a lead
  
         @security administrators
+
+        @param leadguid:          guid of the lead
+        @type leadguid:           guid
  
         @param name:  name of the lead
         @type name: string
