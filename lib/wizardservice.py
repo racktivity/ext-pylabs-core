@@ -839,18 +839,20 @@ class RunningWizardManager(object):
 
 class ApplicationserverWizardService(object):
     '''Wizard applicationserver service'''
-    def __init__(self, taskletPath=None):
+    def __init__(self, taskletPaths=None):
         self._manager = RunningWizardManager()
 
         q.gui.dialog.chooseDialogType(q.enumerators.DialogType.WIZARDSERVER)
         q.gui.dialog.MessageType = DialogMessage
 
-        if not taskletPath:
+        if not taskletPaths:
             # If no specific tasklets path was specified
             # Tasklets go into (folder containing this service file)/tasklets
-            taskletPath = q.system.fs.joinPaths(os.path.dirname(__file__), 'tasklets')
+            taskletPaths = [q.system.fs.joinPaths(os.path.dirname(__file__), 'tasklets')]
             
-        self.taskletengine = q.taskletengine.get(taskletPath)
+        self.taskletengine = q.taskletengine.get(taskletPath[0])
+        for tDir in taskletDirs[1:]:
+            self.taskletengine.addFromPath( tDir )
 
     @q.manage.applicationserver.expose
     def start(self, domain, wizardName, extra=None, applicationserver_request=None):
@@ -863,7 +865,7 @@ class ApplicationserverWizardService(object):
         extra = extra or dict()
 
         tasklets = self.taskletengine.find(name='*',
-                                                 tags=('wizard', wizardName))
+                                                 tags=(domain, wizardName))
 
         if not tasklets:
             raise RuntimeError('No matching wizard found')
@@ -890,7 +892,7 @@ class ApplicationserverWizardService(object):
         raise RuntimeError('No matching wizard found')
 
     @q.manage.applicationserver.expose
-    def callback(self, wizardName='', methodName='', formData='', extra=None, SessionId=None, applicationserver_request=None):
+    def callback(self, domain, wizardName='', methodName='', formData='', extra=None, SessionId=None, applicationserver_request=None):
         q.logger.log('Callback method %s of wizard %s' % \
                 (methodName, wizardName), 7)
         methodName = 'callback_%s'%methodName
@@ -907,9 +909,9 @@ class ApplicationserverWizardService(object):
             q.logger.log('Callback does not get a sessionid')
             extra['SESSIONSTATE'] = None
 
-        callback_method = self._getWizardMethod(wizardName, methodName)
+        callback_method = self._getWizardMethod(domain, wizardName, methodName)
 
-        updatedForm = callback_method(q, i, extra, ('wizard', ))
+        updatedForm = callback_method(q, i, extra, (domain, ))
         action = updatedForm.convertToWizardAction()
 
         return simplejson.dumps(action)
@@ -932,9 +934,9 @@ class ApplicationserverWizardService(object):
 
         return step
 
-    def _getWizardMethod(self, wizardName, method):
+    def _getWizardMethod(self, domain, wizardName, method):
         wizard_methods = self.taskletengine.find(name='*',
-                                                 tags=('wizard',wizardName))
+                                                 tags=(domain,wizardName))
 
         if not wizard_methods:
             raise RuntimeError('No matching wizard found')
