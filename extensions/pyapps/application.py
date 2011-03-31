@@ -96,7 +96,7 @@ import xmlrpclib
 class XmlRpcActionProxy(object):
     
     def __init__(self, url):
-        self.client = xmlrpclib.ServerProxy(url) 
+        self.client = xmlrpclib.ServerProxy(url, allow_none=True)
     
     def __call__(self, domainname, classname, methodname, *args):
 
