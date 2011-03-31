@@ -11,7 +11,7 @@ def main(q, i, p, params, tags):
     lead.amount = params.get('amount')
     lead.probability = params.get('probability')    
     p.api.model.crm.lead.save(lead)
-    params['result'] = True
+    params['result'] = lead.guid
     
 def match(q, i, p, params, tags):
 	return True

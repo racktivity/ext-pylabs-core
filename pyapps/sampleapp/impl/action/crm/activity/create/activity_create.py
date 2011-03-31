@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
     activity.starttime = params['starttime']
     activity.endtime = params['endtime']
     activity.save()
-    params['result'] = True
+    params['result'] = activity.guid
     
 def match(q, i, p, params, tags):
     return True
