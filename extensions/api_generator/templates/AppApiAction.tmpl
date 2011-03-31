@@ -25,7 +25,7 @@ class ${className}ActionManagerProxy(object):
     def __call__(self, domainname, classname, methodname, *args):        
         try:
             m = getattr(self,  methodname)
-            m(*args)
+            return m(*args)
         except AttributeError, ae:
             raise 
         except Exception, e:
