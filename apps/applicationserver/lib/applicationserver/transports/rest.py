@@ -121,7 +121,16 @@ class RESTDomain(Resource):
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
+        if not self.isServiceName( str(request.URLPath())  ):
+            return RESTDomain( self.dispatcher, name )
         return RESTService(self.dispatcher, self.domain, name)
+
+    def isServiceName(self, url):
+        # URL is http://url[:port]/appname/appserver/rest/domain/servicename/method
+        urlParts = url.split('/')
+        if len( urlParts ) < 8 :
+            return False
+        return True
 
 class RESTService(Resource):
     '''REST service handler
@@ -164,7 +173,7 @@ class RESTMethod(Resource):
         if not name:
             return self
         #TODO Check whether next line is actually what we want
-        return RESTMethod(self.dispatcher, self.service, name)
+        return RESTMethod(self.dispatcher, self.domain, self.service, name)
 
     def render_GET(self, request):
         #TODO Defer this
