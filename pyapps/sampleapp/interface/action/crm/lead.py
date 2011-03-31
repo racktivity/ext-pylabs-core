@@ -3,7 +3,7 @@ class lead:
     Lead actions API
     """
  
-    def create(self, name, code, customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=None):
+    def create(self, name, code, customerguid=None, source=None, type=None, status=None, amount=None, probability=None, jobguid=None, executionparams=None):
         """
         Create a lead
  
@@ -45,7 +45,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def update(self, leadguid, name="", code="", customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=None):
+    def update(self, leadguid, name=None, code=None, customerguid=None, source=None, type=None, status=None, amount=None, probability=None, jobguid=None, executionparams=None):
         """
         Update a lead
  
@@ -90,7 +90,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, leadguid, jobguid="", executionparams=None):
+    def delete(self, leadguid, jobguid=None, executionparams=None):
        """
         Delete a lead
  
@@ -111,7 +111,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, name="", code="", customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=None):
+    def find(self, name=None, code=None, customerguid=None, source=None, type=None, status=None, amount=None, probability=None, jobguid=None, executionparams=None):
         """
         Returns a list of leads which met the find criteria.
  
@@ -159,7 +159,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-    def getObject(self, leadguid, jobguid="",executionparams=None):
+    def getObject(self, leadguid, jobguid=None,executionparams=None):
         """
         Gets the rootobject.
  
@@ -174,7 +174,7 @@ class lead:
         @warning:                   Only usable using the python client.
         """
  
-    def list(self, jobguid="", executionparams=None):
+    def list(self, jobguid=None, executionparams=None):
         """
         Filtered list which returns main parameters of every lead in dict format
    
@@ -202,7 +202,7 @@ class lead:
         @raise e:                     In case an error occurred, exception is raised
         """
         
-    def listTypes(self, jobguid="", executionparams=None):
+    def listTypes(self, jobguid=None, executionparams=None):
         """
         List of possible lead types
    
@@ -222,7 +222,7 @@ class lead:
         @raise e:                     In case an error occurred, exception is raised
         """
         
-    def listSources(self, jobguid="", executionparams=None):
+    def listSources(self, jobguid=None, executionparams=None):
         """
         List of possible lead sources
    

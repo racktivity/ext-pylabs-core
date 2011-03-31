@@ -24,7 +24,7 @@ def main(q, i, p, params, tags):
         raise ValueError("Cannot update %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
     guid = params[GUID_FIELD]
 
-    o = handle.get(p, guid)
+    o = handle.get(guid)
 
     for field in FIELDS:
         if field not in params:
@@ -39,4 +39,5 @@ def main(q, i, p, params, tags):
         q.logger.log("Updating field %s to value %s" % (field, value), 7)
         setattr(o , field, value)
 
+    handle.save(o)
     params['result'] = True
