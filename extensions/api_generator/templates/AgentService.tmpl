@@ -39,6 +39,10 @@ class ConfigAgentStub:
     @staticmethod
     def add(name, _):
         assert name == 'main'
+        
+    @staticmethod 
+    def updateConfig():
+        pass
 
 # Monkey-patching mocking magic
 i.config.agent = ConfigAgentStub()
