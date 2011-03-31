@@ -69,10 +69,17 @@ class PyAppsConfigGen:
                 postgres.applyConfig()
         if 'wfe' in self.components:
             if self.appName not in q.manage.ejabberd.cmdb.hosts:
+                agent_cfg = AgentPyApps(self.appName)
+                password = agent_cfg.password
+                agentguid = agent_cfg.agentguid
+                agentcontrollerguid = agent_cfg.agentcontrollerguid
+                hostname = agent_cfg.hostname
+
                 q.manage.ejabberd.startChanges()
-                q.manage.ejabberd.cmdb.addHost(self.appName)
-                q.manage.ejabberd.cmdb.addUser('agent', self.appName, 'agent')
-                q.manage.ejabberd.cmdb.addUser('agentcontroller', self.appName, 'agentcontroller')
+                q.manage.ejabberd.cmdb.addHost(hostname)
+                q.manage.ejabberd.cmdb.addUser(agentguid, hostname, password)
+                q.manage.ejabberd.cmdb.addUser(agentcontrollerguid, hostname, agentcontrollerguid)
+
                 q.manage.ejabberd.save()
                 q.manage.ejabberd.applyConfig()
 
