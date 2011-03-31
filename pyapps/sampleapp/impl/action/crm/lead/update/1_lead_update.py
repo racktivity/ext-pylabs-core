@@ -8,8 +8,7 @@ FIELDS = (
         'type',
         'status',
         'amount',
-        'probability',
-        'jobguid'
+        'probability'
         )
 TYPE = "lead"
 GUID_FIELD = "%sguid" % TYPE
