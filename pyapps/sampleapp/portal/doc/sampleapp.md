@@ -1,124 +1,241 @@
-#Creating a PyLabs Application
+#PyLabs Applications
 
 ##Introducing PyApps
-Explain PyLabs/PyApps: drp/model/actions/actors/osis/app domain/...
-A PyLabs Application (PyApp) is an application designed to run on the PyLabs 5 
-framework. Each PyApp consists of the same components, such as Root Objects 
-(RO), Actions, Wizards, Forms, ...
+A PyApp is an application which is created on top of the PyLabs framework.
+Each PyApp consists of the same components, such as Root Objects, actions, wizards, forms, tasklets, ...
+
+In this section we introduce you to the different components of PyApps and how they interact.
 
 ###Architecture
-*insert architecture scheme here*
+Below you can find the architecture of how the PyLabs framework is built.
 
-Arakoon: key/value store of objects, non-queryable, no relational DB
-PostgreSQL: open source relational db, used for views, fast, queryable 
+![PyApps_Architecture] (/portal/static/PyApp_Architecture.png)
 
-OSIS: on top of Arakoon and PostgreSQL, sort of interface to postgresql/
-arakoon, crud on objects in arakoon/postgresql, create views for fast indexing
+![PyLabs_DRP] (/portal/static/PyLabs_DRP.png)
+
+Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
+
+PostgreSQL: open source relational db, used for views, fast, queryable. This database is used to store views on objects. For example, you can create a view on a customer which save its name and address. This view and its data will be stored in this PostgreSQL database. Via OSIS, these views are populated and updated.
+
+OSIS: Object Store and Indexing System, this is a layer on top of Arakoon and PostgreSQL. OSIS has two functions:
+* store and retrieve Thrift Serialized Objects in and from Arakoon
+* store and update views in PostgreSQL
 
 ###PyModel
-PyModel is p.api.model.domain.RO, get/store objects from/in Arakoon and/or 
-PostgreSQL. The get-function is a deserialization process of an object, the 
-store-function is a serialization process of an object
+PyModel is a PyLabs extension to define, create, and update complex objects. PyModel is capable of serializing Thrift objects to store them in Arakoon, as well as deserializing these objects for further usage in your application.
+The PyModel extension is represented by p.api.model in PyLabs.
 
-####Root Objects
+###Root Objects
 A Root Object of a PyApp is a logical unit in the DRP (Datacenter Resource 
 Planning). The Root Object is a composite entity of properties, components and
 references to other Root Objects.
 
 For example:
-The Root Object "Customer" can have the properties Name, Description, Address,
-... It can have contact person as component and can be in relation with another
- customer via a reference.
+The Root Object "Customer" can have the properties Name, Description, Address,... It can have contact person as component and can be in relation with another customer via a reference.
 
 ###Actions
-Define possible actions on a root object, define args per function, define 
-result of action
+An Action is a definition of possible operations on root objects. The definition determines which arguments the operation expects and what the result must be of the operation. 
 
-Per action, there exists 1 tasklet which contains the biz logic and the actual 
-code
+Per action, there exists one tasklet which contains the business logic and the actual code for the operation.
 
-###From Modelling to Reality
-graphical overview with steps from specs over model to reality
+###From Modeling to Reality
+Below you find a graphical overview of the creation of a PyApp. 
+![PyApp] (/portal/static/PyApp.png)
 
-###PyApps Directory Structure
+
+##PyApps Directory Structure
 Below you can find the directory structure of a PyApp.
 
     pyapps/
     `-- myappname
-        |-- cfg
-        |-- portal
-        |   |-- static
-        |   |-- doc
-        |   `-- api
-        |-- impl
-        |    |-- action
-        |    |   `-- domainname
-        |    |       `-- rootobjectname
-        |    |           `-- methodname
-        |    |               `-- tasklet1.py
-        |    |-- actor
-        |    |   `-- domainname
+        |-- impl (actual implementation of the pyapp)
+        |    |-- action (contains the different actions of the pyapp)
+        |    |   `-- domainname (domain in the pyapp)
+        |    |       `-- rootobjectname (a root object of the pyapp)
+        |    |           `-- methodname (action on a root object)
+        |    |               `-- tasklet1.py (actual implementation)
+        |    |-- actor (to create something in reality) 
+        |    |   `-- domainname (domain in the pyapp)
         |    |       `-- actorname
-        |    |           `-- methodname
-        |    |               `-- tasklet1.py
-        |    |-- osis
-        |    |   `-- domainname
-        |    |       `-- tasklet1.py
-        |    |-- service
+        |    |           `-- methodname (name of the action)
+        |    |               |-- scripts (directory for rscripts)
+        |    |               |   `-- rscript1.rscript (script to be executed by agent)
+        |    |               `-- tasklet1.py (tasklet to make rscript by an agent)
+        |    |-- authenticate
+        |    |   `-- authenticate.py
+        |    |-- authorize
+        |    |   `-- authorize.py
+        |    |-- events (define actions triggered by a pyapp event)
+        |    |   |-- event_action1
+        |    |   |   |-- consumer.cfg (configuration when action must be triggered)
+        |    |   |   |-- event_action1.py (action to be executed upon event)
+        |    |   |   `-- event_action2.py
+        |    |   |-- event_action2
+        |    |   |   |-- consumer.cfg
+        |    |   |   |-- event_action1.py
+        |    |   |   `-- event_action2.py
+        |    |-- osis (methods to delete/store objects from/in views in postgres db) 
+        |    |   |-- config (config objects of pyapp)
+        |    |   |   |-- config1_delete.py
+        |    |   |   `-- config1_store.py
+        |    |   |-- domainname
+        |    |   |   `-- rootobjectname
+        |    |   |       |-- objectname_delete.py
+        |    |   |       `-- objectname_store.py 
+        |    |   |-- generic (generic osis methods)
+        |    |   |   `-- tasklet.py
+        |    |   |-- monitoring 
+        |    |   |   |-- monitoring_delete.py
+        |    |   |   `-- monitoring_store.py
+        |    |   `-- ui (related to UI objects)
+        |    |       |-- ui_object_delete.py
+        |    |       `-- ui_object_store.py
+        |    |-- schedule
         |    |   `-- domain
-        |    |       |-- service1.py
-        |    |       `-- service2.py
+        |    |       |-- schedule1.py
+        |    |       `-- schedule2.py
         |    |-- setup
-        |    |   |-- tasklet1.py
-        |    |   `-- tasklet2.py
+        |    |   `-- osis (define view to be stored in postgres db)
+        |    |       |-- tasklet1.py
+        |    |       `-- tasklet2.py
         |    |-- config
         |    |   |-- tasklet1.py
         |    |   `-- tasklet2.py
-        |    |-- ui
-        |    |   |-- form
-        |    |   |   `-- tasklet1.py
-        |    |   |-- portal
-        |    |   |   `-- tasklet1.py
-        |    |   `-- wizard
-        |    |       `-- tasklet1.py
-        |    |-- portal
-        |    `-- worker
-        |-- client (*)
-        |    `-- action
-        `-- interface
-             |-- action
-             |   `-- domainname
-             |       |-- rootobject1.py
-             |       `-- rootobject2.py
-             |-- actor
-             |   `-- domainname
-             |       |-- actor1.py
-             |       `-- actor2.py
-             `-- pymodel
-                 `-- domainname
-                     |-- object1.py
-                     `-- object2.py
+        |    `-- ui (pyapp UI definitions)
+        |        |-- form (form definitions)
+        |        |   `-- tasklet1.py
+        |        |-- portal (portal page definitions)
+        |        |   `-- tasklet1.py
+        |        `-- wizard (wizard definitions)
+        |            `-- tasklet1.py
+        |
+        |-- interface
+        |    |-- action
+        |    |   `-- domainname
+        |    |       |-- rootobject1.py (interface on rootobject)
+        |    |       `-- rootobject2.py
+        |    |-- actor
+        |    |   `-- domainname
+        |    |       |-- actor1.py (model of an actor object)
+        |    |       `-- actor2.py
+        |    |-- config
+        |    |   `-- configuration1.py (model of a pyapp configuration)
+        |    |-- model
+        |    |   `-- domainname
+        |    |       |-- object1.py (model of root object)
+        |    |       `-- object2.py
+        |    `-- monitoring
+        |        `-- monitoringobject1.py (model of a monitoring object)
+        |
+        `-- portal (documentation of pyapp)
+            |-- static (static data to be included in pyapp doc)
+            |   |-- image1.jpg
+            |   `-- image2.jpg
+            |-- doc (manual of pyapp)
+            |   |-- doc1.md
+            |   `-- doc2.md
+            `-- api (api doc of pyapp)
 
 
+###impl
+The `impl`-directory contains all the code that perform an action in your PyApp, for example create an object. 
+
+####impl/action/domainname/rootobjectname/methodname
+* action: this is the directory that contains the actions as defined in the interface on a Root Object.
+* domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+** config: this domain refers to the configuration of the PyApp itself.
+** core: default directory, this is for core functionalities which are common for each PyApp that you create.
+** ui: actions on UI objects, such as finding or creating pages.
+** <pyappname>: actions, specific for your own PyApp.
+* rootobjectname: name of the Root Object.
+* methodname: name of the method, as defined in the interface file of the proper Root Object. This directory contains the actual files (tasklets) that execute something in the PyApp. 
+
+####impl/actor/domainname/actorname/action/scripts
+* actor: this directory contains the definitions of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
+* domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
+* actorname: meaningful name for the actor of your PyApp.
+* action: name of the action that the actor will execute. This directory contains tasklets that provide the data of which scripts must be executed by whom. The scripts-directory is a subdirectory of the action-directory.
+* scripts: this directory contains the scripts that are executed by the PyLabs agents. They execute something in reality, for example send out a mail.
+
+####impl/authenticate
+This directory contains tasklets that authenticates users in the PyApp.
+
+####impl/authorize
+This directory contains tasklets that authorizes users for sections in the PyApp. For example, user A is an administrator who is allowed to do everything in the PyApp, but user B has only rights to view data in the PyApp.
+
+####impl/events/actionname
+* events: this is the directory to define actions which are triggered by an event.
+* actionname: this directory contains a configuration file and tasklets, which are executed upon a configured event.
+
+####impl/osis/domainname/<rootobjectname>
+* osis: this directory contains the actions that will populate the created views in your PyApp.
+* domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+* rootobjectname: name of the Root Object.
+
+####impl/schedule/domainname
+* schedule: in this directory we place tasklets which can be scheduled, for example, check for mail every 300s. The tasklets themselves are stored per domain name.
+* domainname: name of the domain to which the scheduled action belongs.
+
+####impl/setup/osis
+* setup: this directory is used to set up your OSIS views.
+* osis: contains the actual tasklets that create the OSIS views that you want. For example a list of all customers with their name or a list of all customers with all details results in two different tasklets.
+
+####impl/ui/<UI type>/domainname
+* ui: the directory for all UI related actions, such as wizards and forms that need to be displayed in your PyApp.
+* <UI type>: the type of UI element that needs to be displayed. This is either `form` or `wizard`.
+* domainname: name of the domain to which the UI element belongs.
 
 
-##Root Objects
-Define Root Objects (specs)
-Model Root Objects (pyapps>app>interface>pymodel>domain>RO.py)
+###interface
+The `interface`-directory contains the files that model your complete PyApp.
 
-##Actions
-Define interface/actions per root object (pyapps>app>interface>action>domain>RO.py)
+####interface/action/domainname
+* action: this is the directory that contains the modeling of the actions on the different objects of your PyApp.
+* domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+** config: this domain refers to the configuration of PyApp module.
+** core: default directory, this is for core functionalities which are common for each PyApp that you create.
+** ui: actions on UI objects, such as finding or creating pages.
+** <pyappname>: contains the modeling of actions per root object, specific for your own PyApp.
 
-##OSIS actions
-what is, purpose, ...
+####interface/actor/domainname
+* actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
+* domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
 
-###Views
-Create views on RO in osis
+####interface/config
+* config: contains the model of a PyApp specific module, for example a `pop3` object.
 
-###Wizards and Forms
-Create wizards/forms per defined action (pyapps>app>impl>ui>form/wizard>RO_action.py)
+####interface/model/domainname
+* model: contains the model of root objects in your PyApp
+* domainname: name of the domain to which the root object belongs, this avoids the usage of root objects in possible other installed PyApps. This directory contains one file per root object. Each file is the complete definition of an object.
 
-Implement wizards on osis level
+####interface/monitoring
+* monitoring: model of a monitoring object
 
-##Turning Model into Reality
-Implement the real action
+###portal
+The `portal`-directory contains all the documentation files of your PyApp.
+
+####portal/api
+* api: contains the API documentation of your PyApp in epydoc-format
+
+####portal/doc
+* doc: contains the actual documentation of your PyApp
+
+####portal/static
+* static: contains static files, that can be referenced to from your documentation, mainly images.
+
+
+##Process of Creating a PyApp
+###General Steps
+1. Create the Specifications of the PyApp
+2. Model the different Root Objects
+3. Model the Root Object interface (actions)
+4. Create OSIS views
+5. Implement the OSIS population actions
+6. Implement the defined interfaces
+7. Implement wizards and forms
+
+###Advanced
+1.  Define actions triggered by Events
+
+##Conclusion
+This concludes the introduction to PyApps. In this chapter you have seen the structure of PyApps and how to create PyApps. In the next chapters, we go into detail of the creation of a PyApp, taking the sampleapp as example.
