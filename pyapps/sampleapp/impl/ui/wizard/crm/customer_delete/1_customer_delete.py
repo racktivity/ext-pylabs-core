@@ -1,6 +1,3 @@
-__tags__ = 'wizard','customer','delete'
-__author__ = 'incubaid'
-
 MSG_DELETE = 'Warning! You\'re about to delete the customer <%s>'
 MSG_DELETE_CONFIRM = 'Are you sure you want to delete this customer?'
 
@@ -15,9 +12,7 @@ def main(q, i, p, params, tags):
     answer = q.gui.dialog.askYesNo(MSG_DELETE_CONFIRM, False)
 
     if answer == 'CANCEL':
-		return
+        return
 	
     result = callCloudAPI(p.api, customer.guid)
 
-def match(q, i, p, params, tags):
-	return True
