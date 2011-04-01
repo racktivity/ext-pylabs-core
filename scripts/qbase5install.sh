@@ -73,16 +73,16 @@ cp -rf opt/code/ /opt/
 cp -rf opt/qbase5/ /opt/
 
 cd /opt/code/incubaid/pylabs-core
-hg pull -u
+hg pull -u "${HG_PREFIX}/incubaid/pylabs-core"
 
 cd /opt/code/incubaid/qp5_-unstable-_pylabs5
-hg pull -u
+hg pull -u "${HG_PREFIX}/incubaid/qp5_-unstable-_pylabs5"
 
 cd /opt/code/incubaid/qp5_-unstable-_pylabs5_test
-hg pull -u
+hg pull -u "${HG_PREFIX}/incubaid/qp5_-unstable-_pylabs5_test"
 
 cd /opt/code/incubaid/qp5_-unstable-_qpackages5
-hg pull -u
+hg pull -u "${HG_PREFIX}/incubaid/qp5_-unstable-_qpackages5"
 
 
 mkdir -p /etc/python2.6
@@ -94,24 +94,58 @@ cd /opt/code
 hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pymodel" pymodel
 hg clone --branch 0.5 "${HG_PREFIX}/despiegk/osis" osis
 hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_workflowengine" workflowengine
+hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_agent" pylabs_agent
+hg clone "${HG_PREFIX}/despiegk/jswizards" jswizards
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 ln -s "`pwd`/workflowengine/workflowengine/lib/" "/opt/qbase5/lib/python/site-packages/workflowengine"
 ln -s "`pwd`/workflowengine/workflowengine/manage/" "/opt/code/incubaid/pylabs-core/extensions/servers/workflowengine"
 mkdir -p /opt/qbase5/apps/workflowengine/
 ln -s "`pwd`/workflowengine/workflowengine/bin/" "/opt/qbase5/apps/workflowengine/bin"
+ln -s "`pwd`/pylabs_agent/agent_service" "/opt/qbase5/lib/python/site-packages/"
+mkdir -p /opt/qbase5/www
+ln -s "`pwd`/jswizards" "/opt/qbase5/www"
 
 hg clone "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 
-echo "Symlink wizard service"
-ln -s /opt/code/incubaid/pylabs-core/lib/wizardservice.py /opt/qbase5/lib/python/site-packages/wizardservice.py
+echo "Symlink extra libs"
+ln -s /opt/code/incubaid/pylabs-core/lib/* /opt/qbase5/lib/python/site-packages/
 
 echo "Disable system postgres"
 /etc/init.d/postgresql stop
 update-rc.d -f postgresql remove
 
+echo "Configure nginx"
+python << EOF
+from pylabs.InitBase import q
+
+PORT = 80
+PATH = 'static'
+ROOT = '/opt/qbase5/www'
+
+nginx = q.manage.nginx
+
+nginx.startChanges()
+
+cmdb = nginx.cmdb
+
+if str(PORT) not in cmdb.virtualHosts:
+    cmdb.addVirtualHost(str(PORT), port=PORT)
+
+vhost = cmdb.virtualHosts[str(PORT)]
+
+if PATH not in vhost.sites:
+    site = vhost.addSite(PATH, '/%s' % PATH)
+    site.addOption('root', ROOT)
+    site.addOption('rewrite ', '^/%s/(.*) /\$1 break' % PATH)
+    site.addOption('rewrite  ', '^/%s$ /%s/ permanent' % (PATH, PATH))
+
+nginx.save()
+nginx.applyConfig()
+
+EOF
 
 echo "Setup done"
 cd /opt/qbase5/apps/pylabsExampleApp

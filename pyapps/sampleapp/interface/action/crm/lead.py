@@ -3,7 +3,7 @@ class lead:
     Lead actions API
     """
  
-    def create(self, name, code, customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=dict()):
+    def create(self, name, code, customerguid=None, source=None, type=None, status=None, amount=None, probability=None, jobguid=None, executionparams=None):
         """
         Create a lead
  
@@ -45,11 +45,14 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def update(self, name="", code="", customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=dict()):
+    def update(self, leadguid, name=None, code=None, customerguid=None, source=None, type=None, status=None, amount=None, probability=None, jobguid=None, executionparams=None):
         """
         Update a lead
  
         @security administrators
+
+        @param leadguid:          guid of the lead
+        @type leadguid:           guid
  
         @param name:  name of the lead
         @type name: string
@@ -87,7 +90,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, leadguid, jobguid="", executionparams=dict()):
+    def delete(self, leadguid, jobguid=None, executionparams=None):
        """
         Delete a lead
  
@@ -108,7 +111,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, name="", code="", customerguid="", source="", type="", status="", amount="", probability="", jobguid="", executionparams=dict()):
+    def find(self, name=None, code=None, customerguid=None, source=None, type=None, status=None, amount=None, probability=None, jobguid=None, executionparams=None):
         """
         Returns a list of leads which met the find criteria.
  
@@ -156,7 +159,7 @@ class lead:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-    def getObject(self, leadguid, jobguid="",executionparams=dict()):
+    def getObject(self, leadguid, jobguid=None,executionparams=None):
         """
         Gets the rootobject.
  
@@ -171,7 +174,7 @@ class lead:
         @warning:                   Only usable using the python client.
         """
  
-    def list(self, jobguid="", executionparams=dict()):
+    def list(self, jobguid=None, executionparams=None):
         """
         Filtered list which returns main parameters of every lead in dict format
    
@@ -198,8 +201,8 @@ class lead:
         @note:                                           'probability': 50}]}      
         @raise e:                     In case an error occurred, exception is raised
         """
-        
-    def listTypes(self, jobguid="", executionparams=dict()):
+
+    def listTypes(self, jobguid=None, executionparams=None):
         """
         List of possible lead types
    
@@ -218,8 +221,28 @@ class lead:
         @note:                               'result: ['EXISTINGBUSINESS', 'NEWBUSINESS']}      
         @raise e:                     In case an error occurred, exception is raised
         """
+
+    def listStatuses(self, jobguid=None, executionparams=None):
+        """
+        List of possible lead statuses
+   
+        @execution_method = sync
+        @security administrators
         
-    def listSources(self, jobguid="", executionparams=dict()):
+        @param jobguid:               guid of the job if avalailable else empty string
+        @type jobguid:                guid
+ 
+        @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:        dictionary
+ 
+        @return:                      dictionary with list of lead statuses as result and jobguid: {'result': list, 'jobguid': guid}
+        @rtype:                       dictionary
+        @note:                              {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
+        @note:                               'result: ['PROSPECTING', 'VALUEPROPOSITION', 'CLOSEDWON', 'CLOSEDLOST']}      
+        @raise e:                     In case an error occurred, exception is raised
+        """
+        
+    def listSources(self, jobguid=None, executionparams=None):
         """
         List of possible lead sources
    

@@ -3,7 +3,7 @@ class customer:
     Customer actions API
     """
  
-    def create(self, name, login, password, email, address="", vat="", jobguid="", executionparams=dict()):
+    def create(self, name, login, password, email, address="", vat="", jobguid="", executionparams=None):
         """
         Create a customer
  
@@ -39,12 +39,15 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def update(self, name="", login="", password="", email="", address="", vat="", jobguid="", executionparams=dict()):
+    def update(self, customerguid, name="", login="", password="", email="", address="", vat="", jobguid="", executionparams=None):
         """
         Update a customer
  
         @security administrators
- 
+
+        @param customerguid:          guid of the customer
+        @type customerguid:           guid
+         
         @param name:  name of the customer
         @type name: string
  
@@ -75,7 +78,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
      
-    def delete(self, customerguid, jobguid="", executionparams=dict()):
+    def delete(self, customerguid, jobguid="", executionparams=None):
        """
         Delete a customer
  
@@ -96,7 +99,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
  
-    def find(self, name="", login="", email="", address="", vat="", jobguid="", executionparams=dict()):
+    def find(self, name="", login="", email="", address="", vat="", jobguid="", executionparams=None):
         """
         Returns a list of customers which met the find criteria.
  
@@ -135,7 +138,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         """
         
-    def getObject(self, customerguid, jobguid="",executionparams=dict()):
+    def getObject(self, customerguid, jobguid="",executionparams=None):
         """
         Gets the rootobject.
  
@@ -150,7 +153,7 @@ class customer:
         @warning:                   Only usable using the python client.
         """
  
-    def list(self, jobguid="", executionparams=dict()):
+    def list(self, jobguid="", executionparams=None):
         """
         Filtered list which returns main parameters of every customer in dict format
    

@@ -10,26 +10,39 @@ class ${className}(object):
         """
         $method.docs
         """        
+        if executionparams is None:
+            executionparams = dict()
 #set $line = ','.join($method.argNames)
-        return self._proxy('$domain', '$className', '$method.name', $line)
-        
+        result = self._proxy('$domain', '$className', '$method.name', $line)
+#if $method.name == 'getObject'
+        # Deserialize the pymodel object
+        o = result['result']
+        if isinstance(o, basestring):
+            import base64
+            from pymodel import ROOTOBJECT_TYPES
+            from pymodel.serializers import ThriftSerializer
+            decoded_o = base64.decodestring(o)
+            deserialized_o = ROOTOBJECT_TYPES['$domain']['$className'].deserialize(ThriftSerializer, decoded_o)
+            return deserialized_o
+        else:
+            return result
+#else
+        return result
+#end if
 #end for
 
-
-
-
 class ${className}ActionManagerProxy(object):
-#for $method in $methods:
     def __call__(self, domainname, classname, methodname, *args):        
         try:
             m = getattr(self,  methodname)
-            m(*args)
+            return m(*args)
         except AttributeError, ae:
             raise 
         except Exception, e:
             raise
          
     
+#for $method in $methods:
     def $method.name (self, $method.args):
         """
         $method.docs

@@ -817,7 +817,7 @@ class Server:
         """
         name = self._checkName(name)
         q.console.echo("Stopping %s..." % name)
-        self._callWithStatusCheck('stop', self._getProxy(name).stopServer)
+        self._callWithStatusCheck('stop', name, self._getProxy(name).stopServer)
 
         # same way as the restart() function
         countdown = 5
@@ -871,11 +871,23 @@ class Server:
         restart.
         """
         name = self._checkName(name)
-        self._callWithStatusCheck('reload', self._getProxy(name).reloadConfig, printWarningIfNotRunning)
+        self._callWithStatusCheck('reload', name, self._getProxy(name).reloadConfig, printWarningIfNotRunning)
          
 
-    def _callWithStatusCheck(self, commandname, func, printWarning=True):
-        status = self.checkStatus()
+    def _callWithStatusCheck(self, commandname, appname, func, printWarning=True):
+        """
+        Call a function but check the server status first
+
+        @param commandname: the command that maps to the function (used in logging)
+        @type commandname: string
+        @param appname: the name of the Pyapp the server to check is running in
+        @type appname: string
+        @param func: the function to execute
+        @type func: callable
+        @param printWarning: whether or not to print warnings if the server is not running
+        @type printWarning: boolean
+        """
+        status = self.checkStatus(appname)
         if status == ApplicationserverStatus.RUNNING:
             func()
         elif status == ApplicationserverStatus.UNKNOWN:

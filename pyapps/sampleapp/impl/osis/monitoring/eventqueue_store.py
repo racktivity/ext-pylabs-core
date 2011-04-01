@@ -4,8 +4,8 @@ __priority__= 3
 
 from osis.store.OsisDB import OsisDB
 
-ROOTOBJECT_TYPE = 'monitoring'
-DOMAIN = "eventqueue"
+ROOTOBJECT_TYPE = 'eventqueue'
+DOMAIN = "monitoring"
 VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, p, params, tags):
@@ -13,9 +13,11 @@ def main(q, i, p, params, tags):
 
     rootobject = params['rootobject']
 
-    values = {'server': rootobject.server}
-    values = {'login': rootobject.login}
-    values = {'password': rootobject.password}
+    values = {
+        'server': rootobject.server,
+        'login': rootobject.login,
+        'password': rootobject.password
+    }
 
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
 

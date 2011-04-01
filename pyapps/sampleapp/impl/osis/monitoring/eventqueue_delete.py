@@ -4,8 +4,8 @@ __priority__= 3
 
 from osis.store.OsisDB import OsisDB
 
-ROOTOBJECT_TYPE = 'monitoring'
-DOMAIN = "eventqueue"
+ROOTOBJECT_TYPE = 'eventqueue'
+DOMAIN = "monitoring"
 VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, p, params, tags):

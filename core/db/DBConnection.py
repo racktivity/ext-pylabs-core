@@ -87,7 +87,7 @@ class DBConnection(object):
         if qcl in self.__db._attnames:
             return self.__db._attnames[qcl]
         if qcl not in self.__db.get_relations('rv'):
-            raise ProgrammingError('Class %s does not exist' % qcl)
+            raise pg.ProgrammingError('Class %s does not exist' % qcl)
         t = {}
         for att, typ in self.__db.db.query("SELECT pg_attribute.attname,"
             " pg_type.typname FROM pg_class"

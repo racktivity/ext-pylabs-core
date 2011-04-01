@@ -1,6 +1,10 @@
 from pylabs import q
 
-class $className:
+class ${className}(object):
+    
+    def __init__(self, proxy=None):
+        self._proxy = proxy
+        
 #for $method in $methods:
     def $method.name (self, $method.args):
         """

@@ -41,7 +41,10 @@ class AppManager(object):
 class ApplicationAPI(object):
     
     def __init__(self, appname, host=None, context=None):
-        print 'Context is %s' % context
+        
+        # Default to client context
+        context = context or q.enumerators.AppContext.CLIENT
+        
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._app_path = app_path
         
@@ -52,7 +55,9 @@ class ApplicationAPI(object):
         self.action = self._get_actions(appname, context)
         
         if not context == q.enumerators.AppContext.CLIENT:
-            self.model = self._get_model(appname, context)
+            self.model = self._get_osis_client(appname, 'model')
+            self.config = self._get_osis_client(appname, 'config')
+            self.monitoring = self._get_osis_client(appname, 'monitoring')
             
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
@@ -71,9 +76,9 @@ class ApplicationAPI(object):
         from client.action import actions
         return actions(proxy=proxy)
     
-    def _get_model(self, appname, context):
+    def _get_osis_client(self, appname, modeltype):
         
-        pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', 'pymodel'))
+        pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', modeltype))
         osis.init()
         
         from pymodel.serializers import ThriftSerializer
@@ -81,7 +86,7 @@ class ApplicationAPI(object):
         from osis.client import OsisConnection
         
         transporturl = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
-        transport = XMLRPCTransport(transporturl, 'osissvc')
+        transport = XMLRPCTransport(transporturl, modeltype)
         connection = OsisConnection(transport, ThriftSerializer)
 
         return connection
@@ -91,7 +96,7 @@ import xmlrpclib
 class XmlRpcActionProxy(object):
     
     def __init__(self, url):
-        self.client = xmlrpclib.ServerProxy(url) 
+        self.client = xmlrpclib.ServerProxy(url, allow_none=True)
     
     def __call__(self, domainname, classname, methodname, *args):
 

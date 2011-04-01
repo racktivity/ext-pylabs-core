@@ -40,6 +40,7 @@ import os.path
 import operator
 import time
 import stat
+import weakref
 import functools
 try:
     import threading
@@ -55,6 +56,15 @@ from tasklet import Tasklet
 Tasklet.MATCH_FAILED = MATCH_FAILED
 
 #@feedback (kds) everywhere we use priority 1 as highest, here it is the reverse
+
+def _ignore(t, c, *a, **k):
+    '''Evaluate c(*a, **k), ignoring exceptions of type t'''
+
+    try:
+        c(*a, **k)
+    except t:
+        pass
+
 
 class locked(object): #pylint: disable-msg=R0903
     '''
@@ -84,14 +94,23 @@ class TaskletEngine(object):
     STOP = object()
     CONTINUE = object()
 
-    def __init__(self, taskletsDir):
+    def __init__(self, taskletsDir, clusterFun=None):
         """
         @param taskletsDir is directory in which tasklets live
+
+        @param clusterFun: Callable which yields all keys for which a given
+            tasklet should be added to the index
+        @type clusterFun: callable
         """
         self._tasklets = None
         self._path_load_times = dict()  #@question (kds) why is this?
+
         if threading:                   #@question (kds) is threading support like this really needed?
             self._lock = threading.RLock()
+
+        self._cluster_fun = clusterFun
+        self._clusters = dict()
+
         self.addFromPath(taskletsDir)
 
     # Needs to be locked since it uses self._tasklets as a sentinel
@@ -128,9 +147,9 @@ class TaskletEngine(object):
         self._path_load_times[path] = time.time()
 
         for taskletfile in listTaskletFiles():
-            self._registerTasklet(taskletfile)
+            self._registerTasklet(taskletfile, path)
 
-    def _registerTasklet(self, path):
+    def _registerTasklet(self, path, tasklet_root):
         '''Register one tasklet in a given file in the system'''
         pylabs.q.logger.log('Loading tasklet %s' % path)
         if path in self._tasklets:
@@ -138,7 +157,14 @@ class TaskletEngine(object):
 
         name = self._getPathInfo(path)
 
-        self._tasklets[path] = Tasklet(name, path)
+        tasklet = self._tasklets[path] = Tasklet(name, path, tasklet_root)
+
+        if self._cluster_fun:
+            for key in self._cluster_fun(tasklet):
+                if key not in self._clusters:
+                    self._clusters[key] = weakref.WeakSet()
+
+                self._clusters[key].add(tasklet)
 
     @staticmethod
     def _getPathInfo(path):
@@ -183,11 +209,16 @@ class TaskletEngine(object):
             if force or self._check_reload(path):
                 for taskletpath in self._tasklets.copy():
                     if taskletpath.startswith(path):
-                        self._tasklets.pop(taskletpath)
+                        tasklet = self._tasklets.pop(taskletpath)
+
+                        remove = lambda s: _ignore(KeyError, s.remove, tasklet)
+                        map(remove, self._clusters.itervalues())
+
                 self.addFromPath(path)
 
     #pylint: disable-msg=R0912,R0913
-    def find(self, author="*", name="*", tags=None, priority=-1,  path="*"):
+    def find(self, author="*", name="*", tags=None, priority=-1, path="*",
+        clusters=None):
         '''Find all matching tasklets
 
         Tasklets can be filtered on author, name, tags and priority. If author
@@ -209,6 +240,8 @@ class TaskletEngine(object):
         @type priority: number
         @param path: Path filter
         @type path: string
+        @param clusters: Keys of clusters to use as tasklet source
+        @type clusters: iterable
 
         @returns: All matching tasklets, sorted on priority
         @rtype: tuple<Tasklet>
@@ -220,6 +253,7 @@ class TaskletEngine(object):
         pylabs.q.logger.log(
             'Searching for tasklets, author=%s, name=%s, '
             'tags=%s, priority=%d' % (author, name, tags, priority), 7)
+
         #Some filter generators
         #These filters are chained together to create one filter pipeline to
         #find all matching tasklets given the search criteria.
@@ -250,7 +284,7 @@ class TaskletEngine(object):
             for tasklet in tasklets:
                 if priority < 0 or tasklet.priority == priority:
                     yield tasklet
-        
+
         def pathFilter(tasklets):
             '''Filter tasklets based on path'''
             for tasklet in tasklets:
@@ -265,20 +299,45 @@ class TaskletEngine(object):
             tag_matches = tagFilter(name_matches)
             priority_matches = priorityFilter(tag_matches)
             path_matches = pathFilter(priority_matches)
-            
+
             for tasklet in path_matches:
                 yield tasklet
 
-        #Apply all filters on all known tasklets
-        tasklets = list(filterTasklets(self._tasklets.itervalues()))
-        #Sort on priority
-        tasklets.sort(key=operator.attrgetter('priority'), reverse=True)
+        if not clusters:
+            #Apply all filters on all known tasklets
+            tasklets = self._tasklets.itervalues()
+        else:
+            #Apply all filters on specific clusters of tasklets
+            if isinstance(clusters, basestring):
+                clusters = (clusters, )
 
-        return tuple(tasklets)
+            def iter_clusters():
+                seen = weakref.WeakSet()
+
+                for cluster in clusters:
+                    if cluster in self._clusters:
+                        set_ = self._clusters[cluster]
+
+                        for tasklet in set_:
+                            # Weakref protection, and duplicate protection
+                            if tasklet and tasklet not in seen:
+                                seen.add(tasklet)
+
+                                yield tasklet
+
+            tasklets = iter_clusters()
+
+        filtered_tasklets = filterTasklets(tasklets)
+
+        #Sort on priority
+        sorted_tasklets = sorted(filtered_tasklets,
+            key=operator.attrgetter('priority'), reverse=True)
+
+        return tuple(sorted_tasklets)
 
     #pylint: disable-msg=R0913
-    def findFirst(self, author="*" , name="*", tags=None, priority=-1, 
-                  path='*'):
+    def findFirst(self, author="*" , name="*", tags=None, priority=-1,
+        path='*', clusters=None):
         '''Find the first matching tasklet (highest priority)
 
         @see: TaskletsEngine.find
@@ -286,7 +345,8 @@ class TaskletEngine(object):
         @return: Matching tasklet, or None
         @rtype: Tasklet
         '''
-        matches = self.find(author, name, tags, priority, path=path)
+        matches = self.find(author, name, tags, priority, path=path,
+            clusters=clusters)
 
         if not matches:
             return None
@@ -302,7 +362,7 @@ class TaskletEngine(object):
 
     #pylint: disable-msg=R0913
     def execute(self, params, author="*", name="*", tags=None, priority=-1,
-                path='*', wrapper=None):
+        path='*', clusters=None, wrapper=None):
         '''Execute all matching tasklets
 
         @param params: Params to pass to the tasklet function,is a dict
@@ -315,7 +375,8 @@ class TaskletEngine(object):
         '''
         realized = set()
 
-        matches = self.find(author, name, tags, priority, path=path)
+        matches = self.find(author, name, tags, priority, path=path,
+            clusters=clusters)
         pylabs.q.logger.log('Executing previously found tasklets', 6)
 
         for tasklet in matches:
@@ -337,7 +398,7 @@ class TaskletEngine(object):
 
     #pylint: disable-msg=R0913
     def executeFirst(self, params, author="*", name="*", tags=None,
-            priority=-1, path='*', wrapper=None):
+        priority=-1, path='*', clusters=None, wrapper=None):
         '''Execute the first matching tasklet
 
         @return: Tasklet function return value
@@ -350,7 +411,10 @@ class TaskletEngine(object):
         '''
         wrapper = wrapper or (lambda func: func)
         assert callable(wrapper)
-        tasklet = self.findFirst(author, name, tags, priority, path=path)
+
+        tasklet = self.findFirst(author, name, tags, priority, path=path,
+            clusters=clusters)
+
         if tasklet:
             return tasklet.execute(params, tags, wrapper)
         else:

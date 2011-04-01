@@ -128,7 +128,7 @@ class NginxCmd(CommandWrapper):
 
         @return True if Nginx server configuration reloaded successfully, False or raises an exception otherwise.
         """
-        q.gui.dialog.message('Relaoding Nginx server configuration...')
+        q.gui.dialog.message('Reloading Nginx server configuration...')
         exitcode, output = q.system.process.execute(self._reload_cmd, outputToStdout=False)
         if os.EX_OK == exitcode:
             q.gui.dialog.message('Nginx server configuration reloaded successfully.')
