@@ -18,7 +18,7 @@ def main(q, i, params, tags):
         view.setCol('source', q.enumerators.OsisType.STRING, True)
         view.setCol('type', q.enumerators.OsisType.STRING, True)
         view.setCol('status', q.enumerators.OsisType.STRING, True)
-        view.setCol('amount', q.enumerators.OsisType.BIGINT, True)
+        view.setCol('amount', q.enumerators.OsisType.FLOAT, True)
         view.setCol('probability', q.enumerators.OsisType.BIGINT, True)
         connection.viewAdd(view)
 
