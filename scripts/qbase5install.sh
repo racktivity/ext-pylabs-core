@@ -126,9 +126,10 @@ PATH = 'static'
 ROOT = '/opt/qbase5/www'
 
 nginx = q.manage.nginx
-cmdb = nginx.cmdb
 
 nginx.startChanges()
+
+cmdb = nginx.cmdb
 
 if str(PORT) not in cmdb.virtualHosts:
     cmdb.addVirtualhost(str(PORT), port=PORT)
