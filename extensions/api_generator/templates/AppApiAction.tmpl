@@ -13,12 +13,22 @@ class ${className}(object):
         if executionparams is None:
             executionparams = dict()
 #set $line = ','.join($method.argNames)
-        return self._proxy('$domain', '$className', '$method.name', $line)
-        
+        result = self._proxy('$domain', '$className', '$method.name', $line)
+#if $method.name == 'getObject'
+        # Deserialize the pymodel object
+        if isinstance(result, basestring):
+            from osis import ROOTOBJECT_TYPES
+            import base64
+            from osis.model.serializers import ThriftSerializer
+            decoded_result = base64.decodestring(result)
+            deserialized_result = ROOTOBJECT_TYPES['$domain']['$className'].deserialize(ThriftSerializer, decoded_result)
+            return deserialized_result
+        else:
+            return result
+#else
+        return result
+#end if
 #end for
-
-
-
 
 class ${className}ActionManagerProxy(object):
     def __call__(self, domainname, classname, methodname, *args):        
