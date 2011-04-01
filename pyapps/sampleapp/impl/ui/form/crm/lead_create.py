@@ -29,55 +29,58 @@ MSGBOX_lead_CREATE_FAILED = "Failed to create this new lead! Please contact your
 MSGBOX_lead_CREATE_FAILED_TITLE = "lead creation failed"
 
 
-def callCloudAPI(api, name, code, customer, source, type, amount, probability):
+def callCloudAPI(api, name, code, customer, source, type, status, amount, probability):
 	result = api.crm.lead.create(name, code, customer, source, type, status, amount, probability)['result']    
 	return result
 
 def getCustomers(api):
-	customers = dict([customer['guid'],customer['description']] for customer in p.api.crm.customer.list()['result'])
+	customers = dict([customer['guid'],customer['description']] for customer in api.crm.customer.list()['result'])
 	return customers
 
 def getTypes(api):
 	leadTypes = api.crm.lead.listTypes()['result']
 	return leadTypes
 
+def getStatuses(api):
+	leadStatuses = api.crm.lead.listStatuses()['result']
+	return leadStatuses
+
 def getSources(api):
 	leadSources = api.crm.lead.listSources()['result']
 	return leadSources
 
 def main(q, i, p, params, tags):
-
-	form = q.gui.form.createForm()
-	tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
+    form = q.gui.form.createForm()
+    tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
 
     ###########################
     # General information tab #
     ###########################
-	tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
-	tab_general.addText(name='code', text = TAB_GENERAL_CODE, helpText = TAB_GENERAL_CODE_HELPTEXT)
-	tab_general.addChoice(name='customer', text = TAB_GENERAL_CUSTOMER, values = getCustomers(p.api), helpText = TAB_GENERAL_CUSTOMER_HELPTEXT, optional = True)
-	tab_general.addChoice(name='source', text = TAB_GENERAL_SOURCE, values = getSources(p.api), helpText = TAB_GENERAL_SOURCE_HELPTEXT, optional = True)
-	tab_general.addChoice(name='type', text = TAB_GENERAL_TYPE, values = getTypes(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional = True)
-	tab_general.addInteger(name='amount', text = TAB_GENERAL_AMOUNT, minValue=0, value=0, helpText=TAB_GENERAL_AMOUNT_HELPTEXT)
-	tab_general.addInteger(name='probability', text = TAB_GENERAL_PROBABILITY, minValue=0, maxValue=100, value=50, helpText=TAB_GENERAL_PROBABILITY_HELPTEXT)	
+    tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
+    tab_general.addText(name='code', text = TAB_GENERAL_CODE, helpText = TAB_GENERAL_CODE_HELPTEXT)
+    tab_general.addChoice(name='customer', text = TAB_GENERAL_CUSTOMER, values = getCustomers(p.api), helpText = TAB_GENERAL_CUSTOMER_HELPTEXT, optional = True)
+    tab_general.addChoice(name='source', text = TAB_GENERAL_SOURCE, values = getSources(p.api), helpText = TAB_GENERAL_SOURCE_HELPTEXT, optional = True)
+    tab_general.addChoice(name='type', text = TAB_GENERAL_TYPE, values = getTypes(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional = True)
+    tab_general.addChoice(name='status', text = TAB_GENERAL_STATUS, values=getStatuses(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional=True)
+    tab_general.addInteger(name='amount', text = TAB_GENERAL_AMOUNT, minValue=0, value=0, helpText=TAB_GENERAL_AMOUNT_HELPTEXT)
+    tab_general.addInteger(name='probability', text = TAB_GENERAL_PROBABILITY, minValue=0, maxValue=100, value=50, helpText=TAB_GENERAL_PROBABILITY_HELPTEXT)	
 
-	answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                          title=MSGBOX_CREATE_CONFIRMATION_TITLE,
                                          msgboxButtons='OKCancel',
                                          msgboxIcon='Question',
                                          defaultButton='OK')
 
-	if answer == 'CANCEL':
-		return
+    if answer == 'CANCEL':
+        return
 
-	result = callCloudAPI(p.api,
-    					  tab_general.elements['name'].value,
-    					  tab_general.elements['code'].value,
-    					  tab_general.elements['customer'].value,
-    					  tab_general.elements['source'].value,
-    					  tab_general.elements['type'].value,
-    					  tab_general.elements['amount'].value,
-    					  tab_general.elements['probability'].value)
-
-def match(q, i, p, params, tags):
-    return True
+    result = callCloudAPI(p.api,
+                          tab_general.elements['name'].value,
+                          tab_general.elements['code'].value,
+                          tab_general.elements['customer'].value,
+                          tab_general.elements['source'].value,
+                          tab_general.elements['type'].value,
+                          tab_general.elements['status'].value,
+                          tab_general.elements['amount'].value,
+                          tab_general.elements['probability'].value)
+    params['result'] = result

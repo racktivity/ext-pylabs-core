@@ -3,7 +3,6 @@ from pylabs import q
 import sys
 import os
 import signal
-import subprocess
 
 event_consumer = q.system.fs.joinPaths(q.system.fs.getDirName(__file__), "event_consumer.py")
 
@@ -33,7 +32,7 @@ class EventConsumerMgr:
         for workerPool in self._workerPools:
             cfgFilePath = q.system.fs.joinPaths ( workerPool, "consumers" )
             cfgFile = q.config.getInifile( cfgFilePath )
-            workers = cfgFile.getIntValue('main','consumers')
+            workers = cfgFile.getIntValue('main', 'workers')
             bindingKey = cfgFile.getValue('main','eventKey')
             queueName = q.tools.hash.md5_string(workerPool)
             cmd = buildCmd(bindingKey, workerPool, queueName)

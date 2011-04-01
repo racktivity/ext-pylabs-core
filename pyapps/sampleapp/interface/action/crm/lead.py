@@ -201,7 +201,7 @@ class lead:
         @note:                                           'probability': 50}]}      
         @raise e:                     In case an error occurred, exception is raised
         """
-        
+
     def listTypes(self, jobguid=None, executionparams=None):
         """
         List of possible lead types
@@ -219,6 +219,26 @@ class lead:
         @rtype:                       dictionary
         @note:                              {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
         @note:                               'result: ['EXISTINGBUSINESS', 'NEWBUSINESS']}      
+        @raise e:                     In case an error occurred, exception is raised
+        """
+
+    def listStatuses(self, jobguid=None, executionparams=None):
+        """
+        List of possible lead statuses
+   
+        @execution_method = sync
+        @security administrators
+        
+        @param jobguid:               guid of the job if avalailable else empty string
+        @type jobguid:                guid
+ 
+        @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:        dictionary
+ 
+        @return:                      dictionary with list of lead statuses as result and jobguid: {'result': list, 'jobguid': guid}
+        @rtype:                       dictionary
+        @note:                              {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
+        @note:                               'result: ['PROSPECTING', 'VALUEPROPOSITION', 'CLOSEDWON', 'CLOSEDLOST']}      
         @raise e:                     In case an error occurred, exception is raised
         """
         

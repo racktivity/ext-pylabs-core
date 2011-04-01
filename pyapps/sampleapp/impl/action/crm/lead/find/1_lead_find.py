@@ -19,7 +19,7 @@ def get_model_handle(p):
     return p.api.model.crm.lead
 
 def main(q, i, p, params, tags):
-    handle = get_model_handle()
+    handle = get_model_handle(p)
     f = handle.getFilterObject()
 
     for field in FIELDS:

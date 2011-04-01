@@ -27,7 +27,6 @@ def getActivities(q, api):
     return activities
 
 def main(q, i, p, params, tags):
-    
     activities = getActivities(q, p.api)
     
     form = q.gui.form.createForm()
@@ -51,12 +50,13 @@ def main(q, i, p, params, tags):
     
     if not selection:
         q.gui.dialog.showMessageBox(message = NO_ACTIVITIES_SELECTED,
-                                    title = NO_ACTIVITIES,
+                                    title = NO_ACTIVITIES_SELECTED,
                                     msgboxButtons = 'OK',
                                     msgboxIcon = 'Error')
     
     for s in selection:
         result = callCloudAPI(p.api, s)
+        q.logger.log("Deleted activity %s: %s" % (s, result), 7)
         
 def match(q, i, params, tags):
     return True

@@ -15,4 +15,4 @@ def main(q, i, p, params, tags):
         return
 	
     result = callCloudAPI(p.api, customer.guid)
-
+    params['result'] = result

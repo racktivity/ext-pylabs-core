@@ -18,6 +18,7 @@ def main(q, i, p, params, tags):
 		return
 	
     result = callCloudAPI(p.api, lead.guid)
+    params['result'] = result
 
 def match(q, i, p, params, tags):
 	return True
