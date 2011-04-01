@@ -52,12 +52,13 @@ def main(q, i, p, params, tags):
 		return
 	
     result = callCloudAPI(p.api,
-						  tabgeneral.elements['name'].value,
-						  tabgeneral.elements['email'].value,
-						  tabgeneral.elements['login'].value,
-						  tabgeneral.elements['password'].value,
-						  tabgeneral.elements['address'].value,
-						  tabgeneral.elements['vat'].value)
+						  tab_general.elements['name'].value,
+						  tab_general.elements['email'].value,
+						  tab_general.elements['login'].value,
+						  tab_general.elements['password'].value,
+						  tab_general.elements['address'].value,
+						  tab_general.elements['vat'].value)
+    params['result'] = result
 
 def match(q, i, p, params, tags):
 	return True

@@ -29,37 +29,35 @@ def callCloudAPI(api, name, email, login, password, address, vat):
 
 
 def main(q, i, p, params, tags):
-
-	form = q.gui.form.createForm()
-	tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
+    form = q.gui.form.createForm()
+    tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
 
     ###########################
     # General information tab #
     ###########################
 
-	tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
-	tab_general.addText(name='email', text = TAB_GENERAL_EMAIL, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
-	tab_general.addText(name='login', text = TAB_GENERAL_LOGIN, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
-	tab_general.addPassword(name='password', text = TAB_GENERAL_PASSWORD, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
-	tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
-	tab_general.addText(name='vat', text = TAB_GENERAL_VAT, helpText = TAB_GENERAL_VAT_HELPTEXT)
+    tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
+    tab_general.addText(name='email', text = TAB_GENERAL_EMAIL, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
+    tab_general.addText(name='login', text = TAB_GENERAL_LOGIN, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
+    tab_general.addPassword(name='password', text = TAB_GENERAL_PASSWORD, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
+    tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
+    tab_general.addText(name='vat', text = TAB_GENERAL_VAT, helpText = TAB_GENERAL_VAT_HELPTEXT)
 
-	answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                          title=MSGBOX_CREATE_CONFIRMATION_TITLE,
                                          msgboxButtons='OKCancel',
                                          msgboxIcon='Question',
                                          defaultButton='OK')
 
-	if answer == 'CANCEL':
-		return
+    if answer == 'CANCEL':
+        return
 
-	result = callCloudAPI(p.api,
-    					  tabgeneral.elements['name'].value,
-    					  tabgeneral.elements['email'].value,
-    					  tabgeneral.elements['login'].value,
-    					  tabgeneral.elements['password'].value,
-    					  tabgeneral.elements['address'].value,
-    					  tabgeneral.elements['vat'].value)
+    result = callCloudAPI(p.api,
+                          tab_general.elements['name'].value,
+                          tab_general.elements['email'].value,
+                          tab_general.elements['login'].value,
+                          tab_general.elements['password'].value,
+                          tab_general.elements['address'].value,
+                          tab_general.elements['vat'].value)
 
-def match(q, i, p, params, tags):
-    return True
+    params['result'] = result

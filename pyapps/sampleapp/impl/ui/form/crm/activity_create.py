@@ -33,7 +33,7 @@ def getLeads(q, api):
     leads = dict()
     result = api.action.crm.lead.list()['result']
     
-    map(lambda x: lead.__setitem__(x['guid'], x['name']), result)
+    map(lambda x: leads.__setitem__(x['guid'], x['name']), result)
     return leads
 
 def getType(q):
@@ -126,7 +126,5 @@ def main(q, i, p, params, tags):
                           tab_general.elements['lead'].value,
                           tab_general.elements['starttime'].value,
                           tab_general.elements['endtime'].value,)
-       
-       
-    def match(q, i, params, tags):
-        return True
+
+    params['result'] = result

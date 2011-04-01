@@ -50,7 +50,6 @@ def getPriority(q):
 
 
 def main(q, i, p, params, tags):
-    
     cloudAPI = i.config.cloudApiConnection.find('main')
     cloudAPI.setCredentials(params['login'],params['password'])
     
@@ -76,26 +75,30 @@ def main(q, i, p, params, tags):
                             value = activity.type,
                             values = type)
     
+    statuses = getStatus(q)
     tab_general.addDropDown(name = 'status',
                             text = TAB_GENERAL_STATUS,
                             value = activity.status,
-                            values = status)
+                            values = statuses)
     
+    priorities = getPriority(q)
     tab_general.addDropDown(name = 'priority',
                             text = TAB_GENERAL_PRIORITY,
                             value = activity.priority,
-                            values = priority)
+                            values = priorities)
     
+    customers = getCustomer(q, cloudAPI)
     tab_general.addDropDown(name = 'customer',
                             text = TAB_GENERAL_CUSTOMER,
                             value = activity.customerguid,
                             values = customers,
                             selectedValue = 0)
     
+    leads = getLead(q, cloudAPI)
     tab_general.addDropDown(name = 'lead',
                             text = TAB_GENERAL_LEAD,
                             value = activity.leadguid,
-                            values = lead,
+                            values = leads,
                             selectedValue = 0)
     
     tab_general.addDateTime(name = 'starttime',
@@ -126,6 +129,8 @@ def main(q, i, p, params, tags):
                           tab_general.elements['lead'].value,
                           tab_general.elements['starttime'].value,
                           tab_general.elements['endtime'].value,)
+
+    params['result'] = result
        
        
     def match(q, i, params, tags):
