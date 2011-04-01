@@ -292,7 +292,10 @@ class DirObject():
 
     def updateModdate(self):
         self.moddate=q.base.time.getTimeEpoch()        
-        
+    
+    def containsFile(self, name):
+        return name.strip() in self.files
+    
     def getFileInfo(self,name):
         name=name.strip()
         if self.files.has_key(name):
