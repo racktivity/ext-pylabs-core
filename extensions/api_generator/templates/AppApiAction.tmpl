@@ -21,7 +21,6 @@ class ${className}(object):
 
 
 class ${className}ActionManagerProxy(object):
-#for $method in $methods:
     def __call__(self, domainname, classname, methodname, *args):        
         try:
             m = getattr(self,  methodname)
@@ -32,6 +31,7 @@ class ${className}ActionManagerProxy(object):
             raise
          
     
+#for $method in $methods:
     def $method.name (self, $method.args):
         """
         $method.docs
