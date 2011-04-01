@@ -132,7 +132,7 @@ nginx.startChanges()
 cmdb = nginx.cmdb
 
 if str(PORT) not in cmdb.virtualHosts:
-    cmdb.addVirtualhost(str(PORT), port=PORT)
+    cmdb.addVirtualHost(str(PORT), port=PORT)
 
 vhost = cmdb.virtualHosts[str(PORT)]
 
