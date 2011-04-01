@@ -139,7 +139,7 @@ vhost = cmdb.virtualHosts[str(PORT)]
 if PATH not in vhost.sites:
     site = vhost.addSite(PATH, '/%s' % PATH)
     site.addOption('root', ROOT)
-    site.addOption('rewrite ', '^/%s/(.*) /$1 break' % PATH)
+    site.addOption('rewrite ', '^/%s/(.*) /\$1 break' % PATH)
     site.addOption('rewrite  ', '^/%s$ /%s/ permanent' % (PATH, PATH))
 
 nginx.save()
