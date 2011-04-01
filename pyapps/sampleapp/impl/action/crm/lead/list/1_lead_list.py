@@ -4,7 +4,7 @@ FIELDS = (
         'name',
         'code',
         'customerguid',
-        'soure',
+        'source',
         'type',
         'status',
         'amount',
