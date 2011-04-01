@@ -16,13 +16,14 @@ class ${className}(object):
         result = self._proxy('$domain', '$className', '$method.name', $line)
 #if $method.name == 'getObject'
         # Deserialize the pymodel object
-        if isinstance(result, basestring):
+        o = result['result']
+        if isinstance(o, basestring):
             import base64
             from pymodel import ROOTOBJECT_TYPES
             from pymodel.serializers import ThriftSerializer
-            decoded_result = base64.decodestring(result)
-            deserialized_result = ROOTOBJECT_TYPES['$domain']['$className'].deserialize(ThriftSerializer, decoded_result)
-            return deserialized_result
+            decoded_o = base64.decodestring(o)
+            deserialized_o = ROOTOBJECT_TYPES['$domain']['$className'].deserialize(ThriftSerializer, decoded_o)
+            return deserialized_o
         else:
             return result
 #else
