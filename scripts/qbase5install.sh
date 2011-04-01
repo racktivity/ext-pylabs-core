@@ -114,6 +114,34 @@ echo "Disable system postgres"
 /etc/init.d/postgresql stop
 update-rc.d -f postgresql remove
 
+echo "Configure nginx"
+python << EOF
+from pylabs.InitBase import q
+
+PORT = 80
+PATH = 'static'
+ROOT = '/opt/qbase5/www'
+
+nginx = q.manage.nginx
+cmdb = nginx.cmdb
+
+nginx.startChanges()
+
+if str(PORT) not in cmdb.virtualHosts:
+    cmdb.addVirtualhost(str(PORT), port=PORT)
+
+vhost = cmdb.virtualHosts[str(PORT)]
+
+if PATH not in vhost.sites:
+    site = vhost.addSite(PATH, '/%s' % PATH)
+    site.addOption('root', ROOT)
+    site.addOption('rewrite ', '^/%s/(.*) /$1 break' % PATH)
+    site.addOption('rewrite  ', '^/%s$ /%s/ permanent' % (PATH, PATH))
+
+nginx.save()
+nginx.applyConfig()
+
+EOF
 
 echo "Setup done"
 cd /opt/qbase5/apps/pylabsExampleApp
