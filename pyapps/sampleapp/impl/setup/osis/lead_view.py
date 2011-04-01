@@ -14,6 +14,7 @@ def main(q, i, params, tags):
         view = connection.viewCreate(domain, rootobject, view_name)
         view.setCol('name', q.enumerators.OsisType.STRING, True)
         view.setCol('code', q.enumerators.OsisType.STRING, True)
+        view.setCol('customerguid', q.enumerators.OsisType.UUID, True)
         view.setCol('source', q.enumerators.OsisType.STRING, True)
         view.setCol('type', q.enumerators.OsisType.STRING, True)
         view.setCol('status', q.enumerators.OsisType.STRING, True)
