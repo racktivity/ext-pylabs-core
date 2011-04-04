@@ -13,11 +13,7 @@ FIELDS = (
 
 TYPE = "lead"
 DOMAIN = "crm"
-JOBGUID = "jobguid"
 VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
-
-def to_dict(o):
-    return dict((field, getattr(o, field)) for field in FIELDS)
 
 def get_model_handle(p):
     return p.api.model.crm.lead
@@ -25,13 +21,20 @@ def get_model_handle(p):
 def main(q, i, p, params, tags):
     handle = get_model_handle(p)
 
-    if JOBGUID not in params:
-        raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, JOBGUID))
-    jobguid = params[JOBGUID]
-
     f = handle.getFilterObject()
-    f.add(VIEW, "jobguid", jobguid)
-    objects = handle.filter(f)
 
-    result = [to_dict(o) for o in objects]
+    for field in FIELDS:
+        if field not in params:
+            q.logger.log("Field %s not in params dict: not searching for field %s" % (field, field), 7)
+            continue
+
+        value = params[field]
+        if value is None:
+            q.logger.log("Field %s is None: not searching for field %s" % (field, field), 7)
+            continue
+
+        q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
+        f.add(VIEW, field, value)
+
+    result = handle.findAsView(f)
     params['result'] = result
