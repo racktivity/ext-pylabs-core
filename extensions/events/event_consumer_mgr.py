@@ -3,6 +3,7 @@ from pylabs import q
 import sys
 import os
 import signal
+import traceback
 
 event_consumer = q.system.fs.joinPaths(q.system.fs.getDirName(__file__), "event_consumer.py")
 
@@ -25,7 +26,6 @@ class EventConsumerMgr:
         name = "%s_%d.pid" % (q.system.fs.getBaseName(workerPool), idx)
         file_ = q.system.fs.joinPaths(self.piddir, name)
         q.system.fs.writeFile(file_, str(pid))
-        
 
     def start(self):
         for workerPool in self._workerPools:
@@ -38,13 +38,17 @@ class EventConsumerMgr:
             for i in xrange(workers):
                 pid = q.system.process.runDaemon(" ".join(cmd))
                 self._savePid(pid, workerPool, i)
-    
+
     def stop(self):
         for pidfile in q.system.fs.listFilesInDir(self.piddir):
             pid = q.system.fs.fileGetContents(pidfile)
             if pid.isdigit():
                 q.logger.log("Terminating event consumer with PID %s" % pid, 7)
-                os.kill(int(pid), signal.SIGTERM)
+                try:
+                    os.kill(int(pid), signal.SIGTERM)
+                except OSError:
+                    t = traceback.format_exc()
+                    q.logger.log("Failed to kill event consumer with PID %s: %s" % (pid, t), 3)
             else:
                 q.logger.log("PID in PID file %s is not a digit" % pidfile, 3)
             q.system.fs.removeFile(pidfile)

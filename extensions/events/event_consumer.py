@@ -1,6 +1,17 @@
 from pylabs.InitBase import q
 import rabbitmqclient as rmq
 from events import EXCHG_NAME, EXCHG_TYPE
+from functools import wraps
+import traceback
+
+def safe(func):
+    @wraps(func)
+    def wrapped_func(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception:
+            t = traceback.format_exc()
+            q.logger.log("Caught exception while executing %s: %s" % (func, t), 2)
 
 class EventConsumer:
     """
@@ -22,6 +33,7 @@ class EventConsumer:
         self._connection.declareQueue( self._queueName )
         self._connection.declareBinding( self._exchangeName, self._queueName, self._bindingKey )
 
+        @safe
         def handle_one_event( event ) :
             q.logger.log("Event consumer %s: handling event %s" % (self, event), 7)
             params = dict() 

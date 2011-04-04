@@ -11,7 +11,10 @@ class Events(object):
         self._con.publish(EXCHG_NAME, rootingKey, tagString)
 
     def _getConsumerPath(self, appName):
-        return q.system.fs.joinPaths(q.dirs.pyAppsDir, appName, 'impl', 'events')
+        appDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appName)
+        if not q.system.fs.isDir(appDir):
+            raise RuntimeError("No pyapp with name '%s' found" % appName)
+        return q.system.fs.joinPaths(appDir, 'impl', 'events')
 
     def startConsumers(self, appName):
         path = self._getConsumerPath(appName)
