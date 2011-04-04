@@ -46,8 +46,8 @@ class portal(object):
         if not any([text, space, category, tags]):
             return []
 
-        sql_select = 'view_page_list.category, view_page_list."name", view_page_list.space'
-        sql_from = ['page.view_page_list']
+        sql_select = 'ui_view_page_list.category, ui_view_page_list."name", ui_view_page_list.space'
+        sql_from = ['ui_page.ui_view_page_list']
         sql_where = ['1=1']
 
         if tags:
