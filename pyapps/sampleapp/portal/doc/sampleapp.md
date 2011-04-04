@@ -9,9 +9,9 @@ In this section we introduce you to the different components of PyApps and how t
 ###Architecture
 Below you can find the architecture of how the PyLabs framework is built.
 
-![PyApps_Architecture] (/portal/static/PyApp_Architecture.png)
+![PyApps_Architecture] (images/PyApp_Architecture.png)
 
-![PyLabs_DRP] (/portal/static/PyLabs_DRP.png)
+![PyLabs_DRP] (images/PyLabs_DRP.png)
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 
