@@ -4,4 +4,4 @@ def main(q, i, p, params, tags):
 def match(q, i, params, tags):
     import base64
     tags = q.base.tags.getObject( params["eventBody"] )
-    return '!@***LEAD***@!' in base64.decodestring(tags.getTag("mail"))
+    return '!@***LEAD***@!' in base64.decodestring(tags.tagGet("mail"))
