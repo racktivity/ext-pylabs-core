@@ -110,6 +110,7 @@ ln -s "`pwd`/workflowengine/workflowengine/bin/" "/opt/qbase5/apps/workflowengin
 ln -s "`pwd`/pylabs_agent/agent_service" "/opt/qbase5/lib/python/site-packages/"
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/jswizards" "/opt/qbase5/www"
+ln -s "`pwd`/jswizards/libs" "/opt/qbase5/www/js"
 
 hg clone "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
