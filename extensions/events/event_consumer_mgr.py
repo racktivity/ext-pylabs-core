@@ -17,7 +17,6 @@ def buildCmd(bindingKey, workPoolDir, queueName):
 
 class EventConsumerMgr:
     def __init__ (self, baseDir):
-        
         self.piddir = q.system.fs.joinPaths(q.dirs.pidDir, 'event_consumers', q.tools.hash.md5_string(baseDir))
         q.system.fs.createDir(self.piddir)
         self._workerPools = q.system.fs.listDirsInDir(baseDir)
@@ -44,9 +43,11 @@ class EventConsumerMgr:
         for pidfile in q.system.fs.listFilesInDir(self.piddir):
             pid = q.system.fs.fileGetContents(pidfile)
             if pid.isdigit():
+                q.logger.log("Terminating event consumer with PID %s" % pid, 7)
                 os.kill(int(pid), signal.SIGTERM)
+            else:
+                q.logger.log("PID in PID file %s is not a digit" % pidfile, 3)
             q.system.fs.removeFile(pidfile)
-        
 
 
 if __name__ == '__main__' :

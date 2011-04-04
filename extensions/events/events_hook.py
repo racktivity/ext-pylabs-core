@@ -1,10 +1,9 @@
 from pylabs import q
 from rabbitmqclient import Connection
-from events import EXCHG_NAME, EXCHG_TYPE
+from events import EXCHG_NAME
 from events.event_consumer_mgr import EventConsumerMgr
 
 class Events(object):
-    
     def __init__(self):
         self._con = Connection()
     
