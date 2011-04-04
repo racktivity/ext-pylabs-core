@@ -112,7 +112,7 @@ mkdir -p /opt/qbase5/www
 ln -s "`pwd`/jswizards" "/opt/qbase5/www"
 ln -s "`pwd`/jswizards/libs" "/opt/qbase5/www/js"
 
-hg clone "${HG_PREFIX}/despiegk/lfw" lfw
+hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 
