@@ -8,8 +8,8 @@ from pylabs import q, p
 SQL_PAGES = 'SELECT DISTINCT ui_page.ui_view_page_list.%(prop)s FROM ui_page.ui_view_page_list'
 SQL_PAGES_FILTER = 'SELECT DISTINCT ui_page.ui_view_page_list.%(prop)s FROM ui_page.ui_view_page_list WHERE ui_page.ui_view_page_list.%(prop)s LIKE \'%(term)s%%\''
 
-SQL_PAGE_TAGS = 'SELECT DISTINCT ui_page.ui_view_page_tag_list.%(prop)s FROM ui_page.ui_view_page_tag_list'
-SQL_PAGE_TAGS_FILTER = 'SELECT DISTINCT ui_page.ui_view_page_tag_list.%(prop)s FROM ui_page.ui_view_page_tag_list WHERE ui_page.ui_view_page_tag_list.%(prop)s LIKE \'%(term)s%%\''
+SQL_PAGE_TAGS = 'SELECT DISTINCT ui_page.view_page_tag_list.%(prop)s FROM ui_page.view_page_tag_list'
+SQL_PAGE_TAGS_FILTER = 'SELECT DISTINCT ui_page.view_page_tag_list.%(prop)s FROM ui_page.view_page_tag_list WHERE ui_page.view_page_tag_list.%(prop)s LIKE \'%(term)s%%\''
 
 
 class portal(object):
@@ -54,7 +54,7 @@ class portal(object):
             taglist = tags.split(', ') or []
             
             for x, tag in enumerate(taglist):
-               sql_from.append('INNER JOIN ui_page.ui_view_page_tag_list tl%(x)s ON tl%(x)s.guid = ui_view_page_list.guid AND tl%(x)s.tag = \'%(tag)s\'' % {'tag': tag, 'x': x})
+               sql_from.append('INNER JOIN ui_page.view_page_tag_list tl%(x)s ON tl%(x)s.guid = ui_view_page_list.guid AND tl%(x)s.tag = \'%(tag)s\'' % {'tag': tag, 'x': x})
 
         if space:
             sql_where.append('ui_view_page_list.space = \'%s\'' % space)
