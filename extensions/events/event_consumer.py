@@ -12,6 +12,7 @@ def safe(func):
         except Exception:
             t = traceback.format_exc()
             q.logger.log("Caught exception while executing %s: %s" % (func, t), 2)
+    return wrapped_func
 
 class EventConsumer:
     """
