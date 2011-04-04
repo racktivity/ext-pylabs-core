@@ -217,12 +217,12 @@ class PyAppsConfigGen:
         config_template = '''
 LFW_CONFIG = {
     'uris': {
-        'listSpaces': '/%(appname)s/appserver/rest/lfw/spaces',
-        'completion': '/%(appname)s/appserver/rest/lfw/tags',
-        'search': '/%(appname)s/appserver/rest/lfw/search',
-        'tags': '/%(appname)s/appserver/rest/lfw/tags',
-        'title': '/%(appname)s/appserver/rest/lfw/pages',
-        'pages': '/%(appname)s/appserver/rest/lfw/page',
+        'listSpaces': '/%(appname)s/appserver/rest/ui/portal/spaces',
+        'completion': '/%(appname)s/appserver/rest/ui/portal/tags',
+        'search': '/%(appname)s/appserver/rest/ui/portal/search',
+        'tags': '/%(appname)s/appserver/rest/ui/portal/tags',
+        'title': '/%(appname)s/appserver/rest/ui/portal/pages',
+        'pages': '/%(appname)s/appserver/rest/ui/portal/page',
         'macros': '/%(appname)s/js/macros/'
     }
 };
