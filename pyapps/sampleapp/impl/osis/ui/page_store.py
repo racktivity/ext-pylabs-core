@@ -18,7 +18,8 @@ def main(q, i, p, params, tags):
         'space': rootobject.space,
         'category': rootobject.category,
         'parent': rootobject.parent,
-        'tags': rootobject.tags
+        'tags': rootobject.tags,
+        'content': rootobject.content
     }
 
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
