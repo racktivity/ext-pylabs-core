@@ -19,9 +19,9 @@ class Events(object):
     def startConsumers(self, appName):
         path = self._getConsumerPath(appName)
         if q.system.fs.exists(path):
-            EventConsumerMgr(path).start()
+            EventConsumerMgr(appName, path).start()
     
     def stopConsumers(self, appName):
         path = self._getConsumerPath(appName)
         if q.system.fs.exists(path):
-            EventConsumerMgr(path).stop()
+            EventConsumerMgr(appName, path).stop()

@@ -7,19 +7,22 @@ import traceback
 
 event_consumer = q.system.fs.joinPaths(q.system.fs.getDirName(__file__), "event_consumer.py")
 
-def buildCmd(bindingKey, workPoolDir, queueName):
+def buildCmd(bindingKey, workPoolDir, queueName, appName):
     cmd = [
         sys.executable,
         event_consumer,
         queueName,
         bindingKey,
-        workPoolDir ]
+        workPoolDir,
+        appName
+    ]
     return cmd
 
 class EventConsumerMgr:
-    def __init__ (self, baseDir):
+    def __init__ (self, appName, baseDir):
         self.piddir = q.system.fs.joinPaths(q.dirs.pidDir, 'event_consumers', q.tools.hash.md5_string(baseDir))
         q.system.fs.createDir(self.piddir)
+        self._appName = appName
         self._workerPools = q.system.fs.listDirsInDir(baseDir)
 
     def _savePid(self, pid, workerPool, idx):
@@ -34,7 +37,7 @@ class EventConsumerMgr:
             workers = cfgFile.getIntValue('main', 'workers')
             bindingKey = cfgFile.getValue('main','eventKey')
             queueName = q.tools.hash.md5_string(workerPool)
-            cmd = buildCmd(bindingKey, workerPool, queueName)
+            cmd = buildCmd(bindingKey, workerPool, queueName, self._appName)
             for i in xrange(workers):
                 pid = q.system.process.runDaemon(" ".join(cmd))
                 self._savePid(pid, workerPool, i)
