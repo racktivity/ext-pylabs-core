@@ -40,7 +40,7 @@ Per action, there exists one tasklet which contains the business logic and the a
 
 ###From Modeling to Reality
 Below you find a graphical overview of the creation of a PyApp. 
-![PyApp] (/portal/static/PyApp.png)
+![PyApp] (images/PyApp.png)
 
 
 ##PyApps Directory Structure
