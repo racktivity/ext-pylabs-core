@@ -30,7 +30,7 @@ class EventConsumerMgr:
 
     def start(self):
         for workerPool in self._workerPools:
-            cfgFilePath = q.system.fs.joinPaths ( workerPool, "consumers" )
+            cfgFilePath = q.system.fs.joinPaths(workerPool, "consumer")
             cfgFile = q.config.getInifile( cfgFilePath )
             workers = cfgFile.getIntValue('main', 'workers')
             bindingKey = cfgFile.getValue('main','eventKey')
