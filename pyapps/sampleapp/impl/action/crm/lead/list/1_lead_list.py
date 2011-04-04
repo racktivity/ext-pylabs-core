@@ -36,5 +36,5 @@ def main(q, i, p, params, tags):
         q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
         f.add(VIEW, field, value)
 
-    result = handle.findAsView(f)
+    result = handle.findAsView(f, VIEW)
     params['result'] = result
