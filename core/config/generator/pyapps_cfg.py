@@ -90,7 +90,7 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.applyConfig()
 
         self._configurePortal()
-        self._populatePortal()
+        # self._populatePortal()
 
         taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'setup')
         if q.system.fs.exists(taskletpath):
