@@ -39,16 +39,14 @@ http {
     # server_names_hash_bucket_size 64;
     # server_name_in_redirect off;
 
-  #for $include in $includes
-  include   $include;
-  #end for
+    #for $include in $includes
+    include   $include;
+    #end for
   
-  #for $key, $value in $options.iteritems()
-  $key $value;
-  #end for
- 
-  default_type application/octet-stream;
-  
+    #for $key, $value in $options.iteritems()
+    $key $value;
+    #end for
+    
     ##
     # Logging Settings
     ##
@@ -61,7 +59,7 @@ http {
     ##
 
     ## Include the virtualhosts
-
+    include /etc/nginx/mime.types;
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
     }
