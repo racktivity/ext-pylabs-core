@@ -9,7 +9,13 @@ def main(q, i, p, params, tags):
     *Email:* %(email)s
     *Address:* %(address)s        
     *VAT:* %(vat)s
-    *Status:* %(status)s    
+    *Status:* %(status)s
+    
+    <div class="macro macro_actions"></div>
+    
+    <form method="post" action="#/action/customer_edit">
+        <button type="submit" title="Edit customer"></button>
+    </form>
     """
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.action.ui.page.find(name="customer_detail_%s"%guid)['result']

@@ -1,6 +1,3 @@
-__tags__ = 'page','getObject'
-__author__ = 'incubaid'
-
 def main(q, i, p, params, tags):
     from pymodel.serializers import ThriftSerializer
     import base64

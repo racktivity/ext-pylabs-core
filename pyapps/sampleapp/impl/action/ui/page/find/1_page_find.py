@@ -1,6 +1,3 @@
-__tags__ = 'page','find'
-__author__ = 'incubaid'
-
 def main(q, i, p, params, tags):
     filterObject = p.api.model.ui.page.getFilterObject()
 
