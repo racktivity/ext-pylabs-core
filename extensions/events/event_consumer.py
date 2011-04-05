@@ -1,4 +1,4 @@
-from pylabs.InitBase import q
+from pylabs.InitBase import q, p
 import rabbitmqclient as rmq
 from events import EXCHG_NAME, EXCHG_TYPE
 from functools import wraps
@@ -51,9 +51,10 @@ class EventConsumer:
 if __name__ == '__main__':
     import sys
     cmdArgs = sys.argv
-    if len( cmdArgs ) != 4:
+    if len(cmdArgs) != 5:
         print cmdArgs
         raise RuntimeError( "Usage: eventconsumer.py queuename bindingkey taskletdir" )
-    cons = EventConsumer( cmdArgs[1], cmdArgs[2], cmdArgs[3] )
+    queueName, bindingKey, taskletDir, appName = cmdArgs[1:]
+    p.api = p.application.getAPI(appName)
+    cons = EventConsumer(queueName, bindingKey, taskletDir)
     cons.consume()
-

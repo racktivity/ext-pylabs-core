@@ -1,7 +1,7 @@
 import os
 import os.path
 
-from pylabs import q
+from pylabs import q, p
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
@@ -102,6 +102,8 @@ class PyAppsConfigGen:
         if 'arakoon' in self.components:
             cluster = q.manage.arakoon.getCluster(self.appName)
             cluster.start()
+        if 'event_consumers' in self.components:
+            p.events.startConsumers(self.appName)
 
     
     def stop(self):
@@ -112,6 +114,8 @@ class PyAppsConfigGen:
         if 'arakoon' in self.components:
             cluster = q.manage.arakoon.getCluster(self.appName)
             cluster.stop()
+        if 'event_consumers' in self.components:
+            p.events.stopConsumers(self.appName)
     
     def generateAll(self):
         self.pyapps_configuration()
@@ -161,6 +165,8 @@ class PyAppsConfigGen:
         types = ('osis', 'pymodel', 'service')
         if any( (type_ in dirBaseNames) for type_ in  types):
             params.add('appserver')
+        if 'events' in dirBaseNames:
+            params.add('event_consumers')
         return params
     
     def get_needed_params(self, minRange):
