@@ -90,7 +90,6 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.applyConfig()
 
         self._configurePortal()
-        # self._populatePortal()
 
         taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'setup')
         if q.system.fs.exists(taskletpath):
@@ -259,73 +258,4 @@ LFW_CONFIG = {
             finally:
                 fd.close()
 
-    def _populatePortal (self):
-        
-        appName = self.appName
-        appDir = q.system.fs.joinPaths( q.dirs.pyAppsDir, appName )
-        modelDir = q.system.fs.joinPaths( appDir, 'interface', 'model')
-        pymodel.init_domain( modelDir )
-        osis.init()
-        xmlRpcURL = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appName
-        transport = XMLRPCTransport( xmlRpcURL, 'model')
-        serializer = ThriftSerializer()
-        connection = OsisConnection(transport, serializer)
-        MD_PATH = q.system.fs.joinPaths( appDir, 'portal', 'spaces' )
-        
-        macros_homepage = None
-        
-        for folder in q.system.fs.listDirsInDir(MD_PATH):
-            files = q.system.fs.listFilesInDir(folder, filter='*.md', recursive=True)
-            space = folder.split(os.sep)[-1]
-        
-            for f in files:
-                name = q.system.fs.getBaseName(f).split('.')[0]
-                content = q.system.fs.fileGetContents(f)
-        
-                # Check if page exists
-                f = connection.ui.page.getFilterObject()
-                f.add('ui_view_page_list', 'name', name, True)
-                f.add('ui_view_page_list', 'space', space, True)
-                page_info = connection.ui.page.findAsView(f, 'ui_view_page_list')
-                if len(page_info) > 1:
-                    raise ValueError('Multiple pages found ?')
-                elif len(page_info) == 1:
-                    page = connection.ui.page.get(page_info[0]['guid'])
-                else:
-                    page = connection.ui.page.new()
-                    page.name = name
-                    page.space = space
-                    page.category = 'portal'
-        
-                if name.startswith('Macro') and name not in ['Macros_Home', 'Macros']:
-                    if not macros_homepage:
-                        #check if Macros_Home page is already created, then get its guid to set it as parent guid to other macro pages
-                        filter = connection.ui.page.getFilterObject()
-                        filter.add('ui_view_page_list', 'name', 'Macros_Home', True)
-                        filter.add('ui_view_page_list', 'space', space, True)
-                        macros_page_info = connection.ui.page.findAsView(filter, 'ui_view_page_list')
-                        if len(macros_page_info) == 1:
-                            macros_homepage = connection.ui.page.get(macros_page_info[0]['guid'])
-                    page.parent = macros_homepage.guid
-        
-                # content
-                page.content = content if content else 'empty'
-        
-                # tags
-                if page.tags:
-                    t = page.tags.split(' ')
-                else:
-                    t = []
-                tags = set(t)
-        
-                # page and space 
-                tags.add('space:%s' % space)
-                tags.add('page:%s' % name)
-        
-                # split CamelCase in tags
-                for tag in re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', name).strip().split(' '):
-                    tags.add(tag)
-        
-                page.tags = ' '.join(tags)
-                connection.ui.page.save(page)
 
