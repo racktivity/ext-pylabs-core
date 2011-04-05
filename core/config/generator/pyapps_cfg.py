@@ -7,12 +7,6 @@ from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
 from agent_cfg import AgentPyApps
 from applicationserver_cfg import AppServerPyApps
-import osis
-from osis.client import OsisConnection
-from osis.client.xmlrpc import XMLRPCTransport
-import pymodel
-from pymodel.serializers import ThriftSerializer
-
 
 POSTGRESUSER = "postgres"
 join = q.system.fs.joinPaths
