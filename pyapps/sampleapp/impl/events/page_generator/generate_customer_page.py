@@ -18,13 +18,13 @@ def main(q, i, p, params, tags):
     </form>
     """
     customer = p.api.action.crm.customer.getObject(guid)
-    searchresult = p.action.ui.page.find(name="customer_detail_%s"%guid)['result']
+    searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
     if searchresult:
-        p.action.ui.page.update(guid, "customer_detail_%s"%guid, "crm", "customer", "crm customer", 
+        p.api.action.ui.page.update(guid, "customer_detail_%s"%guid, "crm", "customer", "crm customer", 
                                 template%{"name": customer.name, "login": customer.login, "password": customer.password, "email": customer.email,
                                           "address": customer.address, "vat": customer.vat, "status": customer.status})
     else:
-        p.action.ui.page.create("customer_detail_%s"%guid, "crm", "customer", "crm customer", 
+        p.api.action.ui.page.create("customer_detail_%s"%guid, "crm", "customer", "crm customer", 
                                 template%{"name": customer.name, "login": customer.login, "password": customer.password, "email": customer.email,
                                           "address": customer.address, "vat": customer.vat, "status": customer.status})
         
