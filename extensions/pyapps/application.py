@@ -53,12 +53,16 @@ class ApplicationAPI(object):
 
         self.appname = appname
         self.action = self._get_actions(appname, context)
+
+        modeltypes = ('model', 'config', 'monitoring')
+        for modeltype in modeltypes:
+            self._init_osis(modeltype)
         
         if not context == q.enumerators.AppContext.CLIENT:
-            self.model = self._get_osis_client(appname, 'model')
-            self.config = self._get_osis_client(appname, 'config')
-            self.monitoring = self._get_osis_client(appname, 'monitoring')
-            
+            for modeltype in modeltypes:
+                client = self._get_osis_client(appname, modeltype)
+                setattr(self, modeltype, client)
+
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
             
@@ -76,11 +80,11 @@ class ApplicationAPI(object):
         from client.action import actions
         return actions(proxy=proxy)
     
-    def _get_osis_client(self, appname, modeltype):
-        
+    def _init_osis(self, modeltype):
         pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', modeltype))
         osis.init()
-        
+
+    def _get_osis_client(self, appname, modeltype):
         from pymodel.serializers import ThriftSerializer
         from osis.client.xmlrpc import XMLRPCTransport
         from osis.client import OsisConnection
