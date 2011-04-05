@@ -1,4 +1,4 @@
-__tags__ = 'pop3','create'
+__tags__ = 'schedule'
 __author__ = 'incubaid'
 
 def main(q, i, p, params, tags):
