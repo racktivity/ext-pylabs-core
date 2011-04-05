@@ -17,7 +17,7 @@ def main(q, i, params, tags):
         view.setCol('category', q.enumerators.OsisType.STRING, True)        
         view.setCol('parent', q.enumerators.OsisType.UUID, True)
         view.setCol('tags', q.enumerators.OsisType.STRING, True)        
-        view.setCol('content', q.enumerators.OsisType.STRING, True)        
+        view.setCol('content', q.enumerators.OsisType.TEXT, True)        
         connection.viewAdd(view)
 
         indexes = ['name', 'space', 'category', 'parent', 'tags']

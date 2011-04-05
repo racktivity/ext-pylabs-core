@@ -224,9 +224,10 @@ LFW_CONFIG = {
         'title': '/%(appname)s/appserver/rest/ui/portal/pages',
         'pages': '/%(appname)s/appserver/rest/ui/portal/page',
         'macros': '/%(appname)s/js/macros/'
-    }
+    },
+    'appname' : '%(appname)'
 };
-'''
+''' 
 
         config = config_template % {
             'appname': self.appName,
