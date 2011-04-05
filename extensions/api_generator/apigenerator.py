@@ -579,16 +579,8 @@ class AppAPIGenerator(object):
                             q.system.fs.joinPaths(service_path, 'Scheduler.py'))
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname, 'osistype': 'model'}, 
-                            q.system.fs.joinPaths(service_path, 'model.py'))
-        
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname, 'osistype': 'monitoring'}, 
-                            q.system.fs.joinPaths(service_path, 'monitoring.py'))
-        
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname, 'osistype': 'config'}, 
-                            q.system.fs.joinPaths(service_path, 'config.py'))
+        self._generate_file('OsisService.tmpl', {'appname': appname}, 
+                            q.system.fs.joinPaths(service_path, 'osissvc.py'))
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui'))
         self._generate_file('WizardService.tmpl', params, 

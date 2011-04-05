@@ -55,8 +55,6 @@ class ApplicationAPI(object):
         self.action = self._get_actions(appname, context)
 
         modeltypes = ('model', 'config', 'monitoring')
-        for modeltype in modeltypes:
-            self._init_osis(modeltype)
         
         if not context == q.enumerators.AppContext.CLIENT:
             for modeltype in modeltypes:
@@ -80,21 +78,33 @@ class ApplicationAPI(object):
         from client.action import actions
         return actions(proxy=proxy)
     
-    def _init_osis(self, modeltype):
-        pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', modeltype))
-        osis.init()
-
     def _get_osis_client(self, appname, modeltype):
-        from pymodel.serializers import ThriftSerializer
-        from osis.client.xmlrpc import XMLRPCTransport
-        from osis.client import OsisConnection
-        
-        transporturl = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
-        transport = XMLRPCTransport(transporturl, modeltype)
-        connection = OsisConnection(transport, ThriftSerializer)
+        import os.path
 
-        return connection
+        import pymodel
+        from pymodel import serializers
 
+        from osis.client import connection, xmlrpc
+
+        def list_(path_):
+            subdirs = ((entry, os.path.join(path_, entry)) for entry in os.listdir(path_)
+                if os.path.isdir(os.path.join(path_, entry)))
+
+            for (name, subdir) in subdirs:
+                models = pymodel.load_models(subdir)
+
+                for model in models:
+                    yield ((modeltype, name, model.__name__), model)
+
+        def load(path_, transport_, serializer_):
+            return connection.generate_client(list_(path_), transport_, serializer_)
+
+        path = os.path.join(self._app_path, 'interface', modeltype)
+        transport_uri = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
+        transport = xmlrpc.XMLRPCTransport(transport_uri, 'osissvc')
+        serializer = serializers.ThriftSerializer
+
+        return load(path, transport, serializer)
         
 import xmlrpclib
 class XmlRpcActionProxy(object):

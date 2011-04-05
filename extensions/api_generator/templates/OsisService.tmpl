@@ -7,6 +7,27 @@ path = os.path.abspath(dirname)
 pyapp = os.path.abspath(os.path.join(path, '..', '..'))
 
 tasklet_path = os.path.join(pyapp, 'impl', 'osis')
- 
-from osis.server.applicationserver import OsisServer    
-$osistype = functools.partial(OsisServer, tasklet_path=tasklet_path)
+
+import pymodel
+def list_():
+    base = os.path.join(pyapp, 'interface')
+
+    for modeltype in 'model', 'config', 'monitoring':
+        path_ = os.path.join(base, modeltype)
+
+        if not os.path.isdir(path_):
+            continue
+
+        subdirs = ((entry, os.path.join(path_, entry))
+            for entry in os.listdir(path_)
+            if os.path.isdir(os.path.join(path_, entry)))
+
+        for (name, subdir) in subdirs:
+            models = pymodel.load_models(subdir)
+
+            for model in models:
+                yield ((modeltype, name, model.__name__), model)
+
+from osis.server.applicationserver import OsisServer
+osissvc = functools.partial(OsisServer, tuple(list_()),
+    tasklet_path=tasklet_path)
