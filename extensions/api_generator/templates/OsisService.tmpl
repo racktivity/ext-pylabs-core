@@ -29,5 +29,31 @@ def list_():
                 yield ((modeltype, name, model.__name__), model)
 
 from osis.server.applicationserver import OsisServer
-osissvc = functools.partial(OsisServer, tuple(list_()),
+
+class PatchedOsisServer(OsisServer):
+    def __init__(self, *args, **kwargs):
+        OsisServer.__init__(self, *args, **kwargs)
+
+        orig_execute = self.tasklet_engine.execute
+
+        def execute(**kwargs):
+            params = kwargs.pop('params', None)
+            params = params if params is not None else {}
+
+            if 'rootobjecttype' in params and len(params['rootobjecttype']) == 3:
+                category, domain, rootobjecttype = params['rootobjecttype']
+
+                params.update({
+                    'category': category,
+                    'domain': domain,
+                    'rootobjecttype': rootobjecttype,
+                })
+
+            kwargs['params'] = params
+
+            return orig_execute(**kwargs)
+
+        self.tasklet_engine.execute = execute
+
+osissvc = functools.partial(PatchedOsisServer, tuple(list_()),
     tasklet_path=tasklet_path)
