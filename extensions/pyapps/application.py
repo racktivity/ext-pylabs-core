@@ -22,11 +22,14 @@ class AppManager(object):
         '''Retrieve api object for an application'''
         return ApplicationAPI(appname, host, context)
     
-    def initialize(self, appname):
+    def install (self, appname):
         p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         gen.generateAll()
         gen.setup()
+        gen.stop()
+        gen.start()
+        gen.init()
         
     def start(self, appname):
         gen = PyAppsConfigGen(appname)

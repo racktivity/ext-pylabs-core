@@ -91,6 +91,14 @@ class PyAppsConfigGen:
             params = {"appname": self.appName}
             te.execute(params)
 
+    def init(self):
+        taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'init')
+        if q.system.fs.exists(taskletpath):
+            te = q.taskletengine.get(taskletpath)
+            params = {"appname": self.appName}
+            te.execute(params)
+
+
     def start(self):
         if 'appserver' in self.components:
             q.manage.applicationserver.start(self.appName)

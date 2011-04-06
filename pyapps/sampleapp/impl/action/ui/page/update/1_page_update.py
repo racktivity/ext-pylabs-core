@@ -1,5 +1,5 @@
 def main(q, i, p, params, tags):
-    page = p.api.model.ui.page.getObject(params['pageguid'])
+    page = p.api.model.ui.page.get(params['pageguid'])
     page.name = params['name']
     page.space = params['space']
     page.category = params['category']
