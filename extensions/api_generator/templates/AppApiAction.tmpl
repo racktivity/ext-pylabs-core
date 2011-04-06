@@ -22,7 +22,7 @@ class ${className}(object):
             from pymodel.serializers import ThriftSerializer
             decoded_o = base64.decodestring(o)
             # FIXME hack
-            api = p.application.getAPI("${appname}", context=q.generators.AppContext.APPSERVER)
+            api = p.application.getAPI("${appname}", context=q.enumerators.AppContext.APPSERVER)
             type_class = api.model.${domain}.${className}._ROOTOBJECTTYPE
             deserialized_o = ThriftSerializer.deserialize(type_class, decoded_o)
             return deserialized_o
