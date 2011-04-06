@@ -1,5 +1,6 @@
 import json
 from pylabs import q
+from pylabs import i
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.Shell import *
 import urllib
@@ -28,69 +29,6 @@ class Crowd:
         self.apiURI = 'http://localhost:8095'
         self.resultFormat = q.enumerators.RESTResultFormat.JSON
 
-    def accountAdd(self, account='', login='', passwd=''):
-        """
-        Add new Crowd account
-
-        @param account:         Crowd account name
-        @type account:          string
-        @param login:           Crowd account login
-        @type login:            string
-        @param passwd:          Crowd account password
-        @type passwd:           string
-        """
-        if account != '' and login != '' and passwd != '':
-            try:
-                self._config.remove(account)
-            except:
-                pass
-            self._config.add(account, {'login': login, 'passwd': passwd})
-        else:
-            self._config.add()
-
-    def accountsReview(self):
-        """
-        Review Crowd accounts
-        """
-        self._config.review()
-
-    def accountsShow(self):
-        """
-        Show Crowd accounts
-        """
-        self._config.show()
-
-    def accountsRemove(self, accountName=''):
-        """
-        Remove Crowd account
-        """
-        self._config.remove(accountName)
-
-    def accountGetConfig(self, accountName=''):
-        """
-        Retriev Crowd account configuration
-        """
-        return self._config.getConfig(accountName)
-
-    def accountGetLoginInfo(self, accountName=''):
-        """
-        """
-        # TODO - MNour: Do we still need this line
-        # self.init()
-        if accountName == '':
-            accountName = q.gui.dialog.askChoice('Select Crowd account name', self._getAccountNames())
-
-        config = self.accountGetConfig(accountName)
-        login = config['login']
-        passwd = config['passwd']
-        if login == '' or passwd == '':
-            self.accountsReview(accountName)
-
-        # TODO - MNour: Rwrite this line to follow the Crowd conventions
-        # url = " https://%s:%s@bitbucket.org/%s/" % (login, passwd, accountName)
-        url = ''
-        return url, login, passwd
-
     def checkDirectory(self, directoryName, accountName):
         """
         Check for the existence of a Crowd directory
@@ -109,6 +47,7 @@ class Crowd:
             directory = self._callCrowdRestAPI(accountName, CrowdResource.DIRECTORY, uriParts=[directoryName])
         except Exception:
             q.logger.log("WARN: Could not find Crowd directory with name '%s'." %directoryName, level=3)
+            q.logger.log('Exception: %s' %q.errorconditionhandler.getCurrentExceptionString())
             return False
 
         return True if directory else False
@@ -351,7 +290,7 @@ class Crowd:
         q.platform.ubuntu.checkInstall("curl","curl")
         resultTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
         headerTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
-        accountConfig = self.accountGetConfig(accountName)
+        accountConfig = i.config.clients.crowd.getConfig(accountName)
         uriPartsString = '%s/' %'/'.join(uriParts).replace(' ', '%20') if uriParts else ''
         parameters = urllib.urlencode(params).replace('+', '%20') if params else ''
 
