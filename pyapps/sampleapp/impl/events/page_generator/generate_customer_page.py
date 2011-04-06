@@ -1,21 +1,20 @@
 def main(q, i, p, params, tags):
     guid = params["eventBody"]
-    template = """
-    # Customer details
-    *Name:* %(name)s
-    *Login:* %(login)s
-    *Password:* %(password)s
-    *Email:* %(email)s
-    *Address:* %(address)s        
-    *VAT:* %(vat)s
-    *Status:* %(status)s
-    
-    <div class="macro macro_actions"></div>
-    
-    <form method="post" action="#/action/customer_edit">
-        <button type="submit" title="Edit customer"></button>
-    </form>
-    """
+    template = """# Customer details
+
+*   **Name:** %(name)s
+*   **Login:** %(login)s
+*   **Password:** %(password)s
+*   **Email:** %(email)s
+*   **Address:** %(address)s
+*   **VAT:** %(vat)s
+*   **Status:** %(status)s
+
+<div class="macro macro_actions"></div>
+
+<form method="post" action="#/action/customer_edit">
+    <button type="submit" title="Edit customer"></button>
+</form>"""
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
     if searchresult:
