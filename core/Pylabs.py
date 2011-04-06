@@ -173,6 +173,16 @@ def _pylabs_taskletengine():
     return TaskletEngineFactory()
 
 
+class TaskletControl:
+    @staticmethod
+    def stop():
+        '''Stop the current tasklet execution chain'''
+
+        from pylabs.taskletengine import engine
+
+        raise engine.TaskletStopControlFlowException
+
+
 class Pylabs:
     '''Central pylabs framework class, of which C{q} is an instance'''
     # Construct the singleton objects
@@ -246,6 +256,7 @@ class Pylabs:
 
     taskletengine = pylabsContainerAttributeDescriptor('taskletengine', _pylabs_taskletengine)
     '''Accessor to the tasklet engine factory'''
+    tasklet = TaskletControl
 
     def __init__(self):
         q = getattr(pylabs, 'q', None)
