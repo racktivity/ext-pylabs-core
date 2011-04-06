@@ -30,7 +30,7 @@ POSIX_IPC_BDIST_VERSION="0.9.0"
 POSIX_IPC_BDIST="posix_ipc-${POSIX_IPC_BDIST_VERSION}.linux-x86_64.tar.gz"
 WGET="wget -nv "
 # NOTE: Leave this var on one line, the hudson job greps it out to provide its local mirror
-APT_PACKAGES="python2.6 python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx python-yaml python-pyrex python-greenlet libevent-1.4-2"
+APT_PACKAGES="python2.6 python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx python-yaml python-pyrex python-greenlet libevent-1.4-2 python-sqlalchemy python-psycopg2"
 
 apt-get install ${APT_PACKAGES} -y
 

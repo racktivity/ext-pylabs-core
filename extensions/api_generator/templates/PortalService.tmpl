@@ -93,7 +93,7 @@ class portal(object):
         props = ['name', 'space', 'category', 'content', 'creationdate']
 
         result = dict([(prop, getattr(page, prop)) for prop in props]) 
-        result['tags'] = page.tags.split(' ') 
+        result['tags'] = page.tags.split(' ') if page.tags else []
 
         return result
 

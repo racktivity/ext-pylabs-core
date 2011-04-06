@@ -48,19 +48,19 @@ Below you can find the directory structure of a PyApp.
 
     pyapps/
     `-- myappname
-        |-- impl (actual implementation of the pyapp)
-        |    |-- action (contains the different actions of the pyapp)
-        |    |   `-- domainname (domain in the pyapp)
-        |    |       `-- rootobjectname (a root object of the pyapp)
-        |    |           `-- methodname (action on a root object)
-        |    |               `-- tasklet1.py (actual implementation)
-        |    |-- actor (to create something in reality) 
-        |    |   `-- domainname (domain in the pyapp)
-        |    |       `-- actorname
-        |    |           `-- methodname (name of the action)
+          |-- impl (actual implementation of the pyapp)
+          |    |-- action (contains the different actions of the pyapp)
+          |    |     `-- domainname (domain in the pyapp)
+          |    |         `-- rootobjectname (a root object of the pyapp)
+          |    |             `-- methodname (action on a root object)
+          |    |                 `-- tasklet1.py (actual implementation)
+          |    |-- actor (to create something in reality) 
+          |    |     `-- domainname (domain in the pyapp)
+          |    |         `-- actorname
+          |    |             `-- methodname (name of the action)
         |    |               |-- scripts (directory for rscripts)
         |    |               |   `-- rscript1.rscript (script to be executed by agent)
-        |    |               `-- tasklet1.py (tasklet to make rscript by an agent)
+          |    |                 `-- tasklet1.py (tasklet to make rscript by an agent)
         |    |-- authenticate
         |    |   `-- authenticate.py
         |    |-- authorize
@@ -74,15 +74,15 @@ Below you can find the directory structure of a PyApp.
         |    |   |   |-- consumer.cfg
         |    |   |   |-- event_action1.py
         |    |   |   `-- event_action2.py
-        |    |-- osis (methods to delete/store objects from/in views in postgres db) 
+          |    |-- osis (methods to delete/store objects from/in views in postgres db) 
         |    |   |-- config (config objects of pyapp)
         |    |   |   |-- config1_delete.py
         |    |   |   `-- config1_store.py
-        |    |   |-- domainname
+          |    |     |-- domainname
         |    |   |   `-- rootobjectname
-        |    |   |       |-- objectname_delete.py
+          |    |     |       |-- objectname_delete.py
         |    |   |       `-- objectname_store.py 
-        |    |   |-- generic (generic osis methods)
+          |    |   |-- generic (generic osis methods)
         |    |   |   `-- tasklet.py
         |    |   |-- monitoring 
         |    |   |   |-- monitoring_delete.py
@@ -91,32 +91,32 @@ Below you can find the directory structure of a PyApp.
         |    |       |-- ui_object_delete.py
         |    |       `-- ui_object_store.py
         |    |-- schedule
-        |    |   `-- domain
-        |    |       |-- schedule1.py
-        |    |       `-- schedule2.py
-        |    |-- setup
+          |    |     `-- domain
+          |    |         |-- schedule1.py
+          |    |         `-- schedule2.py
+          |    |-- setup
         |    |   `-- osis (define view to be stored in postgres db)
-        |    |       |-- tasklet1.py
-        |    |       `-- tasklet2.py
+          |    |         |-- tasklet1.py
+          |    |         `-- tasklet2.py
         |    |-- config
         |    |   |-- tasklet1.py
         |    |   `-- tasklet2.py
-        |    `-- ui (pyapp UI definitions)
-        |        |-- form (form definitions)
-        |        |   `-- tasklet1.py
-        |        |-- portal (portal page definitions)
-        |        |   `-- tasklet1.py
-        |        `-- wizard (wizard definitions)
-        |            `-- tasklet1.py
+          |    `-- ui (pyapp UI definitions)
+          |          |-- form (form definitions)
+          |          |     `-- tasklet1.py
+          |          |-- portal (portal page definitions)
+          |          |     `-- tasklet1.py
+          |          `-- wizard (wizard definitions)
+          |              `-- tasklet1.py
         |
         |-- interface
         |    |-- action
-        |    |   `-- domainname
+        |    |     `-- domainname
         |    |       |-- rootobject1.py (interface on rootobject)
         |    |       `-- rootobject2.py
         |    |-- actor
         |    |   `-- domainname
-        |    |       |-- actor1.py (model of an actor object)
+        |    |        |-- actor1.py (model of an actor object)
         |    |       `-- actor2.py
         |    |-- config
         |    |   `-- configuration1.py (model of a pyapp configuration)
@@ -128,10 +128,10 @@ Below you can find the directory structure of a PyApp.
         |        `-- monitoringobject1.py (model of a monitoring object)
         |
         `-- portal (documentation of pyapp)
-            |-- static (static data to be included in pyapp doc)
+              |-- static (static data to be included in pyapp doc)
             |   |-- image1.jpg
             |   `-- image2.jpg
-            |-- doc (manual of pyapp)
+              |-- doc (manual of pyapp)
             |   |-- doc1.md
             |   `-- doc2.md
             `-- api (api doc of pyapp)

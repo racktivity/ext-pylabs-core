@@ -1,43 +1,4 @@
-#Form Wizards
-
-With framework 3.0 wizards are used to execute actions on a certain rootobject. As most of the functionality, wizards can also be defined by writing a simple tasklet.
-Wizards are they way to make highly interactive interfaces which result in executing 1 or multiple cloudAPI functions.
-
-Wizards should only use the cloudAPI to fetch required information and to execute actions.
-
-The wizard dialect is fully integrated in the PyLabs framework. The main entry point to define wizards is located at 'q.gui.form'.
-
-##General structure of a wizard tasklet
-
-Since a wizard is implemented by using the tasklet framework, it contains all sections like any other tasklet.
-
-Sections:
-* Tags
-** Tags instruct the wizard engine which tasklets should be triggered under which circumstances.
-* Author
-** Author allows you to identify who was the creator of the corresponding wizard.
-* Callback method(s)
-** See [#callbacks] for more information
-* Main method
-** This method contains the actual implementation of the wizard
-* Match method
-** This method is invoked before the main method gets executed. Main method is only executed if match method returns True.
-** For wizard tasklets the match method MUST always return true. Multiple implementations of the same wizard are not supported.
-
-Example skeleton for a wizard tasklet:
-
-    \# 'wizard' tag is required, second tag is the name of the wizard rootobject_action e.g. vdc_start
-    __tags__= ('wizard','wizard_name')
-    __author__='aserver'
-    
-    def main(q, i, params, tags):
-        cloudApi = i.config.cloudApiConnection.find('main')
-    
-    def match(q, i, params, tags):
-        return True
-
-
-##Wizard API
+#Form and Wizard API
 
 Following methods are available in the wizard dialect.
 
@@ -58,7 +19,7 @@ Example:
     form = q.gui.form.createForm()
 
 
-### askForm()
+###askForm()
 
 This method presents the constructed form to the end-user and wait until this user completes the wizard.
 
@@ -68,7 +29,7 @@ Example:
     tab.message('message_hello', 'Hello World!')
     retvalue = q.gui.dialog.askForm(form)
 
-### loadForm()
+###loadForm()
 
 Load a form object from a result of the askForm call.
 This transforms the dict to a form object.
@@ -77,7 +38,7 @@ Example:
     form = q.gui.form.loadForm(q.guid.dialog.askForm(form))
 
 
-### addTab()
+###addTab()
 
 Multiple tab pages can be created on a wizard form object. Tab pages allow you to group a set of related controls.
 At least 1 tab must be created before you can start adding other controls.
@@ -99,7 +60,7 @@ Example:
     
     tab = form.addTab('tab_general', 'General')
 
-### message()
+###message()
 
 The message control allows you to display read-only information to the end-user.
 Message controls can only be added on tab pages.
@@ -121,7 +82,7 @@ Example:
     
     tab.message('msg_welcome', 'Welcome to the sample wizard', True, False)
 
-### addText()
+###addText()
 
 The text control allows you to retrieve string input from the end-user.
 Text controls can only be added on tab pages.
@@ -149,7 +110,7 @@ Example:
     
     tab.addText(name='txt_name', text='Please give name',value='<YOUR NAME>', multiline=False, validator='[az-AZ-09]', helpText='Please provide your name. Allowed characters are A to Z and 0 to 9')
 
-### addMultiline()
+###addMultiline()
 
 The multiline control allows you to retrieve large string input from the end-user.
 Multiline controls can only be added on tab pages.
@@ -175,7 +136,7 @@ Example:
     
     tab.addMultiline(name='txt_notes', text='Additional notes', helpText='Please provide additional notes')
 
-### addInteger()
+###addInteger()
 
 The integer control allows you to retrieve integer value input from the end-user.
 Integer controls can only be added on tab pages.
@@ -202,7 +163,7 @@ Example:
     
     tab.addInteger(name='num_licenses', text='Number of licenses', minValue=1, maxValue=100, selectedValue=1)
 
-### addIntegers()
+###addIntegers()
 
 The integers control allows you to retrieve a list of comma separated integer values from the end-user.
 Integer controls can only be added on tab pages.
@@ -228,7 +189,7 @@ Example:
      tab.addIntegers(name='num_list', question='Please provide 2 numbers between 1 and 10', helpText='Provide 2 numbers separated by a comma')
 
 
-### addPassword()
+###addPassword()
 
 The password control allows you to retrieve password input from the end-user.
 Password controls can only be added on tab pages.
@@ -253,7 +214,7 @@ Example:
     
     tab.addPassword(name='passwd', text='Enter your password', helpText='Please provide your desired password')
 
-### addYesNo()
+###addYesNo()
 
 The YesNo control allows you to retrieve boolean input from the end-user.
 YesNo controls can only be added on tab pages.
@@ -278,7 +239,7 @@ Example:
     
     tab.addYesNo(name='yesno_finish', question='Are you sure this information is correct?')
 
-### addChoice()
+###addChoice()
 
 The choice control allows you to retrieve 1 selected value from a list of choices from the end-user. If the list of possible values contains 5 items or less, radio buttons are shown.
 If the list of possible values is more than 5, the control automatically shows a dropdown list.
@@ -306,7 +267,7 @@ Example:
      tab.addChoice(name='sel_department', text='Select department', values={'ENG': 'Engineering', 'SAL': 'Sales', 'MAR' : 'Marketing'},
                    selectedValue='ENG', helpText='Please select your department')
 
-### addChoiceMultiple()
+###addChoiceMultiple()
 
 The multiple choice control allows you to retrieve multiple values from a list of choices from the end-user.
 Multiple choice controls can only be added on tab pages.
@@ -341,7 +302,7 @@ Example:
     tab.addChoiceMultiple(name='sel_supported_os', text='Select supported operating systems', values=('Windows platforms','Linux platforms','MAC OS X platforms'),
                           selectedValue=[0,2], helpText='Please select all supported operating systems')
 
-### addDropDown()
+###addDropDown()
 
 The drop down control allows you to retrieve one value from a list of values from the end-user.
 Drop down controls can only be added on tab pages.
@@ -368,7 +329,7 @@ Example:
     tab.addDropDown(name='dd_supported_os', text='Select supported OS', values={'WIN': 'Windows platforms', 'LIN': 'Linux platforms', 'OSX': 'MAC OS X platforms'},
                     selectedValue='WIN', helpText='Please select the supported operating system')
 
-### addDate()
+###addDate()
 
 The date control allows you to retrieve a date value from the end-user. In a wizard UI the date is selected from a UI date selector.
 Date controls can only be added on tab pages.
@@ -396,7 +357,7 @@ Example:
     
     tab.addDate(name='date_birth', question='Enter date of birth', helpText='Please enter your date of birth')
 
-### addDateTime()
+###addDateTime()
 
 The datetime control allows you to retrieve a date / time value from the end-user. In a wizard UI the date and time are selected from a UI date and time selector.
 Datetime controls can only be added on tab pages.
@@ -424,28 +385,22 @@ Example:
     
     tab.addDateTime(name='start_time', question='Enter start time', helpText='Please enter the start time')
 
-{anchor:callbacks}
 
-##Interactive wizards using callbacks
+##Callbacks
 
 The wizard framework allows you to create highly interactive interfaces. A callback mechanism is available to implement such functionality.
 
 Every interactive control (text, password, yesno, choice, ...) provide the following parameters to allow immediate user interaction:
 
-* trigger
-** This is the event where the control should trigger on. For now we only support 'click' and 'change'.
-* callback
-** This method that will be called, if the event has been triggered
-** The callback method must be implemented in the same tasklet as where the wizard is defined.
-** *WARNING:* the method name must start with 'callback_' followed by the name specified in the callback parameter.
-* message
-** Message to show based on status of the control
-* status
-** Current status of this control. For now only 'error' status is supported.
+* trigger: this is the event where the control should trigger on. For now we only support 'click' and 'change'.
+* callback: this method that will be called, if the event has been triggered. The callback method must be implemented in the same tasklet as where the wizard is defined. 
+The method name must start with 'callback_' followed by the name specified in the callback parameter.
+* message: message to show based on status of the control
+* status: current status of this control. For now only 'error' status is supported.
 
 Example:
-    __tags__= ('wizard','wizard_name')
-    __author__='aserver'
+    __tags__= 'wizard','wizard_name'
+    __author__='incubaid'
     
     def callback_get_employees(q,i,params,tags):
         form = q.gui.form.createForm()
@@ -482,8 +437,8 @@ Sessionstate parameter gives the possibility to transfer metadata from the main 
 The metadata can be any type (string, integer, object...).
 
 Example:
-    _tags__= ('wizard','wizard_name')
-    __author__='aserver'
+    _tags__= 'wizard','wizard_name'
+    __author__='incubaid'
     
     def callback_retrieve_sessionstate(q,i,params,tags):
         session = params['SESSIONSTATE']
@@ -508,6 +463,6 @@ Example:
 
 ##Screenshots
 
-![](static/wizard_sample1.png)
-![](static/wizard_sample2.png)
-![](static/wizard_sample3.png|thumbnail)
+![Example 1](static/wizard_sample1.png)
+![Example 2](static/wizard_sample2.png)
+![Example 3](static/wizard_sample3.png)
