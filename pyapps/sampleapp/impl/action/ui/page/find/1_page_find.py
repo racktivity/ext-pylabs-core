@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
         if key in fields and not value in (None, ''):
             filterObject.add('ui_view_page_list', key, value)
           
-    result = p.api.model.config.pop3.find(filterObject)
+    result = p.api.model.ui.page.find(filterObject)
     params['result'] = result
 
     
