@@ -91,6 +91,74 @@ class Crowd:
         url = ''
         return url, login, passwd
 
+    def checkDirectory(self, directoryName, accountName):
+        """
+        Check for the existence of a Crowd directory
+
+        @param directiryName:       Crowd directory name
+        @type directoryName:        string
+        @param accountName:         Crowd account name
+        @type accountName:          string
+        @return True if directory exists, False otherwise
+        @rtype Boolean
+        @raise Exception in case of errors
+        """
+        self._validateValues(directoryName=directoryName, accountName=accountName)
+
+        try:
+            directory = self._callCrowdRestAPI(accountName, CrowdResource.DIRECTORY, uriParts=[directoryName])
+        except Exception:
+            q.logger.log("WARN: Could not find Crowd directory with name '%s'." %directoryName, level=3)
+            return False
+
+        return True if directory else False
+
+    def checkGroup(self, groupName, directoryName, accountName):
+        """
+        Check for the existence of a Crowd group in a the specified Crowd directory
+
+        @param groupName:           Crowd group name
+        @type groupName:            string
+        @param directiryName:       Crowd directory name
+        @type directoryName:        string
+        @param accountName:         Crowd account name
+        @type accountName:          string
+        @return True if group exists, False otherwise
+        @rtype Boolean
+        @raise Exception in case of errors
+        """
+        self._validateValues(groupName=groupName, accountName=accountName)
+        groups = self._callCrowdRestAPI(accountName, CrowdResource.DIRECTORY, uriParts=[directoryName, str(CrowdResource.GROUP)],
+                                        params={'search': groupName})
+
+        if groups:
+            return len(groups['group']) == 1
+
+        return False
+
+    def checkUser(self, userName, directoryName, accountName):
+        """
+        Check for the existence of a Crowd user in a the specified Crowd directory
+
+        @param userName:            Crowd user name
+        @type userName:             string
+        @param directiryName:       Crowd directory name
+        @type directoryName:        string
+        @param accountName:         Crowd account name
+        @type accountName:          string
+        @return True if user exists, False otherwise
+        @rtype Boolean
+        @raise Exception in case of errors
+        """
+        self._validateValues(userName=userName, directoryName=directoryName, accountName=accountName)
+        users = self._callCrowdRestAPI(accountName, CrowdResource.DIRECTORY, uriParts=[directoryName, str(CrowdResource.USER)],
+                                        params={'search': userName})
+
+        if users:
+            return len(users['user']) == 1
+
+        return False
+
     def getGroup(self, groupName, directoryName, accountName):
         """
         Retrieve the specified Crowd group
@@ -131,29 +199,6 @@ class Crowd:
                                         params={'search': ''})
 
         return groups['group'] if groups else list()
-
-    def checkGroup(self, groupName, directoryName, accountName):
-        """
-        Check for the existence of a Crowd group in a the specified Crowd directory
-
-        @param groupName:           Crowd group name
-        @type groupName:            string
-        @param directiryName:       Crowd directory name
-        @type directoryName:        string
-        @param accountName:         Crowd account name
-        @type accountName:          string
-        @return True if group exists, False otherwise
-        @rtype Boolean
-        @raise Exception in case of errors
-        """
-        self._validateValues(groupName=groupName, accountName=accountName)
-        groups = self._callCrowdRestAPI(accountName, CrowdResource.DIRECTORY, uriParts=[directoryName, str(CrowdResource.GROUP)],
-                                        params={'search': groupName})
-
-        if groups:
-            return len(groups['group']) == 1
-
-        return False
 
     def getUsers(self, directoryName, accountName):
         """
@@ -196,29 +241,6 @@ class Crowd:
 
         return users['user'] if users else dict()
 
-    def checkUser(self, userName, directoryName, accountName):
-        """
-        Check for the existence of a Crowd user in a the specified Crowd directory
-
-        @param userName:            Crowd user name
-        @type userName:             string
-        @param directiryName:       Crowd directory name
-        @type directoryName:        string
-        @param accountName:         Crowd account name
-        @type accountName:          string
-        @return True if user exists, False otherwise
-        @rtype Boolean
-        @raise Exception in case of errors
-        """
-        self._validateValues(userName=userName, directoryName=directoryName, accountName=accountName)
-        users = self._callCrowdRestAPI(accountName, CrowdResource.DIRECTORY, uriParts=[directoryName, str(CrowdResource.USER)],
-                                        params={'search': userName})
-
-        if users:
-            return len(users['user']) == 1
-
-        return False
-
     def getUserGroupMemberships(self, userName, directoryName, accountName):
         """
         Retrieve all Crowd group the specified user is a member of
@@ -259,7 +281,7 @@ class Crowd:
 
         return False
 
-    def getGroupUsers(self, groupName, directoryName, accountName):
+    def getGroupMembers(self, groupName, directoryName, accountName):
         """
         Retrieve all users in the specified Crowd group
 
@@ -331,7 +353,7 @@ class Crowd:
         headerTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
         accountConfig = self.accountGetConfig(accountName)
         uriPartsString = '%s/' %'/'.join(uriParts).replace(' ', '%20') if uriParts else ''
-        parameters = urllib.urlencode(params).replace('+', '%20') if params else dict()
+        parameters = urllib.urlencode(params).replace('+', '%20') if params else ''
 
         dataString = ''
         if data:

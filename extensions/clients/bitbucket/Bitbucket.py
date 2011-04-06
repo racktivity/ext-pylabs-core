@@ -17,6 +17,8 @@ class BitbucketRESTCall(BaseEnumeration):
         cls.registerItem('groups')
         cls.registerItem('group_privileges', value='group-privileges')
         cls.registerItem('users')
+        cls.registerItem('repositories')
+        cls.registerItem('user')
         cls.finishItemRegistration()
 
 class BitbucketSettingsParam(BaseEnumeration):
@@ -208,9 +210,9 @@ class Bitbucket:
             else:
                 q.errorconditionhandler.raiseError("Invalid data type '%s', data value is '%s'." %(type(data), data))
 
-        cmd = "curl --dump-header %(headerTmpfile)s --user %(login)s:%(password)s --request %(method)s '%(apiURI)s/%(apiVersion)s/%(call)s/%(accountName)s/%(uriParts)s?%(parameters)s' --data '%(data)s' > %(resultTmpfile)s" %{'headerTmpfile': headerTmpfile,
-              'login': accountConfig['login'], 'password': accountConfig['passwd'], 'call': call, 'resultTmpfile': resultTmpfile, 'apiURI': self.apiURI, 'apiVersion': self.apiVersion,
-              'accountName': accountConfig['login'], 'method': method, 'data': dataString, 'uriParts': uriPartsString, 'parameters': urllib.urlencode(parameters)}
+        cmd = "curl --dump-header %(headerTmpfile)s --user %(login)s:%(password)s --request %(method)s '%(apiURI)s/%(apiVersion)s/%(call)s/%(uriParts)s?%(parameters)s' --data '%(data)s' > %(resultTmpfile)s" %{'headerTmpfile': headerTmpfile,
+              'login': accountConfig['login'], 'password': accountConfig['passwd'], 'call': call, 'resultTmpfile': resultTmpfile, 'apiURI': self.apiURI,
+              'apiVersion': self.apiVersion, 'method': method, 'data': dataString, 'uriParts': uriPartsString, 'parameters': urllib.urlencode(parameters)}
 
         resultcode, content = q.system.process.execute(cmd, False, True)
         if resultcode > 0:
@@ -335,7 +337,7 @@ class Bitbucket:
         """
         # TODO - MNour: Objectization of returned values.
         self._validateValues(accountName=accountName)
-        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, uriParts=[accountName])
 
     def getGroup(self, groupName, accountName):
         """
@@ -369,7 +371,7 @@ class Bitbucket:
         @rtype list
         @raise Exception in case of errors
         """
-        self._validateAccountName(accountName)
+        self._validateValues(accountName=accountName)
         q.errorconditionhandler.raiseError('Method not yet implemented.')
 
     def addGroup(self, groupName, accountName):
@@ -384,8 +386,36 @@ class Bitbucket:
         @rtype L{Group}
         @raise Exception in case of errors
         """
-        self._validateGroupAndAccountNames(groupName, accountName)
-        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.POST, name=groupName)
+        self._validateValues(groupName=groupName, accountName=accountName)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.POST, uriParts=[accountName], data={'name': groupName})
+
+    def getRepos(self, accountName):
+        """
+        Retrieve all Bitbucket repositories which can be access by the account specified
+
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return List of Bitbucket L{Repository}(s), or empty list of not repositories accessed by the specified account
+        @rtype list
+        @raise Exception in case of errors
+        """
+        self._validateValues(accountName=accountName)
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.USER, uriParts=[str(BitbucketRESTCall.REPOSITORIES)])
+
+    def checkRepo(self, repoName, accountName):
+        """
+        Check for the existence of a Bitbucket repository
+
+        @param repoName:        Bitbucket repository name
+        @type repoName:         string
+        @param accountName:     Bitbucket account name
+        @type accountName:      string
+        @return True if the Bitbucket repository exists, False otherwise
+        @rtype Boolean
+        @raise Exception in case of error
+        """
+        self._validateValues(repoName=repoName, accountName=accountName)
+        return len([repo for repo in self.getRepos(accountName) if repo['name'] == repoName]) > 0
 
     def checkGroup(self, groupName, accountName):
         """
@@ -397,6 +427,7 @@ class Bitbucket:
         @type accountName:      string
         @return True if group exists, False otherwise
         """
+        self._validateValues(groupName=groupName, accountName=accountName)
         return len([group for group in self.getGroups(accountName) if group['name'] == groupName]) > 0
 
     def deleteGroup(self, groupName, accountName):
@@ -409,9 +440,9 @@ class Bitbucket:
         @type accountName:      string
         @raise Exception in case of errors
         """
-        self._validateGroupAndAccountNames(groupName, accountName)
+        self._validateValues(groupName=groupName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.DELETE, [groupSlug])
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.DELETE, uriParts=[accountName, groupSlug])
 
     def getGroupMembers(self, groupName, accountName):
         """
@@ -425,9 +456,9 @@ class Bitbucket:
         @rtype list
         @raise Exception in case of errors
         """
-        self._validateGroupAndAccountNames(groupName, accountName)
+        self._validateValues(groupName=groupName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, uriParts=[groupSlug, 'members'])
+        return [member['username'] for member in self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, uriParts=[accountName, groupSlug, 'members'])]
 
     def addGroupMember(self, memberLogin, groupName, accountName):
         """
@@ -443,9 +474,9 @@ class Bitbucket:
         @rtype L{Member}
         @raise Exception in case of errors
         """
-        self._validateMemberAndGroupAndAccountNames(memberLogin, groupName, accountName)
+        self._validateValues(memberLogin=memberLogin, groupName=groupName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.PUT, uriParts=[groupSlug, 'members', memberLogin])
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.PUT, uriParts=[accountName, groupSlug, 'members', memberLogin])
 
     def updateGroup(self, groupName, accountName, **kwargs):
         """
@@ -461,7 +492,7 @@ class Bitbucket:
         @rtype L{Group}
         @raise Exception in case of errors
         """
-        self._validateGroupAndAccountNames(groupName, accountName)
+        self._validateValues(groupName=groupName, accountName=accountName)
         group = self.getGroup(groupName, accountName)
         if kwargs:
             if not str(BitbucketSettingsParam.NAME) in kwargs:
@@ -484,9 +515,9 @@ class Bitbucket:
         @type accountName:      string
         @raise Exception in case of errors
         """
-        self._validateMemberAndGroupAndAccountNames(memberLogin, groupName, accountName)
+        self._validateValues(memberLogin=memberLogin, groupName=groupName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.DELETE, uriParts=[groupSlug, 'members', memberLogin])
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUPS, q.enumerators.RESTMethod.DELETE, uriParts=[accountName, groupSlug, 'members', memberLogin])
 
     def getGroupPrivileges(self, accountName, filter=None, private=None):
         """
@@ -545,7 +576,8 @@ class Bitbucket:
         """
         self._validateValues(groupName=groupName, repoName=repoName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, q.enumerators.RESTMethod.PUT, uriParts=[repoName, accountName, groupSlug], data=[str(privilege)])
+        return self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, q.enumerators.RESTMethod.PUT,
+                                          uriParts=[accountName, repoName, accountName, groupSlug], data=[str(privilege)])
 
     def revokeRepoGroupPrivileges(self, groupName, repoName, accountName):
         """
@@ -561,7 +593,8 @@ class Bitbucket:
         """
         self._validateValues(groupName=groupName, repoName=repoName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, q.enumerators.RESTMethod.DELETE, uriParts=[repoName, accountName, groupSlug])
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, q.enumerators.RESTMethod.DELETE,
+                                   uriParts=[repoName, accountName, groupSlug])
 
     def revokeGroupPrivileges(self, groupName, accountName):
         """
@@ -577,7 +610,8 @@ class Bitbucket:
         """
         self._validateValues(groupName=groupName, accountName=accountName)
         groupSlug = self._getGroupSlug(groupName, accountName)
-        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, q.enumerators.RESTMethod.DELETE, uriParts=[accountName, groupSlug])
+        self._callBitbucketRestAPI(accountName, BitbucketRESTCall.GROUP_PRIVILEGES.value, q.enumerators.RESTMethod.DELETE,
+                                   uriParts=[accountName, accountName, groupSlug])
 
     def _getGroupSlug(self, groupName, accountName):
         """
