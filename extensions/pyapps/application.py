@@ -2,8 +2,6 @@ import sys
 from pylabs import q, p
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
-import pymodel
-import osis
 
 class AppContext(BaseEnumeration):
     def __repr__(self):
@@ -54,12 +52,12 @@ class ApplicationAPI(object):
         self.appname = appname
         self.action = self._get_actions(appname, context)
 
-        modeltypes = ('model', 'config', 'monitoring')
+        categories = ('model', 'config', 'monitoring')
         
         if not context == q.enumerators.AppContext.CLIENT:
-            for modeltype in modeltypes:
-                client = self._get_osis_client(appname, modeltype)
-                setattr(self, modeltype, client)
+            for category in categories:
+                client = self._get_osis_client(appname, category)
+                setattr(self, category, client)
 
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
@@ -78,7 +76,7 @@ class ApplicationAPI(object):
         from client.action import actions
         return actions(proxy=proxy)
     
-    def _get_osis_client(self, appname, modeltype):
+    def _get_osis_client(self, appname, category):
         import os.path
 
         import pymodel
@@ -94,12 +92,12 @@ class ApplicationAPI(object):
                 models = pymodel.load_models(subdir)
 
                 for model in models:
-                    yield ((modeltype, name, model.__name__), model)
+                    yield ((category, name, model.__name__), model)
 
         def load(path_, transport_, serializer_):
             return connection.generate_client(list_(path_), transport_, serializer_)
 
-        path = os.path.join(self._app_path, 'interface', modeltype)
+        path = os.path.join(self._app_path, 'interface', category)
         transport_uri = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
         transport = xmlrpc.XMLRPCTransport(transport_uri, 'osissvc')
         serializer = serializers.ThriftSerializer
