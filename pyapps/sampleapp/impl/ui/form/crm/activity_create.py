@@ -22,14 +22,14 @@ def callCloudAPI(api, name, description, location, type, priority, status, custo
     result = api.crm.activity.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
     return result
 
-def getCustomers(q, api):
+def getCustomers(api):
     customers = dict()
     result = api.action.crm.customer.list()['result']
     
     map(lambda x: customers.__setitem__(x['guid'], x['name']), result)
     return customers
 
-def getLeads(q, api):
+def getLeads(api):
     leads = dict()
     result = api.action.crm.lead.list()['result']
     
@@ -54,8 +54,8 @@ def main(q, i, p, params, tags):
     type = getType(q)
     status= getStatus(q)
     priority = getPriority(q)
-    customers = getCustomers(q, p.api)
-    leads = getLeads(q, p.api)
+    customers = getCustomers(p.api)
+    leads = getLeads(p.api)
     
     form = q.gui.form.createForm()
     
