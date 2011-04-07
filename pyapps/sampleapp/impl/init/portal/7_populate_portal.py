@@ -26,7 +26,7 @@ def main (q,i,p,params,tags):
             #f = connection.ui.page.getFilterObject()
             #f.add('ui_view_page_list', 'name', name, True)
             #f.add('ui_view_page_list', 'space', space, True)
-            page_info = connection.ui.page.find( name = name, space = space )
+            page_info = connection.ui.page.find(name=name, space=space, exact_properties=("name", "space"))
             if len(page_info['result']) > 1:
                 raise ValueError('Multiple pages found ? ' )
             elif len(page_info['result']) == 1:
