@@ -12,8 +12,9 @@ The wizard dialect is fully integrated in the PyLabs framework. The main entry p
 Since a wizard is implemented by using the [tasklet] (http://confluence.incubaid.com/display/PYLABS/Tasklets) framework, it contains all sections like any other tasklet.
 
 Sections:
-* Tags: instruct the wizard engine which tasklets should be triggered under which circumstances.
-* Author: allows you to identify who was the creator of the corresponding wizard.
+* Tags: instruct the wizard engine which tasklets should be triggered under which circumstances
+* Author: allows you to identify who was the creator of the corresponding wizard
+* Priority: execution priority of tasklet, 1 is lowest priority
 * Callback method(s): see Callbacks-section for more information
 * Main method: this method contains the actual implementation of the wizard
 * Match method: this method is invoked before the main method is executed. The Main method is only executed if match method returns True. For wizard tasklets, the match method must always return True. Multiple implementations of the same wizard are not supported.
@@ -23,6 +24,7 @@ Example skeleton for a wizard tasklet:
     \# 'wizard' tag is required, second tag is the name of the wizard rootobject_action e.g. vdc_start
     __tags__= 'wizard','wizard_name'
     __author__='incubaid'
+    __priority__ = 1
     
     def callCloudAPI(api, arg1, arg2, arg3):
         """execute the cloud API call"""
@@ -42,6 +44,8 @@ Example skeleton for a wizard tasklet:
         return True
 
 The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure] (sampleapp.md) for more information about the location of the files.
+
+It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet] (actiontasklet.md), which receives the arguments through the `params` dictionary.
 
 
 ##Creating Forms

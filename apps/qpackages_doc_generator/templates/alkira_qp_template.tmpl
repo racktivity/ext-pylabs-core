@@ -1,0 +1,26 @@
+$packageName.capitalize().replace('_', '\_') $version
+==================================
+
+\#\#\# Description
+
+#for $description in $descriptionFiles[$packageName][$version].iterkeys():
+$descriptionFiles[$packageName][$version][$description]
+#end for
+
+\#\#\# Q-Package Metadata
+
+#for $detail in $metadata.iterkeys():
+* $detail: $metadata[$detail]
+#end for
+
+\#\#\# Dependencies
+
+#if not $dependenciesDict[$packageName][$version]:
+This Q-Package does not depend on any other Q-Packages.
+#else
+This Q-Package depends on the following Q-packages:
+
+#for $dependency in $dependenciesDict[$packageName][$version]:
+* $dependency
+#end for
+#end if
