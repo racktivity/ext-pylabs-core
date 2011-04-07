@@ -1,14 +1,10 @@
 import os 
 import re
-import pymodel
 import functools
 
 def main (q,i,p,params,tags):
-    
     appName = params['appname']
     appDir = q.system.fs.joinPaths( q.dirs.pyAppsDir, appName )
-    modelDir = q.system.fs.joinPaths( appDir, 'interface', 'model')
-    pymodel.init_domain( modelDir )
     MD_PATH = q.system.fs.joinPaths( appDir, 'portal', 'spaces' )
     serverapi = p.application.getAPI(appName,context=q.enumerators.AppContext.APPSERVER)
     connection = p.application.getAPI(appName).action
