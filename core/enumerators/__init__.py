@@ -33,7 +33,7 @@
 #
 # </License>
 
-__all__ = ['PlatformType', 'AppStatusType', 'ErrorconditionLevel', 'LogLevel', 'MessageType','ActionStatus','SeverityType', 'AppStatusType','JobStatusType']
+__all__ = ['PlatformType', 'AppStatusType', 'ErrorconditionLevel', 'LogLevel', 'MessageType', 'ActionStatus', 'SeverityType', 'AppStatusType', 'JobStatusType', 'REST']
 from pylabs.enumerators.PlatformType import PlatformType
 from pylabs.enumerators.SeverityType import SeverityType
 from pylabs.enumerators.AppStatusType import AppStatusType
@@ -43,5 +43,6 @@ from pylabs.enumerators.MessageType import MessageType
 from pylabs.enumerators.TransactionStatus import TransactionStatus
 from pylabs.enumerators.QPackageQualityLevelType import QPackageQualityLevelType
 from pylabs.enumerators.JobStatusType import JobStatusType
+from pylabs.enumerators.REST import RESTResultFormat
+from pylabs.enumerators.REST import RESTMethod
 #from pylabs.enumerators.TlogType import TlogType
-
