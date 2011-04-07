@@ -81,6 +81,15 @@ else:
         #IPython issue
         global IPYTHON_TRACER
 
+        if not IPYTHON_TRACER:
+            # This is the first time this procedure is called
+            # Due to some funky IPython 0.10 internals, we need the following:
+            import IPython
+
+            if map(int, IPython.__version__.split('.'))[:2] == [0, 10]:
+                from IPython.Shell import IPShellEmbed
+                IPShellEmbed(argv=[])
+
         old_colors = ExceptionColors.active_scheme_name
         ExceptionColors.active_scheme_name = color_scheme
 
