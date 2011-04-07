@@ -72,8 +72,8 @@ class PyAppsConfigGen:
                 dbconnections.addSection(section)
             dbconnections.addParam(section, 'dbtype', 'postgresql')
             dbconnections.addParam(section, 'dbserver', '127.0.0.1')
-            dbconnections.addParam(section, 'dblogin', 'qbase')
-            dbconnections.addParam(section, 'dbpasswd', 'qbase')
+            dbconnections.addParam(section, 'dblogin', self.appName)
+            dbconnections.addParam(section, 'dbpasswd', '')
             dbconnections.addParam(section, 'dbname', self.appName)
             dbconnections.write()
         if 'wfe' in self.components:

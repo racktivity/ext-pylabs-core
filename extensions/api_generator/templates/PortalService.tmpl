@@ -9,7 +9,8 @@ class portal(LFWService):
 	
         # Initialize API
         self.connection = p.api.model.ui
-
         module = os.path.abspath(os.path.dirname(__file__))
         tasklet_path = os.path.abspath(os.path.join(module, '..', '..', 'portal'))
         self._tasklet_engine = q.taskletengine.get(tasklet_path)
+        self.db_config_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'dbconnections.cfg')
+
