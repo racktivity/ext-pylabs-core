@@ -1,14 +1,12 @@
 def main(q, i, p, params, tags):
     filterObject = p.api.model.ui.page.getFilterObject()
+    exact_properties = params['exact_properties'] or ()
 
-    fields = ('name','space', 'category', 'parent', 'tags')
-    for key,value in params.iteritems():
-        if key in fields and not value in (None, ''):
-            filterObject.add('ui_view_page_list', key, value)
+    properties = ('name', 'space', 'category', 'parent', 'tags')
+    for property_name, value in params.iteritems():
+        if property_name in properties and not value in (None, ''):
+            exact = property_name in exact_properties
+            filterObject.add('ui_view_page_list', property_name, value, exactMatch=exact)
           
     result = p.api.model.ui.page.find(filterObject)
     params['result'] = result
-
-    
-def match(q, i, p, params, tags):
-	return True
