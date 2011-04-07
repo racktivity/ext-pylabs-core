@@ -222,7 +222,7 @@ class QHook:
         if debugger is None:
             return self._config.review() #pylint: disable-msg=E1101
 
-        if debugger is 'winpdb':
+        if debugger == 'winpdb':
             # WinPDB needs interactive input
             return self._config.review()
 
