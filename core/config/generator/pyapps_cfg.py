@@ -1,6 +1,5 @@
 import os
 import os.path
-import re
 from pylabs import q, p
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
@@ -67,6 +66,16 @@ class PyAppsConfigGen:
                         cidr_address='127.0.0.1/32',database=self.appName)
                 postgres.save()
                 postgres.applyConfig()
+            dbconnections = q.config.getInifile('dbconnections')
+            section = "db_%s" % self.appName
+            if not dbconnections.checkSection(section):
+                dbconnections.addSection(section)
+            dbconnections.addParam(section, 'dbtype', 'postgresql')
+            dbconnections.addParam(section, 'dbserver', '127.0.0.1')
+            dbconnections.addParam(section, 'dblogin', 'qbase')
+            dbconnections.addParam(section, 'dbpasswd', 'qbase')
+            dbconnections.addParam(section, 'dbname', self.appName)
+            dbconnections.write()
         if 'wfe' in self.components:
             if self.appName not in q.manage.ejabberd.cmdb.hosts:
                 agent_cfg = AgentPyApps(self.appName)

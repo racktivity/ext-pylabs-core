@@ -101,6 +101,7 @@ hg clone --branch 0.5 "${HG_PREFIX}/despiegk/osis" osis
 hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_workflowengine" workflowengine
 hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pylabs_agent" pylabs_agent
 hg clone "${HG_PREFIX}/despiegk/jswizards" jswizards
+hg clone --branch default "${HG_PREFIX}/despiegk/lfw" lfw
 ln -s "`pwd`/pymodel/pymodel/" "/opt/qbase5/lib/python/site-packages/pymodel"
 ln -s "`pwd`/osis/code/osis/" "/opt/qbase5/lib/python/site-packages/osis"
 ln -s "`pwd`/workflowengine/workflowengine/lib/" "/opt/qbase5/lib/python/site-packages/workflowengine"
@@ -111,10 +112,9 @@ ln -s "`pwd`/pylabs_agent/agent_service" "/opt/qbase5/lib/python/site-packages/"
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/jswizards" "/opt/qbase5/www"
 ln -s "`pwd`/jswizards/libs" "/opt/qbase5/www/js"
-
-hg clone --branch default "${HG_PREFIX}/despiegk/lfw" lfw
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
+ln -s "`pwd`/lfw/services/lfw/lfw.py" "/opt/qbase5/lib/python/site-packages/"
 
 echo "Symlink extra libs"
 ln -s /opt/code/incubaid/pylabs-core/lib/* /opt/qbase5/lib/python/site-packages/

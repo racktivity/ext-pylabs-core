@@ -1,6 +1,3 @@
-__tags__ = 'wizard','customer','create'
-__author__ = 'incubaid'
-
 TAB_GENERAL_TITLE = 'General'
 TAB_GENERAL_NAME = 'Name: '
 TAB_GENERAL_EMAIL = 'Email: '
@@ -43,6 +40,8 @@ def main(q, i, p, params, tags):
     tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
     tab_general.addText(name='vat', text = TAB_GENERAL_VAT, helpText = TAB_GENERAL_VAT_HELPTEXT)
 
+    q.gui.dialog.askForm(form)
+    
     answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                          title=MSGBOX_CREATE_CONFIRMATION_TITLE,
                                          msgboxButtons='OKCancel',

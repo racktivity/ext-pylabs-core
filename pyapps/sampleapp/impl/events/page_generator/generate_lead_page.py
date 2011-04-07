@@ -20,12 +20,14 @@ def main(q, i, p, params, tags):
         customername = '<No related customer>'
     
     searchresult = p.action.ui.page.find(name="lead_detail_%s"%guid)['result']
+    parentpage = p.api.action.ui.page.find(name="Home", space="crm")['result'][0]
+    
     if searchresult:
-        p.action.ui.page.update(guid, "lead_detail_%s"%guid, "crm", "lead", "crm lead", 
+        p.action.ui.page.update(guid, "lead_detail_%s"%guid, "crm", "lead", parentpage, "crm lead", 
                                 template%{"name": lead.name, "code": lead.code, "customer": customername, "source": lead.source,
                                           "type": lead.type, "status": lead.status, "amount": lead.amount, "probability": lead.probability})
     else:
-        p.action.ui.page.create("lead_detail_%s"%guid, "crm", "lead", "crm lead", 
+        p.action.ui.page.create("lead_detail_%s"%guid, "crm", "lead", parentpage, "crm lead", 
                                 template%{"name": lead.name, "code": lead.code, "customer": customername, "source": lead.source,
                                           "type": lead.type, "status": lead.status, "amount": lead.amount, "probability": lead.probability})
         

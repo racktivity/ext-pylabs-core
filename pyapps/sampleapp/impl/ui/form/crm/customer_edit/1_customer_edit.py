@@ -1,6 +1,3 @@
-__tags__ = 'wizard','customer','create'
-__author__ = 'incubaid'
-
 TAB_GENERAL_TITLE = 'General'
 TAB_GENERAL_NAME = 'Name: '
 TAB_GENERAL_EMAIL = 'Email: '
