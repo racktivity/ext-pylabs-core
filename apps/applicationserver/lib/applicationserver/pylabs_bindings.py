@@ -839,7 +839,7 @@ class Server:
         """
         name = self._checkName(name)
         q.console.echo("Restarting %s..." % name)
-        self.stop()
+        self.stop(name)
 
         pidfile = self._getPIDFilename(name)
         countdown = 5
@@ -847,8 +847,8 @@ class Server:
         # file is present, the server is still shutting down.
         pid = int(q.system.fs.fileGetContents(pidfile)) if q.system.fs.isFile(pidfile) else None
         while countdown and \
-              (self.isRunning() or (pid and q.system.process.isPidAlive(pid))):
-            q.console.echo("%s is still running, waiting for %d more seconds" % (name, countdown))
+              (self.isRunning(name) or (pid and q.system.process.isPidAlive(pid))):
+            q.console.echo("Applicationserver %s is still running, waiting for %d more seconds" % (name, countdown))
             time.sleep(1)
             countdown -= 1
 
