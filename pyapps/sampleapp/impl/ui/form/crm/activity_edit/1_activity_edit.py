@@ -1,6 +1,3 @@
-__tags__ = 'wizard', 'activity', 'create'
-__author__ = 'incubaid'
-
 TAB_GENERAL_TITLE = 'Create Activity'
 TAB_GENERAL_NAME = 'Activity name : '
 TAB_GENERAL_DESCRIPTION = 'Activity description : '
