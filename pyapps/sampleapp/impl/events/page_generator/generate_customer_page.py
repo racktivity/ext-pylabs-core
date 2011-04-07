@@ -33,6 +33,7 @@ def main(q, i, p, params, tags):
 <div class="macro macro_wizardactions"></div>
 
 <button onclick="start('sampleapp' ,'crm' ,'customer_edit','%(portalip)s', success)">Edit</button>
+<button onclick="start('sampleapp' ,'crm' ,'customer_delete','%(portalip)s', success)">Delete</button>
 """
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
