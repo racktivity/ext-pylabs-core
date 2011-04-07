@@ -44,7 +44,7 @@ class Bitbucket(object):
         if not q.clients.bitbucket.checkGroup(crowdGroupName, bitbucketAccountName):
             q.gui.dialog.message("* Bitbucket group '%(groupName)s' not found. Creating Bitbucket group '%(groupName)s'..." %{'groupName': crowdGroupName})
             q.clients.bitbucket.addGroup(crowdGroupName, bitbucketAccountName)
-            q.gui.dialog.message("  * Done creating Bitbucket group '%s'." %crowdGroupName)
+            q.gui.dialog.message("*   Done creating Bitbucket group '%s'." %crowdGroupName)
 
         crowdMembers = q.clients.crowd.getGroupMembers(crowdGroupName, crowdDirectoryName, crowdAccountName)
         bitbucketMembers = q.clients.bitbucket.getGroupMembers(crowdGroupName, bitbucketAccountName)
