@@ -580,7 +580,7 @@ class AppAPIGenerator(object):
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui'))
         self._generate_file('WizardService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'wizard.py'))
+                            q.system.fs.joinPaths(service_path, 'ui', 'wizard.py'))
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'portal'))
         self._generate_file('PortalService.tmpl', params, 

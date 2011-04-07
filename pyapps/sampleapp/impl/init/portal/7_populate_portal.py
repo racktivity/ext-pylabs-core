@@ -38,13 +38,10 @@ def main (q,i,p,params,tags):
             if name.startswith('Macro') and name not in ['Macros_Home', 'Macros']:
                 if not macros_homepage:
                     #check if Macros_Home page is already created, then get its guid to set it as parent guid to other macro pages
-                    filter = connection.ui.page.getFilterObject()
-                    filter.add('ui_view_page_list', 'name', 'Macros_Home', True)
-                    filter.add('ui_view_page_list', 'space', space, True)
-                    macros_page_info = connection.ui.page.findAsView(filter, 'ui_view_page_list')
-                    if len(macros_page_info) == 1:
-                        macros_homepage = connection.ui.page.get(macros_page_info[0]['guid'])
-                page.parent = macros_homepage.guid
+                    macros_page_info = connection.ui.page.find( name = 'Macros_Home', space = space ) 
+                    if len(macros_page_info ['result'] ) == 1:
+                        macros_homepage = connection.ui.page.getObject(macros_page_info['result'][0])
+                page.parent = macros_homepage.guid if macros_homepage else None
     
             # content
             page.content = content if content else 'empty'
