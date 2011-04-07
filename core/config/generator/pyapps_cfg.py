@@ -70,11 +70,11 @@ class PyAppsConfigGen:
             section = "db_%s" % self.appName
             if not dbconnections.checkSection(section):
                 dbconnections.addSection(section)
-            dbconnections.addParam(sections, 'dbtype', 'postgresql')
-            dbconnections.addParam(sections, 'dbserver', '127.0.0.1')
-            dbconnections.addParam(sections, 'dblogin', 'qbase')
-            dbconnections.addParam(sections, 'dbpasswd', 'qbase')
-            dbconnections.addParam(sections, 'dbname', self.appName)
+            dbconnections.addParam(section, 'dbtype', 'postgresql')
+            dbconnections.addParam(section, 'dbserver', '127.0.0.1')
+            dbconnections.addParam(section, 'dblogin', 'qbase')
+            dbconnections.addParam(section, 'dbpasswd', 'qbase')
+            dbconnections.addParam(section, 'dbname', self.appName)
             dbconnections.write()
         if 'wfe' in self.components:
             if self.appName not in q.manage.ejabberd.cmdb.hosts:
