@@ -410,13 +410,13 @@ Example:
         ddEmpl = form.tabs['tabGeneral'].elements['cboEmployee']
     
         if ddGrp.value == '1':
-            ddEmpl.values = {1:'Marc',2:'Nancy',3:'Kurt',4:'Peter'}
+            ddEmpl.values = {1:'John',2:'Michael',3:'Graham',4:'Terry J'}
         if ddGrp.value == '2':
-            ddEmpl.values = {1:'Frederik',2:'Wim'}
+            ddEmpl.values = {1:'Terry G',2:'Eric'}
         if ddGrp.value == '3':
-            ddEmpl.values = {1:'Stijn',2:'Arvid'}
+            ddEmpl.values = {1:'Andrew',2:'Connie'}
         if ddGrp.value == '4':
-            ddEmpl.values = {1:'Henk',2:'Carla'}
+            ddEmpl.values = {1:'Brian',2:'Prunella'}
         return form
     
     def main(q,i,params,tags):
@@ -428,6 +428,7 @@ Example:
         form.tabs['tabGeneral'].addChoice('cboGroups','Select your department',{1:'Engineering',2:'Sales', 3:'Marketing', 4:'Financial'}, trigger='change',callback='get_employees', helpText=helpTxt)
         form.tabs['tabGeneral'].addDropDown('cboEmployee','Select yourself',{}, helpText=helpTxt)
         q.gui.dialog.askForm(form)
+
     def match(q,i,params,tags):
         return True
 
