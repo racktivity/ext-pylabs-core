@@ -22,7 +22,11 @@ ROOT_DIR="/"
 QBASE_DIR="/opt/qbase5"
 
 my_log () {
-    echo -e "\033[1m"$@"\033[0m"
+    if test "x$TERM" == "xunknown"; then
+        echo $@
+    else
+        echo -e "\033[1m"$@"\033[0m"
+    fi
 }
 
 my_wget () {
@@ -87,8 +91,12 @@ my_tar () {
 
 my_die () {
     echo
-    echo -e '\E[31m\033[1m'Error: $@'\033[0m'
-    tput sgr0
+    if test "x$TERM" == "xunknown"; then
+        echo "Error:" $@
+    else
+        echo -e '\E[31m\033[1m'Error: $@'\033[0m'
+        tput sgr0
+    fi
     echo
 
     exit 1
@@ -117,7 +125,9 @@ do
   esac
 done
 
-clear
+if ! test "x${TERM}" == "xunknown"; then
+    clear
+fi
 
 if [ "x${HG_PREFIX}" == "x" ]; then
 	HG_PREFIX="https://bitbucket.org"
