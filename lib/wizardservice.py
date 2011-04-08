@@ -888,6 +888,7 @@ class ApplicationserverWizardService(object):
             'login':login,
             'password': passwd,
         }
+        params.update( extra )
         tags = (domainName, wizardName)
 
         def call_tasklet_procedure(proc_, params_, tags_):
