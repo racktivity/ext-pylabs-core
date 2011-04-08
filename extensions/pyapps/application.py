@@ -38,6 +38,11 @@ class AppManager(object):
     def stop(self, appname):
         gen = PyAppsConfigGen(appname)
         gen.stop()
+ 
+    def restart(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.stop()
+        gen.start()
         
 class ApplicationAPI(object):
     
