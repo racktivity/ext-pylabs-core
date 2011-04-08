@@ -13,7 +13,8 @@ class ${className}(ActionService):
         result = p.api.action.${domain}.${className}.${method.name}($line)
 #if $method.name == 'getObject'
         # Deserialize the pymodel object
-        o = result['result']
+        o = result
+        result = {}
         import base64
         from pymodel.serializers import ThriftSerializer
         serialized_result = o.serialize(ThriftSerializer)

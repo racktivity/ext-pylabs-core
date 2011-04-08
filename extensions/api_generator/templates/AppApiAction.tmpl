@@ -27,7 +27,7 @@ class ${className}(object):
             deserialized_o = ThriftSerializer.deserialize(type_class, decoded_o)
             return deserialized_o
         else:
-            return result
+            return result['result']
 #else
         return result
 #end if
