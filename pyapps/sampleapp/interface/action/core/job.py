@@ -3,7 +3,7 @@ class job:
     in job embedded there are all jobsteps + logging info
     """
 
-    def create(self, jobguid="", executionparams=dict()):
+    def create(self, jobguid="", executionparams=None):
         """
         Create a new job.
 
@@ -19,7 +19,7 @@ class job:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self, actionname="", agentguid="",machineguid="",applicationguid="",datacenterguid="",fromTime="",toTime="",clouduserguid="",jobstatus='', jobguid="",executionparams=dict()):
+    def find(self, actionname="", agentguid="",machineguid="",applicationguid="",datacenterguid="",fromTime="",toTime="",clouduserguid="",jobstatus='', jobguid="",executionparams=None):
         """        
         @execution_method = sync
         
@@ -59,7 +59,7 @@ class job:
         @returns array of array [[...]]
         """
 
-    def getLogInfo(self,jobguid,MaxLogLevel=5, executionparams=dict()):
+    def getLogInfo(self,jobguid,MaxLogLevel=5, executionparams=None):
         """
         return log info as string
         @todo define format
@@ -82,7 +82,7 @@ class job:
         """
         raise NotImplementedError('Not implemented yet')
 
-    def getObject(self, rootobjectguid, jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, jobguid="",executionparams=None):
         """
         Gets the rootobject.
 
@@ -103,7 +103,7 @@ class job:
         @warning:                Only usable using the python client.
         """
 
-    def getYAML(self, yamljobguid, jobguid="", executionparams=dict()):
+    def getYAML(self, yamljobguid, jobguid="", executionparams=None):
         """
         Gets a string representation in YAML format of the job rootobject.
 
@@ -122,7 +122,7 @@ class job:
         @rtype:                   string
         """
 
-    def getXML(self, jobguid, executionparams=dict()):
+    def getXML(self, jobguid, executionparams=None):
         """
         Gets a string representation in XML format of the job rootobject.
 
@@ -143,7 +143,7 @@ class job:
         """
         raise NotImplementedError('Not implemented yet.')
 
-    def getXMLSchema(self, jobguid, executionparams=dict()):
+    def getXMLSchema(self, jobguid, executionparams=None):
         """
         Gets a string representation in XSD format of the job rootobject structure.
 
@@ -164,7 +164,7 @@ class job:
         """
         raise NotImplementedError('Not implemented yet.')
 
-    def getJobTree(self, rootobjectguid, jobguid="",executionparams=dict()):
+    def getJobTree(self, rootobjectguid, jobguid="",executionparams=None):
         """
         Gets the full tree of the rootobject.
 
@@ -183,7 +183,7 @@ class job:
         @rtype:                  array of dict [{...}]
         """
 
-    def findLatestJobs(self, maxrows=5, errorsonly=False, jobguid="", executionparams=dict()):
+    def findLatestJobs(self, maxrows=5, errorsonly=False, jobguid="", executionparams=None):
         """
         Returns the latest jobs.
 
@@ -202,7 +202,7 @@ class job:
         @rtype:                  array of dict [{...}]
         """
         
-    def delete(self, jobguids, jobguid="",executionparams=dict()):
+    def delete(self, jobguids, jobguid="",executionparams=None):
         """
         Delete all specified jobs and their children.
         
@@ -225,7 +225,7 @@ class job:
         @raise e:                        In case an error occurred, exception is raised
         """
         
-    def clear(self, jobguid="",executionparams=dict()):
+    def clear(self, jobguid="",executionparams=None):
         """
         Deletes all jobs.
         

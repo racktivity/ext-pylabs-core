@@ -4,9 +4,11 @@ import pkg_resources
 
 dirname = os.path.dirname(__file__)
 path = os.path.abspath(dirname)
-pyapp = os.path.abspath(os.path.join(path, '..', '..'))
+pyapp = os.path.abspath(os.path.join(path, '..', '..', '..'))
 
-tasklet_path = os.path.join(pyapp, 'impl', 'ui')
-  
+tasklet_paths = [ 
+    os.path.join(pyapp, 'impl', 'ui', 'form'),
+    os.path.join(pyapp, 'impl', 'ui', 'wizard'),
+]
 from wizardservice import ApplicationserverWizardService    
-wizard = functools.partial(ApplicationserverWizardService, taskletPath=tasklet_path)
+wizard = functools.partial(ApplicationserverWizardService, taskletPaths=tasklet_paths)

@@ -4,20 +4,24 @@ __priority__= 3
 
 from osis.store.OsisDB import OsisDB
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     rootobject = 'activity'
     domain = "crm"
     view_name = '%s_view_%s_list' % (domain, rootobject)
-    connection = OsisDB().getConnection('main')
+    connection = OsisDB().getConnection('sampleapp')
     if not connection.viewExists(domain, rootobject, view_name):
-        view = connection.viewCreate(rootobject, view_name)
+        view = connection.viewCreate(domain, rootobject, view_name)
         view.setCol('name', q.enumerators.OsisType.STRING, False)
+        view.setCol('description', q.enumerators.OsisType.STRING, False)
         view.setCol('customer', q.enumerators.OsisType.STRING, True)
         view.setCol('lead', q.enumerators.OsisType.STRING, True)
+        view.setCol('location', q.enumerators.OsisType.STRING, True)
         view.setCol('type', q.enumerators.OsisType.STRING, True)
         view.setCol('priority', q.enumerators.OsisType.STRING, True)
+        view.setCol('status', q.enumerators.OsisType.STRING, True)
         view.setCol('starttime', q.enumerators.OsisType.DATETIME, True)
         view.setCol('endtime', q.enumerators.OsisType.DATETIME, True)
+        connection.viewAdd(view)
         
         indexes = ['name', 'customer', 'type', 'priority']
         for field in indexes:

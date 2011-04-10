@@ -173,11 +173,11 @@ class Xmp(Fuse):
     def truncate(self, path, len):
         q.logger.log('truncate(%s, %s)%'%(path, len))
 
-    def mknod(self, path, mode, dev):
+    def _mknod(self, path, mode, dev):
         q.logger.log('mknod(%s, %s, %s)'%(path, mode, dev))
         self.create(path, mode, dev)
         
-    def create(self, path, flags, *mode):
+    def _create(self, path, flags, *mode):
         q.logger.log('create(%s, %s, %s)'%(path, flags, mode))
         q.logger.log('creating new file entry: %s'%path)
         parentPath = os.path.dirname(path) #q.system.fs.getDirName returns double /
@@ -192,10 +192,11 @@ class Xmp(Fuse):
             q.logger.log('DEBUG parent dir not found %s'%parentPath[1:])    
 
     def read(self, path, length, offset, *args):
-        fileObj = args[0] if args else None
-        q.logger.log('XMP: read(%s, %s, %s, %s)'%(path, length, offset, fileObj))
+        q.logger.log('Xmp:read(%s, %s, %s, %s)'%(path, length ,offset, args))
+        fileObj = args[0] if isinstance(args[0], Xmp.XmpFile) else None
         data = '01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890'
-        return 'A'*length
+        if fileObj: return fileObj.read(path, length, offset)
+        return data
 
     def mkdir(self, path, mode):
         q.logger.log('mkdir(%s, %s)'%(path, mode))
@@ -291,7 +292,28 @@ class Xmp(Fuse):
             self._stat = st
             self.path = path
             self.mode = mode
-            
+            self.create(path, flags, *mode)
+        
+        def create(self, path, flags, *mode):
+            q.logger.log('create(%s, %s, %s)'%(path, flags, mode))
+            q.logger.log('creating new file entry: %s'%path)
+            parentPath = os.path.dirname(path) #q.system.fs.getDirName returns double /
+            parentDirObject = None
+            try:
+                q.logger.log('DEBUG vfs.dirObjectGet(%s)'%parentPath[1:])
+                parentDirObject = self.vfs.dirObjectGet(parentPath[1:])
+                q.logger.log('DEBUG parent dir found %s'%parentPath[1:])
+                parentDirObject.addFileObject(path[1:], 0, q.base.time.getTimeEpoch(), '')
+                self.vfs.dirObjects.save(parentDirObject)
+            except NoEntryError, ex:
+                q.logger.log('DEBUG parent dir not found %s'%parentPath[1:])              
+
+        def read(self, path, length, offset):
+            q.logger.log('XmpFile:read(%s, %s, %s)'%(path, length, offset))
+            data = '01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890'
+            return 'A'*length
+
+                
         def open(self, path, flags):
             q.logger.log('open(%s, %s, %s)'%(path, flags))
             #self._stat.st_mtime = q.base.time.getTimeEpoch()
@@ -313,18 +335,6 @@ class Xmp(Fuse):
             
             q.logger.log('files: %s'%self.vfs.dirObjectGet(parentPath[1:]).files)
             self.fd = hash(path) #might come handy later, otherwise will be removed
-
-        def read(self, length, offset):
-            q.logger.log('XmpFile:read(%s, %s)'%(length, offset))
-            data = '01234567890012345678900123456789001234567890012345678900123456789001234567890012345678900123456789001234567890'
-            slen = len(data)
-            if offset < slen:
-                if offset + length > slen:
-                    size = slen - offset
-                buf = data[offset:offset+size]
-            else:
-                buf = ''
-            return buf
 
         def write(self, buf, offset):
             q.logger.log('write(%s, %s)%'%(buf, offset))
@@ -422,7 +432,7 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
         sys.exit(1)
 
     #ipshell()
-#    server.file_class = server.XmpFileFactory
+    server.file_class = server.XmpFileFactory
     server.main()
     q.logger.log('Fuse system mounted successfuly, loading vfs metadata ...')
     metadatapath= "/opt/qbase5/var/vfs/var_log/"

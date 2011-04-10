@@ -1,5 +1,4 @@
 __author__ = 'Incubaid'
-__tags__ = 'activity', 'create'
 __priority__= 3
 
 def main(q, i, p, params, tags):
@@ -15,7 +14,7 @@ def main(q, i, p, params, tags):
     activity.starttime = params['starttime']
     activity.endtime = params['endtime']
     activity.save()
-    params['result'] = True
+    params['result'] = activity.guid
     
 def match(q, i, p, params, tags):
     return True

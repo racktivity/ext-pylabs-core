@@ -39,6 +39,10 @@ class ConfigAgentStub:
     @staticmethod
     def add(name, _):
         assert name == 'main'
+        
+    @staticmethod 
+    def updateConfig():
+        pass
 
 # Monkey-patching mocking magic
 i.config.agent = ConfigAgentStub()
@@ -48,10 +52,6 @@ try:
 finally:
     pass
 
+config = i.config.agent
 class AgentSVC(WFLAgent.WFLAgent):
-    def __init__(self):
-        # Cron task should be disabled...
-        self.taskletEngine = None
-
-        self.__agent = agent.Agent(AGENTGUID, XMPPSERVER, PASSWORD,
-            AGENTCONTROLLERGUID, HOSTNAME, None)
+    pass

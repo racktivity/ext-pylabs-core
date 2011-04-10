@@ -10,7 +10,19 @@ class ${className}(ActionService):
         $method.docs
         """
 #set $line = ','.join($method.argNames)
-        return p.api.action.${domain}.${className}.${method.name}($line)
+        result = p.api.action.${domain}.${className}.${method.name}($line)
+#if $method.name == 'getObject'
+        # Deserialize the pymodel object
+        o = result
+        result = {}
+        import base64
+        from pymodel.serializers import ThriftSerializer
+        serialized_result = o.serialize(ThriftSerializer)
+        encoded_result = base64.encodestring(serialized_result)
+        result['result'] = encoded_result
+        return result
+#else
+        return result
+#end if
 
 #end for
-

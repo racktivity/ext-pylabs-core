@@ -3,7 +3,7 @@ class page:
     Page object actions
     """
 
-    def create(self, name, space, category, parent="", tags="", content="", jobguid="", executionparams=dict()):
+    def create(self, name, space, category, parent="", tags="", content="", jobguid="", executionparams=None):
         """
         Create a new page object.
 
@@ -37,7 +37,7 @@ class page:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self, name="", space="", category="", parent="", tags="", jobguid="", executionparams=dict()):
+    def find(self, name="", space="", category="", parent="", tags="", exact_properties=None, jobguid="", executionparams=None):
         """
         Returns a list of page objects which met the find criteria.
  
@@ -58,6 +58,9 @@ class page:
 
         @param tags:                   tags of the page
         @type tags:                    string
+
+        @param exact_properties:       an iterable of property names whose values should be matched exactly
+        @type exact_properties:        iterable of strings
  
         @param jobguid:                guid of the job if available else empty string
         @type jobguid:                 guid
@@ -76,7 +79,7 @@ class page:
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, jobguid="",executionparams=None):
         """
         Gets the rootobject.
 
@@ -97,7 +100,7 @@ class page:
         @warning:                Only usable using the python client.
         """
         
-    def delete(self, pageguid, jobguid="",executionparams=dict()):
+    def delete(self, pageguid, jobguid="",executionparams=None):
         """
         Delete the page object with the guid specified.
         

@@ -200,7 +200,7 @@ class VirtualFileSystemMetadata():
             md5OnDisk=q.tools.hash.md5("/opt/qbase3/qshell")            
         else:
             md5OnDisk=""
-        if dirObject.getFileInfo(filename)==False:
+        if not dirObject.containsFile(filename):
             #file is new
             dirObject.addFileObject(filename,sizeOnDisk,modDateOnDisk,md5OnDisk)
             self.reportNewFile(fullFilePath)    

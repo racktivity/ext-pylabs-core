@@ -1,14 +1,13 @@
 import os
 import os.path
-
-from pylabs import q
+from pylabs import q, p
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
 from agent_cfg import AgentPyApps
 from applicationserver_cfg import AppServerPyApps
-POSTGRESUSER = "postgres"
 
+POSTGRESUSER = "postgres"
 join = q.system.fs.joinPaths
 
 def min_range(pyappsCfg):
@@ -67,12 +66,29 @@ class PyAppsConfigGen:
                         cidr_address='127.0.0.1/32',database=self.appName)
                 postgres.save()
                 postgres.applyConfig()
+            dbconnections = q.config.getInifile('dbconnections')
+            section = "db_%s" % self.appName
+            if not dbconnections.checkSection(section):
+                dbconnections.addSection(section)
+            dbconnections.addParam(section, 'dbtype', 'postgresql')
+            dbconnections.addParam(section, 'dbserver', '127.0.0.1')
+            dbconnections.addParam(section, 'dblogin', self.appName)
+            dbconnections.addParam(section, 'dbpasswd', '')
+            dbconnections.addParam(section, 'dbname', self.appName)
+            dbconnections.write()
         if 'wfe' in self.components:
             if self.appName not in q.manage.ejabberd.cmdb.hosts:
+                agent_cfg = AgentPyApps(self.appName)
+                password = agent_cfg.password
+                agentguid = agent_cfg.agentguid
+                agentcontrollerguid = agent_cfg.agentcontrollerguid
+                hostname = agent_cfg.hostname
+
                 q.manage.ejabberd.startChanges()
-                q.manage.ejabberd.cmdb.addHost(self.appName)
-                q.manage.ejabberd.cmdb.addUser('agent', self.appName, 'agent')
-                q.manage.ejabberd.cmdb.addUser('agentcontroller', self.appName, 'agentcontroller')
+                q.manage.ejabberd.cmdb.addHost(hostname)
+                q.manage.ejabberd.cmdb.addUser(agentguid, hostname, password)
+                q.manage.ejabberd.cmdb.addUser(agentcontrollerguid, hostname, agentcontrollerguid)
+
                 q.manage.ejabberd.save()
                 q.manage.ejabberd.applyConfig()
 
@@ -83,6 +99,14 @@ class PyAppsConfigGen:
             te = q.taskletengine.get(taskletpath)
             params = {"appname": self.appName}
             te.execute(params)
+
+    def init(self):
+        taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'init')
+        if q.system.fs.exists(taskletpath):
+            te = q.taskletengine.get(taskletpath)
+            params = {"appname": self.appName}
+            te.execute(params)
+
 
     def start(self):
         if 'appserver' in self.components:
@@ -95,6 +119,8 @@ class PyAppsConfigGen:
         if 'arakoon' in self.components:
             cluster = q.manage.arakoon.getCluster(self.appName)
             cluster.start()
+        if 'event_consumers' in self.components:
+            p.events.startConsumers(self.appName)
 
     
     def stop(self):
@@ -105,6 +131,8 @@ class PyAppsConfigGen:
         if 'arakoon' in self.components:
             cluster = q.manage.arakoon.getCluster(self.appName)
             cluster.stop()
+        if 'event_consumers' in self.components:
+            p.events.stopConsumers(self.appName)
     
     def generateAll(self):
         self.pyapps_configuration()
@@ -154,6 +182,8 @@ class PyAppsConfigGen:
         types = ('osis', 'pymodel', 'service')
         if any( (type_ in dirBaseNames) for type_ in  types):
             params.add('appserver')
+        if 'events' in dirBaseNames:
+            params.add('event_consumers')
         return params
     
     def get_needed_params(self, minRange):
@@ -210,16 +240,17 @@ class PyAppsConfigGen:
         config_template = '''
 LFW_CONFIG = {
     'uris': {
-        'listSpaces': '/%(appname)s/appserver/rest/lfw/spaces',
-        'completion': '/%(appname)s/appserver/rest/lfw/tags',
-        'search': '/%(appname)s/appserver/rest/lfw/search',
-        'tags': '/%(appname)s/appserver/rest/lfw/tags',
-        'title': '/%(appname)s/appserver/rest/lfw/pages',
-        'pages': '/%(appname)s/appserver/rest/lfw/page',
+        'listSpaces': '/%(appname)s/appserver/rest/ui/portal/spaces',
+        'completion': '/%(appname)s/appserver/rest/ui/portal/tags',
+        'search': '/%(appname)s/appserver/rest/ui/portal/search',
+        'tags': '/%(appname)s/appserver/rest/ui/portal/tags',
+        'title': '/%(appname)s/appserver/rest/ui/portal/pages',
+        'pages': '/%(appname)s/appserver/rest/ui/portal/page',
         'macros': '/%(appname)s/js/macros/'
-    }
+    },
+    'appname' : '%(appname)s'
 };
-'''
+''' 
 
         config = config_template % {
             'appname': self.appName,
@@ -237,3 +268,5 @@ LFW_CONFIG = {
                 fd.write(config)
             finally:
                 fd.close()
+
+

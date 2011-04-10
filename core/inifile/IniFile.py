@@ -170,7 +170,7 @@ class IniFile(object):
             pylabs.q.logger.log("Inifile: get integer %s:%s from %s, result:%s" % (sectionName,paramName,self.__inifilepath,result),7)
             return result
         except Exception, e:
-            raise LookupError('Failed to get integer value of parameter:%s under section:%s \nERROR: %'%(paramName, sectionName, e))
+            raise LookupError('Failed to get integer value of parameter: %s under section: %s\nERROR: %s' % (paramName, sectionName, e))
 
     def getFloatValue(self, sectionName, paramName):
         """Get float value of the specified parameter

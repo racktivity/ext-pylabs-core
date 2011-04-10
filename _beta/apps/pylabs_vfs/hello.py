@@ -81,6 +81,7 @@ Userspace hello example
                      usage=usage)
 
     server.parse(errex=1)
+    server.file_class = 
     server.main()
 
 if __name__ == '__main__':

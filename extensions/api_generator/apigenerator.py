@@ -165,7 +165,6 @@ def getMethodTypedArgument(specFile):
     return methodDetails
 
 class CloudApiGenerator:
-
     rootobject_clientTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','template.tmpl')
     rootobject_serverTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','PylabsApp', 'AppApiActionService.tmpl')
     baseSpecDir = q.system.fs.joinPaths(q.dirs.tmpDir, 'ssospecs')
@@ -196,13 +195,15 @@ class CloudApiGenerator:
     flexServiceFileName='CloudApiRestService.as'
     documentationDest = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'doc')
     restDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'restDocumentationTemplate.tmpl')
-    restMdDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'restMdDocumentationTemplate.tmpl')
     xmlrpcDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcDocumentationTemplate.tmpl')
-    xmlrpcMdDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcMdDocumentationTemplate.tmpl')
+    restAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'restAlkiraDocumentationTemplate.tmpl')
+    xmlrpcAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcAlkiraDocumentationTemplate.tmpl')
     roDirRest = q.system.fs.joinPaths(documentationDest,'REST')
     roDirXmlrpc = q.system.fs.joinPaths(documentationDest, 'XMLRPC')
-    wikiType = 'markdown'
-    
+    _documentationFormat = 'confluence'
+
+    def __init__(self, appName):
+        self._appName = appName
 
     def _generateCode(self, templatePath, params, destPath):
         
@@ -230,12 +231,14 @@ class CloudApiGenerator:
         roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'xmlrpc_%s'%name)
         if not q.system.fs.exists(roDirRestClass): q.system.fs.createDir(roDirRestClass)
         if not q.system.fs.exists(roDirXmlrpcClass): q.system.fs.createDir(roDirXmlrpcClass)
-        if self.wikiType.lower() == 'confluence':
+
+        if self._documentationFormat == 'confluence':
             self._generateCode(self.restDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirRestClass, 'rest_%s.txt'%name ))
             self._generateCode(self.xmlrpcDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.txt'%name))
-        elif self.wikiType.lower() == 'markdown':
-            self._generateCode(self.restMdDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirRestClass, 'rest_%s.md'%name ))
-            self._generateCode(self.xmlrpcMdDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.md'%name))
+        elif self._documentationFormat == 'alkira':
+            self._generateCode(self.restAlkiraDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirRestClass, 'rest_%s.md'%name ))
+            self._generateCode(self.xmlrpcAlkiraDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.md'%name))
+
         return name
 
     def _generateServerCode(self, specFile, templatePath, destPath, serverExtensionTemplate="", serverExtensionDest="",rootobjectslibDest="", rootobjectlibTemplate="", className="", wizards=True, params=None):
@@ -244,7 +247,7 @@ class CloudApiGenerator:
         name = getClassName(claZ)
         
         params = params or {}
-        params.update({'className': name, 'methods':methods})
+        params.update({'className': name, 'methods': methods, 'appname': self._appName})
         
         self._generateCode(templatePath,  params, destPath)
 
@@ -294,7 +297,6 @@ class CloudApiGenerator:
         --------------------------------------------------------------------------------------------------------
         """
 
-        services = dict()
         q.system.fs.createDir(self.rootobject_clientOutputDir)
         q.system.fs.createDir(self.rootobject_serverOutputDir)
         q.system.fs.createDir(self.rootobject_serverExtensionDest)
@@ -333,7 +335,7 @@ class CloudApiGenerator:
                 
                 #services[rootObject] = '%s.%s.%s' % (rootObject, domain, className)
                 
-                params = {'domain': domain}
+                params = {'domain': domain, 'appname': self._appName}
     
                 className = self._generateServerCode(spec,self.rootobject_serverTemplate, q.system.fs.joinPaths(self.rootobject_serverOutputDir, domain, '%s.py'%rootObject), \
                                                      self.rootobject_serverExtensionTemplate, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, domain, '%s.py'%rootObject),\
@@ -383,7 +385,7 @@ class CloudApiGenerator:
             domain_path = q.system.fs.joinPaths(self.actorOutputDir, domain)
             q.system.fs.createDir(domain_path)
             
-            params = {'domain': domain}
+            params = {'domain': domain, 'appname': self._appName}
             domains.append({'modulename': domain, 'classname': domain})
             
             for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
@@ -394,7 +396,6 @@ class CloudApiGenerator:
                 if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
                     continue
                 moduleName =  fileName.split('.')[0]
-                rootObject = moduleName
     
                 className = self._generateServerCode(spec,self.actorTemplate, q.system.fs.joinPaths(domain_path, fileName), wizards=False, params=params)
 
@@ -413,8 +414,6 @@ class CloudApiGenerator:
     def generateFlexRoot(self):
 
         q.system.fs.createDir(self.flexClientOutputDir)
-        modules = dict()
-        extensions = list()
         ##generate root object actions
         for spec in q.system.fs.listFilesInDir(self.specDir, filter='*.py'):
             fileName = q.system.fs.getBaseName(spec)
@@ -425,7 +424,20 @@ class CloudApiGenerator:
 
         self._generateCode(self.flexClientservicetemplate, {}, q.system.fs.joinPaths(self.flexClientOutputDir, self.flexServiceFileName))
 
-    def generateAll(self):
+    def generateAll(self, documentationFormat='confluence'):
+        """
+        Generates all documentation and APIs.
+
+        @type documentationFormat: String
+        @param documentationFormat: The format you want the documentation to be generated in. NOTE: Value can only be 'alkira' or 'confluence'!
+        """
+        if documentationFormat == 'alkira':
+            self._documentationFormat = 'alkira'
+        elif documentationFormat == 'confluence':
+            self._documentationFormat = 'confluence'
+        else:
+            q.errorconditionhandler.raiseError("Documentation format %s is unknown." %documentationFormat)
+
         self.generatePythonRoot()
         self.generatePythonActor()
         ##generate flex amf client
@@ -500,17 +512,69 @@ class CloudApiGenerator:
             rootobject = q.system.fs.getBaseName(dir)
             rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(dir, "%s.txt"%rootobject))
             self._forceCreatePage(space, xmlrpcid, rootobject, _encode(rootobjectcontent))
-            
-            
+
+    def publishToAlkira(self, space, main_page='Cloud API Documentation', parent_name=None, hostname='127.0.0.1'):
+        """
+        Publishes the Cloud API documentation to an Alkira space.
+
+        @type space: String
+        @param space: The name of the space.
+
+        @type main_page: String
+        @param main_page: The name of the page.
+
+        @type parent_name: String
+        @param parent_name: Name of a parent page in case you want the documentation page to be a child of it.
+
+        @type hostname: String
+        @param hostname: The IP that the Alkira Client will use to get a connection and add the pages.
+        """
+        alkira_client = q.clients.alkira.getClient(hostname)
+        main_content = '# %s' %main_page
+
+        if parent_name:
+            alkira_client.createPage(space, main_page, content=main_content, parent=parent_name)
+        else:
+            alkira_client.createPage(space, main_page, content=main_content)
+        
+        rest_page = 'REST Documentation'
+        rest_content = '# %s' %rest_page
+        alkira_client.createPage(space, rest_page, content=rest_content, parent=main_page)
+
+        main_content += '\n* [%s](/#/%s/%s)' %(rest_page, space, rest_page)
+        alkira_client.updatePage(space, main_page, content=main_content)
+
+        for path in q.system.fs.listDirsInDir(self.roDirRest):
+            ro_name = q.system.fs.getBaseName(path)
+            q.logger.log('Publishing: %s REST Documentation' %ro_name, level=2)
+            ro_content = q.system.fs.fileGetContents(q.system.fs.joinPaths(path, "%s.md"%ro_name))
+            alkira_client.createPage(space, ro_name, ro_content, parent=rest_page)
+            rest_content += "\n* [%s](/#/%s/%s)" %(ro_name, space, ro_name)
+            alkira_client.updatePage(space, rest_page, content=rest_content)
+
+        xmlrpc_page = 'XMLRPC Documentation'
+        xmlrpc_content = '# %s' %xmlrpc_page
+        alkira_client.createPage(space, xmlrpc_page, content=xmlrpc_content, parent=main_page)
+
+        main_content += '\n* [%s](/#/%s/%s)' %(xmlrpc_page, space, xmlrpc_page)
+        alkira_client.updatePage(space, main_page, content=main_content)
+
+        for path in q.system.fs.listDirsInDir(self.roDirXmlrpc):
+            ro_name = q.system.fs.getBaseName(path)
+            q.logger.log('Publishing: %s XMLRPC Documentation' %ro_name, level=2)
+            ro_content = q.system.fs.fileGetContents(q.system.fs.joinPaths(path, "%s.md"%ro_name))
+            alkira_client.createPage(space, ro_name, ro_content, parent=xmlrpc_page)
+            xmlrpc_content += "\n* [%s](/#/%s/%s)" %(ro_name, space, ro_name)
+            alkira_client.updatePage(space, xmlrpc_page, content=xmlrpc_content)
+
 class AppAPIGenerator(object):
     
     def __init__(self):
-        self._generator = CloudApiGenerator()
         self._template_path = q.system.fs.joinPaths(os.path.dirname(__file__), 'templates')
         
     
     def generate(self, appname):
-        
+        self._generator = CloudApiGenerator(appname)
         q.action.start('Generating base services')
         self._generate_default_services(appname)
         q.action.stop()
@@ -579,24 +643,16 @@ class AppAPIGenerator(object):
                             q.system.fs.joinPaths(service_path, 'Scheduler.py'))
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname, 'osistype': 'model'}, 
-                            q.system.fs.joinPaths(service_path, 'model.py'))
-        
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname, 'osistype': 'monitoring'}, 
-                            q.system.fs.joinPaths(service_path, 'monitoring.py'))
-        
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname, 'osistype': 'config'}, 
-                            q.system.fs.joinPaths(service_path, 'config.py'))
+        self._generate_file('OsisService.tmpl', {'appname': appname}, 
+                            q.system.fs.joinPaths(service_path, 'osissvc.py'))
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui'))
         self._generate_file('WizardService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'wizard.py'))
+                            q.system.fs.joinPaths(service_path, 'ui', 'wizard.py'))
         
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'portal'))
         self._generate_file('PortalService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'portal.py'))
+                            q.system.fs.joinPaths(service_path, 'ui', 'portal.py'))
         
         self._generate_file('AgentService.tmpl', params, 
                             q.system.fs.joinPaths(service_path, 'AgentSVC.py'))
@@ -614,8 +670,4 @@ class AppAPIGenerator(object):
     def _create_file(self, path):
         if not q.system.fs.exists(path):
             q.system.fs.createEmptyFile(path)
-        
-        
-            
-    
-   
+

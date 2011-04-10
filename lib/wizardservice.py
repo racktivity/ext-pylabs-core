@@ -516,12 +516,13 @@ assert (sys.subversion[0] == 'CPython'), 'This service only runs in CPython'
 
 import os.path
 import uuid
+import inspect
 import operator
-
-import byteplay
 import threading
 
 import simplejson
+
+import byteplay
 
 # We require this for the tests to run fine
 if __name__ == '__main__':
@@ -634,6 +635,7 @@ class GeneratorGenerator(object):
 
         try:
             value = runner.next()
+
             while True:
                 if isinstance(value, self._special_value_wrapper):
                     value = self._special_value_getter(value)
@@ -734,11 +736,17 @@ class RunningWizardManager(object):
             wizard_func = GeneratorGenerator(wizard_func, DialogMessage,
                     operator.attrgetter('value'))
 
-        self._sessionstore[session] = dict()
-        args[2]['SESSIONSTATE'] = self._sessionstore[session]
+        if len(args) == 5:
+            params = args[3]
+        elif len(args) == 4:
+            params = args[2]
+        else:
+            raise RuntimeError('Unexpected number of arguments')
+
+        params['SESSIONSTATE'] = self._sessionstore[session] = dict()
 
         wizard = wizard_func(*args, **kwargs)
-        
+
         self._wizards[session] = wizard
 
         #creating an RLock is created for the wizard, note that RLock is required since a thread that
@@ -839,23 +847,27 @@ class RunningWizardManager(object):
 
 class ApplicationserverWizardService(object):
     '''Wizard applicationserver service'''
-    def __init__(self, taskletPath=None):
+    def __init__(self, taskletPaths=None):
         self._manager = RunningWizardManager()
 
         q.gui.dialog.chooseDialogType(q.enumerators.DialogType.WIZARDSERVER)
         q.gui.dialog.MessageType = DialogMessage
 
-        if not taskletPath:
+        if not taskletPaths:
             # If no specific tasklets path was specified
             # Tasklets go into (folder containing this service file)/tasklets
-            taskletPath = q.system.fs.joinPaths(os.path.dirname(__file__), 'tasklets')
-            
-        self.taskletengine = q.taskletengine.get(taskletPath)
+            taskletPaths = (q.system.fs.joinPaths(
+                os.path.dirname(__file__), 'tasklets'), )
+
+        self.taskletengine = q.taskletengine.get(taskletPaths[0])
+        for dir_ in taskletPaths[1:]:
+            self.taskletengine.addFromPath(dir_)
 
     @q.manage.applicationserver.expose
-    def start(self, domain, wizardName, extra=None, applicationserver_request=None):
+    def start(self, domainName, wizardName, extra=None,
+        applicationserver_request=None):
         q.logger.log('Start new wizard %s in domain %s' % \
-                (wizardName, domain), 7)
+                (wizardName, domainName), 7)
 
         login = applicationserver_request.username
         passwd = applicationserver_request.password
@@ -863,22 +875,47 @@ class ApplicationserverWizardService(object):
         extra = extra or dict()
 
         tasklets = self.taskletengine.find(name='*',
-                                                 tags=('wizard', wizardName))
+            tags=(domainName, wizardName))
 
         if not tasklets:
-            raise RuntimeError('No matching wizard found')
+            raise RuntimeError(
+                'No matching wizard ("%s") found for domain "%s"' % \
+                (wizardName, domainName) )
 
         params = {
-                'domain': domain,
-                'extra': extra,
-                'login':login, 'password': passwd,
-
+            'domain': domainName,
+            'extra': extra,
+            'login':login,
+            'password': passwd,
         }
-        tags = ('wizard', wizardName)
+        params.update( extra )
+        tags = (domainName, wizardName)
+
+        def call_tasklet_procedure(proc_, params_, tags_):
+            argcount_ = len(inspect.getargspec(proc_)[0])
+
+            # 0 case is 'default match': lambda *_1, lambda **_2: True
+            if argcount_ == 5 or argcount_ == 0:
+                return proc_(q, i, p, params_, tags_)
+            elif argcount_ == 4:
+                return proc_(q, i, params_, tags_)
+
+            raise ValueError('Invalid procedure argument count')
 
         for tasklet in tasklets:
-            if tasklet.match(q, i, params, tags):
-                session = self._manager.register(tasklet.methods['main'], q, i, p, params, tags)
+            if call_tasklet_procedure(tasklet.match, params, tags):
+                proc = tasklet.methods['main']
+                argcount = len(inspect.getargspec(proc)[0])
+
+                args = ()
+                if argcount == 5:
+                    args = (q, i, p, params, tags)
+                elif argcount == 4:
+                    args = (q, i, params, tags)
+                else:
+                    raise ValueError('Invalid procedure argument count')
+
+                session = self._manager.register(tasklet.methods['main'], *args)
 
                 try:
                     step = self._manager.start(session)
@@ -887,10 +924,14 @@ class ApplicationserverWizardService(object):
 
                 return session, step
 
-        raise RuntimeError('No matching wizard found')
+        raise RuntimeError(
+            'No matching wizard ("%s") found for domain "%s"' % \
+            (wizardName, domainName))
 
     @q.manage.applicationserver.expose
-    def callback(self, wizardName='', methodName='', formData='', extra=None, SessionId=None, applicationserver_request=None):
+    def callback(self, domainName, wizardName='', methodName='', formData='',
+        extra=None, SessionId=None, applicationserver_request=None):
+
         q.logger.log('Callback method %s of wizard %s' % \
                 (methodName, wizardName), 7)
         methodName = 'callback_%s'%methodName
@@ -907,9 +948,9 @@ class ApplicationserverWizardService(object):
             q.logger.log('Callback does not get a sessionid')
             extra['SESSIONSTATE'] = None
 
-        callback_method = self._getWizardMethod(wizardName, methodName)
+        callback_method = self._getWizardMethod(domainName, wizardName, methodName)
 
-        updatedForm = callback_method(q, i, extra, ('wizard', ))
+        updatedForm = callback_method(q, i, extra, (domainName, ))
         action = updatedForm.convertToWizardAction()
 
         return simplejson.dumps(action)
@@ -932,12 +973,12 @@ class ApplicationserverWizardService(object):
 
         return step
 
-    def _getWizardMethod(self, wizardName, method):
+    def _getWizardMethod(self, domainName, wizardName, method):
         wizard_methods = self.taskletengine.find(name='*',
-                                                 tags=('wizard',wizardName))
+            tags=(domainName,wizardName))
 
         if not wizard_methods:
-            raise RuntimeError('No matching wizard found')
+            raise RuntimeError('No matching wizard ("%s")found for domain "%s"' % (wizardName, domainName) )
         if len(wizard_methods) > 1:
             raise RuntimeError('Multiple matching wizards found')
 
