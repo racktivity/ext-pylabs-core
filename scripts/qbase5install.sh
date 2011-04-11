@@ -29,6 +29,17 @@ my_log () {
     fi
 }
 
+check_system_version () {
+    my_log "Checking if your system version is Ubuntu 10.10 Maverick"
+    LSB_RELEASE="$(lsb_release -c | cut -f 2)"
+    if [ "${LSB_RELEASE}" != "maverick" ]; then
+	    my_log "Your system version is not Ubuntu 10.10 Maverick";
+	    exit 1
+    else
+	    my_log "Your system is Ubuntu 10.10 Maverick. The install can continue."
+    fi
+}
+
 my_wget () {
     local cmd
 
@@ -111,6 +122,8 @@ my_check_command () {
 }
 
 set -e
+
+check_system_version
 
 while [ $# -gt 0 ]
 do
