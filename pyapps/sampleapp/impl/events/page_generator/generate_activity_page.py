@@ -13,13 +13,14 @@ def main(q, i, p, params, tags):
     """
     activity = p.api.action.crm.activity.getObject(guid)
     searchresult = p.action.ui.page.find(name="activity_detail_%s"%guid)['result']
+    parentpage = p.api.action.ui.page.find(name="Home", space="crm")['result'][0]
     if searchresult:
-        p.action.ui.page.update(guid, "activity_detail_%s"%guid, "crm", "activity", "crm activity", 
+        p.action.ui.page.update(guid, "activity_detail_%s"%guid, "crm", "activity", parentpage, "crm activity", 
                                 template%{"name": activity.name, "description": activity.description, "location": activity.location,
                                           "starttime": activity.starttime, "endtime": activity.endtime, "type": activity.type, 
                                           "status": activity.status})
     else:
-        p.action.ui.page.create("activity_detail_%s"%guid, "crm", "activity", "crm activity", 
+        p.action.ui.page.create("activity_detail_%s"%guid, "crm", "activity", parentpage, "crm activity", 
                                 template%{"name": activity.name, "description": activity.description, "location": activity.location,
                                           "starttime": activity.starttime, "endtime": activity.endtime, "type": activity.type, 
                                           "status": activity.status})

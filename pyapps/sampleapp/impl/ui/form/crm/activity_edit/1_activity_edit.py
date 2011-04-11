@@ -1,6 +1,3 @@
-__tags__ = 'wizard', 'activity', 'create'
-__author__ = 'incubaid'
-
 TAB_GENERAL_TITLE = 'Create Activity'
 TAB_GENERAL_NAME = 'Activity name : '
 TAB_GENERAL_DESCRIPTION = 'Activity description : '
@@ -22,19 +19,19 @@ def callCloudAPI(api, name, description, location, type, priority, status, custo
     result = api.crm.activity.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
     return result
 
-def getCustomers(q, api):
+def getCustomer(q, api):
     customers = dict()
     result = api.action.crm.customer.list()['result']
     
     map(lambda x: customers.__setitem__(x['guid'], x['name']), result)
     return customers
 
-def getLeads(q, api):
-    leads = dict()
+def getLead(q, api):
+    lead = dict()
     result = api.action.crm.lead.list()['result']
     
-    map(lambda x: leads.__setitem__(x['guid'], x['name']), result)
-    return leads
+    map(lambda x: lead.__setitem__(x['guid'], x['name']), result)
+    return lead
 
 def getType(q):
     type = q.enumerators.activitytype._pm_enumeration_items
@@ -50,62 +47,65 @@ def getPriority(q):
 
 
 def main(q, i, p, params, tags):
-    
-    type = getType(q)
-    status= getStatus(q)
-    priority = getPriority(q)
-    customers = getCustomers(q, p.api)
-    leads = getLeads(q, p.api)
+    cloudAPI = i.config.cloudApiConnection.find('main')
+    cloudAPI.setCredentials(params['login'],params['password'])
     
     form = q.gui.form.createForm()
-    
-    #alternative way
-    #form.addTab('general',TAB_GENERAL_TITLE)
-    #form.tabs['general'].addText blablabla
-    
     tab_general = form.addTab('general', TAB_GENERAL_TITLE)
     
-    #define fields of tab
+    activity = p.api.action.crm.activity.getObject(params['activityguid'], executionparams={'description': 'Retrieving activity information'})
     tab_general.addText(name = 'name',
-                        text = TAB_GENERAL_NAME)
+                        text = TAB_GENERAL_NAME,
+                        value = activity.name)
     
     tab_general.addText(name = 'description',
                         text = TAB_GENERAL_DESCRIPTION,
+                        value = activity.description,
                         multiline = True)
     
     tab_general.addText(name = 'location',
-                        text = TAB_GENERAL_LOCATION)
+                        text = TAB_GENERAL_LOCATION,
+                        value = activity.location)
     
     tab_general.addDropDown(name = 'type',
                             text = TAB_GENERAL_TYPE,
+                            value = activity.type,
                             values = type)
     
+    statuses = getStatus(q)
     tab_general.addDropDown(name = 'status',
                             text = TAB_GENERAL_STATUS,
-                            values = status)
+                            value = activity.status,
+                            values = statuses)
     
+    priorities = getPriority(q)
     tab_general.addDropDown(name = 'priority',
                             text = TAB_GENERAL_PRIORITY,
-                            values = priority)
+                            value = activity.priority,
+                            values = priorities)
     
+    customers = getCustomer(q, cloudAPI)
     tab_general.addDropDown(name = 'customer',
                             text = TAB_GENERAL_CUSTOMER,
+                            value = activity.customerguid,
                             values = customers,
                             selectedValue = 0)
     
+    leads = getLead(q, cloudAPI)
     tab_general.addDropDown(name = 'lead',
                             text = TAB_GENERAL_LEAD,
+                            value = activity.leadguid,
                             values = leads,
                             selectedValue = 0)
     
     tab_general.addDateTime(name = 'starttime',
-                            question = TAB_GENERAL_STARTTIME)
+                            question = TAB_GENERAL_STARTTIME,
+                            value = activity.starttime)
     
     tab_general.addDateTime(name = 'endtime',
-                        question = TAB_GENERAL_ENDTIME)
+                            question = TAB_GENERAL_ENDTIME,
+                            value = activity.endtime)
     
-    
-    #below shows up when clicked button in tab after entering all values
     answer = q.gui.dialog.showMessageBox(message = MSGBOX_CONFIRMATION,
                                          title = MSGBOX_CONFIRMATION_TITLE,
                                          msgboxButtons = 'YesNo',
@@ -128,3 +128,7 @@ def main(q, i, p, params, tags):
                           tab_general.elements['endtime'].value,)
 
     params['result'] = result
+       
+       
+    def match(q, i, params, tags):
+        return True

@@ -1,6 +1,3 @@
-__tags__ = 'wizard', 'activity', 'create'
-__author__ = 'incubaid'
-
 TAB_GENERAL_TITLE = 'Delete Activity'
 TAB_GENERAL_ACTIVITY = 'Select Activity : '
 TAB_CONFIRM_TITLE = 'Confirmation'

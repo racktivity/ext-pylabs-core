@@ -1,8 +1,8 @@
-\# XMLRPC Cloud API DOC - $className
+\# REST Cloud API DOC - $className
 
 __Index :__
 
-{toc:minLevel=3|maxLevel=3}
+<div class="macro macro_toc"></div>
 
 #for $method in $methods :
     #set $args = ', '.join($method.argNames)
@@ -47,20 +47,18 @@ Not yet implemented.
             #end if
         #end for
     
-\#\#\# Python Example
+\#\#\# Example
     
         #set $lines=[]
         #for $arg in $method.argClasses:
             #set $line = '%s=<%s>'%($arg.name,$arg.argtype)
             $lines.append($line)
         #end for 
-        #set $element = ','.join($lines)
-        #set str = '(' + $element + ')'
+        #set $element = '&'.join($lines)
 
-    import xmlrpclib
+    http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_$className/$method.name?$element
 
-    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
-    result = xmlrpcProxy.cloud_api_$className.$method.name$str)['result']
+List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
 
 \#\#\# Return
 

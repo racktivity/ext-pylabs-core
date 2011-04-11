@@ -1,6 +1,3 @@
-__tags__ = 'wizard','customer','create'
-__author__ = 'incubaid'
-
 TAB_GENERAL_TITLE = 'General'
 TAB_GENERAL_NAME = 'Name: '
 TAB_GENERAL_EMAIL = 'Email: '
@@ -35,6 +32,7 @@ def main(q, i, p, params, tags):
     # General information tab #
     ###########################
     customer = p.api.action.crm.customer.getObject(params['customerguid'], executionparams={'description': 'Retrieving customer information'})
+    
     tab_general.addText(name='name', text = TAB_GENERAL_NAME, value=customer.name, helpText = TAB_GENERAL_NAME_HELPTEXT)
     tab_general.addText(name='email', text = TAB_GENERAL_EMAIL, value=customer.email, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
     tab_general.addText(name='login', text = TAB_GENERAL_LOGIN, value=customer.login, validator="^[a-zA-Z0-9]{1,16}$", helpText = TAB_GENERAL_LOGIN_HELPTEXT)	
@@ -42,11 +40,12 @@ def main(q, i, p, params, tags):
     tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, value=customer.address, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
     tab_general.addText(name='vat', text = TAB_GENERAL_VAT, value=customer.vat, helpText = TAB_GENERAL_VAT_HELPTEXT)
 
-    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
-	                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
-	                                     msgboxButtons='OKCancel',
-	                                     msgboxIcon='Question',
-	                                     defaultButton='OK')
+    #answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+	#                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
+	#                                     msgboxButtons='OKCancel',
+	#                                     msgboxIcon='Question',
+	#                                     defaultButton='OK')
+    answer = q.gui.dialog.askForm(form)
 
     if answer == 'CANCEL':
 		return

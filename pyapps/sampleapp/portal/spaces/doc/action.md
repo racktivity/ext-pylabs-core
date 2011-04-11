@@ -1,15 +1,15 @@
-F#Defining Actions Interface on Rootobjects
+#Defining Actions Interface on Root Objects
 In the previous chapter you have learned how you have to create the model of your Root Objects. Each manipulation that you want to do on a Root Object must be defined and modelled as an action. The assembly of the actions is often referred to as "interface".
 For each Root Object you have to create one `.py`-file that contains the model its complete interface. See the [PyApps Directory Structure] (sampleapp.md/) for more information about the location of the files.
 
 ##File Structure
-The interface file of a Root Object is a python class-file. The file contains one class with the name of the Root Object.
+The interface file of a Root Object is a Python class-file. The file contains one class with the name of the Root Object.
 
     class MyRootObject:
        """
        Some documentation about this Root Object
        """
-Each Root Objerct action is defined as a method in this class.
+Each Root Object action is defined as a method in this class.
 
 
 ##Basic Actions
