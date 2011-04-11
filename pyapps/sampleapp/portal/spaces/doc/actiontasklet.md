@@ -186,4 +186,91 @@ Deleting an object is a very simple tasklet:
 ##Creating Lists
 In the [OSIS Views] (osisviews.md) chapter, you have learned how you can create different views on a Root Object. These views can now be used to create a list.
 
+A first step in this action is to get the model of a Root Object. On the model object, you create a filter object, which allows you to create your own filters. In this case the filter will be based on an OSIS view that you have created.
 
+    TYPE = "lead"
+    DOMAIN = "crm"
+    VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
+
+    def main(q, i, p, params, tags):
+	filter = p.api.model.crm.lead.getFilterObject()
+
+To add rows to the list:
+
+    FIELDS = (
+            'name',
+            'code',
+            'customerguid',
+            'source',
+            'type',
+            'status',
+            'amount',
+            'probability'
+            )
+
+    for field in FIELDS:
+        if field not in params:
+            q.logger.log("Field %s not in params dict: not searching for field %s" % (field, field), 7)
+            continue
+
+        value = params[field]
+        if value is None:
+            q.logger.log("Field %s is None: not searching for field %s" % (field, field), 7)
+            continue
+
+        q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
+        f.add(VIEW, field, value)
+
+A last step is to store the actual list.
+
+    result = p.api.model.crm.lead.findAsView(filter, VIEW)
+    params['result'] = result
+
+All together this leads to the following tasklet which creates a list:
+
+    __author__ = "Incubaid"
+
+    FIELDS = (
+            'name',
+            'code',
+            'customerguid',
+            'source',
+            'type',
+            'status',
+            'amount',
+            'probability'
+            )
+    
+    TYPE = "lead"
+    DOMAIN = "crm"
+    VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
+    
+    def get_model_handle(p):
+        return p.api.model.crm.lead
+    
+    def main(q, i, p, params, tags):
+        handle = get_model_handle(p)
+    
+        f = handle.getFilterObject()
+    
+        for field in FIELDS:
+            if field not in params:
+                q.logger.log("Field %s not in params dict: not searching for field %s" % (field, field), 7)
+                continue
+    
+            value = params[field]
+            if value is None:
+                q.logger.log("Field %s is None: not searching for field %s" % (field, field), 7)
+                continue
+    
+            q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
+            f.add(VIEW, field, value)
+    
+        result = handle.findAsView(f, VIEW)
+        params['result'] = result
+
+
+##What's Next
+In this section you have learned to create the basic operations on a Root Object. This section does not cover all possible actions, but it should give you a good idea about the principles of creating actions.
+
+In the next sections we will discuss how you can create actions, triggered by an event.
