@@ -74,7 +74,11 @@ my_hg () {
 
     my_log "Running Mercurial client"
     cmd="hg $@"
-    echo $cmd
+    if [ "x${HG_PASSWORD}" != "x" ]; then
+        echo "${cmd//${HG_PASSWORD}/***}"
+    else
+        echo "${cmd}"
+    fi
     $cmd || my_die "hg failed"
     echo
 }
@@ -112,6 +116,16 @@ while [ $# -gt 0 ]
 do
   case $1
   in
+    --hg-username)
+      HG_USERNAME="$2"
+      shift 2
+    ;;
+
+    --hg-password)
+      HG_PASSWORD="$2"
+      shift 2
+    ;;
+
     --hg-prefix)
       HG_PREFIX="$2"
       shift 2
@@ -119,7 +133,9 @@ do
 
     *)
       echo "The arguments to use are"
-      echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket"
+      echo "--hg-username: Your bitbucket username"
+      echo "--hg-password: Your bitbucket password"
+      echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket, username and password are ignored if you use hg-prefix"
       exit 1
     ;;
   esac
@@ -130,7 +146,12 @@ if ! test "x${TERM}" == "xunknown"; then
 fi
 
 if [ "x${HG_PREFIX}" == "x" ]; then
-	HG_PREFIX="https://bitbucket.org"
+	if [ "x${HG_USERNAME}" != "x" ]; then
+		HG_PREFIX="https://${HG_USERNAME}:${HG_PASSWORD}@bitbucket.org"
+	else
+		echo "Either provide an HG prefix or HG username and password"
+		exit 1
+	fi
 fi
 
 my_log "Cleaning system"

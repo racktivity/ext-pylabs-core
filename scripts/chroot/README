@@ -1,5 +1,7 @@
 These scripts help you with running pylabs5 in a chroot.
 
+NOTE: Run these scripts from the folder they are in!
+
 - First set up a chroot using setup.sh
 - Then start it with start.sh (start.sh will mount /proc, /dev etc and copy over your hosts file)
 - Install pylabs 5 in the chroot with install.sh
