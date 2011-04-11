@@ -1,3 +1,9 @@
+try:
+    from xml.etree import ElementTree
+except ImportError:
+    from elementtree import ElementTree
+
+
 from pylabs import q
 import gdata.calendar.service
 import gdata.service
@@ -16,6 +22,7 @@ class retry(object):
 
     def __call__(self, f):
         def wrapped_f(*args, **kwargs):
+            
             for i in range(1, self.retries+1):
                 try:
                     f(*args, **kwargs)
@@ -23,14 +30,24 @@ class retry(object):
                     q.logger.log('trying to %s - trial %s of %s'%(f.__name__, i, self.retries), 2)
                     q.logger.log(ex)
                 else:
-                    q.logger.log('%s carried out successfully in %s tries'%(f.__name__, i), 2)
+                    q.logger.log('%s carried out successfully in %s tries'%(f.__name__, i), 5)
                     return
             q.logger.log('failed to %s after %s tries'%(f.__name__, self.retries), 2)
+        wrapped_f.__name__ = f.__name__
+        wrapped_f.__doc__ = f.__doc__
         return wrapped_f
+
 
 
 class GoogleCalendar(object):
     def getConnection(self, email, password=None, saveCredentials=False):
+        """
+        Creates a connection to the given user's Google Calendar.
+        
+        @param email: the user's email
+        @param password: the user's password, if not given then it is retrieved from the stored users' info, if available
+        @param saveCredentials: boolean to determine whether or not to save the user's credentials locally to be used later
+        """
         return GoogleCalConnection(email, password, saveCredentials)
 
 
@@ -85,19 +102,6 @@ class GoogleCalConnection(object):
             return object.__getattribute__(self, '__dict__')[name]
         else:
             return object.__getattribute__(self, name)
-
-        
-#    def _getOwnCalFeed(self):
-#        if not self._initialized:
-#            try:
-#                self._ownCalFeed = self._client.GetOwnCalendarsFeed()
-#            except gdata.service.RequestError:
-#                q.logger.log('Request Error while initializing Calendars - Please Try Later', 2)
-#                self.__reload()
-#            else:
-#                q.logger.log('Calendars initialized')
-#                self.calendars = Calendars(object.__getattribute__(self, '_client'), object.__getattribute__(self, '_ownCalFeed').entry)
-#                self._initialized = True
     
     @retry(10)
     def _getOwnCalFeed(self):
@@ -108,7 +112,17 @@ class GoogleCalConnection(object):
     
     @retry(10)        
     def new(self, title='New Calendar', summary='New Calendar', place='A-Server', color='#2952A3', timezone='Africa/Cairo', hidden='false'):
-
+        """
+        Creates a new calendar using the given parameters in the user's calendars.
+        
+        @param title: string for the title of the new calendar to be created, default is "New Calendar"
+        @param summary: string for the summary of the new calendar to be created, default is "New Calendar"
+        @param place: string for the default location of the new calendar
+        @param color: string for the color in hex for the online interface of the calendar, default is google's "blue" default for new calendars
+        @param timezone: string for the time zone of the calendar
+        @param hidden: boolean to decide whether the calendar is to be hidden or visible in the online interface
+        
+        """
         calendar = gdata.calendar.CalendarListEntry()
         calendar.title = atom.Title(text=title)
         calendar.summary = atom.Summary(text=summary)
@@ -149,17 +163,6 @@ class Calendars(object):
         else:
             return object.__getattribute__(self, name)
             
-#    def _retrieveCals(self):
-#        self._cals={}
-#        try:
-#            self._calFeed = self._calClient.GetOwnCalendarsFeed()
-#        except gdata.service.RequestError:
-#            q.logger.log('Request Error while Requesting Calendar Feed - Please Try Later', 2)
-#            self._connection._reload()
-#        else:
-#            q.logger.log('Calendars Added')
-#            map(lambda calObj: self._addCalendar(self._connection, self._calClient, calObj), self._calFeed.entry)
-#            self._initialized = True
             
     @retry(10)
     def _retrieveCals(self):
@@ -197,6 +200,9 @@ class Calendar(object):
     
     @retry(10)        
     def delete(self):
+        """
+        Deletes the selected calendar from the user's calendars.
+        """
         path = self._calObj.GetAlternateLink().href
         path.replace('http:','https:')
         self._client.Delete(path)
@@ -210,13 +216,46 @@ class Calendar(object):
     def __iter__(self):
         return self.events.__iter__()
     
+    def _createGuest(self, name, email=None):
+        guest = gdata.calendar.Who()
+        guest.valueString = name
+        guest.email = email or name
+        guest.name = name
+        return guest
+    
     @retry(10)
-    def new(self, title='New Event', content='New Event', place='A-Server',start_year=None, start_month=None, start_day=None,
-            start_hour=None, start_min=0, end_year=None, end_month=None, end_day=None, end_hour=None, end_min=0, all_day=False):
+    def new(self, title='New Event', summary='New Event', place='A-Server', start_year=None, start_month=None, start_day=None,
+            start_hour=None, start_min=0, end_year=None, end_month=None, end_day=None, end_hour=None, end_min=0, guests={}, 
+            send_notifications=True, all_day=False):
+        """
+        Creates a new event in the selected calendar
+        
+        @param title: the string title of the new event, default is "New Event"
+        @param summary: the string summary of the new event, default is "New Event"
+        @param place: the string place of the new event
+        @param start_year: the start year of the event, if not given the current year is used
+        @param start_month: the start month of the event, if not given the current month is used
+        @param start_day: the start day of the event, if not given the current day is used
+        @param start_hour: the start hour of the event, if not given the current hour is used
+        @param start_min: the start minute of the event, if hour not given the current minute is used, if hour is given resets to 0
+        @param end_year: the end year of the event, if not given the start year is used
+        @param end_month: the end month of the event, if not given the start month is used
+        @param end_day: the end day of the event, if not given the start day is used
+        @param end_hour: the end hour of the event, if not given default is one hour after the start hour
+        @param end_min: the end minute of the event, if not given and end_hour not given the start minute is used, if hour given resets to 0
+        @param guests: dictionary of guest names and emails
+        @param send_notifications: boolean to determine whether to send notifications to guests, default is true
+        @param all_day: boolean to determine if the event is an all-day event, default is false
+        """
+        
         event = gdata.calendar.CalendarEventEntry()
         event.title = atom.Title(text=title)
-        event.content = atom.Content(text = content)
+        event.content = atom.Content(text = summary)
         event.where.append(gdata.calendar.Where(value_string=place))
+
+        event.who.extend(map(lambda (n, e): self._createGuest(n, e), guests.iteritems()))
+        event.send_event_notifications = gdata.calendar.SendEventNotifications(value='true')
+        
         
         time_now = time.localtime()
         
@@ -255,25 +294,8 @@ class Calendar(object):
         
         path = self._calObj.GetAlternateLink().href
         path.replace('http:','https:')
+
         
-#        for trial in range(1, retries+1):
-#            try:
-#                new_event = self._client.InsertEvent(event, path)
-#            except gdata.service.RequestError as ex:
-#                ownInit = False
-#                q.logger.log('Request Error while creating event "%s" - Retrying #%s of %s'%(title, trial, retries), 2)
-#                self._conn._reload()
-#            if ownInit:
-#                break
-#            
-#        if ownInit:
-#            self.events._addEvent(self._conn, self._client, self, new_event)
-#            q.logger.log('event "%s" created successfully'%title, 2)
-#            return new_event
-#        else:
-#            q.logger.log('Request Error while creating event "%s" - Please Try Later'%title, 2)
-            
-            
         new_event = self._client.InsertEvent(event, path)
         self.events._addEvent(self._conn, self._client, self, new_event)
         q.logger.log('event "%s" created successfully'%title, 2)
@@ -310,16 +332,6 @@ class Events(object):
         self._eventFeed = self._client.GetCalendarEventFeed(path)
         q.logger.log('Event feed initialized')
         self._initialized = True
-        
-        
-#        try:
-#            self._eventFeed = self._client.GetCalendarEventFeed(path)
-#        except gdata.service.RequestError:
-#            q.logger.log('Request Error while Requesting Event Feed for calendar - Please Try Later', 2)
-#            self._conn._reload()
-#        else:
-#            q.logger.log('Event feed initialized')
-#            self._initialized = True
      
     def _initEvents(self):
         if not self._initialized:
@@ -333,67 +345,6 @@ class Events(object):
         self._events['%s'%title] = event
         setattr(self, title, Event(conn, client, calendar, event))
     
-    
-#    @retry(10)  
-#    def new(self, title='New Event', content='New Event', place='A-Server',start_year=None, start_month=None, start_day=None,
-#            start_hour=None, start_min=0, end_year=None, end_month=None, end_day=None, end_hour=None, end_min=0, retries = 10):
-#        event = gdata.calendar.CalendarEventEntry()
-#        event.title = atom.Title(text=title)
-#        event.content = atom.Content(text = content)
-#        event.where.append(gdata.calendar.Where(value_string=place))
-#        
-#        time_now = time.localtime()
-#        
-#        start_year = start_year or time_now.tm_year
-#        start_month = start_month or time_now.tm_mon
-#        start_day = start_day or time_now.tm_mday
-#
-#        if start_hour is None:
-#            start_hour = time_now.tm_hour
-#            if start_min == 0:
-#                start_min = time_now.tm_min
-#        
-#        start_time = time.strftime('%Y-%m-%dT%H:%M:%S',time.struct_time((start_year, start_month, start_day, start_hour, start_min, 0, 0, 0, 0)))
-#        
-#        end_year = end_year or start_year
-#        end_month = end_month or start_month
-#        end_day = end_day or start_day
-#
-#        if end_hour is None:
-#            end_hour = start_hour + 1
-#            if end_min == 0:
-#                end_min = start_min
-#            
-#        end_time = time.strftime('%Y-%m-%dT%H:%M:%S',time.struct_time((end_year, end_month, end_day, end_hour, end_min, 0, 0, 0, 0)))
-#        
-#        
-#        event.when.append(gdata.calendar.When(start_time=start_time, end_time=end_time))
-#        
-#        path = self._calObj.GetAlternateLink().href
-#        path.replace('http:','https:')
-#        
-##        for trial in range(1, retries+1):
-##            try:
-##                new_event = self._client.InsertEvent(event, path)
-##            except gdata.service.RequestError:
-##                ownInit = False
-##                q.logger.log('Request Error while creating event "%s" - Retrying #%s of %s'%(title, trial, retries), 2)
-##                self._conn._reload()
-##            if ownInit:
-##                break
-##            
-##        if ownInit:
-##            setattr(self, cleanString(new_event.title.text), Event(self._conn, self._client, self, new_event))
-##            q.logger.log('event "%s" created successfully'%title, 2)
-##            return new_event
-##        else:
-##            q.logger.log('Request Error while creating event "%s" - Please Try Later'%title, 2)
-#
-#
-#        new_event = self._client.InsertEvent(event, path)
-#        setattr(self, cleanString(new_event.title.text), Event(self._conn, self._client, self, new_event))
-#        q.logger.log('event "%s" created successfully'%title, 2)
-#        return new_event
     
     def __getitem__(self, key):
         if not object.__getattribute__(self, '_initialized'):
@@ -418,9 +369,14 @@ class Event(object):
         self._guests = self._eventObj.who
         self.guestEmails = None
         self.guestNames = None
+        self.guests = Guests(self._eventObj)
+        
+        self.attending = filter(lambda guest: self._checkAttendance(guest), self._guests)
+        
         if not len(self._guests) == 1:
             self.guestEmails = map(lambda guest: guest.email, self._guests)
             self.guestNames = map(lambda guest: guest.name, self._guests)
+            map(lambda guest: self.guests.addGuest(guest), self._guests)
         self.author = self._eventObj.author[0].name.text
         if not len(self._eventObj.when) == 0:
             self._start_time = self._eventObj.when[0].start_time
@@ -434,9 +390,25 @@ class Event(object):
             self.place = self._eventObj.where[0].value_string
         else:
             self.__dict__.pop('place')
+            
+    def _checkAttendance(self, guest):
+        if guest.attendee_status and guest.attendee_status.value == 'ACCEPTED':
+            return True
+        else:
+            return False
     
     @retry(10)
     def inviteGuest(self, name, email=None):
+        """
+        Invite a guest to the selected event. Requires at least one parameter, the email, if two
+        parameters are given, one is considered the name and the other the email.
+        
+        @param name: the name of the guest
+        @param email: the email of the guest, default is None
+        
+        """
+        
+        
         guest = gdata.calendar.Who()
         guest.valueString = name
         guest.email = email or name
@@ -445,6 +417,7 @@ class Event(object):
         path = self._eventObj.GetEditLink().href
         path.replace('http:','https:')
         self._client.UpdateEvent(path, self._eventObj)
+        self.guests.addGuest(guest)
         if self.guestEmails:
             self.guestEmails.append(guest.email)
             self.guestNames.append(guest.valueString)
@@ -455,37 +428,130 @@ class Event(object):
     
     @retry(10)
     def delete(self):
+        """
+        Deletes the selected event from the user's calendar
+        """
         path = self._eventObj.GetEditLink().href
         path.replace('http:','https:')
+        self._eventObj.send_event_notifications = None #gdata.calendar.SendEventNotifications(value='true')
         self._client.DeleteEvent(path)
         q.logger.log('Event "%s" deleted successfully'%self.title, 2)
         self._parentEvents.__dict__.pop(cleanString(self.title))
     
-#    @retry(10)
-#    def _delete(self, path):
-#        self._client.DeleteEvent(path)
+    
+    @retry(10)   
+    def update(self, title=None, summary=None, place=None, start_year=None, start_month=None, start_day=None,
+            start_hour=None, start_min=None, end_year=None, end_month=None, end_day=None, end_hour=None, end_min=None, all_day=False):
+        """
+        Updates the selected event with the given parameters. If start date and time change to after
+        end date and time, the end date and time change accordingly.
         
-#        for trial in range(1, retries+1):
-#            try:
-#                self._client.DeleteEvent(path)
-#            except gdata.service.RequestError:
-#                ownInit = False
-#                q.logger.log('Request Error while deleting event "%s" - Retrying #%s of %s'%(self.title, trial, retries), 2)
-#                self._conn._reload()
-#            else:
-#                ownInit = True
-#                q.logger.log('Event "%s" deleted successfully'%self.title, 2)
-#                self._parentEvents.__dict__.pop(cleanString(self.title))
-#                break
-#            
-#        if not ownInit:
-#            q.logger.log('Request Error while deleting event "%s" - Please Try Later'%self.title, 2)
+        
+        @param title: the new title to give the event, if any
+        @param summary: the new summary to give the event, if any
+        @param place: the new place to give the event, if any
+        @param start_year: the new start year to give the event, if any
+        @param start_month: the new start month to give the event, if any
+        @param start_day: the new start day to give the event, if any
+        @param start_hour: the new start hour to give the event, if any
+        @param start_min: the new start minute to give the event, if any
+        @param end_year: the new end year to give the event, if any
+        @param end_month: the new end month to give the event, if any
+        @param end_day: the new end day to give the event, if any
+        @param end_hour: the new end hour to give the event, if any
+        @param end_min: the new end minute to give the event, if any
+        @param all_day: the new boolean determining if the event is an all-day event
+        """
+        if title:
+            self._eventObj.title = atom.Title(text=title)
+            self.title = title
+        if summary:
+            self._eventObj.content = atom.Content(text = summary)
+        if place:
+            self._eventObj.where.pop()
+            self._eventObj.where.append(gdata.calendar.Where(value_string = place))
+        
+        if start_year or start_month or start_day or start_hour or start_min or end_year or end_month or end_day or end_hour or end_min:
+            old_start = self.starts
+            old_end = self.ends
+            
+            new_start_year = start_year or int(old_start.year)
+            new_start_month = start_month or int(old_start.month)
+            new_start_day = start_day or int(old_start.day)
+            
+            new_start_hour = start_hour or int(old_start.hour)
+            new_start_min = start_min or int(old_start.minute)
+            
+            if all_day:
+                start_date = datetime.date(new_start_year, new_start_month, new_start_day)
+                start_time = start_date.strftime('%Y-%m-%d')
+            else:
+                start_time = time.strftime('%Y-%m-%dT%H:%M:%S',time.struct_time((new_start_year, new_start_month, new_start_day, new_start_hour, new_start_min, 0, 0, 0, 0)))
             
             
-#    def _delete(self):
-#        path = self._eventObj.GetEditLink().href
-#        path.replace('http:', 'https:')
-#        self._client.DeleteEvent(path)
+            
+            new_end_year = end_year or int(old_end.year)
+            new_end_month = end_month or int(old_end.month)
+            new_end_day = end_day or int(old_end.day)
+            
+            new_end_hour = end_hour or int(old_end.hour)
+            new_end_min = end_min or int(old_end.minute)
+            
+            if new_end_year < new_start_year:
+                new_end_year = new_start_year
+            if new_end_year == new_start_year and new_end_month < new_start_month:
+                new_end_month = new_start_month
+            if new_end_year == new_start_year and new_end_month == new_start_month and new_end_day < new_start_day:
+                new_end_day = new_start_day
+                
+            if new_end_year == new_start_year and new_end_month == new_start_month and new_end_day == new_start_day and new_end_hour < new_start_hour:
+                new_end_hour = new_start_hour
+            if new_end_year == new_start_year and new_end_month == new_start_month and new_end_day == new_start_day and new_end_hour == new_start_hour and new_end_min > new_start_min:
+                new_end_min = new_start_min
+            
+            
+            if all_day:
+                end_date = datetime.date(new_end_year, new_end_month, new_end_day)
+                end_time = end_date.strftime('%Y-%m-%d')
+            else:
+                end_time = time.strftime('%Y-%m-%dT%H:%M:%S',time.struct_time((new_end_year, new_end_month, new_end_day, new_end_hour, new_end_min, 0, 0, 0, 0)))
+                
+            self._eventObj.when.pop()
+            self._eventObj.when.append(gdata.calendar.When(start_time=start_time, end_time=end_time))
+        
+        path = self._eventObj.GetEditLink().href
+        path.replace('http:','https:')
+        self._client.UpdateEvent(path, self._eventObj)
+        self._parentEvents._initialized = False
+        
+
+class Guests(object):
+    
+    def __init__(self, event):
+        self._eventObj = event
+        
+    def addGuest(self, guestObj):
+        setattr(self, cleanString(guestObj.name), Guest(guestObj))
+
+
+class Guest(object):
+    def __init__(self, guestObj):
+        self._guestObj = guestObj
+        self.name = self._guestObj.name
+        self.email = self._guestObj.email
+        if self._guestObj.attendee_status:
+            self.status = self._guestObj.attendee_status.value
+        else:
+            self.status = 'INVITED'
+        
+    def attending(self):
+        """
+        Returns the attending status of the selected guest, options are:
+        @return: INVITED if the guest has not yet replied to the event
+                 ACCEPTED if the guest is attending the event
+                 DECLINED if the guest is not attending the event
+        """
+        return self.status
 
 
 class Date(object):
