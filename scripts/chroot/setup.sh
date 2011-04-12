@@ -12,8 +12,8 @@ fi
 echo "Installing deboostrap"
 sudo apt-get install debootstrap -y
 echo "Creating a clean sandbox in ${FULL_CHROOT_PATH}"
-sudo debootstrap --arch=amd64 maverick "${FULL_CHROOT_PATH}" "http://archive.ubuntu.com/ubuntu/"
+sudo debootstrap --arch=amd64 maverick "${FULL_CHROOT_PATH}" "${UBUNTU_REPO}"
 echo "Backing up the clean sandbox to ${FULL_CLEAN_CHROOT_PATH}"
-sudo cp -R "${FULL_CHROOT_PATH}" "${FULL_CLEAN_CHROOT_PATH}"
+sudo cp -a "${FULL_CHROOT_PATH}" "${FULL_CLEAN_CHROOT_PATH}"
 
 echo "You are good to go! Just run start.sh and then install.sh to get you up and running"
