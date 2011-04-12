@@ -1,1 +1,0 @@
-apt-get install python2.6 spe mc python-openssl python-pycurl python-pygresql 
