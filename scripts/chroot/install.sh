@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 . vars.sh
 
 read -p "HG username: " HG_USERNAME
