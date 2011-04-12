@@ -37,7 +37,7 @@ import sys
 import os
 import functools
 
-import simplejson
+import json
 
 from pylabs import q
 
@@ -190,7 +190,7 @@ class WizardActions(object):
 
         @return:        JSON encoded string of the action
         """
-        return simplejson.dumps(action)
+        return json.dumps(action)
 
     def getClearAction(self):
         """

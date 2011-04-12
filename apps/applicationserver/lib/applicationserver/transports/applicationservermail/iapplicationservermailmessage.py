@@ -41,7 +41,7 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 
-import simplejson
+import json
 import xmlrpclib
 
 from twisted.python import components, log
@@ -265,7 +265,7 @@ class Section(object):
 
     def _convert(self, value):
         try:
-            converted_value = simplejson.loads(value)
+            converted_value = json.loads(value)
         except ValueError, ex:
             converted_value = value.strip() # Default to string
         return converted_value

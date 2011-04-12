@@ -521,7 +521,7 @@ import operator
 import byteplay
 import threading
 
-import simplejson
+import json
 
 # We require this for the tests to run fine
 if __name__ == '__main__':
@@ -910,7 +910,7 @@ class ApplicationserverWizardService(object):
         updatedForm = callback_method(q, i, extra, ('wizard', ))
         action = updatedForm.convertToWizardAction()
 
-        return simplejson.dumps(action)
+        return json.dumps(action)
 
     @q.manage.applicationserver.expose
     def stop(self, sessionId):

@@ -33,7 +33,7 @@
 #
 # </License>
  
-import simplejson
+import json
 
 from twisted.python import log
 
@@ -184,7 +184,7 @@ def generate_json_body(results):
         return str(x)
 
     try:
-        return simplejson.dumps(results, default=stringify)
+        return json.dumps(results, default=stringify)
     except TypeError, ex:
         # Shouldn't happen because we use default=stringify
         msg = "Failed to dump one of the results to JSON format: %s" % ex

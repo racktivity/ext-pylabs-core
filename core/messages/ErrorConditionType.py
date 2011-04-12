@@ -1,6 +1,6 @@
 
 from pylabs import q
-import simplejson 
+import json 
 
 gErrorConditionTypePool = dict ()
  
@@ -91,7 +91,7 @@ class ErrorConditionType :
         try :
             fileContents = q.system.fs.fileGetContents( definitionFileName )
             self.definition = ErrorConditionTypeDefinition() 
-            self.definition.__dict__ = simplejson.loads( fileContents )
+            self.definition.__dict__ = json.loads( fileContents )
         except Exception, ex:
             # Be sure to be backwards-compatible with eventhandler calls that do not provide event type ids
             # Raising the exception here will make the ErrorConditionTypeFactory will return None

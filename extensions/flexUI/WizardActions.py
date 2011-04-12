@@ -1,4 +1,4 @@
-import simplejson
+import json
 
 # Turns a form into a hashmap?
 
@@ -31,7 +31,7 @@ class WizardActions(object):
 
         @return:        JSON encoded string of the action
         """
-        return simplejson.dumps(action)
+        return json.dumps(action)
 
     def getClearAction(self):
         """
