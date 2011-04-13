@@ -1,5 +1,5 @@
 #Action Tasklets
-For each Root Object you have created an [interface] (action.md). The interface file contains the different actions that you can perform on the Root Object.
+For each Root Object you have created an [interface](/sampleapp/#/doc/action). The interface file contains the different actions that you can perform on the Root Object.
 The examples of the tasklets so far did not create objects in Arakoon. 
 
 In this section we will take the step to the actual management of Root Objects: create, delete, update Root Objects, create lists, find objects, ...
@@ -10,7 +10,7 @@ Besides the most common actions, you can of course create your own specific acti
 ##Before Creating Tasklets
 What do you need to know before you start implementing the Root Object Interface?
 
-The tasklets have the same structure as any other [tasklet] (http://confluence.incubaid.com/display/PYLABS/Tasklets).
+The tasklets have the same structure as any other [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets).
 
     __author__='incubaid'
     
@@ -35,11 +35,11 @@ The file name of an action tasklet has always the following structure:
 The <priority> replaces the `__priority__` inside the tasklet.
 The <rootobject>_<action> combination replaces the `__tags__` inside the tasklet.
 
-The tasklet is located in `<pyapp name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure] (sampleapp.md) for more information about the location of the files.
+The tasklet is located in `<pyapp name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 
 ###Provided Data
-The execution of the action tasklet mostly requires a lot of data about an object. This data is not to be retrieved in this action tasklet itself, but is gathered in the `params` dictionary. The `params` dictionary lives throughout the whole PyLabs framework. As seen in the [Creating Forms and Wizards] (formwizardparctical.md) section, the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
+The execution of the action tasklet mostly requires a lot of data about an object. This data is not to be retrieved in this action tasklet itself, but is gathered in the `params` dictionary. The `params` dictionary lives throughout the whole PyLabs framework. As seen in the [Creating Forms and Wizards](/sampleapp/#/doc/formwizardparctical) section, the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
 
 All of this is part of the PyLabs framework.
 
@@ -62,7 +62,7 @@ For example:
 
     lead = p.api.model.crm.lead.new()
 
-This creates an object with some basic properties, such as a guid and a creation date. All other properties, which are defined in the [modeling] (modeling.md) phase are empty.
+This creates an object with some basic properties, such as a guid and a creation date. All other properties, which are defined in the [modeling](/sampleapp/#/doc/modeling) phase are empty.
 
 
 ###Setting Properties
@@ -91,7 +91,7 @@ In the given example:
     
     lead = p.api.model.crm.lead.save(lead)
 
-It is also required to add the guid of the object to the keyword 'result' in the `params` dictionary. See the [Defining Actions Interface on Root Objects] (action.md) chapter for more information.
+It is also required to add the guid of the object to the keyword 'result' in the `params` dictionary. See the [Defining Actions Interface on Root Objects](/sampleapp/#/doc/action) chapter for more information.
 
     params['result'] = lead.guid
 
@@ -184,7 +184,7 @@ Deleting an object is a very simple tasklet:
 
 
 ##Creating Lists
-In the [OSIS Views] (osisviews.md) chapter, you have learned how you can create different views on a Root Object. These views can now be used to create a list.
+In the [OSIS Views](/sampleapp/#/doc/osisviews) chapter, you have learned how you can create different views on a Root Object. These views can now be used to create a list.
 
 A first step in this action is to get the model of a Root Object. On the model object, you create a filter object, which allows you to create your own filters. In this case the filter will be based on an OSIS view that you have created.
 
