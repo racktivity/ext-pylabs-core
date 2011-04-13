@@ -16,10 +16,8 @@ This tutorial gives you a walk-through in the creation process of a PyLabs Appli
 5. [OSIS Transactions](/sampleapp/#/doc/osistransactions)
 6. [Implementing Action Tasklets](/sampleapp/#/doc/actiontasklet)
 7. [Creating Forms and Wizards](/sampleapp/#/doc/formwizardpractical)
-
 7.1. [Form and Wizard Conventions](/sampleapp/#/doc/formwizardconventions)
 7.2. [Form and Wizard API](/sampleapp/#/doc/formwizard)
-
 8. [From DRP to Reality](/sampleapp/#/doc/reality)
 9. [Event-Driven Actions](/sampleapp/#/doc/eventdrivenactions)
 10. [Scheduling Actions](/sampleapp/#/doc/scheduling)
