@@ -229,7 +229,7 @@ class RESTMethod(Resource):
         
         def finish_render(data):
             try:
-                json = json.dumps(data, indent=2)
+                jsondata = json.dumps(data, indent=2)
             except Exception, e:
                 #Auch, unable to serialize data
                 log.msg("Unable to serialize data to JSON: %s" % e)
@@ -240,7 +240,7 @@ class RESTMethod(Resource):
                     e).dumps())
             else:
                 request.setHeader('Content-Type', contenttype)
-                write(json)
+                write(jsondata)
 
             request.finish()
 
