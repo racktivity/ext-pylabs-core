@@ -22,15 +22,10 @@ install_packages(){
     apt-get install -qq -y $packages > /dev/null
 }
 
-ipython_config(){
-        ln -s /opt/qbase5/cfg/ipython /root/ipython
-    }
-
 install(){
     self_extract
     install_packages "${CORE_PACKAGES}"
     customize
-    ipython_config
 }
 
 install
