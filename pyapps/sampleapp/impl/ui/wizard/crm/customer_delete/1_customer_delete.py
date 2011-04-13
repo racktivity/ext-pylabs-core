@@ -2,7 +2,7 @@ MSG_DELETE = 'Warning! You\'re about to delete the customer <%s>'
 MSG_DELETE_CONFIRM = 'Are you sure you want to delete this customer?'
 
 def callCloudAPI(api, customerguid):
-    result = api.crm.customer.delete(customerguid)['result']    
+    result = api.action.crm.customer.delete(customerguid)['result']    
     return result
 
 

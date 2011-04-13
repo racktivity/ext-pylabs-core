@@ -1,4 +1,5 @@
 def main(q, i, p, params, tags):
+    q.logger.log('Creating page %s/%s' % (params['space'], params['name']), 1)
     page = p.api.model.ui.page.new()
     page.name = params['name']
     page.space = params['space']
