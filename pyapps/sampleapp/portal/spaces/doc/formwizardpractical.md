@@ -9,7 +9,7 @@ The wizard dialect is fully integrated in the PyLabs framework. The main entry p
 
 ##General Structure of a Form/Wizard Tasklet
 
-Since a wizard is implemented by using the [tasklet] (http://confluence.incubaid.com/display/PYLABS/Tasklets) framework, it contains all sections like any other tasklet.
+Since a wizard is implemented by using the [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) framework, it contains all sections like any other tasklet.
 
 Sections:
 * Tags: instruct the wizard engine which tasklets should be triggered under which circumstances
@@ -43,9 +43,9 @@ Example skeleton for a wizard tasklet:
     def match(q, i, params, tags):
         return True
 
-The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure] (sampleapp.md) for more information about the location of the files.
+The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
-It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet] (actiontasklet.md), which receives the arguments through the `params` dictionary.
+It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet](/sampleapp/#/doc/actiontasklet), which receives the arguments through the `params` dictionary.
 
 
 ##Creating Forms
@@ -63,7 +63,7 @@ Creating a form with one tab goes as follows:
 The `addTab` function expects two arguments, a unique ID ('general' in the above example) and  a title name for the tab.
 
 The tab object has several methods to fill your form with text fields, choices, multiple choices, yes/no questions, ... The methods have clear names so you know which type of field you are going to add.
-See the [Form and Wizard API] (formwizard.md) for details about the fields.
+See the [Form and Wizard API](/sampleapp/#/doc/formwizard) for details about the fields.
 
 An example of a basic form:
 
@@ -81,7 +81,7 @@ The third field shows a drop-down box with a list that need to be retrieved in t
         gender = q.enumerators.gender._pm_enumeration_items
         return gender
 
-This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects] (modeling.md) to create your custom enumerator.
+This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects](/sampleapp/#/doc/modeling) to create your custom enumerator.
 
 Once all fields are filled, the user will have to click on one of the provided buttons, *OK* or *CANCEL*. When the user clicks *OK*, the tasklet continues with the main function. Either you call the `callCloudAPI` function, which will execute an action, using the data entered by the user, or you can show a confirmation window.
 
@@ -196,5 +196,5 @@ Similar to the other forms, you must execute a cloud API call for the creation o
 
 
 ##What's Next?
-In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API] (formwizard.md)
+In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/doc/formwizard)
 In the next chapter you will learn the actual implementation of the actions in your PyApp, store, update, delete objects in the DRP, create lists, ...

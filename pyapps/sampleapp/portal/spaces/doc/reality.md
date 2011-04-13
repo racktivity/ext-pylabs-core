@@ -3,7 +3,7 @@ The PyLabs framework is not limited to creating objects in the DRP, creating vie
 
 If you take a look at the architecture schema of a PyApp, we have focussed on the  DRP, Actions, and the UI wizards sections up til now. In this section we will focus on the interaction between the PyLabs framework and the reality. The reality can be of any kind. Besides the given reality example, e-mail, the reality can also be manipulations of servers, configuration of systems, ...
 
-![PyApp_Architecture] (images/PyApp_Architecture.png)
+![PyApp_Architecture](images/PyApp_Architecture.png)
 
 
 ##Overview
@@ -16,9 +16,9 @@ One level further to the reality, you must implement the actor interface. In thi
 
 ##Actor Actions
 In the actor interface, you define the actions that the actor can execute. In case your PyApp needs to send out mails, you will need an actor who can execute this action.
-In the given example you can define the action `sendMail`. The definition is similar to defining the [actions on Root Objects](action).
+In the given example you can define the action `sendMail`. The definition is similar to defining the [actions on Root Objects](/sampleapp/#/doc/action).
 
-The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure](sampleapp) for more information about the location of the files. The interface contains one class with the name of the actor.
+The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files. The interface contains one class with the name of the actor.
 
     class mailprocessor:
         """
@@ -66,7 +66,7 @@ This class contains the different actions that the actor can execute. In this ex
 
 
 ##Implementation of an Actor Action
-The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure](sampleapp) for more information about the location of the files. The file name of an action tasklet has always the following structure:
+The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files. The file name of an action tasklet has always the following structure:
 
 <priority>_<rootobject>_<action>.py
 

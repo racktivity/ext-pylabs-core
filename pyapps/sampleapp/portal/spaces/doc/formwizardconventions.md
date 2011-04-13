@@ -1,4 +1,4 @@
-#Wizard Conventions
+#Form and Wizard Conventions
 
 Below are some wizard conventions to use:
 

@@ -4,7 +4,7 @@ A scheduled action can launch event-driven actions; for example check a mailbox 
 
 
 ##Creating a Scheduled Action
-Similar to all other actions of a PyApp, sheduled actions too are tasklets. A scheduled action however has a specific `match` function, which defines the execution interval of the action. The tasklet is located in `<pyapp name>/impl/schedule/config/<config app>/`. See the [PyApps Directory Structure](sampleapp) for more information about the location of the files.
+Similar to all other actions of a PyApp, sheduled actions too are tasklets. A scheduled action however has a specific `match` function, which defines the execution interval of the action. The tasklet is located in `<pyapp name>/impl/schedule/config/<config app>/`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 
 ##Defining the Interval

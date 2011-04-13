@@ -1,4 +1,4 @@
-#Action Tasklets
+#Implementing Action Tasklets
 For each Root Object you have created an [interface](/sampleapp/#/doc/action). The interface file contains the different actions that you can perform on the Root Object.
 The examples of the tasklets so far did not create objects in Arakoon. 
 

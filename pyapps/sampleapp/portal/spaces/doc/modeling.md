@@ -2,7 +2,7 @@
 
 After the process of designing your PyLabs Application (PyApp), it is time that you define the different Root Objects of your PyApp. Each model of a root object is a `.py`-file and stored in its proper directory.
 
-See the [PyApps Directory Structure] (sampleapp.md/) for more information about the location of the files.
+See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 ##What is a Root Object
 A Root Object is a logical entity of the PyApp, stored in the PyLabs DRP, and more specific in [Arakoon](http://www.arakoon.org). A root object consists of properties, and references to other root objects.
@@ -49,7 +49,7 @@ Always add a short description of the enumerator with `#@doc your doc here`. Thi
             cls.registerItem('OPTION2')
             cls.finishItemRegistration()
 
-A first line in the class is a [decorator] (http://wiki.python.org/moin/PythonDecorators). The `@classmethod` form is a function decorator. It is used to make the defined items available on the class and not via the instance of the class. More information about this decorator can be found [here] (http://docs.python.org/library/functions.html#classmethod).
+A first line in the class is a [decorator](http://wiki.python.org/moin/PythonDecorators). The `@classmethod` form is a function decorator. It is used to make the defined items available on the class and not via the instance of the class. More information about this decorator can be found [here](http://docs.python.org/library/functions.html#classmethod).
 
 The next line is the start of the method, it is always as shown in the example above.
 
@@ -74,7 +74,7 @@ where x is a sequential integer and where <property_type> can be one of the foll
 * List
 * String
 
-The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. PyLabs uses the [thrift] (http://thrift.apache.org/) framework for serializing and deserializing objects. Where PyLabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.
+The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. PyLabs uses the [thrift](http://thrift.apache.org/) framework for serializing and deserializing objects. Where PyLabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.
 
 In case the property is an Enumeration-type, you have to add the enumerator as argument. The enumerator can be a default PyLabs enumerator, or a custom enumerator.
 
@@ -103,7 +103,7 @@ If you put the old property in a comment line and create two new properties, you
 
 
 ##How to Use the Model
-In the above sections you have learned how you can model the Root Objects of your PyApp. This step in fact only creates the model, which you can consider to be the schema of your Root Object, similar to XML schemas for XML documents. The model is used in your PyApp for the actual creation of Root Objects, which are stored in the DRP [Arakoon] (http://www.arakoon.org) data store.
+In the above sections you have learned how you can model the Root Objects of your PyApp. This step in fact only creates the model, which you can consider to be the schema of your Root Object, similar to XML schemas for XML documents. The model is used in your PyApp for the actual creation of Root Objects, which are stored in the DRP [Arakoon](http://www.arakoon.org) data store.
 
 ##What's Next?
 After defining a Root Object, you have to define the different actions that can be executed on a Root Object. That step too is only a modeling phase. You define the possible actions, their arguments, and what the action must return as result.

@@ -464,6 +464,6 @@ Example:
 
 ##Screenshots
 
-![Example 1](static/wizard_sample1.png)
-![Example 2](static/wizard_sample2.png)
-![Example 3](static/wizard_sample3.png)
+![Example 1](images/wizard_sample1.png)
+![Example 2](images/wizard_sample2.png)
+![Example 3](images/wizard_sample3.png)
