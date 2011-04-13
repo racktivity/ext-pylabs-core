@@ -10,7 +10,7 @@ class PysyncWalker:
             raise RuntimeError("Cannot start walker for dir '%s', make sure it exist and is not empty." % startPath)
         self.usemd5=usemd5
         self.root=startPath     
-        self.dirObjects=dirobjects
+        self.dirObjectStore=dirobjects
         self.processHiddenFiles=processHiddenFiles
         
     def checkIfHiddenDir(self,path):
@@ -30,7 +30,7 @@ class PysyncWalker:
             if not self.checkIfHiddenDir(dirFullPath):
                 q.console.echo("scan: %s" % dirFullPath)
                 dirShortPath=q.system.fs.pathRemoveDirPart(dirFullPath, self.root, removeTrailingSlash=True).strip()
-                dirObject=self.dirObjects.new(dirShortPath)
+                dirObject=self.dirObjectStore.new(dirShortPath)
                 files=q.system.fs.listFilesInDir(dirFullPath)
                 for fullFilePath in files:
                     dirObject=self._getFileStatus(dirObject,fullFilePath)
@@ -38,7 +38,7 @@ class PysyncWalker:
                 for subdirname in subdirs:
                     if subdirname[0]<>".":
                         dirObject.addSubDir(subdirname)
-                self.dirObjects.save(dirObject)
+                self.dirObjectStore.save(dirObject)
                 
     def _getFileStatus(self,dirObject,fullFilePath):
         stat=q.system.fs.statPath(fullFilePath)

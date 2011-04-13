@@ -23,12 +23,13 @@ class FileNode(object):
     def __cmp__(self, other):
         return cmp(self.name, other.name)
     
-# disabled since unpack would prefer __iter__ for __getitem__
-#    def __iter__(self):
-#        return NullIterator()
+    def __hash__(self):
+        return hash(self.name)
     
     def __eq__(self, other):
-        return self.name == other.name & self.md5hash == other.md5hash
+        return isinstance(other, self.__class__) \
+        and self.name == other.name \
+        and self.md5hash == other.md5hash
     
     def __str__(self):
         return 'f:%s'%self.name
@@ -40,30 +41,33 @@ class DirNode(object):
     def __init__(self, key, path, moddate=None, accessdate=None):
         self.key = key
         self.path = path
+        self.fullpath = self.path
         _now = q.base.time.getTimeEpoch()
         self.moddate = moddate or _now
         self.accessdate = accessdate or _now
         self.stpoolid = 0
         self.files = dict()
         self.dirs = dict() #consider using flyweight pattern and not keeping dir objects in memory
-        self._dirs = list() #a simple list of names that is serialized
 
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) \
+        and self.fullpath == other.fullpath
+        
     def __cmp__(self, other):
-        return cmp(self.path, other.path)
+        return cmp(self.fullpath, other.fullpath)
+    
+    def __hash__(self):
+        return hash(self.fullpath)
     
     def __iter__(self):
         return DirIterator(self)
     
     def __str__(self):
-        content="Dirpath: %s\n"% (self.path)
-        for key in self.files:
-            fileinfo=tuple(self.files[key])
-            content="%sFile: %s %s\n" %(content, key, fileinfo)
-        for dir in sorted(self.dirs.values()):
-            content="%sSubdir: %s\n" %(content, dir.path)
-        return content
+        return '%s: %d subdirs %d files'%(self.name, len(self.dirs), len(self.files))
+
+    __repr__ = __str__
    
-    def __repr__(self):
+    def serialize(self):
         '''Serliaizes a dirNode'''
         content="1\n" #identifies format used, is for further reference
         content="%s%s\n"%(content, self.path)
@@ -94,6 +98,11 @@ class DirNode(object):
         return children
     
     children = property(fget=_getChildren)
+    
+    def _getName(self):
+        return self.fullpath
+    
+    name = property(fget=_getName)
     
     def addFileNode(self, fileNode):
         self.files[fileNode.name] = fileNode

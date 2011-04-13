@@ -17,35 +17,35 @@ class VirtualFileSystemMetadata():
         """
         self.metadataPath=metadataPath
         self.root=rootpath #path of root in which we will scan, when empty get from vfs metadata
-        self.dirObjectsStore=DirObjectsStore(metadataPath,self.root)
+        self.dirObjectStoreManager=DirObjectsStore(metadataPath,self.root)
         if self.root=="":
-            self.root=self.dirObjectsStore.root
+            self.root=self.dirObjectStoreManager.root
         q.system.fs.changeDir(self.root)
         self.state="INIT"
 
     def _checkActive(self):
         if self.state<>"OK":
             raise RuntimeError("Cannot continue, please populate vfs from filesystem of get latest version or another version, use functions get... or populate...")
-        if not self.dirObjects.stateIsActive:
-            raise RuntimeError("VFS is in wrong state, state=%s" % self.dirObjects.stateGet())
+        if not self.dirObjectStore.stateIsActive:
+            raise RuntimeError("VFS is in wrong state, state=%s" % self.dirObjectStore.stateGet())
 
     def populateFromFilesystem(self,processHiddenFiles=False,usemd5=False):
         """
         scan filesystem and populate the VFS will create a new version of the metadata (each scan results in a new version)
         """
         self.state="SCAN"
-        self.dirObjects=self.dirObjectsStore.new(processHiddenFiles,usemd5)  #the walk happens here
-        self.walk=self.dirObjects.walk        
+        self.dirObjectStore=self.dirObjectStoreManager.new(processHiddenFiles,usemd5)  #the walk happens here
+        self.walk=self.dirObjectStore.walk        
         self.state="OK"
         
     def getLatest(self):
-        self.dirObjects=self.dirObjectsStore.get()
-        self.walk=self.dirObjects.walk
+        self.dirObjectStore=self.dirObjectStoreManager.get()
+        self.walk=self.dirObjectStore.walk
         self.state="OK"
         
     def getFromVersionEpoch(self,versionEpoch):
-        self.dirObjects=self.dirObjectsStore.get(versionEpoch=versionEpoch)
-        self.walk=self.dirObjects.walk
+        self.dirObjectStore=self.dirObjectStoreManager.get(versionEpoch=versionEpoch)
+        self.walk=self.dirObjectStore.walk
         self.state="OK"
 
     def listFilesInDir(self, path, recursive=False, fileNameOnly=True, filter=None):
@@ -96,13 +96,13 @@ class VirtualFileSystemMetadata():
         return pathsreturn
 
     def listVersions(self):
-        return self.dirObjectsStore.list()
+        return self.dirObjectStoreManager.list()
 
     def listVersionsHR(self):
         """
         human readable list
         """
-        return self.dirObjectsStore.listHR()
+        return self.dirObjectStoreManager.listHR()
     
     def compareWithOlderVersion(self,versionEpoch,changefilePath,ignoreDate=False):
         """
@@ -230,9 +230,9 @@ class VirtualFileSystemMetadata():
         self.__init__(self.metadataPath,self.root)
 
     def dirObjectGet(self,path):
-        return self.dirObjects.get(path)
+        return self.dirObjectStore.get(path)
     
     def dirObjectExists(self,path):
-        return self.dirObjects.exists(path)
+        return self.dirObjectStore.exists(path)
     
     

@@ -1,7 +1,8 @@
 from pylabs import q
 from VFSTreeBuilder import VFSTreeBuilder
 from infomodel import *
-
+from iterators import DirNodeStoreCompositeIterator
+from functools import partial
 from pylabs import q
 
 class ObjectStoreManager():
@@ -210,13 +211,23 @@ class ObjectStore():
         
     def serialize(self, dirNode):
         dirNode.updateModdate()
-        return repr(dirNode)
+        return dirNode.serialize()
             
     def deserialize(self, key, content):
         obj = DirNode(None, None)
         return obj.deserialize(key, content)
 
     def walk(self, function, args, path, recursive=True):
+        itr = DirNodeStoreCompositeIterator(self, path, recursive)
+        for entry in itr:
+            function(args, 
+                  entry.name, 
+                  'F' if entry.isLeaf else 'D',
+                  entry.moddate,
+                  getattr(entry, 'size', 0),
+                  getattr(entry, 'md5hash', 0) )
+        
+    def _walk(self, function, args, path, recursive=True):
         """
         walks over dirobjects collection (virtual metadata, not on a real filesystem)
         pass function, argements given to function are 

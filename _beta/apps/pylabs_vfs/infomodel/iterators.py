@@ -33,6 +33,7 @@ class DirIterator(object):
     def __init__(self, dirNode):
         self.content = dirNode.children
         self.idx = 0
+        self.path = dirNode.path
         
     def __iter__(self):
         return self
@@ -49,9 +50,10 @@ class DirIterator(object):
             raise StopIteration()     
 
 class DirNodeStoreCompositeIterator(object):
-    def __init__(self, objectStore, startPath):
+    def __init__(self, objectStore, startPath, recursive=True):
         self.store = objectStore
         self.startPath = startPath
+        self.recursive = recursive
         self.iteratorQueue = deque()
         self.build(self.startPath)
         self.current_iter = self.iteratorQueue.popleft() 
@@ -61,21 +63,22 @@ class DirNodeStoreCompositeIterator(object):
         q.logger.log('building iterator for %s'%node)
         itr = iter(node) 
         self.iteratorQueue.append(itr)
-        for child in sorted(node.dirs):
-            self.build(q.system.fs.joinPaths(startPath, child))
+        for subdirname in sorted(node.dirs):
+            if self.recursive: self.build(q.system.fs.joinPaths(startPath, subdirname))
     
     def __iter__(self):
         return self
     
     def next(self):
-        if not self.current_iter.hasNext():
+        while not self.current_iter.hasNext():
             try:
                 self.current_iter = self.iteratorQueue.popleft()
-            except IndexError:
-                raise StopIteration()
+            except IndexError, ex:
+                q.logger.log(ex)
+                raise StopIteration('No more queued iterators')
             
-        return self.current_iter.next()             
-
+        return self.current_iter.next()
+        
 class NullIterator(object):
     def __iter__(self):
         return self
