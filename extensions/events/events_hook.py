@@ -1,11 +1,20 @@
 from pylabs import q
-from rabbitmqclient import Connection
 from events import EXCHG_NAME
 from events.event_consumer_mgr import EventConsumerMgr
 
 class Events(object):
+
     def __init__(self):
-        self._con = Connection()
+        self._connection = None
+
+    def _getConnection(self):
+        from rabbitmqclient import Connection
+        if not self._connection:
+            self._connection = Connection()
+        return self._connection
+    
+    _con = property(fget=_getConnection)
+
     
     def publish(self, rootingKey, tagString):
         self._con.publish(EXCHG_NAME, rootingKey, tagString)

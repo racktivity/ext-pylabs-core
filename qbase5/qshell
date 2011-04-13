@@ -2,10 +2,8 @@
 . /opt/qbase5/bin/init-bootstrap.sh
 
 if [ "x$IPYTHONDIR" == "x" ]; then
-  export IPYTHONDIR=$HOME/.ipython
+  export IPYTHONDIR=/opt/qbase5/cfg/ipython
 fi
-
-mkdir -p $IPYTHONDIR
 
 mkdir -p $base/var/pid
 mkdir -p $base/var/log
