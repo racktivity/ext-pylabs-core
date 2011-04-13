@@ -29,6 +29,7 @@ class VFSTreeBuilder(object):
             q.console.echo("scan: %s" % dirFullPath)
             dirShortPath = q.system.fs.pathRemoveDirPart(dirFullPath, self.root, removeTrailingSlash=True).strip()
             dirObject = self.objectStore.new(dirShortPath)
+            dirObject.fullpath = dirFullPath
             files = q.system.fs.listFilesInDir(dirFullPath)
             for fileFullPath in files:
                 dirObject.addFile(fileFullPath)
@@ -37,24 +38,6 @@ class VFSTreeBuilder(object):
                 if subdirname[0]<>".":
                     dirObject.addSubDir(subdirname)
             self.objectStore.save(dirObject)
-#                
-#
-#    def _reportFileChange(self,change,fullFilePath,size=0,modDate=0,md5hash=""): 
-#        """
-#        @param change N,D,M  (New, Deleted, Modified)
-#        """
-#        content = "%sF:%s|%s|%s|%s\n"%(change,fullFilePath,size,modDate,md5hash,key)
-#        q.system.fs.writeFile(self._MetadataChangesPath, content, append=True)
-#        ch = ""
-#        if change=="N":
-#            ch="NEW"
-#        if change=="M":
-#            ch="MOD"
-#        if change=="D":
-#            ch="DEL"
-#        if ch=="":
-#            raise RuntimeError("wrong change type, use N,D,M")
-#        #q.console.echo("%s: %s" % (ch,fullFilePath))
 #        
 
         

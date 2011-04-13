@@ -1,7 +1,12 @@
 from pylabs import q
 from pylabs.Shell import *
+import fnmatch
 from infomodel.infomodel import *
 from infomodel.ObjectStore import ObjectStoreManager 
+from infomodel.iterators import  DirNodeStoreCompositeIterator
+from difflib import SequenceMatcher
+from functools import partial
+from collections import defaultdict
 
 
 class VFSMetadata():
@@ -13,35 +18,35 @@ class VFSMetadata():
     def __init__(self, metadataPath, rootpath=""):
         self.metadataPath = metadataPath
         self.root = rootpath #path of root in which we will scan, when empty get from vfs metadata
-        self.dirObjectsStore = ObjectStoreManager(metadataPath, self.root)
+        self.dirObjectStoreManager = ObjectStoreManager(metadataPath, self.root)
         if not self.root:
-            self.root = self.dirObjectsStore.root
+            self.root = self.dirObjectStoreManager.root
         q.system.fs.changeDir(self.root)
         self.state = "INIT"
 
     def _checkActive(self):
         if self.state != "OK":
             raise RuntimeError("Cannot continue, please populate vfs from filesystem of get latest version or another version, use functions get... or populate...")
-        if not self.dirObjects.stateIsActive():
-            raise RuntimeError("VFS is in wrong state, state=%s" % self.dirObjects.stateGet())
+        if not self.dirObjectStore.stateIsActive():
+            raise RuntimeError("VFS is in wrong state, state=%s" % self.dirObjectStore.stateGet())
 
     def populateFromFilesystem(self, processHiddenFiles=False, usemd5=False):
         """
         scan filesystem and populate the VFS will create a new version of the metadata (each scan results in a new version)
         """
         self.state="SCAN"
-        self.dirObjects = self.dirObjectsStore.new(processHiddenFiles, usemd5)  #the walk happens here
-        self.walk=self.dirObjects.walk        
+        self.dirObjectStore = self.dirObjectStoreManager.new(processHiddenFiles, usemd5)  #the walk happens here
+        self.walk=self.dirObjectStore.walk        
         self.state="OK"
         
     def getLatest(self):
-        self.dirObjects = self.dirObjectsStore.get()
-        self.walk=self.dirObjects.walk
+        self.dirObjectStore = self.dirObjectStoreManager.get()
+        self.walk=self.dirObjectStore.walk
         self.state="OK"
         
     def getFromVersionEpoch(self,versionEpoch):
-        self.dirObjects = self.dirObjectsStore.get(versionEpoch=versionEpoch)
-        self.walk = self.dirObjects.walk
+        self.dirObjectStore = self.dirObjectStoreManager.get(versionEpoch=versionEpoch)
+        self.walk = self.dirObjectStore.walk
         self.state = "OK"
 
     def listFilesInDir(self, path, recursive=False, fileNameOnly=True, filter=None):
@@ -92,15 +97,78 @@ class VFSMetadata():
         return pathsreturn
 
     def listVersions(self):
-        return self.dirObjectsStore.list()
+        return self.dirObjectStoreManager.list()
 
     def listVersionsHR(self):
         """
         human readable list
         """
-        return self.dirObjectsStore.listHR()
+        return self.dirObjectStoreManager.listHR()
     
-    def compareWithOlderVersion(self,versionEpoch,changefilePath,ignoreDate=False):
+    def __iter__(self):
+        return DirNodeStoreCompositeIterator(self.dirObjectStore, '')
+    
+    def compareWithOlderVersion(self, versionEpoch):
+        vfsOlder = VFSMetadata(self.metadataPath)
+        vfsOlder.getFromVersionEpoch(versionEpoch=versionEpoch)
+        self._checkActive()
+        vfsOlder._checkActive()
+        itr = iter(self)
+        older_itr = iter(vfsOlder)
+        #unfortunately we have to expand the iterators into lists to use difflib
+        content = [entry for entry in itr]
+        older_content = [entry for entry in older_itr]
+        seq_matcher = SequenceMatcher(a=content, b=older_content)
+        return seq_matcher
+    
+    def diffWithOlderVersion(self, versionEpoch, groupSimilarOperations=False, ignoreEquals=True):
+        '''
+        if groupSimilarOperations is False, returns a list of strings representing Transaction Log of changes between the two VFS versions
+        else a dictionary of <action> : <list of files/dirs> based on the value of 
+        '''
+        seq_matcher = self.compareWithOlderVersion(versionEpoch)
+        if groupSimilarOperations:
+            return self._getActionGroups(seq_matcher, ignoreEquals=ignoreEquals)
+        else:
+            return self._getTLog(seq_matcher, ignoreEquals=ignoreEquals)
+        
+        
+    def _getActionGroups(self, seq_matcher, ignoreEquals=True):
+        actionGroups = defaultdict(list)
+        def replace_handler(opcode_handlers, actionGroups, a, b, alo, ahi, blo, bhi):
+            opcode_handlers['delete'](opcode_handlers, actionGroups, a, b, alo, ahi, blo, bhi)
+            opcode_handlers['insert'](opcode_handlers, actionGroups, a, b, alo, ahi, blo, bhi)
+            
+        opcode_handlers = {
+              'equal' : lambda opcode_handlers, actionGroups, a, b, alo, ahi, blo, bhi: actionGroups['equal'] if ignoreEquals 
+              else actionGroups['equal'].extend(a[alo:ahi]),
+              'delete' : lambda opcode_handlers, actionGroups, a, b, alo, ahi, blo, bhi: actionGroups['delete'].extend(a[alo:ahi]),
+              'insert' : lambda opcode_handlers, actionGroups, a, b, alo, ahi, blo, bhi: actionGroups['insert'].extend(b[blo:bhi]),
+              'replace' : replace_handler
+              }
+            
+        for opcode in seq_matcher.get_opcodes():
+            opcode_handlers[opcode[0]](opcode_handlers, actionGroups, seq_matcher.a, seq_matcher.b, *opcode[1:])
+        return actionGroups
+            
+        
+    def _getTLog(self, seq_matcher, ignoreEquals=True):
+        opcodes = seq_matcher.get_opcodes()
+        opcode_handlers = {
+              'delete' : lambda code, a, alo, ahi, b, blo, bhi: ['%s: %s\n'%(code, entry) for entry in a[alo:ahi]],
+              'insert' : lambda code, a, alo, ahi, b, blo, bhi: ['%s: %s\n'%(code, entry) for entry in b[blo:bhi]],
+              'replace' : lambda code, a, alo, ahi, b, blo, bhi: ['%s: %s\n'%('delete', entry) for entry in a[alo:ahi]] + ['%s: %s\n'%('insert', entry) for entry in b[blo:bhi]],
+              'equal' : lambda code, a, alo, ahi, b, blo, bhi: [] if ignoreEquals else ['%s: %s\n'%(code, entry) for entry in a[alo:ahi]]
+              }
+        def buildTLog(seq_matcher, opcode_handlers, prev, opcode):
+            code, a_start, a_end, b_start, b_end = opcode
+            return prev + opcode_handlers[code](code, seq_matcher.a, a_start, a_end, seq_matcher.b, b_start, b_end)
+        
+        return reduce(partial(buildTLog, seq_matcher, opcode_handlers), opcodes, [])
+
+        
+    
+    def _compareWithOlderVersion(self,versionEpoch,changefilePath,ignoreDate=False):
         """
         @param changefilePath is file in which changes will be recorded
         format
@@ -226,9 +294,9 @@ class VFSMetadata():
         self.__init__(self.metadataPath,self.root)
 
     def dirObjectGet(self,path):
-        return self.dirObjects.get(path)
+        return self.dirObjectStore.get(path)
     
     def dirObjectExists(self,path):
-        return self.dirObjects.exists(path)
+        return self.dirObjectStore.exists(path)
     
     

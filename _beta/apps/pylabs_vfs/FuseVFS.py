@@ -187,7 +187,7 @@ class Xmp(Fuse):
             parentDirObject = self.vfs.dirObjectGet(parentPath[1:])
             q.logger.log('DEBUG parent dir found %s'%parentPath[1:])
             parentDirObject.addFileObject(path[1:], 0, q.base.time.getTimeEpoch(), '')
-            self.vfs.dirObjects.save(parentDirObject)
+            self.vfs.dirObjectStore.save(parentDirObject)
         except NoEntryError, ex:
             q.logger.log('DEBUG parent dir not found %s'%parentPath[1:])    
 
@@ -210,11 +210,11 @@ class Xmp(Fuse):
         if isDir:
             dirObject.moddate = mtime
             dirObject.accessdate = atime
-            self.vfs.dirObjects.save(dirObject)
+            self.vfs.dirObjectStore.save(dirObject)
         else:
             size, moddate, md5hash = dirObject.files[info['filename']] 
             dirObject.files[info['filename']] = size, mtime, md5hash
-            self.vfs.dirObjects.save(dirObject)
+            self.vfs.dirObjectStore.save(dirObject)
         
 
 #    The following utimens method would do the same as the above utime method.
@@ -304,7 +304,7 @@ class Xmp(Fuse):
                 parentDirObject = self.vfs.dirObjectGet(parentPath[1:])
                 q.logger.log('DEBUG parent dir found %s'%parentPath[1:])
                 parentDirObject.addFileObject(path[1:], 0, q.base.time.getTimeEpoch(), '')
-                self.vfs.dirObjects.save(parentDirObject)
+                self.vfs.dirObjectStore.save(parentDirObject)
             except NoEntryError, ex:
                 q.logger.log('DEBUG parent dir not found %s'%parentPath[1:])              
 
@@ -432,7 +432,7 @@ Userspace nullfs-alike: mirror the filesystem tree from some point on.
         sys.exit(1)
 
     #ipshell()
-    server.file_class = server.XmpFileFactory
+#    server.file_class = server.XmpFileFactory
     server.main()
     q.logger.log('Fuse system mounted successfuly, loading vfs metadata ...')
     metadatapath= "/opt/qbase5/var/vfs/var_log/"
