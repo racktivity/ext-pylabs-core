@@ -1,26 +1,24 @@
-PyLabs Debugger Support
-=======================
-PyLabs contains a number of debugging aids accessible under `q.debugger`.
-There's 3 procedures available: `shell`, `configure` and `setbreakpoint`.
+#PyLabs Debugger Support
 
-Launching an Interactive Shell
-------------------------------
-At any stage in a script (which is executed in an interactive environment), a
-call to `q.debugger.shell()` will launch a shell, similar to the Qshell
-environment you're used to.
+When you create a PyApp, it is very likely that not everything works as it should be, and in many cases you have to debug your PyApp. In the PyLabs framework this can be easily done, since it contains number of debugging aids.  
+The debugging tools are accessible under `q.debugger`.
 
-The shell will execute in a *copy* of the namespace in which it's launched. As
-such, you can not overwrite variables. See the demo session below for an
-example.
+There are three procedures available: `shell`, `configure`, and `setbreakpoint`.
 
-Do note the implementation of `q.debugger.shell` does not (and can not) make
-sure it's being called in an interactive session. As such, one should always
-remove calls to `q.debugger.shell()` once the call is no longer required.
-Otherwise the call could launch a shell in a non-interactive environment
-(e.g. when the code is executed inside the Applicationserver or Workflow
-Engine), which can lead to blocked processes.
+* shell: launch a Q-Shell session in an interactive environment
+* configure: configure a Python debugger, for example pdb or ipython
+* setbreakpoint: a breakpoint in your script results in a debug session in the configured debugger
 
-Here's a sample session:
+
+##Launching an Interactive Shell
+
+At any stage in a script (which is executed in an interactive environment), a call to `q.debugger.shell()` will launch a shell, similar to the Q-Shell environment you are used to.
+
+The shell will execute in a *copy* of the namespace in which it is launched. As such, you can not overwrite variables. See the demo session below for an example.
+
+Do note the implementation of `q.debugger.shell` does not (and can not) make sure it is being called in an interactive session. As such, one should always remove calls to `q.debugger.shell()` once the call is no longer required. Otherwise the call could launch a shell in a non-interactive environment, for example when the code is executed inside the Applicationserver or Workflow Engine. This situation can lead to blocked processes.
+
+Here is a sample session:
 
     $ cat shelldemo.py 
     from pylabs.InitBase import q
@@ -60,25 +58,19 @@ Here's a sample session:
 
     j = 10
 
+
 Debugger Configuration
 ----------------------
-PyLabs supports several Python debuggers, including standard PDB, the IPython
-enhanced PDB, and RPDB2/WinPDB (when available on the system). The debugger to
-be used can be configured using `q.debugger.configure()`. A specific debugger
-can also be selected by calling `q.debugger.configure('name')`, where *name*
-should be one of 'pdb', 'ipython', 'winpdb' or 'disabled' (to disable all
-breakpoint calls).
+PyLabs supports several Python debuggers, including standard PDB, the IPython enhanced PDB, and RPDB2/WinPDB (when available on the system). The debugger to be used can be configured using `q.debugger.configure()`. A specific debugger
+can also be selected by calling `q.debugger.configure('name')`, where *name* should be one of 'pdb', 'ipython', 'winpdb' or 'disabled' (to disable all breakpoint calls).
 
 Setting Breakpoints
 -------------------
-Whenever you want to break into a running script, a call to
-`q.debugger.setbreakpoint()` will launch the configured debugger. Note, similar
-to calls to `q.debugger.shell()`, this should only be called during interactive
-execution of the code, unless the 'disabled' debugger is configured, or the
-'winpdb' debugger is being used, since this system is client-server based (and
-as such suited to debug code running in a non-interactive process).
+Whenever you want to break into a running script, a call to `q.debugger.setbreakpoint()` launches the configured debugger. 
 
-Here's a demonstration of using the 'IPython' debugger:
+Similar to calls to `q.debugger.shell()`, this should only be called during interactive execution of the code, unless the 'disabled' debugger is configured, or the 'winpdb' debugger is being used, since the 'winpdb' system is client-server based (and as such suited to debug code running in a non-interactive process).
+
+Here is a demonstration of using the 'IPython' debugger:
 
     $ cat tasklets/1_demo.py
     __tags__ = 'demo',
@@ -109,7 +101,7 @@ Here's a demonstration of using the 'IPython' debugger:
     engine.execute(params, tags=('demo', ))
 
     $ python debugdemo.py 
-    > /home/nicolas/tasklets/1_demo.py(8)main()
+    > /home/holygrail/tasklets/1_demo.py(8)main()
           7 
     ----> 8     clusters = q.manage.arakoon.listClusters()
           9 
@@ -127,8 +119,7 @@ Here's a demonstration of using the 'IPython' debugger:
 
     ipdb> next
 
-Several calls to 'next' later, once we're outside the PyLabs extension loading
-mechanism:
+Several calls to 'next' later, once we are outside the PyLabs extension loading mechanism:
 
     ipdb> 
     --Call--
@@ -162,7 +153,7 @@ mechanism:
         132 
 
     ipdb> 
-    > /home/nicolas/tasklets/1_demo.py(10)main()
+    > /home/holygrail/tasklets/1_demo.py(10)main()
           8     clusters = q.manage.arakoon.listClusters()
           9 
     ---> 10     q.logger.log('There are %d configured clusters' % len(clusters), 5)

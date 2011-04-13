@@ -9,9 +9,9 @@ In this section we introduce you to the different components of PyApps and how t
 ###Architecture
 Below you can find the architecture of how the PyLabs framework is built.
 
-![PyApps_Architecture] (images/PyApp_Architecture.png)
+![PyApps_Architecture](images/PyApp_Architecture.png)
 
-![PyLabs_DRP] (images/PyLabs_DRP.png)
+![PyLabs_DRP](images/PyLabs_DRP.png)
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 
@@ -40,7 +40,8 @@ Per action, there exists one tasklet which contains the business logic and the a
 
 ###From Modeling to Reality
 Below you find a graphical overview of the creation of a PyApp. 
-![PyApp] (images/PyApp.png)
+
+![PyApp](images/PyApp.png)
 
 
 ##PyApps Directory Structure
@@ -48,90 +49,90 @@ Below you can find the directory structure of a PyApp.
 
     pyapps/
     `-- myappname
-          |-- impl (actual implementation of the pyapp)
-          |    |-- action (contains the different actions of the pyapp)
-          |    |     `-- domainname (domain in the pyapp)
-          |    |         `-- rootobjectname (a root object of the pyapp)
-          |    |             `-- methodname (action on a root object)
-          |    |                 `-- tasklet1.py (actual implementation)
-          |    |-- actor (to create something in reality) 
-          |    |     `-- domainname (domain in the pyapp)
-          |    |         `-- actorname
-          |    |             `-- methodname (name of the action)
-        |    |               |-- scripts (directory for rscripts)
-        |    |               |   `-- rscript1.rscript (script to be executed by agent)
-          |    |                 `-- tasklet1.py (tasklet to make rscript by an agent)
-        |    |-- authenticate
-        |    |   `-- authenticate.py
-        |    |-- authorize
-        |    |   `-- authorize.py
-        |    |-- events (define actions triggered by a pyapp event)
-        |    |   |-- event_action1
-        |    |   |   |-- consumer.cfg (configuration when action must be triggered)
-        |    |   |   |-- event_action1.py (action to be executed upon event)
-        |    |   |   `-- event_action2.py
-        |    |   |-- event_action2
-        |    |   |   |-- consumer.cfg
-        |    |   |   |-- event_action1.py
-        |    |   |   `-- event_action2.py
-          |    |-- osis (methods to delete/store objects from/in views in postgres db) 
-        |    |   |-- config (config objects of pyapp)
-        |    |   |   |-- config1_delete.py
-        |    |   |   `-- config1_store.py
-          |    |     |-- domainname
-        |    |   |   `-- rootobjectname
-          |    |     |       |-- objectname_delete.py
-        |    |   |       `-- objectname_store.py 
-          |    |   |-- generic (generic osis methods)
-        |    |   |   `-- tasklet.py
-        |    |   |-- monitoring 
-        |    |   |   |-- monitoring_delete.py
-        |    |   |   `-- monitoring_store.py
-        |    |   `-- ui (related to UI objects)
-        |    |       |-- ui_object_delete.py
-        |    |       `-- ui_object_store.py
-        |    |-- schedule
-          |    |     `-- domain
-          |    |         |-- schedule1.py
-          |    |         `-- schedule2.py
-          |    |-- setup
-        |    |   `-- osis (define view to be stored in postgres db)
-          |    |         |-- tasklet1.py
-          |    |         `-- tasklet2.py
-        |    |-- config
-        |    |   |-- tasklet1.py
-        |    |   `-- tasklet2.py
-          |    `-- ui (pyapp UI definitions)
-          |          |-- form (form definitions)
-          |          |     `-- tasklet1.py
-          |          |-- portal (portal page definitions)
-          |          |     `-- tasklet1.py
-          |          `-- wizard (wizard definitions)
-          |              `-- tasklet1.py
+        |-- impl (actual implementation of the pyapp)
+        |   |-- action (contains the different actions of the pyapp)
+        |   |   `-- domainname (domain in the pyapp)
+        |   |       `-- rootobjectname (a root object of the pyapp)
+        |   |           `-- methodname (action on a root object)
+        |   |               `-- tasklet1.py (actual implementation)
+        |   |-- actor (to create something in reality) 
+        |   |   `-- domainname (domain in the pyapp)
+        |   |       `-- actorname
+        |   |           `-- methodname (name of the action)
+        |   |               |-- scripts (directory for rscripts)
+        |   |               |   `-- rscript1.rscript (script to be executed by agent)
+        |   |               `-- tasklet1.py (tasklet to make rscript by an agent)
+        |   |-- authenticate
+        |   |   `-- authenticate.py
+        |   |-- authorize
+        |   |   `-- authorize.py
+        |   |-- events (define actions triggered by a pyapp event)
+        |   |   |-- event_action1
+        |   |   |   |-- consumer.cfg (configuration when action must be triggered)
+        |   |   |   |-- event_action1.py (action to be executed upon event)
+        |   |   |   `-- event_action2.py
+        |   |   `-- event_action2
+        |   |       |-- consumer.cfg
+        |   |       |-- event_action1.py
+        |   |       `-- event_action2.py
+        |   |-- osis (methods to delete/store objects from/in views in postgres db) 
+        |   |   |-- config (config objects of pyapp)
+        |   |   |   |-- config1_delete.py
+        |   |   |   `-- config1_store.py
+        |   |   |-- domainname
+        |   |   |   `-- rootobjectname
+        |   |   |       |-- objectname_delete.py
+        |   |   |       `-- objectname_store.py 
+        |   |   |-- generic (generic osis methods)
+        |   |   |   `-- tasklet.py
+        |   |   |-- monitoring 
+        |   |   |   |-- monitoring_delete.py
+        |   |   |   `-- monitoring_store.py
+        |   |   `-- ui (related to UI objects)
+        |   |       |-- ui_object_delete.py
+        |   |       `-- ui_object_store.py
+        |   |-- schedule
+        |   |   `-- domain
+        |   |       |-- schedule1.py
+        |   |       `-- schedule2.py
+        |   |-- setup
+        |   |   `-- osis (define view to be stored in postgres db)
+        |   |       |-- tasklet1.py
+        |   |       `-- tasklet2.py
+        |   |-- config
+        |   |   |-- tasklet1.py
+        |   |   `-- tasklet2.py
+        |   `-- ui (pyapp UI definitions)
+        |        |-- form (form definitions)
+        |        |   `-- tasklet1.py
+        |        |-- portal (portal page definitions)
+        |        |   `-- tasklet1.py
+        |        `-- wizard (wizard definitions)
+        |            `-- tasklet1.py
         |
         |-- interface
-        |    |-- action
-        |    |     `-- domainname
-        |    |       |-- rootobject1.py (interface on rootobject)
-        |    |       `-- rootobject2.py
-        |    |-- actor
-        |    |   `-- domainname
-        |    |        |-- actor1.py (model of an actor object)
-        |    |       `-- actor2.py
-        |    |-- config
-        |    |   `-- configuration1.py (model of a pyapp configuration)
-        |    |-- model
-        |    |   `-- domainname
-        |    |       |-- object1.py (model of root object)
-        |    |       `-- object2.py
-        |    `-- monitoring
-        |        `-- monitoringobject1.py (model of a monitoring object)
+        |   |-- action
+        |   |   `-- domainname
+        |   |       |-- rootobject1.py (interface on rootobject)
+        |   |       `-- rootobject2.py
+        |   |-- actor
+        |   |   `-- domainname
+        |   |       |-- actor1.py (model of an actor object)
+        |   |       `-- actor2.py
+        |   |-- config
+        |   |   `-- configuration1.py (model of a pyapp configuration)
+        |   |-- model
+        |   |   `-- domainname
+        |   |       |-- object1.py (model of root object)
+        |   |       `-- object2.py
+        |   `-- monitoring
+        |       `-- monitoringobject1.py (model of a monitoring object)
         |
         `-- portal (documentation of pyapp)
-              |-- static (static data to be included in pyapp doc)
+            |-- static (static data to be included in pyapp doc)
             |   |-- image1.jpg
             |   `-- image2.jpg
-              |-- doc (manual of pyapp)
+            |-- doc (manual of pyapp)
             |   |-- doc1.md
             |   `-- doc2.md
             `-- api (api doc of pyapp)

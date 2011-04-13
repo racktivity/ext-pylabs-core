@@ -4,7 +4,7 @@ In this section we will cover how you can store, update, and delete objects from
 
 
 ##Creating an OSIS Transaction
-An OSIS transaction is a [tasklet] (http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure] (sampleapp.md) for more information about the location of the files.
+An OSIS transaction is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 Each file has the following identification:
 * __author__ : name of the author of the tasklet
@@ -56,7 +56,7 @@ When you have the Root Object, you can set the different values of the Root Obje
         'property4': rootobject.property4
         }
 
-The properties of the Root Object are all defined in the [Root Object Model] (modeling.md).
+The properties of the Root Object are all defined in the [Root Object Model](/sampleapp/#/doc/modeling).
 
 When you have set the values of the Root Object, you only have to save the view with the new or updated Root Object. This action is a method on the osis connection and expects the following arguments in the given order:
 
