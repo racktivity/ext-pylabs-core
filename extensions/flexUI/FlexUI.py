@@ -1,6 +1,6 @@
 from pylabs import *
 from pylabs.Shell import *
-import simplejson
+import json
 from threading import Thread
 
 #Copyright Jon Berg , turtlemeat.com
@@ -37,7 +37,7 @@ class MyHandler(BaseHTTPRequestHandler):
         self.end_headers()
         result = form["result"].value
         
-        objResult = self.process(self.path, simplejson.loads(result))
+        objResult = self.process(self.path, json.loads(result))
         print 'sending back: ' + objResult
         self.wfile.write(objResult)
 
@@ -102,8 +102,6 @@ class FlexUI:
         a    = WizardActions()
         data = a.Form(form)
         return '{"action":"display", "params": {"control": "label", "text": "Snapshot Multiple Machines", "multiline": false, "name": "msg1", "bold": true}}'
-        #print self.prettyPrintJSON(simplejson.loads(data))
-        #return data
 
         #
         # print self.prettyPrintJSON(data)

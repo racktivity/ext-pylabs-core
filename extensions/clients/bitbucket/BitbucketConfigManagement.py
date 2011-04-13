@@ -9,4 +9,3 @@ class BitbucketConfigManagementItem(ConfigManagementItem):
         self.dialogAskPassword('passwd', 'Enter password for user "%s"' % self.params["login"])
 
 BitbucketConfigManagement = ItemGroupClass(BitbucketConfigManagementItem)
-

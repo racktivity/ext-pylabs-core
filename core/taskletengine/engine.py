@@ -55,6 +55,21 @@ from tasklet import Tasklet
 
 Tasklet.MATCH_FAILED = MATCH_FAILED
 
+# Exception type used for control flow (kill execution chain of tasklets)
+# Used by q.tasklet.stop()
+try:
+    BaseException
+except NameError:
+    _BaseException = Exception
+else:
+    _BaseException = BaseException
+
+class TaskletStopControlFlowException(_BaseException):
+    '''Exception used to interrupt tasklet execution flow'''
+
+del _BaseException
+
+
 #@feedback (kds) everywhere we use priority 1 as highest, here it is the reverse
 
 def _ignore(t, c, *a, **k):
@@ -386,7 +401,10 @@ class TaskletEngine(object):
                                       (tasklet.realizes, tasklet.name), 6)
                 continue
 
-            ret = tasklet.executeIfMatches(params, tags or tuple(), wrapper)
+            try:
+                ret = tasklet.executeIfMatches(params, tags or tuple(), wrapper)
+            except TaskletStopControlFlowException:
+                ret = self.STOP
 
             if ret is not MATCH_FAILED and tasklet.realizes:
                 pylabs.q.logger.log('%s realized by %s' % (tasklet.realizes,

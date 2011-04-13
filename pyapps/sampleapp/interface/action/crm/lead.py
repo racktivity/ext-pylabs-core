@@ -181,7 +181,7 @@ class lead:
         @execution_method = sync
         @security administrators
         
-        @param jobguid:               guid of the job if avalailable else empty string
+        @param jobguid:               guid of the job if avalailable else None
         @type jobguid:                guid
  
         @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...

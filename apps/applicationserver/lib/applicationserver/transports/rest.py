@@ -35,7 +35,7 @@
  
 import functools
 
-import simplejson
+import json
 
 from twisted.plugin import IPlugin
 from twisted.web import http, server
@@ -67,18 +67,18 @@ class JSONException:
         }
 
         try:
-            jsonexc = simplejson.dumps(self.exception)
+            jsonexc = json.dumps(self.exception)
         except:
             jsonexc = str(self.exception)
 
         data['exception'] = jsonexc
 
         try:
-            ret = simplejson.dumps(data)
+            ret = json.dumps(data)
             return ret
         except:
             try:
-                ret = simplejson.dumps({
+                ret = json.dumps({
                     'error': True,
                     'code': FAILURE_CODE,
                     'message': 'Unable to serialize original exception',
@@ -189,7 +189,7 @@ class RESTMethod(Resource):
                 #Unpack input data. Default to JSON, if the input string is not
                 #parsable as a JSON string, just pass it through (as a string)
                 try:
-                    value = simplejson.loads(value)
+                    value = json.loads(value)
                 except ValueError:
                     value = value
                 
@@ -229,7 +229,7 @@ class RESTMethod(Resource):
         
         def finish_render(data):
             try:
-                json = simplejson.dumps(data, indent=2)
+                jsondata = json.dumps(data, indent=2)
             except Exception, e:
                 #Auch, unable to serialize data
                 log.msg("Unable to serialize data to JSON: %s" % e)
@@ -240,7 +240,7 @@ class RESTMethod(Resource):
                     e).dumps())
             else:
                 request.setHeader('Content-Type', contenttype)
-                write(json)
+                write(jsondata)
 
             request.finish()
 

@@ -1,11 +1,11 @@
-__tags__ = 'pop3','create'
+__tags__ = 'schedule'
 __author__ = 'incubaid'
 
 def main(q, i, p, params, tags):
     import poplib
     import base64
-    pop3guid = p.api.model.config.pop3.find(server="pop.gmail.com", login="analytics@incubaid.com")['result'][0]
-    pop3 = p.api.model.config.pop3.getObject(pop3guid)
+    pop3guid = p.api.config.mail.pop3.find(server="pop.gmail.com", login="analytics@incubaid.com")['result'][0]
+    pop3 = p.api.config.mail.pop3.getObject(pop3guid)
     mailbox = poplib.POP3_SSL(pop3.server)
     mailbox.user(pop3.login)
     mailbox.pass_(pop3.password)
@@ -17,4 +17,4 @@ def main(q, i, p, params, tags):
 
 def match(q, i, params, tags):
     import time
-    return (params['taskletlastexecutiontime']  + 300 <= time.time())
+    return (params['taskletlastexecutiontime']  + 300 >= time.time())

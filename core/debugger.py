@@ -81,6 +81,15 @@ else:
         #IPython issue
         global IPYTHON_TRACER
 
+        if not IPYTHON_TRACER:
+            # This is the first time this procedure is called
+            # Due to some funky IPython 0.10 internals, we need the following:
+            import IPython
+
+            if map(int, IPython.__version__.split('.'))[:2] == [0, 10]:
+                from IPython.Shell import IPShellEmbed
+                IPShellEmbed(argv=[])
+
         old_colors = ExceptionColors.active_scheme_name
         ExceptionColors.active_scheme_name = color_scheme
 
@@ -217,10 +226,47 @@ class QHook:
     def __init__(self):
         self._config = pylabsDebuggerConfiguration()
 
-    def configure(self):
+    def configure(self, debugger=None):
         '''Configure the debugger subsystem'''
-        self._config.review() #pylint: disable-msg=E1101
+        if debugger is None:
+            return self._config.review() #pylint: disable-msg=E1101
 
-    def set_trace(self): #pylint: disable-msg=R0201
+        if debugger == 'winpdb':
+            # WinPDB needs interactive input
+            return self._config.review()
+
+        return self._config.configure({
+            'type': debugger,
+        })
+
+    def setbreakpoint(self): #pylint: disable-msg=R0201
         '''Set a breakpoint or launch the configured debugger'''
         set_trace(frame_idx=1)
+
+    def __getattr__(self, name):
+        # Backward compatibility (and people used to the PDB interface)
+        if name == 'set_trace':
+            return self.setbreakpoint
+
+        raise AttributeError(name)
+
+    def shell(self):
+        '''Launch an IPython interactive shell in the current namespace'''
+
+        import pylabs.Shell
+
+        local_ns = {}
+        global_ns = {}
+        user_ns = {}
+
+        try:
+            # Ugly NS hacks go here
+            parent_frame = sys._getframe(1)
+            global_ns.update(parent_frame.f_globals)
+            local_ns.update(parent_frame.f_locals)
+        except:
+            local_ns = {}
+            global_ns = {}
+
+        return pylabs.Shell.Shell(debug=False, ns=user_ns)(local_ns=local_ns,
+            global_ns=global_ns)

@@ -1,0 +1,10 @@
+These scripts help you with running pylabs5 in a chroot.
+
+NOTE: Run these scripts from the folder they are in!
+
+- First set up a chroot using setup.sh
+- Then start it with start.sh (start.sh will mount /proc, /dev etc and copy over your hosts file)
+- Install pylabs 5 in the chroot with install.sh
+- Now you can chroot into your sandbox with "sudo chroot /srv/chroot/sandbox /bin/bash"
+- To kill all processes in your chroot, and unmount all mounts in the chroot, run stop.sh
+- To restart with a fresh sandbox, use reset.sh

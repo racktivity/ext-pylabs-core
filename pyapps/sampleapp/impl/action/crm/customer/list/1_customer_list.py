@@ -1,8 +1,5 @@
 __author__ = 'incubaid'
 
-from osis.store.OsisDB import OsisDB
-
-
 def main(q, i, p, params, tags):
     filterObject = p.api.model.crm.customer.getFilterObject()
     

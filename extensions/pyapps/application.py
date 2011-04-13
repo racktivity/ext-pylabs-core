@@ -2,8 +2,6 @@ import sys
 from pylabs import q, p
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
-import pymodel
-import osis
 
 class AppContext(BaseEnumeration):
     def __repr__(self):
@@ -24,11 +22,14 @@ class AppManager(object):
         '''Retrieve api object for an application'''
         return ApplicationAPI(appname, host, context)
     
-    def initialize(self, appname):
+    def install (self, appname):
         p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         gen.generateAll()
         gen.setup()
+        gen.stop()
+        gen.start()
+        gen.init()
         
     def start(self, appname):
         gen = PyAppsConfigGen(appname)
@@ -37,6 +38,11 @@ class AppManager(object):
     def stop(self, appname):
         gen = PyAppsConfigGen(appname)
         gen.stop()
+ 
+    def restart(self, appname):
+        gen = PyAppsConfigGen(appname)
+        gen.stop()
+        gen.start()
         
 class ApplicationAPI(object):
     
@@ -53,12 +59,14 @@ class ApplicationAPI(object):
 
         self.appname = appname
         self.action = self._get_actions(appname, context)
+
+        categories = ('model', 'config', 'monitoring')
         
         if not context == q.enumerators.AppContext.CLIENT:
-            self.model = self._get_osis_client(appname, 'model')
-            self.config = self._get_osis_client(appname, 'config')
-            self.monitoring = self._get_osis_client(appname, 'monitoring')
-            
+            for category in categories:
+                client = self._get_osis_client(appname, category)
+                setattr(self, category, client)
+
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
             
@@ -76,21 +84,33 @@ class ApplicationAPI(object):
         from client.action import actions
         return actions(proxy=proxy)
     
-    def _get_osis_client(self, appname, modeltype):
-        
-        pymodel.init_domain(q.system.fs.joinPaths(self._app_path, 'interface', modeltype))
-        osis.init()
-        
-        from pymodel.serializers import ThriftSerializer
-        from osis.client.xmlrpc import XMLRPCTransport
-        from osis.client import OsisConnection
-        
-        transporturl = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
-        transport = XMLRPCTransport(transporturl, modeltype)
-        connection = OsisConnection(transport, ThriftSerializer)
+    def _get_osis_client(self, appname, category):
+        import os.path
 
-        return connection
+        import pymodel
+        from pymodel import serializers
 
+        from osis.client import connection, xmlrpc
+
+        def list_(path_):
+            subdirs = ((entry, os.path.join(path_, entry)) for entry in os.listdir(path_)
+                if os.path.isdir(os.path.join(path_, entry)))
+
+            for (name, subdir) in subdirs:
+                models = pymodel.load_models(subdir)
+
+                for model in models:
+                    yield ((category, name, model.__name__), model)
+
+        def load(path_, transport_, serializer_):
+            return connection.generate_client(list_(path_), transport_, serializer_)
+
+        path = os.path.join(self._app_path, 'interface', category)
+        transport_uri = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
+        transport = xmlrpc.XMLRPCTransport(transport_uri, 'osissvc')
+        serializer = serializers.ThriftSerializer
+
+        return load(path, transport, serializer)
         
 import xmlrpclib
 class XmlRpcActionProxy(object):

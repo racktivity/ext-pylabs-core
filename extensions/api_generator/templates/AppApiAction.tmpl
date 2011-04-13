@@ -1,4 +1,4 @@
-from pylabs import q
+from pylabs import q, p
 
 class ${className}(object):
     
@@ -19,13 +19,15 @@ class ${className}(object):
         o = result['result']
         if isinstance(o, basestring):
             import base64
-            from pymodel import ROOTOBJECT_TYPES
             from pymodel.serializers import ThriftSerializer
             decoded_o = base64.decodestring(o)
-            deserialized_o = ROOTOBJECT_TYPES['$domain']['$className'].deserialize(ThriftSerializer, decoded_o)
+            # FIXME hack
+            api = p.application.getAPI("${appname}", context=q.enumerators.AppContext.APPSERVER)
+            type_class = api.model.${domain}.${className}._ROOTOBJECTTYPE
+            deserialized_o = ThriftSerializer.deserialize(type_class, decoded_o)
             return deserialized_o
         else:
-            return result
+            return result['result']
 #else
         return result
 #end if
