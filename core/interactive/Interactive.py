@@ -36,15 +36,6 @@
 from pylabs.extensions.PMExtensions import PMExtensions
 
 
-# This is the class providing the i namespace
-class svn():
-   def __init__(self):
-       self.connections = ""
-      
-class hg():
-   def __init__(self):
-       self.connections =""
-
 class Interactive():
 
     def _initExtensions(self):
@@ -52,27 +43,4 @@ class Interactive():
         self._pmExtensions.init()
         self._pmExtensions.findExtensions()
    
-    def _get_svnconnections(self):
-        try:
-            return self._svn
-        except AttributeError:
-            from pylabs.clients.svn.SvnConfigManagement import SvnConnections
-            self._svnConnections = SvnConnections()
-            self._svn = svn()
-            self._svn.connections = self._svnConnections
-            return self._svn
-    
-    svn = property(fget=_get_svnconnections)
 
-
-    def _get_hgconnections(self):
-        try:
-            return self._hg
-        except AttributeError:
-            from pylabs.clients.hg.HgConnections import HgConnections
-            self._hgConnections = HgConnections()
-            self._hg = hg()
-            self._hg.connections = self._hgConnections
-            return self._hg
-
-    hg = property(fget=_get_hgconnections)
