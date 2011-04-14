@@ -144,10 +144,10 @@ The `impl`-directory contains all the code that perform an action in your PyApp,
 ####impl/action/domainname/rootobjectname/methodname
 * action: this is the directory that contains the actions as defined in the interface on a Root Object.
 * domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-** config: this domain refers to the configuration of the PyApp itself.
-** core: default directory, this is for core functionalities which are common for each PyApp that you create.
-** ui: actions on UI objects, such as finding or creating pages.
-** <pyappname>: actions, specific for your own PyApp.
+    ** config: this domain refers to the configuration of the PyApp itself.
+    ** core: default directory, this is for core functionalities which are common for each PyApp that you create.
+    ** ui: actions on UI objects, such as finding or creating pages.
+    ** <pyappname>: actions, specific for your own PyApp.
 * rootobjectname: name of the Root Object.
 * methodname: name of the method, as defined in the interface file of the proper Root Object. This directory contains the actual files (tasklets) that execute something in the PyApp. 
 
@@ -181,9 +181,9 @@ This directory contains tasklets that authorizes users for sections in the PyApp
 * setup: this directory is used to set up your OSIS views.
 * osis: contains the actual tasklets that create the OSIS views that you want. For example a list of all customers with their name or a list of all customers with all details results in two different tasklets.
 
-####impl/ui/<UI type>/domainname
+####impl/ui/\<UI type\>/domainname
 * ui: the directory for all UI related actions, such as wizards and forms that need to be displayed in your PyApp.
-* <UI type>: the type of UI element that needs to be displayed. This is either `form` or `wizard`.
+* \<UI type\>: the type of UI element that needs to be displayed. This is either `form` or `wizard`.
 * domainname: name of the domain to which the UI element belongs.
 
 
@@ -193,10 +193,10 @@ The `interface`-directory contains the files that model your complete PyApp.
 ####interface/action/domainname
 * action: this is the directory that contains the modeling of the actions on the different objects of your PyApp.
 * domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-** config: this domain refers to the configuration of PyApp module.
-** core: default directory, this is for core functionalities which are common for each PyApp that you create.
-** ui: actions on UI objects, such as finding or creating pages.
-** <pyappname>: contains the modeling of actions per root object, specific for your own PyApp.
+    ** config: this domain refers to the configuration of PyApp module.
+    ** core: default directory, this is for core functionalities which are common for each PyApp that you create.
+    ** ui: actions on UI objects, such as finding or creating pages.
+    ** <pyappname>: contains the modeling of actions per root object, specific for your own PyApp.
 
 ####interface/actor/domainname
 * actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
