@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CORE_PACKAGES="ipython python-pkg-resources mercurial"
+CORE_PACKAGES="ipython python-pkg-resources mercurial python-apt"
 
 self_extract(){
     echo "Exctracting base layout"
