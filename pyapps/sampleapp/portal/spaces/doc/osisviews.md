@@ -44,6 +44,8 @@ Once you have your OSIS connection, it takes you three steps to create the view:
 2. Add the desired data to the view-object
 3. Add the view to OSIS
 
+Example:
+
     \#create view object:
         view = connection.viewCreate(domain, rootobject, view_name)
     \#add desired data
