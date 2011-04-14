@@ -17,7 +17,6 @@ class ObjectStoreManager():
         self.metadatapath = metadataPath
         q.system.fs.createDir(self.metadatapath)        
         self.db = q.db.getConnection(self.metadatapath)
-        self.db.set = self.db.put#temp compatiblity workaround
         if not rootpath:
             if self.db.exists("main", "rootpath"): 
                 self.root = self.db.get("main", "rootpath")

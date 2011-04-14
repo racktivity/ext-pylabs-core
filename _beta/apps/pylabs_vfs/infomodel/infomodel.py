@@ -72,7 +72,7 @@ class DirNode(object):
         content="1\n" #identifies format used, is for further reference
         content="%s%s\n"%(content, self.path)
         for key in self.files:
-            size, moddate, md5hash = self.files[key]
+            size, moddate, md5hash = sorted(self.files[key])
             content="%sF:%s|%s|%s|%s\n"%(content, size, moddate, md5hash,key)
         for key in sorted(self.dirs.keys()):
             content = "%sD:%s\n"%(content, key)
