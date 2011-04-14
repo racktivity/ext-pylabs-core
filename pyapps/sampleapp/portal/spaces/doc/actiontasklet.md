@@ -32,8 +32,8 @@ The file name of an action tasklet has always the following structure:
 * rootobject: name of the Root Object, all lowercase
 * action: name of the action, as defined in the interface file of the proper Root Object
 
-The <priority> replaces the `__priority__` inside the tasklet.
-The <rootobject>_<action> combination replaces the `__tags__` inside the tasklet.
+The `<priority>` replaces the `__priority__` inside the tasklet.
+The `<rootobject>_<action>` combination replaces the `__tags__` inside the tasklet.
 
 The tasklet is located in `<pyapp_name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
@@ -171,12 +171,14 @@ Deleting an object is a very simple tasklet:
 1. Get the object guid out of the `params` dictionary
 2. Delete the object by using the retrieved guid
 
+For example:
+
     TYPE = "lead"
     GUID_FIELD = "%sguid" % TYPE
 
     def main(q, i, p, params, tags):
-        if GUID_FIELD not in params:
-            raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
+        if GUID\_FIELD not in params:
+            raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, GUID\_FIELD))
         guid = params[GUID_FIELD]
 
         p.api.model.crm.lead.delete(guid)

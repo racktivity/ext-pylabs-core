@@ -24,6 +24,7 @@ Example:
 This method presents the constructed form to the end-user and wait until this user completes the wizard.
 
 Example:
+
     form = q.gui.form.createForm()
     tab = form.addTab('general', 'General')
     tab.message('message_hello', 'Hello World!')
@@ -36,6 +37,7 @@ Load a form object from a result of the askForm call.
 This transforms the dict to a form object.
 
 Example:
+
     form = q.gui.form.loadForm(q.guid.dialog.askForm(form))
 
 
@@ -45,6 +47,7 @@ Multiple tab pages can be created on a wizard form object. Tab pages allow you t
 At least 1 tab must be created before you can start adding other controls.
 
 Example:
+
     form.addTab(?<ENTER>
     
     Definition:     form.addTab(self, name, text)
@@ -68,6 +71,7 @@ The message control allows you to display read-only information to the end-user.
 Message controls can only be added on tab pages.
 
 Example:
+
     tab.message(?<ENTER>
     
     Definition:     tab.message(self, name, text, bold=False, multiline=False)
@@ -91,6 +95,7 @@ The text control allows you to retrieve string input from the end-user.
 Text controls can only be added on tab pages.
 
 Example:
+
     tab.addText(?<ENTER>
     
     Definition:     tab.addText(self, name, text, value=None, multiline=False, validator=None, message='', status='', trigger=None, callback=None, helpText='')
@@ -120,6 +125,7 @@ The multiline control allows you to retrieve large string input from the end-use
 Multiline controls can only be added on tab pages.
 
 Example:
+
     tab.addMultiline(?<ENTER>
     Definition:     tab.addMultiline(self, name, text, value=None, validator=None, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
@@ -147,7 +153,9 @@ The integer control allows you to retrieve integer value input from the end-user
 Integer controls can only be added on tab pages.
 
 Example:
-    tab.addInteger?
+
+    tab.addInteger(?<ENTER>
+
     Definition:     tab.addInteger(self, name, text, minValue=None, maxValue=None, value=None, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing integer selector control.
@@ -175,7 +183,9 @@ The integers control allows you to retrieve a list of comma separated integer va
 Integer controls can only be added on tab pages.
 
 Example:
+
     tab.addIntegers(?<ENTER>
+
     Definition:     tab.addIntegers(self, name, question, value=None, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing integers selector control.
@@ -201,7 +211,9 @@ The password control allows you to retrieve password input from the end-user.
 Password controls can only be added on tab pages.
 
 Example:
+
     tab.addPassword(?<ENTER>
+
     Definition:     tab.addPassword(self, name, text, value=None, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing password textbox control.
@@ -227,7 +239,9 @@ The YesNo control allows you to retrieve boolean input from the end-user.
 YesNo controls can only be added on tab pages.
 
 Example:
+
     tab.addYesNo(?<ENTER>
+
     Definition:     tab.addYesNo(self, name, question, selectedValue=None, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing yes/no control.
@@ -254,7 +268,9 @@ If the list of possible values is more than 5, the control automatically shows a
 Choice controls can only be added on tab pages.
 
 Example:
+
     tab.addChoice(?<ENTER>
+
     Definition:     tab.addChoice(self, name, text, values, selectedValue=0, optional=False, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing item selector control.
@@ -282,7 +298,9 @@ The multiple choice control allows you to retrieve multiple values from a list o
 Multiple choice controls can only be added on tab pages.
 
 Example:
+
     tab.addChoiceMultiple(?<ENTER>
+
     Definition:     tab.addChoiceMultiple(self, name, text, values, selectedValue=0, optional=False, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing multi items selector control.
@@ -318,7 +336,9 @@ The drop down control allows you to retrieve one value from a list of values fro
 Drop down controls can only be added on tab pages.
 
 Example:
+
     tab.addDropDown(?<ENTER>
+
     Definition:     tab.addDropDown(self, name, text, values, selectedValue=0, optional=False, message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing multi items dropdown control.
@@ -346,7 +366,9 @@ The date control allows you to retrieve a date value from the end-user. In a wiz
 Date controls can only be added on tab pages.
 
 Example:
+
     tab.addDate(?
+
     Definition:     tab.addDate(self, name, question, minValue=None, maxValue=None, selectedValue=None, format='YYYY/MM/DD', message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing date control.
@@ -375,7 +397,9 @@ The datetime control allows you to retrieve a date / time value from the end-use
 Datetime controls can only be added on tab pages.
 
 Example:
+
     tab.addDateTime(?<ENTER>
+
     Definition:     tab.addDateTime(self, name, question, minValue=None, maxValue=None, selectedValue=None, format='YYYY/MM/DD hh:mm', message='', status='', trigger=None, callback=None, helpText='')
     Documentation:
         Create a display action containing datetime control.
@@ -411,6 +435,7 @@ The method name must start with 'callback_' followed by the name specified in th
 * status: current status of this control. For now only 'error' status is supported.
 
 Example:
+
     __tags__= 'wizard','wizard_name'
     __author__='incubaid'
     
@@ -451,7 +476,8 @@ Sessionstate parameter gives the possibility to transfer metadata from the main 
 The metadata can be any type (string, integer, object...).
 
 Example:
-    _tags__= 'wizard','wizard_name'
+
+    __tags__= 'wizard','wizard_name'
     __author__='incubaid'
     
     def callback_retrieve_sessionstate(q,i,params,tags):

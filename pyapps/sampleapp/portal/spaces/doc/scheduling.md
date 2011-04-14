@@ -16,3 +16,7 @@ In the `match` function you must import the standard Python `time` library. The 
 
 The example above shows us that the tasklet is executed when the interval is more than 300 seconds.
 
+
+##Conclusion
+A scheduled action is a conventional action which is executed on a defined schedule, resulting in less human interaction.
+

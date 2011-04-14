@@ -5,7 +5,7 @@ After the process of designing your PyLabs Application (PyApp), it is time that 
 See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 ##What is a Root Object
-A Root Object is a logical entity of the PyApp, stored in the PyLabs DRP, and more specific in [Arakoon](http://www.arakoon.org). A root object consists of properties, and references to other root objects.
+A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning), and more specific in [Arakoon](http://www.arakoon.org). A Root Object consists of properties, and references to other Root Objects.
 
 ##File Structure
 The file name is always `rootobject.py`, where rootobject is the Root Object name, using only lowercase characters, possibly using underscores.
@@ -63,7 +63,7 @@ In this class you define the properties of the Root Object. A property is define
 
     property_name = model.<property_type>(thrift_id=x)
 
-where x is a sequential integer and where <property_type> can be one of the following types (case-sensitive):
+where x is a sequential integer and where `<property_type>` can be one of the following types (case-sensitive):
 
 * Boolean
 * DateTime
@@ -97,9 +97,9 @@ As last point, do not forget to add documentation to the object and its properti
         customenum = model.Enumeration(MyFirstEnum, thrift_id=4)
 
 Whenever you add or update a property, make sure that you do not reuse the `thrift_id`. For example, assume that in a next version the `streetnumber` property is split in two properties, `street` and `number`. 
-You could change the name of the `streetnumber` property to just `street` and create a new property `number`, however, do not apply the change this way. Create two new properties and comment the obsolete property instead.
+You could change the name of the `streetnumber` property to just `street` and create a new property `number`. However, do not apply the change this way. Create two new properties and comment the obsolete property instead.
 Since thrift works by id, existing objects will provide values with street and number when calling their new property `street`.
-In the example given, if you change the property `streetnumber` to `street`, all existing root objects in the database still contain the values of `streetnumber`, where newly created objects will only have a street name. This may result in erroneous values when retrieving old root objects.
+In the example given, if you change the property `streetnumber` to `street`, all existing Root Objects in the database still contain the values of `streetnumber`, where newly created objects will only have a street name. This may result in erroneous values when retrieving old Root Objects.
 If you put the old property in a comment line and create two new properties, you will no longer be able to retrieve the old value of the commented property. Therefore be careful when you make properties inactive.
 
 

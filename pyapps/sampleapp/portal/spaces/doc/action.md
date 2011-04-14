@@ -49,6 +49,7 @@ The first lines of the action must contain the documentation of the action and c
 Keep the documentation of the action concise, but clear.
 
 The optional parameters are:
+
 * `@security`: defines which user group can execute the function, for example `@security    administrators`
 * `execution_method`: by default this value is async and omitted. If the action needs to be executed in a synchronized way, you have to define this option with `sync`. When this option is activated, no other action can be started prior to the end of this action. Synchronized actions are typically updates or retrievals of objects.
 
@@ -61,9 +62,7 @@ In the method declaration you add the arguments and keyworded arguments. In the 
 
 where the type of the argument are the built-in Python types, such as float, integer, string, dictionary, ...
 
-Every action must have the arguments `jobguid` and `executionparams`. 
-The `jobguid` is required as internal argument for the PyLabs framework.
-The `executionparams` is used for the workflow engine of the PyLabs framework.
+Every action must have the arguments `jobguid` and `executionparams`. The `jobguid` is required as internal argument for the PyLabs framework. The `executionparams` is used for the workflow engine of the PyLabs framework.
 
 
 ###Return Values

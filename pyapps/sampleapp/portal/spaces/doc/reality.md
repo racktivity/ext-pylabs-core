@@ -86,6 +86,7 @@ The following arguments are required for the `executeActorActionScript` command:
 * executionparams: extra dictionary with parameters, specific for the execution of the RScript.
 
 For example:
+
     params['result'] = q.workflowengine.agentcontroller.executeActorActionScript(agentguid       = 'agent1', 
                                                                                  scriptname      = 'sendMail', 
                                                                                  params          = params, 

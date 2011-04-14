@@ -19,17 +19,18 @@ Arakoon: key/value store of objects, non-queryable, no relational DB. This datab
 PostgreSQL: open source relational db, used for views, fast, queryable. This database is used to store views on objects. For example, you can create a view on a customer which save its name and address. This view and its data will be stored in this PostgreSQL database. Via OSIS, these views are populated and updated.
 
 OSIS: Object Store and Indexing System, this is a layer on top of Arakoon and PostgreSQL. OSIS has two functions:
+
 * store and retrieve Thrift Serialized Objects in and from Arakoon
 * store and update views in PostgreSQL
 
 
 ###PyModel
 PyModel is a PyLabs extension to define, create, and update complex objects. PyModel is capable of serializing Thrift objects to store them in Arakoon, as well as deserializing these objects for further usage in your application.
-The PyModel extension is represented by p.api.model in PyLabs.
+The PyModel extension is represented by `p.api.model in PyLabs`.
 
 
 ###Root Objects
-A Root Object of a PyApp is a logical unit in the DRP (Datacenter Resource Planning). The Root Object is a composite entity of properties, components and references to other Root Objects.
+A Root Object of a PyApp is a logical unit in the [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning). The Root Object is a composite entity of properties, components and references to other Root Objects.
 
 For example:
 The Root Object "Customer" can have the properties Name, Description, Address,... It can have contact person as component and can be in relation with another customer via a reference.
@@ -184,7 +185,7 @@ This directory contains tasklets that authorizes users for sections in the PyApp
 
 
 ####impl/schedule/domainname
-* schedule: in this directory we place tasklets which can be scheduled, for example, check for mail every 300s. The tasklets themselves are stored per domain name.
+* schedule: in this directory we place tasklets which can be scheduled, for example, check for mail every 300 seconds. The tasklets themselves are stored per domain name.
 * domainname: name of the domain to which the scheduled action belongs.
 
 
@@ -265,4 +266,4 @@ The `portal`-directory contains all the documentation files of your PyApp.
 3. Debugging a PyApp
 
 ##Conclusion
-This concludes the introduction to PyApps. In this chapter you have seen the structure of PyApps and the steps to create PyApps. In the next chapters, we go into detail of the creation of a PyApp, taking the sampleapp as example.
+This concludes the introduction to PyApps. In this chapter you have seen the structure of PyApps and the steps to create PyApps. In the next chapters, we go into detail of the creation of a PyApp, taking the *sampleapp* as example.
