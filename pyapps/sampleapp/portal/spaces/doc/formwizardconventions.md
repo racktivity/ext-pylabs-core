@@ -48,7 +48,6 @@ To force the GUI to navigate to the job detail page (for example commands starte
     q.gui.dialog.navigateTo("cmc://job?action=view&jobguid=<jobguid>")
 
 
-
 ##Wizard Structure
 
 All text messages in message boxes and labels must be grouped as constants at the top of the wizard source file:

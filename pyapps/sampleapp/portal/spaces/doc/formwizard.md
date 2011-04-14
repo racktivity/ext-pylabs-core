@@ -29,6 +29,7 @@ Example:
     tab.message('message_hello', 'Hello World!')
     retvalue = q.gui.dialog.askForm(form)
 
+
 ###loadForm()
 
 Load a form object from a result of the askForm call.
@@ -60,6 +61,7 @@ Example:
     
     tab = form.addTab('tab_general', 'General')
 
+
 ###message()
 
 The message control allows you to display read-only information to the end-user.
@@ -81,6 +83,7 @@ Example:
         - multiline:     Use multiline label
     
     tab.message('msg_welcome', 'Welcome to the sample wizard', True, False)
+
 
 ###addText()
 
@@ -110,6 +113,7 @@ Example:
     
     tab.addText(name='txt_name', text='Please give name',value='<YOUR NAME>', multiline=False, validator='[az-AZ-09]', helpText='Please provide your name. Allowed characters are A to Z and 0 to 9')
 
+
 ###addMultiline()
 
 The multiline control allows you to retrieve large string input from the end-user.
@@ -135,6 +139,7 @@ Example:
         - helpText:      Information about the usage/functionality of the control
     
     tab.addMultiline(name='txt_notes', text='Additional notes', helpText='Please provide additional notes')
+
 
 ###addInteger()
 
@@ -162,6 +167,7 @@ Example:
         - helpText:      Information about the usage/functionality of the control
     
     tab.addInteger(name='num_licenses', text='Number of licenses', minValue=1, maxValue=100, selectedValue=1)
+
 
 ###addIntegers()
 
@@ -214,6 +220,7 @@ Example:
     
     tab.addPassword(name='passwd', text='Enter your password', helpText='Please provide your desired password')
 
+
 ###addYesNo()
 
 The YesNo control allows you to retrieve boolean input from the end-user.
@@ -238,6 +245,7 @@ Example:
         - helpText:      Information about the usage/functionality of the control
     
     tab.addYesNo(name='yesno_finish', question='Are you sure this information is correct?')
+
 
 ###addChoice()
 
@@ -266,6 +274,7 @@ Example:
     
      tab.addChoice(name='sel_department', text='Select department', values={'ENG': 'Engineering', 'SAL': 'Sales', 'MAR' : 'Marketing'},
                    selectedValue='ENG', helpText='Please select your department')
+
 
 ###addChoiceMultiple()
 
@@ -302,6 +311,7 @@ Example:
     tab.addChoiceMultiple(name='sel_supported_os', text='Select supported operating systems', values=('Windows platforms','Linux platforms','MAC OS X platforms'),
                           selectedValue=[0,2], helpText='Please select all supported operating systems')
 
+
 ###addDropDown()
 
 The drop down control allows you to retrieve one value from a list of values from the end-user.
@@ -328,6 +338,7 @@ Example:
     
     tab.addDropDown(name='dd_supported_os', text='Select supported OS', values={'WIN': 'Windows platforms', 'LIN': 'Linux platforms', 'OSX': 'MAC OS X platforms'},
                     selectedValue='WIN', helpText='Please select the supported operating system')
+
 
 ###addDate()
 
@@ -356,6 +367,7 @@ Example:
         - helpText:      Information about the usage/functionality of the control
     
     tab.addDate(name='date_birth', question='Enter date of birth', helpText='Please enter your date of birth')
+
 
 ###addDateTime()
 
@@ -432,6 +444,7 @@ Example:
     def match(q,i,params,tags):
         return True
 
+
 ##Sessionstate functionality
 
 Sessionstate parameter gives the possibility to transfer metadata from the main method to the callbacks methods.
@@ -465,5 +478,7 @@ Example:
 ##Screenshots
 
 ![Example 1](images/wizard_sample1.png)
+
 ![Example 2](images/wizard_sample2.png)
+
 ![Example 3](images/wizard_sample3.png)

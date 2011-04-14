@@ -5,8 +5,10 @@ In this section we will discuss the PostgreSQL connection, which is responisble 
 Since the Arakoon object store is not queryable, the retrieval of object would be too slow and thus not user-friendly. That's where the PostgreSQL database comes into play.
 The PostgreSQL database is used to store different views on Root Objects. A view is a definition of what you want to see of a Root Object. This means that you can create multiple views on one Root Object. For example on a Root Object "Customer" you can create a view which contains only the name and guid of the customer, but another view can contain name, customer ID, postal code, and city. You have to find a good balance in the number of views that you create and the clarity of the views. Too many views make easily a mishmash of your directory, too little views make some operations less effective.
 
+
 ##Creating an OSIS View
 An OSIS view is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/setup/osis`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+
 
 ###Import Libraries
 A first thing to add to the OSIS view is the import of the `OsisDB` library:
@@ -75,6 +77,7 @@ To add indexes to an OSIS view:
         context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
         connection.runQuery("CREATE INDEX %(field)s_%(schema)s_%(view)s ON %(schema)s.%(view)s (%(field)s)" % context)
 
+
 ##Example of a Complete OSIS View
     from osis.store.OsisDB import OsisDB
     
@@ -98,8 +101,8 @@ To add indexes to an OSIS view:
             context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
             connection.runQuery("CREATE INDEX %(field)s_%(schema)s_%(view)s ON %(schema)s.%(view)s (%(field)s)" % context)
 
+
 ##What's Next?
 In this section you have learned how you can create OSIS views on Root Objects. The most important topics are the creation of the OSIS view itself and create indexex on the view for optimizing the data retrieval.
 In the next section we will cover how you can store, update, and delete objects from an OSIS view.
-
 

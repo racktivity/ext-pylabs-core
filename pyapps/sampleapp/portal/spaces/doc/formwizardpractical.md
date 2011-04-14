@@ -5,13 +5,15 @@ Wizards are the way to make highly interactive windows which result in executing
 
 Wizards should only use the cloudAPI to fetch required information and to execute actions.
 
-The wizard dialect is fully integrated in the PyLabs framework. The main entry point to define wizards is located at 'q.gui.form'.
+The wizard dialect is fully integrated in the PyLabs framework. The main entry point to define wizards is located at `q.gui.form`.
+
 
 ##General Structure of a Form/Wizard Tasklet
 
 Since a wizard is implemented by using the [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) framework, it contains all sections like any other tasklet.
 
 Sections:
+
 * Tags: instruct the wizard engine which tasklets should be triggered under which circumstances
 * Author: allows you to identify who was the creator of the corresponding wizard
 * Priority: execution priority of tasklet, 1 is lowest priority

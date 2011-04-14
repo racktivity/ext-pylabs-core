@@ -63,7 +63,7 @@ where the type of the argument are the built-in Python types, such as float, int
 
 Every action must have the arguments `jobguid` and `executionparams`. 
 The `jobguid` is required as internal argument for the PyLabs framework.
-The `executionparams` is used for the internal workflow engine of the PyLabs framework.
+The `executionparams` is used for the workflow engine of the PyLabs framework.
 
 
 ###Return Values

@@ -64,6 +64,7 @@ In this class you define the properties of the Root Object. A property is define
     property_name = model.<property_type>(thrift_id=x)
 
 where x is a sequential integer and where <property_type> can be one of the following types (case-sensitive):
+
 * Boolean
 * DateTime
 * Dict 

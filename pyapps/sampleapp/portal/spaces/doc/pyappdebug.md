@@ -59,13 +59,13 @@ Here is a sample session:
     j = 10
 
 
-Debugger Configuration
-----------------------
+##Debugger Configuration
 PyLabs supports several Python debuggers, including standard PDB, the IPython enhanced PDB, and RPDB2/WinPDB (when available on the system). The debugger to be used can be configured using `q.debugger.configure()`. A specific debugger
 can also be selected by calling `q.debugger.configure('name')`, where *name* should be one of 'pdb', 'ipython', 'winpdb' or 'disabled' (to disable all breakpoint calls).
 
-Setting Breakpoints
--------------------
+
+##Setting Breakpoints
+
 Whenever you want to break into a running script, a call to `q.debugger.setbreakpoint()` launches the configured debugger. 
 
 Similar to calls to `q.debugger.shell()`, this should only be called during interactive execution of the code, unless the 'disabled' debugger is configured, or the 'winpdb' debugger is being used, since the 'winpdb' system is client-server based (and as such suited to debug code running in a non-interactive process).
@@ -159,3 +159,4 @@ Several calls to 'next' later, once we are outside the PyLabs extension loading 
     ---> 10     q.logger.log('There are %d configured clusters' % len(clusters), 5)
 
     ipdb> continue
+

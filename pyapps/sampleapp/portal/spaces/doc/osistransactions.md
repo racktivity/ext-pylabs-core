@@ -7,6 +7,7 @@ In this section we will cover how you can store, update, and delete objects from
 An OSIS transaction is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 Each file has the following identification:
+
 * __author__ : name of the author of the tasklet
 * __tags__ : set of tasklet identifications, used by the tasklet engine to retrieve the proper tasklet
 * __priority__ : priority of the tasklet, the lower the value, the lower the priority

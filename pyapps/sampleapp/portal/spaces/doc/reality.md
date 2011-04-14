@@ -68,7 +68,7 @@ This class contains the different actions that the actor can execute. In this ex
 ##Implementation of an Actor Action
 The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files. The file name of an action tasklet has always the following structure:
 
-<priority>_<rootobject>_<action>.py
+`<priority>_<rootobject>_<action>.py`
 
 See the [Action Tasklets](actiontasklet) section for more information about the file name.
 

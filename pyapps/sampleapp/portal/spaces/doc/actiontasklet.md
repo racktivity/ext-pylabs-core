@@ -26,7 +26,7 @@ The tasklets have the same structure as any other [tasklet](http://confluence.in
 ###File Name and Location
 The file name of an action tasklet has always the following structure:
 
-<priority>_<rootobject>_<action>.py
+`<priority>_<rootobject>_<action>.py`
 
 * priority: integer value, indicating the priority of the tasklet, 1 is lowest priority 
 * rootobject: name of the Root Object, all lowercase
@@ -35,7 +35,7 @@ The file name of an action tasklet has always the following structure:
 The <priority> replaces the `__priority__` inside the tasklet.
 The <rootobject>_<action> combination replaces the `__tags__` inside the tasklet.
 
-The tasklet is located in `<pyapp name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+The tasklet is located in `<pyapp_name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 
 ###Provided Data

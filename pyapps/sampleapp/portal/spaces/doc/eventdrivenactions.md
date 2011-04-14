@@ -79,7 +79,7 @@ The number of workers define how many processes can be started. Each process wil
 
 
 ##Example Consumer
-You must create the consumer files in the following directory: ``<pyapp name>/impl/events/<event process>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+You must create the consumer files in the following directory: `<pyapp name>/impl/events/<event process>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 For example, when customer data changes, its page must be created or updated. Instead of manually launching the creation or update of the page, an event can be generated and a consumer can trigger the action to create of update the page.
 
