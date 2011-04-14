@@ -79,6 +79,9 @@ Below you can find the directory structure of a PyApp.
         |   |       |-- consumer.cfg
         |   |       |-- event_action1.py
         |   |       `-- event_action2.py
+        |   |-- init
+        |   |   `-- portal 
+        |   |       `-- portalaction.py (populate PyApps portal with pages)
         |   |-- osis (methods to delete/store objects from/in views in postgres db) 
         |   |   |-- config (config objects of pyapp)
         |   |   |   |-- config1_delete.py
@@ -96,35 +99,36 @@ Below you can find the directory structure of a PyApp.
         |   |       |-- ui_object_delete.py
         |   |       `-- ui_object_store.py
         |   |-- schedule
-        |   |   `-- domain
-        |   |       |-- schedule1.py
-        |   |       `-- schedule2.py
+        |   |   `-- domainname
+        |   |       `-- rootobjectname
+        |   |           |-- schedule1.py
+        |   |           `-- schedule2.py
         |   |-- setup
         |   |   `-- osis (define view to be stored in postgres db)
         |   |       |-- tasklet1.py
         |   |       `-- tasklet2.py
-        |   |-- config
-        |   |   |-- tasklet1.py
-        |   |   `-- tasklet2.py
         |   `-- ui (pyapp UI definitions)
         |        |-- form (form definitions)
-        |        |   `-- tasklet1.py
-        |        |-- portal (portal page definitions)
-        |        |   `-- tasklet1.py
+        |        |   `-- domainname
+        |        |       `-- rootobject_action
+        |        |           `-- tasklet1.py
         |        `-- wizard (wizard definitions)
-        |            `-- tasklet1.py
+        |            `-- domainname
+        |                `-- rootobject_action
+        |                    `-- tasklet1.py
         |
         |-- interface
         |   |-- action
         |   |   `-- domainname
-        |   |       |-- rootobject1.py (interface on rootobject)
+        |   |       |-- rootobject1.py (interface on root object)
         |   |       `-- rootobject2.py
         |   |-- actor
         |   |   `-- domainname
         |   |       |-- actor1.py (model of an actor object)
         |   |       `-- actor2.py
         |   |-- config
-        |   |   `-- configuration1.py (model of a pyapp configuration)
+        |   |   `-- rootobjectname
+        |   |       `-- configuration1.py (model of a pyapp configuration)
         |   |-- model
         |   |   `-- domainname
         |   |       |-- object1.py (model of root object)
@@ -133,13 +137,18 @@ Below you can find the directory structure of a PyApp.
         |       `-- monitoringobject1.py (model of a monitoring object)
         |
         `-- portal (documentation of pyapp)
-            |-- static (static data to be included in pyapp doc)
-            |   |-- image1.jpg
-            |   `-- image2.jpg
-            |-- doc (manual of pyapp)
-            |   |-- doc1.md
-            |   `-- doc2.md
-            `-- api (api doc of pyapp)
+            |-- spaces
+            |   |-- api (api doc of pyapp)
+            |   |-- doc (manual of pyapp)
+            |   |   |-- doc1.md
+            |   |   `-- doc2.md
+            |   `-- domainname
+            |       `-- Home.md
+            `-- static (static data to be included in pyapp doc)
+                `-- images
+                    |-- image1.jpg
+                    `-- image2.jpg
+            
 
 
 ###impl
@@ -148,7 +157,7 @@ The `impl`-directory contains all the code that perform an action in your PyApp,
 
 ####impl/action/*domainname*/rootobjectname/methodname
 * action: this is the directory that contains the actions as defined in the interface on a Root Object.
-* *domainname*: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+* *domainname*: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp. The domain names can be:
     - config: this domain refers to the configuration of the PyApp itself.
     - core: default directory, this is for core functionalities which are common for each PyApp that you create.
     - ui: actions on UI objects, such as finding or creating pages.
@@ -157,11 +166,11 @@ The `impl`-directory contains all the code that perform an action in your PyApp,
 * methodname: name of the method, as defined in the interface file of the proper Root Object. This directory contains the actual files (tasklets) that execute something in the PyApp. 
 
 
-####impl/actor/domainname/actorname/action/scripts
+####impl/actor/domainname/actorname/methodname/scripts
 * actor: this directory contains the definitions of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
 * domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
 * actorname: meaningful name for the actor of your PyApp.
-* action: name of the action that the actor will execute. This directory contains tasklets that provide the data of which scripts must be executed by whom. The scripts-directory is a subdirectory of the action-directory.
+* methodname: name of the action that the actor will execute. This directory contains tasklets that provide the data of which scripts must be executed by whom. The scripts-directory is a subdirectory of the action-directory.
 * scripts: this directory contains the scripts that are executed by the PyLabs agents. They execute something in reality, for example send out a mail.
 
 
@@ -178,15 +187,21 @@ This directory contains tasklets that authorizes users for sections in the PyApp
 * actionname: this directory contains a configuration file and tasklets, which are executed upon a configured event.
 
 
-####impl/osis/domainname/*rootobjectname*
+####impl/init/portal
+* init: this directory contains the actions that must be run at the start of your PyApp
+* portal: this directory contains the tasklets that populate your PyApps' portal with content
+
+
+####impl/osis/domainname/rootobjectname
 * osis: this directory contains the actions that will populate the created views in your PyApp.
 * domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-* *rootobjectname*: name of the Root Object.
+* rootobjectname: name of the Root Object, only in case of a specific PyApp domain name.
 
 
-####impl/schedule/domainname
+####impl/schedule/domainname/rootobjectname
 * schedule: in this directory we place tasklets which can be scheduled, for example, check for mail every 300 seconds. The tasklets themselves are stored per domain name.
 * domainname: name of the domain to which the scheduled action belongs.
+* rootobjectname: name of the Root Object.
 
 
 ####impl/setup/osis
@@ -235,12 +250,16 @@ The `interface`-directory contains the files that model your complete PyApp.
 The `portal`-directory contains all the documentation files of your PyApp.
 
 
-####portal/api
+####portal/spaces/api
 * api: contains the API documentation of your PyApp in epydoc-format
 
 
-####portal/doc
+####portal/spaces/doc
 * doc: contains the actual documentation of your PyApp
+
+
+####portal/spaces/domainname
+* domainname: name of the domain of your PyApp, this directory must contain the landing page of your PyApp
 
 
 ####portal/static
