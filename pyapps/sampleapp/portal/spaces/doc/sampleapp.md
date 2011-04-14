@@ -6,6 +6,7 @@ Each PyApp consists of the same components, such as Root Objects, actions, wizar
 
 In this section we introduce you to the different components of PyApps and how they interact.
 
+
 ###Architecture
 Below you can find the architecture of how the PyLabs framework is built.
 
@@ -21,22 +22,24 @@ OSIS: Object Store and Indexing System, this is a layer on top of Arakoon and Po
 * store and retrieve Thrift Serialized Objects in and from Arakoon
 * store and update views in PostgreSQL
 
+
 ###PyModel
 PyModel is a PyLabs extension to define, create, and update complex objects. PyModel is capable of serializing Thrift objects to store them in Arakoon, as well as deserializing these objects for further usage in your application.
 The PyModel extension is represented by p.api.model in PyLabs.
 
+
 ###Root Objects
-A Root Object of a PyApp is a logical unit in the DRP (Datacenter Resource 
-Planning). The Root Object is a composite entity of properties, components and
-references to other Root Objects.
+A Root Object of a PyApp is a logical unit in the DRP (Datacenter Resource Planning). The Root Object is a composite entity of properties, components and references to other Root Objects.
 
 For example:
 The Root Object "Customer" can have the properties Name, Description, Address,... It can have contact person as component and can be in relation with another customer via a reference.
+
 
 ###Actions
 An Action is a definition of possible operations on root objects. The definition determines which arguments the operation expects and what the result must be of the operation. 
 
 Per action, there exists one tasklet which contains the business logic and the actual code for the operation.
+
 
 ###From Modeling to Reality
 Below you find a graphical overview of the creation of a PyApp. 
@@ -141,15 +144,17 @@ Below you can find the directory structure of a PyApp.
 ###impl
 The `impl`-directory contains all the code that perform an action in your PyApp, for example create an object. 
 
-####impl/action/domainname/rootobjectname/methodname
+
+####impl/action/*domainname*/rootobjectname/methodname
 * action: this is the directory that contains the actions as defined in the interface on a Root Object.
-* domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-    ** config: this domain refers to the configuration of the PyApp itself.
-    ** core: default directory, this is for core functionalities which are common for each PyApp that you create.
-    ** ui: actions on UI objects, such as finding or creating pages.
-    ** <pyappname>: actions, specific for your own PyApp.
+* *domainname*: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+    - config: this domain refers to the configuration of the PyApp itself.
+    - core: default directory, this is for core functionalities which are common for each PyApp that you create.
+    - ui: actions on UI objects, such as finding or creating pages.
+    - *pyappname*: actions, specific for your own PyApp.
 * rootobjectname: name of the Root Object.
 * methodname: name of the method, as defined in the interface file of the proper Root Object. This directory contains the actual files (tasklets) that execute something in the PyApp. 
+
 
 ####impl/actor/domainname/actorname/action/scripts
 * actor: this directory contains the definitions of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
@@ -158,74 +163,92 @@ The `impl`-directory contains all the code that perform an action in your PyApp,
 * action: name of the action that the actor will execute. This directory contains tasklets that provide the data of which scripts must be executed by whom. The scripts-directory is a subdirectory of the action-directory.
 * scripts: this directory contains the scripts that are executed by the PyLabs agents. They execute something in reality, for example send out a mail.
 
+
 ####impl/authenticate
 This directory contains tasklets that authenticates users in the PyApp.
 
+
 ####impl/authorize
 This directory contains tasklets that authorizes users for sections in the PyApp. For example, user A is an administrator who is allowed to do everything in the PyApp, but user B has only rights to view data in the PyApp.
+
 
 ####impl/events/actionname
 * events: this is the directory to define actions which are triggered by an event.
 * actionname: this directory contains a configuration file and tasklets, which are executed upon a configured event.
 
-####impl/osis/domainname/<rootobjectname>
+
+####impl/osis/domainname/*rootobjectname*
 * osis: this directory contains the actions that will populate the created views in your PyApp.
 * domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-* rootobjectname: name of the Root Object.
+* *rootobjectname*: name of the Root Object.
+
 
 ####impl/schedule/domainname
 * schedule: in this directory we place tasklets which can be scheduled, for example, check for mail every 300s. The tasklets themselves are stored per domain name.
 * domainname: name of the domain to which the scheduled action belongs.
 
+
 ####impl/setup/osis
 * setup: this directory is used to set up your OSIS views.
 * osis: contains the actual tasklets that create the OSIS views that you want. For example a list of all customers with their name or a list of all customers with all details results in two different tasklets.
 
-####impl/ui/\<UI type\>/domainname
+
+####impl/ui/*UI type*/domainname
 * ui: the directory for all UI related actions, such as wizards and forms that need to be displayed in your PyApp.
-* \<UI type\>: the type of UI element that needs to be displayed. This is either `form` or `wizard`.
+* *UI type*: the type of UI element that needs to be displayed. This is either `form` or `wizard`.
 * domainname: name of the domain to which the UI element belongs.
 
 
 ###interface
 The `interface`-directory contains the files that model your complete PyApp.
 
-####interface/action/domainname
+
+####interface/action/*domainname*
 * action: this is the directory that contains the modeling of the actions on the different objects of your PyApp.
-* domainname: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-    ** config: this domain refers to the configuration of PyApp module.
-    ** core: default directory, this is for core functionalities which are common for each PyApp that you create.
-    ** ui: actions on UI objects, such as finding or creating pages.
-    ** <pyappname>: contains the modeling of actions per root object, specific for your own PyApp.
+* *domainname*: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+    - config: this domain refers to the configuration of PyApp module.
+    - core: default directory, this is for core functionalities which are common for each PyApp that you create.
+    - ui: actions on UI objects, such as finding or creating pages.
+    - *pyappname*: contains the modeling of actions per root object, specific for your own PyApp.
+
 
 ####interface/actor/domainname
 * actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
 * domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
 
+
 ####interface/config
 * config: contains the model of a PyApp specific module, for example a `pop3` object.
+
 
 ####interface/model/domainname
 * model: contains the model of root objects in your PyApp
 * domainname: name of the domain to which the root object belongs, this avoids the usage of root objects in possible other installed PyApps. This directory contains one file per root object. Each file is the complete definition of an object.
 
+
 ####interface/monitoring
 * monitoring: model of a monitoring object
+
 
 ###portal
 The `portal`-directory contains all the documentation files of your PyApp.
 
+
 ####portal/api
 * api: contains the API documentation of your PyApp in epydoc-format
 
+
 ####portal/doc
 * doc: contains the actual documentation of your PyApp
+
 
 ####portal/static
 * static: contains static files, that can be referenced to from your documentation, mainly images.
 
 
 ##Process of Creating a PyApp
+
+
 ###General Steps
 1. Create the Specifications of the PyApp
 2. Model the different Root Objects
@@ -235,8 +258,11 @@ The `portal`-directory contains all the documentation files of your PyApp.
 6. Implement the defined interfaces
 7. Implement wizards and forms
 
+
 ###Advanced
-1.  Define actions triggered by Events
+1. Define actions triggered by Events
+2. Scheduled Actions
+3. Debugging a PyApp
 
 ##Conclusion
-This concludes the introduction to PyApps. In this chapter you have seen the structure of PyApps and how to create PyApps. In the next chapters, we go into detail of the creation of a PyApp, taking the sampleapp as example.
+This concludes the introduction to PyApps. In this chapter you have seen the structure of PyApps and the steps to create PyApps. In the next chapters, we go into detail of the creation of a PyApp, taking the sampleapp as example.
