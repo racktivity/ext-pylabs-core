@@ -23,7 +23,7 @@ Sections:
 
 Example skeleton for a wizard tasklet:
 
-    \# 'wizard' tag is required, second tag is the name of the wizard rootobject_action e.g. vdc_start
+    # 'wizard' tag is required, second tag is the name of the wizard rootobject_action e.g. vdc_start
     __tags__= 'wizard','wizard_name'
     __author__='incubaid'
     __priority__ = 1

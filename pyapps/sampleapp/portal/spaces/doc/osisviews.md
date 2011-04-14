@@ -46,9 +46,9 @@ Once you have your OSIS connection, it takes you three steps to create the view:
 
 Example:
 
-    \#create view object:
+    #create view object:
         view = connection.viewCreate(domain, rootobject, view_name)
-    \#add desired data
+    #add desired data
         view.setCol('name', q.enumerators.OsisType.STRING, True)
         view.setCol('code', q.enumerators.OsisType.STRING, True)
         view.setCol('customerguid', q.enumerators.OsisType.UUID, True)
@@ -56,7 +56,7 @@ Example:
 
         ...
 
-    \#add view to OSIS
+    #add view to OSIS
         connection.viewAdd(view)
 
 The `setCol`-method of the view object expects three arguments:
