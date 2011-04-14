@@ -1274,7 +1274,7 @@ class SystemFS:
             # recursively scan other folders, appending results
             if recurse:
                 if self.isDir(fullname) and not self.isLink(fullname):
-                    result = result + self.Walk( fullname, recurse, pattern, return_folders, return_files, followSoftlinks )
+                    result = result + self.walk( fullname, recurse, pattern, return_folders, return_files, followSoftlinks )
         return result
 
     Walk = deprecated('q.system.fs.Walk', 'q.system.fs.walk', '3.2')(walk)
