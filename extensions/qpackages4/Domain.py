@@ -124,7 +124,7 @@ class Domain():
                     replace(usernamePattern, username)
                     val = val.replace(usernamePattern, username)
                 if val.find(passwordPattern) != -1:
-                    password = q.console.askString("Your password please", '1234')
+                    password = q.console.askPassword("Your password please", confirm=False)
                     replace(passwordPattern, password)
                     val = val.replace(passwordPattern, password)
             return val

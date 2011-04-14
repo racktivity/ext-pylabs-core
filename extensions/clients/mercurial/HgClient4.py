@@ -568,6 +568,49 @@ class HgClient4:
         for cachedir in dirs2delete:
             q.system.fs.removeDirTree(cachedir)
 
+    def export(self, destination, source=None, branch=''):
+
+        ''' Svn Export like mercurial top level directory copy
+
+        This function exports a source repository to a destination
+
+        @param destination: Export Destination
+        @type add_source_path: string
+        @param source : The source that is to be exported
+        @type source: string
+        @param branch_name: Branch name under remote_name
+        @type branch_name : string
+
+        '''
+
+        repository_path=self.basedir
+        hg_repo = q.system.fs.joinPaths(repository_path, '.hg')
+
+        destination= q.system.fs.joinPaths(q.dirs.baseDir, destination)
+        archive = q.system.fs.joinPaths(q.dirs.tmpDir, 'hg', 'archive')
+        if q.system.fs.exists(archive): q.system.fs.removeDirTree(archive)
+
+        ###pull lastest changes first
+        self.pull()
+
+        command='hg archive -r %s %s' % ('default' if not branch else branch, archive)
+
+        ret,stdout,stderror = q.system.process.run(command, stopOnError=False,cwd=repository_path)
+        if ret:
+          raise RuntimeError('Unable to export, %s'%stderror)
+
+        if source and not q.system.fs.exists(q.system.fs.joinPaths(archive, source)):
+          raise IOError('%s does not exist '%q.system.fs.joinPaths(archive, source))
+
+        source=q.system.fs.joinPaths(archive,source) or archive
+
+        q.system.fs.copyDirTree(source, destination)
+        archivalFile = q.system.fs.joinPaths(destination, '.hg_archival.txt')
+        if q.system.fs.exists(archivalFile):
+          q.system.fs.removeFile(archivalFile)
+
+        q.system.fs.removeDirTree(archive)
+
         
     def log(self,fromdaysago=0,fromdate=0,fromkey=""):
         """

@@ -1,9 +1,3 @@
-
-
-#import os.path
-#import httplib
-#from urlparse import urlparse, urlunparse
-#import pylabs
 from pylabs import q
 from pylabs.Shell import *
 from HgClient4 import HgClient4

@@ -80,8 +80,6 @@ class HgRecipe:
     def addRepository(self, hgConnection):
         '''Register a repository
         '''
-        hgConnection.clone(True)
-
         self.connections.add(hgConnection)
 
     def addSource(self, hgConnection, source_path, destination_path, branch=''):
