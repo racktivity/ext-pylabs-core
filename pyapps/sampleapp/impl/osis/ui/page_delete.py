@@ -12,9 +12,8 @@ def main(q, i, p, params, tags):
     osis = OsisDB().getConnection(p.api.appname)
 
     rootobjectguid = params['rootobjectguid']
-    rootobjectversionguid = params['rootobjectversionguid']
 
-    osis.viewDelete(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid, rootobjectversionguid)
+    osis.viewDelete(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid)
 
     q.logger.log('Deleted rootobject of type %s and guid %s from domain %s' % (ROOTOBJECT_TYPE, rootobjectguid, DOMAIN), 3)
 
