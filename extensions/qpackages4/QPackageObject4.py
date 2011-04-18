@@ -139,6 +139,7 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         #write config file
         inifile = self._getIniFile(reset=True)
         inifile.addSection('main')
+        inifile.addSection('checksum')
         sups = ''
         for sup in self.supportedPlatforms:
             sups += '%s, '%( str(sup).strip())
@@ -149,6 +150,9 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         inifile.setParam('main', 'buildNr', self.buildNr)
         inifile.setParam('main', 'MetaNr', self.metaNr)
         inifile.setParam('main', 'bundleNr', self.bundleNr)
+        for platform, bundleName, bundleFile in self._getBundleFiles():
+            inifile.setParam('checksum', platform.name, q.tools.hash.sha256(bundleFile))
+
         inifile.write()
         for dependency in self.dependencies:
             self._addDependencyToCfgFile(dependency.domain, dependency.name, dependency.supportedPlatforms, minversion=dependency.minversion, \
@@ -255,6 +259,14 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             cfg.setParam('main', 'bundleNr', cfg.getValue('main', 'buildNr'))
         if not cfg.checkParam('main', 'metaNr'):
             cfg.setParam('main', 'metaNr', cfg.getValue('main', 'buildNr'))
+
+    def getChecksum(self, platform):
+        cfg = self._getIniFile()
+        if not cfg.checkSection('checksum'):
+            return None
+        if not cfg.checkParam('checksum', platform.name):
+            return None
+        return cfg.getValue('checksum', platform.name)
 
     def _parseConfig(self):
         '''
@@ -1055,7 +1067,6 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         self._log('Downloading bundles for package ' + str(self))
         state      = self.getState()
         foundOne   = False
-        foundOne=False
         for platform in self.getBundlePlatforms():
             bundleName = self.getBundleName(platform)
             if destinationDirectory != None:
@@ -1067,22 +1078,29 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             if q.system.fs.exists(bundleFile) and forceDownload==False:
                 #we are not forced to download so if we find the file there is good enough
                 foundOne=True
-            if q.cloud.system.fs.sourcePathExists(sourceFile):
-                if forceDownload or not q.system.fs.exists(bundleFile):
+            checksum = self.getChecksum(platform)
+            download = True
+            if q.system.fs.exists(bundleFile):
+                if checksum:
+                    download = q.tools.hash.sha256(bundleFile) != checksum
+                else:
+                    download = False
+            if download or forceDownload:
+                if q.cloud.system.fs.sourcePathExists(sourceFile):
                     #download from source to local dir
                     self._log('Trying to download from  ' + sourceFile)
-                    q.cloud.system.fs.copyFile(sourceFile, 'file://' +  bundleFile)
+                    self._downloadFile(sourceFile, bundleFile, checksum) 
                     #@todo function above not throw an exception if this fails! (info nick)
                     if not q.system.fs.exists(bundleFile):
                         raise RuntimeError("%s was not downloaded well to %s" % (sourceFile,bundleFile))
                     state.setLastDownloadedBuildNr(self.buildNr)
                     foundOne=True
                     self._log('Successfully downloaded bundle for package ' + str(self) + ' from domain ' + sourceFile)
-                else:
-                    self._log('bundle %s was already downloaded' % bundleFile)
-                    state.setLastDownloadedBuildNr(self.buildNr)
+                elif checksum:
+                    raise RuntimeError("Failed to download %s while checksum was given" % sourceFile)
             else:
-                self._log("Could not find bundle %s on source" % sourceFile)
+                self._log('bundle %s was already downloaded' % bundleFile)
+                state.setLastDownloadedBuildNr(self.buildNr)
 
 
         if foundOne==False:
@@ -1095,9 +1113,33 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         q.action.stop(False)
         return True
 
+    def _downloadFile(self, url, destinationpath, checksum, retry=1):
+        valid = False
+        actual_checksum = None
+        while not valid and retry >= 0:
+            q.cloud.system.fs.copyFile(url, 'file://' +  destinationpath)
+            if checksum:
+                actual_checksum = q.tools.hash.sha256(destinationpath)
+                if actual_checksum != checksum:
+                    retry -= 1
+                    continue
+            valid = True
+        if not valid:
+            q.system.fs.remove(destinationpath)
+            raise RuntimeError("Checksum mismatch for file %s retrieved from %s\nGot checksum %s expected %s" % (destinationpath, url, actual_checksum, checksum))
+
+
 ###################################################################
 ########################  ACTIONS PRIVATE  ########################
 ###################################################################
+
+    def _getBundleFiles(self):
+        for platform in q.platform.ALL:
+            bundleName = self.getBundleName(platform)
+            bundleFile = self.getPathBundle(bundleName)
+            if q.system.fs.exists(bundleFile):
+                yield platform, bundleName, bundleFile
+
 
     # upload the bundle
     def _upload(self):
@@ -1108,13 +1150,10 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         source     = q.qp.getDomainObject(self.domain)
         if source.bundleUpload == None:
             raise RuntimeError('Uploading not supported, no bundleupload property specified for domain ' + source)
-        for platform in q.platform.ALL:
-            bundleName = self.getBundleName(platform)
-            bundleFile = self.getPathBundle(bundleName)
-            if q.system.fs.exists(bundleFile):
-                sourceFile = q.system.fs.joinPaths(source.bundleUpload, bundleName)
-                q.cloud.system.fs.copyFile('file://' +  bundleFile, sourceFile) # Add protocol, Of cource upload will not work for all protocols (http)
-                self._log('Successfully uploaded bundle for package ' + str(self) + ' to source ' + sourceFile)
+        for platform, bundleName, bundleFile in self._getBundleFiles():
+            sourceFile = q.system.fs.joinPaths(source.bundleUpload, bundleName)
+            q.cloud.system.fs.copyFile('file://' +  bundleFile, sourceFile) # Add protocol, Of cource upload will not work for all protocols (http)
+            self._log('Successfully uploaded bundle for package ' + str(self) + ' to source ' + sourceFile)
 
     # Needed in some codemanagement tasklets
     def extract(self, suppressErrors=False):
@@ -1138,6 +1177,11 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             if not q.system.fs.exists(bundleFile):
                 continue
             self._log("expand action")
+            checksum = self.getChecksum(platform)
+            if checksum:
+                actual_checksum = q.tools.hash.sha256(bundleFile)
+                if actual_checksum != checksum:
+                    raise RuntimeError("Checksum mismatch for file %s\nGot checksum %s expected %s" % (bundleFile, actual_checksum, checksum))
             q.system.fs.targzUncompress(bundleFile, q.system.fs.joinPaths(dataPath, str(platform)))
             state.setLastExpandedBuildNr(self.buildNr)
         state.setCurrentActionIsDone()
@@ -1272,6 +1316,7 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
                 q.system.fs.createDir(q.system.fs.getDirName(bundleFile))
             q.system.fs.targzCompress(platformdir, bundleFile)
         state.setCurrentActionIsDone()
+        self.save()
 
     #
     # Generate default files
