@@ -270,6 +270,11 @@ The `portal`-directory contains all the documentation files of your PyApp.
 
 
 ###General Steps
+
+Below you can find a general overview of the creation process of a PyApp.
+
+![PyApp\_Create](images/PyApp\_Create.png)
+
 1. Create the Specifications of the PyApp
 2. Model the different Root Objects
 3. Model the Root Object interface (actions)
