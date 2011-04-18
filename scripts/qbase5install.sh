@@ -121,14 +121,6 @@ my_check_command () {
     which $@ > /dev/null || my_die "Command $@ not found"
 }
 
-my_usage () {
-    echo "The arguments to use are"
-    echo "--hg-username: Your bitbucket username"
-    echo "--hg-password: Your bitbucket password"
-    echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket, username and password are ignored if you use hg-prefix"
-    exit 1
-}
-
 set -e
 
 check_system_version
@@ -153,22 +145,26 @@ do
     ;;
 
     *)
-      my_usage
+      echo "The arguments to use are"
+      echo "--hg-username: Your bitbucket username"
+      echo "--hg-password: Your bitbucket password"
+      echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket, username and password are ignored if you use hg-prefix"
+      exit 1
     ;;
   esac
 done
+
+if ! test "x${TERM}" == "xunknown"; then
+    clear
+fi
 
 if [ "x${HG_PREFIX}" == "x" ]; then
 	if [ "x${HG_USERNAME}" != "x" ]; then
 		HG_PREFIX="https://${HG_USERNAME}:${HG_PASSWORD}@bitbucket.org"
 	else
 		echo "Either provide an HG prefix or HG username and password"
-		my_usage
+		exit 1
 	fi
-fi
-
-if ! test "x${TERM}" == "xunknown"; then
-    clear
 fi
 
 my_log "Cleaning system"
@@ -285,6 +281,9 @@ cp /opt/code/incubaid/pylabs-core/utils/system/sitecustomize.py /etc/python2.6/s
 #TODO Do we want this?
 my_log "Installing Pylabs Example application"
 ln -sf /opt/code/incubaid/pylabs-core/apps/exampleapp /opt/qbase5/apps/pylabsExampleApp
+
+#link macro documentation in sampleapp doc
+ln -s /opt/code/lfw/docs/alkiradocs /opt/qbase5/apps/pyapps/sampleapp/portal/spaces
 
 pushd /opt/code
 my_log "Cloning repositories"
