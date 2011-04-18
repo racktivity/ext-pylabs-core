@@ -1,74 +1,67 @@
-from pylabs import *
-from pylabs.Shell import *
+from pylabs import q
+import apt
 
-class Ubuntu():
+class Ubuntu:
     def __init__(self):
-        self._aptupdated=False
-        self._checked=False
+        self._aptupdated = False
+        self._checked = False
+        self._cache = apt.cache.Cache()
         
     def check(self):
         """
         check if ubuntu
         """
-        if self._checked==False:
-            if not (q.platform.name=="linux32" or q.platform.name=="linux64"):
-                raise RuntimeError("Only ubuntu is supported, platform is not even linux.")
-            if q.system.process.execute("uname -a")[1].lower().find("ubuntu")<>-1:
-                self._checked=True
-            else:
-                raise RuntimeError("Only ubuntu is supported")
+        if not self._checked:
+            try:
+                import lsb_release
+                info = lsb_release.get_distro_information()['ID']
+                if info != 'Ubuntu':
+                    raise RuntimeError("Only ubuntu is supported, platform is not even linux.")
+                self._checked = True
+            except ImportError:
+                self._checked = False
+                raise RuntimeError("Only ubuntu is supported.")
         
     def checkInstall(self, packagename, cmdname):
         """
         @param packagename is name of ubuntu package to install e.g. curl
         @param cmdname is cmd to check e.g. curl
         """
-        if not q.platform.isLinux():
-            raise RuntimeError("only linux supported for this method (checkinstall)")
-        result,out=q.system.process.execute("which %s" % cmdname,False)   
-        if result<>0:
+        self.check()
+        result,out=q.system.process.execute("which %s" % cmdname,False)
+        if result != 0:
             self.install(packagename)
         else:
             return 
         result,out=q.system.process.execute("which %s" % cmdname,False)   
-        if result<>0:
+        if result != 0:
             raise RuntimeError("Could not install package %s and check for command %s." % (packagename, cmdname))
 
         
-    def install(self,packagename):
+    def install(self, packagename):
         self.check()
-        self.updatePackageMetadata(force=False)
-        q.logger.log("apt-get install %s" % packagename)
-        q.system.process.executeWithoutPipe("apt-get install %s -y" % packagename) #@todo wrap better to raise proper error
+        if isinstance(packagename, basestring):
+            packagename = [ packagename ]
+        for package in packagename:
+            pkg = self._cache[package]
+            if not pkg.is_installed:
+                pkg.mark_install()
+        self._cache.commit()
 
-    def remove(self,packagename):
+    def remove(self, packagename):
         self.check()
-        q.system.process.executeWithoutPipe("apt-get remove %s -y" % packagename,dieOnNonZeroExitCode=False) #@todo wrap better to raise proper error
+        pkg = self._cache[packagename]
+        if pkg.is_installed:
+            pkg.mark_delete()
+        self._cache.commit()
         
-        
-    def updatePackageMetadata(self,force=True):
+    def updatePackageMetadata(self, force=True):
         self.check()
-        if self._aptupdated==False:
-            q.system.process.execute("apt-get update",dieOnNonZeroExitCode=False)
-            self._aptupdated=True
+        self._cache.update()
             
-    def upgradePackages(self,force=True,die=False):
+    def upgradePackages(self, force=True):
         self.check()        
         self.updatePackageMetadata()
-        q.system.process.execute("apt-get upgrade",dieOnNonZeroExitCode=die)
+        self._cache.upgrade()
     
-    def installFileMonitor(self):
-        self.check()
-        self.install("gamin")
-        self.install("python-gamin")
-        q.system.fs.symlink("/usr/lib/libgamin-1.so.0","/opt/qbase3/lib/libgamin-1.so.0",True)
-        
-    def linkPylabsToSystem(self):
-        self.install("python2.6")
-        self.remove("mercurial")
-        self.remove("mercurial-common")
-        q.system.fs.copyFile(q.system.fs.joinPaths(q.dirs.baseDir,"utils","defaults","system","sitecustomize.py"),"/usr/lib/python2.6/sitecustomize.py")
-        q.system.fs.symlink("/opt/qbase3/bin/hg","/usr/bin/hg",True)
-        q.system.fs.symlink("/opt/qbase3/qshell","/usr/bin/qshell",True)
-        
-        
+       

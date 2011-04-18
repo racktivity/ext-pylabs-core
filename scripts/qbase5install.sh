@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # NOTE: Leave this var on one line, the hudson job greps it out to provide its local mirror
-APT_PACKAGES="python2.6 python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx python-yaml python-pyrex python-greenlet libevent-1.4-2 python-sqlalchemy python-psycopg2 python-paramiko"
+APT_PACKAGES="python2.6 python-openssl ejabberd python-pycurl python-pygresql mercurial wget ipython python-epydoc python-cheetah python-twisted python-setuptools postgresql-8.4 rabbitmq-server python-amqplib nginx python-yaml python-pyrex python-greenlet libevent-1.4-2 python-sqlalchemy python-psycopg2 python-paramiko python-apt"
 
 # Package versions
 THRIFT_BDIST_VERSION="0.5.0"
