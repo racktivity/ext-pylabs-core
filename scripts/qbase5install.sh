@@ -308,7 +308,6 @@ ln -s "`pwd`/jswizards" "/opt/qbase5/www"
 ln -s "`pwd`/jswizards/libs" "/opt/qbase5/www/js"
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 ln -s "`pwd`/lfw/services/lfw/lfw.py" "/opt/qbase5/lib/python/site-packages/"
-ln -s /opt/code/lfw/docs/alkiradocs /opt/qbase5/apps/pyapps/sampleapp/portal/spaces
 
 my_log "Creating symlinks to extra libraries"
 ln -s /opt/code/incubaid/pylabs-core/lib/* /opt/qbase5/lib/python/site-packages/
