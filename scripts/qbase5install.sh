@@ -282,9 +282,6 @@ cp /opt/code/incubaid/pylabs-core/utils/system/sitecustomize.py /etc/python2.6/s
 my_log "Installing Pylabs Example application"
 ln -sf /opt/code/incubaid/pylabs-core/apps/exampleapp /opt/qbase5/apps/pylabsExampleApp
 
-#link macro documentation in sampleapp doc
-ln -s /opt/code/lfw/docs/alkiradocs /opt/qbase5/apps/pyapps/sampleapp/portal/spaces
-
 pushd /opt/code
 my_log "Cloning repositories"
 my_hg clone --branch pylabs5 "${HG_PREFIX}/despiegk/pymodel" pymodel
@@ -311,6 +308,7 @@ ln -s "`pwd`/jswizards" "/opt/qbase5/www"
 ln -s "`pwd`/jswizards/libs" "/opt/qbase5/www/js"
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 ln -s "`pwd`/lfw/services/lfw/lfw.py" "/opt/qbase5/lib/python/site-packages/"
+ln -s /opt/code/lfw/docs/alkiradocs /opt/qbase5/apps/pyapps/sampleapp/portal/spaces
 
 my_log "Creating symlinks to extra libraries"
 ln -s /opt/code/incubaid/pylabs-core/lib/* /opt/qbase5/lib/python/site-packages/
