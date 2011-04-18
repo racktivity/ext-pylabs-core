@@ -121,6 +121,14 @@ my_check_command () {
     which $@ > /dev/null || my_die "Command $@ not found"
 }
 
+my_usage () {
+    echo "The arguments to use are"
+    echo "--hg-username: Your bitbucket username"
+    echo "--hg-password: Your bitbucket password"
+    echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket, username and password are ignored if you use hg-prefix"
+    exit 1
+}
+
 set -e
 
 check_system_version
@@ -145,26 +153,22 @@ do
     ;;
 
     *)
-      echo "The arguments to use are"
-      echo "--hg-username: Your bitbucket username"
-      echo "--hg-password: Your bitbucket password"
-      echo "--hg-prefix: The prefix to use for hg if you do not want to clone from bitbucket, username and password are ignored if you use hg-prefix"
-      exit 1
+      my_usage
     ;;
   esac
 done
-
-if ! test "x${TERM}" == "xunknown"; then
-    clear
-fi
 
 if [ "x${HG_PREFIX}" == "x" ]; then
 	if [ "x${HG_USERNAME}" != "x" ]; then
 		HG_PREFIX="https://${HG_USERNAME}:${HG_PASSWORD}@bitbucket.org"
 	else
 		echo "Either provide an HG prefix or HG username and password"
-		exit 1
+		my_usage
 	fi
+fi
+
+if ! test "x${TERM}" == "xunknown"; then
+    clear
 fi
 
 my_log "Cleaning system"
