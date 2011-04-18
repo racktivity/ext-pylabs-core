@@ -1,11 +1,15 @@
 from pylabs import q
 import apt
+import apt.debfile
 
 class Ubuntu:
     def __init__(self):
         self._aptupdated = False
         self._checked = False
-        self._cache = apt.cache.Cache()
+        apt.apt_pkg.init()
+        apt.apt_pkg.Config.set("APT::Install-Recommends", "0")
+        apt.apt_pkg.Config.set("APT::Install-Suggests", "0")
+        self._cache = apt.Cache()
         
     def check(self):
         """
@@ -47,6 +51,10 @@ class Ubuntu:
             if not pkg.is_installed:
                 pkg.mark_install()
         self._cache.commit()
+
+    def installDebFile(self, path):
+        deb = apt.debfile.DebPackage(path)
+        deb.install()
 
     def remove(self, packagename):
         self.check()
