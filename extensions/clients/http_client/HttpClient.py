@@ -19,29 +19,34 @@ class Connection(object):
     
     def __init__(self):
         pass
-    
-    def addAuthentication(self, url, username, password):
-        passManager = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        passManager.add_password(None, url, username, password)
-        authenticationHandler = urllib2.HTTPBasicAuthHandler(passManager)
-        opener = urllib2.build_opener(authenticationHandler)
-        urllib2.install_opener(opener)
         
+    def simpleAuth(self, url, username, password):
+        req = urllib2.Request(url)
+        base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
+        req.add_header("Authorization", "Basic %s" % base64string)
+
+        try:
+            handle = urllib2.urlopen(req)
+            return handle 
+        except IOError, e:
+            q.logger.log(e)
+            
+            
     def get(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='GET', **params)
-        return response#.read()
+        return response
     
     def post(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='POST', **params)
-        return response#.read()
+        return response
     
     def put(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='PUT', **params)
-        return response#.read()
+        return response
         
     def delete(self, url, data=None, headers=None, **params):
         response = self._http_request(url, data=data, headers=headers, method='DELETE', **params)
-        return response#.read()
+        return response
     
     def download(self, fileUrl, downloadPath, customHeaders=None):
         '''
