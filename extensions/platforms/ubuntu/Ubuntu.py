@@ -51,6 +51,7 @@ class Ubuntu:
             if not pkg.is_installed:
                 pkg.mark_install()
         self._cache.commit()
+        self._cache.clear()
 
     def installDebFile(self, path):
         deb = apt.debfile.DebPackage(path)
@@ -62,6 +63,7 @@ class Ubuntu:
         if pkg.is_installed:
             pkg.mark_delete()
         self._cache.commit()
+        self._cache.clear()
         
     def updatePackageMetadata(self, force=True):
         self.check()
