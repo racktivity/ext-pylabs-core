@@ -1,11 +1,14 @@
 from pylabs import q
-import apt
-import apt.debfile
 
 class Ubuntu:
     def __init__(self):
         self._aptupdated = False
         self._checked = False
+        try:
+            import apt
+        except ImportError:
+            #we dont wont qshell to break, self.check will take of this
+            return
         apt.apt_pkg.init()
         apt.apt_pkg.Config.set("APT::Install-Recommends", "0")
         apt.apt_pkg.Config.set("APT::Install-Suggests", "0")
@@ -54,6 +57,8 @@ class Ubuntu:
         self._cache.clear()
 
     def installDebFile(self, path):
+        self.check()
+        import apt.debfile
         deb = apt.debfile.DebPackage(path)
         deb.install()
 
