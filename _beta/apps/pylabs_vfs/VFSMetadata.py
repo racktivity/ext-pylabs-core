@@ -36,7 +36,7 @@ class VFSMetadata():
         """
         self.state="SCAN"
         self.dirObjectStore = self.dirObjectStoreManager.new(processHiddenFiles, usemd5)  #the walk happens here
-        self.walk=self.dirObjectStore.walk        
+        self.walk=self.dirObjectStore.walk
         self.state="OK"
         
     def getLatest(self):
@@ -168,66 +168,6 @@ class VFSMetadata():
 
         
     
-    def _compareWithOlderVersion(self,versionEpoch,changefilePath,ignoreDate=False):
-        """
-        @param changefilePath is file in which changes will be recorded
-        format
-            $CHANGETYPE|F:size|moddate|md5|path
-            $CHANGETYPE|D:|||path
-        $CHANGETYPE is D,N,M (Deleted, New, Modified)
-        
-        """
-        vfsOlder = VFSMetadata(self.metadataPath)
-        vfsOlder.getFromVersionEpoch(versionEpoch=versionEpoch)
-        self._checkActive()
-        vfsOlder._checkActive()
-        args={}
-        q.system.fs.remove(changefilePath)
-        def raiseError(path,error):
-            q.system.fs.writeFile(changefilePath+".error","%s|%s\n"%(error,path), True)
-        def compare(args, path, type, moddate, size, md5):
-            if type=="D":
-                if vfsOlder.dirObjectExists(path):
-                    dirObject=self.dirObjectGet(path)
-                    dirObjectOlder=vfsOlder.dirObjectGet(path)
-                    setfilesOlder=set(dirObjectOlder.getFileNames())
-                    setfiles=set(dirObject.getFileNames())
-                    deletedfiles=setfilesOlder-setfiles
-                    newfiles=setfiles-setfilesOlder
-                    commonfiles=setfiles & setfilesOlder
-                    for file in commonfiles:
-                        size2,modDate2,md5hash2=dirObjectOlder.getFileInfo(file)
-                        size,modDate,md5hash=dirObject.getFileInfo(file)
-                        name = file
-                        if ignoreDate:
-                            if  (md5hash2=="" or md5hash==""):
-                                raiseError(dirObjectOlder.getFilePath(name),"Cannot compare because hashing code is not known for file")
-                            if md5hash<>md5hash2:
-                                q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,dirObject.getFilePath(name)),True)
-                        else:
-                            if modDate<>modDate2:
-                                #file potentially changed
-                                if md5hash<>"" and md5hash2<>"":
-                                    #can use md5 to check
-                                    if md5hash<>md5hash2:
-                                        #we now know for sure files are different
-                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
-                                else:
-                                    #cannot use md5
-                                        q.system.fs.writeFile(changefilePath,"M|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
-                    for file in deletedfiles:
-                        size,modDate,md5hash=dirObject.getFileInfo(file)
-                        q.system.fs.writeFile(changefilePath,"D|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
-                    for file in newfiles:
-                        size,modDate,md5hash=dirObject.getFileInfo(file)
-                        q.system.fs.writeFile(changefilePath,"N|F|%s|%s|%s|%s\n"%(size,modDate,md5hash,path),True)
-                else:
-                    #new dir, does not exist in old metadata
-                    q.system.fs.writeFile(changefilePath,"N|D||||%s\n"%path,True)
-                    
-        self.walk(compare,args,"",recursive=True)
-    
-    
     def compareWithOlderVersionOld(self,versionEpoch):
         vfsOlder=VFSMetadata(self.metadataPath)
         vfsOlder.getFromVersionEpoch(versionEpoch=versionEpoch)
@@ -269,7 +209,7 @@ class VFSMetadata():
             dirObject.addFileObject(filename,sizeOnDisk,modDateOnDisk,md5OnDisk)
             self.reportNewFile(fullFilePath)    
             return dirObject
-        [size,modDate,md5hash] =dirObject.getFileInfo(filename)
+        [size, modDate, md5hash, dataKey] = dirObject.getFileInfo(filename)
         if not self.ignoreModDate:
             if float(modDate)<>float(modDateOnDisk):
                 q.console.echo("File %s changed because of moddate" % fullFilePath)

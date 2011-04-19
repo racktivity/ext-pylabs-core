@@ -9,7 +9,6 @@
 
 from pylabs.InitBase import *
 from pylabs.Shell import *
-from PysyncWalker import *
 from VFSMetadata import *
 import fnmatch
 

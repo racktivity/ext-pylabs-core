@@ -9,16 +9,18 @@ class NoEntryError(RuntimeError):
             
 class FileNode(object):
     isLeaf = True
-    def __init__(self, name, size, moddate, md5hash=""):
+    def __init__(self, name, size, moddate, md5hash="", dataKey=''):
         self.name = name
         self.size = size
         self.moddate = moddate
         self.md5hash = md5hash
+        self.dataKey = dataKey
+    
     
     def __getitem__(self, idx):
         '''allows the file object to be unpacked into its primitive attributes
         might come handy with compatibility with the existing code'''
-        return (self.size, self.moddate, self.md5hash)[idx]
+        return (self.size, self.moddate, self.md5hash, self.dataKey)[idx]
 
     def __cmp__(self, other):
         return cmp(self.name, other.name)
@@ -71,9 +73,9 @@ class DirNode(object):
         '''Serliaizes a dirNode'''
         content="1\n" #identifies format used, is for further reference
         content="%s%s\n"%(content, self.path)
-        for key in self.files:
-            size, moddate, md5hash = sorted(self.files[key])
-            content="%sF:%s|%s|%s|%s\n"%(content, size, moddate, md5hash,key)
+        for key in sorted(self.files):
+            size, moddate, md5hash, dataKey = self.files[key]
+            content="%sF:%s|%s|%s|%s|%s\n"%(content, size, moddate, md5hash, key, dataKey)
         for key in sorted(self.dirs.keys()):
             content = "%sD:%s\n"%(content, key)
         return content
@@ -86,8 +88,8 @@ class DirNode(object):
         for line in lines2:
             if line.strip():
                 if line[0:2]=="F:":
-                    [size,modDate,md5hash,name]=line[2:].split("|")
-                    self.addFile(name,long(size),float(modDate),md5hash)
+                    [size, modDate, md5hash, name, dataKey] = line[2:].split("|")
+                    self.addFile(name,long(size),float(modDate),md5hash, dataKey)
                 if line[0:2]=="D:":
                     self.addSubDir(line[2:])
         return self
@@ -107,8 +109,8 @@ class DirNode(object):
     def addFileNode(self, fileNode):
         self.files[fileNode.name] = fileNode
         
-    def addFile(self, name, size=0, moddate=0, md5hash=''):
-        self.files[name.strip()] = FileNode(name, size, moddate, md5hash)
+    def addFile(self, name, size=0, moddate=0, md5hash='', dataKey=''):
+        self.files[name.strip()] = FileNode(name, size, moddate, md5hash, dataKey)
         
     def addFilePath(self, fileFullPath):
         stat = q.system.fs.statPath(fileFullPath)

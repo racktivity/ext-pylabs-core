@@ -50,10 +50,13 @@ import errno
 import datetime
 import time
 import calendar
-import logging
 
-LOG_FILENAME = "LOG"
-logging.basicConfig(filename=LOG_FILENAME,level=logging.INFO,)
+from pylabs.InitBase import *
+from pylabs.Shell import *
+from VFSMetadata import *
+from infomodel.infomodel import DirNode, FileNode
+import functools
+from twisted.web.server import UnsupportedMethod
 
 # FUSE version at the time of writing. Be compatible with this version.
 fuse.fuse_python_api = (0, 2)
@@ -79,6 +82,25 @@ fuse.fuse_python_api = (0, 2)
 #   st_atime, st_mtime, st_ctime:
 #       File access times, in seconds since the epoch, UTC time. Last access
 #       time, modification time, stat change time, respectively.
+
+
+class debug_log(object):
+    def __init__(self, f):
+        self.f = f
+        self.__doc__ = f.__doc__
+    def __call__(self, *args, **kwargs):
+        try:
+            q.logger.log('#DEBUG: %s(%s, %s)'%(self.f.__name__, args, kwargs))
+            ret = self.f(*args, **kwargs)
+            q.logger.log('#DEBUG: %s returned successfully with value: %s'%(self.f.__name__, ret))
+            return ret
+        except Exception, ex:
+            q.logger.log('#DEBUG: %s failed with Exception %s'%(self.f.__name__, ex))
+            raise
+    def __get__(self, obj, objtype):
+        #support decoration of instance methods
+        return functools.partial(self.__call__, obj)  
+          
 class Stat(fuse.Stat):
     """
     A Stat object. Describes the attributes of a file or directory.
@@ -245,15 +267,102 @@ class Dir(FSObject):
         stat: Stat
         files: dict mapping str names to File and Dir objects.
     """
-    def __init__(self, name, mode, uid, gid, parent=None):
+    def __init__(self, name, mode, uid, gid, parent=None, path=None):
         """
         Create a new directory object.
         """
         self.name = name
+        self.path = path
         self.stat = Stat(mode, Stat.DIRSIZE, st_nlink=2, st_uid=uid,
             st_gid=gid)
-        self.files = {}
+#        self.files = {}
         self.parent = parent
+        self.path = q.system.fs.joinPaths(self.parent.path, self.name) if parent else self.path
+        self.files = DirChildrenProxy(self)        
+        
+    def __str__(self):
+        return "<%s %s>" % (type(self).__name__, self.path)
+    
+    __repr__ = __str__
+        
+class FileDataProxy(object):
+    """A data descriptor that acts as well as a sequence
+    """
+    @debug_log
+    def __init__(self):
+        pass
+
+    @debug_log
+    def __get__(self, obj, objtype):
+        #@todo call findPath in vfs and get the the key of file data in object store
+        self.file = obj
+        self.vfs = self.file.vfs
+        self.store = self.vfs.dirObjectStore
+        self.dirObject, self.fileNode = self.findFile(self.file.path)
+#        self.datakey = vfs.findPath(obj.name).datakey
+        return self
+    
+    @debug_log
+    def __set__(self, obj, val):
+        self.file = obj
+        self.fileData = val
+    
+    @debug_log            
+    def __len__(self):
+        return len(self.fileData)
+    @debug_log
+    def __getitem__(self, idx):
+        #@todo use the key to the file data to retrieve data from object store, handle numerical and slice indexes
+        return self.fileData[idx]
+    @debug_log
+    def __setitem__(self, idx, val):
+        #@todo update the data corresponding to the key
+        raise NotImplementedError('cannot assign')
+    
+    def __add__(self, val):
+        return self.fileData + val
+    
+    def _setFileData(self, fileData):
+        dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
+        self.dirObject.files[self.file.name].dataKey = dataKey
+        self.store.putFileData(dataKey, fileData)
+        self.dirObject.files[self.file.name].size = len(fileData)
+        self.store.save(self.dirObject)
+        
+    def _getFileData(self):
+        fileData = ''
+        try:
+            dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
+            fileData = self.store.getFileData(dataKey)
+        except RuntimeError, ex:
+            q.logger.log(ex)
+        return fileData
+    
+    fileData = property(fset=_setFileData, fget=_getFileData)
+    
+    @debug_log
+    def findFile(self, path):
+        '''
+        raise NoEntryError if path doesn't correspond for a dir or a file
+        return isDir, DirObject(path is isDie, otherwise parent dir of file), dict {'filename':name, 'filestat':stat, 'dirstat':stat}
+        '''
+        dirObject = None
+        #how to handle files, while the VFS holds only size?
+            #assume the path is file path and get its parent folder
+        parentPath = os.path.dirname(path)
+        fileName = q.system.fs.getBaseName(path)
+        fileNode = None
+        q.logger.log('No dir found with name: %s, looking for files with name: %s under dir: %s'%(path, fileName, parentPath))
+        try:
+            dirObject = self.store.get(parentPath)
+            q.logger.log('DEBUG: files under %s: %s'%(parentPath, dirObject.files))
+            if fileName in dirObject.files:
+                q.logger.log('Found file with name: %s under dir: %s'%(path, parentPath))
+                fileNode = dirObject.files[fileName]
+        except NoEntryError, ex:
+            q.logger.log('No file found with name: %s under dir: %s'%(fileName, parentPath))
+            raise
+        return dirObject, fileNode
 
 class File(FSObject):
     """
@@ -272,19 +381,29 @@ class File(FSObject):
         self.name = name
         self.stat = Stat(mode, len(data), st_nlink=1, st_uid=uid,
             st_gid=gid)
-        self.data = data
         self.parent = parent
+        self.path = q.system.fs.joinPaths(self.parent.path, self.name)
+#        self.data = data
 
+    data = FileDataProxy()
+    
+    def __str__(self):
+        return "<%s %s>" % (type(self).__name__, self.path)
+    
+    __repr__ = __str__
+    
+    @debug_log
     def read(self, size, offset):
         """
         Reads from a file. Returns a bytes object.
         """
-        logging.debug("data: %r" % self.data)
-        logging.debug("returned: %r" % self.data[offset:offset+size])
+        q.logger.log("data: %r" % self.data)
+        q.logger.log("returned: %r" % self.data[offset:offset+size])
         # Update timestamps: read updates atime
         self.stat.set_times_to_now(atime=True)
         return self.data[offset:offset+size]
-
+    
+    @debug_log
     def write(self, buf, offset):
         """
         Writes to the file.
@@ -307,6 +426,7 @@ class File(FSObject):
         self.stat.set_times_to_now(mtime=True)
         return len(buf)
 
+    @debug_log
     def truncate(self, size):
         """
         Truncates a file. Returns None.
@@ -321,6 +441,74 @@ class File(FSObject):
             self.stat.st_size = size
         # Update timestamps: truncate updates mtime
         self.stat.set_times_to_now(mtime=True)
+
+
+#Proxy classes to connect VFS to MemFS
+
+class DirChildrenProxy(object):
+    
+    @debug_log
+    def __init__(self, parent):
+        self.parent = parent
+        self.vfs = parent.vfs
+        self.store = self.vfs.dirObjectStore
+        try:
+            self.dirObject = self.store.get(self.parent.path)
+        except NoEntryError, ex:
+            q.logger.log(ex)
+            q.logger.log('#DEBUG: Directory %s not found'%self.parent.path)
+            self.dirObject = self.store.new(self.parent.path, False)
+            self.store.save(self.dirObject)
+    @debug_log
+    def __getitem__(self, key):
+        if key in self.dirObject.dirs:
+            return Dir(key, mode=self.parent.stat.st_mode, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
+            parent=self.parent, path=self.dirObject.fullpath)
+        elif key in self.dirObject.files:
+            data = 'hello data' 
+            #@todo consider saving mode in VFS
+            return File(key, data, mode=stat.S_IFREG|0755, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
+            parent=self.parent)
+        else:
+            raise KeyError(key)
+            
+    @debug_log
+    def __setitem__(self, key, value):
+        if isinstance(value, Dir):
+            self.dirObject.dirs[key] = self._dirNodeFromDir(value)
+        elif isinstance(value, File):
+            self.dirObject.files[key] = self._fileNodeFromFile(value)
+        self.store.save(self.dirObject)
+    
+    @debug_log    
+    def __delitem__(self, key):
+        try:
+            del self.dirObject.dirs[key]
+        except KeyError:
+            try:
+                del self.dirObject.files[key]
+            except KeyError:
+                raise
+        
+        self.store.save(self.dirObject)
+    
+    @debug_log
+    def keys(self):
+        q.logger.log(self.dirObject)
+        keys = sorted(self.dirObject.dirs.keys())
+        keys.extend(sorted(self.dirObject.files.keys()))
+        return keys
+    @debug_log    
+    def __len__(self):
+        return len(self.dirObject.dirs) + len(self.dirObject.files)
+    
+    def _dirNodeFromDir(self, dir_):
+        #name, mode, uid, gid, parent=None
+        path = dir_.path
+        return DirNode(DirNode.getKey(path), path)
+    
+    def _fileNodeFromFile(self, file):
+        return FileNode(file.name, file.stat.st_size, file.stat.st_mtime)
 
 # Almost all that is required is the definition of a class deriving from
 # fuse.Fuse, and implementation of a bunch of methods.
@@ -352,9 +540,11 @@ class MemFS(fuse.Fuse):
         Creates a new MemFS object. Needs to call fuse.Fuse.__init__ with the
         args (just forward them along).
         """
-        logging.info("Mounting file system")
+        q.logger.log("Mounting file system")
+        q.logger.log('DEBUG: args: %s, kwargs: %s'%(args, kwargs))
         super(MemFS, self).__init__(*args, **kwargs)
 
+    @debug_log
     def _search_path(self, path):
         """
         Given a path string, returns the Dir or File object corresponding to
@@ -376,7 +566,8 @@ class MemFS(fuse.Fuse):
             except KeyError:
                 return None
         return cur_dir
-
+    
+    @debug_log
     def _search_new_path(self, path):
         """
         Given a path string, searches for the path but doesn't require the
@@ -414,23 +605,41 @@ class MemFS(fuse.Fuse):
             except KeyError:
                 return None
         return cur_dir, name
-
+    
+    @debug_log
     def fsinit(self):
         """
         Will be called when the file system has finished mounting, and is
         ready to be used.
         It doesn't have to exist, or do anything.
         """
-        logging.info("File system mounted")
-        self.root_dir = Dir('/', stat.S_IFDIR|0755, os.getuid(), os.getgid())
-
+        q.logger.log("File system mounted")
+        try:
+            metadatapath = "/opt/qbase5/var/vfs/var_log/"
+            root = "/opt/qbase5/var/log" 
+            self.vfs=VFSMetadata(metadatapath, root)  #scan log dir and create metadata store for it
+            self.vfs.reset()
+            self.vfs.populateFromFilesystem()
+            self.vfs.getLatest()
+            q.logger.log('VFS initialized successfully')
+        except Exception, ex:
+            q.logger.log(ex)
+            raise
+        Dir.vfs = self.vfs #injecting vfs instance to Dir class
+        File.vfs = self.vfs
+#        self.root_dir = Dir('/', stat.S_IFDIR|0755, os.getuid(), os.getgid())
+        
+        self.root_dir = Dir('', stat.S_IFDIR|0755, os.getuid(), os.getgid(), path='')
+        
+    @debug_log
     def fsdestroy(self):
         """
         Will be called when the file system is about to be unmounted.
         It doesn't have to exist, or do anything.
         """
-        logging.info("Unmounting file system")
+        q.logger.log("Unmounting file system")
 
+    @debug_log
     def statfs(self):
         """
         Retrieves information about the mounted filesystem.
@@ -450,11 +659,12 @@ class MemFS(fuse.Fuse):
 
         Note f_type, f_frsize, f_favail, f_fsid and f_flag are ignored.
         """
-        logging.info("statfs")
+        q.logger.log("statfs")
         stats = fuse.StatVfs()
         # Fill it in here. All fields take on a default value of 0.
         return stats
 
+    @debug_log
     def getattr(self, path):
         """
         Retrieves information about a file (the "stat" of a file).
@@ -463,13 +673,14 @@ class MemFS(fuse.Fuse):
         Returns -errno.ENOENT if the file is not found, or another negative
         errno code if another error occurs.
         """
-        logging.debug("getattr: %s" % path)
+        q.logger.log("getattr: %s" % path)
         file = self._search_path(path)
         if file is None:
             return -errno.ENOENT
         return file.stat
 
     # Note: utime is deprecated in favour of utimens.
+    @debug_log
     def utime(self, path, times):
         """
         Sets the access and modification times on a file.
@@ -477,7 +688,7 @@ class MemFS(fuse.Fuse):
         Deprecated in favour of utimens.
         """
         atime, mtime = times
-        logging.info("utime: %s (atime %s, mtime %s)" % (path, atime, mtime))
+        q.logger.log("utime: %s (atime %s, mtime %s)" % (path, atime, mtime))
         file = self._search_path(path)
         if file is None:
             return -errno.ENOENT
@@ -486,7 +697,7 @@ class MemFS(fuse.Fuse):
         # Update timestamps: utime updates ctime
         file.stat.set_times_to_now(ctime=True)
         return 0
-
+    @debug_log
     def access(self, path, flags):
         """
         Checks permissions for accessing a file or directory.
@@ -498,7 +709,7 @@ class MemFS(fuse.Fuse):
         May not always be called. For example, when opening a file, open may
         be called and access avoided.
         """
-        logging.info("access: %s (flags %s)" % (path, oct(flags)))
+        q.logger.log("access: %s (flags %s)" % (path, oct(flags)))
         file = self._search_path(path)
         if file is None:
             return -errno.ENOENT
@@ -508,15 +719,17 @@ class MemFS(fuse.Fuse):
         else:
             return -errno.EACCES
 
+    @debug_log
     def readlink(self, path):
         """
         Get the target of a symlink.
         Returns a bytestring with the contents of a symlink (its target).
         May also return an int error code.
         """
-        logging.info("readlink: %s" % path)
+        q.logger.log("readlink: %s" % path)
         return -errno.EOPNOTSUPP
-
+    
+    @debug_log
     def mknod(self, path, mode, rdev):
         """
         Creates a non-directory file (or a device node).
@@ -543,7 +756,7 @@ class MemFS(fuse.Fuse):
         #   executing the current syscall. This should be handy when creating
         #   new files and directories, because they should be owned by this
         #   user/group.
-        logging.info("mknod: %s (mode %s, rdev %s)" % (path, oct(mode), rdev))
+        q.logger.log("mknod: %s (mode %s, rdev %s)" % (path, oct(mode), rdev))
         parent, filename = self._search_new_path(path)
         if parent is None:
             return -errno.ENOENT
@@ -557,7 +770,8 @@ class MemFS(fuse.Fuse):
         # Update timestamps: mknod updates mtime
         parent.stat.set_times_to_now(mtime=True)
         return 0
-
+    
+    @debug_log
     def mkdir(self, path, mode):
         """
         Creates a directory.
@@ -566,7 +780,7 @@ class MemFS(fuse.Fuse):
         # Note: mode & 0770000 gives you the non-permission bits.
         # Should be S_IDIR (040000); I guess you can assume this.
         # Also see note about self.GetContext() in mknod.
-        logging.info("mkdir: %s (mode %s)" % (path, oct(mode)))
+        q.logger.log("mkdir: %s (mode %s)" % (path, oct(mode)))
         parent, filename = self._search_new_path(path)
         if parent is None:
             return -errno.ENOENT
@@ -577,7 +791,7 @@ class MemFS(fuse.Fuse):
         uid = context['uid']
         gid = context['gid']
         parent.files[filename] = Dir(filename, mode, uid=uid, gid=gid,
-            parent=parent)
+            parent=parent, path=path)
         parent.stat.st_nlink += 1
         # Update timestamps: mkdir updates mtime
         parent.stat.set_times_to_now(mtime=True)
@@ -593,29 +807,32 @@ class MemFS(fuse.Fuse):
         parent.stat.set_times_to_now(mtime=True)
         return 0
 
+    @debug_log
     def unlink(self, path):
         """Deletes a file."""
-        logging.info("unlink: %s" % path)
+        q.logger.log("unlink: %s" % path)
         file = self._search_path(path)
         if file is None:
             return -errno.ENOENT
         return self._unlink(file)
 
+    @debug_log
     def rmdir(self, path):
         """Deletes a directory."""
-        logging.info("rmdir: %s" % path)
-        dir = self._search_path(path)
-        if dir is None:
+        q.logger.log("rmdir: %s" % path)
+        dir_ = self._search_path(path)
+        if dir_ is None:
             return -errno.ENOENT
-        if not isinstance(dir, Dir):
+        if not isinstance(dir_, Dir):
             return -errno.ENOTDIR
-        if len(dir.files) > 0:
+        if len(dir_.files) > 0:
             return -errno.ENOTEMPTY
-        r = self._unlink(dir)
+        r = self._unlink(dir_)
         if r == 0:
-            dir.parent.stat.st_nlink -= 1
+            dir_.parent.stat.st_nlink -= 1
         return r
 
+    @debug_log
     def symlink(self, target, name):
         """
         Creates a symbolic link from path to target.
@@ -635,18 +852,20 @@ class MemFS(fuse.Fuse):
         system, it will not touch this system at all (symlinks do not depend
         on the target system unless followed).
         """
-        logging.info("symlink: target %s, name: %s" % (target, name))
+        q.logger.log("symlink: target %s, name: %s" % (target, name))
         return -errno.EOPNOTSUPP
 
+    @debug_log
     def link(self, target, name):
         """
         Creates a hard link from name to target. Note that both paths are
         relative to the mounted file system. Hard-links across systems are not
         supported.
         """
-        logging.info("link: target %s, name: %s" % (target, name))
+        q.logger.log("link: target %s, name: %s" % (target, name))
         return -errno.EOPNOTSUPP
 
+    @debug_log
     def rename(self, old, new):
         """
         Moves a file from old to new. (old and new are both full paths, and
@@ -656,19 +875,20 @@ class MemFS(fuse.Fuse):
         If the operating system needs to move files across systems, it will
         manually copy and delete the file, and this method will not be called.
         """
-        logging.info("rename: target %s, name: %s" % (old, new))
+        q.logger.log("rename: target %s, name: %s" % (old, new))
         return -errno.EOPNOTSUPP
-
+    @debug_log
     def chmod(self, path, mode):
         """Changes the mode of a file or directory."""
-        logging.info("chmod: %s (mode %s)" % (path, oct(mode)))
+        q.logger.log("chmod: %s (mode %s)" % (path, oct(mode)))
         return -errno.EOPNOTSUPP
-
+    @debug_log
     def chown(self, path, uid, gid):
         """Changes the owner of a file or directory."""
-        logging.info("chown: %s (uid %s, gid %s)" % (path, uid, gid))
+        q.logger.log("chown: %s (uid %s, gid %s)" % (path, uid, gid))
         return -errno.EOPNOTSUPP
 
+    @debug_log
     def truncate(self, path, size):
         """
         Shrink or expand a file to a given size.
@@ -677,7 +897,7 @@ class MemFS(fuse.Fuse):
         If 'size' if larger than the existing file size, extend it with null
         bytes.
         """
-        logging.info("truncate: %s (size %s)" % (path, size))
+        q.logger.log("truncate: %s (size %s)" % (path, size))
         file = self._search_path(path)
         if file is None:
             return -errno.ENOENT
@@ -697,6 +917,7 @@ class MemFS(fuse.Fuse):
     # optional dir-handle argument, which is whatever object "opendir"
     # returned.
 
+    @debug_log
     def opendir(self, path):
         """
         Checks permissions for listing a directory.
@@ -708,32 +929,35 @@ class MemFS(fuse.Fuse):
         On failure, should return a negative errno code.
         Should return -errno.EACCES if disallowed.
         """
-        logging.info("opendir: %s" % path)
-        dir = self._search_path(path)
-        if dir is None:
+        q.logger.log("opendir: %s" % path)
+        dir_ = self._search_path(path)
+        if dir_ is None:
             return -errno.ENOENT
-        if not isinstance(dir, Dir):
+        if not isinstance(dir_, Dir):
             return -errno.ENOTDIR
-        if dir.stat.check_permission(self.GetContext()['uid'],
+        if dir_.stat.check_permission(self.GetContext()['uid'],
             self.GetContext()['gid'], os.R_OK):
-            return dir
+            return dir_
         else:
             return -errno.EACCES
 
+    @debug_log
     def releasedir(self, path, dh):
         """
         Closes an open directory. Allows filesystem to clean up.
         """
-        logging.info("releasedir: %s (dh %s)" % (path, dh))
+        q.logger.log("releasedir: %s (dh %s)" % (path, dh))
 
+    @debug_log
     def fsyncdir(self, path, datasync, dh):
         """
         Synchronises an open directory.
         datasync: If True, only flush user data, not metadata.
         """
-        logging.info("fsyncdir: %s (datasync %s, dh %s)"
+        q.logger.log("fsyncdir: %s (datasync %s, dh %s)"
             % (path, datasync, dh))
 
+    @debug_log
     def readdir(self, path, offset, dh):
         """
         Generator function. Produces a directory listing.
@@ -746,7 +970,7 @@ class MemFS(fuse.Fuse):
         request starting the listing partway through (which I clearly don't
         yet support). Seems to always be 0 anyway.
         """
-        logging.info("readdir: %s (offset %s, dh %s)" % (path, offset, dh))
+        q.logger.log("readdir: %s (offset %s, dh %s)" % (path, offset, dh))
         # Update timestamps: readdir updates atime
         dh.stat.set_times_to_now(atime=True)
         yield fuse.Direntry(".")
@@ -765,6 +989,7 @@ class MemFS(fuse.Fuse):
     # prepared to accept an optional file-handle argument, which is whatever
     # object "open" or "create" returned.
 
+    @debug_log
     def open(self, path, flags):
         """
         Open a file for reading/writing, and check permissions.
@@ -778,7 +1003,7 @@ class MemFS(fuse.Fuse):
         On failure, should return a negative errno code.
         Should return -errno.EACCES if disallowed.
         """
-        logging.info("open: %s (flags %s)" % (path, oct(flags)))
+        q.logger.log("open: %s (flags %s)" % (path, oct(flags)))
         file = self._search_path(path)
         if file is None:
             return -errno.ENOENT
@@ -796,38 +1021,42 @@ class MemFS(fuse.Fuse):
             return file
         else:
             return -errno.EACCES
-
+    @debug_log
     def fgetattr(self, path, fh):
         """
         Retrieves information about a file (the "stat" of a file).
         Same as Fuse.getattr, but may be given a file handle to an open file,
         so it can use that instead of having to look up the path.
         """
-        logging.debug("fgetattr: %s (fh %s)" % (path, fh))
+        q.logger.log("fgetattr: %s (fh %s)" % (path, fh))
         return fh.stat
 
+    @debug_log
     def release(self, path, flags, fh):
         """
         Closes an open file. Allows filesystem to clean up.
         flags: The same flags the file was opened with (see open).
         """
-        logging.info("release: %s (flags %s, fh %s)" % (path, oct(flags), fh))
+        q.logger.log("release: %s (flags %s, fh %s)" % (path, oct(flags), fh))
 
+    @debug_log
     def fsync(self, path, datasync, fh):
         """
         Synchronises an open file.
         datasync: If True, only flush user data, not metadata.
         """
-        logging.info("fsync: %s (datasync %s, fh %s)" % (path, datasync, fh))
-
+        q.logger.log("fsync: %s (datasync %s, fh %s)" % (path, datasync, fh))
+        
+    @debug_log
     def flush(self, path, fh):
         """
         Flush cached data to the file system.
         This is NOT an fsync (I think the difference is fsync goes both ways,
         while flush is just one-way).
         """
-        logging.info("flush: %s (fh %s)" % (path, fh))
+        q.logger.log("flush: %s (fh %s)" % (path, fh))
 
+    @debug_log
     def read(self, path, size, offset, fh):
         """
         Get all or part of the contents of a file.
@@ -845,10 +1074,11 @@ class MemFS(fuse.Fuse):
         available (and it is a non-blocking read), return -errno.EAGAIN.
         If it is a blocking read, just block until ready.
         """
-        logging.info("read: %s (size %s, offset %s, fh %s)"
+        q.logger.log("read: %s (size %s, offset %s, fh %s)"
             % (path, size, offset, fh))
         return fh.read(size, offset)
 
+    @debug_log
     def write(self, path, buf, offset, fh):
         """
         Write over part of a file.
@@ -863,17 +1093,18 @@ class MemFS(fuse.Fuse):
         be equal to len(buf) unless an error occured). May also be a negative
         int, which is an errno code.
         """
-        logging.info("write: %s (offset %s, fh %s)" % (path, offset, fh))
-        logging.debug("  buf: %r" % buf)
+        q.logger.log("write: %s (offset %s, fh %s)" % (path, offset, fh))
+        q.logger.log("  buf: %r" % buf)
         return fh.write(buf, offset)
 
+    @debug_log
     def ftruncate(self, path, size, fh):
         """
         Shrink or expand a file to a given size.
         Same as Fuse.truncate, but may be given a file handle to an open file,
         so it can use that instead of having to look up the path.
         """
-        logging.info("ftruncate: %s (size %s, fh %s)" % (path, size, fh))
+        q.logger.log("ftruncate: %s (size %s, fh %s)" % (path, size, fh))
         fh.truncate(size)
         return 0
 
@@ -897,4 +1128,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-logging.info("File system unmounted")

@@ -161,6 +161,13 @@ class ObjectStore():
         """        
         return self.deserialize(key, self.db.get("fsmetadata_%s"%self.scantimeId, key))
 
+
+    def putFileData(self, key, data):
+        self.db.set("fsmetadata_%s"%self.scantimeId, key, data)
+
+    def getFileData(self, key):
+        return self.db.get("fsmetadata_%s"%self.scantimeId, key)
+
     def _set(self, dirNode):
         """
         get object from disk, fail if  not there
@@ -237,7 +244,7 @@ class ObjectStore():
         files=dirobject.files.keys()
         files.sort()
         for key in files:
-            size,modDate,md5hash = dirobject.files[key]
+            size,modDate,md5hash, dataKey = dirobject.files[key]
             fullpath = q.system.fs.joinPaths(path,key)
             function(args, fullpath, "F", modDate, size, md5hash)
         dirs = dirobject.dirs.values()
