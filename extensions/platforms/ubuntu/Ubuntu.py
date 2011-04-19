@@ -64,6 +64,19 @@ class Ubuntu:
             pkg.mark_delete()
         self._cache.commit()
         self._cache.clear()
+
+    def startService(self, servicename):
+        self._service(servicename, 'start')
+
+    def stopService(self, servicename):
+        self._service(servicename, 'stop')
+
+    def disableStartAtBoot(self, servicename):
+        q.system.process.execute("update-rc.d -f %s remove" % servicename)
+
+    def _service(self, servicename, action):
+        return q.system.process.execute("service %s %s" % (servicename, action))
+        
         
     def updatePackageMetadata(self, force=True):
         self.check()
