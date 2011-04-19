@@ -20,6 +20,7 @@ mkdir -p "${QBASE}/lib/pylabs/core"
 
 cp -a "${REPOPATH}/core" "${QBASE}/lib/pylabs/core/pylabs"
 cp -a "${REPOPATH}/extensions" "${QBASE}/lib/pylabs/extensions"
+cp -a "${REPOPATH}/lib/*" "${QBASE}/lib/python/site-packages"
 
 mkdir -p "${QBASE}/pyapps"
 
