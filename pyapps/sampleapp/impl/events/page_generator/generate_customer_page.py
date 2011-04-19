@@ -50,7 +50,7 @@ def main(q, i, p, params, tags):
     
     if searchresult:
         p.api.action.ui.page.update(
-            guid,
+            searchresult[0],
             "customer_detail_%s" % guid,
             "crm",
             "customer",
