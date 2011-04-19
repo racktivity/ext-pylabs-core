@@ -134,7 +134,7 @@ class PostgresqlControl(CommandWrapper):
         except Exception, e:
             q.logger.log("The following exception occurred while checking the postgres status.", 5)
             q.logger.log("Exceptions are nothing to worry about if the database is not running.", 5)
-            q.logger.log(e.message, 5)
+            q.logger.log(str(e), 5)
             return AppStatusType.HALTED
 
         return AppStatusType.RUNNING
