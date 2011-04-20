@@ -1,10 +1,10 @@
-#OSIS Transactions
+#OSIS Operations
 In the previous section you have learned how you can create OSIS views and that the views, with their objects, are stored in a PostgreSQL database.
 In this section we will cover how you can store, update, and delete objects from these views.
 
 
-##Creating an OSIS Transaction
-An OSIS transaction is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+##Creating an OSIS Operation
+An OSIS operations is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 Each file has the following identification:
 
@@ -13,8 +13,8 @@ Each file has the following identification:
 * __priority__ : priority of the tasklet, the lower the value, the lower the priority
 
 
-##Creating an OSIS Store and Update Transaction
-The store and update transaction in an OSIS view are identical. The main flow is:
+##Creating an OSIS Store and Update Operation
+The store and update operation in an OSIS view are identical. The main flow is:
 
 1. Create an OSIS connection
 2. Get the Root Object from the params, offered to the tasklet
@@ -108,8 +108,8 @@ The store and update tasklet can only be executed when the `rootobjecttype` in t
         return params['rootobjecttype'] == ROOTOBJECT_TYPE
 
 
-##Creating an OSIS Delete Transaction
-The flow of a delete transaction in an OSIS view is similar to the create/update transaction flow. First create a connection to OSIS, get Root Object data, and finally update the OSIS view by deleting the Root Object.
+##Creating an OSIS Delete Operation
+The flow of a delete operation in an OSIS view is similar to the create/update operation flow. First create a connection to OSIS, get Root Object data, and finally update the OSIS view by deleting the Root Object.
 
 
 ###Retrieving the Root Object Data
@@ -165,6 +165,6 @@ So far you have learned about:
 
 * modeling Root Objects and its interfaces
 * the creation of OSIS views and their purposes
-* the creation of OSIS transactions
+* the creation of OSIS operations
 
 In a next step we will discuss how you can create your own forms and wizards of your PyApp. A form and a wizard are both UI elements of your PyApp.

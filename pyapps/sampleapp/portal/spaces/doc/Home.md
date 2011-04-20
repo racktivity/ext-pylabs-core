@@ -13,7 +13,7 @@ This tutorial gives you a walk-through in the creation process of a PyLabs Appli
 2. [Modeling Root Objects](/sampleapp/#/doc/modeling)
 3. [Defining Actions Interface on Root Objects](/sampleapp/#/doc/action)
 4. [OSIS Views](/sampleapp/#/doc/osisviews)
-5. [OSIS Transactions](/sampleapp/#/doc/osistransactions)
+5. [OSIS Operations](/sampleapp/#/doc/osisoperations)
 6. [Implementing Action Tasklets](/sampleapp/#/doc/actiontasklet)
 7. [Creating Forms and Wizards](/sampleapp/#/doc/formwizardpractical)
     * [Form and Wizard Conventions](/sampleapp/#/doc/formwizardconventions)
