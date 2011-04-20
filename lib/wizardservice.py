@@ -520,7 +520,7 @@ import inspect
 import operator
 import threading
 
-import simplejson
+import json
 
 import byteplay
 
@@ -953,7 +953,7 @@ class ApplicationserverWizardService(object):
         updatedForm = callback_method(q, i, extra, (domainName, ))
         action = updatedForm.convertToWizardAction()
 
-        return simplejson.dumps(action)
+        return json.dumps(action)
 
     @q.manage.applicationserver.expose
     def stop(self, sessionId):
