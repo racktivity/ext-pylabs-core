@@ -69,7 +69,7 @@ core_install(){
 
 usage(){
     echo "Usage $0"
-    echo "  --boostrap-package: The Q-Package you want to install by default, default pyapps_framework"
+    echo "  --bootstrap-package: The Q-Package you want to install by default, default pyapps_framework"
     exit 1
 }
 
