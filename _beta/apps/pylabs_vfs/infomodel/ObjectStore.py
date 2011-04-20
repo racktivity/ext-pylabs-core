@@ -259,7 +259,7 @@ class ObjectStore():
                 self.walk(function, args, fullpath, recursive)
             
     def __str__(self):
-        raise RuntimeError("NOT IMPLEMENTED @todo please implement")
+        return 'Object Store: metadatapath: %s, scantimeId: %s'%(self.metadatapath, self.scantimeId)
         
     def __repr__(self):
         return self.__str__()

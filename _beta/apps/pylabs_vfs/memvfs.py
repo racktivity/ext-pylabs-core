@@ -280,32 +280,61 @@ class Dir(FSObject):
         self.files = DirChildrenProxy(self)        
         
     def __str__(self):
-        return "<%s %s>" % (type(self).__name__, self.path)
+        return "<%s %s %s>" % (type(self).__name__, self.path, hash(self))
     
     __repr__ = __str__
+    
+    def releaseFile(self, fh):
+        del self.files.memfsFiles[fh.name]
         
 class FileDataProxy(object):
     """A data descriptor that acts as well as a sequence
     """
     @debug_log
     def __init__(self):
-        pass
-
+        pass#this init happens only once upon class loading
     @debug_log
     def __get__(self, obj, objtype):
         #@todo call findPath in vfs and get the the key of file data in object store
-        self.file = obj
-        self.vfs = self.file.vfs
-        self.store = self.vfs.dirObjectStore
-        self.dirObject, self.fileNode = self.findFile(self.file.path)
-#        self.datakey = vfs.findPath(obj.name).datakey
-        return self
+        init_done = getattr(obj, 'data_proxy_init', False)
+        if not init_done:
+            store = obj.vfs.dirObjectStore
+            dirObject, fileNode = self.findFile(obj.path, store)
+            obj.dataProxy = SequenceProxy(obj, dirObject, store)
+        return obj.dataProxy
     
-#    @debug_log
     def __set__(self, obj, val):
-        self.file = obj
-        self.fileData = val
-    
+        obj.dataProxy.fileData = val
+        
+    @debug_log
+    def findFile(self, path, store):
+        '''
+        raise NoEntryError if path doesn't correspond for a dir or a file
+        return isDir, DirObject(path is isDie, otherwise parent dir of file), dict {'filename':name, 'filestat':stat, 'dirstat':stat}
+        '''
+        dirObject = None
+        #how to handle files, while the VFS holds only size?
+            #assume the path is file path and get its parent folder
+        parentPath = os.path.dirname(path)
+        fileName = q.system.fs.getBaseName(path)
+        fileNode = None
+        q.logger.log('No dir found with name: %s, looking for files with name: %s under dir: %s'%(path, fileName, parentPath))
+        try:
+            dirObject = store.get(parentPath)
+            q.logger.log('DEBUG: files under %s: %s'%(parentPath, dirObject.files))
+            if fileName in dirObject.files:
+                q.logger.log('Found file with name: %s under dir: %s'%(path, parentPath))
+                fileNode = dirObject.files[fileName]
+        except NoEntryError, ex:
+            q.logger.log('No file found with name: %s under dir: %s'%(fileName, parentPath))
+            raise
+        return dirObject, fileNode
+        
+class SequenceProxy(object):
+    def __init__(self, file, dirObject=None, store=None):
+        self.file = file
+        self.dirObject = dirObject
+        self.store = store
     @debug_log            
     def __len__(self):
         return len(self.fileData)
@@ -321,17 +350,17 @@ class FileDataProxy(object):
     def __add__(self, val):
         return self.fileData + val
     
-    def _setFileData(self, fileData):
+    def _setFileData(self, data):
         dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
         self.dirObject.files[self.file.name].dataKey = dataKey
-        if len(fileData) < 1048576:
-            self.store.putFileData(dataKey, fileData)
+        if len(data) < 1048576:
+            self.store.putFileData(dataKey, data)
         else:
             self.store.delete(dataKey)
             versionPrefix = self.store._getDBCat()
             path = q.system.fs.joinPaths(self.vfs.localFileStore, versionPrefix, self.file.path)
-            q.system.fs.writeFile(path, fileData)
-        self.dirObject.files[self.file.name].size = len(fileData)
+            q.system.fs.writeFile(path, data)
+        self.dirObject.files[self.file.name].size = len(data)
         self.store.save(self.dirObject)
         
     def _getFileData(self):
@@ -361,29 +390,7 @@ class FileDataProxy(object):
         path = dataKey.replace(separator, '/')
         return path[5:]
     
-    @debug_log
-    def findFile(self, path):
-        '''
-        raise NoEntryError if path doesn't correspond for a dir or a file
-        return isDir, DirObject(path is isDie, otherwise parent dir of file), dict {'filename':name, 'filestat':stat, 'dirstat':stat}
-        '''
-        dirObject = None
-        #how to handle files, while the VFS holds only size?
-            #assume the path is file path and get its parent folder
-        parentPath = os.path.dirname(path)
-        fileName = q.system.fs.getBaseName(path)
-        fileNode = None
-        q.logger.log('No dir found with name: %s, looking for files with name: %s under dir: %s'%(path, fileName, parentPath))
-        try:
-            dirObject = self.store.get(parentPath)
-            q.logger.log('DEBUG: files under %s: %s'%(parentPath, dirObject.files))
-            if fileName in dirObject.files:
-                q.logger.log('Found file with name: %s under dir: %s'%(path, parentPath))
-                fileNode = dirObject.files[fileName]
-        except NoEntryError, ex:
-            q.logger.log('No file found with name: %s under dir: %s'%(fileName, parentPath))
-            raise
-        return dirObject, fileNode
+    
 
 class File(FSObject):
     """
@@ -409,11 +416,11 @@ class File(FSObject):
     data = FileDataProxy()
     
     def __str__(self):
-        return "<%s %s>" % (type(self).__name__, self.path)
+        return "<%s %s %s>" % (type(self).__name__, self.path, hash(self))
     
     __repr__ = __str__
     
-#    @debug_log
+    @debug_log
     def read(self, size, offset):
         """
         Reads from a file. Returns a bytes object.
@@ -422,9 +429,10 @@ class File(FSObject):
         q.logger.log("returned: %r" % self.data[offset:offset+size])
         # Update timestamps: read updates atime
         self.stat.set_times_to_now(atime=True)
+        q.logger.log('#DEBUG: read st_size: %s'%self.stat.st_size)
         return self.data[offset:offset+size]
     
-#    @debug_log
+    @debug_log
     def write(self, buf, offset):
         """
         Writes to the file.
@@ -442,7 +450,9 @@ class File(FSObject):
             after = ''
         # Insert buf in between before and after
         self.data = before + buf + after
+        q.logger.log('#DEBUG: data length: %s'%len(self.data))
         self.stat.st_size = len(self.data)
+        q.logger.log('#DEBUG: stored st_size: %s'%self.stat.st_size)
         # Update timestamps: write updates mtime
         self.stat.set_times_to_now(mtime=True)
         return len(buf)
@@ -473,6 +483,7 @@ class DirChildrenProxy(object):
         self.parent = parent
         self.vfs = parent.vfs
         self.store = self.vfs.dirObjectStore
+        self.memfsFiles = {}
         try:
             self.dirObject = self.store.get(self.parent.path)
         except NoEntryError, ex:
@@ -480,16 +491,19 @@ class DirChildrenProxy(object):
             q.logger.log('#DEBUG: Directory %s not found'%self.parent.path)
             self.dirObject = self.store.new(self.parent.path, False)
             self.store.save(self.dirObject)
-#    @debug_log
+    
+    @debug_log
     def __getitem__(self, key):
         if key in self.dirObject.dirs:
-            return Dir(key, mode=self.parent.stat.st_mode, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
+            memfsDir = self.memfsFiles.get(key) or Dir(key, mode=self.parent.stat.st_mode, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
             parent=self.parent, path=self.dirObject.fullpath)
+            self.memfsFiles[key] = memfsDir
+            return memfsDir
         elif key in self.dirObject.files:
-            data = 'hello data' 
-            #@todo consider saving mode in VFS
-            return File(key, data, mode=stat.S_IFREG|0755, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
+            memfsFile = self.memfsFiles.get(key) or File(key, '', mode=stat.S_IFREG|0755, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
             parent=self.parent)
+            self.memfsFiles[key] = memfsFile
+            return memfsFile
         else:
             raise KeyError(key)
             
@@ -498,8 +512,11 @@ class DirChildrenProxy(object):
         if isinstance(value, Dir):
             self.dirObject.dirs[key] = self._dirNodeFromDir(value)
         elif isinstance(value, File):
-            self.dirObject.files[key] = self._fileNodeFromFile(value)
+            fileObject = self._fileNodeFromFile(value)
+            self.dirObject.files[key] = fileObject
+        self.memfsFiles[key] = value
         self.store.save(self.dirObject)
+        
     
     @debug_log    
     def __delitem__(self, key):
@@ -508,6 +525,7 @@ class DirChildrenProxy(object):
         except KeyError:
             try:
                 del self.dirObject.files[key]
+                del self.memfsFiles[key]
             except KeyError:
                 raise
         
@@ -1040,6 +1058,7 @@ class MemFS(fuse.Fuse):
             accessflags |= os.R_OK | os.W_OK
         if file.stat.check_permission(self.GetContext()['uid'],
             self.GetContext()['gid'], accessflags):
+            q.logger.log('#DEBUG: size from open: %s'%file.stat.st_size)
             return file
         else:
             return -errno.EACCES

@@ -110,3 +110,7 @@ INFO:root:flush: /largeTestFile (fh <File largeTestFile>)
 INFO:root:release: /largeTestFile (flags 0100002, fh <File largeTestFile>)
 INFO:root:open: /largeTestFile (flags 0100000)
 INFO:root:read: /largeTestFile (size 4096, offset 0, fh <File largeTestFile>)
+INFO:root:flush: /largeTestFile (fh <File largeTestFile>)
+INFO:root:release: /largeTestFile (flags 0100000, fh <File largeTestFile>)
+INFO:root:Unmounting file system
+INFO:root:File system unmounted
