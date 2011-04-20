@@ -51,6 +51,10 @@ import datetime
 import time
 import calendar
 import logging
+import functools
+
+from pylabs.InitBase import *
+from pylabs.Shell import *
 
 LOG_FILENAME = "LOG"
 logging.basicConfig(filename=LOG_FILENAME,level=logging.INFO,)
@@ -79,6 +83,24 @@ fuse.fuse_python_api = (0, 2)
 #   st_atime, st_mtime, st_ctime:
 #       File access times, in seconds since the epoch, UTC time. Last access
 #       time, modification time, stat change time, respectively.
+
+class debug_log(object):
+    def __init__(self, f):
+        self.f = f
+        self.__doc__ = f.__doc__
+    def __call__(self, *args, **kwargs):
+        try:
+            q.logger.log('#DEBUG: %s(%s, %s)'%(self.f.__name__, args, kwargs))
+            ret = self.f(*args, **kwargs)
+            q.logger.log('#DEBUG: %s returned successfully with value: %s'%(self.f.__name__, ret))
+            return ret
+        except Exception, ex:
+            q.logger.log('#DEBUG: %s failed with Exception %s'%(self.f.__name__, ex))
+            raise
+    def __get__(self, obj, objtype):
+        #support decoration of instance methods
+        return functools.partial(self.__call__, obj) 
+
 class Stat(fuse.Stat):
     """
     A Stat object. Describes the attributes of a file or directory.
@@ -128,7 +150,6 @@ class Stat(fuse.Stat):
         self.dt_atime = dt_atime or now
         self.dt_mtime = dt_mtime or now
         self.dt_ctime = dt_ctime or now
-
     def __repr__(self):
         return ("<Stat st_mode %s, st_nlink %s, st_uid %s, st_gid %s, "
             "st_size %s>" % (self.st_mode, self.st_nlink, self.st_uid,
@@ -184,7 +205,6 @@ class Stat(fuse.Stat):
             self.dt_mtime = now
         if ctime:
             self.dt_ctime = now
-
     def check_permission(self, uid, gid, flags):
         """
         Checks the permission of a uid:gid with given flags.
@@ -275,6 +295,8 @@ class File(FSObject):
         self.data = data
         self.parent = parent
 
+
+    @debug_log
     def read(self, size, offset):
         """
         Reads from a file. Returns a bytes object.
@@ -285,6 +307,7 @@ class File(FSObject):
         self.stat.set_times_to_now(atime=True)
         return self.data[offset:offset+size]
 
+    @debug_log
     def write(self, buf, offset):
         """
         Writes to the file.
@@ -307,6 +330,7 @@ class File(FSObject):
         self.stat.set_times_to_now(mtime=True)
         return len(buf)
 
+    @debug_log
     def truncate(self, size):
         """
         Truncates a file. Returns None.
@@ -347,6 +371,7 @@ class MemFS(fuse.Fuse):
     Attributes:
         root_dir: Dir object
     """
+    @debug_log
     def __init__(self, *args, **kwargs):
         """
         Creates a new MemFS object. Needs to call fuse.Fuse.__init__ with the
@@ -355,6 +380,7 @@ class MemFS(fuse.Fuse):
         logging.info("Mounting file system")
         super(MemFS, self).__init__(*args, **kwargs)
 
+    @debug_log
     def _search_path(self, path):
         """
         Given a path string, returns the Dir or File object corresponding to
@@ -376,7 +402,8 @@ class MemFS(fuse.Fuse):
             except KeyError:
                 return None
         return cur_dir
-
+    
+    @debug_log
     def _search_new_path(self, path):
         """
         Given a path string, searches for the path but doesn't require the
@@ -415,6 +442,7 @@ class MemFS(fuse.Fuse):
                 return None
         return cur_dir, name
 
+    @debug_log
     def fsinit(self):
         """
         Will be called when the file system has finished mounting, and is
@@ -424,6 +452,7 @@ class MemFS(fuse.Fuse):
         logging.info("File system mounted")
         self.root_dir = Dir('/', stat.S_IFDIR|0755, os.getuid(), os.getgid())
 
+    @debug_log
     def fsdestroy(self):
         """
         Will be called when the file system is about to be unmounted.
@@ -431,6 +460,7 @@ class MemFS(fuse.Fuse):
         """
         logging.info("Unmounting file system")
 
+    @debug_log
     def statfs(self):
         """
         Retrieves information about the mounted filesystem.
@@ -455,6 +485,7 @@ class MemFS(fuse.Fuse):
         # Fill it in here. All fields take on a default value of 0.
         return stats
 
+    @debug_log
     def getattr(self, path):
         """
         Retrieves information about a file (the "stat" of a file).
@@ -470,6 +501,8 @@ class MemFS(fuse.Fuse):
         return file.stat
 
     # Note: utime is deprecated in favour of utimens.
+    
+    @debug_log
     def utime(self, path, times):
         """
         Sets the access and modification times on a file.
@@ -487,6 +520,7 @@ class MemFS(fuse.Fuse):
         file.stat.set_times_to_now(ctime=True)
         return 0
 
+    @debug_log
     def access(self, path, flags):
         """
         Checks permissions for accessing a file or directory.
@@ -508,6 +542,8 @@ class MemFS(fuse.Fuse):
         else:
             return -errno.EACCES
 
+
+    @debug_log
     def readlink(self, path):
         """
         Get the target of a symlink.
@@ -517,6 +553,8 @@ class MemFS(fuse.Fuse):
         logging.info("readlink: %s" % path)
         return -errno.EOPNOTSUPP
 
+
+    @debug_log
     def mknod(self, path, mode, rdev):
         """
         Creates a non-directory file (or a device node).
@@ -558,6 +596,8 @@ class MemFS(fuse.Fuse):
         parent.stat.set_times_to_now(mtime=True)
         return 0
 
+
+    @debug_log
     def mkdir(self, path, mode):
         """
         Creates a directory.
@@ -583,6 +623,8 @@ class MemFS(fuse.Fuse):
         parent.stat.set_times_to_now(mtime=True)
         return 0
 
+
+    @debug_log
     def _unlink(self, fileobj):
         parent = fileobj.parent
         if parent is None:
@@ -593,6 +635,8 @@ class MemFS(fuse.Fuse):
         parent.stat.set_times_to_now(mtime=True)
         return 0
 
+
+    @debug_log
     def unlink(self, path):
         """Deletes a file."""
         logging.info("unlink: %s" % path)
@@ -601,6 +645,8 @@ class MemFS(fuse.Fuse):
             return -errno.ENOENT
         return self._unlink(file)
 
+
+    @debug_log
     def rmdir(self, path):
         """Deletes a directory."""
         logging.info("rmdir: %s" % path)
@@ -616,6 +662,7 @@ class MemFS(fuse.Fuse):
             dir.parent.stat.st_nlink -= 1
         return r
 
+    @debug_log
     def symlink(self, target, name):
         """
         Creates a symbolic link from path to target.
@@ -638,6 +685,8 @@ class MemFS(fuse.Fuse):
         logging.info("symlink: target %s, name: %s" % (target, name))
         return -errno.EOPNOTSUPP
 
+
+    @debug_log
     def link(self, target, name):
         """
         Creates a hard link from name to target. Note that both paths are
@@ -647,6 +696,8 @@ class MemFS(fuse.Fuse):
         logging.info("link: target %s, name: %s" % (target, name))
         return -errno.EOPNOTSUPP
 
+
+    @debug_log
     def rename(self, old, new):
         """
         Moves a file from old to new. (old and new are both full paths, and
@@ -659,16 +710,22 @@ class MemFS(fuse.Fuse):
         logging.info("rename: target %s, name: %s" % (old, new))
         return -errno.EOPNOTSUPP
 
+
+    @debug_log
     def chmod(self, path, mode):
         """Changes the mode of a file or directory."""
         logging.info("chmod: %s (mode %s)" % (path, oct(mode)))
         return -errno.EOPNOTSUPP
 
+
+    @debug_log
     def chown(self, path, uid, gid):
         """Changes the owner of a file or directory."""
         logging.info("chown: %s (uid %s, gid %s)" % (path, uid, gid))
         return -errno.EOPNOTSUPP
-
+    
+    
+    @debug_log
     def truncate(self, path, size):
         """
         Shrink or expand a file to a given size.
@@ -697,6 +754,7 @@ class MemFS(fuse.Fuse):
     # optional dir-handle argument, which is whatever object "opendir"
     # returned.
 
+    @debug_log
     def opendir(self, path):
         """
         Checks permissions for listing a directory.
@@ -720,12 +778,14 @@ class MemFS(fuse.Fuse):
         else:
             return -errno.EACCES
 
+    @debug_log
     def releasedir(self, path, dh):
         """
         Closes an open directory. Allows filesystem to clean up.
         """
         logging.info("releasedir: %s (dh %s)" % (path, dh))
 
+    @debug_log
     def fsyncdir(self, path, datasync, dh):
         """
         Synchronises an open directory.
@@ -734,6 +794,7 @@ class MemFS(fuse.Fuse):
         logging.info("fsyncdir: %s (datasync %s, dh %s)"
             % (path, datasync, dh))
 
+    @debug_log
     def readdir(self, path, offset, dh):
         """
         Generator function. Produces a directory listing.
@@ -765,6 +826,7 @@ class MemFS(fuse.Fuse):
     # prepared to accept an optional file-handle argument, which is whatever
     # object "open" or "create" returned.
 
+    @debug_log
     def open(self, path, flags):
         """
         Open a file for reading/writing, and check permissions.
@@ -797,6 +859,7 @@ class MemFS(fuse.Fuse):
         else:
             return -errno.EACCES
 
+    @debug_log
     def fgetattr(self, path, fh):
         """
         Retrieves information about a file (the "stat" of a file).
@@ -806,6 +869,7 @@ class MemFS(fuse.Fuse):
         logging.debug("fgetattr: %s (fh %s)" % (path, fh))
         return fh.stat
 
+    @debug_log
     def release(self, path, flags, fh):
         """
         Closes an open file. Allows filesystem to clean up.
@@ -813,6 +877,7 @@ class MemFS(fuse.Fuse):
         """
         logging.info("release: %s (flags %s, fh %s)" % (path, oct(flags), fh))
 
+    @debug_log
     def fsync(self, path, datasync, fh):
         """
         Synchronises an open file.
@@ -820,6 +885,7 @@ class MemFS(fuse.Fuse):
         """
         logging.info("fsync: %s (datasync %s, fh %s)" % (path, datasync, fh))
 
+    @debug_log
     def flush(self, path, fh):
         """
         Flush cached data to the file system.
@@ -828,6 +894,7 @@ class MemFS(fuse.Fuse):
         """
         logging.info("flush: %s (fh %s)" % (path, fh))
 
+    @debug_log
     def read(self, path, size, offset, fh):
         """
         Get all or part of the contents of a file.
@@ -849,6 +916,7 @@ class MemFS(fuse.Fuse):
             % (path, size, offset, fh))
         return fh.read(size, offset)
 
+    @debug_log
     def write(self, path, buf, offset, fh):
         """
         Write over part of a file.
@@ -867,6 +935,7 @@ class MemFS(fuse.Fuse):
         logging.debug("  buf: %r" % buf)
         return fh.write(buf, offset)
 
+    @debug_log
     def ftruncate(self, path, size, fh):
         """
         Shrink or expand a file to a given size.

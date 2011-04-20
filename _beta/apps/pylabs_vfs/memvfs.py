@@ -56,7 +56,6 @@ from pylabs.Shell import *
 from VFSMetadata import *
 from infomodel.infomodel import DirNode, FileNode
 import functools
-from twisted.web.server import UnsupportedMethod
 
 # FUSE version at the time of writing. Be compatible with this version.
 fuse.fuse_python_api = (0, 2)
@@ -302,7 +301,7 @@ class FileDataProxy(object):
 #        self.datakey = vfs.findPath(obj.name).datakey
         return self
     
-    @debug_log
+#    @debug_log
     def __set__(self, obj, val):
         self.file = obj
         self.fileData = val
@@ -325,20 +324,42 @@ class FileDataProxy(object):
     def _setFileData(self, fileData):
         dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
         self.dirObject.files[self.file.name].dataKey = dataKey
-        self.store.putFileData(dataKey, fileData)
+        if len(fileData) < 1048576:
+            self.store.putFileData(dataKey, fileData)
+        else:
+            self.store.delete(dataKey)
+            versionPrefix = self.store._getDBCat()
+            path = q.system.fs.joinPaths(self.vfs.localFileStore, versionPrefix, self.file.path)
+            q.system.fs.writeFile(path, fileData)
         self.dirObject.files[self.file.name].size = len(fileData)
         self.store.save(self.dirObject)
         
     def _getFileData(self):
         fileData = ''
-        try:
-            dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
-            fileData = self.store.getFileData(dataKey)
-        except RuntimeError, ex:
-            q.logger.log(ex)
+        if self.dirObject.files[self.file.name].size < 1048576:
+            try:
+                dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
+                fileData = self.store.getFileData(dataKey)
+            except RuntimeError, ex: #q.db.get throws a RuntimeError if the key is not found 
+                q.logger.log(ex)
+        else:
+            try:
+                dataKey = self.store.getKey(q.system.fs.joinPaths('DATA', self.file.path))
+                filePath = self._keyToPath(dataKey)
+                versionPrefix = self.store._getDBCat()
+                path = q.system.fs.joinPaths(self.vfs.localFileStore, versionPrefix, filePath)
+                fileData = q.system.fs.fileGetContents(path)
+            except RuntimeError, ex:
+                q.logger.log(ex)
         return fileData
     
     fileData = property(fset=_setFileData, fget=_getFileData)
+    
+    @debug_log
+    def _keyToPath(self, dataKey):
+        separator="_!_"
+        path = dataKey.replace(separator, '/')
+        return path[5:]
     
     @debug_log
     def findFile(self, path):
@@ -392,7 +413,7 @@ class File(FSObject):
     
     __repr__ = __str__
     
-    @debug_log
+#    @debug_log
     def read(self, size, offset):
         """
         Reads from a file. Returns a bytes object.
@@ -403,7 +424,7 @@ class File(FSObject):
         self.stat.set_times_to_now(atime=True)
         return self.data[offset:offset+size]
     
-    @debug_log
+#    @debug_log
     def write(self, buf, offset):
         """
         Writes to the file.
@@ -459,7 +480,7 @@ class DirChildrenProxy(object):
             q.logger.log('#DEBUG: Directory %s not found'%self.parent.path)
             self.dirObject = self.store.new(self.parent.path, False)
             self.store.save(self.dirObject)
-    @debug_log
+#    @debug_log
     def __getitem__(self, key):
         if key in self.dirObject.dirs:
             return Dir(key, mode=self.parent.stat.st_mode, uid=self.parent.stat.st_uid, gid=self.parent.stat.st_gid,
@@ -625,6 +646,7 @@ class MemFS(fuse.Fuse):
         except Exception, ex:
             q.logger.log(ex)
             raise
+        self.vfs.localFileStore = '/tmp/vfsFiles'
         Dir.vfs = self.vfs #injecting vfs instance to Dir class
         File.vfs = self.vfs
 #        self.root_dir = Dir('/', stat.S_IFDIR|0755, os.getuid(), os.getgid())
@@ -1093,8 +1115,8 @@ class MemFS(fuse.Fuse):
         be equal to len(buf) unless an error occured). May also be a negative
         int, which is an errno code.
         """
-        q.logger.log("write: %s (offset %s, fh %s)" % (path, offset, fh))
-        q.logger.log("  buf: %r" % buf)
+#        q.logger.log("write: %s (offset %s, fh %s)" % (path, offset, fh))
+#        q.logger.log("  buf: %r" % buf)
         return fh.write(buf, offset)
 
     @debug_log

@@ -162,6 +162,9 @@ class ObjectStore():
         return self.deserialize(key, self.db.get("fsmetadata_%s"%self.scantimeId, key))
 
 
+    def delete(self, key):
+        self.db.delete("fsmetadata_%s"%self.scantimeId, key)
+
     def putFileData(self, key, data):
         self.db.set("fsmetadata_%s"%self.scantimeId, key, data)
 
