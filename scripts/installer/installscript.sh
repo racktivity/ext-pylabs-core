@@ -47,7 +47,7 @@ configure_packages(){
 }
 
 install_qpackage(){
-    packgename=$1
+    packagename=$1
     log "Installing Q-Package ${packagename}"
     /opt/qbase5/qshell -c "i.qp.find('${packagename}').install()"
     configure_packages
@@ -56,19 +56,21 @@ install_qpackage(){
 install_package(){
     local packages
     packages=$1
-    echo "Installing ${packages}"
+    log "Installing ${packages}"
     apt-get install -qq -y $packages > /dev/null
 }
 
-install(){
+core_install(){
     self_extract
-    install_packages "${CORE_PACKAGES}"
+    install_package "${CORE_PACKAGES}"
     customize
+    update_metadata
 }
 
 usage(){
     echo "Usage $0"
-    echo "--boostrap-package: The Q-Package you want to install by default, default pyapps_framework"
+    echo "  --boostrap-package: The Q-Package you want to install by default, default pyapps_framework"
+    exit 1
 }
 
 BOOTSRAP_PACKAGE="pyapps_framework"
@@ -90,10 +92,10 @@ do
 done
 
 check_system_version
-install
+core_install
 
-if [ -z ${BOOTSTRAP_PACKAGE}  ]; then
-    install_package ${BOOTSTRAP_PACKAGE}
+if [ -n ${BOOTSTRAP_PACKAGE}  ]; then
+    install_qpackage ${BOOTSTRAP_PACKAGE}
 fi
 
 exit 0
