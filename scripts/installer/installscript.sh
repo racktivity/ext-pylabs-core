@@ -72,8 +72,7 @@ usage(){
     echo "  --bootstrap-package: The Q-Package you want to install by default, default pyapps_framework"
     exit 1
 }
-
-BOOTSRAP_PACKAGE="pyapps_framework"
+BOOTSTRAP_PACKAGE="pyapps_framework"
 
 while [ $# -gt 0 ]
 do
