@@ -5,26 +5,29 @@ After the process of designing your PyLabs Application (PyApp), it is time that 
 See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 ##What is a Root Object
-A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning), and more specific in [Arakoon](http://www.arakoon.org). A Root Object consists of properties, and references to other Root Objects.
+A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning), and more specific in [Arakoon](http://www.arakoon.org). A Root Object consists of properties, complex properties, and references to other Root Objects.
+A complex property, also referred to as 'model object', is for example a contact person in a company. The contact on its turn has its own properties.
+For example a customer can have a name and address as properties, contacts as model objects, and references to other customers.
+
 
 ##File Structure
-The file name is always `rootobject.py`, where rootobject is the Root Object name, using only lowercase characters, possibly using underscores.
+The file name is always `<rootobject>.py`, where rootobject is the Root Object name, using only lower-case characters, possibly using underscores.
 The file content is always structured as follows:
 
-    import libs
+    import <python libs>
 
     #@doc some doc about enumeration
-    class enumeration(BaseEnumeration):
+    class <enumeration>(BaseEnumeration):
         @classmethod
         def _initItems(cls):
-            enumerationvalue1
-            enumerationvalue2
+            <enumerationvalue1>
+            <enumerationvalue2>
             ....
 
     #@doc some doc about the root object
-    class rootobject(model.RootObjectModel):
+    class <rootobject>(model.RootObjectModel):
         #@doc some doc about RO property
-        property1 = model.<value type>(thrift_id=1)
+        <property1> = model.<value type>(thrift_id=1)
         
 
 ##File Details
@@ -38,7 +41,7 @@ If you need custom enumerators, you also need to import the BaseEnumeration libr
 
 ###Creating Custom Enumerators
 Besides the default PyLabs enumerators, such as AppStatusType and MessageType, you can create your own enumerator.
-Each custom enumerator is a custom class that inherits from teh BaseEnumeration base class.
+Each custom enumerator is a custom class that inherits from the BaseEnumeration base class.
 Always add a short description of the enumerator with `#@doc your doc here`. This documentation is used in the API documentation of the PyApp.
 
     #@doc my first enumerator
@@ -57,6 +60,9 @@ Then you start registering the items, make sure that each item is capitalized.
 
 To finish the enumeration, call the `finishItemRegistration` function.
 
+See also the [PyLabs 5 site](http://confluence.incubaid.com/display/PYLABS/Enumerator+Classes) for more details about PyLabs Enumerators.
+
+
 ###Modeling the Root Object
 The definition of a Root Object is comprised in a class that inherits from `pymodel.RootObjectModel`, but since `pymodel` is imported as `model`, this becomes `model.RootObjectModel`.
 In this class you define the properties of the Root Object. A property is defined as follows:
@@ -73,6 +79,7 @@ where x is a sequential integer and where `<property_type>` can be one of the fo
 * GUID
 * Integer
 * List
+* Object
 * String
 
 The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. PyLabs uses the [thrift](http://thrift.apache.org/) framework for serializing and deserializing objects. Where PyLabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.

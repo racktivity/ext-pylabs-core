@@ -199,4 +199,8 @@ Similar to the other forms, you must execute a cloud API call for the creation o
 
 ##What's Next?
 In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/doc/formwizard)
+
+@todo: rework this section, next is explanation from drp to reality!
+In the next sections we will discuss how you can create actions, triggered by an event.
+
 In the next chapter you will learn the actual implementation of the actions in your PyApp, store, update, delete objects in the DRP, create lists, ...

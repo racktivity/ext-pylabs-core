@@ -1,8 +1,8 @@
 #OSIS Views
 As explained in the [PyApp architecture](/sampleapp/#/doc/sampleapp), OSIS stands for Object Store and Indexing System. OSIS is responsible for populating the [Arakoon](http://www.arakoon.org) object store as well as a PostgreSQL database.
-In this section we will discuss the PostgreSQL connection, which is responisble to store views on objects.
+In this section we will discuss the PostgreSQL connection, which is responsible to store views on objects.
 
-Since the Arakoon object store is not queryable, the retrieval of object would be too slow and thus not user-friendly. That's where the PostgreSQL database comes into play.
+Since the Arakoon object store can not be queried, the retrieval of object would be too slow and thus not user-friendly. That's where the PostgreSQL database comes into play.
 The PostgreSQL database is used to store different views on Root Objects. A view is a definition of what you want to see of a Root Object. This means that you can create multiple views on one Root Object. For example on a Root Object "Customer" you can create a view which contains only the name and guid of the customer, but another view can contain name, customer ID, postal code, and city. You have to find a good balance in the number of views that you create and the clarity of the views. Too many views make easily a mishmash of your directory, too little views make some operations less effective.
 
 
@@ -105,6 +105,6 @@ To add indexes to an OSIS view:
 
 
 ##What's Next?
-In this section you have learned how you can create OSIS views on Root Objects. The most important topics are the creation of the OSIS view itself and create indexex on the view for optimizing the data retrieval.
+In this section you have learned how you can create OSIS views on Root Objects. The most important topics are the creation of the OSIS view itself and create indexes on the view for optimizing the data retrieval.
 In the next section we will cover how you can store, update, and delete objects from an OSIS view.
 

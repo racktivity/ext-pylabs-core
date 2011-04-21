@@ -53,6 +53,25 @@ Below you can find the directory structure of a PyApp.
 
     pyapps/
     `-- myappname
+        |-- interface
+        |   |-- action
+        |   |   `-- domainname
+        |   |       |-- rootobject1.py (interface on root object)
+        |   |       `-- rootobject2.py
+        |   |-- actor
+        |   |   `-- domainname
+        |   |       |-- actor1.py (model of an actor object)
+        |   |       `-- actor2.py
+        |   |-- config
+        |   |   `-- rootobjectname
+        |   |       `-- configuration1.py (model of a pyapp configuration)
+        |   |-- model
+        |   |   `-- domainname
+        |   |       |-- object1.py (model of root object)
+        |   |       `-- object2.py
+        |   `-- monitoring
+        |       `-- monitoringobject1.py (model of a monitoring object)
+        |
         |-- impl (actual implementation of the pyapp)
         |   |-- action (contains the different actions of the pyapp)
         |   |   `-- domainname (domain in the pyapp)
@@ -117,25 +136,6 @@ Below you can find the directory structure of a PyApp.
         |                `-- rootobject_action
         |                    `-- tasklet1.py
         |
-        |-- interface
-        |   |-- action
-        |   |   `-- domainname
-        |   |       |-- rootobject1.py (interface on root object)
-        |   |       `-- rootobject2.py
-        |   |-- actor
-        |   |   `-- domainname
-        |   |       |-- actor1.py (model of an actor object)
-        |   |       `-- actor2.py
-        |   |-- config
-        |   |   `-- rootobjectname
-        |   |       `-- configuration1.py (model of a pyapp configuration)
-        |   |-- model
-        |   |   `-- domainname
-        |   |       |-- object1.py (model of root object)
-        |   |       `-- object2.py
-        |   `-- monitoring
-        |       `-- monitoringobject1.py (model of a monitoring object)
-        |
         `-- portal (documentation of pyapp)
             |-- spaces
             |   |-- api (api doc of pyapp)
@@ -149,6 +149,36 @@ Below you can find the directory structure of a PyApp.
                     |-- image1.jpg
                     `-- image2.jpg
             
+
+###interface
+The `interface`-directory contains the files that model your complete PyApp.
+
+
+####interface/action/*domainname*
+* action: this is the directory that contains the modeling of the actions on the different objects of your PyApp.
+* *domainname*: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
+    - config: this domain refers to the configuration of PyApp module.
+    - core: default directory, this is for core functionalities which are common for each PyApp that you create.
+    - ui: actions on UI objects, such as finding or creating pages.
+    - *pyappname*: contains the modeling of actions per root object, specific for your own PyApp.
+
+
+####interface/actor/domainname
+* actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
+* domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
+
+
+####interface/config
+* config: contains the model of a PyApp specific module, for example a `pop3` object.
+
+
+####interface/model/domainname
+* model: contains the model of root objects in your PyApp
+* domainname: name of the domain to which the root object belongs, this avoids the usage of root objects in possible other installed PyApps. This directory contains one file per root object. Each file is the complete definition of an object.
+
+
+####interface/monitoring
+* monitoring: model of a monitoring object
 
 
 ###impl
@@ -215,43 +245,13 @@ This directory contains tasklets that authorizes users for sections in the PyApp
 * domainname: name of the domain to which the UI element belongs.
 
 
-###interface
-The `interface`-directory contains the files that model your complete PyApp.
-
-
-####interface/action/*domainname*
-* action: this is the directory that contains the modeling of the actions on the different objects of your PyApp.
-* *domainname*: name of the domain to which the action belongs, this avoids the usage of actions in other parts of your PyApp.
-    - config: this domain refers to the configuration of PyApp module.
-    - core: default directory, this is for core functionalities which are common for each PyApp that you create.
-    - ui: actions on UI objects, such as finding or creating pages.
-    - *pyappname*: contains the modeling of actions per root object, specific for your own PyApp.
-
-
-####interface/actor/domainname
-* actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
-* domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
-
-
-####interface/config
-* config: contains the model of a PyApp specific module, for example a `pop3` object.
-
-
-####interface/model/domainname
-* model: contains the model of root objects in your PyApp
-* domainname: name of the domain to which the root object belongs, this avoids the usage of root objects in possible other installed PyApps. This directory contains one file per root object. Each file is the complete definition of an object.
-
-
-####interface/monitoring
-* monitoring: model of a monitoring object
-
-
 ###portal
 The `portal`-directory contains all the documentation files of your PyApp.
 
 
 ####portal/spaces/api
-* api: contains the API documentation of your PyApp in epydoc-format
+* api: contains the API documentation of your PyApp in [epydoc](http://epydoc.sourceforge.net/)-format. The API documentation is generated when installing your PyApp.
+__Note__: Epydoc is a tool for generating API documentation for Python modules, based on their docstrings.
 
 
 ####portal/spaces/doc

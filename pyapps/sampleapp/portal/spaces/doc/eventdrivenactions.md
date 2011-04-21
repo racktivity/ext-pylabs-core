@@ -113,6 +113,6 @@ The main function contains the actions to be executed. The following example is 
 ##Conclusion
 The event framework is a simple, but powerful component of the PyLabs framework. Its major feature is the possibility of event-driven actions.
 An event-driven action is an action that is executed when a specific event is generated. You have to decide yourself when to generate an event. Do not exaggerate however, it may slow down your application.
-Typically a PyApp has multiple consumers, each reading the events (messages) published on the RabbitMQ queue. A consumer consists of a configuration file and one or more action tasklets. The configuration file filters the events by using the eventKey. The `match`-function in the action tasklet then determines which tasklet needs to be executed.
+Typically a PyApp has multiple consumers, each reading the events (messages) published on the RabbitMQ queue. A consumer consists of a configuration file and one or more action tasklets. The configuration file filters the events by using the eventKey. The `match` function in the action tasklet then determines which tasklet needs to be executed.
 
 

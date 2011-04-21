@@ -24,22 +24,24 @@ The tasklets have the same structure as any other [tasklet](http://confluence.in
 
 
 ###File Name and Location
-The file name of an action tasklet has always the following structure:
+In PyLabs 5, it is recommended that the file name of an action tasklet has the following structure:
 
 `<priority>_<rootobject>_<action>.py`
 
 * priority: integer value, indicating the priority of the tasklet, 1 is lowest priority 
-* rootobject: name of the Root Object, all lowercase
+* rootobject: name of the Root Object, all lower-case
 * action: name of the action, as defined in the interface file of the proper Root Object
 
-The `<priority>` replaces the `__priority__` inside the tasklet.
-The `<rootobject>_<action>` combination replaces the `__tags__` inside the tasklet.
+When you use the new file names for the action tasklets, do not use the `__priority__` and `__tags__` parameters inside the tasklet.
 
 The tasklet is located in `<pyapp_name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
+__Note:__ It is possible to still use the old tasklet file names and use the `__priority__` and `__tags__` parameters inside the tasklet, but it is recommended not to mix them.
+
 
 ###Provided Data
-The execution of the action tasklet mostly requires a lot of data about an object. This data is not to be retrieved in this action tasklet itself, but is gathered in the `params` dictionary. The `params` dictionary lives throughout the whole PyLabs framework. As seen in the [Creating Forms and Wizards](/sampleapp/#/doc/formwizardparctical) section, the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
+The execution of the action tasklet mostly requires a lot of data about an object. This data is not to be retrieved in this action tasklet itself, but is gathered in the `params` dictionary. 
+The `params` dictionary lives throughout the whole PyLabs framework. You will see in the [Creating Forms and Wizards](/sampleapp/#/doc/formwizardparctical) section, that the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
 
 All of this is part of the PyLabs framework.
 
@@ -62,7 +64,8 @@ For example:
 
     lead = p.api.model.crm.lead.new()
 
-This creates an object with some basic properties, such as a guid and a creation date. All other properties, which are defined in the [modeling](/sampleapp/#/doc/modeling) phase are empty.
+This creates an empty object. If you would save this empty object, it will be saved with some basic properties, such as a guid and a creation date. 
+All other properties, which are defined in the [modeling](/sampleapp/#/doc/modeling) phase are empty.
 
 
 ###Setting Properties
@@ -177,8 +180,8 @@ For example:
     GUID_FIELD = "%sguid" % TYPE
 
     def main(q, i, p, params, tags):
-        if GUID\_FIELD not in params:
-            raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, GUID\_FIELD))
+        if GUID_FIELD not in params:
+            raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
         guid = params[GUID_FIELD]
 
         p.api.model.crm.lead.delete(guid)
@@ -195,7 +198,7 @@ A first step in this action is to get the model of a Root Object. On the model o
     VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
 
     def main(q, i, p, params, tags):
-	filter = p.api.model.crm.lead.getFilterObject()
+	   filter = p.api.model.crm.lead.getFilterObject()
 
 To add rows to the list:
 
@@ -275,4 +278,6 @@ All together this leads to the following tasklet which creates a list:
 ##What's Next
 In this section you have learned to create the basic operations on a Root Object. This section does not cover all possible actions, but it should give you a good idea about the principles of creating actions.
 
-In the next sections we will discuss how you can create actions, triggered by an event.
+In a next step we will discuss how you can create your own forms and wizards of your PyApp. A form and a wizard are both UI elements of your PyApp. 
+These elements allows you to interact with the user, for example ask for a confirmation or request input.
+

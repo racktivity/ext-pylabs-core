@@ -68,11 +68,11 @@ When you have set the values of the Root Object, you only have to save the view 
 * version of the Root Object
 * a dictionary with values
 
-    osis.viewSave(DOMAIN, ROOTOBJECT\_TYPE, VIEW\_NAME, rootobject.guid, rootobject.version, values)
+    osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
 
 
-###Execution Tasklet
-The store and update tasklet can only be executed when the `rootobjecttype` in the `params` dict matches the given Root Object type. Thus this must be defined in the match function of the tasklet:
+###Tasklet Execution
+The store and update tasklet can only be executed when the `rootobjecttype` in the `params` dictionary matches the given Root Object type. This must be defined in the `match` function of the tasklet:
 
     def match(q, i, params, tags):
         return params['rootobjecttype'] == ROOTOBJECT_TYPE
@@ -113,10 +113,9 @@ The flow of a delete operation in an OSIS view is similar to the create/update o
 
 
 ###Retrieving the Root Object Data
-To delete a Root Object from an OSIS view, you need its guid and version. These data are all stored in the `params` dict and can be retrieved as follows:
+To delete a Root Object from an OSIS view, you only need its guid. The guid is stored in the `params` dictionary and can be retrieved as follows:
 
     rootobjectguid = params['rootobjectguid']
-    rootobjectversionguid = params['rootobjectversionguid']
 
 To delete the object, you must use the `viewDelete` method on the the OSIS connection object. This method expects the following arguments in the given order:
 
@@ -124,13 +123,12 @@ To delete the object, you must use the `viewDelete` method on the the OSIS conne
 * the name of Root Object
 * name of the osis view
 * guid of the Root Object
-* version of the Root Object
 
-    osis.viewSave(DOMAIN, ROOTOBJECT\_TYPE, VIEW\_NAME, rootobjectguid, rootobjectversionguid)
+    osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid)
 
 
-###Execution Tasklet
-The store and update tasklet can only be executed when the `rootobjecttype` in the `params` dict matches the given Root Object type. Thus this must be defined in the match function of the tasklet:
+###Tasklet Execution
+The store and update tasklet can only be executed when the `rootobjecttype` in the `params` dictionary matches the given Root Object type. This must be defined in the `match` function of the tasklet:
 
     def match(q, i, params, tags):
         return params['rootobjecttype'] == ROOTOBJECT_TYPE
@@ -167,4 +165,4 @@ So far you have learned about:
 * the creation of OSIS views and their purposes
 * the creation of OSIS operations
 
-In a next step we will discuss how you can create your own forms and wizards of your PyApp. A form and a wizard are both UI elements of your PyApp.
+In a next step we will discuss how you can implement the actions of a Root Object. 
