@@ -68,6 +68,8 @@ When you have set the values of the Root Object, you only have to save the view 
 * version of the Root Object
 * a dictionary with values
 
+Use the `viewSave` method as follows:
+
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
 
 
@@ -123,6 +125,8 @@ To delete the object, you must use the `viewDelete` method on the the OSIS conne
 * the name of Root Object
 * name of the osis view
 * guid of the Root Object
+
+Use the `viewSave` method as follows:
 
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid)
 
