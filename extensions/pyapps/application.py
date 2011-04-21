@@ -18,7 +18,7 @@ class AppManager(object):
     def __init__(self):
         pass
     
-    def getAPI(self, appname, host=None, context=None):
+    def getAPI(self, appname, host='127.0.0.1', context=None):
         '''Retrieve api object for an application'''
         return ApplicationAPI(appname, host, context)
     
@@ -53,6 +53,7 @@ class ApplicationAPI(object):
         
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._app_path = app_path
+        self._host = host
         
         api_path = q.system.fs.joinPaths(app_path)
         sys.path.append(api_path)
@@ -79,7 +80,7 @@ class ApplicationAPI(object):
         
         proxy = None
         if context == q.enumerators.AppContext.CLIENT:
-            proxy = XmlRpcActionProxy('http://127.0.0.1/%s/appserver/xmlrpc/' % appname)           
+            proxy = XmlRpcActionProxy('http://%s/%s/appserver/xmlrpc/' % (self._host, appname))
         
         from client.action import actions
         return actions(proxy=proxy)
@@ -106,7 +107,7 @@ class ApplicationAPI(object):
             return connection.generate_client(list_(path_), transport_, serializer_)
 
         path = os.path.join(self._app_path, 'interface', category)
-        transport_uri = 'http://127.0.0.1/%s/appserver/xmlrpc/' % appname
+        transport_uri = 'http://%s/%s/appserver/xmlrpc/' % (self._host, appname)
         transport = xmlrpc.XMLRPCTransport(transport_uri, 'osissvc')
         serializer = serializers.ThriftSerializer
 
