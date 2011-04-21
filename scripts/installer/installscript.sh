@@ -24,7 +24,7 @@ check_system_version () {
 
 
 self_extract(){
-    log "Exctracting base layout"
+    log "Extracting base layout"
     ARCHIVE=$(awk '/^__ARCHIVE_BELOW__/ {print NR + 1; exit 0; }' $0)
     mkdir -p /opt
     tail -n+$ARCHIVE $0 | tar xz -C /opt
