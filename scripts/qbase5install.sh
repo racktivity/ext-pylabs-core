@@ -308,8 +308,6 @@ ln -s "`pwd`/pylabs_agent/agent_service" "/opt/qbase5/lib/python/site-packages/"
 
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/jswizards" "/opt/qbase5/www"
-#TODO Do we want this?
-ln -s "`pwd`/jswizards/libs" "/opt/qbase5/www/js"
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
 ln -s "`pwd`/lfw/services/lfw/lfw.py" "/opt/qbase5/lib/python/site-packages/"
 
