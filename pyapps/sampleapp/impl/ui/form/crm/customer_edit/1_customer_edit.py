@@ -20,8 +20,8 @@ MSGBOX_CUSTOMER_CREATE_FAILED = "Failed to update this customer! Please contact 
 MSGBOX_CUSTOMER_CREATE_FAILED_TITLE = "Customer update failed"
 
 
-def callCloudAPI(api, name, email, login, password, address, vat):
-    result = api.crm.customer.update(name, email, login, password, address, vat)['result']    
+def callCloudAPI(api, customerguid, name, email, login, password, address, vat):
+    result = api.action.crm.customer.update(customerguid, name, email, login, password, address, vat)['result']    
     return result
 
 
@@ -31,7 +31,8 @@ def main(q, i, p, params, tags):
     ###########################
     # General information tab #
     ###########################
-    customer = p.api.action.crm.customer.getObject(params['customerguid'], executionparams={'description': 'Retrieving customer information'})
+    customerguid = params['customerguid']
+    customer = p.api.action.crm.customer.getObject(customerguid, executionparams={'description': 'Retrieving customer information'})
     
     tab_general.addText(name='name', text = TAB_GENERAL_NAME, value=customer.name, helpText = TAB_GENERAL_NAME_HELPTEXT)
     tab_general.addText(name='email', text = TAB_GENERAL_EMAIL, value=customer.email, validator="^\w+(\.\w+)*@\w+(\.\w+)+$", helpText = TAB_GENERAL_EMAIL_HELPTEXT)
@@ -45,12 +46,11 @@ def main(q, i, p, params, tags):
 	#                                     msgboxButtons='OKCancel',
 	#                                     msgboxIcon='Question',
 	#                                     defaultButton='OK')
-    answer = q.gui.dialog.askForm(form)
+    form.loadForm(q.gui.dialog.askForm(form))
+    tab_general = form.tabs['general']
 
-    if answer == 'CANCEL':
-		return
-	
     result = callCloudAPI(p.api,
+                          customerguid,
 						  tab_general.elements['name'].value,
 						  tab_general.elements['email'].value,
 						  tab_general.elements['login'].value,
