@@ -21,7 +21,7 @@ MSGBOX_CUSTOMER_CREATE_FAILED_TITLE = "Customer update failed"
 
 
 def callCloudAPI(api, customerguid, name, email, login, password, address, vat):
-    result = api.action.crm.customer.update(customerguid, name, email, login, password, address, vat)['result']    
+    result = api.action.crm.customer.update(customerguid, name, login, password, email, address, vat)['result']    
     return result
 
 
