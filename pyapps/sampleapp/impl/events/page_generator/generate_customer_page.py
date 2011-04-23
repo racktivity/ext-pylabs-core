@@ -36,10 +36,8 @@ def main(q, i, p, params, tags):
 
 </div>
 
-<div class="macro macro_wizardactions"></div>
-
-<button onclick="start('sampleapp', 'crm', 'customer_edit', '%(portalip)s', '%(params)s', success)">Edit</button>
-<button onclick="start('sampleapp' ,'crm' ,'customer_delete','%(portalip)s', '%(params)s', success)">Delete</button>
+[[wizard:title=Edit, name=customer_edit, extra=%(params)s]][[/wizard]]
+[[wizard:title=Delete, name=customer_delete, extra=%(params)s]][[/wizard]]
 """
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
