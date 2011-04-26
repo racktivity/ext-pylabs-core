@@ -42,7 +42,6 @@ def main(q, i, p, params, tags):
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
     parentpage = p.api.action.ui.page.find(name="Home", space="crm")['result'][0]
-    portalip = q.system.net.getIpAddress(q.system.net.getNics(up=True)[1])[0][0]
 
     params_ = urllib.quote(json.dumps({'customerguid': customer.guid}))
     
@@ -56,7 +55,7 @@ def main(q, i, p, params, tags):
             "crm customer",
             template % {"name": customer.name, "login": customer.login, "password": customer.password, "email": customer.email,
                                           "address": customer.address, "vat": customer.vat, "status": customer.status,
-                                          "portalip": portalip, "customerguid" : customer.guid,
+                                          "customerguid" : customer.guid,
                                           'params': params_, })
     else:
         p.api.action.ui.page.create(
@@ -67,7 +66,7 @@ def main(q, i, p, params, tags):
             "crm customer",
             template % {"name": customer.name, "login": customer.login, "password": customer.password, "email": customer.email,
                                           "address": customer.address, "vat": customer.vat, "status": customer.status,
-                                          "portalip": portalip, "customerguid" : customer.guid,
+                                          "customerguid" : customer.guid,
                                           'params': params_, })
         
 def match(q, i, params, tags):
