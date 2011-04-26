@@ -200,7 +200,7 @@ class CloudApiGenerator:
     xmlrpcAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcAlkiraDocumentationTemplate.tmpl')
     roDirRest = q.system.fs.joinPaths(documentationDest,'REST')
     roDirXmlrpc = q.system.fs.joinPaths(documentationDest, 'XMLRPC')
-    _documentationFormat = 'confluence'
+    _documentationFormat = 'alkira'
 
     def __init__(self, appName):
         self._appName = appName
@@ -329,7 +329,7 @@ class CloudApiGenerator:
                 #rootObject = fileName.split('.')[0].split('ro_')[-1]
                 rootObject = fileName.split('.')[0]
                 
-                #className = self._generateClientCode(spec, rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, domain, 'client_%s.py' % rootObject))
+                self._generateClientCode(spec, rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, domain, 'client_%s.py' % rootObject))
                 
                 
                 
@@ -598,6 +598,9 @@ class AppAPIGenerator(object):
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'service'))
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'action'))
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'actor'))
+
+        docdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'portal', 'spaces', 'api')
+        self._create_folder(docdir)
         
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, '__init__.py'))
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, '__init__.py'))
@@ -612,6 +615,10 @@ class AppAPIGenerator(object):
         self._generator.rootobjects_libDir  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'lib')
         self._generator.rootobject_serverOutputDir  = q.system.fs.joinPaths(app_path, 'impl', 'service')
         self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'client', 'action')
+        
+        self._generator.roDirRest = docdir
+        self._generator.roDirXmlrpc = docdir
+
         #self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'extension')
         self._generator.generatePythonRoot()
         q.action.stop()
