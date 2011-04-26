@@ -309,7 +309,7 @@ ln -s "`pwd`/pylabs_agent/agent_service" "/opt/qbase5/lib/python/site-packages/"
 mkdir -p /opt/qbase5/www
 ln -s "`pwd`/jswizards" "/opt/qbase5/www"
 ln -s "`pwd`/lfw/htdocs/" "/opt/qbase5/www/lfw"
-ln -s "`pwd`/lfw/services/lfw/lfw.py" "/opt/qbase5/lib/python/site-packages/"
+ln -s "`pwd`/lfw/services/lfw" "/opt/qbase5/lib/python/site-packages/alkira"
 
 my_log "Creating symlinks to extra libraries"
 ln -s /opt/code/incubaid/pylabs-core/lib/* /opt/qbase5/lib/python/site-packages/
