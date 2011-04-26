@@ -30,6 +30,10 @@ class AppManager(object):
         gen.stop()
         gen.start()
         gen.init()
+
+    def syncPortal(self, appname):
+        from alkira.sync_md_to_lfw import sync_to_alkira
+        sync_to_alkira(appname)
         
     def start(self, appname):
         gen = PyAppsConfigGen(appname)
