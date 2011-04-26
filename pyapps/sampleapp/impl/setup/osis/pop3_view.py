@@ -6,7 +6,7 @@ from osis.store.OsisDB import OsisDB
 
 def main(q, i, params, tags):
     rootobject = 'pop3'
-    domain = "config"
+    domain = 'mail'
     appname = params['appname']
     view_name = '%s_view_%s_list' % (domain, rootobject)
     connection = OsisDB().getConnection(appname)
