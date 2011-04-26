@@ -503,8 +503,8 @@ Example:
 
 ##Screenshots
 
-![Example 1](images/wizard_sample1.png)
+![Example 1](images/pyapps//wizard_sample1.png)
 
-![Example 2](images/wizard_sample2.png)
+![Example 2](images/pyapps/wizard_sample2.png)
 
-![Example 3](images/wizard_sample3.png)
+![Example 3](images/pyapps/wizard_sample3.png)

@@ -10,9 +10,9 @@ In this section we introduce you to the different components of PyApps and how t
 ###Architecture
 Below you can find the architecture of how the PyLabs framework is built.
 
-![PyApps_Architecture](images/PyApp_Architecture.png)
+![PyApps_Architecture](images/pyapps/PyApp_Architecture.png)
 
-![PyLabs_DRP](images/PyLabs_DRP.png)
+![PyLabs_DRP](images/pyapps/PyLabs_DRP.png)
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 
@@ -45,7 +45,7 @@ Per action, there exists one tasklet which contains the business logic and the a
 ###From Modeling to Reality
 Below you find a graphical overview of the creation of a PyApp. 
 
-![PyApp](images/PyApp.png)
+![PyApp](images/pyapps/PyApp.png)
 
 
 ##PyApps Directory Structure
@@ -273,7 +273,7 @@ __Note__: Epydoc is a tool for generating API documentation for Python modules, 
 
 Below you can find a general overview of the creation process of a PyApp.
 
-![PyApp\_Create](images/PyApp\_Create.png)
+![PyApp\_Create](images/pyapps/PyApp\_Create.png)
 
 1. Create the Specifications of the PyApp
 2. Model the different Root Objects
