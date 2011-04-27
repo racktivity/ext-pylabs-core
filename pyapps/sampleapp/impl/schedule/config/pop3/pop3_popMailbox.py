@@ -54,6 +54,11 @@ def main(q, i, p, params, tags):
         # TODO - MNOUR: Why we should tigh events to its source. The event processor should be able to receive events
         #               from different sources. I would change that later.
         p.events.publish('pylabs.event.sampleapp.email', 'mail:%s' %base64.encodestring(mail))
+        # Mark message for deletion, otherwise it would be read on next execution.
+        mailbox.dele(i+1)
+
+    # Signoff: commit changes, unlock mailbox, drop connection
+    mailbox.quit()
 
 def match(q, i, params, tags):
     # TODO - MNOUR: For now the match always return True cause there is an error in the sent last execution time. It is always sent as 0.
