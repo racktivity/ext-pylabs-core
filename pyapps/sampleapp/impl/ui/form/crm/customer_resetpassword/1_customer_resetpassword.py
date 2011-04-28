@@ -10,8 +10,8 @@ MSGBOX_CUSTOMER_CREATE_FAILED = "Failed to reset customer's password! Please con
 MSGBOX_CUSTOMER_CREATE_FAILED_TITLE = "Customer password update failed"
 
 
-def callCloudAPI(api, customerguid, name, password, email):
-    result = api.action.crm.customer.resetPassword(customerguid,name=name, password=password, email=email)['result']    
+def callCloudAPI(api, customerguid, password):
+    result = api.action.crm.customer.resetPassword(customerguid,password= password)['result']    
     return result
 
 
@@ -31,8 +31,7 @@ def main(q, i, p, params, tags):
     tab_general = form.tabs['general']
     newpassword = customerguid[0:5]
     result = callCloudAPI(p.api,
-                          customerguid,name = customer.name,
-                        password=newpassword, email = customer.email)
+                          customerguid, newpassword)
     params['result'] = result
 
 def match(q, i, p, params, tags):
