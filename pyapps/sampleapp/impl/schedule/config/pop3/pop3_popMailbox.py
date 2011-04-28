@@ -27,8 +27,9 @@ def _extractMessage(q, mail_elements):
     return os.linesep.join([mail_elements[index] for index in range(start, end) if mail_elements[index]])
 
 def main(q, i, p, params, tags):
-    import poplib
     import base64
+    import os
+    import poplib
     view = '%s_view_%s_list' %('mail', 'pop3')
     filter = p.api.config.mail.pop3.getFilterObject()
     filter.add(view, 'server', 'pop.gmail.com')
@@ -53,7 +54,7 @@ def main(q, i, p, params, tags):
         q.logger.log('[DEBUG] - Extracted message nr#%d: %s' %((i+1), mail), level=3)
         # TODO - MNOUR: Why we should tigh events to its source. The event processor should be able to receive events
         #               from different sources. I would change that later.
-        p.events.publish('pylabs.event.sampleapp.email', 'mail:%s' %base64.encodestring(mail))
+        p.events.publish('pylabs.event.sampleapp.email', 'mail:%s' %base64.encodestring(mail).replace(os.linesep, ''))
         # Mark message for deletion, otherwise it would be read on next execution.
         mailbox.dele(i+1)
 
