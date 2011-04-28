@@ -13,7 +13,8 @@ def main(q, i, p, params, tags):
     activity.leadguid = params['leadguid']
     activity.starttime = params['starttime']
     activity.endtime = params['endtime']
-    activity.save()
+    p.api.model.crm.activity.save(activity)
+    #activity.save()
     params['result'] = activity.guid
     
 def match(q, i, p, params, tags):
