@@ -6,9 +6,9 @@ def main(q, i, p, params, tags):
     activity.name = params['name']
     activity.description = params['description']
     activity.location = params['location']
-    activity.type = params['type']
-    activity.priority = params['priority']
-    activity.status = params['status']
+    #activity.type =  q.enumerators.activitytype.getByName(params['type'])
+    #activity.priority = q.enumerators.activitypriority.getByName(params['priority'])
+    #activity.status = q.enumerators.activitystatus.getByName(params['status']) 
     activity.customerguid = params['customerguid']
     activity.leadguid = params['leadguid']
     activity.starttime = params['starttime']
