@@ -28,7 +28,7 @@ class PysyncWalker:
         dirs.append(self.root) #make sure own directory is added as well
         for dirFullPath in dirs:                        
             if not self.checkIfHiddenDir(dirFullPath):
-                q.console.echo("scan: %s" % dirFullPath)
+#                q.console.echo("scan: %s" % dirFullPath)
                 dirShortPath=q.system.fs.pathRemoveDirPart(dirFullPath, self.root, removeTrailingSlash=True).strip()
                 dirObject=self.dirObjectStore.new(dirShortPath)
                 files=q.system.fs.listFilesInDir(dirFullPath)

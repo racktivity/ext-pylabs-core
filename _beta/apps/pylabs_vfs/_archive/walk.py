@@ -24,7 +24,8 @@ ipshell()
 #    print file
 
 def _printFileDirPath(args,path,ttype,moddate=0,size=0,md5sum=""):
-        q.console.echo("%s %s %s %s %s" % (ttype, path, moddate, size, md5sum))
+    pass
+#        q.console.echo("%s %s %s %s %s" % (ttype, path, moddate, size, md5sum))
 
 vfs.walk(_printFileDirPath,None,"")
 

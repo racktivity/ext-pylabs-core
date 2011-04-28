@@ -166,7 +166,6 @@ class VFSMetadata():
         
         return reduce(partial(buildTLog, seq_matcher, opcode_handlers), opcodes, [])
 
-        
     
     def compareWithOlderVersionOld(self,versionEpoch):
         vfsOlder=VFSMetadata(self.metadataPath)
@@ -186,6 +185,7 @@ class VFSMetadata():
             for filename in filenames:
                 pass
             ipshell()
+ 
                 
     def compareCurrentWithFS(self):
             dirObject=self._checkFileStatus(dirObject,fullFilePath)
@@ -194,6 +194,7 @@ class VFSMetadata():
                 if subdirname[0]<>".":
                     dirObject.addSubDir(subdirname)
             self.dirObjectFactory.save(dirObject)
+
 
     def _checkFileStatus(self,dirObject,fullFilePath):
         stat=q.system.fs.statPath(fullFilePath)
@@ -212,19 +213,20 @@ class VFSMetadata():
         [size, modDate, md5hash, dataKey] = dirObject.getFileInfo(filename)
         if not self.ignoreModDate:
             if float(modDate)<>float(modDateOnDisk):
-                q.console.echo("File %s changed because of moddate" % fullFilePath)
+#                q.console.echo("File %s changed because of moddate" % fullFilePath)
                 self.reportModFile(fullFilePath)                
                 return dirObject  
         if long(sizeOnDisk)<>long(size):
             self.reportModFile(fullFilePath)
-            q.console.echo("File %s changed because of size" % fullFilePath)
+#            q.console.echo("File %s changed because of size" % fullFilePath)
             return dirObject  
         if not self.usemd5:
             if md5OnDisk<>md5hash:
-                q.console.echo("File %s changed because of md5" % fullFilePath)
+#                q.console.echo("File %s changed because of md5" % fullFilePath)
                 self.reportModFile(fullFilePath)
                 return dirObject
         return dirObject
+
 
     def reset(self):
         """
@@ -233,8 +235,10 @@ class VFSMetadata():
         q.system.fs.removeDirTree(self.metadataPath)
         self.__init__(self.metadataPath,self.root)
 
+
     def dirObjectGet(self,path):
         return self.dirObjectStore.get(path)
+    
     
     def dirObjectExists(self,path):
         return self.dirObjectStore.exists(path)

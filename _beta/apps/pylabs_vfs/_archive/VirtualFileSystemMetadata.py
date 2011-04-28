@@ -208,16 +208,16 @@ class VirtualFileSystemMetadata():
         [size,modDate,md5hash] =dirObject.getFileInfo(filename)
         if not self.ignoreModDate:
             if float(modDate)<>float(modDateOnDisk):
-                q.console.echo("File %s changed because of moddate" % fullFilePath)
+#                q.console.echo("File %s changed because of moddate" % fullFilePath)
                 self.reportModFile(fullFilePath)                
                 return dirObject  
         if long(sizeOnDisk)<>long(size):
             self.reportModFile(fullFilePath)
-            q.console.echo("File %s changed because of size" % fullFilePath)
+#            q.console.echo("File %s changed because of size" % fullFilePath)
             return dirObject  
         if not self.usemd5:
             if md5OnDisk<>md5hash:
-                q.console.echo("File %s changed because of md5" % fullFilePath)
+#                q.console.echo("File %s changed because of md5" % fullFilePath)
                 self.reportModFile(fullFilePath)
                 return dirObject
         return dirObject
