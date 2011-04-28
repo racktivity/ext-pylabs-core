@@ -1,3 +1,4 @@
+import uuid
 TAB_GENERAL_TITLE = 'General'
 TAB_GENERAL_EMAIL = 'Email: '
 TAB_GENERAL_LOGIN = 'Login: '
@@ -29,7 +30,8 @@ def main(q, i, p, params, tags):
     
     form.loadForm(q.gui.dialog.askForm(form))
     tab_general = form.tabs['general']
-    newpassword = customerguid[0:5]
+    newpasswordstr = str(uuid.uuid1()).replace('-','')
+    newpassword = newpasswordstr[0:8]
     result = callCloudAPI(p.api,
                           customerguid, newpassword)
     params['result'] = result
