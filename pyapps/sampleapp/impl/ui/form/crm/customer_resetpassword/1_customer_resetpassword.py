@@ -30,8 +30,8 @@ def main(q, i, p, params, tags):
     
     form.loadForm(q.gui.dialog.askForm(form))
     tab_general = form.tabs['general']
-    newpasswordstr = str(uuid.uuid1()).replace('-','')
-    newpassword = newpasswordstr[0:8]
+    newpasswordstr = str(uuid.uuid4()).replace('-','')
+    newpassword = newpasswordstr[0:12]
     result = callCloudAPI(p.api,
                           customerguid, newpassword)
     params['result'] = result
