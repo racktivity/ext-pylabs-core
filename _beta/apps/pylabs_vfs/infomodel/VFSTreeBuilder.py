@@ -26,7 +26,7 @@ class VFSTreeBuilder(object):
         for dirFullPath in dirs:                        
             if self.checkIfHiddenDir(dirFullPath): 
                 continue
-            q.console.echo("scan: %s" % dirFullPath)
+#            q.console.echo("scan: %s" % dirFullPath)
             dirShortPath = q.system.fs.pathRemoveDirPart(dirFullPath, self.root, removeTrailingSlash=True).strip()
             dirObject = self.objectStore.new(dirShortPath)
             dirObject.fullpath = dirFullPath
