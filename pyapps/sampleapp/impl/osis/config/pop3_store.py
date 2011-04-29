@@ -5,7 +5,7 @@ __priority__= 3
 from osis.store.OsisDB import OsisDB
 
 ROOTOBJECT_TYPE = 'pop3'
-DOMAIN = "config"
+DOMAIN = 'mail'
 VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, p, params, tags):
