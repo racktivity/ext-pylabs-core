@@ -177,3 +177,27 @@ class customer:
  
         @raise e:                     In case an error occurred, exception is raised
         """
+        
+    def resetPassword(self, customerguid, password, jobguid="", executionparams=None):
+        """
+        Reset a customer's password 
+ 
+        @security administrators
+
+        @param customerguid:          guid of the customer
+        @type customerguid:           guid
+         
+        @param password: new password of the customer
+        @type password: string
+
+        @param jobguid: guid of the job if available else empty string
+        @type jobguid: guid
+        
+        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:         dictionary
+ 
+        @return:                       dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+        @rtype:                        dictionary
+ 
+        @raise e:                      In case an error occurred, exception is raised
+        """

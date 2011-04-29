@@ -10,7 +10,10 @@ def main(q, i, p, params, tags):
     *Type:* %(type)s        
     *Status:* %(status)s
     *Amount:* %(amount)s
-    *Probability:* %(probability)s            
+    *Probability:* %(probability)s
+
+[[wizard:title=Add Activity, name=activity_create]][[/wizard]]
+               
     """
     lead = p.api.action.crm.lead.getObject(guid)
     if lead.customerguid:
@@ -20,7 +23,7 @@ def main(q, i, p, params, tags):
         customername = '<No related customer>'
     
     searchresult = p.api.action.ui.page.find(name="lead_detail_%s"%guid)['result']
-    parentpage = p.api.action.ui.page.find(name="Home", space="crm")['result'][0]
+    parentpage = p.api.action.ui.page.find(name="Leads", space="crm")['result'][0]
     
     if searchresult:
         p.api.action.ui.page.update(guid, "lead_detail_%s"%guid, "crm", "lead", parentpage, "crm lead", 

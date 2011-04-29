@@ -1,14 +1,19 @@
 #CRM Home
 
-<div id="pagetree" class="macro macro_pagetree"></div>
+[[pagetree]][[/pagetree]]
 
-<div class="macro macro_sqlgrid">
+[[sqlgrid]]
     {
         "dbconnection": "sampleapp",
         "table": "ui_view_page_list",
         "schema": "ui_page",
-        "fields": ["category", "name", "parent", "space"],
-        "link": "name",
+        "columns" : {
+            "name": "Name",
+            "category" : "Category",
+            "space": "Space"},
+        "wheredict": {
+            "space" : "crm"
+        },
         "sort": "name",
         "pagesize": 10,
         "width": 600,
@@ -20,4 +25,7 @@
             "space": 70
         }
     }
-</div>
+[[/sqlgrid]]
+
+
+

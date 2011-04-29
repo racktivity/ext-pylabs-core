@@ -6,14 +6,15 @@ def main(q, i, p, params, tags):
     activity.name = params['name']
     activity.description = params['description']
     activity.location = params['location']
-    activity.type = params['type']
-    activity.priority = params['priority']
-    activity.status = params['status']
+    #activity.type =  q.enumerators.activitytype.getByName(params['type'])
+    #activity.priority = q.enumerators.activitypriority.getByName(params['priority'])
+    #activity.status = q.enumerators.activitystatus.getByName(params['status']) 
     activity.customerguid = params['customerguid']
     activity.leadguid = params['leadguid']
     activity.starttime = params['starttime']
     activity.endtime = params['endtime']
-    activity.save()
+    p.api.model.crm.activity.save(activity)
+    #activity.save()
     params['result'] = activity.guid
     
 def match(q, i, p, params, tags):

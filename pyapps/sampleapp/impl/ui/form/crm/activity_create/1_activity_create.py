@@ -1,3 +1,4 @@
+
 TAB_GENERAL_TITLE = 'Create Activity'
 TAB_GENERAL_NAME = 'Activity name : '
 TAB_GENERAL_DESCRIPTION = 'Activity description : '
@@ -16,7 +17,7 @@ MSGBOX_CONFIRMATION_TITLE = 'Confirm activity?'
 
 
 def callCloudAPI(api, name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime):
-    result = api.crm.activity.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
+    result = api.action.crm.activity.create(name, description, location, type, priority, status, customerguid, leadguid, starttime, endtime)['result']    
     return result
 
 def getCustomers(api):
@@ -34,15 +35,18 @@ def getLeads(api):
     return leads
 
 def getType(q):
-    type = q.enumerators.activitytype._pm_enumeration_items
+    type = dict((k, str(v)) for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems())
+    #type = q.enumerators.activitytype._pm_enumeration_items
     return type
 
 def getStatus(q):
-    status = q.enumerators.activitystatus._pm_enumeration_items
+    status =dict((k, str(v)) for k, v in q.enumerators.activitystatus._pm_enumeration_items.iteritems())
+    #status = q.enumerators.activitystatus._pm_enumeration_items
     return status
 
 def getPriority(q):
-    priority = q.enumerators.activitypriority._pm_enumeration_items
+    priority = dict((k, str(v)) for k, v in q.enumerators.activitypriority._pm_enumeration_items.iteritems())
+    #priority = q.enumerators.activitypriority._pm_enumeration_items
     return priority
 
 
@@ -101,16 +105,8 @@ def main(q, i, p, params, tags):
     tab_general.addDateTime(name = 'endtime',
                         question = TAB_GENERAL_ENDTIME)
     
-    
-    #below shows up when clicked button in tab after entering all values
-    answer = q.gui.dialog.showMessageBox(message = MSGBOX_CONFIRMATION,
-                                         title = MSGBOX_CONFIRMATION_TITLE,
-                                         msgboxButtons = 'YesNo',
-                                         msgboxIcon = 'Question',
-                                         defaultButton = 'Yes')
-    
-    if answer == 'No':
-        return
+    form.loadForm(q.gui.dialog.askForm(form))
+    tab_general = form.tabs['general'] 
     
     result = callCloudAPI(p.api,
                           tab_general.elements['name'].value,
@@ -122,6 +118,6 @@ def main(q, i, p, params, tags):
                           tab_general.elements['customer'].value,
                           tab_general.elements['lead'].value,
                           tab_general.elements['starttime'].value,
-                          tab_general.elements['endtime'].value,)
+                          tab_general.elements['endtime'].value)
 
     params['result'] = result

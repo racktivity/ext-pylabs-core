@@ -15,17 +15,28 @@ def main(q, i, p, params, tags):
 *   **Address:** %(address)s
 *   **VAT:** %(vat)s
 *   **Status:** %(status)s
-
+<br />
+<br />
+[[wizard:title=Edit, name=customer_edit, extra=%(params)s]][[/wizard]]
+[[wizard:title=Delete, name=customer_delete, extra=%(params)s]][[/wizard]]
+[[wizard:title=Create New Lead, name=lead_create, extra=%(params)s]][[/wizard]]
+[[wizard:title=Reset Password, name=customer_resetpassword, extra=%(params)s]][[/wizard]]
+<br />
 <div class="macro macro_sqlgrid">
     {
         "dbconnection": "sampleapp",
         "table": "crm_view_lead_list",
-        "schema": "crm",
-        "fields": ["name", "source", "type", "status"],
+        "schema": "crm_lead",
+        "columns": {
+            "name":"Lead Name"
+            },
+        "wheredict": {
+            "customerguid":"%(customerguid)s"
+            },
         "sort": "name",
         "pagesize": 10,
-        "width": 600,
-        "height": 490,
+        "width": 300,
+        "height": 300,
         "fieldwidth": {
             "name": 120,
             "source": 120,
@@ -35,9 +46,7 @@ def main(q, i, p, params, tags):
     }
 
 </div>
-
-[[wizard:title=Edit, name=customer_edit, extra=%(params)s]][[/wizard]]
-[[wizard:title=Delete, name=customer_delete, extra=%(params)s]][[/wizard]]
+<br />
 """
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']

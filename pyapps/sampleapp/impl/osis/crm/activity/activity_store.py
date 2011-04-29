@@ -14,12 +14,14 @@ def main(q, i, p, params, tags):
     rootobject = params['rootobject']
 
     values = {'name': rootobject.name, 
-              'customer': rootobject.customer,
-              'lead': rootobject.lead,
+              'customer': rootobject.customerguid,
+              'lead': rootobject.leadguid,
               'type': rootobject.type, 
               'priority': rootobject.priority,
               'starttime': rootobject.starttime,
-              'endtime': rootobject.endtime}
+              'endtime': rootobject.endtime,
+              'description':rootobject.description
+              }
 
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
 

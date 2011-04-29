@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 SCRIPTDIR=$(readlink -f $(dirname $0))
 REPOPATH=$(readlink -f "${SCRIPTDIR}/../..")
 TFOLDER="/tmp/$(basename $0).$$.tmp"

@@ -21,7 +21,7 @@ MSGBOX_CUSTOMER_CREATE_FAILED_TITLE = "Customer creation failed"
 
 
 def callCloudAPI(api, name, email, login, password, address, vat):
-	result = api.crm.customer.create(name, email, login, password, address, vat)['result']    
+	result = api.action.crm.customer.create(name, login,  password, email, address, vat)['result']    
 	return result
 
 
@@ -39,17 +39,19 @@ def main(q, i, p, params, tags):
     tab_general.addPassword(name='password', text = TAB_GENERAL_PASSWORD, helpText = TAB_GENERAL_PASSWORD_HELPTEXT)		
     tab_general.addText(name='address', text = TAB_GENERAL_ADDRESS, helpText = TAB_GENERAL_ADDRESS_HELPTEXT)	
     tab_general.addText(name='vat', text = TAB_GENERAL_VAT, helpText = TAB_GENERAL_VAT_HELPTEXT)
-
-    q.gui.dialog.askForm(form)
     
-    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
-                                         title=MSGBOX_CREATE_CONFIRMATION_TITLE,
-                                         msgboxButtons='OKCancel',
-                                         msgboxIcon='Question',
-                                         defaultButton='OK')
+    form.loadForm(q.gui.dialog.askForm(form))
+    tab_general = form.tabs['general']
+    #q.gui.dialog.askForm(form)
+    
+    #answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+    #                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
+    #                                     msgboxButtons='OKCancel',
+    #                                     msgboxIcon='Question',
+    #                                     defaultButton='OK')
 
-    if answer == 'CANCEL':
-        return
+    #if answer == 'CANCEL':
+    #    return
 
     result = callCloudAPI(p.api,
                           tab_general.elements['name'].value,
@@ -60,3 +62,6 @@ def main(q, i, p, params, tags):
                           tab_general.elements['vat'].value)
 
     params['result'] = result
+    
+def match(q, i, p, params, tags):
+	return True
