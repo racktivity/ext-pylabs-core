@@ -1,6 +1,6 @@
 from pylabs import q
 from pylabs.baseclasses.CommandWrapper import CommandWrapper
-import urllib
+import urllib2
 
 CHUNKSIZE=8192
 
@@ -53,20 +53,13 @@ class HttpFS(object):
 
         # construct url again
         connect_url = 'http://%s%s' % (self.server,self.path)
-        self.http_socket = urllib.urlopen(connect_url)
+        try:
+            self.http_socket = urllib2.urlopen(connect_url)
+        except urllib2.HTTPError, error:
+            if suppressErrors:
+                return False
+            raise
 
-        if self.http_socket.getcode() == 403: # Forbidden
-            if not suppressErrors:
-                raise RuntimeError("You are not authorized to access resource: " + connect_url)
-            return False
-        if self.http_socket.getcode() == 404: # Not found
-            if not suppressErrors:
-                raise RuntimeError("Resouce %s not found" % connect_url)
-            return False
-        if self.http_socket.getcode() != 200: # OK
-            if not suppressErrors:
-                raise RuntimeError("unknown error occurd while geeting resource "+ connect_url)
-            return False
         return True
 
     def exists(self):

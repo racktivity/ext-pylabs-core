@@ -85,6 +85,27 @@ class SystemNet:
             return True
         else:
             return False
+
+    def enableProxy(self):
+        maincfg = pymonkey.q.config.getConfig('main')
+        if 'proxy' in maincfg:
+            import os, urllib2
+            proxycfg = maincfg['proxy']
+            proxyserver = proxycfg['server']
+            params = ""
+            proxyuser =  proxycfg.get('user')
+            if proxyuser:
+                params += proxyuser
+                proxypassword = proxycfg.get('password')
+                if proxypassword:
+                    params += ":%s" % proxypassword
+                params += "@"
+            params += proxyserver
+            if pymonkey.q.platform.isUnix():
+                os.environ['http_proxy'] = proxyserver
+            proxy_support = urllib2.ProxyHandler()
+            opener = urllib2.build_opener(proxy_support)
+            urllib2.install_opener(opener)
     
     def getNics(self,up=False):
         """ Get Nics on this machine

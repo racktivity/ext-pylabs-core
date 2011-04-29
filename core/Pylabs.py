@@ -297,6 +297,7 @@ class Pylabs:
 
         self.agentid="%s.%s" % (agentconfig.getValue("main","nodename"),agentconfig.getValue("main","domain"))
         pylabs.q.application.agentid = self.agentid
+        pylabs.q.system.net.enableProxy()
 
         
         if len(pylabs.q.application.agentid)<5:
