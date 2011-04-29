@@ -87,7 +87,7 @@ class SystemNet:
             return False
 
     def enableProxy(self):
-        maincfg = pymonkey.q.config.getConfig('main')
+        maincfg = pylabs.q.config.getConfig('main')
         if 'proxy' in maincfg:
             import os, urllib2
             proxycfg = maincfg['proxy']
