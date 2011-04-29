@@ -12,6 +12,7 @@
     "columns": {
         "name": "Macro name"
     },
+    "name", "Leads",
     "link": "name,guid",
     "sort": "name",
     "pagesize": 10,

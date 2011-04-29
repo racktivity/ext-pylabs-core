@@ -34,6 +34,7 @@ def main(q, i, p, params, tags):
             "customerguid":"%(customerguid)s"
             },
         "sort": "name",
+        "name": "Leads",
         "pagesize": 10,
         "width": 300,
         "height": 300,

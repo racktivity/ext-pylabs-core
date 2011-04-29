@@ -15,6 +15,7 @@
             "space" : "crm"
         },
         "sort": "name",
+        "name", "Pages",
         "pagesize": 10,
         "width": 600,
         "height": 490,
