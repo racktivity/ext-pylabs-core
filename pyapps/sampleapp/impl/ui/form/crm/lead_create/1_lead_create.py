@@ -31,6 +31,9 @@ def callCloudAPI(api, name, code, customer, source, type, status, amount, probab
     result = api.action.crm.lead.create(name, code, customer, source, type, status, amount, probability)['result']    
     return result
 
+#~ def getCustomers(api):
+    #~ customers = dict([customer['guid'],customer['name']] for customer in api.action.crm.customer.list()['result'])
+    #~ return customers
 
 def getTypes(api):
     leadTypes_list = api.action.crm.lead.listTypes()['result']
@@ -66,8 +69,6 @@ def main(q, i, p, params, tags):
     ###########################
     tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
     tab_general.addText(name='code', text = TAB_GENERAL_CODE, helpText = TAB_GENERAL_CODE_HELPTEXT)
-    tab_general.addText(name='customer_name', text = TAB_GENERAL_CUSTOMER_NAME, value = customer.name, helpText = TAB_GENERAL_CUSTOMER_HELPTEXT, optional = True)
-    tab_general.addText(name='customer_guid', text = TAB_GENERAL_CUSTOMER_GUID, value = customer.guid, helpText = TAB_GENERAL_CUSTOMER_HELPTEXT, optional = True)
     tab_general.addChoice(name='source', text = TAB_GENERAL_SOURCE, values = getSources(p.api), helpText = TAB_GENERAL_SOURCE_HELPTEXT, optional = True)
     tab_general.addChoice(name='type', text = TAB_GENERAL_TYPE, values = getTypes(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional = True)
     tab_general.addChoice(name='status', text = TAB_GENERAL_STATUS, values=getStatuses(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional=True)
@@ -80,7 +81,7 @@ def main(q, i, p, params, tags):
     result = callCloudAPI(p.api,
                           tab_general.elements['name'].value,
                           tab_general.elements['code'].value,
-                          tab_general.elements['customer_guid'].value,
+                          customer.guid,
                           tab_general.elements['source'].value,
                           tab_general.elements['type'].value,
                           tab_general.elements['status'].value,
