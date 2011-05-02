@@ -16,7 +16,12 @@ def main(q, i, p, params, tags):
     q.logger.log('[DEBUG] - In pop3_processor:main', level=3)
     decodedparams = base64.decodestring(q.base.tags.getObject(params['eventBody']).tagGet('mail'))
     q.logger.log('[DEBUG] - Decoded params are: %s' %decodedparams,  level=3)
-    parameters = dict([entry.split('=') for entry in decodedparams.splitlines() if entry and entry != '!@***LEAD***@!'])
+    parameters = dict()
+    for line in decodedparams.splitlines():
+        if line and line !=  '!@***LEAD***@!':
+            param = line.split('=')
+            if len(param) == 2:
+                parameters[param[0].strip()] = param[1].strip()
     for field in FIELDS:
         parameters[field] = parameters.get(field)
 
