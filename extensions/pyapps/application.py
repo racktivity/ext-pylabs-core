@@ -25,11 +25,19 @@ class AppManager(object):
     def install (self, appname):
         p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
+        q.action.start("Generating config for %s" % appname)
         gen.generateAll()
+        q.action.stop()
+        q.action.start("Setting up %s" % appname)
         gen.setup()
+        q.action.stop()
+        q.action.start("Restarting %s" % appname)
         gen.stop()
         gen.start()
+        q.action.stop()
+        q.action.start("Initializing %s" % appname)
         gen.init()
+        q.action.stop()
 
     def syncPortal(self, appname):
         from alkira.sync_md_to_lfw import sync_to_alkira
