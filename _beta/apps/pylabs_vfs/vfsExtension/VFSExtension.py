@@ -1,6 +1,4 @@
 from pylabs import q
-import fuse
-import sys
 from VFSMetadata import *
 
 
