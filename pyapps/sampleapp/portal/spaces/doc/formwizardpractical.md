@@ -65,7 +65,7 @@ Creating a form with one tab goes as follows:
 The `addTab` function expects two arguments, a unique ID ('general' in the above example) and  a title name for the tab.
 
 The tab object has several methods to fill your form with text fields, choices, multiple choices, yes/no questions, ... The methods have clear names so you know which type of field you are going to add.
-See the [Form and Wizard API](/sampleapp/#/doc/formwizard) for details about the fields.
+See the [Form API](/sampleapp/#/doc/formwizard) for details about the fields.
 
 An example of a basic form:
 
@@ -127,6 +127,8 @@ The above form in wizard style then looks like:
                                          msgboxButtons='OKCancel',
                                          msgboxIcon='Question',
                                          defaultButton='OK')
+
+For more methods that can be used in the wizards, see the [Wizard API](/sampleapp/#/doc/wizardapi).
 
 
 ##Other Forms

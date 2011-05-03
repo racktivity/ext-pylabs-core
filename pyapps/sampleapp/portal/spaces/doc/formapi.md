@@ -1,6 +1,8 @@
-#Form and Wizard API
+#Form API
 
-Following methods are available in the wizard dialect.
+In this section you can find the API documentation of the methods to create forms in a PyLabs Application.
+The methods to create a form are available in the name space `q.gui.form.`.
+
 
 ###createForm()
 
