@@ -84,7 +84,7 @@ class EasyDialogWizardServer(EasyDialogGeneric):
     @dialogmessage
     def askYesNo(self,question,defaultValue=None):
         values = {True: 'Yes', False: 'No'}
-        return self.pm_actions.ShowOptions(question, values)
+        return self.pm_actions.ShowOptions(question, values, defaultValue)
 
     @dialogmessage
     def askPassword(self,question, defaultValue=None):
@@ -110,9 +110,9 @@ class EasyDialogWizardServer(EasyDialogGeneric):
             thechoices = choices
 
         if len(thechoices) > 4:
-            return self.pm_actions.ShowDropDown(question, thechoices)
+            return self.pm_actions.ShowDropDown(question, thechoices, defaultValue)
         else:
-            return self.pm_actions.ShowOptions(question, thechoices)
+            return self.pm_actions.ShowOptions(question, thechoices, defaultValue)
 
     @dialogmessage
     def askChoiceMultiple(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
