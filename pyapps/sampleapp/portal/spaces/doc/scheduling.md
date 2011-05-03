@@ -6,7 +6,7 @@ For more details about the setup of the mail server in this sample application, 
 
 
 ##Creating a Scheduled Action
-Similar to all other actions of a PyApp, sheduled actions too are tasklets. A scheduled action however has a specific `match` function, which defines the execution interval of the action. The tasklet is located in `<pyapp name>/impl/schedule/config/<config app>/`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+Similar to all other actions of a PyApp, scheduled actions too are tasklets. A scheduled action however has a specific `match` function, which defines the execution interval of the action. The tasklet is located in `<pyapp name>/impl/schedule/config/<config app>/`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 
 ##PyLabs Scheduling
