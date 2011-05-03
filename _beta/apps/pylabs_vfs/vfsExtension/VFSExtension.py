@@ -1,4 +1,6 @@
 from pylabs import q
+import sys
+sys.path.append('/opt/qbase5/lib/pylabs/extensions/pylabs_vfs')
 from VFSMetadata import *
 
 
@@ -44,7 +46,7 @@ class VFSExtension(object):
         
         #Check for the mount status of the virtual filesystem
         self.preMount(mountpoint=None, root=None, localfilestore=None, metadatapath=None)
-        command = 'python /opt/qbase5/lib/pylabs/extensions/clients/vfs/memvfs.py '+self.mountpoint
+        command = 'python /opt/qbase5/lib/pylabs/extensions/pylabs_vfs/memvfs.py '+self.mountpoint
         try:
             q.system.unix.executeAsUser(command, username='root')
             self._mounted = True
