@@ -28,12 +28,15 @@ MSGBOX_lead_CREATE_FAILED_TITLE = "lead creation failed"
 
 
 def callCloudAPI(api, name, code, customer, source, type, status, amount, probability):
+   
     result = api.action.crm.lead.create(name, code, customer, source, type, status, amount, probability)['result']    
     return result
 
-#~ def getCustomers(api):
-    #~ customers = dict([customer['guid'],customer['name']] for customer in api.action.crm.customer.list()['result'])
-    #~ return customers
+def getCustomers(api):
+    customers = dict()
+    result = api.action.crm.customer.list()['result']
+    map(lambda x: customers.__setitem__(x['guid'], x['name']), result)
+    return customers
 
 def getTypes(api):
     leadTypes_list = api.action.crm.lead.listTypes()['result']
@@ -58,17 +61,20 @@ def getSources(api):
     return leadSources
 
 def main(q, i, p, params, tags):
+    q.logger.log("[lead create wizard] About to generate lead create wizard ",level=6)
     form = q.gui.form.createForm()
     tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
-    
-    customerguid = params['customerguid']
-    customer = p.api.action.crm.customer.getObject(customerguid)
+    if 'customerguid' in params:
+        customerguid = params['customerguid']
+        customer = p.api.action.crm.customer.getObject(customerguid)
 
     ###########################
     # General information tab #
     ###########################
     tab_general.addText(name='name', text = TAB_GENERAL_NAME, helpText = TAB_GENERAL_NAME_HELPTEXT)
     tab_general.addText(name='code', text = TAB_GENERAL_CODE, helpText = TAB_GENERAL_CODE_HELPTEXT)
+    if 'customerguid' not in params:
+        tab_general.addDropDown(name = 'customer',text = TAB_GENERAL_CUSTOMER_NAME, values = getCustomers(p.api), selectedValue = 0)
     tab_general.addChoice(name='source', text = TAB_GENERAL_SOURCE, values = getSources(p.api), helpText = TAB_GENERAL_SOURCE_HELPTEXT, optional = True)
     tab_general.addChoice(name='type', text = TAB_GENERAL_TYPE, values = getTypes(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional = True)
     tab_general.addChoice(name='status', text = TAB_GENERAL_STATUS, values=getStatuses(p.api), helpText = TAB_GENERAL_TYPE_HELPTEXT, optional=True)
@@ -77,11 +83,12 @@ def main(q, i, p, params, tags):
 
     form.loadForm(q.gui.dialog.askForm(form))
     tab_general = form.tabs['general']
-    
+    if 'customerguid' not in params:
+        customerguid=  tab_general.elements['customer'].value
     result = callCloudAPI(p.api,
                           tab_general.elements['name'].value,
                           tab_general.elements['code'].value,
-                          customer.guid,
+                          customerguid,
                           tab_general.elements['source'].value,
                           tab_general.elements['type'].value,
                           tab_general.elements['status'].value,

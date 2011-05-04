@@ -10,7 +10,6 @@ VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, p, params, tags):
     osis = OsisDB().getConnection(p.api.appname)
-
     rootobject = params['rootobject']
 
     values = {'name': rootobject.name, 
@@ -18,6 +17,8 @@ def main(q, i, p, params, tags):
               'lead': rootobject.leadguid,
               'type': rootobject.type, 
               'priority': rootobject.priority,
+              'location': rootobject.location,
+              'status': rootobject.status,
               'starttime': rootobject.starttime,
               'endtime': rootobject.endtime,
               'description':rootobject.description
