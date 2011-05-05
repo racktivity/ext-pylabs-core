@@ -19,6 +19,8 @@ class VFSExtension(object):
         if cfgfile.getValue('status','mounted') == 'True':
             self.unmount()
         
+        cfgfile.setParam('vfs_paths', 'root', root)
+        
         if localfilestore:
             cfgfile.setParam('vfs_paths', 'localfilestore', localfilestore)
         if metadatapath:
@@ -35,22 +37,27 @@ class VFSExtension(object):
             q.system.fs.createDir(self.mountpoint)
             
         
-        self.vfs = VFSMetadata(q.system.fs.joinPaths(cfg['metadatapath'],'vfsMD'), mountpoint)
-        cfgfile.setParam('status','mounted','True')
+        
     
     def mount(self, mountpoint, root, localfilestore=None, metadatapath=None):#, savepaths=False):
         
         #Check for the mount status of the virtual filesystem
+        cfgpath = q.system.fs.joinPaths(q.dirs.cfgDir, 'vfs.cfg')
+        cfgfile = q.tools.inifile.open(cfgpath)
+        cfg = cfgfile.getSectionAsDict('vfs_paths')
         self._preMount(mountpoint, root, localfilestore, metadatapath)
-        command = 'python /opt/qbase5/lib/pylabs/extensions/clients/vfs/memvfs.py '+self.mountpoint
+        command = 'python /opt/qbase5/lib/pylabs/extensions/pylabs_vfs/memvfs.py '+self.mountpoint
         try:
             q.system.unix.executeAsUser(command, username='root')
             self._mounted = True
         except Exception as ex:
             q.logger.log(ex)
         
+        self.vfs = VFSMetadata(q.system.fs.joinPaths(cfg['metadatapath'],'vfsMD'), mountpoint)
         #Initializing the virtual filesystem's metadata
         self._initializeVFS()
+        cfgfile.setParam('status','mounted','True')
+
 
     def listVersions(self):
         if self._mounted:
@@ -86,7 +93,7 @@ class VFSExtension(object):
         cfgpath = q.system.fs.joinPaths(q.dirs.cfgDir, 'vfs.cfg')
         cfgfile = q.tools.inifile.open(cfgpath)
         cfg = cfgfile.getSectionAsDict('vfs_paths')
-        
+        cfgfile.setParam('status', 'mounted', 'False')
         command = 'fusermount -uz '+ self.mountpoint
         self.vfs = None
         try:
