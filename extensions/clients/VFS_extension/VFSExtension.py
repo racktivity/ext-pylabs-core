@@ -1,4 +1,6 @@
 from pylabs import q
+import sys
+sys.path.append('/opt/qbase5/lib/pylabs/extensions/pylabs_vfs')
 from VFSMetadata import *
 
 
