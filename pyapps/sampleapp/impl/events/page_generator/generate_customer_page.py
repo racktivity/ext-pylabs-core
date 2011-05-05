@@ -19,6 +19,8 @@ def main(q, i, p, params, tags):
 <br />
 [[wizard:title=Edit, name=customer_edit, extra=%(params)s]][[/wizard]]
 [[wizard:title=Delete, name=customer_delete, extra=%(params)s]][[/wizard]]
+[[wizard:title=Create New Lead, name=lead_create, extra=%(params)s]][[/wizard]]
+[[wizard:title=Reset Password, name=customer_resetpassword, extra=%(params)s]][[/wizard]]
 <br />
 <div class="macro macro_sqlgrid">
     {
@@ -45,7 +47,6 @@ def main(q, i, p, params, tags):
 
 </div>
 <br />
-[[wizard:title=Create New Lead, name=lead_create, extra=%(params)s]][[/wizard]]
 """
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']

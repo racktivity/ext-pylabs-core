@@ -10,16 +10,19 @@ VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, p, params, tags):
     osis = OsisDB().getConnection(p.api.appname)
-
     rootobject = params['rootobject']
 
     values = {'name': rootobject.name, 
-              'customer': rootobject.customer,
-              'lead': rootobject.lead,
+              'customer': rootobject.customerguid,
+              'lead': rootobject.leadguid,
               'type': rootobject.type, 
               'priority': rootobject.priority,
+              'location': rootobject.location,
+              'status': rootobject.status,
               'starttime': rootobject.starttime,
-              'endtime': rootobject.endtime}
+              'endtime': rootobject.endtime,
+              'description':rootobject.description
+              }
 
     osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
 
