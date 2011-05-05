@@ -9,7 +9,7 @@ class VFSExtension(object):
     def __init__(self):
         self._mounted = False
         self.vfs = None
-    
+        self.mountpoint = None
     def _preMount(self,mountpoint, root, localfilestore=None, metadatapath=None):
         ''' A prerequisite method for mounting the Virtual FileSystem '''
         
@@ -87,7 +87,7 @@ class VFSExtension(object):
         cfgfile = q.tools.inifile.open(cfgpath)
         cfg = cfgfile.getSectionAsDict('vfs_paths')
         
-        command = 'fusermount -uz '+cfg['mountpoint']
+        command = 'fusermount -uz '+ self.mountpoint
         self.vfs = None
         try:
             q.system.unix.executeAsUser(command, username='root')
