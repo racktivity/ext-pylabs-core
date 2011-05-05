@@ -8,7 +8,7 @@ class VFSExtension(object):
         self._mounted = False
         self.vfs = None
     
-    def preMount(self,mountpoint=None, root=None, localfilestore=None, metadatapath=None):
+    def _preMount(self,mountpoint, root, localfilestore=None, metadatapath=None):
         ''' A prerequisite method for mounting the Virtual FileSystem '''
         
         cfgpath = q.system.fs.joinPaths(q.dirs.cfgDir, 'vfs.cfg')
@@ -17,18 +17,14 @@ class VFSExtension(object):
         if cfgfile.getValue('status','mounted') == 'True':
             self.unmount()
         
-        if root:
-            cfgfile.setParam('vfs_paths', 'root', root)
         if localfilestore:
             cfgfile.setParam('vfs_paths', 'localfilestore', localfilestore)
         if metadatapath:
             cfgfile.setParam('vfs_paths', 'metadatapath', metadatapath)
-        if mountpoint:
-            cfgfile.setParam('vfs_paths', 'mountpoint', mountpoint)
             
 
         cfg = cfgfile.getSectionAsDict('vfs_paths')                
-        self.mountpoint = cfg['mountpoint']
+        self.mountpoint = mountpoint
         
         if q.system.fs.isDir(self.mountpoint):
             if not q.system.fs.isEmptyDir(self.mountpoint):
@@ -37,13 +33,13 @@ class VFSExtension(object):
             q.system.fs.createDir(self.mountpoint)
             
         
-        self.vfs = VFSMetadata(q.system.fs.joinPaths(cfg['metadatapath'],'vfsMD'), cfg['mountpoint'])
+        self.vfs = VFSMetadata(q.system.fs.joinPaths(cfg['metadatapath'],'vfsMD'), mountpoint)
         cfgfile.setParam('status','mounted','True')
     
-    def mount(self, mountpoint=None, root=None, localfilestore=None, metadatapath=None):#, savepaths=False):
+    def mount(self, mountpoint, root, localfilestore=None, metadatapath=None):#, savepaths=False):
         
         #Check for the mount status of the virtual filesystem
-        self.preMount(mountpoint=None, root=None, localfilestore=None, metadatapath=None)
+        self._preMount(mountpoint, root, localfilestore, metadatapath)
         command = 'python /opt/qbase5/lib/pylabs/extensions/clients/vfs/memvfs.py '+self.mountpoint
         try:
             q.system.unix.executeAsUser(command, username='root')
