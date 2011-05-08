@@ -1,42 +1,41 @@
-
 '''Utility methods to work with hg repositories'''
 
-#import os.path
-import httplib
-from urlparse import urlparse, urlunparse
-#import pylabs
 from pylabs import q
-from pylabs import i
-from pylabs.Shell import *
+from mercurial import hg, ui, commands
 
+class NewUI(ui.ui):
+    def write(self, *args, **opts):
+         if self._buffers:
+            self._buffers[-1].extend([str(a) for a in args])
 
+        
 class HgClient4:    
     
-    def __init__(self,hgbasedir,remoteUrl="",branchname="default"):
+    def __init__(self,hgbasedir,remoteUrl="",branchname=None):
         """
         @param base dir where local hgrepository will be stored
         @param remote url of hg repository, can be empty if local repo is created
         """
-        
         self.remoteUrl=remoteUrl.strip()
         self.basedir=hgbasedir
         self.branchname=branchname
         self.reponame=""
         self.repokey=""
-        #o = urlparse(self.remoteUrl)
+        self._ui = NewUI()
         self._log("Init hgclient: basedir:%s remoteurl:%s branchname:%s" %(hgbasedir,remoteUrl,branchname))
-        if (not isinstance(hgbasedir, str) or not isinstance(remoteUrl, str) or not isinstance(branchname, str)):
+        
+        if (not isinstance(hgbasedir, basestring) or not isinstance(remoteUrl, basestring))\
+         or (branchname and not isinstance(branchname, basestring)):
             raise ValueError("Input to hgclient need to be all strings")
-        
-        
+
         if q.system.fs.exists(self.basedir) and not q.system.fs.exists(q.system.fs.joinPaths(self.basedir,".hg")):
+            if not self.remoteUrl:
+                raise RuntimeError(".hg not found and remote url is not supplied")
             if len(q.system.fs.listFilesInDir(self.basedir,recursive=True))==0:
                 self._clone()
             else:
                 #did not find the mercurial dir
                 if q.qshellconfig.interactive:
-                #import pdb
-                #pdb.set_trace()
                     response=q.gui.dialog.askYesNo("\nDid find a directory but there was no mercurial metadata inside.\n\tdir: %s\n\turl:%s\n\tIs it ok to remove all files from the target destination before cloning the repository?"\
                                                    % (self.basedir,self.remoteUrl))
                     if response:
@@ -47,23 +46,15 @@ class HgClient4:
                         self._raise("Could not clone %s to %s, target dir was not empty" % (self.basedir,self.remoteUrl))
                 else:
                     self._raise("Could not clone %s to %s, target dir was not empty" % (self.basedir,self.remoteUrl))
-
-        if not q.system.fs.exists(self.basedir):            
+                    
+        if not q.system.fs.exists(self.basedir):
+            if not self.remoteUrl:
+                raise RuntimeError(".hg not found and remote url is not supplied")            
             q.system.fs.createDir(self.basedir)
             self._clone()
-            
-        if remoteUrl=="":
-            q.system.fs.changeDir(self.basedir)
-            if self.getbranchname()<>branchname:
-                self._raise("Cannot load directory because found branch %s does not correspond with requested branch %s" % (self.getbranchname(),branchname))
-            result,output=self._hgCmdExecutor("hg paths")
-            line=q.codetools.regex.findLine("default",output)
-            if line=="":
-                self._raise("Cannot find remote url of repo %s (use hg path)" % self.basedir)
-            self.remoteUrl=line.split("=")[1].strip()
-            if branchname=="":
-                self.branchname=self.getbranchname()
-            self._getRepoInfo()
+                
+        if q.system.fs.exists(self.basedir) and q.system.fs.exists(q.system.fs.joinPaths(self.basedir,".hg")):
+            self._repo = hg.repository(self._ui, self.basedir)
 
     def _getRepoInfo(self):
         """
@@ -112,7 +103,7 @@ class HgClient4:
         pass
     
     def verify(self):
-        cmd="hg verify"
+        cmd="verify"
         exitCode, output = self._hgCmdExecutor(cmd,autoCheckFix=False)
         if exitCode>0:
             self._raise("invalid repo, output verify: <<<<<<<<<<<<<<<<<<<<\n" + output + "\n>>>>>>>>>>>>>>>>>>")
@@ -123,7 +114,7 @@ class HgClient4:
         @return True if fixed
         """
         self._log("mercurial verify %s" % (self.basedir),2)
-        cmd="hg verify"
+        cmd="verify"
         exitCode, output = self._hgCmdExecutor(cmd,autoCheckFix=False)
         if exitCode>0:
             msg="Mercurial directory on %s is corrupt./n%s" % (self.basedir,output)
@@ -147,27 +138,46 @@ class HgClient4:
     def _raise(self, message):        
         message="ERROR hgclient: %s\nPlease fix the merurial local repo manually and restart failed mercurial action.\nRepo is %s" % (message, self.basedir)
         raise RuntimeError(message)
+
+    def _hgCmdExecutor(self,cmd, *args, **kwargs):
+
+        recursivedepth = kwargs.pop('recursivedepth', 0)
+        autoCheckFix = kwargs.pop('autoCheckFix', True)
+        die = kwargs.pop('die', True)
+        output = ''
+        exitCode = ''
+        error = 0
+        self._ui.pushbuffer()
         
-        
-    def _hgCmdExecutor(self,cmd,recursivedepth=0, autoCheckFix=True,die=True):
-        
+        try:
+            command = getattr(commands, cmd)
+            if cmd == 'clone':
+                exitCode = command(self._ui, *args, **kwargs)
+            else:
+                exitCode = command(self._ui, self._repo, *args, **kwargs)
+            output = self._ui.popbuffer()
+            if exitCode is False:
+                exitCode = 0
+            if exitCode is True:
+                exitCode = 1
+        except Exception , e:
+            output = str(e)
+            error = 1
+
         self._log("executing command: '" + cmd + "' in dir " + self.basedir)
-        (exitCode,output,error) = q.system.process.run('%s 2>&1' % (cmd), stopOnError=False, cwd=self.basedir)
-        #print "DDD:"+output
         if output.find("authorization failed") <> -1:
             raise RuntimeError("ERROR: hgclient %s\nAuthorization failed cannot execute mercurial command: %s" % (self.reponame,cmd))
         if output.find("unknown revision 'default'")<>-1 and die==False:
             return 999,output
         if output.find("abort") <> -1 and exitCode == 0:
             raise RuntimeError("ERROR: hgclient %s\nInvalid exitcode on cmd %s!" % (self.reponame,cmd))
-        if exitCode>0:
+        if exitCode > 0 or error:
             msg="ERROR: hgclient %s\nCould not execute hg cmd: \n%s\nOutput:\n%s" % (self.reponame,cmd,output)
             if die:
                 raise RuntimeError(msg)
             else:
                 self._log(msg,4)                
-            pass #@todo check for command not found (hg), ....
-        if exitCode>0 and autoCheckFix:            
+        if exitCode > 0 and autoCheckFix:            
             result=False
             if recursivedepth==0:
                 #unknown error
@@ -176,7 +186,7 @@ class HgClient4:
                 if result:
                     #repo has been fixed
                     self._log("Repo %s has been fixed, will try to execute relevant hg command again" % self.basedir)
-                    exitCode,output = self._hgCmdExecutor(cmd,recursivedepth=1)
+                    exitCode,output = self._hgCmdExecutor(cmd, *args, **kwargs)
             if not result:
                 self._raise("Could not execute mercurial command: %s.\nOutput: %s\n%s" % (cmd,exitCode,output))
         return exitCode,output
@@ -186,13 +196,14 @@ class HgClient4:
         self._log("pull %s" % (self.basedir))
         self.checkConnection()
         self._log("pull %s to %s" % (self.remoteUrl,self.basedir))
-        cmd="hg pull" # '%s'" % self.remoteUrl
-        self._hgCmdExecutor(cmd)
+        cmd="pull"
+        url = self.getUrl()
+        self._hgCmdExecutor(cmd, source=url)
 
     def isTrackingFile(self, file):
         self._log("isTrackingFile of %s" % (self.basedir))
-        cmd="hg status '%s'" % file
-        exitcode,output=self._hgCmdExecutor(cmd)
+        cmd = 'status'
+        exitCode, output = self._hgCmdExecutor(cmd, file)
         return output==''
 
     def getModifiedFiles(self):
@@ -215,15 +226,14 @@ class HgClient4:
         for file in files:
             if file[-1] == '~': # if backupfile
                 q.system.fs.removeFile(file)
-                cmd = "hg remove '%s'" % (file)
-                self._hgCmdExecutor(cmd)
-                cmd = "hg commit -m 'removed backup file' '%s' " % (file)
-                self._hgCmdExecutor(cmd)
+                cmd = 'remove'
+                self._hgCmdExecutor(cmd, file)
+                cmd = 'commit'
+                message = "removed backup file '%s' " % (file)
+                self._hgCmdExecutor(cmd, message = message)
 
-                
-        cmd="hg status" 
         self._removeRedundantFiles()
-        exitcode,output=self._hgCmdExecutor(cmd)
+        output = self.status()
         lines=output.split("\n")
         modified=[]
         added=[]
@@ -246,7 +256,7 @@ class HgClient4:
                 elif code.lower()=="a":
                     added.append(path)
                 elif code.lower()=="r":
-                    removed.append(path)                    
+                    removed.append(path)      
         return {"added":added,"missing":missing,"modified":modified,"ignored":ignored,"removed":removed,"nottracked":nottracked}
     
     def hasModifiedFiles(self):
@@ -255,36 +265,9 @@ class HgClient4:
             return True
         else:
             return False            
-
-    def status(self):
-        """
-        remarks
-        - missing means, file referenced in mercurial local repo but no longer on filesystem (! in hg status) 
-        - notracked mans, file is on filesystem but not in repo (?)
-        - removed means, mercurial repo knows file has been removed from filesystem (R)
-        - ignored, means hg has been instructed to ignore that file (I)
-        """
-        result=self.getModifiedFiles()
-        if len(result)>0:
-            if len(result["added"])>0:
-                q.console.echo("\n".join(["Added: %s" % item for item in result["added"]]))
-            if len(result["removed"])>0:
-                q.console.echo("\n".join(["Removed: %s" % item for item in result["removed"]]))
-            if len(result["modified"])>0:
-                q.console.echo("\n".join(["Modified: %s" % item for item in result["modified"]]))
-            if len(result["ignored"])>0:
-                q.console.echo("\n".join(["Untracked: %s" % item for item in result["ignored"]]))
-            if len(result["removed"])>0:            
-                q.console.echo("\n".join(["Removed: %s" % item for item in result["removed"]]))
-            if len(result["missing"])>0:            
-                q.console.echo("\n".join(["Missing: %s" % item for item in result["missing"]]))
-            if len(result["nottracked"])>0:            
-                q.console.echo("\n".join(["Nottracked: %s" % item for item in result["nottracked"]]))
-            return result
-    
+            
     def updatemerge(self,commitMessage="",ignorechanges=False,addRemoveUntrackedFiles=False,trymerge=True, release=0):
         self._log("updatemerge %s" % (self.basedir))
-        #self.checkbranch()
         if ignorechanges and trymerge:
             self._raise("Cannot ignore changes and try to do a merge at the same time")
         if ignorechanges and addRemoveUntrackedFiles:
@@ -371,24 +354,27 @@ class HgClient4:
 
     # If there are local changes in the repo should we crash?
     def update(self,release=0,force=False,die=True, strict=False):
-        if release==0 and self.branchname<>"":
+        clean = False
+        check = False
+        if release==0 and self.branchname:
             release=self.branchname
         self._log("update %s to release: %s" % (self.basedir,release))
         if force:
-            force="-C" # overwrite local changes..              see hg help update
+            clean = True
         elif strict:
-            force="-c" # don't allow automatic merge to occur.. see hg help update
+            check = True
         else:
             force=""   # allow automatic merge to occur..       see hg help update
-        if release>0:
-            cmd="hg update %s -r %s" % (force,release)
+        cmd = 'update'
+        if release:
+			result,output=self._hgCmdExecutor(cmd, die=False, check=check, clean=clean, rev=release)
         else:
-            cmd="hg update %s" % force
-        result,output=self._hgCmdExecutor(cmd,die=False)
+			result,output=self._hgCmdExecutor(cmd, die=False, check=check, clean=clean)
+        
         if result==999:
             #means default does not exist
-            cmd="hg update %s" % force
-            result,output=self._hgCmdExecutor(cmd,die=False)
+            cmd="update"
+            result,output=self._hgCmdExecutor(cmd, die=False, check=check, clean=clean)
         output.replace("***ERROR***\n","")
         if output.find("abort")<>-1 or result>0:
             if die:
@@ -402,8 +388,8 @@ class HgClient4:
         remove file with path from local repo
         """
         self._log("remove file from local repo with path %s" % path,8)
-        cmd="hg remove %s " % (path)
-        self._hgCmdExecutor(cmd)
+        cmd="remove"
+        self._hgCmdExecutor(cmd, path)
 
     def merge(self,commitMessage="",commit=True,silent=False):
         self._log("merge '%s'" % (self.basedir))
@@ -411,17 +397,13 @@ class HgClient4:
         self._removeRedundantFiles()
         if self.hasModifiedFiles():
             self._raise("Cannot merge %s because there are untracked files." % self.basedir)
-        cmd="hg merge"
+        cmd="merge"
         returncode,out=self._hgCmdExecutor(cmd,autoCheckFix=False,die=False)
         skip=False
         if out.find("there is nothing to merge")<>-1 or out.find("has one head")<>-1 :
             self._log("Nothing to merge",5)
             skip =True
             return 1
-        #if out.find("has one head - please merge with an explicit rev")<>-1:
-        #    self._log("Nothing to merge, if an errormessage: \"has one head - please merge...\" can be ignored.",2)
-        #    skip =True
-        #    return 2
         if out.find("conflicts during merge")<>-1:
             self._raise("conflicts in merge")
         
@@ -436,7 +418,6 @@ class HgClient4:
     def switchbranch(self,branchname):
         self._log("switchbranch %s" % (self.basedir))
         if branchname<>self.getbranchname():
-            #self.update(branchname)
             self.updatemerge(commitMessage="switch branch",ignorechanges=False,addRemoveUntrackedFiles=False,trymerge=True, release=branchname)
         
     def pullupdate(self,force=False, release=0, commitMessage=""):
@@ -454,24 +435,23 @@ class HgClient4:
         
         self.checkConnection()
         self._log("clone %s to %s" % (self.remoteUrl,self.basedir))
-        cmd="hg clone '%s' . -r %s" % (self.remoteUrl,self.branchname)
-        print cmd
-        exitCode,output=self._hgCmdExecutor(cmd, autoCheckFix=False,die=False)
+        cmd="clone"
+        options = dict()
+        if self.branchname:
+            options['rev'] = [self.branchname]
+        exitCode,output=self._hgCmdExecutor(cmd, source=self.remoteUrl, dest=self.basedir ,autoCheckFix=False, die=False, **options)
         if exitCode==999:
             #could not find default try to checkout using no revision
-            cmd="hg clone '%s' ." % (self.remoteUrl)
-            exitCode,output=self._hgCmdExecutor(cmd, autoCheckFix=False)
+            cmd="clone"
+            exitCode,output=self._hgCmdExecutor(cmd, source=self.remoteUrl, dest=self.basedir, autoCheckFix=False)
         if exitCode>0:
-            #ipshell()
             raise RuntimeError("Could not clone %s, error message %s" % (self.remoteUrl,output))
             
-        #self.update(force=True)
-        #q.console.askYesNo('Check the clone of ' + cmd)
-        # Verify that the clone worked
+        self._repo = hg.repository(self._ui, self.basedir)
         self.verify()
 
     def getbranchname(self):
-        cmd="hg branch" 
+        cmd="branch" 
         returncode,output=self._hgCmdExecutor(cmd)
         return output.strip()
 
@@ -480,23 +460,26 @@ class HgClient4:
         check if branch of client is consistent with branch found on local repo
         will raise error if not ok
         """
-        if self.getbranchname()<>self.branchname:
-            self._raise("Branchnames conflict for repo, qshell mercurial client has branchname: %s and branchname on filesystem: %s" % (self.branchname,self.getbranchname()))
+        if self.branchname:
+			if self.getbranchname() != self.branchname:
+				self._raise("Branchnames conflict for repo, qshell mercurial client has branchname: %s and branchname on filesystem: %s" % (self.branchname,self.getbranchname()))
     
     def getbranches(self):
-        cmd="hg branches"
+        cmd="branches"
         returncode , output=self._hgCmdExecutor(cmd)
         return [l.split()[0] for l in output.splitlines()]
         
     def status(self):
-        cmd="hg status"
+        cmd="status"
         returncode,output=self._hgCmdExecutor(cmd)
         return output
     
     def id(self):
-        cmd="hg id -i"
-        returncode , output=self._hgCmdExecutor(cmd)
+        cmd="identify"
+        returncode , output=self._hgCmdExecutor(cmd, id='-i')
         return output[:-1]
+        
+    identify = id
 
     def commit(self, message="", force=False):
         """
@@ -510,13 +493,13 @@ class HgClient4:
         if q.qshellconfig.interactive:
             if message=="":
                 message=q.gui.dialog.askString("give commit message:")
-                # i.codemgmt.lastcommitmessage=message
+                
         else:
             if message=="":
                 self._raise("cannot commit because commit message is empty")
         self._log("commit %s" % (self.basedir))
-        cmd="hg commit -m '%s'" % message
-        self._hgCmdExecutor(cmd)
+        cmd="commit"
+        self._hgCmdExecutor(cmd, message = message)
         return message
 
     def addremove(self,message="",commit=True):
@@ -529,7 +512,7 @@ class HgClient4:
             self._log("Nothing to addremove",2)
             return 
         self._removeRedundantFiles()
-        cmd="hg addremove"
+        cmd="addremove"
         self._hgCmdExecutor(cmd)
         if commit:
             self.commit(message)        
@@ -538,8 +521,9 @@ class HgClient4:
         self.checkbranch()
         self._log("push %s to %s" % (self.basedir, self.remoteUrl))
         self.checkConnection()
-        cmd="hg push"
-        self._hgCmdExecutor(cmd)
+        cmd="push"
+        url = self.getUrl()
+        self._hgCmdExecutor(cmd, dest=url)
         
     def pushcommit(self,commitMessage="",ignorechanges=False,addRemoveUntrackedFiles=False,trymerge=True, release=0):
         """
@@ -583,26 +567,26 @@ class HgClient4:
 
         '''
 
-        repository_path=self.basedir
-        hg_repo = q.system.fs.joinPaths(repository_path, '.hg')
-
         destination= q.system.fs.joinPaths(q.dirs.baseDir, destination)
         archive = q.system.fs.joinPaths(q.dirs.tmpDir, 'hg', 'archive')
         if q.system.fs.exists(archive): q.system.fs.removeDirTree(archive)
 
         ###pull lastest changes first
         self.pull()
+            
+        cmd = 'archive'
+        options = dict()
+        if branch:
+            options['rev'] = branch
+        exitCode, output = self._hgCmdExecutor(cmd, dest=archive, prefix='', **options)
 
-        command='hg archive -r %s %s' % ('default' if not branch else branch, archive)
-
-        ret,stdout,stderror = q.system.process.run(command, stopOnError=False,cwd=repository_path)
-        if ret:
-          raise RuntimeError('Unable to export, %s'%stderror)
 
         if source and not q.system.fs.exists(q.system.fs.joinPaths(archive, source)):
           raise IOError('%s does not exist '%q.system.fs.joinPaths(archive, source))
-
-        source=q.system.fs.joinPaths(archive,source) or archive
+        if source:
+            source=q.system.fs.joinPaths(archive,source)
+        else:
+            source = archive
 
         q.system.fs.copyDirTree(source, destination)
         archivalFile = q.system.fs.joinPaths(destination, '.hg_archival.txt')
@@ -611,24 +595,36 @@ class HgClient4:
 
         q.system.fs.removeDirTree(archive)
 
+    def getUrl(self):
+        if self.remoteUrl:
+            return self.remoteUrl
+        else:
+            if not q.system.fs.exists(q.system.fs.joinPaths(self._repo.path,"hgrc")):
+                raise RuntimeError("ERROR: Cant retrieve remote url. hgrc file doesnt exist")
+            self._ui.readconfig(self._repo.path + '/hgrc')
+            config = self._ui.configitems('paths')
+            for item in config:
+                if item[0]=='default':
+                    return item[1]
         
     def log(self,fromdaysago=0,fromdate=0,fromkey=""):
         """
         @fromdate needs to be in epoch
         """
+        cmd = 'log' 
+        
         if fromdaysago<>0:
-            datecmd="-d \"-%s\"" % fromdaysago
+            datecmd=fromdaysago
         elif fromdate<>0:
-            datecmd="-d \"%s 0\"" %fromdate        
+            datecmd=fromdate        
         else:
             datecmd=""
-        if fromkey<>"":
-            fromkeycmd="-r %s:" %fromkey
+            
+        if fromkey:
+            result,content=self._hgCmdExecutor(cmd, date = datecmd, rev=fromkey, template =  '{date}[BR]{author}[BR]{rev}[BR]{desc}\\n ----------------------------------------------------- \\n', follow = True, user='')
         else:
-            fromkeycmd=""
-                        
-        cmd="hg log %s %s --follow --template '{date}[BR]{author}[BR]{rev}[BR]{desc}\\n ----------------------------------------------------- \\n'" % (datecmd,fromkeycmd)        
-        result,content=self._hgCmdExecutor(cmd)
+            result,content=self._hgCmdExecutor(cmd, date = datecmd, template =  '{date}[BR]{author}[BR]{rev}[BR]{desc}\\n ----------------------------------------------------- \\n', follow = True, user='')            
+        
         lines=q.codetools.regex.extractBlocks(content,[" -* "],includeMatchingLine=False)
         changes=[]
         for item in lines:

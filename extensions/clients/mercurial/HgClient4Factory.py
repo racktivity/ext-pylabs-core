@@ -1,10 +1,8 @@
-from pylabs import q
-from pylabs.Shell import *
 from HgClient4 import HgClient4
 
 class HgClient4Factory:
         
-    def getclient(self,hgbasedir,remoteUrl,branchname="default"):
+    def getclient(self,hgbasedir,remoteUrl,branchname=None):
         """
         return a mercurial tool which you can help to manipulate a hg repository
         @param base dir where local hgrepository will be stored
