@@ -62,7 +62,8 @@ def main(q, i, p, params, tags):
     mailbox.quit()
 
 def match(q, i, params, tags):
-    # TODO - MNOUR: For now the match always return True cause there is an error in the sent last execution time. It is always sent as 0.
     import time
-    # return (params['taskletlastexecutiontime']  + 300 >= time.time())
-    return True
+    # if the last execution time +300 sec less than current time (which the current time is after the last execution time with 5 min passed since last execution ) we run the tasklet , 
+    #this ensure minimum 5 min between every run of tasklet       
+    return (params['taskletlastexecutiontime']  + 300 <= time.time())
+    #return True
