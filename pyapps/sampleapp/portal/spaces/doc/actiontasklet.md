@@ -33,8 +33,11 @@ In PyLabs 5, it is recommended that the file name of an action tasklet has the f
 * action: name of the action, as defined in the interface file of the proper Root Object
 
 When you use the new file names for the action tasklets, do not use the `__priority__` and `__tags__` parameters inside the tasklet.
+The `__priority__` is replaced by the priority indication in the file name of the tasklet.
+The `__tags__`  parameter is replaced by the folder names in which the tasklet resides. Take a look at the action tasklet {{1_customer_create.py}} of the 'sampleapp'. 
+This file is located in {{/opt/qbase5/pyapps/sampleapp/impl/action/crm/customer/create}}, where {{crm}} is a domain inside the 'sampleapp' application. All folder names, including the domain name, are used as tags of the tasklet.
 
-The tasklet is located in `<pyapp_name>/impl/action/<domain>/<rootobject>/<action>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
 __Note:__ It is possible to still use the old tasklet file names and use the `__priority__` and `__tags__` parameters inside the tasklet, but it is recommended not to mix them.
 
