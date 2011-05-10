@@ -23,27 +23,29 @@ Sections:
 
 Example skeleton for a wizard tasklet:
 
-    # 'wizard' tag is required, second tag is the name of the wizard rootobject_action e.g. vdc_start
-    __tags__= 'wizard','wizard_name'
-    __author__='incubaid'
-    __priority__ = 1
+[[code]]
+# 'wizard' tag is required, second tag is the name of the wizard rootobject_action e.g. vdc_start
+__tags__= 'wizard','wizard_name'
+__author__='incubaid'
+__priority__ = 1
     
-    def callCloudAPI(api, arg1, arg2, arg3):
-        """execute the cloud API call"""
-    	result = api.<sampleapp>.<rootobject>.<function>(arg1, arg2, arg3)['result']    
-	    return result
+def callCloudAPI(api, arg1, arg2, arg3):
+    """execute the cloud API call"""
+ 	result = api.sampleapp.RO.function(arg1, arg2, arg3)['result']    
+    return result
 
-    def main(q, i, params, tags):
-        <code to create wizard and form>
+def main(q, i, params, tags):
+    code to create wizard and form
 
-        result = callCloudAPI(p.api, 
-                              tab.elements['arg1'].value,
-                              tab.elements['arg2'].value,
-                              tab.elements['arg3'].value)
-        params['result']=result
+    result = callCloudAPI(p.api, 
+                          tab.elements['arg1'].value,
+                          tab.elements['arg2'].value,
+                          tab.elements['arg3'].value)
+    params['result']=result
    
-    def match(q, i, params, tags):
-        return True
+def match(q, i, params, tags):
+    return True
+[[/code]]    
 
 The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
@@ -57,10 +59,12 @@ When you create a tab in your form, you get always the following two buttons, *O
 
 Creating a form with one tab goes as follows:
 
-    TAB_GENERAL_TITLE = 'My TAB'
+[[code]]
+TAB_GENERAL_TITLE = 'My TAB'
 
-    form = q.gui.form.createForm()
-    tab_general = form.addTab('general', TAB_GENERAL_TITLE)
+form = q.gui.form.createForm()
+tab_general = form.addTab('general', TAB_GENERAL_TITLE)
+[[/code]]
 
 The `addTab` function expects two arguments, a unique ID ('general' in the above example) and  a title name for the tab.
 
@@ -69,19 +73,23 @@ See the [Form API](/sampleapp/#/doc/formwizard) for details about the fields.
 
 An example of a basic form:
 
-    TAB_GENERAL_NAME = 'Give your name'
-    TAB_GENERAL_AGE = 'How old are you'
-    TAB_GENERAL_GENDER = 'Female/Male'
+[[code]]
+TAB_GENERAL_NAME = 'Give your name'
+TAB_GENERAL_AGE = 'How old are you'
+TAB_GENERAL_GENDER = 'Female/Male'
 
-    tab_general.addText(name = 'name', text = TAB_GENERAL_NAME)
-    tab_general.addInteger(name = 'age', text = TAB_GENERAL_AGE)
-    tab_general.addDropdown(name = 'gender', text = TAB_GENERAL_GENDER, values = genderList(q))
+tab_general.addText(name = 'name', text = TAB_GENERAL_NAME)
+tab_general.addInteger(name = 'age', text = TAB_GENERAL_AGE)
+tab_general.addDropdown(name = 'gender', text = TAB_GENERAL_GENDER, values = genderList(q))
+[[/code]]
 
 The third field shows a drop-down box with a list that need to be retrieved in the tasklet itself.
 
-    def genderList(q):
-        gender = q.enumerators.gender._pm_enumeration_items
-        return gender
+[[code]]
+def genderList(q):
+    gender = q.enumerators.gender._pm_enumeration_items
+    return gender
+[[/code]]    
 
 This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects](/sampleapp/#/doc/modeling) to create your custom enumerator.
 
@@ -89,25 +97,29 @@ Once all fields are filled, the user will have to click on one of the provided b
 
 Below you can see how a pop-up window will appear when the user clicks *OK* on the tab:
 
-    MSGBOX_CREATE_CONFIRMATION = 'Create this new user?'
-    MSGBOX_CREATE_CONFIRMATION_TITLE = 'Create User'
+[[code]]
+MSGBOX_CREATE_CONFIRMATION = 'Create this new user?'
+MSGBOX_CREATE_CONFIRMATION_TITLE = 'Create User'
 
-    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
-                                         title=MSGBOX_CREATE_CONFIRMATION_TITLE,
-                                         msgboxButtons='OKCancel',
-                                         msgboxIcon='Question',
-                                         defaultButton='OK')    
+answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
+                                     msgboxButtons='OKCancel',
+                                     msgboxIcon='Question',
+                                     defaultButton='OK')
+[[/code]]                                         
 
 For more details about the `showMessageBox` function, we refer to the [API documentation] (api/index.html) of PyLabs 5.
 
 To trigger an action with the provided data, you have to call the `callCloudAPI` method:
 
-    result = callCloudAPI(p.api,
-                          tab_general.elements['name'].value,
-                          tab_general.elements['age'].value,
-                          tab_general.elements['gender'].value)
+[[code]]
+result = callCloudAPI(p.api,
+                      tab_general.elements['name'].value,
+                      tab_general.elements['age'].value,
+                      tab_general.elements['gender'].value)
 
-    params['result'] = result
+params['result'] = result
+[[/code]]
 
 The last line is a PyLabs 5 specific dictionary. This `params` dictionary is used throughout the whole PyLabs 5 framework and is a key element to pass on data from one level to another.
 
@@ -118,15 +130,17 @@ Each request for user interaction occurs in one window. The windows are created 
 
 The above form in wizard style then looks like:
 
-    name = q.gui.dialog.askString('Give your name')
-    age = q.gui.dialog.askInteger('How old are you')
-    gender = q.gui.dialog.askChoice('Female/Male', genderList(q))
+[[code]]
+name = q.gui.dialog.askString('Give your name')
+age = q.gui.dialog.askInteger('How old are you')
+gender = q.gui.dialog.askChoice('Female/Male', genderList(q))
 
-    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
-                                         title=MSGBOX_CREATE_CONFIRMATION_TITLE,
-                                         msgboxButtons='OKCancel',
-                                         msgboxIcon='Question',
-                                         defaultButton='OK')
+answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
+                                     msgboxButtons='OKCancel',
+                                     msgboxIcon='Question',
+                                     defaultButton='OK')
+[[/code]]                                     
 
 For more methods that can be used in the wizards, see the [Wizard API](/sampleapp/#/doc/wizardapi).
 
@@ -138,14 +152,16 @@ In this section we will show some other common structures with the usage of form
 ###Updating Object Properties
 When you want to update the properties of an object, it is likely that the user sees the actual values. The creation of the form and the tab is similar to the given example, except that you now show the actual property of the object. Therefore, the `main` function of your tasklet must also contain a line that retrieves the concerned object.
 
-    user = p.api.action.<sampleapp>.<rootobject>.getObject(params['<rootobjectguid>'], executionparams={'description': 'Retrieving <rootobject> information'})
-    
-    form = q.gui.form.createForm()
-    tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
+[[code]]
+user = p.api.action.sampleapp.RO.getObject(params['RO guid'], executionparams={'description': 'Retrieving RO information'})
 
-    tab_general.addText(name = 'name', text = TAB_GENERAL_NAME, value = user.name)
-    tab_general.addInteger(name = 'age', text = TAB_GENERAL_AGE, value = user.age)
-    tab_general.addDropdown(name = 'gender', text = TAB_GENERAL_GENDER, values = genderList(q), selectedValue = user.gender)
+form = q.gui.form.createForm()
+tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
+
+tab_general.addText(name = 'name', text = TAB_GENERAL_NAME, value = user.name)
+tab_general.addInteger(name = 'age', text = TAB_GENERAL_AGE, value = user.age)
+tab_general.addDropdown(name = 'gender', text = TAB_GENERAL_GENDER, values = genderList(q), selectedValue = user.gender)
+[[/code]]
 
 
 ###Load a Form with Provided Data
@@ -160,49 +176,53 @@ The flow is then as follows:
 
 In the example below, we create a form with two tabs. Each tab will have a number of questions. Before the cloud API call is executed, the user will see a new form with all his provided data.
 
-    form = q.gui.form.createForm()
-    tab1 = form.addTab('userTab','General')
-    tab2 = form.addTab('infoTab','Information')
+[[code]]
+form = q.gui.form.createForm()
+tab1 = form.addTab('userTab','General')
+tab2 = form.addTab('infoTab','Information')
 
-    tab1.addText('name', text = TAB_GENERAL_NAME)
-    tab1.addInteger(name = 'age', text = TAB_GENERAL_AGE)
-    tab1.addDropdown(name = 'gender', text = TAB_GENERAL_GENDER, values = genderList(q))
+tab1.addText('name', text = TAB_GENERAL_NAME)
+tab1.addInteger(name = 'age', text = TAB_GENERAL_AGE)
+tab1.addDropdown(name = 'gender', text = TAB_GENERAL_GENDER, values = genderList(q))
 
-    tab2.addText('street', text = TAB_INFORMATION_STREET)
-    tab2.addInteger(name = 'number', text = TAB_INFORMATION_NUMBER)
-    tab2.addText(name = 'zip', text = TAB_INFORMATION_ZIP)
-    tab2.addText(name = 'city', text = TAB_INFORMATION_CITY)
+tab2.addText('street', text = TAB_INFORMATION_STREET)
+tab2.addInteger(name = 'number', text = TAB_INFORMATION_NUMBER)
+tab2.addText(name = 'zip', text = TAB_INFORMATION_ZIP)
+tab2.addText(name = 'city', text = TAB_INFORMATION_CITY)
+[[/code]]
 
 Now that you have defined all fields in the two tabs, we create a new empty form. In this empty form we will load the form, created above. This results in a form which contains the tabs and all fields filled out with the user data.
 
-    resultform = q.gui.form.createForm()
-    resultform.loadForm(q.gui.dialog.askForm(form))
+[[code]]
+resultform = q.gui.form.createForm()
+resultform.loadForm(q.gui.dialog.askForm(form))
 
-    answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
-                                         title=MSGBOX_CREATE_CONFIRMATION_TITLE,
-                                         msgboxButtons='OKCancel',
-                                         msgboxIcon='Question',
-                                         defaultButton='OK')
+answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
+                                     title=MSGBOX_CREATE_CONFIRMATION_TITLE,
+                                     msgboxButtons='OKCancel',
+                                     msgboxIcon='Question',
+                                     defaultButton='OK')
+[[/code]]                                     
+                                    
 
 Displaying the form itself, including its content and values, is done with the command `q.gui.dialog.askForm(form)`.
 Similar to the other forms, you must execute a cloud API call for the creation of an object.
 
-    result = callCloudAPI(p.api,
-                          tab1.elements['name'].value,
-                          tab1.elements['age'].value,
-                          tab1.elements['gender'].value,
-                          tab2.elements['street'].value,
-                          tab2.elements['number'].value,
-                          tab2.elements['zip'].value,
-                          tab2.elements['city'].value,
+[[code]]
+result = callCloudAPI(p.api,
+                      tab1.elements['name'].value,
+                      tab1.elements['age'].value,
+                      tab1.elements['gender'].value,
+                      tab2.elements['street'].value,
+                      tab2.elements['number'].value,
+                      tab2.elements['zip'].value,
+                      tab2.elements['city'].value,
 
-    params['result'] = result
+params['result'] = result
+[[/code]]
 
 
 ##What's Next?
 In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/doc/formwizard)
 
-@todo: rework this section, next is explanation from drp to reality!
-In the next sections we will discuss how you can create actions, triggered by an event.
-
-In the next chapter you will learn the actual implementation of the actions in your PyApp, store, update, delete objects in the DRP, create lists, ...
+In the next chapters you will learn how your PyApp can interact with the reality, how actions can be triggered by events, and how actions can be scheduled.

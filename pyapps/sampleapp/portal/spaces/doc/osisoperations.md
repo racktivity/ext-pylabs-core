@@ -25,37 +25,47 @@ The store and update operation in an OSIS view are identical. The main flow is:
 ###Import Libraries
 A first thing to add to the OSIS view is the import of the `OsisDB` library:
 
-    from osis.store.OsisDB import OsisDB
+[[code]]
+from osis.store.OsisDB import OsisDB
+[[/code]]
 
 Import other libraries if necessary but that is not likely.
 
 Typically we also define some global variable, such as the domain, the Root Object, and the corresponding OSIS view.
 
-    ROOTOBJECT_TYPE = 'sampleapprootobject'
-    DOMAIN = "sampleappdomain"
-    VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
+[[code]]
+ROOTOBJECT_TYPE = 'sampleapprootobject'
+DOMAIN = "sampleappdomain"
+VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
+[[/code]]
 
 
 ###Connecting to OSIS
 In the `main` function of the tasklet you have to create a connection to OSIS. The function uses five arguments: q, i, p, params, and tags. `p` represents the PyApp name space and `params` is a dictionary filled by the PyLabs framework. 
 
-    def main(q, i, p, params, tags):
-        osis = OsisDB.getConnection(p.api.appname)
+[[code]]
+def main(q, i, p, params, tags):
+    osis = OsisDB.getConnection(p.api.appname)
+[[/code]]    
 
 
 ###Storing or Updating the Root Object in an OSIS View
 A first step to store or update a Root Object is to get the Root Object from the `params` dictionary:
 
-    rootobject = params['rootobject']
+[[code]]
+rootobject = params['rootobject']
+[[/code]]
 
 When you have the Root Object, you can set the different values of the Root Object properties.
 
-    values = {
-        'property1': rootobject.property1
-        'property2': rootobject.property2,
-        'property3': rootobject.property3,
-        'property4': rootobject.property4
-        }
+[[code]]
+values = {
+    'property1': rootobject.property1
+    'property2': rootobject.property2,
+    'property3': rootobject.property3,
+    'property4': rootobject.property4
+    }
+[[/code]]    
 
 The properties of the Root Object are all defined in the [Root Object Model](/sampleapp/#/doc/modeling).
 
@@ -70,44 +80,50 @@ When you have set the values of the Root Object, you only have to save the view 
 
 Use the `viewSave` method as follows:
 
-    osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
+[[code]]
+osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
+[[/code]]
 
 
 ###Tasklet Execution
 The store and update tasklet can only be executed when the `rootobjecttype` in the `params` dictionary matches the given Root Object type. This must be defined in the `match` function of the tasklet:
 
-    def match(q, i, params, tags):
-        return params['rootobjecttype'] == ROOTOBJECT_TYPE
+[[code]]
+def match(q, i, params, tags):
+    return params['rootobjecttype'] == ROOTOBJECT_TYPE
+[[/code]]    
 
 
 ##Example of an OSIS Store
-    
-    __author__ = 'Incubaid'
-    __tags__ = 'osis', 'store'
-    __priority__= 1
 
-    from osis.store.OsisDB import OsisDB
+[[code]]    
+__author__ = 'Incubaid'
+__tags__ = 'osis', 'store'
+__priority__= 1
 
-    ROOTOBJECT_TYPE = 'sampleapprootobject'
-    DOMAIN = "sampleappdomain"
-    VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
+from osis.store.OsisDB import OsisDB
 
-    def main(q, i, p, params, tags):
-        osis = OsisDB.getConnection(p.api.appname)
+ROOTOBJECT_TYPE = 'sampleapprootobject'
+DOMAIN = "sampleappdomain"
+VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
-        rootobject = params['rootobject']
+def main(q, i, p, params, tags):
+    osis = OsisDB.getConnection(p.api.appname)
 
-        values = {
-            'property1': rootobject.property1
-            'property2': rootobject.property2,
-            'property3': rootobject.property3,
-            'property4': rootobject.property4
-            }
+    rootobject = params['rootobject']
 
-        osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
+    values = {
+        'property1': rootobject.property1
+        'property2': rootobject.property2,
+        'property3': rootobject.property3,
+        'property4': rootobject.property4
+        }
 
-    def match(q, i, params, tags):
-        return params['rootobjecttype'] == ROOTOBJECT_TYPE
+    osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
+
+def match(q, i, params, tags):
+    return params['rootobjecttype'] == ROOTOBJECT_TYPE
+[[/code]]    
 
 
 ##Creating an OSIS Delete Operation
@@ -117,7 +133,9 @@ The flow of a delete operation in an OSIS view is similar to the create/update o
 ###Retrieving the Root Object Data
 To delete a Root Object from an OSIS view, you only need its guid. The guid is stored in the `params` dictionary and can be retrieved as follows:
 
-    rootobjectguid = params['rootobjectguid']
+[[code]]
+rootobjectguid = params['rootobjectguid']
+[[/code]]
 
 To delete the object, you must use the `viewDelete` method on the the OSIS connection object. This method expects the following arguments in the given order:
 
@@ -128,38 +146,44 @@ To delete the object, you must use the `viewDelete` method on the the OSIS conne
 
 Use the `viewSave` method as follows:
 
-    osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid)
+[[code]]
+osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid)
+[[/code]]
 
 
 ###Tasklet Execution
 The store and update tasklet can only be executed when the `rootobjecttype` in the `params` dictionary matches the given Root Object type. This must be defined in the `match` function of the tasklet:
 
-    def match(q, i, params, tags):
-        return params['rootobjecttype'] == ROOTOBJECT_TYPE
+[[code]]
+def match(q, i, params, tags):
+    return params['rootobjecttype'] == ROOTOBJECT_TYPE
+[[/code]]    
 
 
 ##Example of an OSIS Delete
 
-    __author__ = 'Incubaid'
-    __tags__ = 'osis', 'delete'
-    __priority__= 3
+[[code]]
+__author__ = 'Incubaid'
+__tags__ = 'osis', 'delete'
+__priority__= 3
 
-    from osis.store.OsisDB import OsisDB
+from osis.store.OsisDB import OsisDB
 
-    ROOTOBJECT_TYPE = 'lead'
-    DOMAIN = "crm"
-    VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
+ROOTOBJECT_TYPE = 'lead'
+DOMAIN = "crm"
+VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
-    def main(q, i, p, params, tags):
-        osis = OsisDB().getConnection(p.api.appname)
+def main(q, i, p, params, tags):
+    osis = OsisDB().getConnection(p.api.appname)
 
-        rootobjectguid = params['rootobjectguid']
-        rootobjectversionguid = params['rootobjectversionguid']
+    rootobjectguid = params['rootobjectguid']
+    rootobjectversionguid = params['rootobjectversionguid']
 
-        osis.viewDelete(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid, rootobjectversionguid)
+    osis.viewDelete(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobjectguid, rootobjectversionguid)
 
-    def match(q, i, params, tags):
-        return params['rootobjecttype'] == ROOTOBJECT_TYPE
+def match(q, i, params, tags):
+    return params['rootobjecttype'] == ROOTOBJECT_TYPE
+[[/code]]    
 
 
 ##What's Next?

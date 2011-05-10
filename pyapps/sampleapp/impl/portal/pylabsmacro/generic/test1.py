@@ -1,5 +1,4 @@
 __author__ = "incubaid"
-__tags__ = 'macro', 'generic'
 
 def main(q, i, params, tags):
 
@@ -7,7 +6,6 @@ def main(q, i, params, tags):
 
     labels = ''.join(['*    %s\n' % l for l in t.labels])
     tags = ''.join(['*    %s = %s\n' % (k, v) for k, v in t.tags.iteritems()])
-
     result = """
 #### Tags
 %(tags)s
@@ -19,5 +17,4 @@ def main(q, i, params, tags):
     params['result'] = result
 
 def match(q, i, params, tags):
-
     return 'debug' in params['tags'].labels

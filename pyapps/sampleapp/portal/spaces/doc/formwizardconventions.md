@@ -52,12 +52,14 @@ To force the GUI to navigate to the job detail page (for example commands starte
 
 All text messages in message boxes and labels must be grouped as constants at the top of the wizard source file:
 
-    __author__ = 'incubaid'
-    __tags__ = 'wizard','customer_delete'
-    __priority__= 3
+[[code]]
+__author__ = 'incubaid'
+__tags__ = 'wizard','customer_delete'
+__priority__= 3
 
-    CUSTOMERGUID_MISSING = "No Customer Identifier was provided - Aborting."
-    CUSTOMERGUID_MISSING_TITLE = "Missing parameter"
+CUSTOMERGUID_MISSING = "No Customer Identifier was provided - Aborting."
+CUSTOMERGUID_MISSING_TITLE = "Missing parameter"
+[[/code]]
 
 The main method only contains:
 * Cloud API calls to retrieve information.

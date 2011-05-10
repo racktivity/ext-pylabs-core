@@ -3,7 +3,7 @@ The PyLabs framework is not limited to creating objects in the DRP, creating vie
 
 If you take a look at the architecture schema of a PyApp, we have focused so far on the  DRP, Actions, and the UI wizards sections. In this section we will focus on the interaction between the PyLabs framework and the reality. The reality can be of any kind. Besides the given reality example, e-mail, the reality can also be manipulations of servers, configuration of systems, ...
 
-![PyApp_Architecture](images/PyApp_Architecture.png)
+![PyApp_Architecture](images/pyapps/PyApp_Architecture.png)
 
 Just like other Root Objects, you can consider the mail server as a Root Object. Therefore, the creation of the mail server and its functions takes the same steps as the other Root Objects:
 
@@ -33,49 +33,53 @@ In the given example you can define the action `sendMail`. The definition is sim
 
 The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files. The interface contains one class with the name of the actor.
 
-    class mailprocessor:
-        """
-        Mail processor actions API
-        """
+[[code]]
+class mailprocessor:
+    """
+    Mail processor actions API
+    """
+[[/code]]    
 
 This class contains the different actions that the actor can execute. In this example we will only provide an action that can send out mails.
 
-    def sendMail(self, sender, replyto, to, subject, message, cc="", bcc="", jobguid="", executionparams=None):
-        """
-        Create a mailprocessor
+[[code]]
+def sendMail(self, sender, replyto, to, subject, message, cc="", bcc="", jobguid="", executionparams=None):
+    """
+    Create a mailprocessor
 
-        @param sender:  sender address for the email
-        @type sender: string
+    @param sender:  sender address for the email
+    @type sender: string
 
-        @param replyto:  replyto address for the email
-        @type replyto: string
+    @param replyto:  replyto address for the email
+    @type replyto: string
  
-        @param to:  to address for the email
-        @type to: string
+    @param to:  to address for the email
+    @type to: string
 
-        @param subject: subject for the email
-        @type subject: string
+    @param subject: subject for the email
+    @type subject: string
 
-        @param message: message body for the email
-        @type message: string
+    @param message: message body for the email
+    @type message: string
 
-        @param cc:  cc address for the email
-        @type cc: string
+    @param cc:  cc address for the email
+    @type cc: string
 
-        @param bcc: bcc address for the email
-        @type bcc: string
+    @param bcc: bcc address for the email
+    @type bcc: string
  
-        @param jobguid: guid of the job if available else empty string
-        @type jobguid: guid
+    @param jobguid: guid of the job if available else empty string
+    @type jobguid: guid
         
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
+    @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
+    @type executionparams:         dictionary
  
-        @return:                       dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
-        @rtype:                        dictionary
+    @return:                       dictionary with True as result and jobguid: {'result': True, 'jobguid': guid}
+    @rtype:                        dictionary
  
-        @raise e:                      In case an error occurred, exception is raised
-        """
+    @raise e:                      In case an error occurred, exception is raised
+    """
+[[/code]]    
 
 
 ##Implementation of an Actor Action
@@ -100,10 +104,12 @@ The following arguments are required for the `executeActorActionScript` command:
 
 For example:
 
-    params['result'] = q.workflowengine.agentcontroller.executeActorActionScript(agentguid       = 'agent1', 
-                                                                                 scriptname      = 'sendMail', 
-                                                                                 params          = params, 
-                                                                                 executionparams = {"maxduration": 30, "description": "Sending welcome mail to customer"})['result']
+[[code]]
+params['result'] = q.workflowengine.agentcontroller.executeActorActionScript(agentguid       = 'agent1', 
+                                                                             scriptname      = 'sendMail', 
+                                                                             params          = params, 
+                                                                             executionparams = {"maxduration": 30, "description": "Sending welcome mail to customer"})['result']
+[[/code]]                                                                             
 
 
 ###RScript
@@ -116,18 +122,19 @@ The action is the name of the method as defined in the interface file.
 
 Besides the PyLabs system abstraction layer (SAL), the RScript can also make use of standard Python libraries. If the RScript needs standard Python libraries, you have to import them into the RScript. The PyLabs libraries are all availble without importing.
 
-    import smtplib
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = params['subject']
-    msg['From'] = params['replyto']
-    msg['To'] = params['to']
-    msg.attach(MIMEText(params['message'], 'plain'))
+[[code]]
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-    q.logger.log('Set SMTP server')    
-    server = smtplib.SMTP('relay.aserver.com')
-    server.sendmail(params['replyto'], params['to'], msg.as_string())
-    params['result'] = True
+msg = MIMEMultipart('alternative')
+msg['Subject'] = params['subject']
+msg['From'] = params['replyto']
+msg['To'] = params['to']
+msg.attach(MIMEText(params['message'], 'plain'))
 
+q.logger.log('Set SMTP server')    
+server = smtplib.SMTP('relay.aserver.com')
+server.sendmail(params['replyto'], params['to'], msg.as_string())
+params['result'] = True
+[[/code]]
