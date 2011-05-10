@@ -12,15 +12,17 @@ What do you need to know before you start implementing the Root Object Interface
 
 The tasklets have the same structure as any other [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets).
 
-    __author__='incubaid'
+[[code]]
+__author__='incubaid'
     
-    def main(q, i, p, params, tags):
-        <code to implement action>
+def main(q, i, p, params, tags):
+    code to implement action
 
-        params['result']=<something>
-   
-    def match(q, i, params, tags):
-        return True
+    params['result']=something
+
+def match(q, i, params, tags):
+    return True
+[[/code]]
 
 
 ###File Name and Location
@@ -34,8 +36,8 @@ In PyLabs 5, it is recommended that the file name of an action tasklet has the f
 
 When you use the new file names for the action tasklets, do not use the `__priority__` and `__tags__` parameters inside the tasklet.
 The `__priority__` is replaced by the priority indication in the file name of the tasklet.
-The `__tags__`  parameter is replaced by the folder names in which the tasklet resides. Take a look at the action tasklet {{1_customer_create.py}} of the 'sampleapp'. 
-This file is located in {{/opt/qbase5/pyapps/sampleapp/impl/action/crm/customer/create}}, where {{crm}} is a domain inside the 'sampleapp' application. All folder names, including the domain name, are used as tags of the tasklet.
+The `__tags__`  parameter is replaced by the folder names in which the tasklet resides. Take a look at the action tasklet `1_customer_create.py` of the 'sampleapp'. 
+This file is located in `/opt/qbase5/pyapps/sampleapp/impl/action/crm/customer/create`, where `crm` is a domain inside the 'sampleapp' application. All folder names, including the domain name, are used as tags of the tasklet.
 
 See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
 
@@ -74,14 +76,16 @@ All other properties, which are defined in the [modeling](/sampleapp/#/doc/model
 ###Setting Properties
 With the created object, it becomes very easy to set its properties.
 
-    lead.name = params['name']
-    lead.code = params['code']
-    lead.customerguid = params['customerguid']
-    lead.source = params['source']
-    lead.type = params.get('type')
-    lead.status = params.get('status')
-    lead.amount = params.get('amount')
-    lead.probability = params.get('probability')
+[[code]]
+lead.name = params['name']
+lead.code = params['code']
+lead.customerguid = params['customerguid']
+lead.source = params['source']
+lead.type = params.get('type')
+lead.status = params.get('status')
+lead.amount = params.get('amount')
+lead.probability = params.get('probability')
+[[/code]]
 
 You notice that we use two different ways to set a property.
 The first way, `params['keyword']`, returns the value of the keyword in the `params` dictionary, but in case the given keyword does not exist in the dictionary, the complete creation of the object will fail. For example, if the `params` dict does not contain the keyword `code`, the lead object will not be created. This way of setting properties is mainly used for key properties of the object.
@@ -91,15 +95,21 @@ The second option, `params.get('keyword')`, also returns the value of the keywor
 ###Saving the Object
 Saving the object is similar to creating the object:
 
-    object = p.api.model.<domain>.<rootobject>.save(<created object>)
+[[code]]
+object = p.api.model.domain.RO.save(created object)
+[[/code]]
 
 In the given example:
     
-    lead = p.api.model.crm.lead.save(lead)
+[[code]]    
+lead = p.api.model.crm.lead.save(lead)
+[[/code]]
 
 It is also required to add the guid of the object to the keyword 'result' in the `params` dictionary. See the [Defining Actions Interface on Root Objects](/sampleapp/#/doc/action) chapter for more information.
 
-    params['result'] = lead.guid
+[[code]]
+params['result'] = lead.guid
+[[/code]]
 
 
 ##Getting Full Objects
@@ -108,21 +118,25 @@ The alternative is to grab the object via the model, but this is only possible i
 
 To get the object:
 
-    object = p.api.model.<domain>.<rootobject>.get('rootobjectguid')
-    params['result'] = object
+[[code
+object = p.api.model.domain.rootobject.get('rootobjectguid')
+params['result'] = object
+[[/code]]
 
 It is recommended to add some error handling for example to throw an error in case the guid key is not available in the `params` dictionary.
 
-    TYPE = "lead"
-    GUID_FIELD = "%sguid" % TYPE
+[[code]]
+TYPE = "lead"
+GUID_FIELD = "%sguid" % TYPE
 
-    def main(q, i, p, params, tags):
-        if GUID_FIELD not in params:
-            raise ValueError("Cannot retrieve %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
-        guid = params[GUID_FIELD]
+def main(q, i, p, params, tags):
+    if GUID_FIELD not in params:
+        raise ValueError("Cannot retrieve %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
+    guid = params[GUID_FIELD]
 
-        object = p.api.model.crm.lead.get(guid)
-        params['result'] = object
+    object = p.api.model.crm.lead.get(guid)
+    params['result'] = object
+[[/code]]    
 
 With this tasklet you have retrieved a complete object and added it to the `params` dictionary.
 
@@ -130,45 +144,49 @@ With this tasklet you have retrieved a complete object and added it to the `para
 ##Updating Objects
 No Root Object is a static piece of data, you will need to update it over time. The update of an object overwrites old values with new values. These new values are passed to the tasklet via the `params` dictionary. The least effective and therefore not recommended way is to retrieve the object and then set the properties one by one, even if the value remains the same.
 
-    lead = p.api.model.crm.lead.get(params['leadguid'])
-    lead.name = params['name']
-    lead.code = params['code']
-    lead.customerguid = params['customerguid']
-    lead.source = params['source']
-    lead.type = params.get('type')
-    lead.status = params.get('status')
-    lead.amount = params.get('amount')
-    lead.probability = params.get('probability')
-    p.api.model.crm.lead.save(lead)
+[[code]]
+lead = p.api.model.crm.lead.get(params['leadguid'])
+lead.name = params['name']
+lead.code = params['code']
+lead.customerguid = params['customerguid']
+lead.source = params['source']
+lead.type = params.get('type')
+lead.status = params.get('status')
+lead.amount = params.get('amount')
+lead.probability = params.get('probability')
+p.api.model.crm.lead.save(lead)
+[[/code]]
 
 Better is to store the properties of the Root Object in a list and check if the property is actually present in the `params` dictionary. On the retrieved object, you can execute a `setattr` function to set the new value.
 
-    FIELDS = (
-            'name',
-            'code',
-            'customerguid',
-            'source',
-            'type',
-            'status',
-            'amount',
-            'probability'
-            )
+[[code]]
+FIELDS = (
+        'name',
+        'code',
+        'customerguid',
+        'source',
+        'type',
+        'status',
+        'amount',
+        'probability'
+        )
 
-    def main(q, i, p, params, tags):
-        object = p.api.model.crm.lead.get(params['leadguid'])
+def main(q, i, p, params, tags):
+    object = p.api.model.crm.lead.get(params['leadguid'])
 
-        for field in FIELDS:
-            if field not in params:
-                q.logger.log("Field %s not in params dict: not updating field %s" % (field, field), 7)
-                continue
+    for field in FIELDS:
+        if field not in params:
+            q.logger.log("Field %s not in params dict: not updating field %s" % (field, field), 7)
+            continue
 
-            value = params[field]
-            if value is None:
-                q.logger.log("Field %s is None: not updating field %s" % (field, field), 7)
-                continue
+        value = params[field]
+        if value is None:
+            q.logger.log("Field %s is None: not updating field %s" % (field, field), 7)
+            continue
 
-            q.logger.log("Updating field %s to value %s" % (field, value), 7)
-            setattr(object , field, value)
+        q.logger.log("Updating field %s to value %s" % (field, value), 7)
+        setattr(object , field, value)
+[[/code]]        
 
 
 ##Deleting Objects
@@ -179,16 +197,18 @@ Deleting an object is a very simple tasklet:
 
 For example:
 
-    TYPE = "lead"
-    GUID_FIELD = "%sguid" % TYPE
+[[code]]
+TYPE = "lead"
+GUID_FIELD = "%sguid" % TYPE
 
-    def main(q, i, p, params, tags):
-        if GUID_FIELD not in params:
-            raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
-        guid = params[GUID_FIELD]
+def main(q, i, p, params, tags):
+    if GUID_FIELD not in params:
+        raise ValueError("Cannot delete %s, there is no %s key in the params" % (TYPE, GUID_FIELD))
+    guid = params[GUID_FIELD]
 
-        p.api.model.crm.lead.delete(guid)
-        params['result'] = True
+    p.api.model.crm.lead.delete(guid)
+    params['result'] = True
+[[/code]]    
 
 
 ##Creating Lists
@@ -196,25 +216,77 @@ In the [OSIS Views](/sampleapp/#/doc/osisviews) chapter, you have learned how yo
 
 A first step in this action is to get the model of a Root Object. On the model object, you create a filter object, which allows you to create your own filters. In this case the filter will be based on an OSIS view that you have created.
 
-    TYPE = "lead"
-    DOMAIN = "crm"
-    VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
+[[code]]
+TYPE = "lead"
+DOMAIN = "crm"
+VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
 
-    def main(q, i, p, params, tags):
-	   filter = p.api.model.crm.lead.getFilterObject()
+def main(q, i, p, params, tags):
+   filter = p.api.model.crm.lead.getFilterObject()
+[[/code]]   
 
 To add rows to the list:
 
-    FIELDS = (
-            'name',
-            'code',
-            'customerguid',
-            'source',
-            'type',
-            'status',
-            'amount',
-            'probability'
-            )
+[[code]]
+FIELDS = (
+        'name',
+        'code',
+        'customerguid',
+        'source',
+        'type',
+        'status',
+        'amount',
+        'probability'
+        )
+
+for field in FIELDS:
+    if field not in params:
+        q.logger.log("Field %s not in params dict: not searching for field %s" % (field, field), 7)
+        continue
+
+    value = params[field]
+    if value is None:
+        q.logger.log("Field %s is None: not searching for field %s" % (field, field), 7)
+        continue
+
+    q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
+    f.add(VIEW, field, value)
+[[/code]]    
+
+A last step is to store the actual list.
+
+[[code]]
+result = p.api.model.crm.lead.findAsView(filter, VIEW)
+params['result'] = result
+[[/code]]
+
+All together this leads to the following tasklet which creates a list:
+
+[[code]]
+__author__ = "Incubaid"
+
+FIELDS = (
+        'name',
+        'code',
+        'customerguid',
+        'source',
+        'type',
+        'status',
+        'amount',
+        'probability'
+        )
+
+TYPE = "lead"
+DOMAIN = "crm"
+VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
+
+def get_model_handle(p):
+    return p.api.model.crm.lead
+
+def main(q, i, p, params, tags):
+    handle = get_model_handle(p)
+
+    f = handle.getFilterObject()
 
     for field in FIELDS:
         if field not in params:
@@ -229,53 +301,9 @@ To add rows to the list:
         q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
         f.add(VIEW, field, value)
 
-A last step is to store the actual list.
-
-    result = p.api.model.crm.lead.findAsView(filter, VIEW)
+    result = handle.findAsView(f, VIEW)
     params['result'] = result
-
-All together this leads to the following tasklet which creates a list:
-
-    __author__ = "Incubaid"
-
-    FIELDS = (
-            'name',
-            'code',
-            'customerguid',
-            'source',
-            'type',
-            'status',
-            'amount',
-            'probability'
-            )
-    
-    TYPE = "lead"
-    DOMAIN = "crm"
-    VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
-    
-    def get_model_handle(p):
-        return p.api.model.crm.lead
-    
-    def main(q, i, p, params, tags):
-        handle = get_model_handle(p)
-    
-        f = handle.getFilterObject()
-    
-        for field in FIELDS:
-            if field not in params:
-                q.logger.log("Field %s not in params dict: not searching for field %s" % (field, field), 7)
-                continue
-    
-            value = params[field]
-            if value is None:
-                q.logger.log("Field %s is None: not searching for field %s" % (field, field), 7)
-                continue
-    
-            q.logger.log("Adding filter on field %s with value value %s" % (field, value), 7)
-            f.add(VIEW, field, value)
-    
-        result = handle.findAsView(f, VIEW)
-        params['result'] = result
+[[/code]]    
 
 
 ##What's Next

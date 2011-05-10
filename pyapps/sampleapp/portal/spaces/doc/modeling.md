@@ -14,20 +14,22 @@ For example a customer can have a name and address as properties, contacts as mo
 The file name is always `<rootobject>.py`, where rootobject is the Root Object name, using only lower-case characters, possibly using underscores.
 The file content is always structured as follows:
 
-    import <python libs>
+[[code]]
+import python libs
 
-    #@doc some doc about enumeration
-    class <enumeration>(BaseEnumeration):
-        @classmethod
-        def _initItems(cls):
-            <enumerationvalue1>
-            <enumerationvalue2>
-            ....
+#@doc some doc about enumeration
+class enumeration(BaseEnumeration):
+    @classmethod
+    def _initItems(cls):
+        enumerationvalue1
+        enumerationvalue2
+        ....
 
-    #@doc some doc about the root object
-    class <rootobject>(model.RootObjectModel):
-        #@doc some doc about RO property
-        <property1> = model.<value type>(thrift_id=1)
+#@doc some doc about the root object
+class RO(model.RootObjectModel):
+    #@doc some doc about RO property
+    property1 = model.valuetype(thrift_id=1)
+[[/code]]    
         
 
 ##File Details
@@ -36,21 +38,25 @@ The file content is always structured as follows:
 You always need to import at least one library, `pymodel`, which is a key component of the PyLabs framework.
 If you need custom enumerators, you also need to import the BaseEnumeration library.
 
-    from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
-    import pymodel as model
+[[code]]
+from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
+import pymodel as model
+[[/code]]
 
 ###Creating Custom Enumerators
 Besides the default PyLabs enumerators, such as AppStatusType and MessageType, you can create your own enumerator.
 Each custom enumerator is a custom class that inherits from the BaseEnumeration base class.
 Always add a short description of the enumerator with `#@doc your doc here`. This documentation is used in the API documentation of the PyApp.
 
-    #@doc my first enumerator
-    class MyFirstEnum(BaseEnumeration):
-        @classmethod
-        def _initItems(cls):
-            cls.registerItem('OPTION1')
-            cls.registerItem('OPTION2')
-            cls.finishItemRegistration()
+[[code]]
+#@doc my first enumerator
+class MyFirstEnum(BaseEnumeration):
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('OPTION1')
+        cls.registerItem('OPTION2')
+        cls.finishItemRegistration()
+[[/code]]        
 
 A first line in the class is a [decorator](http://wiki.python.org/moin/PythonDecorators). The `@classmethod` form is a function decorator. It is used to make the defined items available on the class and not via the instance of the class. More information about this decorator can be found [here](http://docs.python.org/library/functions.html#classmethod).
 
@@ -67,9 +73,11 @@ See also the [PyLabs 5 site](http://confluence.incubaid.com/display/PYLABS/Enume
 The definition of a Root Object is comprised in a class that inherits from `pymodel.RootObjectModel`, but since `pymodel` is imported as `model`, this becomes `model.RootObjectModel`.
 In this class you define the properties of the Root Object. A property is defined as follows:
 
-    property_name = model.<property_type>(thrift_id=x)
+[[code]]
+property_name = model.property_type(thrift_id=x)
+[[/code]]
 
-where x is a sequential integer and where `<property_type>` can be one of the following types (case-sensitive):
+where x is a sequential integer and where `property_type` can be one of the following types (case-sensitive):
 
 * Boolean
 * DateTime
@@ -88,20 +96,22 @@ In case the property is an Enumeration-type, you have to add the enumerator as a
 
 As last point, do not forget to add documentation to the object and its properties. 
 
-    #@doc Model of Root Object
-    class MyRootObject(model.RootObjectModel):
-    
-        #@doc name of the object
-        name = model.String(thrift_id=1)
+[[code]]
+#@doc Model of Root Object
+class MyRootObject(model.RootObjectModel):
 
-        #@doc street and number of object
-        streetnumber = model.String(thrift_id=2)
+    #@doc name of the object
+    name = model.String(thrift_id=1)
 
-        #@doc is person parent
-        isparent = model.Boolean(thrift_id=3)
+    #@doc street and number of object
+    streetnumber = model.String(thrift_id=2)
 
-        #@doc show custom enumerator
-        customenum = model.Enumeration(MyFirstEnum, thrift_id=4)
+    #@doc is person parent
+    isparent = model.Boolean(thrift_id=3)
+
+    #@doc show custom enumerator
+    customenum = model.Enumeration(MyFirstEnum, thrift_id=4)
+[[/code]]    
 
 Whenever you add or update a property, make sure that you do not reuse the `thrift_id`. For example, assume that in a next version the `streetnumber` property is split in two properties, `street` and `number`. 
 You could change the name of the `streetnumber` property to just `street` and create a new property `number`. However, do not apply the change this way. Create two new properties and comment the obsolete property instead.

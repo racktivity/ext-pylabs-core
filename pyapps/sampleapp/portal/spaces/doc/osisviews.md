@@ -13,7 +13,9 @@ An OSIS view is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Taskle
 ###Import Libraries
 A first thing to add to the OSIS view is the import of the `OsisDB` library:
 
-    from osis.store.OsisDB import OsisDB
+[[code]]
+from osis.store.OsisDB import OsisDB
+[[/code]]
 
 Import other libraries if necessary but that is not likely.
 
@@ -21,11 +23,13 @@ Import other libraries if necessary but that is not likely.
 ###Creating the View Name
 A name for an OSIS view must be concise, but clear too. Therefore, we use at least the domain name and the root object name as name for the view.
 
-    def main(q, i, params, tags):
-        domain = 'mydomain'
-        rootobject = 'myrootobject'
-        appname = params['appname']
-        view_name = '%s_view_%s_list' %(domain, rootobject)
+[[code]]
+def main(q, i, params, tags):
+    domain = 'mydomain'
+    rootobject = 'myrootobject'
+    appname = params['appname']
+    view_name = '%s_view_%s_list' %(domain, rootobject)
+[[/code]]    
 
 Note that all variable names can be changed into names of your own choice.
 For the `view_name` variable, it is highly recommended to use the domain and root object name in the name of your view list, and to optionally add some more specification to the name.
@@ -34,9 +38,11 @@ For the `view_name` variable, it is highly recommended to use the domain and roo
 ###Creating the OSIS View
 To create an OSIS view, you need to connect to the OSIS database. Also verify if the view_name does not yet exist for the given domain and root object.
 
-    connection = OsisDB().getConnection(appname)
-    if not connection.viewExists(domain, rootobject, view_name):
-        ...
+[[code]]
+connection = OsisDB().getConnection(appname)
+if not connection.viewExists(domain, rootobject, view_name):
+    ...
+[[/code]]    
 
 Once you have your OSIS connection, it takes you three steps to create the view:
 
@@ -46,18 +52,20 @@ Once you have your OSIS connection, it takes you three steps to create the view:
 
 Example:
 
-    #create view object:
-        view = connection.viewCreate(domain, rootobject, view_name)
-    #add desired data
-        view.setCol('name', q.enumerators.OsisType.STRING, True)
-        view.setCol('code', q.enumerators.OsisType.STRING, True)
-        view.setCol('customerguid', q.enumerators.OsisType.UUID, True)
-        view.setCol('source', q.enumerators.OsisType.STRING, True)
+[[code]]
+#create view object:
+    view = connection.viewCreate(domain, rootobject, view_name)
+#add desired data
+    view.setCol('name', q.enumerators.OsisType.STRING, True)
+    view.setCol('code', q.enumerators.OsisType.STRING, True)
+    view.setCol('customerguid', q.enumerators.OsisType.UUID, True)
+    view.setCol('source', q.enumerators.OsisType.STRING, True)
 
-        ...
+    ...
 
-    #add view to OSIS
-        connection.viewAdd(view)
+#add view to OSIS
+    connection.viewAdd(view)
+[[/code]]    
 
 The `setCol`-method of the view object expects three arguments:
 
@@ -74,34 +82,38 @@ In short, indexes speed up data retrieval but slows down data manipulation (writ
 
 To add indexes to an OSIS view:
 
+[[code]]
+indexes = ['name', 'customerguid']
+for field in indexes:
+    context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
+    connection.runQuery("CREATE INDEX %(field)s_%(schema)s_%(view)s ON %(schema)s.%(view)s (%(field)s)" % context)
+[[/code]]
+
+
+##Example of a Complete OSIS View
+[[code]]
+from osis.store.OsisDB import OsisDB
+
+def main(q, i, params, tags):
+    domain = 'mydomain'
+    rootobject = 'myrootobject'
+    appname = params['appname']
+    view_name = '%s_view_%s_list' %(domain, rootobject)
+    
+    connection = OsisDB().getConnection(appname)
+    if not connection.viewExists(domain, rootobject, view_name):
+        view = connection.viewCreate(domain, rootobject, view_name)
+        view.setCol('name', q.enumerators.OsisType.STRING, True)
+        view.setCol('code', q.enumerators.OsisType.STRING, True)
+        view.setCol('customerguid', q.enumerators.OsisType.UUID, True)
+        view.setCol('source', q.enumerators.OsisType.STRING, True)
+        connection.viewAdd(view)
+
     indexes = ['name', 'customerguid']
     for field in indexes:
         context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
         connection.runQuery("CREATE INDEX %(field)s_%(schema)s_%(view)s ON %(schema)s.%(view)s (%(field)s)" % context)
-
-
-##Example of a Complete OSIS View
-    from osis.store.OsisDB import OsisDB
-    
-    def main(q, i, params, tags):
-        domain = 'mydomain'
-        rootobject = 'myrootobject'
-        appname = params['appname']
-        view_name = '%s_view_%s_list' %(domain, rootobject)
-        
-        connection = OsisDB().getConnection(appname)
-        if not connection.viewExists(domain, rootobject, view_name):
-            view = connection.viewCreate(domain, rootobject, view_name)
-            view.setCol('name', q.enumerators.OsisType.STRING, True)
-            view.setCol('code', q.enumerators.OsisType.STRING, True)
-            view.setCol('customerguid', q.enumerators.OsisType.UUID, True)
-            view.setCol('source', q.enumerators.OsisType.STRING, True)
-            connection.viewAdd(view)
-
-        indexes = ['name', 'customerguid']
-        for field in indexes:
-            context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
-            connection.runQuery("CREATE INDEX %(field)s_%(schema)s_%(view)s ON %(schema)s.%(view)s (%(field)s)" % context)
+[[/code]]        
 
 
 ##What's Next?

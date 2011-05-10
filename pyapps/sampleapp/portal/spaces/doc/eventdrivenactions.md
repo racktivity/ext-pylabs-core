@@ -36,14 +36,17 @@ The routing key is '`pylabs.event.sampleapp.email`'. Each event consumer that ha
 
 PyLabss 5 has already some built-in producers, located in `/opt/qbase5/pyapps/sampleapp/impl/osis/generic/object_generateevent_<action>.py`. These producers generate events for objects stored/updated in or deleted from OSIS.
 
-    __author__ = 'incubaid'
-    __tags__ ='osis', 'store'
-    __priority__= 1
+[[code]]
+__author__ = 'incubaid'
+__tags__ ='osis', 'store'
+__priority__= 1
 
-    def main(q, i, p, params, tags):
-        root = params['rootobject']
-        domain = params['domain'] 
-        p.events.publish('pylabs.event.sampleapp.osis.store.%s.%s' % (domain, root.PYMODEL_MODEL_INFO.name), root.guid)
+def main(q, i, p, params, tags):
+    root = params['rootobject']
+    domain = params['domain'] 
+    p.events.publish('pylabs.event.sampleapp.osis.store.%s.%s' % (domain, root.PYMODEL_MODEL_INFO.name), root.guid)
+[[/code]]
+    
 
 ###Event Consumer
 A PyLabs event consumer is a client that reacts on a given event. The consumer consists of a configuration file and at least one tasklet.
@@ -100,14 +103,18 @@ A consumer can have more than one action tasklets. Therefore it is very importan
 
 Each action tasklet must have a match function in which you define what the `eventKey` must be. The following example shows a tasklet that is executed when a customer is removed from OSIS.
 
-    def match(q, i, params, tags):
-        return params["eventKey"]=='pylabs.event.sampleapp.osis.delete'
+[[code]]
+def match(q, i, params, tags):
+    return params["eventKey"]=='pylabs.event.sampleapp.osis.delete'
+[[/code]]    
 
 The main function contains the actions to be executed. The following example is a simple action that deletes a page with a specific GUID. The GUID is retrieved from the `eventBody` key of the `params` dictionary.
 
-    def main(q, i, p, params, tags):
-        guid = params["eventBody"]
-        p.action.ui.page.delete(guid)
+[[code]]
+def main(q, i, p, params, tags):
+    guid = params["eventBody"]
+    p.action.ui.page.delete(guid)
+[[/code]]
 
 
 ##Conclusion

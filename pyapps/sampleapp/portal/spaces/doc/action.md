@@ -6,10 +6,13 @@ For each Root Object you have to create one `.py`-file that contains the Root Ob
 ##File Structure
 The interface file of a Root Object is a Python class-file. The file contains one class with the name of the Root Object.
 
-    class MyRootObject:
-       """
-       Some documentation about this Root Object
-       """
+[[code]]
+class MyRootObject:
+   """
+   Some documentation about this Root Object
+   """
+[[/code]]
+
 Each Root Object action is defined as a method in this class.
 
 
@@ -33,19 +36,21 @@ The definition of an Action is described in the docstring of the method. This do
 ###Documentation and Options
 The first lines of the action must contain the documentation of the action and can contain some options.
 
-    class MyRootObject:
-        """
-        Some documentation about this Root Object
-        """
+[[code]]
+class MyRootObject:
+    """
+    Some documentation about this Root Object
+    """
 
-        def create(self, arg1, arg2, arg3=None, jobguid=None, executionparams=None)
-            """
-            Oneliner about the function
+    def create(self, arg1, arg2, arg3=None, jobguid=None, executionparams=None)
+        """
+        Oneliner about the function
 
-            #optional
-            @security <user group>
-            @execution_method = sync
-            """
+        #optional
+        @security user group
+        @execution_method = sync
+        """
+[[/code]]
 
 Keep the documentation of the action concise, but clear.
 
@@ -89,188 +94,190 @@ You also have to define what to do in case an action does not succeed, show a wa
 ###Example Interface of a Root Object
 A basic root object can be:
 
-    class MyRootObject
+[[code]]
+class MyRootObject
+    """
+    Example Rootobject
+    """
+
+    def create(self, name, description=None, jobguid=None, executionparams=None):
         """
-        Example Rootobject
+        Create a new Example Rootobject
+
+        @execution_method = sync
+        @security administrators
+
+        @param name:            Name of the Example
+        @type name:             string
+
+        @param description:     description of the Example
+        @type description:      string
+
+        @param jobguid:         Guid of the job if available else empty string
+        @type jobguid:          guid
+       
+        @param executionparams: dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:  dictionary
+
+        @return:                dictionary with Example as result and jobguid: {'result': guid, 'jobguid': guid}
+        @rtype:                 dictionary
+
+        @raise e:               In case an error occurred, exception is raised
         """
     
-        def create(self, name, description=None, jobguid=None, executionparams=None):
-            """
-            Create a new Example Rootobject
-    
-            @execution_method = sync
-            @security administrators
-    
-            @param name:            Name of the Example
-            @type name:             string
-    
-            @param description:     description of the Example
-            @type description:      string
-    
-            @param jobguid:         Guid of the job if available else empty string
-            @type jobguid:          guid
-           
-            @param executionparams: dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:  dictionary
-    
-            @return:                dictionary with Example as result and jobguid: {'result': guid, 'jobguid': guid}
-            @rtype:                 dictionary
-    
-            @raise e:               In case an error occurred, exception is raised
-            """
+    def delete(self, exampleguid, jobguid=None, executionparams=None)
+       """
+        Delete a Example
+
+        @execution_method = sync
+        @security administrators
+
+        @param exampleguid:             Guid of the example to be deleted
+        @type name:                     guid
+       
+        @param jobguid:                 Guid of the job if available else empty string
+        @type jobguid:                  guid
+       
+        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:         dictionary
+
+        @return:                       dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
+        @rtype:                        dictionary
+
+        @raise e:                      In case an error occurred, exception is raised
+        """
+
+    def find(self, name=None, descripion=None, jobguid=None, executionparams=None)
+        """
+        Returns a list of cable guids which met the find criteria.
+
+        @execution_method = sync
+        @security administrators
+
+        @param name:                Name of the Example
+        @type name:                 string
+
+        @param description:         description of the Example
+        @type description:          string
+
+        @param jobguid:             Guid of the job if available else empty string
+        @type jobguid:              guid
+       
+        @param executionparams:     dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:      dictionary
+
+        @return:                    A list of Guids as result and jobguid: {'result': [], 'jobguid': guid}
+        @rtype:                     list
+
+        @note:                      Example return value:
+        @note:                      {'result': '["FAD805F7-1F4E-4DB1-8902-F440A59270E6","C4395DA2-BE55-495A-A17E-6A25542CA398"]',
+        @note:                       'jobguid':'5D2C0F39-F34E-4542-9B6F-B9233E80D803'}
+
+
+        @raise e:                   In case an error occurred, exception is raised
+        """
+       
+      def getObject(self, rootobjectguid, jobguid=None,executionparams=None):
+        """
+        Gets the rootobject.
+
+        @execution_method = sync
         
-        def delete(self, exampleguid, jobguid=None, executionparams=None)
-           """
-            Delete a Example
-    
-            @execution_method = sync
-            @security administrators
-    
-            @param exampleguid:             Guid of the example to be deleted
-            @type name:                     guid
-           
-            @param jobguid:                 Guid of the job if available else empty string
-            @type jobguid:                  guid
-           
-            @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:         dictionary
-    
-            @return:                       dictionary with True as result and jobguid: {'result': guid, 'jobguid': guid}
-            @rtype:                        dictionary
-    
-            @raise e:                      In case an error occurred, exception is raised
-            """
-    
-        def find(self, name=None, descripion=None, jobguid=None, executionparams=None)
-            """
-            Returns a list of cable guids which met the find criteria.
-    
-            @execution_method = sync
-            @security administrators
-    
-            @param name:                Name of the Example
-            @type name:                 string
-    
-            @param description:         description of the Example
-            @type description:          string
-    
-            @param jobguid:             Guid of the job if available else empty string
-            @type jobguid:              guid
-           
-            @param executionparams:     dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:      dictionary
-    
-            @return:                    A list of Guids as result and jobguid: {'result': [], 'jobguid': guid}
-            @rtype:                     list
-    
-            @note:                      Example return value:
-            @note:                      {'result': '["FAD805F7-1F4E-4DB1-8902-F440A59270E6","C4395DA2-BE55-495A-A17E-6A25542CA398"]',
-            @note:                       'jobguid':'5D2C0F39-F34E-4542-9B6F-B9233E80D803'}
-    
-    
-            @raise e:                   In case an error occurred, exception is raised
-            """
-           
-          def getObject(self, rootobjectguid, jobguid=None,executionparams=None):
-            """
-            Gets the rootobject.
-    
-            @execution_method = sync
-            
-            @param rootobjectguid:      Guid of the cable Example rootobject
-            @type rootobjectguid:       guid
-    
-            @return:                    rootobject
-            @rtype:                     Object
-    
-            @warning:                   Only usable using the python client.
-            """
-    
-        def getYaml(self, exampleguid, jobguid=None, executionparams=None)
-            """
-            Gets a string representation in YAML format of the cable rootobject.
-    
-            @execution_method = sync
-            
-            @param exampleguid:           Guid of the Example rootobject
-            @type exampleguid:            guid
-    
-            @param jobguid:               Guid of the job if avalailable else empty string
-            @type jobguid:                guid
-    
-            @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:        dictionary
-    
-            @return:                      YAML representation of the Example
-            @rtype:                       string
-            """
-    
-        def getXml(self, exampleguid, jobguid=None, executionparams=None)
-            """
-            Gets a string representation in XML format of the cable rootobject.
-    
-            @execution_method = sync
-            
-            @param exampleguid:           Guid of the Example rootobject
-            @type exampleguid:            guid
-    
-            @param jobguid:               Guid of the job if avalailable else empty string
-            @type jobguid:                guid
-    
-            @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:        dictionary
-    
-            @return:                      XML representation of the Example
-            @rtype:                       string
-            """
-     
-        def getXmlSchema(self, exampleguid, jobguid=None, executionparams=None):
-            """
-            Get a string representation in XSD format of the Example Rootobject
-            
-            @execution_method = sync
-            
-            @param exampleguid:           Guid of the Example rootobject
-            @type exampleguid:            guid
-    
-            @param jobguid:               Guid of the job if avalailable else empty string
-            @type jobguid:                guid
-    
-            @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:        dictionary
-            
-    
-            @return:                      XSD representation of the Example
-            @rtype:                       string
-    
-            @todo:                        Will be implemented in phase2
-            """
-            raise NotImplementedError('Not implemented yet.')
-    
-        def list(self, exampleguid=None, jobguid=None, executionparams=None):
-            """
-            Filtered list which returns main parameters of every Example in dict format
-      
-            @execution_method = sync
-            
-            @param exampleguid:           Guid of the Example rootobject
-            @type exampleguid:            guid
-    
-            @param jobguid:               Guid of the job if avalailable else empty string
-            @type jobguid:                guid
-    
-            @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
-            @type executionparams:        dictionary
-    
-            @return:                      dictionary with array of Example info as result and jobguid: {'result': array, 'jobguid': guid}
-            @rtype:                       dictionary
-            @note:                              {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
-            @note:                               'result: [{ 'machineguid': '33544B07-4129-47B1-8690-B92C0DB21434',
-            @note:                                           'name': 'MyWebServer',
-            @note:                                           'description': 'My Personal Web Server'}]}
-    
-            @raise e:                     In case an error occurred, exception is raised
-            """
+        @param rootobjectguid:      Guid of the cable Example rootobject
+        @type rootobjectguid:       guid
+
+        @return:                    rootobject
+        @rtype:                     Object
+
+        @warning:                   Only usable using the python client.
+        """
+
+    def getYaml(self, exampleguid, jobguid=None, executionparams=None)
+        """
+        Gets a string representation in YAML format of the cable rootobject.
+
+        @execution_method = sync
+        
+        @param exampleguid:           Guid of the Example rootobject
+        @type exampleguid:            guid
+
+        @param jobguid:               Guid of the job if avalailable else empty string
+        @type jobguid:                guid
+
+        @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:        dictionary
+
+        @return:                      YAML representation of the Example
+        @rtype:                       string
+        """
+
+    def getXml(self, exampleguid, jobguid=None, executionparams=None)
+        """
+        Gets a string representation in XML format of the cable rootobject.
+
+        @execution_method = sync
+        
+        @param exampleguid:           Guid of the Example rootobject
+        @type exampleguid:            guid
+
+        @param jobguid:               Guid of the job if avalailable else empty string
+        @type jobguid:                guid
+
+        @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:        dictionary
+
+        @return:                      XML representation of the Example
+        @rtype:                       string
+        """
+ 
+    def getXmlSchema(self, exampleguid, jobguid=None, executionparams=None):
+        """
+        Get a string representation in XSD format of the Example Rootobject
+        
+        @execution_method = sync
+        
+        @param exampleguid:           Guid of the Example rootobject
+        @type exampleguid:            guid
+
+        @param jobguid:               Guid of the job if avalailable else empty string
+        @type jobguid:                guid
+
+        @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:        dictionary
+        
+
+        @return:                      XSD representation of the Example
+        @rtype:                       string
+
+        @todo:                        Will be implemented in phase2
+        """
+        raise NotImplementedError('Not implemented yet.')
+
+    def list(self, exampleguid=None, jobguid=None, executionparams=None):
+        """
+        Filtered list which returns main parameters of every Example in dict format
+  
+        @execution_method = sync
+        
+        @param exampleguid:           Guid of the Example rootobject
+        @type exampleguid:            guid
+
+        @param jobguid:               Guid of the job if avalailable else empty string
+        @type jobguid:                guid
+
+        @param executionparams:       dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:        dictionary
+
+        @return:                      dictionary with array of Example info as result and jobguid: {'result': array, 'jobguid': guid}
+        @rtype:                       dictionary
+        @note:                              {'jobguid': '22544B07-4129-47B1-8690-B92C0DB21434',
+        @note:                               'result: [{ 'machineguid': '33544B07-4129-47B1-8690-B92C0DB21434',
+        @note:                                           'name': 'MyWebServer',
+        @note:                                           'description': 'My Personal Web Server'}]}
+
+        @raise e:                     In case an error occurred, exception is raised
+        """
+[[/code]]
 
 ##What's Next?
 In the previous chapter and this chapter you have done all the modeling work of your PyApp, design the different Root Objects and define each interface.
