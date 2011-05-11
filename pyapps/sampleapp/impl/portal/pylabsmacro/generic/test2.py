@@ -1,5 +1,4 @@
 __author__ = "incubaid"
-__tags__ = 'macro', 'generic'
 
 def main(q, i, params, tags):
 
