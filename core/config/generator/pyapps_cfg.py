@@ -246,7 +246,9 @@ LFW_CONFIG = {
         'tags': '/%(appname)s/appserver/rest/ui/portal/tags',
         'title': '/%(appname)s/appserver/rest/ui/portal/pages',
         'pages': '/%(appname)s/appserver/rest/ui/portal/page',
-        'macros': '/%(appname)s/js/macros/'
+        'macros': '/%(appname)s/js/macros/',
+        'showTree': true
+
     },
     'appname' : '%(appname)s'
 };

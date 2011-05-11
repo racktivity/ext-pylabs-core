@@ -6,19 +6,21 @@ The methods to create a wizard are available in the name space `q.gui.dialog.`.
 
 ###askChoice
 
-    def askChoice(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
-        """
-        Ask the user the supplied question and list the choices to choose from, if no response given the default value is used
+[[code]]
+def askChoice(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
+    """
+    Ask the user the supplied question and list the choices to choose from, if no response given the default value is used
 
-        @param question: question to be display to the user
-        @param choices: list of choices for the user to choose from
-        @param defaultValue: the value that will be used if no response given
-        @param pageSize: max number of choices that can be prompted to the user in a single screen
-        @param sortChoices: if True, choices will be sorted before showing them to the user
-        @param sortCallBack: A callback function to handle the sorting of the choices (will only be used if sortChoices is set to True)
+    @param question: question to be display to the user
+    @param choices: list of choices for the user to choose from
+    @param defaultValue: the value that will be used if no response given
+    @param pageSize: max number of choices that can be prompted to the user in a single screen
+    @param sortChoices: if True, choices will be sorted before showing them to the user
+    @param sortCallBack: A callback function to handle the sorting of the choices (will only be used if sortChoices is set to True)
 
-        @return:  selected choice
-        """
+    @return:  selected choice
+    """
+[[/code]]    
         
 Example:
 
@@ -40,19 +42,21 @@ Example:
         
 ###askChoiceMultiple
 
-    def askChoiceMultiple(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
-        """
-        Ask the user the supplied question and list the choices to choose from, if no response given the default value[s] is used
+[[code]]
+def askChoiceMultiple(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
+    """
+    Ask the user the supplied question and list the choices to choose from, if no response given the default value[s] is used
 
-        @param question: question to be display to the user
-        @param choices: list of choices for the user to choose from
-        @param defaultValue: default value assumed if no user response is given, default value can be a single value or a comma separated list of values
-        @param pageSize: max number of choices that can be prompted to the user in a single screen
-        @param sortChoices: if True, choices will be sorted before showing them to the user
-        @param sortCallBack: A callback function to handle the sorting of the choices (will only be used if sortChoices is set to True)
+    @param question: question to be display to the user
+    @param choices: list of choices for the user to choose from
+    @param defaultValue: default value assumed if no user response is given, default value can be a single value or a comma separated list of values
+    @param pageSize: max number of choices that can be prompted to the user in a single screen
+    @param sortChoices: if True, choices will be sorted before showing them to the user
+    @param sortCallBack: A callback function to handle the sorting of the choices (will only be used if sortChoices is set to True)
 
-        @return:  list of selected choice[s] or default value[s]
-        """
+    @return:  list of selected choice[s] or default value[s]
+    """
+[[/code]]    
         
 Example:
 
@@ -74,18 +78,20 @@ Example:
         
 ###askDate
 
-    def askDate(self, question, minValue = None, maxValue = None, selectedValue = None, format = 'YYYY/MM/DD'):
-        """
-        Asks user a question that its answer is a date between minValue and maxValue
+[[code]]
+def askDate(self, question, minValue = None, maxValue = None, selectedValue = None, format = 'YYYY/MM/DD'):
+    """
+    Asks user a question that its answer is a date between minValue and maxValue
 
-        Note: this note my seem out of place, but is is important to note that currently in the EasyDialogConsole implementation only dates with format YYYY/MM/DD are supported
+    Note: this note my seem out of place, but is is important to note that currently in the EasyDialogConsole implementation only dates with format YYYY/MM/DD are supported
 
-        @param question: question that will be prompted to the user
-        @param minValue: optional value for the lower boundary date
-        @param maxValue: optional value for the upper boundary date
-        @param selectedValue:
-        @param  format: the format of the input date
-        """
+    @param question: question that will be prompted to the user
+    @param minValue: optional value for the lower boundary date
+    @param maxValue: optional value for the upper boundary date
+    @param selectedValue:
+    @param  format: the format of the input date
+    """
+[[/code]]    
         
 Example:
 
@@ -99,51 +105,59 @@ Example:
         
 ###askDateTime
 
-    def askDateTime(self, question, minValue = None, maxValue = None, selectedValue = None, format = 'YYYY/MM/DD hh:mm'):
-        """
-        Asks user a question that its answer is a datetime between minValue and maxValue
+[[code]]
+def askDateTime(self, question, minValue = None, maxValue = None, selectedValue = None, format = 'YYYY/MM/DD hh:mm'):
+    """
+    Asks user a question that its answer is a datetime between minValue and maxValue
 
-        Note: this note my seem out of place, but is is important to note that currently in the EasyDialogConsole implementation only dates with format YYYY/MM/DD are supported
+    Note: this note my seem out of place, but is is important to note that currently in the EasyDialogConsole implementation only dates with format YYYY/MM/DD are supported
 
-        @param question: question that will be prompted to the user
-        @param minValue: optional value for the lower boundary date
-        @param maxValue: optional value for the upper boundary date
-        @param selectedValue:
-        @param  format: the format of the input date
-        """
+    @param question: question that will be prompted to the user
+    @param minValue: optional value for the lower boundary date
+    @param maxValue: optional value for the upper boundary date
+    @param selectedValue:
+    @param  format: the format of the input date
+    """
+[[/code]]    
         
 ###askDirPath
 
-    def askDirPath(self,message, startPath = None):
-        """
-        Prompts for a selection of a file path starting from startPath if given and '/' if not
+[[code]]
+def askDirPath(self,message, startPath = None):
+    """
+    Prompts for a selection of a file path starting from startPath if given and '/' if not
 
-        @param message: message that would be displayed to the user above the selection menu
-        @param startPath: base dir of the navigation tree
-        @return: path to the directory selected
-        """
+    @param message: message that would be displayed to the user above the selection menu
+    @param startPath: base dir of the navigation tree
+    @return: path to the directory selected
+    """
+[[/code]]
         
 ###askFilePath
 
-    def askFilePath(self,message, startPath = None):
-        """
-        Prompts for a selection of a file path starting from startPath if given and '/' if not
+[[code]]
+def askFilePath(self,message, startPath = None):
+    """
+    Prompts for a selection of a file path starting from startPath if given and '/' if not
 
-        @param message: message that would be displayed to the user above the selection menu
-        @param startPath: base dir of the navigation tree
-        @return: path to the file selected
-        """
+    @param message: message that would be displayed to the user above the selection menu
+    @param startPath: base dir of the navigation tree
+    @return: path to the file selected
+    """
+[[/code]]
         
 ###askInteger
 
-    def askInteger(self, question, defaultValue = None):
-        """
-        Asks user the supplied question and prompt for an answer, if none given the default value is used, the response and the default value must be valid integer
+[[code]]
+def askInteger(self, question, defaultValue = None):
+    """
+    Asks user the supplied question and prompt for an answer, if none given the default value is used, the response and the default value must be valid integer
 
-        @param question: question to be displayed
-        @param defaultValue: if the user did not provide a response this value is used as an answer
-        @return: response integer or the default value
-        """
+    @param question: question to be displayed
+    @param defaultValue: if the user did not provide a response this value is used as an answer
+    @return: response integer or the default value
+    """
+[[/code]]
         
 Example:
 
@@ -152,33 +166,39 @@ Example:
         
 ###askIntegers
 
-    def askIntegers(self, question):
-        """
-        Asks user the supplied question and prompt for an answer
+[[code]]
+def askIntegers(self, question):
+    """
+    Asks user the supplied question and prompt for an answer
 
-        @param question: question to be prompted
-        @return: response integer
-        """
+    @param question: question to be prompted
+    @return: response integer
+    """
+[[/code]]
         
 ###askMultiline
 
-    def askMultiline(self, question, defaultValue=None):
-        """
-        Asks the user the supplied question, where the answer could be multi-lines
+[[code]]
+def askMultiline(self, question, defaultValue=None):
+    """
+    Asks the user the supplied question, where the answer could be multi-lines
 
-        @param question: the question to be displayed
-        """
-        
+    @param question: the question to be displayed
+    """
+[[/code]]
+       
 ###askPassword
 Asks for a password (with confirmation), including a check if the entered passwords are identical.
 
-    def askPassword(self, question, defaultValue=None):
-        """
-        Asks the supplied question and prompts for password
+[[code]]
+def askPassword(self, question, defaultValue=None):
+    """
+    Asks the supplied question and prompts for password
 
-        @param question: question to be displayed
-        @return: response string
-        """
+    @param question: question to be displayed
+    @return: response string
+    """
+[[/code]]
         
 Example:
 
@@ -198,14 +218,16 @@ Example:
         
 ###askString
 
-    def askString(self,question, defaultValue = None, validator=None):
-        """
-        Asks the user the supplied question and prompt for an answer, if none given the default value is used
-        @param question: question to be displayed
-        @param defaultValue: if the user did not provide a response this value is used as an answer
-        @param validator: regex validation value
-        @return: response string or the default value
-        """
+[[code]]
+def askString(self,question, defaultValue = None, validator=None):
+    """
+    Asks the user the supplied question and prompt for an answer, if none given the default value is used
+    @param question: question to be displayed
+    @param defaultValue: if the user did not provide a response this value is used as an answer
+    @param validator: regex validation value
+    @return: response string or the default value
+    """
+[[/code]]
         
 Example:
 
@@ -215,15 +237,17 @@ Example:
         
 ###askYesNo
 
-    def askYesNo(self,question, defaultValue = None):
-        """
-        Asks user the supplied question and prompt for an answer, if none given the default value is used, the response and the default value one of the values [y|Y|yes|Yes..n|N|No..]
+[[code]]
+def askYesNo(self,question, defaultValue = None):
+    """
+    Asks user the supplied question and prompt for an answer, if none given the default value is used, the response and the default value one of the values [y|Y|yes|Yes..n|N|No..]
 
-        Note:For the EasyDialogConol implementation, currently the default value effect is ignored since it would require changing the pylabs vapp
-        @param question: question to be prompted
-        @param defaultValue: if the user did not provide a response this value is used as an answer
-        @return: response answer or the default value
-        """
+    Note:For the EasyDialogConol implementation, currently the default value effect is ignored since it would require changing the pylabs vapp
+    @param question: question to be prompted
+    @param defaultValue: if the user did not provide a response this value is used as an answer
+    @return: response answer or the default value
+    """
+[[/code]]
         
 Example:
 
@@ -232,12 +256,14 @@ Example:
         
 ###message
 
-    def message(self, message):
-        """
-        prints the given message to the screen
+[[code]]
+def message(self, message):
+    """
+    prints the given message to the screen
 
-        @param message: message to print
-        """  
+    @param message: message to print
+    """
+[[/code]]     
         
 Example:
 
@@ -246,26 +272,30 @@ Example:
         
 ###showMessageBox
 
-    def showMessageBox(self, message, title, msgboxButtons = "OK", msgboxIcon = "Information", defaultButton = "OK"):
-        """
-        Shows a large message box
+[[code]]
+def showMessageBox(self, message, title, msgboxButtons = "OK", msgboxIcon = "Information", defaultButton = "OK"):
+    """
+    Shows a large message box
 
-        @param message: message for the messagebox
-        @param title: title of the messagebox
-        @param msgboxButtons: buttons to show in the messagebox. Possible values are 'OKCancel', 'YesNo', 'YesNoCancel', 'OK'
-        @param msgboxIcon: icon to show in the messagebox. Possible values are 'None', 'Error', 'Warning', 'Information', 'Question'
-        @param defaultButton: default button for the messagebox. Possible values are 'OK', 'Cancel', 'Yes', 'No'
-        
-        @return: A JSON encoded string containing the selected button clicked
-        """
+    @param message: message for the messagebox
+    @param title: title of the messagebox
+    @param msgboxButtons: buttons to show in the messagebox. Possible values are 'OKCancel', 'YesNo', 'YesNoCancel', 'OK'
+    @param msgboxIcon: icon to show in the messagebox. Possible values are 'None', 'Error', 'Warning', 'Information', 'Question'
+    @param defaultButton: default button for the messagebox. Possible values are 'OK', 'Cancel', 'Yes', 'No'
+    
+    @return: A JSON encoded string containing the selected button clicked
+    """
+[[/code]]    
         
 ###showProgress
 
-    def showProgress(self, minvalue, maxvalue, currentvalue):
-        """
-        Shows a progress bar according to the given values
+[[code]]
+def showProgress(self, minvalue, maxvalue, currentvalue):
+    """
+    Shows a progress bar according to the given values
 
-        @param minvalue: minVlue of scale
-        @param maxvalue: maxvlaue of scale
-        @param currentvalue: the current value to show the progress
-        """                                   
+    @param minvalue: minVlue of scale
+    @param maxvalue: maxvlaue of scale
+    @param currentvalue: the current value to show the progress
+    """
+[[/code]]                                    
