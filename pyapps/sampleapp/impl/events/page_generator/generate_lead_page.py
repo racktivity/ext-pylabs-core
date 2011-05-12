@@ -7,15 +7,15 @@ def main(q, i, p, params, tags):
     guid = params["eventBody"]
     key = params["eventKey"]
     template = """
-    # Lead details
-    *Name:* %(name)s
-    *Code:* %(code)s
-    *Customer:* %(customer)s
-    *Source:* %(source)s
-    *Type:* %(type)s        
-    *Status:* %(status)s
-    *Amount:* %(amount)s 
-    *Probability:* %(probability)s
+# Lead details
+* __Name:__ %(name)s
+* __Code:__ %(code)s
+* __Customer:__ %(customer)s
+* __Source:__ %(source)s
+* __Type:__ %(type)s        
+* __Status:__ %(status)s
+* __Amount:__ %(amount)s 
+* __Probability:__ %(probability)s
 
 [[wizard:title=Add Activity, name=activity_create , extra=%(params)s ]][[/wizard]]
 <br />
