@@ -124,7 +124,7 @@ class EasyDialog():
         @return: response answer or the default value
         """
 
-        return self.easyDialog.askYesNo(question)
+        return self.easyDialog.askYesNo(question, defaultValue)
 
     def askPassword(self, question, defaultValue=None):
         """

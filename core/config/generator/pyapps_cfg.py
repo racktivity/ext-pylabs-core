@@ -109,11 +109,12 @@ class PyAppsConfigGen:
 
 
     def start(self):
+        if 'wfe' in self.components:
+            q.manage.ejabberd.start()
+            q.manage.workflowengine.start(self.appName)
         if 'appserver' in self.components:
             q.manage.applicationserver.start(self.appName)
             q.manage.nginx.start()
-        if 'wfe' in self.components:
-            q.manage.workflowengine.start(self.appName)
         if 'postgresql' in self.components:
             q.manage.postgresql8.start()
         if 'arakoon' in self.components:
