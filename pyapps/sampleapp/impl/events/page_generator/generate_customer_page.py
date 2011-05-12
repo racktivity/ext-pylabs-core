@@ -51,7 +51,7 @@ def main(q, i, p, params, tags):
 """
     customer = p.api.action.crm.customer.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
-    parentpage = p.api.action.ui.page.find(name="customer_overview", space="crm")['result'][0]
+    parentpage = p.api.action.ui.page.find(name="CustomerOverview", space="crm")['result'][0]
 
     params_ = urllib.quote(json.dumps({'customerguid': customer.guid}))
     
