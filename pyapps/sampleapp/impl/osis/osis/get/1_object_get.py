@@ -1,5 +1,3 @@
-__tags__ = 'osis', 'get'
-__priority__= 1 # Lowest priority 
 
 from pymodel.serializers import ThriftSerializer
 

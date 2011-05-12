@@ -55,7 +55,12 @@ class AppManager(object):
         gen = PyAppsConfigGen(appname)
         gen.stop()
         gen.start()
-        
+
+    def getOsisConnection(self, appname):
+        from osis.store.OsisDB import OsisDB
+        osis = OsisDB().getConnection(appname)
+        return osis
+
 class ApplicationAPI(object):
     
     def __init__(self, appname, host=None, context=None):

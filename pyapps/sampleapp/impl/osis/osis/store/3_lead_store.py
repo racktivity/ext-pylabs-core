@@ -1,18 +1,9 @@
 __author__ = 'Incubaid'
-__tags__ = 'osis', 'store'
-__priority__= 3
-
-from osis.store.OsisDB import OsisDB
-
-ROOTOBJECT_TYPE = 'lead'
-DOMAIN = "crm"
-VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection(p.api.appname)
-
+    osis = p.application.getOsisConnection(p.api.appname) 
+    viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     rootobject = params['rootobject']
-
     values = {
         'name': rootobject.name,
         'code': rootobject.code,
@@ -23,10 +14,7 @@ def main(q, i, p, params, tags):
         'amount': rootobject.amount,
         'probability': rootobject.probability
     }
-
-    osis.viewSave(DOMAIN, ROOTOBJECT_TYPE, VIEW_NAME, rootobject.guid, rootobject.version, values)
-
-    q.logger.log('Saved rootobject %s' % rootobject, 3)
+    osis.viewSave(params['domain'], params['rootobjecttype'], viewname, rootobject.guid, rootobject.version, values)
 
 def match(q, i, params, tags):
-    return params['rootobjecttype'] == ROOTOBJECT_TYPE
+    return params['rootobjecttype'] == 'lead' and params['domain'] == 'crm'

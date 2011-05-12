@@ -1,7 +1,4 @@
 __author__ = 'incubaid'
-__tags__ ='osis', 'store'
-__priority__= 3
-
 from pymodel.serializers import ThriftSerializer
 
 def main(q, i, p, params, tags):

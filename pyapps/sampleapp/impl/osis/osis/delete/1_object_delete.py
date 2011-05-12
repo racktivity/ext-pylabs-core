@@ -1,5 +1,3 @@
-__tags__ = 'osis', 'delete'
-__priority__= 1 # Lowest priority 
 
 def main(q, i, p, params, tags):
     key  = 'osis.%s.%s.%s'  % (params['domain'], params['rootobjecttype'], params['rootobjectguid'])

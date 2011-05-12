@@ -1,6 +1,3 @@
-__author__ = 'incubaid'
-__tags__ ='osis', 'store'
-__priority__= 1
 
 def main(q, i, p, params, tags):
     root = params['rootobject']
