@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     pop3.login = params['login']
     pop3.password = params['password']
     p.api.config.mail.pop3.save(pop3)
-    params['result'] = True
+    params['result'] = pop3.guid
     
 def match(q, i, p, params, tags):
     return True
