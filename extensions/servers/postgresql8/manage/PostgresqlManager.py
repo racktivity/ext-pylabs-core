@@ -185,7 +185,7 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         for pgDatabase in pgDatabases:
             newACLEntryDict = dict()
             if pgDatabase.deleted :
-                q.cmdtools.postgresql8.dropdb(pgDatabase.name, pgDatabase.owner)
+                q.cmdtools.postgresql8.dropdb(pgDatabase.name, q.manage.postgresql8.cmdb.rootLogin)
 
             else:
                 self.startChanges()
