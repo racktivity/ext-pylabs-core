@@ -1,5 +1,5 @@
 #OSIS Views
-As explained in the [PyApp architecture](/sampleapp/#/doc/sampleapp), OSIS stands for Object Store and Indexing System. OSIS is responsible for populating the [Arakoon](http://www.arakoon.org) object store as well as a PostgreSQL database.
+As explained in the [PyApp architecture](/sampleapp/#/doc/SampleApp), OSIS stands for Object Store and Indexing System. OSIS is responsible for populating the [Arakoon](http://www.arakoon.org) object store as well as a PostgreSQL database.
 In this section we will discuss the PostgreSQL connection, which is responsible to store views on objects.
 
 Since the Arakoon object store can not be queried, the retrieval of object would be too slow and thus not user-friendly. That's where the PostgreSQL database comes into play.
@@ -7,7 +7,7 @@ The PostgreSQL database is used to store different views on Root Objects. A view
 
 
 ##Creating an OSIS View
-An OSIS view is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/setup/osis`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+An OSIS view is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/setup/osis`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
 
 
 ###Import Libraries
@@ -69,7 +69,7 @@ Example:
 
 The `setCol`-method of the view object expects three arguments:
 
-* name of a root object property, as defined in the [Root Object Model](/sampleapp/#/doc/modeling)
+* name of a root object property, as defined in the [Root Object Model](/sampleapp/#/doc/Modeling)
 * type of the property, which must be an OSIS-type
 * boolean to indicate if the value may be null (True) or not (False)
 

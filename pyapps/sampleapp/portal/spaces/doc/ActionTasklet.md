@@ -1,5 +1,5 @@
 #Implementing Action Tasklets
-For each Root Object you have created an [interface](/sampleapp/#/doc/action). The interface file contains the different actions that you can perform on the Root Object.
+For each Root Object you have created an [interface](/sampleapp/#/doc/Action). The interface file contains the different actions that you can perform on the Root Object.
 The examples of the tasklets so far did not create objects in Arakoon. 
 
 In this section we will take the step to the actual management of Root Objects: create, delete, update Root Objects, create lists, find objects, ...
@@ -39,14 +39,14 @@ The `__priority__` is replaced by the priority indication in the file name of th
 The `__tags__`  parameter is replaced by the folder names in which the tasklet resides. Take a look at the action tasklet `1_customer_create.py` of the 'sampleapp'. 
 This file is located in `/opt/qbase5/pyapps/sampleapp/impl/action/crm/customer/create`, where `crm` is a domain inside the 'sampleapp' application. All folder names, including the domain name, are used as tags of the tasklet.
 
-See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
 
 __Note:__ It is possible to still use the old tasklet file names and use the `__priority__` and `__tags__` parameters inside the tasklet, but it is recommended not to mix them.
 
 
 ###Provided Data
 The execution of the action tasklet mostly requires a lot of data about an object. This data is not to be retrieved in this action tasklet itself, but is gathered in the `params` dictionary. 
-The `params` dictionary lives throughout the whole PyLabs framework. You will see in the [Creating Forms and Wizards](/sampleapp/#/doc/formwizardparctical) section, that the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
+The `params` dictionary lives throughout the whole PyLabs framework. You will see in the [Creating Forms and Wizards](/sampleapp/#/doc/FormWizardParctical) section, that the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
 
 All of this is part of the PyLabs framework.
 
@@ -70,7 +70,7 @@ For example:
     lead = p.api.model.crm.lead.new()
 
 This creates an empty object. If you would save this empty object, it will be saved with some basic properties, such as a guid and a creation date. 
-All other properties, which are defined in the [modeling](/sampleapp/#/doc/modeling) phase are empty.
+All other properties, which are defined in the [modeling](/sampleapp/#/doc/Modeling) phase are empty.
 
 
 ###Setting Properties

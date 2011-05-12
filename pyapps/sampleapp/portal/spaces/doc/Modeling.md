@@ -2,7 +2,7 @@
 
 After the process of designing your PyLabs Application (PyApp), it is time that you define the different Root Objects of your PyApp. Each model of a root object is a `.py`-file and stored in its proper directory.
 
-See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
 
 ##What is a Root Object
 A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning), and more specific in [Arakoon](http://www.arakoon.org). A Root Object consists of properties, complex properties, and references to other Root Objects.

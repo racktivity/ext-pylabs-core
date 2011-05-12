@@ -47,9 +47,9 @@ def match(q, i, params, tags):
     return True
 [[/code]]    
 
-The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files.
+The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
 
-It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet](/sampleapp/#/doc/actiontasklet), which receives the arguments through the `params` dictionary.
+It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet](/sampleapp/#/doc/ActionTasklet), which receives the arguments through the `params` dictionary.
 
 
 ##Creating Forms
@@ -223,6 +223,6 @@ params['result'] = result
 
 
 ##What's Next?
-In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/doc/formwizard)
+In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/doc/FormWizard)
 
 In the next chapters you will learn how your PyApp can interact with the reality, how actions can be triggered by events, and how actions can be scheduled.
