@@ -216,6 +216,9 @@ class PyAppsConfigGen:
         if '@lfw' not in vhost.sites:
             lfw = vhost.addSite('@lfw', '@lfw')
             lfw.addOption('root', '/opt/qbase5/www/lfw/')
+        if '@lfw_macros' not in vhost.sites:
+            lfw = vhost.addSite('@lfw_macros', '@lfw_macros')
+            lfw.addOption('root', '/opt/qbase5/www/lfw/js/macros/')
 
         root = os.path.join(q.dirs.pyAppsDir, self.appName, 'portal', 'static')
         if not os.path.isdir(root):
@@ -225,15 +228,23 @@ class PyAppsConfigGen:
             site = vhost.addSite(self.appName, '/%s' % self.appName)
             site.addOption('root', root)
             site.addOption('try_files', '$uri $uri/ @lfw')
-            # Since the nginx manage 'extension' doesn't like users to set the
-            # same option multiple times (which is perfectly allowed in nginx
-            # configuration files for some options), we use this 1337 'space'
-            # trick
             site.addOption('rewrite', '^/%s$ /%s/ permanent' % \
                 (self.appName, self.appName))
-            site.addOption('rewrite ', '^/%s/$ /index.html break' % \
+            site.addOption('rewrite', '^/%s/$ /index.html break' % \
                 self.appName)
-            site.addOption('rewrite  ', '^/%s/(.*) /$1 break' % self.appName)
+            site.addOption('rewrite', '^/%s/(.*) /$1 break' % self.appName)
+
+        root = os.path.join(q.dirs.pyAppsDir, self.appName, 'impl', 'portal', 'jsmacros')
+        if not os.path.isdir(root):
+            os.makedirs(root, 0755)
+
+        sitename = "%s_macros" % self.appName
+        if not sitename in vhost.sites:
+            site = vhost.addSite(sitename, '/%s/js/macros' % self.appName)
+            site.addOption('root', root)
+            site.addOption('try_files', '$uri $uri/ @lfw_macros')
+            site.addOption('rewrite', '^/%s/js/macros/(.*) /$1 break' % self.appName)
+
 
         nginx.cmdb.save()
         nginx.applyConfig()
