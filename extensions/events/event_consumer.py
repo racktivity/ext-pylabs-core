@@ -55,6 +55,9 @@ if __name__ == '__main__':
         print cmdArgs
         raise RuntimeError( "Usage: eventconsumer.py queuename bindingkey taskletdir" )
     queueName, bindingKey, taskletDir, appName = cmdArgs[1:]
+    dirname = q.system.fs.getBaseName(taskletDir)
+    q.application.appname = "../%s/eventconsumer/%s" % (appName, dirname)
+    q.application.start()
     p.api = p.application.getAPI(appName)
     cons = EventConsumer(queueName, bindingKey, taskletDir)
     cons.consume()

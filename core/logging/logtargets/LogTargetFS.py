@@ -107,10 +107,10 @@ class LogTargetFS(object):
         logdir=os.path.join(pylabs.q.dirs.varDir,'log',"pylabslogs",appLogname)
 
         if appLogname<>self.appname:
-            if os.path.isdir(logdir)==False:
-                os.mkdir(logdir)
             self.appname=appLogname
 
+        if not os.path.isdir(logdir):
+            os.makedirs(logdir)
         filename=time.strftime("%b_%d--%H_%M_%S", time.gmtime())
         logfile=os.path.join(logdir,"%s_%s"%(filename,pylabs.q.application.state))
         filenum = 1
