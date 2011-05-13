@@ -7,7 +7,7 @@ The PostgreSQL database is used to store different views on Root Objects. A view
 
 
 ##Creating an OSIS View
-An OSIS view is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/setup/osis`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
+An OSIS view is a [tasklet](http://confluence.incubaid.com/display/PYLABS/3.2+Tasklets) which is stored in the directory `<pyapp name>/impl/setup/osis`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
 
 
 ###Import Libraries

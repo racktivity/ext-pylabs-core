@@ -4,7 +4,7 @@ In this section we will cover how you can store, update, and delete objects from
 
 
 ##Creating an OSIS Operation
-An OSIS operation is a [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
+An OSIS operation is a [tasklet](http://confluence.incubaid.com/display/PYLABS/3.2+Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
 
 Each file has the following identification:
 

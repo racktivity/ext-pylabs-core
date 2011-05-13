@@ -10,7 +10,7 @@ Besides the most common actions, you can of course create your own specific acti
 ##Before Creating Tasklets
 What do you need to know before you start implementing the Root Object Interface?
 
-The tasklets have the same structure as any other [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets).
+The tasklets have the same structure as any other [tasklet](http://confluence.incubaid.com/display/PYLABS/3.2+Tasklets).
 
 [[code]]
 __author__='incubaid'

@@ -37,26 +37,14 @@ How is PL5 structured
 ####PyLabs 5 Levels
 
 ####PyLabs 5 Components
-app server
-agents
-nginx
-wfe
-tasklet engine
-osis
-arakoon
-postgresql
-drp
-ejabberd
-q-shell
+
+####Workflow Engine
+
+####PyLabs Agent
 
 ####Tasklets
-what is a tasklet
-why tasklets
-structure of a tasklet
 
 ####PyApps
-what is a pyapp
-why pyapps
 
 ----
 
