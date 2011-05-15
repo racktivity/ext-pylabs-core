@@ -5,8 +5,8 @@
     "dbconnection": "sampleapp",
     "table": "crm_view_customer_list",
     "schema": "crm_customer",
-    "sqlselect": "SELECT crm_view_customer_list.name FROM crm_customer.crm_view_customer_list",
-    "link": "name",
+    "sqlselect": "SELECT crm_view_customer_list.name, crm_view_customer_list.guid FROM crm_customer.crm_view_customer_list",
+    "link": {"name": "/sampleapp/#/crm/customer_detail_$guid$"},
     "sort": "name",
     "name": "Customers",
     "pagesize": 10,
@@ -16,7 +16,8 @@
         "category": 40,
         "name": 80,
         "parent": 160
-    }
+    },
+    "hidden":["guid"]
 }
 </div>
 
