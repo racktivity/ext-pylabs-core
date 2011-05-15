@@ -11,7 +11,11 @@ def _extractMessage(q, mail_elements):
     if not mail_elements:
         q.errorconditionhandler.raiseError('Ivalid value %s.' %mail_elements)
 
-    boundry_headers = [boundary_header for boundary_header in [header for header in mail_elements if header.find('Content-Type') != -1] if boundary_header.find('boundary') != -1]
+    boundry_headers = list()
+    for header in mail_elements:
+        if header.find('Content-Type') != -1 and header.find('boundary') != -1:
+            boundry_headers.append(header)
+    
     if not boundry_headers:
         q.errorconditionhandler.raiseError('Could not find boundary to extract and read e-mail message.')
 
@@ -23,8 +27,13 @@ def _extractMessage(q, mail_elements):
     end = mail_elements.index('--%s' %boundary, start + 1)
     if start == -1 or end == -1:
         q.errorconditionhandler.raiseError('Could not find boundary to extract and read e-mail message.')
+    
+    massage_lines = list()
+    for index in range(start, end):
+        if mail_elements[index]:
+            massage_lines.append(mail_elements[index])
 
-    return os.linesep.join([mail_elements[index] for index in range(start, end) if mail_elements[index]])
+    return os.linesep.join(massage_lines)
 
 def main(q, i, p, params, tags):
     import base64
