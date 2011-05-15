@@ -574,6 +574,15 @@ class AppAPIGenerator(object):
         
     
     def generate(self, appname):
+        """
+        For a given application:
+            * Generates base services.
+            * Generates action API.
+            * Generates actor API.
+
+        @type appname: String
+        @param appname: The name of your application.
+        """
         self._generator = CloudApiGenerator(appname)
         q.action.start('Generating base services')
         self._generate_default_services(appname)
