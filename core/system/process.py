@@ -1593,6 +1593,30 @@ class SystemProcess:
         else:
             raise RuntimeError("This platform is not supported in q.system.process.checkListenPort()")
 
+    def getProcessPid(self, process):
+        if pylabs.q.platform.isUnix():
+            # Need to set $COLUMNS such that we can grep full commandline
+            # Note: apparently this does not work on solaris
+            command = "env COLUMNS=300 ps -ef"
+            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
+            pids = list()
+            co = re.compile("\s*(?P<uid>[a-z]+)\s+(?P<pid>[0-9]+)\s+(?P<ppid>[0-9]+)\s+(?P<cpu>[0-9]+)\s+(?P<stime>\S+)\s+(?P<tty>\S+)\s+(?P<time>\S+)\s+(?P<cmd>.+)")
+            for line in output.splitlines():
+                match = co.search(line)
+                if not match:
+                    continue
+                gd = match.groupdict()
+                if isinstance(process, int) and gd['pid'] == process:
+                    pids.append(gd['pid'])
+                elif isinstance(process, (str,unicode)) and  process in gd['cmd']:
+                    pids.append(gd['pid'])
+
+            return pids
+        else:
+             raise NotImplementedError("getProcessPid is only implemented for unix")
+
+
+
     def checkProcess(self, process, min=1):
         """
         Check if a certain process is running on the system.
@@ -1606,23 +1630,8 @@ class SystemProcess:
         """
         pylabs.q.logger.log('Checking whether at least %d processes %s are running' % (min, process), 8)
         if pylabs.q.platform.isUnix():
-            # Need to set $COLUMNS such that we can grep full commandline
-            # Note: apparently this does not work on solaris
-            command = "env COLUMNS=300 ps -ef"
-            (exitcode, output) = pylabs.q.system.process.execute(command, dieOnNonZeroExitCode=False, outputToStdout=False)
-            i=0
-            co = re.compile("\s*(?P<uid>[a-z]+)\s+(?P<pid>[0-9]+)\s+(?P<ppid>[0-9]+)\s+(?P<cpu>[0-9]+)\s+(?P<stime>\S+)\s+(?P<tty>\S+)\s+(?P<time>\S+)\s+(?P<cmd>.+)")
-            for line in output.splitlines():
-                match = co.search(line)
-                if not match:
-                    continue
-                gd = match.groupdict()
-                if isinstance(process, int) and gd['pid'] == process:
-                    i = i+1
-                elif isinstance(process, (str,unicode)) and  process in gd['cmd']:
-                    i = i+1
-
-            if i >= min:
+            pids = self.getProcessPid(process)
+            if len(pids) >= min:
                 return 0
             return 1
 
