@@ -24,29 +24,37 @@ def getCustomers(api):
     customers = dict()
     result = api.action.crm.customer.list()['result']
     
-    map(lambda x: customers.__setitem__(x['guid'], x['name']), result)
+    for x in result:
+        customers[x['guid']] = x['name']
     return customers
 
 def getLeads(api):
     leads = dict()
     result = api.action.crm.lead.list()['result']
     
-    map(lambda x: leads.__setitem__(x['guid'], x['name']), result)
+    for x in result:
+        leads[x['guid']] = x['name']
     return leads
 
 def getType(q):
-    type = dict((k, str(v)) for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems())
-    #type = q.enumerators.activitytype._pm_enumeration_items
+    type_list= list()
+    for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems():
+        type_list.append(k, str(v))
+    type = dict(type_list)
     return type
 
 def getStatus(q):
-    status =dict((k, str(v)) for k, v in q.enumerators.activitystatus._pm_enumeration_items.iteritems())
-    #status = q.enumerators.activitystatus._pm_enumeration_items
+    status_list= list()
+    for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems():
+        status_list.append(k, str(v))
+    status = dict(status_list)
     return status
 
 def getPriority(q):
-    priority = dict((k, str(v)) for k, v in q.enumerators.activitypriority._pm_enumeration_items.iteritems())
-    #priority = q.enumerators.activitypriority._pm_enumeration_items
+    priority_list= list()
+    for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems():
+        priority_list.append(k, str(v))
+    priority = dict(priority_list)
     return priority
 
 

@@ -35,7 +35,8 @@ def callCloudAPI(api, name, code, customer, source, type, status, amount, probab
 def getCustomers(api):
     customers = dict()
     result = api.action.crm.customer.list()['result']
-    map(lambda x: customers.__setitem__(x['guid'], x['name']), result)
+    for x in result:
+        customers[x['guid']] = x['name']
     return customers
 
 def getTypes(api):
@@ -53,7 +54,6 @@ def getStatuses(api):
     return leadStatuses
 
 def getSources(api):
-    #dict([customer['guid'],customer['name']] for customer in api.action.crm.customer.list()['result'])
     leadSources_list = api.action.crm.lead.listSources()['result']
     leadSources = dict.fromkeys(leadSources_list)
     for k in leadSources.iterkeys():
