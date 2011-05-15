@@ -164,16 +164,17 @@ Several calls to 'next' later, once we are outside the PyLabs extension loading 
 
 In order to debug the workflow engine, you need to start it in debug mode. This can be achieved with:
 
-    q.manage.workflowengine.start(appname, debug=True)
+    q.manage.workflowengine.start(appname, debug=True)   
 
-where:  
-    * __appname:__ is the name of your application.
-    * __debug:__ specifies whether you want to start the workflow engine normally or in debug mode.
+Where:  
 
-*Note:* If the workflow engine is already running, you need to stop it first.
+* __appname:__ is the name of your application.   
+* __debug:__ specifies whether you want to start the workflow engine normally or in debug mode.   
+
+*Note: If the workflow engine is already running, you need to stop it first.*   
 
 After you start the workflow engine in debug mode, you can open it's screen using the command below:
-
+    
     screen -x wfe
 
 In that screen you will be able to interactively debug your PyApp.
