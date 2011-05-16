@@ -770,7 +770,6 @@ class Server:
             cmd = "twistd --pidfile=%s -y %s --savestats %s"% (pidfile, tacfile, "-b" if debug else "")
             if debug:
                 cmd = "screen -dmS %s %s" % (name, cmd)
-            print cmd 
             code, stdout, stderr = q.system.process.run(cmd,
                 showOutput=False,
                 captureOutput=True,
