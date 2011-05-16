@@ -160,6 +160,7 @@ Several calls to 'next' later, once we are outside the PyLabs extension loading 
 
     ipdb> continue
 
+
 ##Debugging the Workflow Engine and Actions Tasklets
 
 In order to debug the workflow engine, you need to start it in debug mode. This can be achieved with:
@@ -173,8 +174,28 @@ Where:
 
 *Note: If the workflow engine is already running, you need to stop it first.*   
 
-After you start the workflow engine in debug mode, you can open it's screen using the command below:
+After you start the workflow engine in debug mode, you can open its screen using the command below:
     
     screen -x wfe
+    
+     0 jobs to reset
+    Ready !
+    
 
 In that screen you will be able to interactively debug your PyApp.
+
+If you want to leave the screen session and want the workflow engine to stay running in debug mode, press CTRL+a followed by the `d` key.
+However, it is recommended not to run the workflow engine in debug mode for better performance.
+
+To end the debug mode, press CTRL+c in your screen session and restart the workflow engine in the Q-Shell.
+
+    root@tdw-mm64:/opt/qbase5# screen -x wfe --> press CTRL+c in your screen session
+    [screen is terminating]
+    root@tdw-mm64:/opt/qbase5#
+    
+    #in Q-Shell:
+    In [2]: q.manage.workflowengine.start('sampleapp')
+    Starting the workflowengine.
+     Waiting for initialization
+    Workflowengine started
+    
