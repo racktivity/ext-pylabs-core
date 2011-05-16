@@ -234,9 +234,9 @@ class PyAppsConfigGen:
                 self.appName)
             site.addOption('rewrite', '^/%s/(.*) /$1 break' % self.appName)
 
-        root = os.path.join(q.dirs.pyAppsDir, self.appName, 'impl', 'portal', 'jsmacros')
-        if not os.path.isdir(root):
-            os.makedirs(root, 0755)
+        jsmacros = os.path.join(q.dirs.pyAppsDir, self.appName, 'impl', 'portal', 'jsmacros')
+        if not os.path.isdir(jsmacros):
+            os.makedirs(jsmacros, 0755)
 
         sitename = "%s_macros" % self.appName
         if not sitename in vhost.sites:
