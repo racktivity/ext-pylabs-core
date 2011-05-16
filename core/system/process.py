@@ -760,7 +760,7 @@ def run(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
     @return: Tuple containing subprocess exitcode, stdout and stderr output
     @rtype: tuple(number, string, string)
     '''
-    env = os.environ
+    env =  kwargs.pop('env', os.environ)
 
     # Calculate UID and GID t run as
     if user is not None or group is not None:
@@ -790,7 +790,6 @@ def run(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
 
         # TODO Do we want to cleanup the environment, eg HOME and USER?
         # See Trac #165
-        env = os.environ.copy()
         path = env.get('PYTHONPATH', None)
         if path:
             path = os.pathsep.join((processhelper_path, path, ))
