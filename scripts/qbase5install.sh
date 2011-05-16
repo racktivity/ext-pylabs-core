@@ -346,7 +346,6 @@ if PATH not in vhost.sites:
 nginx.save()
 nginx.applyConfig()
 
-q.extensions.enable('q.clients.arakoon')
 EOF
 
 my_log "Setup done"
