@@ -1,3 +1,32 @@
+import sys
+import twisted.application.app
+import twisted.internet.defer
+import twisted.python.failure
+orig_runReactorWithLogging = twisted.application.app.runReactorWithLogging
+
+def patched_runReactorWithLogging(config, oldstdout, oldstderr, profiler=None, reactor=None):
+    if not config['debug']:
+        return orig_runReactorWithLogging(config, oldstdout, oldstderr, profiler, reactor)
+
+    if reactor is None:
+        from twisted.internet import reactor
+    try:
+        sys.stdout = oldstdout
+        sys.stderr = oldstderr
+        reactor.run()
+    except:
+        if config['nodaemon']:
+            file = oldstdout
+        else:
+            file = open('TWISTD-CRASH.log', 'a')
+        traceback.print_exc(file=file)
+        file.flush()
+
+twisted.application.app.runReactorWithLogging = patched_runReactorWithLogging
+
+twisted.internet.defer.setDebugging(False)
+twisted.python.failure.DO_POST_MORTEM = False
+
 from twisted.application.service import Application
 from twisted.python.log import ILogObserver, FileLogObserver
 from twisted.plugins.applicationserver_plugin import serviceMaker

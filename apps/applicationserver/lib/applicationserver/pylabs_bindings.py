@@ -721,7 +721,7 @@ class Server:
                 name = "applicationserver.%s" % name
         return name
 
-    def start(self, name=None):
+    def start(self, name=None, debug=False):
         """
         Start this applicationserver
 
@@ -759,24 +759,26 @@ class Server:
 
 
         # Start a twistd
-        os.environ['TWISTED_NAME'] = name
+        env = os.environ.copy()
+        env['TWISTED_NAME'] = name
         if not q.platform.isWindows():
             # This code is suboptimal since it overrules previously-set values
             # of PYTHONPATH, which might not be the intention
             tacfile = q.system.fs.joinPaths(applicationserver_dir, 'applicationserver.tac')
-            code, stdout, stderr = q.system.process.run(
-                "PYTHONPATH=\"%s\" twistd "
-                "--pidfile=%s -y %s --savestats"% (
-                    applicationserver_dir,
-                    pidfile,
-                    tacfile,
-                ),
+            env['PYTHONPATH'] = applicationserver_dir
+
+            cmd = "twistd --pidfile=%s -y %s --savestats %s"% (pidfile, tacfile, "-b" if debug else "")
+            if debug:
+                cmd = "screen -dmS %s %s" % (name, cmd)
+            code, stdout, stderr = q.system.process.run(cmd,
                 showOutput=False,
                 captureOutput=True,
                 stopOnError=False,
                 # Use shell so the system's twistd can be found
                 shell=True,
-            )
+                env=env)
+
+
         else:
             # Windows hack
             cmd = q.system.fs.joinPaths(
@@ -833,7 +835,7 @@ class Server:
                 q.console.echo("%s with pid [%s] is still alive, killing it..." % (name,pid))
                 q.system.process.kill(pid)
 
-    def restart(self, name=None):
+    def restart(self, name=None, debug=False):
         """
         Restart this applicationserver
         """
@@ -859,7 +861,7 @@ class Server:
             q.gui.dialog.message('Killing process %s'%pid)
             q.system.process.kill(pid)
 
-        self.start(name)
+        self.start(name, debug)
 
     def reload(self, printWarningIfNotRunning=True, name=None):
         """

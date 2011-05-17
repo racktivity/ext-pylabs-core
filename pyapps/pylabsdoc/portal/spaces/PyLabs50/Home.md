@@ -31,20 +31,17 @@ The PyLabs 5 Guide describes the framework that allows users to automate their d
 
 ##PyLabs 5 Overview
 
-####High-Level Architecture
-How is PL5 structured
+####PyLabs Architecture
 
-####PyLabs 5 Levels
-
-####PyLabs 5 Components
+####PyLabs Components
 
 ####Workflow Engine
 
 ####PyLabs Agent
 
-####Tasklets
+####Tasklets and Tasklet Engine
 
-####PyApps
+####PyLabs Applications
 
 ----
 

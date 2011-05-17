@@ -25,9 +25,6 @@ try:
 except ImportError:
     from pylabs import q
 
-from arakoon import Arakoon 
-from arakoon.ArakoonProtocol import ArakoonClientConfig
-
 class ArakoonClientExtConfig:
     """
     Configuration of Arakoon nodes
@@ -181,6 +178,9 @@ class ArakoonClient:
         @param clusterId: the name of the cluster for which you want to get a client
         @return arakoon client object
         """
+        from arakoon import Arakoon 
+        from arakoon.ArakoonProtocol import ArakoonClientConfig
+
         clientConfig = q.config.getInifile("arakoonclients")
         if not clientConfig.checkSection(clusterId):
             q.errorconditionhandler.raiseError("No such client configured for cluster [%s]." %clusterId)

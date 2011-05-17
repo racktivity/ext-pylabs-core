@@ -65,6 +65,7 @@ core_install(){
     install_package "${CORE_PACKAGES}"
     customize
     update_metadata
+    install_qpackage pylabs
 }
 
 usage(){
