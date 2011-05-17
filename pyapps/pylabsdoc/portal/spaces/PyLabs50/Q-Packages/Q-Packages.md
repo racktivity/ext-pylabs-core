@@ -17,7 +17,7 @@
 Welcome to Q-Packages, a revolution in cloud application installations.
 
 
-### Table of Contents
+### In this Chapter...
 1. [Introducing Q-Packages][qpintro]
 2. [Q-Package Architecture][qparchitecture]
 2.1. [Q-Package Directory Structure][qparchitecture]

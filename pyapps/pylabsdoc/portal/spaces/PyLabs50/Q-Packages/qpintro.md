@@ -1,5 +1,4 @@
-[deb]: http://en.wikipedia.org/wiki/Deb_(file_format)
-[rpm]: http://en.wikipedia.org/wiki/RPM_Package_Manager
+[apt]: http://en.wikipedia.org/wiki/Advanced_Packaging_Tool
 [yum]: http://en.wikipedia.org/wiki/Yellowdog_Updater,_Modified
 [nginx]: http://www.nginx.org/
 [PostgreSQL]: http://www.postgresql.org
@@ -7,7 +6,7 @@
 
 ## Introducing Q-Packages
 
-Q-Packages is Incubaid's platform independent software and content distribution system. It is similar to conventional package systems ([deb][], [rpm][], [yum][], ...), but without their complexity.
+Q-Packages is Incubaid's platform independent software and content distribution system. It is similar to conventional package systems ([apt][], [yum][], ...), but without their complexity.
 
 A Q-Package is a package to be installed in PyLabs 5. A software package can be self-created software, as well as open-source packages, for example [nginx][] or [PostgreSQL][]. But a package can not only be software, but also a virtual machine image or documentation. 
 

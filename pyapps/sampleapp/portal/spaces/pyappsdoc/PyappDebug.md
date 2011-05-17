@@ -1,3 +1,6 @@
+[as]: /pylabsdoc/#/PyLabs50/components
+
+
 #PyLabs Debugger Support
 
 When you create a PyApp, it is very likely that not everything works as it should be, and in many cases you have to debug your PyApp. In the PyLabs framework this can be easily done, since it contains number of debugging aids.  
@@ -170,7 +173,7 @@ In order to debug the workflow engine, you need to start it in debug mode. This 
 Where:  
 
 * __appname:__ is the name of your application.   
-* __debug:__ specifies whether you want to start the workflow engine normally or in debug mode.   
+* __debug:__ specifies whether you want to start the workflow engine in normal (recommended) or in debug mode.   
 
 *Note: If the workflow engine is already running, you need to stop it first.*   
 
@@ -182,16 +185,16 @@ After you start the workflow engine in debug mode, you can open its screen using
     Ready !
     
 
-In that screen you will be able to interactively debug your PyApp.
+In that screen you will be able to interactively debug your PyApp on workflow engine level.
 
 If you want to leave the screen session and want the workflow engine to stay running in debug mode, press CTRL+a followed by the `d` key.
 However, it is recommended not to run the workflow engine in debug mode for better performance.
 
 To end the debug mode, press CTRL+c in your screen session and restart the workflow engine in the Q-Shell.
 
-    root@tdw-mm64:/opt/qbase5# screen -x wfe --> press CTRL+c in your screen session
+    root@mm64:/opt/qbase5# screen -x wfe --> press CTRL+c in your screen session
     [screen is terminating]
-    root@tdw-mm64:/opt/qbase5#
+    root@mm64:/opt/qbase5#
     
     #in Q-Shell:
     In [2]: q.manage.workflowengine.start('sampleapp')
@@ -199,3 +202,26 @@ To end the debug mode, press CTRL+c in your screen session and restart the workf
      Waiting for initialization
     Workflowengine started
     
+
+## Debugging the Application Server
+
+Similar to debugging the workflow engine, you can also debug the [PyLabs Application Server][as]. Therefore run the application server in debug mode:
+
+    q.manage.applicationserver.start(appname, debug=True)
+    
+Where:  
+
+* __appname:__ is the name of your application.   
+* __debug:__ specifies whether you want to start the application server in normal (recommended) or in debug mode.   
+
+*Note: If the workflow engine is already running, you need to stop it first.* 
+
+After you start the application server in debug mode, you can open its screen using the command below:
+    
+    screen -x applicationserver.appname
+    
+Replace _appname_ by the name of your PyApp, for example _sampleapp_.
+
+*Tip: enter `screen -ls` to get a list of active screen sessions.*
+
+In that screen you will be able to interactively debug your PyApp on application server level. To return to the normal mode of the application server, see the previous paragraph.

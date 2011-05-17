@@ -56,10 +56,10 @@ PyLabs is now installed on your system. In the next section you will see how to 
 PyLabs 5 has created a sample PyLabs application (PyApp), called '**sampleapp**'. This is a very basic CRM application, just to show the power of PyLabs.
 To install this sample application:
 
-# Go to the PyLabs root directory: `cd /opt/qbase5/` \\ \\
-# Start the Q-Shell: `./qshell` \\ \\
-# Find and install the sample application: `i.qp.find('sampleapp').install()` \\ \\
-# Make the application available in PyLabs 5: `p.application.install('sampleapp')`
+1. Go to the PyLabs root directory: `cd /opt/qbase5/` 
+2. Start the Q-Shell: `./qshell` 
+3. Find and install the sample application: `i.qp.find('sampleapp').install()` 
+4. Make the application available in PyLabs 5: `p.application.install('sampleapp')`
 
      * Generating base services                                  DONE
      * Generating API for sampleapp application                  RUNNING
