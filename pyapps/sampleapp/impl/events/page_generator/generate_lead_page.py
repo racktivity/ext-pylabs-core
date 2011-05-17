@@ -8,16 +8,18 @@ def main(q, i, p, params, tags):
     key = params["eventKey"]
     template = """
 # Lead details
+
 * __Name:__ %(name)s
 * __Code:__ %(code)s
 * __Customer:__ %(customer)s
 * __Source:__ %(source)s
-* __Type:__ %(type)s        
+* __Type:__%(type)s        
 * __Status:__ %(status)s
 * __Amount:__ %(amount)s 
 * __Probability:__ %(probability)s
 
 [[wizard:title=Add Activity, name=activity_create , extra=%(params)s ]][[/wizard]]
+[[wizard:title=Edit, name=lead_edit , extra=%(params)s ]][[/wizard]]
 <br />
 <div class="macro macro_sqlgrid">
     {
@@ -52,7 +54,7 @@ def main(q, i, p, params, tags):
     q.logger.log("search view for lead %s"%guid,level=3) 
     searchresult = p.api.action.ui.page.find(name="lead_detail_%s"%guid)['result']
     q.logger.log("search returned view %s"%str(searchresult),level=3)
-    parentpage = p.api.action.ui.page.find(name="LeadsOverview", space="crm")['result'][0]
+    parentpage = p.api.action.ui.page.find(name="Leads_Overview", space="crm")['result'][0]
     
     if searchresult:
         p.api.action.ui.page.update(searchresult[0], "lead_detail_%s"%guid, "crm", "lead", parentpage, "crm lead", 

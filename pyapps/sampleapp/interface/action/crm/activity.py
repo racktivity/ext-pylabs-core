@@ -180,3 +180,53 @@ class activity:
         
         @warning:                   Only usable using the python client.
         """
+    
+    def update (self, activityguid, name=None, description=None, location=None, type=None, priority=None, status=None, customerguid=None, leadguid=None, starttime=None, endtime=None, jobguid=None, executionparams={}):
+        """
+        Update an activity
+        
+        @param activityguid: guid for the activity
+        @type activityguid: guid
+        
+        @param name: name for the activity
+        @type name: string
+        
+        @param description: description of the activity
+        @type description: string
+        
+        @param location: location where the activity will be held
+        @param location: string
+        
+        @param type: type of the activity
+        @type type: string
+        
+        @param priority: priority of the activity
+        @type priority: string
+        
+        @param status: status of the activity
+        @type status: string
+        
+        @param customerguid: guid of the customer with whom the activity is held, if not available this is an empty string
+        @type customerguid: guid
+        
+        @param leadguid: guid of the lead with whom the activity is held, if not available this is an empty string
+        @type leadguid: guid
+        
+        @param starttime: start time of activity, in format 'DD/MM/YYYY hh-mm'
+        @type starttime: string
+        
+        @param endtime: end time of activity, in format 'DD/MM/YYYY hh-mm'
+        @type endtime: string
+        
+        @param jobguid: guid of the job if available, else empty string
+        @type jobguid: guid
+        
+        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:         dictionary
+        
+        @return:                       dictionary with activity guid and jobguid {'result': guid, 'jobguid': guid}
+        @rtype:                        dictionary
+        
+        @raise e:                      in case of an error, raise an exception
+        """
+        
