@@ -10,13 +10,17 @@ def main(q, i, p, params, tags):
 
     depth = int(macro_tags['depth'])
     space = macro_tags['space']
-    if macro_tags.get('root', 'self') == 'self':
-        root_page = macro_tags['page']
-    else:
-        root_page = macro_tags['root']
+    root_page = macro_tags.get('root', 'self')
 
     all_pages = alkira_client.listPages(space)
-    tree = {root_page:{}}
+
+    root_pages = []
+    if root_page != 'self':
+        root_pages.append(root_page)
+    else:
+        for each_page in all_pages:
+            if not alkira_client.getPage(space, each_page).parent:
+                root_pages.append(each_page)
 
     def childPages(root, pages, tree, tree_depth):
         tree_depth -= 1
@@ -34,7 +38,10 @@ def main(q, i, p, params, tags):
                 childPages(child, all_pages, tree[root], tree_depth)
         return tree
 
-    values = childPages(root_page, all_pages, {root_page:{}}, depth)
+    values = []
+    for each_root_page in root_pages:
+        values.append(childPages(each_root_page, all_pages, {each_root_page:{}}, depth))
+
     children_str = ""
 
     def treePrint(indent, value_dict):
@@ -46,7 +53,8 @@ def main(q, i, p, params, tags):
                 children_str += indent*' ' + "* <a href='/" + appname + '/#/' + space + '/' + item + "'>" + page_name + '</a>  \n'
                 treePrint(indent+4, value_dict[item])
 
-    treePrint(0, values)
+    for each_value in values:
+        treePrint(0, each_value)
 
     result = """
 __Children:__
