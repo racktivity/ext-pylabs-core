@@ -1,13 +1,18 @@
 #Leads Overview
 
-<div class="macro macro_sqlgrid">
+[[sqlgrid]]
 {
     "dbconnection": "sampleapp",
     "table": "crm_view_lead_list",
     "schema": "crm_lead",
-    "sqlselect": "SELECT   crm_view_lead_list.name, crm_view_lead_list.probability, crm_view_lead_list.source, crm_view_lead_list.guid, crm_view_lead_list.amount FROM crm_lead.crm_view_lead_list",
+	"columns" : {
+		        "name": "Name",
+		        "probability" : "Probability",
+		        "source": "Source",
+				"amount": "Amount",
+				"guid": "guid"},
     "name": "Leads",
-    "link": {"name": "/sampleapp/#/crm/lead_detail_$guid$"},
+    "link": {"Name": "/sampleapp/#/crm/lead_detail_$guid$"},
     "sort": "name",
     "pagesize": 10,
     "width": 600,
@@ -18,6 +23,6 @@
     "hidden":["guid"]
     
 }
-</div>
+[[/sqlgrid]]
 
 [[wizard:title=Add, name=lead_create]][[/wizard]]
