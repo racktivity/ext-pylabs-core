@@ -33,6 +33,85 @@ def listMethods(claZ):
             methods[att] = method
     return methods
 
+def getTypeConverter(pymodelType):
+    typeMapping = dict()
+    typeMapping['String'] = "str"
+    typeMapping['Object'] = 'str'
+    typeMapping['Boolean'] = 'str'
+    typeMapping['DateTime'] = 'str'
+    typeMapping['Float'] = 'float'
+    typeMapping['Integer'] = 'int'
+    typeMapping['GUID'] = 'str'
+    typeMapping['Enumeration'] = 'str'
+    return typeMapping[pymodelType]
+    
+
+
+def getUIType(pymodelType):
+    typeMapping = dict()
+    typeMapping['String'] = "Text"
+    typeMapping['Object'] = 'Text'
+    typeMapping['Boolean'] = 'YesNo'
+    typeMapping['DateTime'] = 'DateTime'
+    typeMapping['Float'] = 'Integer'
+    typeMapping['Integer'] = 'Integer'
+    typeMapping['GUID'] = 'Text'
+    typeMapping['Enumeration'] = 'Choice'
+    return typeMapping[pymodelType]
+    
+
+def getOsisType(pymodelType):
+    typeMapping = dict()
+    typeMapping['String'] = "STRING"
+    typeMapping['Object'] = 'BINARY'
+    typeMapping['Boolean'] = 'BOOLEAN'
+    typeMapping['DateTime'] = 'DATETIME'
+    typeMapping['Float'] = 'FLOAT'
+    typeMapping['Integer'] = 'INTEGER'
+    typeMapping['GUID'] = 'UUID'
+    typeMapping['Enumeration'] = 'STRING'
+    return typeMapping[pymodelType]
+    
+    #these types needs to review their mapping , is that possble to get these types in the model specs?                                                             
+    #model.Model                        
+                
+        #model.Dict              
+        #model.Enumeration
+        #model.List
+        
+        #typeMapping['']='TEXT'
+        #typeMapping['']='BIGINT'
+
+def listFields(claZ):
+    fields = list()
+    for att in  claZ.PYMODEL_MODEL_INFO.attributes:
+        if att.name in ["_baseversion", "version", "guid", "creationdate"]:
+            continue
+        field = dict()
+        field ['name'] =  att.name
+        field ['type'] =  att.attribute.__class__.__name__
+        field ['Osistype'] = getOsisType(field ['type'])
+        field ['uitype'] = getUIType(field ['type'])
+        field ['converter'] = getTypeConverter(field ['type'])
+        
+        if field ['type'] == "Enumeration":
+            field ['enum'] = att.attribute.type_._pm_enumeration_items.keys()
+            
+        fields.append(field)
+        
+    return fields
+
+def getTemplateParams(specFile, appname = "", domain = "", params = dict() ):
+        className = specFile.split(os.sep)[-1].split(".")[0]
+        claZ = getClass(specFile,className)
+        fieldsList = listFields(claZ)
+        className = getClassName(claZ)
+        params['rootobject'] = className
+        params['fields'] = fieldsList
+        params['domain'] = domain
+        params['appname'] = appname
+        return params
+
 class Extension:
     def __init__(self, className, moduleName, qlocation):
         self.className = className
@@ -206,16 +285,64 @@ class CloudApiGenerator:
         self._appName = appName
 
     def _generateCode(self, templatePath, params, destPath):
-        
+       
         if not q.system.fs.exists(q.system.fs.getDirName(destPath)):
             q.system.fs.createDir(q.system.fs.getDirName(destPath))
                                         
         template = Template(q.system.fs.fileGetContents(templatePath), params)
         
         contents = str(template)
+        
         q.system.fs.writeFile(destPath, contents)
 
+                  
+    def _generateModelImpl(self, specFile, appname, domain ):
+        params = getTemplateParams(specFile, appname, domain)
+        
+        params['table'] = "%s_view_%s_list"% (params['domain'], params['rootobject'] )
+        params['schema'] = "%s_%s"% (params['domain'], params['rootobject'] )
+        
+        sqlSelect = "Select "
+        for field in params['fields']:
+            sqlSelect += "%s.%s, " %(params['table'], field['name'])
+        sqlSelect =sqlSelect[:-2]
+        sqlSelect += " FROM %s.%s "%(params['schema'] , params['table'])
+        params['sqlSelect'] = sqlSelect
+        
+        
+        actionsList = []
+        #generating view files 
+        actionsList.append( ['ModelView.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "setup", "osis", "%s_view.py"% params['rootobject'])])
+        
+        #_generateOsisStoreDeleteCode
+        actionsList.append( ['ModelStore.tmpl',q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "osis", "osis" , "store", "3_%s_store.py"% params['rootobject'])])
+        actionsList.append( ['ModelDelete.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl" , "osis", "osis" , "delete", "1_%s_delete.py"% params['rootobject'])])
+        
+        #genarting action files 
+        actionsList.append( ['ModelCreateAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "create",  "1_%s_create.py"% params['rootobject'])])
+        actionsList.append( ['ModelDeleteAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "delete",  "1_%s_delete.py"% params['rootobject'])])
+        actionsList.append( ['ModelGetObjectAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "getObject",  "1_%s_getObject.py"% params['rootobject'])])
+        actionsList.append( ['ModelListAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "list", "1_%s_list.py"% params['rootobject'])])
+        actionsList.append( ['ModelUpdateAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "update", "1_%s_update.py"% params['rootobject'])])
+        actionsList.append( ['ModelFindAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "find", "1_%s_find.py"% params['rootobject'])])
+        actionsList.append( ['GenerateModelDetailsPage.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "events" , "page_generator" , "generate_%s_page.py"% params['rootobject'])])
+        actionsList.append( ['ModelOverview.md.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "portal", "spaces" , params["domain"], "%sOverview.md"% params['rootobject'].capitalize())])
+        
+        #generateViewWizards
+        actionsList.append( ['ModelCreateWizard.tmpl',q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "form", params["domain"], "%s_create"% params["rootobject"],   "1_%s_create.py"% params['rootobject'])])
+        actionsList.append( ['ModelEditWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "form", params["domain"], "%s_edit"% params["rootobject"],   "1_%s_edit.py"% params['rootobject'])])
+        actionsList.append( ['ModelDeleteWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "wizard", params["domain"], "%s_delete"% params["rootobject"],   "1_%s_delete.py"% params['rootobject'])])
+        
+        generatedFiles = []
+        for action in actionsList:
+            templatePath = q.system.fs.joinPaths(self._template_path, action[0])
+            self._generateCode(templatePath, params, action[1])
+            generatedFiles.append(action[1])
+        
+        return generatedFiles
+    
     def _generateClientCode(self, specFile, serviceName, templatePath, destPath, className =""):
+        
         claZ = getClass(specFile, className)
         methods = getClassMethods(specFile, className)
         typedArgs = getMethodTypedArgument(specFile)
@@ -308,6 +435,7 @@ class CloudApiGenerator:
         ##generate root object actions
         
         domains = list()
+               
         
         for domain_spec in q.system.fs.listDirsInDir(self.specDir):
             
@@ -322,7 +450,6 @@ class CloudApiGenerator:
             actions = list()
             
             for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
-                
                 fileName = q.system.fs.getBaseName(spec)
                 if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
                     continue
@@ -377,7 +504,6 @@ class CloudApiGenerator:
         q.system.fs.createDir(self.actorOutputDir)
         #extensions = list()
         domains = list()
-        
         
         for domain_spec in q.system.fs.listDirsInDir(self.specDirActors):
             
@@ -571,8 +697,55 @@ class AppAPIGenerator(object):
     
     def __init__(self):
         self._template_path = q.system.fs.joinPaths(os.path.dirname(__file__), 'templates')
+    def generateCRUDImpl(self, appname, domain = None, modelSpec = None):
+        specDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model")
+        print "(generateCRUDImpl(self, %s, %s,%s):)"%(appname, domain , modelSpec )
+        if not appname:
+            raise Exception ("appname should be provided ")
         
-    
+        if appname and not domain and not modelSpec:
+            result = dict() 
+            for domain_spec in q.system.fs.listDirsInDir(specDir):
+                domain = domain_spec.split(os.sep)[-1]
+                domainFiles = self._generateCRUDImplForDomain(appname, domain)
+                result[domain] =  domainFiles
+        elif appname and domain and not modelSpec:
+            return self._generateCRUDImplForDomain(appname, domain)
+        
+        elif appname and domain and modelSpec:
+            return self._generateCRUDImplForModel(appname, domain, modelSpec )
+                
+                
+    def _generateCRUDImplForDomain(self, appname, domain ):
+        print "    _generateCRUDImplForDomain( %s, %s )"%(appname, domain)
+        domainSpecDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model", domain)
+        generatedFiles = dict()
+        for model in q.system.fs.listFilesInDir(domainSpecDir, filter='*.py'):
+            files = self._generateCRUDImplForModel(appname, domain, model )
+            generatedFiles[model] = files
+        return files
+     
+    def _generateCRUDImplForModel(self, appname, domain, modelSpec ):
+        """
+        Generates CRUD files for model spec file
+        modelSpecFile: can be the full path of model file ,  
+                       or can be the class name , in case of class name , spec file will be retrived from 
+                       /opt/qbase/pyapps/<appname>/interface/model/<domain>/<modelSpec>.py
+                       N.B: in both cases , file name should be the same as model class name    
+        """
+        
+        modelSpecFile = None
+        if not q.system.fs.isFile(modelSpec):
+            model_spec_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model")
+            modelSpecFile =  q.system.fs.joinPaths (model_spec_dir, domain, "%s.py"%modelSpec )
+        self._generator = CloudApiGenerator(appname)
+        self._generator._template_path = self._template_path 
+        
+        modelFiles = self._generator._generateModelImpl(modelSpecFile, appname, domain ) 
+
+        print "Generated Files are :%s"%modelFiles
+        return modelFiles
+        
     def generate(self, appname):
         """
         For a given application:
@@ -644,7 +817,8 @@ class AppAPIGenerator(object):
         q.action.stop()        
         
         q.action.stop()
-    
+
+   
     
     def _generate_default_services(self, appname):
         

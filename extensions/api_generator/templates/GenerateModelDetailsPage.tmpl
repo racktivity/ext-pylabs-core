@@ -1,0 +1,51 @@
+import urllib
+try:
+    import json
+except ImportError:
+    import simplejson as json
+def main(q, i, p, params, tags):
+    guid = params["eventBody"]
+    key = params["eventKey"]
+    template = """
+# ${rootobject.capitalize()} details
+#for $field in $fields
+* __$field['name'].capitalize():__ %($field['name'])s
+#end for 
+[[wizard:title=Edit, name=${rootobject}_edit, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Delete, name=${rootobject}_delete, extra=%(wizard_params)s]][[/wizard]]
+
+    """
+    #this is a dirty work around tell fix the get object issues
+    api2=p.application.getAPI("${appname}",None, q.enumerators.AppContext.APPSERVER)
+        
+    $rootobject = api2.model.${domain}.${rootobject}.new()
+    ${rootobject}.guid = guid
+    ${rootobject}.name = "default name , get object not working "
+    try:
+        $rootobject = p.api.action.${domain}.${rootobject}.getObject(guid)
+    except:
+        q.logger.log("Error getting $rootobject with guid %s"% guid , 7)
+    
+    
+    wizard_params = urllib.quote(json.dumps({'${rootobject}guid': ${rootobject}.guid}))
+    q.logger.log("search view for $rootobject %s"%guid,level=3) 
+    searchresult = p.api.action.ui.page.find(name="${rootobject}_detail_%s"%guid)['result']
+    q.logger.log("search returned view %s"%str(searchresult),level=3)
+    parentpage = p.api.action.ui.page.find(name="${rootobject.capitalize()}Overview", space="${domain}")['result'][0]
+    
+    templateParams= dict()
+    templateParams['wizard_params'] = wizard_params
+    templateParams['${rootobject}guid'] = guid
+#for field in $fields
+    templateParams['${field["name"]}']=${rootobject}.${field["name"]}
+#end for
+    
+    content = template% templateParams 
+    
+    if searchresult:
+        p.api.action.ui.page.update(searchresult[0], "${rootobject}_detail_%s"%guid, "${rootobject}", "${domain}", parentpage, "${domain} ${rootobject}",content)
+    else:
+        p.api.action.ui.page.create("${rootobject}_detail_%s"%guid, "${domain}", "${rootobject}", parentpage, "${domain} ${rootobject}",content)        
+        
+def match(q, i, params, tags):
+    return params["eventKey"]=='pylabs.event.${appname}.osis.store.${domain}.${rootobject}'

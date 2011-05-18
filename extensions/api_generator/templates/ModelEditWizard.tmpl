@@ -1,0 +1,69 @@
+TAB_GENERAL_TITLE = 'General'
+
+#for field in $fields
+TAB_GENERAL_${field['name'].upper()} = '${field["name"].capitalize()}: '
+#end for
+
+#for field in $fields
+TAB_GENERAL_${field['name'].upper()}_HELPTEXT = 'Please provide the ${rootobject}\'s ${field["name"].capitalize()}'
+#end for
+
+MSGBOX_CREATE_CONFIRMATION = "Update this ${rootobject}?"
+MSGBOX_CREATE_CONFIRMATION_TITLE = "${rootobject} update"
+
+MSGBOX_${rootobject.upper()}_CREATE_FAILED = "Failed to update this ${rootobject}! Please contact your system administrator!"
+MSGBOX_${rootobject.upper()}_CREATE_FAILED_TITLE = "${rootobject} update failed"
+
+
+def callCloudAPI(api, **args):
+    result = api.action.${domain}.${rootobject}.update( **args)['result']    
+    return result
+
+
+def main(q, i, p, params, tags):
+    form = q.gui.form.createForm()
+    tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
+    
+    ${rootobject}guid = params['${rootobject}guid']
+    ${rootobject} = p.api.model.${domain}.${rootobject}.new()
+#for field in $fields
+#if field['type'] == "String"
+    ${rootobject}.${field['name']} = "Error Getting Object "
+#end if
+#end for
+    try:
+        pass
+        #${rootobject} = p.api.action.${domain}.${rootobject}.getObject(${rootobject}guid, executionparams={'description': 'Retrieving ${rootobject} information'})
+    except:
+        q.logger.log('Error while Retrieving ${rootobject} %s information'% ${rootobject}guid)
+
+#for field in $fields
+#if field['type'] == "Enumeration" 
+    choices = $field['enum']
+    ${rootobject}.$field['name'] =  choices[0]
+    fieldValue = choices.index(str(${rootobject}.$field['name']))
+#else
+    fieldValue = ${rootobject}.$field['name']
+#end if
+    tab_general.add${field['uitype']}(name ='${field['name']}' 
+                                      , text = TAB_GENERAL_${field['name'].upper()}
+                                      , helpText = TAB_GENERAL_${field['name'].upper()}_HELPTEXT
+                                      #if not field['type'] == "Enumeration" ##echo ", value = fieldValue"# #else  # #end if
+                                      , optional = True
+                                      #if field['type'] == "Enumeration" ##echo ", values= dict(zip(choices,choices))"# #end if
+                                      )
+#end for    
+    
+    form.loadForm(q.gui.dialog.askForm(form))
+    tab_general = form.tabs['general']
+    cloudAPIArgs=dict()
+    cloudAPIArgs['${rootobject}guid'] = ${rootobject}guid
+    
+#for field in $fields    
+    cloudAPIArgs['${field["name"]}'] = ${field["converter"]}(tab_general.elements['${field["name"]}'].value) 
+#end for 
+    result = callCloudAPI(p.api, **cloudAPIArgs)
+    params['result'] = result
+
+def match(q, i, p, params, tags):
+	return True
