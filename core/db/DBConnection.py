@@ -57,7 +57,11 @@ class DBConnection(object):
         self.metadatapopulated=False
 
     def sqlexecute(self,sql):
-        return self._connection.query(sql)
+        try:
+            return self._connection.query(sql)
+        except:
+            self._connection.reset()
+            raise
 
     def getDatabaseMetadata(self):
         """

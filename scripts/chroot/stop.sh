@@ -17,7 +17,7 @@ if [ -d ${FULL_CHROOT_PATH} ]; then
 	KILL_PIDS=""
 	for i in /proc/[0-9]*; do
 		PID=$(echo -n $i | sed "s:/proc/::");
-		ROOT=$(sudo readlink "$i/root");
+		ROOT=$(sudo readlink "$i/root" || true);
 		if [ "${ROOT}" == "${FULL_CHROOT_PATH}" ]; then
 			echo "Killing PID ${PID}";
 			KILL_PIDS="${KILL_PIDS} ${PID}";
