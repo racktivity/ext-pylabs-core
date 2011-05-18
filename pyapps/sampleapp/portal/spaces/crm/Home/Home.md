@@ -14,6 +14,7 @@
         "wheredict": {
             "space" : "crm"
         },
+        "link": {"Name": "/sampleapp/#/crm/$Name$"},
         "sort": "name",
         "name": "Pages",
         "pagesize": 10,

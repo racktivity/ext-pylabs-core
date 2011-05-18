@@ -8,13 +8,13 @@ def main(q, i, p, params, tags):
     guid = params["eventBody"]
     template = """# Customer details
 
-*   **Name:** %(name)s
-*   **Login:** %(login)s
-*   **Password:** %(password)s
-*   **Email:** %(email)s
-*   **Address:** %(address)s
-*   **VAT:** %(vat)s
-*   **Status:** %(status)s
+* __Name:__ %(name)s
+* __Login:__ %(login)s
+* __Password:__ %(password)s
+* __Email:__ %(email)s
+* __Address:__ %(address)s
+* __VAT:__ %(vat)s
+* __Status:__ %(status)s
 <br />
 <br />
 [[wizard:title=Edit, name=customer_edit, extra=%(params)s]][[/wizard]]
@@ -22,17 +22,19 @@ def main(q, i, p, params, tags):
 [[wizard:title=Create New Lead, name=lead_create, extra=%(params)s]][[/wizard]]
 [[wizard:title=Reset Password, name=customer_resetpassword, extra=%(params)s]][[/wizard]]
 <br />
-<div class="macro macro_sqlgrid">
+[[sqlgrid]]
     {
         "dbconnection": "sampleapp",
         "table": "crm_view_lead_list",
         "schema": "crm_lead",
         "columns": {
-            "name":"Lead Name"
+            "name":"Lead Name",
+            "guid":"guid"
             },
         "wheredict": {
             "customerguid":"%(customerguid)s"
             },
+        "link": {"Lead Name":"/sampleapp/#/crm/lead_detail_$guid$"},
         "sort": "name",
         "name": "Leads",
         "pagesize": 10,
@@ -43,10 +45,10 @@ def main(q, i, p, params, tags):
             "source": 120,
             "type": 120,
             "status": 120
-        }
+        },
+		"hidden":["guid"]
     }
-
-</div>
+[[/sqlgrid]]
 <br />
 """
     customer = p.api.action.crm.customer.getObject(guid)

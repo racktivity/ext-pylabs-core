@@ -21,26 +21,28 @@ def main(q, i, p, params, tags):
 [[wizard:title=Add Activity, name=activity_create , extra=%(params)s ]][[/wizard]]
 [[wizard:title=Edit, name=lead_edit , extra=%(params)s ]][[/wizard]]
 <br />
-<div class="macro macro_sqlgrid">
-    {
+[[sqlgrid]]
+   {
         "dbconnection": "sampleapp",
         "table": "crm_view_activity_list",
         "schema": "crm_activity",
         "columns": {
             "name":"Name",
-            "location":"Location"
+            "location":"Location",
+            "guid": "guid"
             },
         "wheredict": {
             "lead":"%(leadguid)s"
             },
+        "link": {"Name": "/sampleapp/#/crm/activity_detail_$guid$"},
         "sort": "name",
         "name": "Activities",
         "pagesize": 10,
         "width": 300,
-        "height": 300
+        "height": 300,
+        "hidden":["guid"]
     }
-
-</div>
+[[/sqlgrid]]
 <br />       
     """
     lead = p.api.action.crm.lead.getObject(guid)

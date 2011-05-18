@@ -39,21 +39,21 @@ def getLeads(api):
 def getType(q):
     type_list= list()
     for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems():
-        type_list.append(k, str(v))
+        type_list.append((k, str(v)))
     type = dict(type_list)
     return type
 
 def getStatus(q):
     status_list= list()
     for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems():
-        status_list.append(k, str(v))
+        status_list.append((k, str(v)))
     status = dict(status_list)
     return status
 
 def getPriority(q):
     priority_list= list()
     for k, v in q.enumerators.activitytype._pm_enumeration_items.iteritems():
-        priority_list.append(k, str(v))
+        priority_list.append((k, str(v)))
     priority = dict(priority_list)
     return priority
 

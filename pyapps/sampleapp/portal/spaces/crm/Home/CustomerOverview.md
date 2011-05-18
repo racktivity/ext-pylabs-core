@@ -1,11 +1,13 @@
 #Customer Overview
 
-<div class="macro macro_sqlgrid">
+[[sqlguid]]
 {
     "dbconnection": "sampleapp",
     "table": "crm_view_customer_list",
     "schema": "crm_customer",
-    "sqlselect": "SELECT crm_view_customer_list.name, crm_view_customer_list.guid FROM crm_customer.crm_view_customer_list",
+    "columns" : {
+            "name": "Name",
+            "guid": "guid"},
     "link": {"name": "/sampleapp/#/crm/customer_detail_$guid$"},
     "sort": "name",
     "name": "Customers",
@@ -19,6 +21,5 @@
     },
     "hidden":["guid"]
 }
-</div>
-
+[[/sqlgrid]]
 [[wizard:title=Create Customer,name=customer_create]][[/wizard]]
