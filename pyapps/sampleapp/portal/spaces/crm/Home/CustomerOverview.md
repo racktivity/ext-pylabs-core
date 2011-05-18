@@ -1,6 +1,6 @@
 #Customer Overview
 
-[[sqlguid]]
+[[sqlgrid]]
 {
     "dbconnection": "sampleapp",
     "table": "crm_view_customer_list",
