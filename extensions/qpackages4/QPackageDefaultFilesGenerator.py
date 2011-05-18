@@ -1,5 +1,4 @@
 from pylabs import q
-from pylabs.Shell import *
 
     
 class QPackageDefaultFilesGenerator:
@@ -99,16 +98,8 @@ __author__ = 'aserver'
 __tags__   = 'codemanagement',
 
 def main(q, i, params, tags):
-    #Use this to checkout from mercurial
-    #from pylabs.clients.hg.HgRecipe import HgRecipe
-    #recipe = HgRecipe()
-    
-    # Or just extract the files from the bundle
     qpackage = params['qpackage']
-    if qpackage.download(suppressErrors=True):
-        qpackage.extract()  # extract the bundle
-    else:
-        pass # we dont have a bundle yet
+    qpackage.checkoutFromRecipe()
 '''
         q.system.fs.createDir(q.system.fs.getDirName(filePath))
         if not q.system.fs.exists(filePath):
@@ -146,6 +137,8 @@ __tags__ = 'package',
 
 def main(q, i, params, tags):
     qpackage = params["qpackage"]
+    q.system.fs.removeDirTree(qpackage.getPathFiles())
+    q.system.fs.copyDirTree(qpackage.getPathSourceCode(), qpackage.getPathFiles())
     
 '''
         q.system.fs.createDir(q.system.fs.getDirName(filePath))

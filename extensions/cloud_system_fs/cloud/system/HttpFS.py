@@ -1,6 +1,7 @@
 from pylabs import q
 from pylabs.baseclasses.CommandWrapper import CommandWrapper
 import urllib2
+import httplib
 
 CHUNKSIZE=8192
 
@@ -55,7 +56,7 @@ class HttpFS(object):
         connect_url = 'http://%s%s' % (self.server,self.path)
         try:
             self.http_socket = urllib2.urlopen(connect_url)
-        except urllib2.HTTPError, error:
+        except (urllib2.HTTPError, httplib.HTTPException), error:
             if suppressErrors:
                 return False
             raise
