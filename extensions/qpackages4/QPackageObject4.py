@@ -8,6 +8,7 @@ from pylabs.sync.Sync import SyncLocal
 from QPackageIObject4 import QPackageIObject4
 from QPackageDefaultFilesGenerator import QPackageDefaultFilesGenerator
 import json
+import os
 
 class QPackageObject4(BaseType, DirtyFlaggingMixin):
     ''' Data representation of a QPackage, should contain all information contained in the qpackage.cfg '''
@@ -1028,12 +1029,10 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             self._executeTasklet(tag,action)
         self._log('checkout')
 
-    def checkoutFromRecipe(self):
+    def _getRelativeRecipe(self):
         recipefile = q.system.fs.joinPaths(self.getPathMetadata(), 'recipe.json')
         if not q.system.fs.exists(recipefile):
             return
-        sourcecode = self.getPathSourceCode()
-        q.system.fs.removeDirTree(sourcecode)
         recipe = json.loads(q.system.fs.fileGetContents(recipefile))
         for repo in recipe:
             connection = i.config.clients.mercurial.findByUrl(repo['location'])
@@ -1041,8 +1040,39 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             connection.switchbranch(branch)
             for repolocation, qbaselocation in repo['mapping'].iteritems():
                 repofulllocation = q.system.fs.joinPaths(connection.basedir, repolocation)
-                qbasefull = q.system.fs.joinPaths(sourcecode, qbaselocation)
-                q.system.fs.copyDirTree(repofulllocation, qbasefull)
+                yield repofulllocation, qbaselocation
+
+    def checkoutRecipe(self):
+        iterator = self._getRelativeRecipe()
+        sourcecode = self.getPathSourceCode()
+        if not iterator:
+            return
+        q.system.fs.removeDirTree(sourcecode)
+        for repofulllocation, qbaselocation in iterator:
+            qbasefull = q.system.fs.joinPaths(sourcecode, qbaselocation)
+            q.system.fs.copyDirTree(repofulllocation, qbasefull)
+
+    def installDebug(self):
+        iterator = self._getRelativeRecipe()
+        if not iterator:
+            raise RuntimeError("No recipe defined for this qpackage")
+        for repofulllocation, qbaselocation in iterator:
+            parts = qbaselocation.split("/")
+            platform = parts[0]
+            platformtype = q.enumerators.PlatformType.getByName(platform)
+            if platformtype not in self.getBundlePlatforms():
+                continue
+            qbaselocation = qbaselocation.replace(platform, "", 1)
+            if qbaselocation.startswith("/"):
+                qbaselocation = qbaselocation[1:]
+            qbasefull = q.system.fs.joinPaths(q.dirs.baseDir, qbaselocation)
+            answer = True
+            if q.system.fs.exists(qbasefull):
+                answer = q.console.askYesNo("Folder %s exists, remove and link to repo?" % qbasefull)
+            if answer:
+                q.system.fs.removeDirTree(qbasefull)
+                q.system.fs.symlink(repofulllocation, qbasefull)
+
 
 
     # populates the files directory based on the source that is in an unknown location
