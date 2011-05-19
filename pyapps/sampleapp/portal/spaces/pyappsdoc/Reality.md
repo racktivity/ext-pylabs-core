@@ -7,11 +7,11 @@ If you take a look at the architecture schema of a PyApp, we have focused so far
 
 Just like other Root Objects, you can consider the mail server as a Root Object. Therefore, the creation of the mail server and its functions takes the same steps as the other Root Objects:
 
-1. [Modeling the Mail Server](/sampleapp/#/doc/Modeling): define the model of the POP3 server, such as IP address, login, and password
-2. [Define the Actions on the POP3 Server](/sampleapp/#/doc/Action): define the different methods on the POP3 server, such as creating a POP3 configuration
-3. [Create OSIS View on the POP3 Server](/sampleapp/#/doc/OsisViews)
-4. [Create OSIS Operations on the POP3 Server](/sampleapp/#/doc/OsisOperations)
-5. [Implement the POP3 Server Configuration Actions](/sampleapp/#/doc/ActionTasklet)
+1. [Modeling the Mail Server](/sampleapp/#/pyappsdoc/Modeling): define the model of the POP3 server, such as IP address, login, and password
+2. [Define the Actions on the POP3 Server](/sampleapp/#/pyappsdoc/Action): define the different methods on the POP3 server, such as creating a POP3 configuration
+3. [Create OSIS View on the POP3 Server](/sampleapp/#/pyappsdoc/OsisViews)
+4. [Create OSIS Operations on the POP3 Server](/sampleapp/#/pyappsdoc/OsisOperations)
+5. [Implement the POP3 Server Configuration Actions](/sampleapp/#/pyappsdoc/ActionTasklet)
 
 The POP3 Server configuration does not need a form nor wizard, since this should be a one time only action. 
 By executing the five steps above, you are able to configure a POP3 server for your sample application.
@@ -29,9 +29,9 @@ One level further to the reality, you must implement the actor interface. In thi
 
 ##Actor Actions
 In the actor interface, you define the actions that the actor can execute. In case your PyApp needs to send out mails, you will need an actor who can execute this action.
-In the given example you can define the action `sendMail`. The definition is similar to defining the [actions on Root Objects](/sampleapp/#/doc/Action).
+In the given example you can define the action `sendMail`. The definition is similar to defining the [actions on Root Objects](/sampleapp/#/pyappsdoc/Action).
 
-The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/Sampleapp) for more information about the location of the files. The interface contains one class with the name of the actor.
+The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/Sampleapp) for more information about the location of the files. The interface contains one class with the name of the actor.
 
 [[code]]
 class mailprocessor:
@@ -83,7 +83,7 @@ def sendMail(self, sender, replyto, to, subject, message, cc="", bcc="", jobguid
 
 
 ##Implementation of an Actor Action
-The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure](/sampleapp/#/doc/sampleapp) for more information about the location of the files. The file name of an action tasklet has always the following structure:
+The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/sampleapp) for more information about the location of the files. The file name of an action tasklet has always the following structure:
 
 `<priority>_<rootobject>_<action>.py`
 

@@ -4,7 +4,7 @@ In this section we will cover how you can store, update, and delete objects from
 
 
 ##Creating an OSIS Operation
-An OSIS operation is a [tasklet](http://confluence.incubaid.com/display/PYLABS/3.2+Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
+An OSIS operation is a [tasklet](http://confluence.incubaid.com/display/PYLABS/3.2+Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
 
 Each file has the following identification:
 
@@ -67,7 +67,7 @@ values = {
     }
 [[/code]]    
 
-The properties of the Root Object are all defined in the [Root Object Model](/sampleapp/#/doc/Modeling).
+The properties of the Root Object are all defined in the [Root Object Model](/sampleapp/#/pyappsdoc/Modeling).
 
 When you have set the values of the Root Object, you only have to save the view with the new or updated Root Object. This action is a method on the osis connection and expects the following arguments in the given order:
 

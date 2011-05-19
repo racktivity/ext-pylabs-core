@@ -2,7 +2,7 @@
 In many cases it is desirable that certain actions are executed on a regular basis. In such a situation you can create scheduled actions.
 A scheduled action can launch event-driven actions; for example check a mailbox every five minutes, where an event can be thrown when mails have arrived.
 
-For more details about the setup of the mail server in this sample application, see the [From DRP to Reality section](/sampleapp/#/doc/Reality).
+For more details about the setup of the mail server in this sample application, see the [From DRP to Reality section](/sampleapp/#/pyappsdoc/Reality).
 
 
 ##Creating a Scheduled Action
@@ -28,7 +28,7 @@ The tasklet is located in `<pyapp name>/impl/schedule/`. To keep a clear overvie
 
     <pyapp name>/impl/schedule/config/<config app>/
     
-See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
+See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
 
 
 ##PyLabs Scheduling

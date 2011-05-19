@@ -47,9 +47,9 @@ def match(q, i, params, tags):
     return True
 [[/code]]    
 
-The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/doc/SampleApp) for more information about the location of the files.
+The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
 
-It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet](/sampleapp/#/doc/ActionTasklet), which receives the arguments through the `params` dictionary.
+It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet](/sampleapp/#/pyappsdoc/ActionTasklet), which receives the arguments through the `params` dictionary.
 
 
 ##Creating Forms
@@ -69,7 +69,7 @@ tab_general = form.addTab('general', TAB_GENERAL_TITLE)
 The `addTab` function expects two arguments, a unique ID ('general' in the above example) and  a title name for the tab.
 
 The tab object has several methods to fill your form with text fields, choices, multiple choices, yes/no questions, ... The methods have clear names so you know which type of field you are going to add.
-See the [Form API](/sampleapp/#/doc/formwizard) for details about the fields.
+See the [Form API](/sampleapp/#/pyappsdoc/formwizard) for details about the fields.
 
 An example of a basic form:
 
@@ -91,7 +91,7 @@ def genderList(q):
     return gender
 [[/code]]    
 
-This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects](/sampleapp/#/doc/modeling) to create your custom enumerator.
+This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects](/sampleapp/#/pyappsdoc/modeling) to create your custom enumerator.
 
 Once all fields are filled, the user will have to click on one of the provided buttons, *OK* or *CANCEL*. When the user clicks *OK*, the tasklet continues with the main function. Either you call the `callCloudAPI` function, which will execute an action, using the data entered by the user, or you can show a confirmation window.
 
@@ -142,7 +142,7 @@ answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                      defaultButton='OK')
 [[/code]]                                     
 
-For more methods that can be used in the wizards, see the [Wizard API](/sampleapp/#/doc/wizardapi).
+For more methods that can be used in the wizards, see the [Wizard API](/sampleapp/#/pyappsdoc/wizardapi).
 
 
 ##Other Forms
@@ -223,6 +223,6 @@ params['result'] = result
 
 
 ##What's Next?
-In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/doc/FormWizard)
+In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/pyappsdoc/FormWizard)
 
 In the next chapters you will learn how your PyApp can interact with the reality, how actions can be triggered by events, and how actions can be scheduled.
