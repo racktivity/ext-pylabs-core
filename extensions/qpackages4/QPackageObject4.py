@@ -1,13 +1,13 @@
-from pylabs import q
+from pylabs import q, i
 from pylabs.baseclasses import BaseType
 from pylabs.enumerators.PlatformType import PlatformType
 from pylabs.baseclasses.dirtyflaggingmixin import DirtyFlaggingMixin
 from DependencyDef4 import DependencyDef4
-from pylabs.Shell import *
 from QPackageStateObject import QPackageStateObject
 from pylabs.sync.Sync import SyncLocal
 from QPackageIObject4 import QPackageIObject4
-from QPackageDefaultFilesGenerator import *
+from QPackageDefaultFilesGenerator import QPackageDefaultFilesGenerator
+import json
 
 class QPackageObject4(BaseType, DirtyFlaggingMixin):
     ''' Data representation of a QPackage, should contain all information contained in the qpackage.cfg '''
@@ -1027,6 +1027,23 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         if self._hasTasklet(tag):
             self._executeTasklet(tag,action)
         self._log('checkout')
+
+    def checkoutFromRecipe(self):
+        recipefile = q.system.fs.joinPaths(self.getPathMetadata(), 'recipe.json')
+        if not q.system.fs.exists(recipefile):
+            return
+        sourcecode = self.getPathSourceCode()
+        q.system.fs.removeDirTree(sourcecode)
+        recipe = json.loads(q.system.fs.fileGetContents(recipefile))
+        for repo in recipe:
+            connection = i.config.clients.mercurial.findByUrl(repo['location'])
+            branch = repo.get('branch', 'default')
+            connection.switchbranch(branch)
+            for repolocation, qbaselocation in repo['mapping'].iteritems():
+                repofulllocation = q.system.fs.joinPaths(connection.basedir, repolocation)
+                qbasefull = q.system.fs.joinPaths(sourcecode, qbaselocation)
+                q.system.fs.copyDirTree(repofulllocation, qbasefull)
+
 
     # populates the files directory based on the source that is in an unknown location
     def compile(self):

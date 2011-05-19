@@ -1,0 +1,22 @@
+# ${rootobject.capitalize()} Overview
+
+
+<div class="macro macro_sqlgrid">
+{
+    "dbconnection": "${appname}",
+    "table": "${table}",
+    "schema": "${schema}",
+    "sqlselect": "${sqlSelect}",
+    "name": "${rootobject.capitalize()}s",
+    "sort": "name",
+    "pagesize": 10,
+    "width": 600,
+    "height": 200,
+    "fieldwidth": {
+        "name": 80
+    }
+    
+}
+</div>
+
+[[wizard:title=Add, name=${rootobject}_create]][[/wizard]]

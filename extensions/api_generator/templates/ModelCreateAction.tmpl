@@ -1,0 +1,12 @@
+__author__ = 'incubaid'
+
+def main(q, i, p, params, tags):
+    ${rootobject} = p.api.model.${domain}.${rootobject}.new()
+#for $field in $fields
+    ${rootobject}.$field["name"] = params['$field["name"]']
+#end for
+    p.api.model.${domain}.${rootobject}.save(${rootobject})
+    params['result'] = ${rootobject}.guid
+    
+def match(q, i, p, params, tags):
+	return True

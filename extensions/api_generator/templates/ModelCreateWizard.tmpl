@@ -1,0 +1,48 @@
+TAB_GENERAL_TITLE = 'General'
+
+#for field in $fields
+TAB_GENERAL_${field['name'].upper()} = '${field["name"].capitalize()}: '
+#end for
+
+#for field in $fields
+TAB_GENERAL_${field['name'].upper()}_HELPTEXT = 'Please provide the ${rootobject}\'s ${field["name"].capitalize()}'
+#end for
+
+MSGBOX_CREATE_CONFIRMATION = "Create this new ${rootobject.capitalize()}?"
+MSGBOX_CREATE_CONFIRMATION_TITLE = "${rootobject} creation"
+
+MSGBOX_${rootobject.upper()}_CREATE_FAILED = "Failed to create this new ${rootobject}! Please contact your system administrator!"
+MSGBOX_${rootobject.upper()}_CREATE_FAILED_TITLE = "${rootobject} creation failed"
+
+
+def callCloudAPI(api, ** args):
+   
+    result = api.action.${domain}.${rootobject}.create(** args)['result']    
+    return result
+
+
+def main(q, i, p, params, tags):
+    
+    form = q.gui.form.createForm()
+    tab_general  = form.addTab('general' , TAB_GENERAL_TITLE)
+    
+    
+#for field in $fields
+    #if field['type'] == "Enumeration" ##echo "choices = " + str(field['enum'])# #end if
+    tab_general.add${field['uitype']}(name ='${field['name']}' 
+                                      , text = TAB_GENERAL_${field['name'].upper()}
+                                      , helpText = TAB_GENERAL_${field['name'].upper()}_HELPTEXT
+                                      , optional = True
+                                      #if field['type'] == "Enumeration" ##echo ", values= dict(zip(choices,choices))"# #end if
+                                      )
+#end for    
+
+    form.loadForm(q.gui.dialog.askForm(form))
+    tab_general = form.tabs['general']
+    cloudAPIArgs=dict()
+#for field in $fields    
+    cloudAPIArgs['${field["name"]}'] = ${field["converter"]}(tab_general.elements['${field["name"]}'].value) 
+#end for 
+        
+    result = callCloudAPI(p.api, **cloudAPIArgs)
+    params['result'] = result
