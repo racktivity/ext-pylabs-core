@@ -40,10 +40,10 @@ def main(q, i, p, params, tags):
     import os
     import poplib
     view = '%s_view_%s_list' %('mail', 'pop3')
-    filter = p.api.model.mail.pop3.getFilterObject()
+    filter = p.api.config.mail.pop3.getFilterObject()
     filter.add(view, 'server', 'pop.gmail.com')
     filter.add(view, 'login', 'analytics@incubaid.com')
-    pop3guids = p.api.model.mail.pop3.find(filter)
+    pop3guids = p.api.config.mail.pop3.find(filter)
     if len(pop3guids) > 1:
         q.errorconditionhandler.raiseError("Found more than one POP3 mailbox configured for '%s' on '%s' server." %('analytics@incubaid.com', 'pop.gmail.com'))
 
@@ -51,7 +51,7 @@ def main(q, i, p, params, tags):
         q.errorconditionhandler.raiseError('Could not find configured POP3 mailbox.')
 
     pop3guid = pop3guids[0]
-    pop3 = p.api.model.mail.pop3.get(pop3guid)
+    pop3 = p.api.config.mail.pop3.get(pop3guid)
     mailbox = poplib.POP3_SSL(pop3.server)
     mailbox.user(pop3.login)
     mailbox.pass_(pop3.password)
