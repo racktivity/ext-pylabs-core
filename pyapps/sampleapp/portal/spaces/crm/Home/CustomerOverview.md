@@ -8,7 +8,7 @@
     "columns" : {
             "name": "Name",
             "guid": "guid"},
-    "link": {"name": "/sampleapp/#/crm/customer_detail_$guid$"},
+    "link": {"Name": "/sampleapp/#/crm/customer_detail_$guid$"},
     "sort": "name",
     "name": "Customers",
     "pagesize": 10,

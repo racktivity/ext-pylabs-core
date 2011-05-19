@@ -45,7 +45,7 @@ def main(q, i, p, params, tags):
     filter.add(view, 'login', 'analytics@incubaid.com')
     pop3guids = p.api.model.mail.pop3.find(filter)
     if len(pop3guids) > 1:
-        q.errorconditionhandler.raiseError("Found more than one POP3 mailbox configured for '%s' on '%s' server." %('nourm@incubaid.com', 'pop.gmail.com'))
+        q.errorconditionhandler.raiseError("Found more than one POP3 mailbox configured for '%s' on '%s' server." %('analytics@incubaid.com', 'pop.gmail.com'))
 
     if len(pop3guids) < 1:
         q.errorconditionhandler.raiseError('Could not find configured POP3 mailbox.')
