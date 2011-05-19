@@ -1,4 +1,3 @@
-import urllib
 try:
     import json
 except ImportError:
@@ -55,7 +54,7 @@ def main(q, i, p, params, tags):
     searchresult = p.api.action.ui.page.find(name="customer_detail_%s"%guid)['result']
     parentpage = p.api.action.ui.page.find(name="CustomerOverview", space="crm")['result'][0]
 
-    params_ = urllib.quote(json.dumps({'customerguid': customer.guid}))
+    params_ = json.dumps({'customerguid': customer.guid})
     
     if searchresult:
         p.api.action.ui.page.update(

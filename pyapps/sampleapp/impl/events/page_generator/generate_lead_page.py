@@ -1,4 +1,3 @@
-import urllib
 try:
     import json
 except ImportError:
@@ -52,7 +51,7 @@ def main(q, i, p, params, tags):
     else:
         customername = '<No related customer>'
     
-    params = urllib.quote(json.dumps({'leadguid': lead.guid}))
+    params = json.dumps({'leadguid': lead.guid})
     q.logger.log("search view for lead %s"%guid,level=3) 
     searchresult = p.api.action.ui.page.find(name="lead_detail_%s"%guid)['result']
     q.logger.log("search returned view %s"%str(searchresult),level=3)
