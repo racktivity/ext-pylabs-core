@@ -576,8 +576,7 @@ class HgClient4:
             
         cmd = 'archive'
         options = dict()
-        if branch:
-            options['rev'] = branch
+        options['rev'] = branch or self.getbranchname()
         exitCode, output = self._hgCmdExecutor(cmd, dest=archive, prefix='', **options)
 
 
