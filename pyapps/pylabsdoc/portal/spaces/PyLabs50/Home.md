@@ -14,18 +14,13 @@ The PyLabs 5 Guide describes the framework that allows users to automate their d
 ###What is PyLabs 5
 
 #### About this book
-<how this book is structured>
-<What can one expect in this book>
-<target audience>
-
 
 #### Using this book
-<conventions>
+@todo
 
 ----
 
 ## Installing PyLabs 5
-<installation procedure here>
 
 ----
 
@@ -46,10 +41,6 @@ The PyLabs 5 Guide describes the framework that allows users to automate their d
 ----
 
 ##Q-Shell
-what is qshell
-why qshell
-getting familiar with qshell
-qshell as logger
 
 ----
 
