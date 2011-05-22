@@ -1038,6 +1038,7 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
             connection = i.config.clients.mercurial.findByUrl(repo['location'])
             branch = repo.get('branch', 'default')
             connection.switchbranch(branch)
+            connection.pullupdate()
             for repolocation, qbaselocation in repo['mapping'].iteritems():
                 repofulllocation = q.system.fs.joinPaths(connection.basedir, repolocation)
                 yield repofulllocation, qbaselocation
