@@ -23,7 +23,11 @@ class ${className}(object):
             decoded_o = base64.decodestring(o)
             # FIXME hack
             api = p.application.getAPI("${appname}", context=q.enumerators.AppContext.APPSERVER)
+#if $isconfig
+            type_class = api.config.${domain}.${className}._ROOTOBJECTTYPE
+#else
             type_class = api.model.${domain}.${className}._ROOTOBJECTTYPE
+#end if
             deserialized_o = ThriftSerializer.deserialize(type_class, decoded_o)
             return deserialized_o
         else:

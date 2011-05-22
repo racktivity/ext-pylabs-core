@@ -455,14 +455,11 @@ class CloudApiGenerator:
                     continue
                 #rootObject = fileName.split('.')[0].split('ro_')[-1]
                 rootObject = fileName.split('.')[0]
-                
                 self._generateClientCode(spec, rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, domain, 'client_%s.py' % rootObject))
-                
-                
-                
                 #services[rootObject] = '%s.%s.%s' % (rootObject, domain, className)
-                
-                params = {'domain': domain, 'appname': self._appName}
+                # Check whether this specification belongs to a configuration model specification or not
+                isconfig = q.system.fs.exists(spec.replace('action', 'config'))
+                params = {'domain': domain, 'appname': self._appName, 'isconfig': isconfig}
     
                 className = self._generateServerCode(spec,self.rootobject_serverTemplate, q.system.fs.joinPaths(self.rootobject_serverOutputDir, domain, '%s.py'%rootObject), \
                                                      self.rootobject_serverExtensionTemplate, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, domain, '%s.py'%rootObject),\
