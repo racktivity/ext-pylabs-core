@@ -7,14 +7,9 @@ def callCloudAPI(api, ${rootobject}guid):
 
 
 def main(q, i, p, params, tags):
-    ${rootobject} = p.api.model.${domain}.${rootobject}.new()
-    ${rootobject}.name =params['${rootobject}guid'] 
-    try:
-        pass
-        #${rootobject} = p.api.action.${domain}.${rootobject}.getObject(params['${rootobject}guid'], executionparams={'description': 'Retrieving lead information'})
-    except:
-        q.logger.log("Error Getting ${rootobject}")
-    q.gui.dialog.message(MSG_DELETE%${rootobject}.name)
+    
+    ${rootobject} = p.api.action.${domain}.${rootobject}.getObject(params['${rootobject}guid'], executionparams={'description': 'Retrieving lead information'})
+    q.gui.dialog.message(MSG_DELETE% str(${rootobject}))
     answer = q.gui.dialog.askYesNo(MSG_DELETE_CONFIRM, False)
 
     if answer == 'CANCEL':

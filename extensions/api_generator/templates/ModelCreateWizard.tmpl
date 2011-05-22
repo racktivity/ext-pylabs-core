@@ -28,7 +28,7 @@ def main(q, i, p, params, tags):
     
     
 #for field in $fields
-    #if field['type'] == "Enumeration" ##echo "choices = " + str(field['enum'])# #end if
+    #if field['type'] == "Enumeration" ##echo "choices = q.enumerators."+field['enum']+"._pm_enumeration_items.keys()"# #end if
     tab_general.add${field['uitype']}(name ='${field['name']}' 
                                       , text = TAB_GENERAL_${field['name'].upper()}
                                       , helpText = TAB_GENERAL_${field['name'].upper()}_HELPTEXT

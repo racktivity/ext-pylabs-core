@@ -95,7 +95,7 @@ def listFields(claZ):
         field ['converter'] = getTypeConverter(field ['type'])
         
         if field ['type'] == "Enumeration":
-            field ['enum'] = att.attribute.type_._pm_enumeration_items.keys()
+            field ['enum'] = att.attribute.type_.__name__
             
         fields.append(field)
         
