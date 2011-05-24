@@ -55,7 +55,7 @@ def main(q, i, p, params, tags):
     q.logger.log("search view for lead %s"%guid,level=3) 
     searchresult = p.api.action.ui.page.find(name="lead_detail_%s"%guid)['result']
     q.logger.log("search returned view %s"%str(searchresult),level=3)
-    parentpage = p.api.action.ui.page.find(name="Leads_Overview", space="crm")['result'][0]
+    parentpage = p.api.action.ui.page.find(name="LeadsOverview", space="crm")['result'][0]
     
     if searchresult:
         p.api.action.ui.page.update(searchresult[0], "lead_detail_%s"%guid, "crm", "lead", parentpage, "crm lead", 
