@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 CORE_PACKAGES="ipython python-pkg-resources mercurial python-apt"
 
