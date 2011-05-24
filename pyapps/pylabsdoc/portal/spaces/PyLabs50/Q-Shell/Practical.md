@@ -202,7 +202,7 @@ Available actions for Unix systems:
 Available process actions:
 
     In [6]: q.system.process.
-    q.system.process.checkListenPort(
+    q.system.net.checkListenPort(
     q.system.process.checkProcess(
     q.system.process.checkProcessForPid(
     q.system.process.execute(
@@ -220,8 +220,8 @@ Available process actions:
 
 For example check if a port is opened:
 
-    In [7]: q.system.process.checkListenPort(?
-    Definition: q.system.process.checkListenPort(self, port)
+    In [7]: q.system.net.checkListenPort(?
+    Definition: q.system.net.checkListenPort(self, port)
     Documentation:
         Check if a certain port is listening on the system.
         
@@ -230,9 +230,9 @@ For example check if a port is opened:
         
         - port: sets the port number to check
         
-        Returns: status: 0 if running 1 if not running
+        Returns: status: True if running False if not running
         
-    In [8]: q.system.process.checkListenPort(22)
-    Out[8]: 0
+    In [8]: q.system.net.checkListenPort(22)
+    Out[8]: True
     
 More practical information can be found in the examples of creating scripts.    
