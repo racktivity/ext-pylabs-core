@@ -1149,7 +1149,7 @@ q.system.plists?8
 q.system.plists.find?4(root,pfilter)
 q.system.plists.getFilterObject?4()
 q.system.process?8
-q.system.process.checkListenPort?4(port)
+q.system.net.checkListenPort?4(port)
 q.system.process.checkProcess?4(process,min)
 q.system.process.checkProcessForPid?4(pid,process)
 q.system.process.execute?4(command,dieOnNonZeroExitCode,outputToStdout,useShell)

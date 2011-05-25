@@ -179,7 +179,10 @@ Where:
 
 After you start the workflow engine in debug mode, you can open its screen using the command below:
     
-    screen -x wfe
+    screen -x wfe.appname
+
+Where 'appname' is the name of your application. For example: sampleapp.   
+This will open a screen with the following:
     
      0 jobs to reset
     Ready !

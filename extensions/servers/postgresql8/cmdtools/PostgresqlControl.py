@@ -126,7 +126,7 @@ class PostgresqlControl(CommandWrapper):
         @param  dataDir: data directory used to initialize system databases
         """
 
-        if q.system.process.checkListenPort(5432): # 0 if running, 1 if not running
+        if not q.system.net.checkListenPort(5432): # 0 if running, 1 if not running
             return AppStatusType.HALTED
         try:
             dbCon = DBConnection(None, 'postgres', username)
