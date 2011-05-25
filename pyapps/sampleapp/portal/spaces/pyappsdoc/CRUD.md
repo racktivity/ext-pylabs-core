@@ -1,115 +1,129 @@
-#CRUD Generation 
+[model]: /sampleapp/#/pyappsdoc/Modeling
+[action]: /sampleapp/#/pyappsdoc/Action
+[dirs]: /sampleapp/#/pyappsdoc/SampleApp
 
-CRUD Generation creates all layers required to have a new module up and running.  
-It takes as input model and action interfaces. Files should be located in:
+
+##CRUD Generation 
+
+Some steps of creating a PyApp can be automated. Since all root objects of a PyApp always have some common actions, you can generate these actions. Besides these common actions you have of course to develop the other actions on a Root Object.
+
+The common actions, always available for each Root Object, are the CRUD actions (Create, Read (getObject), Update, and Delete). A PyLabs function generates all layers required to have a new Root Object up and running with these four CRUD actions. 
+
+This PyLabs function takes the [model][] and [action][] interfaces. Files should be located in:
  
-* /opt/qbase5/pyapps/sampleapp/interface/model/domain/rootobject.py
-* /opt/qbase5/pyapps/sampleapp/interface/action/domain/rootobject.py
+* `/opt/qbase5/pyapps/<pyapp name>/interface/model/<pyapp domain>/<rootobject>.py`
+* `/opt/qbase5/pyapps/<pyapp name>/interface/action/<pyapp domain>/<rootobject>.py`
 
-To generate CRUD for a new model, follow the following steps: 
+To generate CRUD for a new Root Object, follow the following steps: 
 
-##1. Generate Model
+###Generate Model
 
 Below is a sample of a model file:  
 
-    from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
-    import pymodel as model
-    
-    #@doc order status enumeration
-    class orderstatus(BaseEnumeration):
-        @classmethod
-        def _initItems(cls):
-            cls.registerItem('ORDERED')
-            cls.registerItem('SHIPPED')
-            cls.registerItem('DELIVERED')
-            cls.registerItem('WAITINGPAYMENT')                
-            cls.registerItem('CLOSED')                                
-            cls.finishItemRegistration()
-    
-    #@doc order object
-    class order(model.RootObjectModel):
-    
-        #@doc name of the order
-        name = model.String(thrift_id=1)
-    
-        #@doc customer of the order
-        customer = model.String(thrift_id=2)
-    
-        #@doc status of the order
-        status = model.Enumeration(orderstatus, thrift_id=4)
-    
-        #@doc total price of the order
-        price = model.Integer(thrift_id=8)
-    
-    def __str__(self)
-        return self.name
+[[code]]
+from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
+import pymodel as model
 
+#@doc order status enumeration
+class orderstatus(BaseEnumeration):
+    @classmethod
+    def _initItems(cls):
+        cls.registerItem('ORDERED')
+        cls.registerItem('SHIPPED')
+        cls.registerItem('DELIVERED')
+        cls.registerItem('WAITINGPAYMENT')                
+        cls.registerItem('CLOSED')                                
+        cls.finishItemRegistration()
 
-__N.B:__ The method \_\_str\_\_ should be implemented since it used to show a human readable representation of the object. 
+#@doc order object
+class order(model.RootObjectModel):
 
-##2. Generate Action Interface  
+    #@doc name of the order
+    name = model.String(thrift_id=1)
+
+    #@doc customer of the order
+    customer = model.String(thrift_id=2)
+
+    #@doc status of the order
+    status = model.Enumeration(orderstatus, thrift_id=4)
+
+    #@doc total price of the order
+    price = model.Integer(thrift_id=8)
+
+def __str__(self)
+    return self.name
+[[/code]]
+
+__Note__ The method \_\_str\_\_ is implemented since it is used to show a human readable representation of the object. 
+
+###Generate Action Interface  
 
 Below is a sample of an action interface file:
 
-    class order:
-	    """
-	    order actions API
-	    """
-	    def create(self, name , customer , status, price, jobguid=None, executionparams=None):
-	        """
-	        @security administrators
-	        """
+[[code]]
+class order:
+    """
+    order actions API
+    """
+    def create(self, name , customer , status, price, jobguid=None, executionparams=None):
+        """
+        @security administrators
+        """
 
-	    def update(self, orderguid, name, customer, status, price, jobguid=None, executionparams=None):
-	        """ 
-	        @security administrators
-	        """
+    def update(self, orderguid, name, customer, status, price, jobguid=None, executionparams=None):
+        """ 
+        @security administrators
+        """
 
-	    def delete(self, orderguid, jobguid=None, executionparams=None):
-	       """
-	        Delete an order
-	 
-	        @security administrators
-	        """
-	 
-	    def find(self, name, customer, status, price, jobguid=None, executionparams=None):
-	        """
-	        Returns a list of leads which met the find criteria.
-	 
-	        @execution_method = sync
-	        @security administrators
-	        """
-	        
-	    def getObject(self, orderguid, jobguid=None,executionparams=None):
-	        """
-	        Gets the rootobject.
-	 
-	        @execution_method = sync
-	         """
-	 
-	    def list(self, jobguid=None, executionparams=None):
-	        """
-	        @execution_method = sync
-	        @security administrators        
-	        """
+    def delete(self, orderguid, jobguid=None, executionparams=None):
+       """
+        Delete an order
+ 
+        @security administrators
+        """
+ 
+    def find(self, name, customer, status, price, jobguid=None, executionparams=None):
+        """
+        Returns a list of leads which met the find criteria.
+ 
+        @execution_method = sync
+        @security administrators
+        """
+        
+    def getObject(self, orderguid, jobguid=None,executionparams=None):
+        """
+        Gets the rootobject.
+ 
+        @execution_method = sync
+         """
+ 
+    def list(self, jobguid=None, executionparams=None):
+        """
+        @execution_method = sync
+        @security administrators        
+        """
+[[/code]]
 
-__Notes:__   
+[[note]]   
 * Name of parameters *must* be <rootobject>guid and all attribute names should be the same as defined in the model.
 * Methods that return objects, like 'getObject', should have "@execution_method = sync" in its doc string.
+[[/note]]
 
-##3. Auto-Generate CRUD Files
+###Auto-Generate CRUD Files
 
 Run the following command on Q-Shell: 
 
-    p.core.codemanagement.api.generateCRUDImpl("sampleapp","crm","order")
+[[code]]
+p.core.codemanagement.api.generateCRUDImpl("sampleapp","crm","order")
+[[/code]]
 
-__N.B:__ This method may take:
+You can execute the `generateCRUDImpl` in three ways:
  
-* The application name only: In this case it will make auto generation for all domains under the interface folder. This will override __*all*__ CRUD written code.
-* Application Name & Domain Name: This will generate all CRUD files for models under the given domain. 
-* Application Name, Domain Name & Model Name: This will generate CRUD for specified model.
+* Application Name only: this creates the CRUD for all domains under the `interface` folder. This action overrides __all__ CRUD written code.
+* Application Name and Domain Name: This will generate all CRUD files for models under the given domain. 
+* Application Name, Domain Name, and Object Name: this generates the CRUD for the given object.
 
-After successfull generation, the following files will be generated for every model:
+After successful generation, the following files are generated for every model:
 
 * /opt/qbase5/pyapps/sampleapp/impl/setup/osis/order\_view.py
 * /opt/qbase5/pyapps/sampleapp/impl/osis/osis/store/3\_order\_store.py
@@ -126,8 +140,15 @@ After successfull generation, the following files will be generated for every mo
 * /opt/qbase5/pyapps/sampleapp/impl/ui/form/crm/order\_edit/1\_order\_edit.py
 * /opt/qbase5/pyapps/sampleapp/impl/ui/wizard/crm/order\_delete/1\_order\_delete.py
 
-##4. Re-Installing the Application
+For more information about the file locations, see the [PyApps Directory Section][dirs].
 
-After generating the files, it is required to re-install the application; run the following command in the Q-Shell: 
+When the code is generated, all actions are operational and can be used. However if you require more functionality to these CRUD actions, you can customize the generated code to your own needs.
+Defined actions in the `actions` interface of an object, other than the CRUD actions, must be implemented manually.
 
-    p.application.install("sampleapp")
+###Reinstalling the Application
+
+After generating the files, it is required to reinstall the application. Run the following command in the Q-Shell: 
+
+[[code]]
+p.application.install("sampleapp")
+[[/code]]
