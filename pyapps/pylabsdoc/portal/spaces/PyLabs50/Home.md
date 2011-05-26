@@ -46,11 +46,9 @@ The PyLabs 5 Guide describes the framework that allows users to automate their d
 
 ##Scripting in PyLabs 5
 
-PyLabs 5 as scripting/automation platform
-
 ####Your First Script
 
-####Operating System Calls
+####Using PyLabs
 
 ####Using Configuration Files
 
