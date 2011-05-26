@@ -22,7 +22,7 @@ Out of the box [XML-RPC][xmlrpc], [REST][] and [AMF][] are available as possible
 
 
 ### Arakoon
-[Arakoon][] is a key/value store of objects. This database is used to store the actual objects of your application. Although Arakoon is a database, it is non-queryable nor it is a relational databas. 
+[Arakoon][] is a key/value store of objects. This database is used to store the actual objects of your application. Although Arakoon is a database, it is non-queryable nor it is a relational database. 
 
 
 ### [ejabberd][]

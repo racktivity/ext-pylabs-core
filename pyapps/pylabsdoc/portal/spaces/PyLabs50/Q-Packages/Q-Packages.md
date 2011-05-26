@@ -1,15 +1,15 @@
-[qpintro]: /pylabsdoc/#/PyLabs50/Q-Packages/qpintro
-[qparchitecture]: /pylabsdoc/#/PyLabs50/Q-Packages/qparchitecture
-[qpinstall]: /pylabsdoc/#/PyLabs50/Q-Packages/qpinstall
-[qpcreate]: /pylabsdoc/#/PyLabs50/Q-Packages/qpcreate
-[qpcreatebinary]: /pylabsdoc/#/PyLabs50/Q-Packages/qpcreatebinary
-[qptasklets]: /pylabsdoc/#/PyLabs50/Q-Packages/qptasklets
-[codemgmt]: /pylabsdoc/#/PyLabs50/Q-Packages/codemanagement
-[compile]: /pylabsdoc/#/PyLabs50/Q-Packages/compile
-[package]: /pylabsdoc/#/PyLabs50/Q-Packages/package
-[qpupdate]: /pylabsdoc/#/PyLabs50/Q-Packages/qpupdate
-[qpdomains]: /pylabsdoc/#/PyLabs50/Q-Packages/qpdomains
-[qplist]: /pylabsdoc/#/PyLabs50/Q-Packages/qplist
+[qpintro]: /pylabsdoc/#/PyLabs50/Q-Packages/QPIntro
+[qparchitecture]: /pylabsdoc/#/PyLabs50/Q-Packages/QPackageArchitecture
+[qpinstall]: /pylabsdoc/#/PyLabs50/Q-Packages/QPInstall
+[qpcreate]: /pylabsdoc/#/PyLabs50/Q-Packages/QPCcreate
+[qpcreatebinary]: /pylabsdoc/#/PyLabs50/Q-Packages/QPCcreatebinary
+[qptasklets]: /pylabsdoc/#/PyLabs50/Q-Packages/QPTasklets
+[codemgmt]: /pylabsdoc/#/PyLabs50/Q-Packages/CodeManagement
+[compile]: /pylabsdoc/#/PyLabs50/Q-Packages/Compile
+[package]: /pylabsdoc/#/PyLabs50/Q-Packages/Package
+[qpupdate]: /pylabsdoc/#/PyLabs50/Q-Packages/QPUpdate
+[qpdomains]: /pylabsdoc/#/PyLabs50/Q-Packages/QPDomains
+[qplist]: /pylabsdoc/#/PyLabs50/Q-Packages/QPList
 
 
 #Q-Packages

@@ -1,5 +1,8 @@
 [architecture]: /pylabsdoc/#/PyLabs50/Overview/architecture
 [stackless]: http://www.stackless.com/
+[imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
+[imgAC]: images/images50/pylabs/AgentController.png
+[imgWfeTasklet]: images/images50/pylabs/WFETasklets.png
 
 
 ## Workflow Engine
@@ -10,7 +13,7 @@ The Workflow Engine (WFE) acts like a scheduler for an operating system. It is u
 ### High-Level Overview
 From a high level perspective, the workflow engine consists of two different components.
 
-![WFE_Overview](images/images50/pylabs/WorkflowEngineHighLevel.png)
+![WFE_Overview][imgWFE]
 
 
 One is a _Tasklet Engine_ which is responsible for the launching and monitoring of tasklets. 
@@ -21,7 +24,7 @@ If you are not familiar with the concepts of Root Object Actions, Actor Actions 
 
 When the remote execution of an RScript is requested, the Agent Controller sends the RScript to correct agent over the XMPP communication channel. After receiving the script the agent executes it. When the script is executed, the agent reports back the status code and the captured output.
 
-![Agent_Controller](images/images50/pylabs/AgentController.png)
+![Agent_Controller][imgAC]
 
 
 ### Workflow Engine Tasklet Execution Model
@@ -29,7 +32,7 @@ When the remote execution of an RScript is requested, the Agent Controller sends
 The workflow engine is a single-threaded Python process that is responsible for the scheduling of the tasklets. Instead of using regular threads to schedule the different tasklets, the workflow engine uses microthreads. 
 The workflow engine schedules the execution of all the different tasklets in a single thread using the microthreads and scheduler provided by [Stackless Python][stackless].
 
-![WFE_Tasklets](images/images50/pylabs/WFETasklets.png)
+![WFE_Tasklets][imgWfeTasklet]
 
 The image above shows an example of a running workflow engine. Each of boxes portrayed in the diagram of the workflow engine represents a tasklet. As mentioned before each of these tasklets runs in a single thread. 
 As a result of this approach it is imperative that a tasklet does not perform a blocking system call, except in some well-defined cases that can be detected by the stackless scheduler. If the tasklet would perform a blocking call, this means that the entire workflow engine hangs and brings the entire environment to a halt!

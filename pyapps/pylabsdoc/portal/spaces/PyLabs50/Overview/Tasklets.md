@@ -1,4 +1,4 @@
-[ns]: @todo insert link to pylabs name spaces
+[ns]: /pylabsdoc/#/PyLabs50/NameSpaces
 [dict]: http://docs.python.org/release/2.6.6/library/stdtypes.html#dict
 
 

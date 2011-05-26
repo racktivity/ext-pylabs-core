@@ -1,4 +1,5 @@
-[qshell]: /pylabsdoc/#/PyLabs50/Q-Shell/qshell
+[qshell]: /pylabsdoc/#/PyLabs50/Q-Shell
+[python]: http://www.python.org
 
 
 ## Introducing PyLabs 5
@@ -12,7 +13,7 @@ PyLabs is a framework with two main objectives, enabling easy datacenter automat
 
 ### Datacenter Automation
 In a datacenter, the purchase of hardware is a huge cost, but maintaining your hardware is an equally large cost. Not only because of hardware failures, but also the number of human interventions to keep your datacenter up and running.
-PyLabs is a platform that offers you the possibility to reduce the human interventions significantly. Therefore PyLabs has a new scripting language, based on [Python 2.6|http://www.python.org]. Besides the Python functionalities and libraries, PyLabs offers extra libraries that can interact with your hardware as well as with the operating systems in your datacenter.
+PyLabs is a platform that offers you the possibility to reduce the human interventions significantly. Therefore PyLabs has a new scripting language, based on [Python 2.6][pyton]. Besides the Python functionalities and libraries, PyLabs offers extra libraries that can interact with your hardware as well as with the operating systems in your datacenter.
 
 Build your own scripts with PyLabs' [Q-Shell][qshell] and no longer waste money in time consuming interventions.
 

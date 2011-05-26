@@ -1,4 +1,4 @@
-[ro]: @todo link to ro definition
+[ro]: /pylabsdoc/#/PyLabs50/RootObject
 
 
 ## PyLabs Applications

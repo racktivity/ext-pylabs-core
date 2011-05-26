@@ -1,12 +1,16 @@
+[imgpyappArch]: images/pyapps/PyLabs_Architecture.png
+[imgDRP]: images/images50/pylabs/PyLabs_DRP.png
+
+
 ## PyLabs Architecture
 The PyLabs framework is a Python framework, specifically aimed at cloud application development. It provides all required components needed to build a typical cloud application. 
 PyLabs covers a very wide range of functionality, from the basics such as logging services to an advanced workflow engine to oversee distributed program execution.
 
 The framework itself is made up out of different logical layers. This page explains the different layers making up the full PyLabs stack and define the responsibilities of each layer. 
 
-![PyApps_Architecture](images/pyapps/PyLabs_Architecture.png)
+![PyApps_Architecture][imgpyappArch]
 
-![PyLabs_DRP](images/images50/pylabs/PyLabs_DRP.png)
+![PyLabs_DRP][imgDRP]
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 

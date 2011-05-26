@@ -19,6 +19,7 @@ Below you find various Q-Shell commands and its output. More examples can be fou
 
 **Copy File**
 
+[[code]]
     $ ls /opt
     code  pylabs5-installer.sh  qbase5
     
@@ -46,10 +47,12 @@ Below you find various Q-Shell commands and its output. More examples can be fou
     
     $ ls /opt
     code  pylabs5-installer.sh  qbase5  test.py
+[[/code]]
 
 
 **Copy Full Directory**
 
+[[code]]
     $ ls /opt
     code  pylabs5-installer.sh  qbase5  test.py
     
@@ -76,6 +79,7 @@ Below you find various Q-Shell commands and its output. More examples can be fou
     
     $ ls /opt
     code  __init.py__  pylabs5-installer.sh  qbase5  sampleapp  test.py
+[[/code]]
 
 The content of the `pyapps` directory (`__init.py__` and `sampleapp` directory) is copied to `/opt`.
 
@@ -83,16 +87,19 @@ The content of the `pyapps` directory (`__init.py__` and `sampleapp` directory) 
 **Working with Directories**
 In the `q.dirs` name space you can get the paths to default PyLabs system directories, for example the `bin` or `pyapps` directory.
 
+[[code]]
     In [9]: q.dirs.binDir
     Out[9]: '/opt/qbase5/bin'
     
     In [10]: q.dirs.pyAppsDir
     Out[10]: '/opt/qbase5/pyapps'
+[[/code]]
 
 With these functions it is easy to create new directories or copy files to PyLabs system directories.
 
 To create a new directory names to combine various names, use the `q.system.fs.joinPaths` function:
 
+[[code]]
     In [11]: q.system.fs.joinPaths(?
     Definition: q.system.fs.joinPaths(self, *args)
     Documentation:
@@ -105,9 +112,11 @@ To create a new directory names to combine various names, use the `q.system.fs.j
         - path2: string
         - path3: string
         - ....: : string
+[[/code]]
 
 In the next example we create a new directory `test` in the `pyapps` directory:
 
+[[code]]
     In [12]: newDir = q.system.fs.joinPaths(q.dirs.pyAppsDir,'test')
     
     In [13]: q.system.fs.createDir(?
@@ -123,17 +132,20 @@ In the next example we create a new directory `test` in the `pyapps` directory:
     
     $ ls pyapps
     __init__.py  sampleapp  test
-
+[[/code]]
 
 **Find Files Recursively
 Q-Shell contains the function, `fswalker`, which looks up files in a recursive way. You only need to enter the path from which the function must start. As a result you get a list of all the files.
 To this function you can add several options to include or exclude files.
 
+[[code]]
     In [8]: q.system.fswalker.find(?
     Definition: q.system.fswalker.find(root, recursive=True, includeFolders=False, pathRegexIncludes=['.*'], pathRegexExcludes=[], contentRegexIncludes=[], contentRegexExcludes=[], depths=[])
+[[/code]]
 
 Instead of just looking up the files, the `fswalker` can also execute an action on the retrieved files.
 
+[[code]]
     In [15]: q.system.fswalker.walk(?
     Definition: q.system.fswalker.walk(root, callback, arg='', recursive=True, includeFolders=False, pathRegexIncludes=['.*'], pathRegexExcludes=[], contentRegexIncludes=[], contentRegexExcludes=[], depths=[], followlinks=True)
     Documentation:
@@ -156,6 +168,7 @@ Instead of just looking up the files, the `fswalker` can also execute an action 
         - pathRegexIncludes: / Excludes  match paths to array of regex expressions (array(strings))
         - contentRegexIncludes: / Excludes match content of files to array of regex expressions (array(strings))
         - depths: array of depth values e.g. only return depth 0 & 1 (would mean first dir depth and then 1 more deep) (array(int))
+[[/code]]
 
 See [the Scripting Chapter][fswalker] for examples of this function.
 
@@ -165,16 +178,21 @@ See [the Scripting Chapter][fswalker] for examples of this function.
 **Networking**
 Ping a machine:
 
+[[code]]
     In [3]: q.system.net.pingMachine('192.168.16.213')
     Out[3]: True
+[[/code]]
     
 Get the default gateway:
 
+[[code]]
     In [5]: q.system.net.getDefaultRouter()
     Out[5]: '192.168.16.254'
+[[/code]]
     
 Show available network interfaces and their type:
 
+[code]]
     In [1]: nics = q.system.net.getNics()
     
     In [2]: for nic in nics:
@@ -185,10 +203,12 @@ Show available network interfaces and their type:
     vboxnet0 - VIRTUAL
     eth1 - ETHERNET_GB
     eth0 - ETHERNET_GB
+[[/code]]
     
 **Unix**
 Available actions for Unix systems:
 
+[[code]]
     In [6]: q.system.unix.
     q.system.unix.addCronJob(           q.system.unix.executeDaemonAsUser(
     q.system.unix.addSystemGroup(       q.system.unix.getBashEnvFromFile(
@@ -200,11 +220,13 @@ Available actions for Unix systems:
     q.system.unix.disableUnixUser(      q.system.unix.unixUserExists(
     q.system.unix.enableUnixUser(       q.system.unix.unixUserIsInGroup(
     q.system.unix.executeAsUser(
+[[/code]]
 
 
 **Unix Processes**
 Available process actions:
 
+[[code]]
     In [6]: q.system.process.
     q.system.net.checkListenPort(
     q.system.process.checkProcess(
@@ -221,9 +243,11 @@ Available process actions:
     q.system.process.runDaemon(
     q.system.process.runScript(
     q.system.process.setEnvironmentVariable(
+[/code]]
 
 For example check if a port is opened:
 
+[[code]]
     In [7]: q.system.net.checkListenPort(?
     Definition: q.system.net.checkListenPort(self, port)
     Documentation:
@@ -238,5 +262,6 @@ For example check if a port is opened:
         
     In [8]: q.system.net.checkListenPort(22)
     Out[8]: True
+[[/code]]
     
 More practical information can be found in the examples of creating scripts.    

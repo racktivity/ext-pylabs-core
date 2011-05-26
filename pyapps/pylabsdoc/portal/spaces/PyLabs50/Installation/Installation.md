@@ -1,3 +1,6 @@
+[imgdocSpace]: images/images50/installation/docSpace.png
+
+
 # PyLabs 5 Installation Guide
 
 PyLabs 5 has an installation script that automatically downloads and installs the necessary packages. This section covers preparing for installation, running the installation script itself, and the steps to install a PyLabs 5 sample application, called 'sampleapp'. 
@@ -91,6 +94,6 @@ where '<ip address>' is the IP address of the machine on which you installed the
 The sample application contains documentation about creating your own PyLabs application. To open the documentation, browse to the sample application.
 By default, the '*crm*' space is displayed. Switch the space to '*doc*' to get the PyLabs Application documentation.
 
-![docSpace](images/images50/installation/docSpace.png)
+![docSpace][imgdocSpace]
 
 Enjoy the power of *PyLabs 5*!

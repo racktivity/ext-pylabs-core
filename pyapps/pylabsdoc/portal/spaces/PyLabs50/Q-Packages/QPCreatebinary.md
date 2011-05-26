@@ -1,4 +1,4 @@
-[qptasklets]: /pylabsdoc/#/PyLabs50/Q-Packages/qptasklets
+[qptasklets]: /pylabsdoc/#/PyLabs50/Q-Packages/QPTasklets
 [Ocaml]: http://caml.inria.fr/ocaml/index.en.html
 
 

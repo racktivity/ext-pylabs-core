@@ -1,5 +1,5 @@
 [Mercurial]: http://mercurial.selenic.com/
-[codemanagement]: /pylabsdoc/#/PyLabs50/Q-Packages/qptasklets
+[codemanagement]: /pylabsdoc/#/PyLabs50/Q-Packages/QPTasklets
 
 ## Q-Package Tasklets
 
@@ -8,8 +8,10 @@ The `backup` tasklet is the tasklet tagged with "backup".
 The `backup` tasklet allows one to take a backup of the data stored in the data structure being used.
 The restore tasklet lets you put the saved data back in the data structure.
 
+[[code]]
     Out[1].backup(url='ftp://login:password@10.100.1.1/myroot/')
     Out[1].restore(url='ftp://login:password@10.100.1.1/myroot/')
+[[/code]]
 
 
 #### codemanagement Tasklet

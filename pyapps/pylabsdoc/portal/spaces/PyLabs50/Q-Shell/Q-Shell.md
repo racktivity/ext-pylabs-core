@@ -1,6 +1,11 @@
 [iPython]: http://ipython.scipy.org/moin/
 [qp]: /pylabsdoc/#/PyLabs50/Q-Packages/Q-Packages
-[pyapp]: @todo add link to pyapps home page
+[pyapp]: /pylabsdoc/#/PyLabs50/PyApp @todo check link
+[familiar]: /pylabsdoc/#/PyLabs50/Q-Shell/GettingFamiliar
+[practical]: /pylabsdoc/#/PyLabs50/Q-Shell/Practical
+[debug]: /pylabsdoc/#/PyLabs50/Q-Shell/DebugMode
+[options]: /pylabsdoc/#/PyLabs50/Q-Shell/QShellOptions
+[magic]: /pylabsdoc/#/PyLabs50/Q-Shell/MagicFunctions
 
 
 #PyLabs Q-Shell
@@ -24,7 +29,8 @@ The main advantages of the Q-Shell are:
 
 ###In this Chapter...
 
-1. [Getting Familiar with Q-Shell](/pylabsdoc/#/PyLabs50/Q-Shell/GettingFamiliar)
-2. [Q-Shell in Debug Mode](/pylabsdoc/#/PyLabs50/Q-Shell/DebugMode)
-3. [Q-Shell Options]((/pylabsdoc/#/PyLabs50/Q-Shell/QShellOptions)
-4. [Q-Shell Magic Functions](/pylabsdoc/#/PyLabs50/Q-Shell/MagicFunctions)
+1. [Getting Familiar with Q-Shell][familiar]
+2. [Using the Q-Shell][practical]
+3. [Q-Shell in Debug Mode][debug]
+4. [Q-Shell Options][option]
+5. [Q-Shell Magic Functions][magic]

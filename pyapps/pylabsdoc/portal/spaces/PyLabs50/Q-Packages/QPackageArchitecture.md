@@ -1,10 +1,12 @@
 [Confluence]: http://www.atlassian.com/software/confluence/
+[imgQPArch]: images/qpackages/qp5_architecture.gif
+
 
 ## Q-Packages Architecture
 
 The Q-Package framework consists of different components as shown in the image below:
 
-![Q-Packages_Architecture](images/qpackages/qp5_architecture.gif)
+![Q-Packages_Architecture][imgQPArch]
 
 The core of the Q-Package framework is `qbase`, which is logical since the Q-Package framework is part of the PyLabs 5 framework.
 As input for a Q-Package, you have source code repositories, here displayed as `mercurial`. 

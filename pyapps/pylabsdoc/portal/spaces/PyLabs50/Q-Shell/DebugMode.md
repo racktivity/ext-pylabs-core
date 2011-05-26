@@ -1,9 +1,9 @@
-﻿## Q-Shell Debug Mode
+﻿##Q-Shell Debug Mode
 
 It might occur that something goes wrong in your Q-Shell and that you get a message that you must run Q-Shell in debug mode for more information. To do so:
 
-1. Open a terminal session and go to your {{/opt/qbase}} folder.
-2. Run {{./qshell -d}}
+1. Open a terminal session and go to your `/opt/qbase5` folder.
+2. Run `./qshell -d`
 
 Your Q-Shell starts in debug mode.
 
