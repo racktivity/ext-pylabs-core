@@ -1,3 +1,5 @@
+[fswalker]: /pylabsdoc/#/PyLabs50/UsingPyLabs
+
 ##Using the Q-Shell
 In the previous sections you have learned how to work with the Q-Shell and what the principles are.
 In this section you will get some more practical examples to use the Q-Shell.
@@ -13,7 +15,7 @@ All operating system commands are located under `q.system.` in the Q-Shell.
 [[toc]][[/toc]]
 
 ###Working with Files and Directories
-Below you find various Q-Shell commands and its output.
+Below you find various Q-Shell commands and its output. More examples can be found in the [Scripting chapter][fswalker].
 
 **Copy File**
 
@@ -154,6 +156,8 @@ Instead of just looking up the files, the `fswalker` can also execute an action 
         - pathRegexIncludes: / Excludes  match paths to array of regex expressions (array(strings))
         - contentRegexIncludes: / Excludes match content of files to array of regex expressions (array(strings))
         - depths: array of depth values e.g. only return depth 0 & 1 (would mean first dir depth and then 1 more deep) (array(int))
+
+See [the Scripting Chapter][fswalker] for examples of this function.
 
 
 ###Some Other OS Examples

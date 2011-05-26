@@ -99,7 +99,7 @@ __tags__   = 'codemanagement',
 
 def main(q, i, params, tags):
     qpackage = params['qpackage']
-    qpackage.checkoutFromRecipe()
+    qpackage.checkoutRecipe()
 '''
         q.system.fs.createDir(q.system.fs.getDirName(filePath))
         if not q.system.fs.exists(filePath):
