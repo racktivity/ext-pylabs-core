@@ -56,6 +56,34 @@ The PyLabs 5 Guide describes the framework that allows users to automate their d
 
 ----
 
+##Configuration Management
+http://confluence.incubaid.com/display/PYLABS/3.2+Configuration+Management
+
+####Simple Configuration
+
+####Item-Based Configuration
+
+####Examples
+
+----
+
+##Extending PyLabs 5
+
+####What is a PyLabs 5 Extension
+
+####Creating Your First Extension
+
+####Enumerator Classes
+
+----
+
+##Contributing
+
+####Contributing in Style
+
+####Coding guidelines
+
+----
 ##Q-Packages
 
 ####Introducing Q-Packages
@@ -75,34 +103,6 @@ The PyLabs 5 Guide describes the framework that allows users to automate their d
 ####Q-Package Domains
 
 ####List of Q-Packages
-
-----
-
-##Contributing
-
-####Contributing in Style
-
-####Coding guidelines
-
-----
-
-##Configuration Management
-
-####Simple Configuration
-
-####Item-Based Configuration
-
-####Examples
-
-----
-
-##Extending PyLabs 5
-
-####What is a PyLabs 5 Extension
-
-####Creating Your First Extension
-
-####Enumerator Classes
 
 ----
 
