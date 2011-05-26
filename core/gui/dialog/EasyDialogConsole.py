@@ -85,7 +85,7 @@ class EasyDialogConsole(EasyDialogGeneric):
         """
         return pylabs.q.console.askYesNo(question)
 
-    def askPassword(self, question, defaultValue=None):
+    def askPassword(self, question, confirm=True, regex=None, retry=-1, defaultValue=None):
         """
         Asks the supplied question and prompts for password
 
@@ -97,7 +97,7 @@ class EasyDialogConsole(EasyDialogGeneric):
 
             question = '%s [%s]: ' % (question, '*' * len(defaultValue))
 
-        value = pylabs.q.console.askPassword(question)
+        value = pylabs.q.console.askPassword(question, confirm, regex, retry)
 
         if defaultValue and not value:
             value = defaultValue

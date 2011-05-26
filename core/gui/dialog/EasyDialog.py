@@ -126,14 +126,14 @@ class EasyDialog():
 
         return self.easyDialog.askYesNo(question, defaultValue)
 
-    def askPassword(self, question, defaultValue=None):
+    def askPassword(self, question, confirm=True, regex=None, retry=-1, defaultValue=None):
         """
         Asks the supplied question and prompts for password
 
         @param question: question to be displayed
         @return: response string
         """
-        return self.easyDialog.askPassword(question, defaultValue)
+        return self.easyDialog.askPassword(question, confirm, regex, retry, defaultValue)
 
     def askInteger(self, question, defaultValue = None):
         """
