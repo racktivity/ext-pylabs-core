@@ -718,9 +718,11 @@ class AppAPIGenerator(object):
         domainSpecDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model", domain)
         generatedFiles = dict()
         for model in q.system.fs.listFilesInDir(domainSpecDir, filter='*.py'):
+            model = model.split(os.sep)[-1]
+            model = model.split(".")[0]
             files = self._generateCRUDImplForModel(appname, domain, model )
             generatedFiles[model] = files
-        return files
+        return generatedFiles
      
     def _generateCRUDImplForModel(self, appname, domain, modelSpec ):
         """
@@ -734,9 +736,13 @@ class AppAPIGenerator(object):
         modelSpecFile = None
         if not q.system.fs.isFile(modelSpec):
             model_spec_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model")
+            print "__model_spec_dir_%s"%model_spec_dir
+
             modelSpecFile =  q.system.fs.joinPaths (model_spec_dir, domain, "%s.py"%modelSpec )
+            print "__modelSpecFile_%s"%modelSpecFile
         self._generator = CloudApiGenerator(appname)
         self._generator._template_path = self._template_path 
+        print "___%s"%modelSpecFile
         
         modelFiles = self._generator._generateModelImpl(modelSpecFile, appname, domain ) 
 

@@ -6,7 +6,19 @@
     "dbconnection": "${appname}",
     "table": "${table}",
     "schema": "${schema}",
-    "sqlselect": "${sqlSelect}",
+    "columns" : {
+#for $field in $fields            
+            "${field['name']}": "${field['name'].capitalize()}",
+#end for
+            "guid": "guid"
+            },
+    "link" : {
+#for $field in $fields            
+            "${field['name'].capitalize()}":"/${appname}/#/${domain}/${rootobject}_detail_<%="$guid$"%>",
+#end for    
+    "": ""
+    },
+ 
     "name": "${rootobject.capitalize()}s",
     "sort": "name",
     "pagesize": 10,
@@ -14,8 +26,8 @@
     "height": 200,
     "fieldwidth": {
         "name": 80
-    }
-    
+    },
+    "hidden":["guid"]
 }
 </div>
 
