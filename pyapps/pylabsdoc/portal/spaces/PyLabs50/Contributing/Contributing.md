@@ -1,33 +1,33 @@
-##Contributing in Style
+#Contributing in Style
 
 This chapter is a short intermezzo to provide you the coding guidelines of PyLabs. 
 When contributing to PyLabs, contribute in style and follow the rules as described on this page.
 
 
-### `q` Should Be a Global Var
+## `q` Should Be a Global Var
 
 When you want to use the core PyMonkey class `q`, make sure you call it the right way. 
 
 
-### Import All Relevant PyMonkey Packages
+## Import All Relevant PyMonkey Packages
 
 * e.g. `from event import QEvent`
 
 
-### Private and Public methods
+## Private and Public methods
 
 * Make sure that protected methods are really _protected_.
 * Make sure that protected properties are really _protected_.
 * Only expose _public_ method names.
 
 
-### Do Not Use Getters and Setters
+## Do Not Use Getters and Setters
 
 * Use properties instead.
 * Use the code formatter functionality to generate the properties automatically for you
 
 
-### Add Logging 
+## Add Logging 
 
 Use the PyLabs logging system with `q.logger.log(...)`
 
@@ -36,7 +36,7 @@ Use the PyLabs logging system with `q.logger.log(...)`
 * Put clear and useful descriptions in logging.
 
 
-### Throw Events
+## Throw Events
 Use the PyLabs event management `q.eventhandler`
 
 * There are 4 event levels.
@@ -45,7 +45,7 @@ Use the PyLabs event management `q.eventhandler`
 * The `raise` statement can be used but will always result in a _critical_ event or use `q.eventhandler.raiseWarning(...)`.
 
 
-### Use the Type Classes in Types Package
+## Use the Type Classes in Types Package
 
 Use the PyLabs enumerators, available in `q.enumerators`
 
@@ -69,6 +69,7 @@ has to be put at top of page
 import ...
 [[/code]]
 
+
 ###Document a Class
 
 [[code]]
@@ -79,6 +80,7 @@ class testclass(...):
     for a class
     has to be put just underneathclass"""
 [[/code]]
+
 
 ###Document a Method
 
@@ -120,6 +122,7 @@ class testclass(...):
 ##Coding Guidelines
 
 Here are some basic coding guidelines.
+
 
 ###Naming Conventions
 
@@ -240,8 +243,3 @@ LogLevel classifies the message towards its intended reader and/or targeted devi
 <td>SPECIALLEVEL</td><td align="center">10</td>
 </tr>
 </table>
-
-
-###Guidelines
-
-* Define a set of guidelines clarifying the uses of the log levels.

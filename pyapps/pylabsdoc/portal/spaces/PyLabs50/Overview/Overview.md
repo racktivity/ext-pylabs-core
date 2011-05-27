@@ -13,9 +13,9 @@ In this section you get a high-level overview of what PyLabs is.
 This covers the architecture of PyLabs, a description of the PyLabs core components, ... everything you need to know to get a clear understanding the way PyLabs is built.
 
 ### In this Chapter...
-* [PyLabs Architecture][pylabArch]
-* [PyLabs Components Overview][pylabComp]
-* [PyLabs Name Spaces][ns]
-* [Workflow Engine][wfe]
-* [Tasklets and Tasklet Engine][tasklet]
-* [PyLabs Applications][pyapp]
+1. [PyLabs Architecture][pylabArch]
+2. [PyLabs Components Overview][pylabComp]
+3. [PyLabs Name Spaces][ns]
+4. [Workflow Engine][wfe]
+5. [Tasklets and Tasklet Engine][tasklet]
+6. [PyLabs Applications][pyapp]

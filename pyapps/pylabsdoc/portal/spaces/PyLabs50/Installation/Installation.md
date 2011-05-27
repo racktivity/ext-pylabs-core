@@ -15,6 +15,7 @@ PyLabs 5 has an installation script that automatically downloads and installs th
 ## Installing PyLabs 5
 
 To install PyLabs 5 only, follow the steps as described below:
+
 1. In shell: `wget http://fileserver.incubaid.com/pylabs5/pylabs5-installer.sh`
 2. Get root privileges: `sudo su`\\ \\
 3. Update the properties of the installer to make it executable: `chmod a+x pylabs5-installer.sh` \\ \\
@@ -85,7 +86,7 @@ To install this sample application:
 
 The sample application is now installed on your system. To access the application, open a web browser and go to:
 
-**http://<ip address>/sampleapp**
+**http://IpAddress/sampleapp**
 
 where '<ip address>' is the IP address of the machine on which you installed the sample application. If you installed it on a Desktop version, you can go to localhost/sampleapp.
 
