@@ -138,6 +138,13 @@ Make sure that you have correctly created the [codemanagement][qptasklets] taskl
 
     i.qp.lastPackage.checkout()
 
+[[tip]]
+Most of the generated tasklets start with the line `qpackage = params['qpackage']`. If you want to simulate this `qpackage` object in your Q-Shell session, execute this line in the Q-Shell:
+
+`In [1]: qpackage = i.qp.find("packagename").qpackage`
+`lastPackages: [IPackage <package domain> <package name> <package version>]`
+[[/tip]]
+
 Instead of calling this `checkout` method, you can also manipulate the Q-Package directories, by creating your own directory-structure and putting your files in the proper directories.
 
 If you need to compile your code against the PyLabs framework, make sure that you have correctly created the [compile][qptasklets] tasklet. The compile tasklet is mainly used for [binary Q-Packages][qpcreatebinary].
@@ -150,8 +157,9 @@ In a last step, you have to put all the files from the source directories (via t
 
     i.qp.lastPackage.package()
 
-**Tip**
+[[tip]]
 These three above described steps (checkout, compile, and package) are all automated in one method, `quickPackage()`.
+[[/tip]]
 
 
 #### Publishing the Q-Package
