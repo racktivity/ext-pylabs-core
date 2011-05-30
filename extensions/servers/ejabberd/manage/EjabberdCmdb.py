@@ -128,7 +128,7 @@ class EjabberdCmdb(CMDBServerObject):
         @param server: name of the server to add the user to
         @param password: password of the user to register
         """
-        if name in self.users:
+        if name in self.users and self.users[name].server is server :
             raise ValueError('User with name [%s] already exists'%name)
         user = EjabberdUser()
         user.name = name
