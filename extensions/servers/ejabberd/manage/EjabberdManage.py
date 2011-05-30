@@ -155,6 +155,7 @@ class EjabberdManage(ManagementApplication, CMDBLockMixin):
         Retrieves a list of users registered in given hosts. if no hosts are specified q.manage.ejabberd.cmdb.hosts will be used
         @param hosts: list of hosts to retrieve registered users
         """
+        print hosts
         if hosts:
             hosts = hosts if isinstance(hosts, (list, tuple)) else [hosts] if hosts else None
         hosts = hosts or  self.cmdb.hosts

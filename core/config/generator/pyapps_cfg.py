@@ -12,12 +12,12 @@ join = q.system.fs.joinPaths
 
 def min_range(pyappsCfg):
     sections = pyappsCfg.getSections()
-    if sections == []:
+    if not sections:
         return 20000
-    minRange = [21000]
+    minRange = list()
     for section in sections:
         portrange = pyappsCfg.getValue(section, 'port_range')
-        minRange.append(int(portrange.split(':')[0]))
+        minRange.append(int(portrange.split(':')[1]))
     return max(minRange)
 
 
