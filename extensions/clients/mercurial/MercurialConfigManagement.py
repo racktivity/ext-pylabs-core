@@ -9,7 +9,7 @@ class MercurialConfigManagementItem(ConfigManagementItem):
         self.dialogAskString('url', 'Enter base URL of repository e.g. http://bitbucket.org/despiegk/%s' % self.itemname)
         self.dialogAskString('login', 'Username for mercurial connection')
         self.dialogAskPassword('passwd', 'Password for mercurial connection')
-        hg_base = q.system.fs.joinPaths(q.dirs.varDir, 'var', 'mercurial')
+        hg_base = q.system.fs.joinPaths(q.dirs.varDir, 'mercurial')
         destination = self.params['url'].rstrip('/').split('/')[-1]
         target = q.system.fs.joinPaths(hg_base, destination)
         self.dialogAskString('destination', 'Destination folder to clone repository [%s]'% target)
