@@ -137,8 +137,8 @@ For more info see [Q-Package Tasklets][qptasklets].
 Make sure that you have correctly created the [codemanagement][qptasklets] tasklet. To execute the `codemanagement` tasklet, call the `checkout` method on your new Q-Package object:
 
     i.qp.lastPackage.checkout()
-     Username for mercurial connection: <your username>
-    Password for mercurial connection: <your pwd>
+     Username for mercurial connection: your_username
+    Password for mercurial connection: your_password
     Destination folder to clone repository [/opt/qbase5/var/mercurial/pylabs-core]: 
 
 The destination folder of the cloned repository is very important for the further creation of the Q-Package. In the `package` tasklet you will have to refer to this folder.
@@ -229,6 +229,6 @@ To publish the domain:
      Added:    pylabsdoc/5.0/tasklets/startstop.py
       
     Do you want to commit the files? (y/n):y
-    user: incubaid
-    password: 
+    user: your_username
+    password: your_password
 
