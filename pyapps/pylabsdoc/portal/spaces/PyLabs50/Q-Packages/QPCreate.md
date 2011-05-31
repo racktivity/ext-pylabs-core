@@ -229,3 +229,6 @@ To publish the domain:
      Added:    pylabsdoc/5.0/tasklets/startstop.py
       
     Do you want to commit the files? (y/n):y
+    user: incubaid
+    password: 
+
