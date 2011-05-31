@@ -137,6 +137,12 @@ For more info see [Q-Package Tasklets][qptasklets].
 Make sure that you have correctly created the [codemanagement][qptasklets] tasklet. To execute the `codemanagement` tasklet, call the `checkout` method on your new Q-Package object:
 
     i.qp.lastPackage.checkout()
+     Username for mercurial connection: <your username>
+    Password for mercurial connection: <your pwd>
+    Destination folder to clone repository [/opt/qbase5/var/mercurial/pylabs-core]: 
+
+The destination folder of the cloned repository is very important for the further creation of the Q-Package. In the `package` tasklet you will have to refer to this folder.
+
 
 [[tip]]
 Most of the generated tasklets start with the line `qpackage = params['qpackage']`. If you want to simulate this `qpackage` object in your Q-Shell session, execute this line in the Q-Shell:
@@ -183,4 +189,43 @@ To publish the domain:
     i.qp.publishDomain('<domain name>', commitMessage='<your commitmessage here>')
 
     #for example
-    i.qp.publishDomain('pylabs5_test', commitMessage='demo package in pylabs5_test domain')
+    In [5]: i.qp.publishDomain('pylabs5_test', commitMessage='demo package')
+     Publish metadata for qpackage domain: pylabs5_test 
+     The following packages will be published:
+     publishing packages for domain pylabs5_test:
+         domain:        name:          version:       metachanged:   fileschanged:  status:        
+         pylabs5_test   testqp         1.0            True           True           NEW            
+    continue? (y/n):y
+     1) Updating buildNumbers in metadata and uploading files
+     * updateqpackage metadata for domain pylabs5_test 
+     
+     Found files not added yet to repo or deleted from filesystem
+     Nottracked/Ignored: pylabsdoc/5.0/description.wiki
+     Nottracked/Ignored: pylabsdoc/5.0/qpackage.cfg
+     Nottracked/Ignored: pylabsdoc/5.0/recipe.json
+     Nottracked/Ignored: pylabsdoc/5.0/tasklets/backup.py
+     Nottracked/Ignored: pylabsdoc/5.0/tasklets/codemanagement.py
+     Nottracked/Ignored: pylabsdoc/5.0/tasklets/configure.py
+     Nottracked/Ignored: pylabsdoc/5.0/tasklets/install.py
+     Nottracked/Ignored: pylabsdoc/5.0/tasklets/package.py
+     Nottracked/Ignored: pylabsdoc/5.0/tasklets/startstop.py
+     
+     \Above files are not added yet to repo but on filesystem
+     What do you want to do with these files
+        1: RemoveTheseFiles
+        2: AddRemove
+        3: Abort
+        Select Nr (1-3): 2
+     
+     Found modified, added, deleted files not committed yet
+     Added:    pylabsdoc/5.0/description.wiki
+     Added:    pylabsdoc/5.0/qpackage.cfg
+     Added:    pylabsdoc/5.0/recipe.json
+     Added:    pylabsdoc/5.0/tasklets/backup.py
+     Added:    pylabsdoc/5.0/tasklets/codemanagement.py
+     Added:    pylabsdoc/5.0/tasklets/configure.py
+     Added:    pylabsdoc/5.0/tasklets/install.py
+     Added:    pylabsdoc/5.0/tasklets/package.py
+     Added:    pylabsdoc/5.0/tasklets/startstop.py
+      
+    Do you want to commit the files? (y/n):y
