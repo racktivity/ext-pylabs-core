@@ -143,6 +143,12 @@ Most of the generated tasklets start with the line `qpackage = params['qpackage'
 
 `In [1]: qpackage = i.qp.find("packagename").qpackage`
 `lastPackages: [IPackage <package domain> <package name> <package version>]`
+
+or if you have stored your new Q-Package object in a variable:
+
+`In [1]: newQPackage = i.qp.createNewPackage()`
+
+`In [2]: newQPackage = newQPackage.qpackage`
 [[/tip]]
 
 Instead of calling this `checkout` method, you can also manipulate the Q-Package directories, by creating your own directory-structure and putting your files in the proper directories.
