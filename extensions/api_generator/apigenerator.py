@@ -960,9 +960,9 @@ class AppAPIGenerator(object):
            {'template':'ObjectQuery.tmpl', 'params':params, 
                                'destination':[ 'impl', 'osis', 'osis', 'query',  'object_query.py']}]
         for file in files:
-			path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
-			if not q.system.fs.exists(path):
-		        self._generate_file(file['template'], file['params'], path)
+            path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
+            if not q.system.fs.exists(path):
+                self._generate_file(file['template'], file['params'], path)
 
         
                             
