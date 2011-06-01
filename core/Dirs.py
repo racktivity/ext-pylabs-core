@@ -125,8 +125,6 @@ class Dirs(object):
     '''
 
     packageDir = None
-
-    packageDir_2 = None
     
     etcDir = None ##string
     ''' etc folder where system configuration is kept (basedir/etc)
@@ -168,14 +166,11 @@ class Dirs(object):
         if not self.cmdbDir:
             self.cmdbDir = os.path.join(self.varDir,"cmdb")
         if not self.packageDir:
-            self.packageDir = os.path.join(self.varDir,"qpackages")
-        if not self.packageDir_2:
-            self.packageDir_2 = os.path.join(self.varDir,"qpackages2")
+            self.packageDir = os.path.join(self.varDir,"qpackages4")
         if not self.etcDir:
             self.etcDir = os.path.join(self.baseDir, 'etc')
         if not self.homeDir:
             self.homeDir = pathToUnicode(os.path.join(home, ".qbase"))
-
         if not self.extensionsDir:
             self.extensionsDir = os.path.join(self.baseDir, 'lib', 'pylabs','extensions')
         if not self.binDir:

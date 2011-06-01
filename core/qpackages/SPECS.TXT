@@ -1,2 +1,0 @@
-see http://software.qlayer.com/display/SPEC20/Vapps3IntroSpecs
-todo: defs in separate files

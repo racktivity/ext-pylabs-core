@@ -1,7 +1,6 @@
 import math
 from pylabs import q
 from QPackageObject4 import QPackageObject4
-from ConvertQPackages import Convertor # temp
 from Domain import *
 
 # Testing QPackages?
@@ -22,12 +21,11 @@ class QPackageClient4():
     def __init__(self):
         """
         """
-        q.system.fs.createDir(q.system.fs.joinPaths(self._getPackageDir(),"metadata"))
-        q.system.fs.createDir(q.system.fs.joinPaths(self._getPackageDir(),"files"))
-        q.system.fs.createDir(q.system.fs.joinPaths(self._getPackageDir(),"bundles"))
-        q.system.fs.createDir(q.system.fs.joinPaths(self._getPackageDir(),"metatars"))
+        q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.packageDir, "metadata"))
+        q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.packageDir, "files"))
+        q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.packageDir, "bundles"))
+        q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.packageDir, "metatars"))
         self._activeQpackageActionsReset()
-        self.convertor = Convertor() # temp
         self.domains=[]
         self._metadatadirTmp=q.system.fs.joinPaths(q.dirs.varDir,"tmp","qpackages","md")
         q.system.fs.createDir(self._metadatadirTmp)
@@ -156,13 +154,6 @@ class QPackageClient4():
 ###################  GET PATH FUNCTIONS  ###################
 ############################################################
 
-    def _getPackageDir(self):
-        """
-        Get qpackage for v4 version
-        """
-        packagedir=q.dirs.packageDir+"4"
-        return packagedir
-
     def getMetadataPath(self,domain,name,version,fromtmp=False):
         """
         Returns the metadatapath for the provided qpackage
@@ -177,7 +168,7 @@ class QPackageClient4():
             self._metadatadirTmp
             return q.system.fs.joinPaths(self._metadatadirTmp,domain,name,version)
         else:
-            return q.system.fs.joinPaths(self._getPackageDir(),"metadata",domain,name,version)
+            return q.system.fs.joinPaths(q.dirs.packageDir, "metadata", domain,name,version)
 
     def getDataPath(self,domain,name,version):
         """
@@ -186,14 +177,14 @@ class QPackageClient4():
         @param name:    string - The name of the qpackage
         @param version: string - The version of the qpackage
         """
-        return q.system.fs.joinPaths(self._getPackageDir(),"files",domain,name,version)
+        return q.system.fs.joinPaths(q.dirs.packageDir, "files", domain,name,version)
 
     def getMetaTarPath(self, domainName):
         """
         Returns the metatarsdatapath for the provided domain
         This is the place where the .tgz bundles are stored for each domain
         """
-        return q.system.fs.joinPaths(self._getPackageDir(), "metatars", domainName)
+        return q.system.fs.joinPaths(q.dirs.packageDir, "metatars", domainName)
 
     # This is a name inconsitency with qpackage.getPathFiles
     #                                          .getPathBundles
@@ -202,7 +193,7 @@ class QPackageClient4():
         """
         Returns the bundlesdatapath where all bundles are stored for all different domains
         """
-        return q.system.fs.joinPaths(self._getPackageDir(),"bundles")
+        return q.system.fs.joinPaths(q.dirs.packageDir, "bundles")
 
 
 ############################################################
@@ -322,7 +313,7 @@ class QPackageClient4():
         res = list()
         domains=self.getDomainNames()
         for domainName in domains:
-            domainpath=q.system.fs.joinPaths(self._getPackageDir(),"metadata",domainName)
+            domainpath=q.system.fs.joinPaths(q.dirs.packageDir, "metadata", domainName)
             if q.system.fs.exists(domainpath):
                 packages= [p for p in q.system.fs.listDirsInDir(domainpath,dirNameOnly=True) if p != '.hg'] # skip hg file
                 for packagename in packages:
