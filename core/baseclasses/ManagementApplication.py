@@ -89,32 +89,7 @@ class ManagementApplication(ManagementConfiguration):
         Restart the server
         """
         raise NotImplementedError("%s.restart()" % self.cmdb.cmdbtypename)
- 
-   
-    def printStatus(self):
-        # TODO: implement nicely using self.name and self.status
-        print "Application [%s] is %s" % (self.cmdb.cmdbtypename, self.status)
 
-    def exportConfig(self):
-        """
-        Returns a string representation (pickle) of the cmdb.
-
-        @return: string containing pickled dump of the cmdb
-        @rtype: string      
-        """
-        
-        return pickle.dumps(self.cmdb)
-
-    def importConfig(self, picklestring):
-        """
-        Takes a string representation (pickle) of the cmdb and overwrites the cmdb with it.
-        
-        @param picklestring:    String containing pickled version of the CMDB 
-        @type picklestring:     string
-        """
-        self.startChanges()
-        self.cmdb = pickle.loads(picklestring)
-        self.save()
 
 class CMDBLockMixin:
 

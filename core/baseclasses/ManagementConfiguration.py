@@ -70,38 +70,6 @@ class ManagementConfiguration(object):
         """
         raise NotImplementedError("%s.applyConfig()" % self.cmdb.cmdbtypename)
 
-    def exportConfig(self, version=None):
-        """
-        If config is dirty and version is None, throw error and tell user to save his config first.
-        Export configuration of this server to a string which is returned.
-        If version is None, export latest.
-        If version is not None, take that config version from cmdb
-        """
-        # TODO: must implement this generically at this level
-        raise NotImplementedError("%s.exportConfig()" % self.cmdb.cmdbtypename)
-
-    def importConfig(self, configstring):
-        """
-        previousinitdone = self._initdone
-        Import configuration from configstring.
-        self._initdone = previousinitdone
-        self.save()
-        """ 
-        # TODO: must implement this generically at this level
-        raise NotImplementedError("%s.importConfig()" % self.cmdb.cmdbtypename)
-
-    def listConfigs(self):
-        # TODO implement as a generator, going from last config version to first config version
-        """
-        List all known configurations of this server, latest config first.
-        """
-        pass
-
-    def printConfig(self):
-        """
-        Show userfriendly textual version of configuration
-        """
-        raise NotImplementedError("%s.printConfig()" % self.cmdb.cmdbtypename)
 
     def __str__(self):
         return str(self.cmdb)
