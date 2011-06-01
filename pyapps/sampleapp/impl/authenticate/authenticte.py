@@ -1,14 +1,65 @@
 __tags__ = 'authenticate', 
 __author__ = 'Incubaid'
 
-def main(q, i, params, tags):
-    request = params['request']
-    domain =  params['domain']
-    service = params['service']
-    methodname = params['methodname']
-    args = params['args']
-    kwargs = params['kwargs']
-    return request.username == request.password
+def getpermissions(p):
+    osis = p.application.getOsisConnection(p.api.appname) 
+    viewname = '%s_view_%s_list' % ("crm", "permission")
+    permissionsList = osis.objectsFindAsView("crm",
+        "permission",
+        p.api.model.crm.permission.getFilterObject(),
+        viewname)
 
+    permissions= ["/sampleapp/appserver/rest/ui/portal/page?space=%s&name=%s"%(permission['uri'].split("/")[-2],permission['uri'].split("/")[-1]) for permission in permissionsList]
+    return permissions
+
+def isUserCeridentialsVaild(p,username, password):
+    osis = p.application.getOsisConnection(p.api.appname)
+    filter = p.api.model.crm.permission.getFilterObject()
+    viewname = '%s_view_%s_list' % ("crm", "user")
+    filter.add(viewname, "name", username)
+    filter.add(viewname, "password", password)
+    
+    user = osis.objectsFindAsView("crm","user",filter, viewname)
+    
+    if user: 
+        return True
+    else:
+        return False
+    
+    
+def main(q, i, p, params, tags):
+    request = params['request']
+        
+
+
+    #permission = p.api.action.crm. permission.find(uri =request._request.uri) 
+    permissions = getpermissions(p) 
+        
+    
+   
+    if request._request.uri not in permissions :
+        params['result'] = True
+        return
+        
+    else:
+        
+     
+        if not request.username or not request.password:
+            params['result'] = False
+            return
+         
+   
+        if isUserCeridentialsVaild(p,request.username, request.password): 
+            #request.username
+            params['result'] = True
+        else:
+            params['result'] = False
+            return
+        
+    
+    result =params.get('result', False)
+
+  
+            
 def match(q, i, params, tags):
     return True
