@@ -5,7 +5,7 @@
 [imgQshell5]: images/images50/qshell/Q-Shell_05.png
 
 
-﻿## Getting Familiar with the Q-Shell
+##Getting Familiar with the Q-Shell
 
 ### Starting the Q-Shell
 When you have installed PyLabs, go to the folder `/opt/qbase5`.
