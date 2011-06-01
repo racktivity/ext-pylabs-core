@@ -1,4 +1,4 @@
-﻿##Q-Shell Debug Mode
+##Q-Shell Debug Mode
 
 It might occur that something goes wrong in your Q-Shell and that you get a message that you must run Q-Shell in debug mode for more information. To do so:
 
