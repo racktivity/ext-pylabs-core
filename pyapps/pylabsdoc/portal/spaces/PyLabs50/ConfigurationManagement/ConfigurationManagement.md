@@ -1,5 +1,8 @@
 [components]: /pylabsdoc/#/PyLabs50/Components
 [install]: /pylabsdoc/#/PyLabs50/Installation
+[general]: /pylabsdoc/#/PyLabs50/GeneralConfigFunctions
+[simple]: /pylabsdoc/#/PyLabs50/SimpleConfig
+[cmdb]: /pylabsdoc/#/PyLabs50/CMDBConfig
 
 
 #Configuration Management
@@ -10,4 +13,6 @@ The default configuration of the applications can always be updated or extended.
 
 ###In this Chapter...
 
-1. [Simple Configuration]
+1. [General Configuration Functions][general]
+2. [Simple Configuration][simple]
+3. [CMDB Configuration][cmdb]
