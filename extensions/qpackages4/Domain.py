@@ -137,7 +137,7 @@ class Domain():
         self._hgclient=None
         self._hgclientTmp=None
 
-        self.metadatadir=q.system.fs.joinPaths(q.dirs.packageDir+"4","metadata", self.domainname)
+        self.metadatadir=q.system.fs.joinPaths(q.dirs.packageDir,"metadata", self.domainname)
         self._metadatadirTmp=""
 
         self._bundleUpload = None
