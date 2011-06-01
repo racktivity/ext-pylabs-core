@@ -22,7 +22,7 @@ mkdir -p "${WORKSPACE}/pylabs5"
 echo "Launch installer"
 sudo chmod u+x ${WORKSPACE}/pylabs5-installer.sh
 sudo cp "${WORKSPACE}/pylabs5-installer.sh" "${FULL_CHROOT_PATH}/"
-sudo chroot "${FULL_CHROOT_PATH}" "/pylabs5-installer.sh --bootstrap-package sampleapp"
+sudo chroot "${FULL_CHROOT_PATH}" /pylabs5-installer.sh --bootstrap-package sampleapp
 echo "Run tests"
 sudo chmod u+x "${WORKSPACE}/test/pyapps/test_pylabs.py"
 sudo cp "${WORKSPACE}/test/pyapps/test_pylabs.py" "${FULL_CHROOT_PATH}/tmp"
