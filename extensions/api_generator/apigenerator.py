@@ -736,19 +736,28 @@ class AppAPIGenerator(object):
         modelSpecFile = None
         if not q.system.fs.isFile(modelSpec):
             model_spec_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model")
-            print "__model_spec_dir_%s"%model_spec_dir
-
             modelSpecFile =  q.system.fs.joinPaths (model_spec_dir, domain, "%s.py"%modelSpec )
-            print "__modelSpecFile_%s"%modelSpecFile
         self._generator = CloudApiGenerator(appname)
         self._generator._template_path = self._template_path 
-        print "___%s"%modelSpecFile
         
         modelFiles = self._generator._generateModelImpl(modelSpecFile, appname, domain ) 
 
         print "Generated Files are :%s"%modelFiles
         return modelFiles
-        
+    def _generateBaseDirs(self, appname):
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'actor'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'action'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'model'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'config'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'monitoring'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'authenticate'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'authorize'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'form'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'wizard'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'setup', 'osis'))
+         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
+         
+         
     def generate(self, appname):
         """
         For a given application:
@@ -759,6 +768,7 @@ class AppAPIGenerator(object):
         @type appname: String
         @param appname: The name of your application.
         """
+        self._generateBaseDirs(appname)
         self._generator = CloudApiGenerator(appname)
         q.action.start('Generating base services')
         self._generate_default_services(appname)
@@ -830,31 +840,173 @@ class AppAPIGenerator(object):
         # Generate default services
         params = {'appname': appname}
         
-        # Scheduler
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'schedule'))        
-        self._generate_file('SchedulerService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'Scheduler.py'))
+        #Create folders
+        self._generateFolders(appname)
+
+        files = [{'template':'SchedulerService.tmpl', 'params':params, 
+                            'destination':['impl', 'service', 'Scheduler.py']},
+                            
+           {'template':'OsisService.tmpl', 'params':params, 
+                               'destination':['impl', 'service', 'osissvc.py']},
+
+           {'template':'WizardService.tmpl', 'params':params, 
+                               'destination':['impl', 'service', 'ui', 'wizard.py']},
+            
+           {'template':'PortalService.tmpl', 'params':params, 
+                               'destination':['impl', 'service', 'ui', 'portal.py']},
+            
+           {'template':'AgentService.tmpl', 'params':params, 
+                               'destination':['impl', 'service', 'AgentSVC.py']},
+      
+           {'template':'Job.tmpl', 'params':params, 
+                               'destination':['interface', 'action', 'core', 'job.py']},
+       
+           {'template':'Page.tmpl', 'params':params, 
+                               'destination':['interface', 'action', 'ui', 'page.py']},
+           
+           {'template':'JobClear.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'clear', '1_job_clear.py']},
+                                                   
+           {'template':'JobCreate.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'create', '1_job_create.py']},
+                                
+           {'template':'JobDelete.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'delete', '1_job_delete.py']},    
+                                
+           {'template':'JobFind.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'find', '1_job_find.py']},   
+                                     
+           {'template':'JobFindLatestJob.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'findLatestJob', '1_job_findLatestJob.py']},
+            
+           {'template':'JobGetJobTree.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'getJobTree', '1_job_getJobTree.py']},
+             
+           {'template':'JobGetLogoInfo.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'getLogoInfo', '1_job_getLogoInfo.py']},
+                                                
+           {'template':'JobGetObject.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'getObject', '1_job_getObject.py']},
+                                
+           {'template':'JobGetXML.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'getXML', '1_job_getXML.py']},
+                                
+           {'template':'JobGetXMLSchema.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'getXMLSchema', '1_job_getXMLSchema.py']},
+                                
+           {'template':'JobGetYAML.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'core', 'job', 'getYAML', '1_job_getYAML.py']},
+                                
+           {'template':'UiPageCreate.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'page', 'create', '1_page_create.py']},
+                                
+           {'template':'UiPageDelete.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'page', 'delete', '1_page_delete.py']},
+
+           {'template':'UiPageFind.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'page', 'find', '1_page_find.py']},
+                                
+           {'template':'UiPageGetObject.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'page', 'getObject', '1_page_getObject.py']},
+                                
+           {'template':'UiPageUpdate.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'page', 'update', '1_page_update.py']},
+                                
+           {'template':'ModelJob.tmpl', 'params':params, 
+                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'core', 'job.py']},
+
+           {'template':'ModelPage.tmpl', 'params':params, 
+                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'page.py']},
+             
+           {'template':'PageView.tmpl', 'params':params, 
+                           'destination':['impl', 'setup', 'osis', 'page_view.py']},
+                            
+           {'template':'PageViewTags.tmpl', 'params':params, 
+                               'destination':['impl', 'setup', 'osis', 'page_view_tags.py']},
+                                
+           {'template':'JobViewList.tmpl', 'params':params, 
+                               'destination':['impl', 'setup', 'osis', 'job_view_list.py']},
+                                
+           {'template':'JobViewParentList.tmpl', 'params':params, 
+                               'destination':['impl', 'setup', 'osis', 'job_view_parentlist.py']},
+                                
+           {'template':'PageDelete.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_page_delete.py']},
+                                
+           {'template':'PageStore.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_page_store.py']},
+             
+           {'template':'ObjectStore.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_store.py']},
+                                
+           {'template':'ObjectGenerateEventStore.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_generateevent_store.py']},  
+                                 
+           {'template':'ObjectDelete.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'delete',  '1_object_delete.py']},
+                                
+           {'template':'ObjectGenerateEventDelete.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'delete',  '3_object_generateevent_delete.py']},
+                                                   
+           {'template':'ObjectFindAsView.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'findasview',  'object_findasview.py']},
+                      
+           {'template':'ObjectFind.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'findobject',  'object_find.py']},
+                        
+           {'template':'ObjectGet.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'get',  '1_object_get.py']},   
+                                                   
+           {'template':'ObjectQuery.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'query',  'object_query.py']}]
+        for file in files:
+			path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
+			if not q.system.fs.exists(path):
+		        self._generate_file(file['template'], file['params'], path)
+
         
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-        self._generate_file('OsisService.tmpl', {'appname': appname}, 
-                            q.system.fs.joinPaths(service_path, 'osissvc.py'))
-        
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui'))
-        self._generate_file('WizardService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'ui', 'wizard.py'))
-        
-        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'portal'))
-        self._generate_file('PortalService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'ui', 'portal.py'))
-        
-        self._generate_file('AgentService.tmpl', params, 
-                            q.system.fs.joinPaths(service_path, 'AgentSVC.py'))
-        
-        
+                            
     def _generate_file(self, template, params, path):
         self._generator._generateCode(
             q.system.fs.joinPaths(self._template_path, template), 
             params, path)
+    
+    def _generateFolders(self, appname):
+        folders = [['impl', 'schedule'],
+            ['impl', 'osis'],
+            ['impl', 'ui'],
+            ['impl', 'portal'],
+            ['interface', 'action', 'core'],
+            ['interface', 'action', 'ui'],
+            ['interface', 'model', 'core'],
+            ['interface', 'model', 'ui'],
+            ['impl', 'action', 'core', 'job', 'clear'],
+            ['impl', 'action', 'core', 'job', 'create'],
+            ['impl', 'action', 'core', 'job', 'delete'],
+            ['impl', 'action', 'core', 'job', 'find'],
+            ['impl', 'action', 'core', 'job', 'findLatestJob'],
+            ['impl', 'action', 'core', 'job', 'getJobTree'],
+            ['impl', 'action', 'core', 'job', 'getLogoInfo'],
+            ['impl', 'action', 'core', 'job', 'getObject'],
+            ['impl', 'action', 'core', 'job', 'getXML'],
+            ['impl', 'action', 'core', 'job', 'getXMLSchema'],
+            ['impl', 'action', 'core', 'job', 'getYAML'],
+            ['impl', 'action', 'ui', 'page', 'create'],
+            ['impl', 'action', 'ui', 'page', 'delete'],
+            ['impl', 'action', 'ui', 'page', 'find'],
+            ['impl', 'action', 'ui', 'page', 'getObject'],
+            ['impl', 'action', 'ui', 'page', 'update'],
+            ['impl', 'setup', 'osis'],
+            ['impl', 'osis', 'osis', 'delete'],
+            ['impl', 'osis', 'osis', 'store'],
+            ['impl', 'osis', 'osis', 'findAsView'],
+            ['impl', 'osis', 'osis', 'findObject'],
+            ['impl', 'osis', 'osis', 'get'],
+            ['impl', 'osis', 'osis', 'query']
+            ]
+        for folder in folders:
+            self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname,*folder))
+        
         
     def _create_folder(self, path):
         if not q.system.fs.exists(path):
