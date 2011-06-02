@@ -31,7 +31,11 @@ cp -a "${REPOPATH}/utils" "${QBASE}/utils"
 
 mkdir -p ${QBASE}/var/{cmdb,log,pid}
 
-cat "${SCRIPTDIR}/installscript.sh" > ${TARFILE}
+touch ${TARFILE}
+
+if [ -z "$2" ]; then
+    cat "${SCRIPTDIR}/installscript.sh" > ${TARFILE}
+fi
 pushd ${TFOLDER}
 tar czf - . >> ${TARFILE}
 popd

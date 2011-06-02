@@ -31,6 +31,26 @@ self_extract(){
     tail -n+$ARCHIVE $0 | tar xz -C /opt
 }
 
+get_qbase_remote(){
+    TARFILE=/tmp/installer.$$
+    curl http://fileserver.incubaid.com/pylabs5/qbase5.tgz > $TARFILE
+    tar xf $TARFILE -C /opt
+    rm $TARFILE
+}
+
+install_qbase(){
+    if [ ! -t 0 ]; then
+        get_qbase_remote
+        return
+    fi
+    SIZE=$(stat -c %s $0)
+    if [ $SIZE -gt 102400 ]; then
+        self_extract
+    else
+        get_qbase_remote
+    fi
+}
+
 customize(){
     log "Adding sitecustomize to system python"
     mkdir -p /etc/python2.6
@@ -62,7 +82,7 @@ install_package(){
 }
 
 core_install(){
-    self_extract
+    install_qbase
     install_package "${CORE_PACKAGES}"
     customize
     update_metadata
