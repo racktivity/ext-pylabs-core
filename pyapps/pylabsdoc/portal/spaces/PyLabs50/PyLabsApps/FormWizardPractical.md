@@ -1,3 +1,12 @@
+[tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
+[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+[actiontasklet]: /pylabsdoc/#/PyLabs50/ActionTasklet
+[formapi]: /pylabsdoc/#/PyLabs50/FormWizard
+[modeling]: /pylabsdoc/#/PyLabs50/Modeling
+[api]:  /pylabsdoc/#/api/index.html @todo: verify
+[wizardapi]: /pylabsdoc/#/PyLabs50/WizardApi
+
+
 #Creating Forms and Wizards
 
 In the PyLabs 5 framework, wizards are used to execute actions on a certain Root Object. As most of the functionality, wizards can also be defined by writing a simple tasklet.
@@ -10,7 +19,7 @@ The wizard dialect is fully integrated in the PyLabs framework. The main entry p
 
 ##General Structure of a Form/Wizard Tasklet
 
-Since a wizard is implemented by using the [tasklet](http://confluence.incubaid.com/display/PYLABS/Tasklets) framework, it contains all sections like any other tasklet.
+Since a wizard is implemented by using the [tasklet][] framework, it contains all sections like any other tasklet.
 
 Sections:
 
@@ -47,9 +56,9 @@ def match(q, i, params, tags):
     return True
 [[/code]]    
 
-The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
+The wizard tasklets are stored in the directory `<pyapp name>/impl/ui/<form/wizard>/<domain>`. See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
-It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet](/sampleapp/#/pyappsdoc/ActionTasklet), which receives the arguments through the `params` dictionary.
+It is highly recommended to create `callCloudAPI` method as shown in the tasklet above. This method will call the actual [action tasklet][actiontasklet], which receives the arguments through the `params` dictionary.
 
 
 ##Creating Forms
@@ -69,7 +78,7 @@ tab_general = form.addTab('general', TAB_GENERAL_TITLE)
 The `addTab` function expects two arguments, a unique ID ('general' in the above example) and  a title name for the tab.
 
 The tab object has several methods to fill your form with text fields, choices, multiple choices, yes/no questions, ... The methods have clear names so you know which type of field you are going to add.
-See the [Form API](/sampleapp/#/pyappsdoc/formwizard) for details about the fields.
+See the [Form API][formapi] for details about the fields.
 
 An example of a basic form:
 
@@ -91,7 +100,7 @@ def genderList(q):
     return gender
 [[/code]]    
 
-This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects](/sampleapp/#/pyappsdoc/modeling) to create your custom enumerator.
+This function works provided that you created your proper enumerator 'gender'. See [Modeling Root Objects][modeling] to create your custom enumerator.
 
 Once all fields are filled, the user will have to click on one of the provided buttons, *OK* or *CANCEL*. When the user clicks *OK*, the tasklet continues with the main function. Either you call the `callCloudAPI` function, which will execute an action, using the data entered by the user, or you can show a confirmation window.
 
@@ -108,7 +117,7 @@ answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                      defaultButton='OK')
 [[/code]]                                         
 
-For more details about the `showMessageBox` function, we refer to the [API documentation] (api/index.html) of PyLabs 5.
+For more details about the `showMessageBox` function, we refer to the [API documentation][API] of PyLabs 5.
 
 To trigger an action with the provided data, you have to call the `callCloudAPI` method:
 
@@ -142,7 +151,7 @@ answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                      defaultButton='OK')
 [[/code]]                                     
 
-For more methods that can be used in the wizards, see the [Wizard API](/sampleapp/#/pyappsdoc/wizardapi).
+For more methods that can be used in the wizards, see the [Wizard API][wizardapi].
 
 
 ##Other Forms
@@ -223,6 +232,6 @@ params['result'] = result
 
 
 ##What's Next?
-In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API](/sampleapp/#/pyappsdoc/FormWizard)
+In this chapter you have learned how you can create forms and wizards. For more details about the forms and wizards methods, we refer to the [Form and Wizard API][formapi].
 
 In the next chapters you will learn how your PyApp can interact with the reality, how actions can be triggered by events, and how actions can be scheduled.

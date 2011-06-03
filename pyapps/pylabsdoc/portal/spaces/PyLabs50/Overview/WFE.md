@@ -1,4 +1,4 @@
-[architecture]: /pylabsdoc/#/PyLabs50/Overview/architecture
+[architecture]: /pylabsdoc/#/PyLabs50/Architecture
 [stackless]: http://www.stackless.com/
 [imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
 [imgAC]: images/images50/pylabs/AgentController.png

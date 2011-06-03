@@ -1,3 +1,11 @@
+[imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
+[imgDrp]: images/images50/pyapps/PyLabs_DRP.png
+[imgPyApp]: images/images50/pyapps/PyApp.png
+[imgPyAppCreate]: images/images50/pyapps/PyApp\_Create.png
+[drp]: /pylabsdoc/#/PyLabs50/Architecture
+[epydoc]: http://epydoc.sourceforge.net/
+
+
 #PyLabs Applications
 
 ##Introducing PyApps
@@ -10,9 +18,9 @@ In this section we introduce you to the different components of PyApps and how t
 ###Architecture
 Below you can find the architecture of how the PyLabs framework is built.
 
-![PyApps_Architecture](images/images50/pyapps/PyApp_Architecture.png)
+![PyApps_Architecture][imgPyAppArch]
 
-![PyLabs_DRP](images/images50/pyapps/PyLabs_DRP.png)
+![PyLabs_DRP][imgDrp]
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 
@@ -30,7 +38,7 @@ The PyModel extension is represented by `p.api.model in PyLabs`.
 
 
 ###Root Objects
-A Root Object of a PyApp is a logical unit in the [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning). The Root Object is a composite entity of properties, components and references to other Root Objects.
+A Root Object of a PyApp is a logical unit in the [DRP][drp] (Datacenter Resource Planning). The Root Object is a composite entity of properties, components and references to other Root Objects.
 
 For example:
 The Root Object "Customer" can have the properties Name, Description, Address,... It can have contact person as component and can be in relation with another customer via a reference.
@@ -45,7 +53,7 @@ Per action, there exists one tasklet which contains the business logic and the a
 ###From Modeling to Reality
 Below you find a graphical overview of the creation of a PyApp. 
 
-![PyApp](images/images50/pyapps/PyApp.png)
+![PyApp][imgPyApp]
 
 
 ##PyApps Directory Structure
@@ -164,7 +172,7 @@ The `interface`-directory contains the files that model your complete PyApp.
 
 
 ####interface/actor/domainname
-* actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send out an e-mail.
+* actor: this directory contains the model of actors in your PyApp. An actor is your interface to the reality. Tasklets in this section will interact with the reality, for example send an e-mail.
 * domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
 
 
@@ -250,7 +258,7 @@ The `portal`-directory contains all the documentation files of your PyApp.
 
 
 ####portal/spaces/api
-* api: contains the API documentation of your PyApp in [epydoc](http://epydoc.sourceforge.net/)-format. The API documentation is generated when installing your PyApp.
+* api: contains the API documentation of your PyApp in [epydoc][] format. The API documentation is generated when installing your PyApp.
 __Note__: Epydoc is a tool for generating API documentation for Python modules, based on their docstrings.
 
 
@@ -273,7 +281,7 @@ __Note__: Epydoc is a tool for generating API documentation for Python modules, 
 
 Below you can find a general overview of the creation process of a PyApp.
 
-![PyApp\_Create](images/images50/pyapps/PyApp\_Create.png)
+![PyApp\_Create][imgPyAppCreate]
 
 1. Create the Specifications of the PyApp
 2. Model the different Root Objects

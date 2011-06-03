@@ -1,5 +1,5 @@
-[qptasklets]: /pylabsdoc/#/PyLabs50/Q-Packages/QPTasklets
-[qpcreatebinary]: /pylabsdoc/#/PyLabs50/Q-Packages/QPCreatebinary
+[qptasklets]: /pylabsdoc/#/PyLabs50/QPTasklets
+[qpcreatebinary]: /pylabsdoc/#/PyLabs50/QPCreatebinary
 
 
 ## Creating a Q-Package

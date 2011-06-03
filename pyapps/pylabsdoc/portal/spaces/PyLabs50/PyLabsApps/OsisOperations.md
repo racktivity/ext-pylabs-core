@@ -1,10 +1,15 @@
+[tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
+[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+[model]: /pylabsdoc/#/PyLabs50/Modeling
+
+
 #OSIS Operations
 In the previous section you have learned how you can create OSIS views and that the views, with their objects, are stored in a PostgreSQL database.
 In this section we will cover how you can store, update, and delete objects from these views.
 
 
 ##Creating an OSIS Operation
-An OSIS operation is a [tasklet](http://confluence.incubaid.com/display/PYLABS/3.2+Tasklets) which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
+An OSIS operation is a [tasklet][] which is stored in the directory `<pyapp name>/impl/osis/<domain>/<root object>`. See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
 Each file has the following identification:
 
@@ -41,7 +46,7 @@ VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 
 ###Connecting to OSIS
-In the `main` function of the tasklet you have to create a connection to OSIS. The function uses five arguments: q, i, p, params, and tags. `p` represents the PyApp name space and `params` is a dictionary filled by the PyLabs framework. 
+In the `main` function of the tasklet you have to create a connection to OSIS. The function uses five arguments: `q`, `i`, `p`, `params`, and `tags`. `p` represents the PyApp name space and `params` is a dictionary filled by the PyLabs framework. 
 
 [[code]]
 def main(q, i, p, params, tags):
@@ -67,7 +72,7 @@ values = {
     }
 [[/code]]    
 
-The properties of the Root Object are all defined in the [Root Object Model](/sampleapp/#/pyappsdoc/Modeling).
+The properties of the Root Object are all defined in the [Root Object Model][model].
 
 When you have set the values of the Root Object, you only have to save the view with the new or updated Root Object. This action is a method on the osis connection and expects the following arguments in the given order:
 

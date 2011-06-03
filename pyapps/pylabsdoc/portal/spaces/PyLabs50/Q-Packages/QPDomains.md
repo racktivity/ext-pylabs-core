@@ -1,4 +1,4 @@
-[qparchitecture]: /pylabsdoc/#/PyLabs50/Q-Packages/QPackageArchitecture
+[qparchitecture]: /pylabsdoc/#/PyLabs50/QPackageArchitecture
 
 ## Q-Package Domains
 

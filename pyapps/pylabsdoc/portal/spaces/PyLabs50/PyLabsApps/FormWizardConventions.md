@@ -1,3 +1,7 @@
+[map]:  http://docs.python.org/library/functions.html?highlight=map#map
+[lambda]: http://docs.python.org/tutorial/controlflow.html#lambda-forms
+
+
 #Form and Wizard Conventions
 
 Below are some wizard conventions to use:
@@ -92,7 +96,7 @@ Don't:
 
     customer = cloudAPI.customer.getObject(customerguid)
 
-* Use `map` and `lambda` expressions for building lists to be displayed in a wizard, even if `map` and `lambda` expressions are harder to read, they are a lot more efficient. More information about the `map` function can be found [here] (http://docs.python.org/library/functions.html?highlight=map#map), about the `lambda` control form [here] (http://docs.python.org/tutorial/controlflow.html#lambda-forms).
+* Use `map` and `lambda` expressions for building lists to be displayed in a wizard, even if `map` and `lambda` expressions are harder to read, they are a lot more efficient. More information about the `map` function can be found [here][map], about the `lambda` control form [here][lambda].
 
 Do:
 

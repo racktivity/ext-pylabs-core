@@ -1,3 +1,6 @@
+[rabbit]: http://www.rabbitmq.com/
+[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+
 #Event-Driven Actions
 In the previous sections you have learned how to create actions. These actions are all triggered by manual intervention, for example creating an object.
 
@@ -5,7 +8,7 @@ In many cases you want actions to be executed automatically, for example send a 
 
 
 ##PyLabs 5 Events
-Pylabs 5 introduces a new standardized way for publishing and consuming events using tasklets. The event framework uses [RabbitMQ](http://www.rabbitmq.com/) as messaging system. The three important components in this event framework are:
+Pylabs 5 introduces a new standardized way for publishing and consuming events using tasklets. The event framework uses [RabbitMQ][rabbit] as messaging system. The three important components in this event framework are:
 
 * Producer: publishes event messages in a specific format
 * Consumer: reads the event messages in the RabbitMQ network and triggers an action if the event message matches specific criteria
@@ -82,7 +85,7 @@ The number of workers define how many processes can be started. Each process wil
 
 
 ##Example Consumer
-You must create the consumer files in the following directory: `<pyapp name>/impl/events/<event process>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/sampleapp) for more information about the location of the files.
+You must create the consumer files in the following directory: `<pyapp name>/impl/events/<event process>`. See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
 For example, when customer data changes, its page must be created or updated. Instead of manually launching the creation or update of the page, an event can be generated and a consumer can trigger the action to create of update the page.
 

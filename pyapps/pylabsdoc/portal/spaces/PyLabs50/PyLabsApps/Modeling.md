@@ -1,11 +1,20 @@
+[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+[drp]: /pylabsdoc/#/PyLabs50/Architecture
+[arakoon]: http://www.arakoon.org
+[decorator]: http://wiki.python.org/moin/PythonDecorators
+[classmethod]: http://docs.python.org/library/functions.html#classmethod
+[enums]: /pylabsdoc/#/PyLabs50/CreateEnumerators
+[thrift]: http://thrift.apache.org/
+
+
 #Modeling Root Objects
 
 After the process of designing your PyLabs Application (PyApp), it is time that you define the different Root Objects of your PyApp. Each model of a root object is a `.py`-file and stored in its proper directory.
 
-See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
+See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
 ##What is a Root Object
-A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP](http://confluence.incubaid.com/display/PYLABS/The+High+Level+Architecture) (Datacenter Resource Planning), and more specific in [Arakoon](http://www.arakoon.org). A Root Object consists of properties, complex properties, and references to other Root Objects.
+A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP][drp] (Datacenter Resource Planning), and more specific in [Arakoon][arakoon]. A Root Object consists of properties, complex properties, and references to other Root Objects.
 A complex property, also referred to as 'model object', is for example a contact person in a company. The contact on its turn has its own properties.
 For example a customer can have a name and address as properties, contacts as model objects, and references to other customers.
 
@@ -58,7 +67,7 @@ class MyFirstEnum(BaseEnumeration):
         cls.finishItemRegistration()
 [[/code]]        
 
-A first line in the class is a [decorator](http://wiki.python.org/moin/PythonDecorators). The `@classmethod` form is a function decorator. It is used to make the defined items available on the class and not via the instance of the class. More information about this decorator can be found [here](http://docs.python.org/library/functions.html#classmethod).
+A first line in the class is a [decorator][]. The `@classmethod` form is a function decorator. It is used to make the defined items available on the class and not via the instance of the class. More information about this decorator can be found [here][classmethod].
 
 The next line is the start of the method, it is always as shown in the example above.
 
@@ -66,7 +75,7 @@ Then you start registering the items, make sure that each item is capitalized.
 
 To finish the enumeration, call the `finishItemRegistration` function.
 
-See also the [PyLabs 5 site](http://confluence.incubaid.com/display/PYLABS/Enumerator+Classes) for more details about PyLabs Enumerators.
+See also the [Extending PyLabs][enums] chapter for more information about PyLabs Enumerators.
 
 
 ###Modeling the Root Object
@@ -90,7 +99,7 @@ where x is a sequential integer and where `property_type` can be one of the foll
 * Object
 * String
 
-The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. PyLabs uses the [thrift](http://thrift.apache.org/) framework for serializing and deserializing objects. Where PyLabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.
+The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. PyLabs uses the [thrift][] framework for serializing and deserializing objects. Where PyLabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.
 
 In case the property is an Enumeration-type, you have to add the enumerator as argument. The enumerator can be a default PyLabs enumerator, or a custom enumerator.
 
@@ -121,7 +130,7 @@ If you put the old property in a comment line and create two new properties, you
 
 
 ##How to Use the Model
-In the above sections you have learned how you can model the Root Objects of your PyApp. This step in fact only creates the model, which you can consider to be the schema of your Root Object, similar to XML schemas for XML documents. The model is used in your PyApp for the actual creation of Root Objects, which are stored in the DRP [Arakoon](http://www.arakoon.org) data store.
+In the above sections you have learned how you can model the Root Objects of your PyApp. This step in fact only creates the model, which you can consider to be the schema of your Root Object, similar to XML schemas for XML documents. The model is used in your PyApp for the actual creation of Root Objects, which are stored in the DRP [Arakoon][arakoon] data store.
 
 ##What's Next?
 After defining a Root Object, you have to define the different actions that can be executed on a Root Object. That step too is only a modeling phase. You define the possible actions, their arguments, and what the action must return as result.
