@@ -16,21 +16,63 @@ PyLabs 5 has an installation script that automatically downloads and installs th
 
 To install PyLabs 5 only, follow the steps as described below:
 
-1. In shell: `wget http://fileserver.incubaid.com/pylabs5/pylabs5-installer.sh`
-2. Get root privileges: `sudo su`\\ \\
-3. Update the properties of the installer to make it executable: `chmod a+x pylabs5-installer.sh` \\ \\
-4. Launch the installer: `./pylabs5-installer.sh`\\ \\
+1. Get root privileges: `sudo su`\\ \\
+2. Launch the installer: `curl http://fileserver.incubaid.com/pylabs5/pylabs5-installer.sh | sh`\\ \\
 
-    Checking if your system version is Ubuntu 10.10 Maverick
-    Your system is Ubuntu 10.10 Maverick. The install can continue.
-    Exctracting base layout
-    Installing ipython python-pkg-resources mercurial python-apt
-    Adding sitecustomize to system python
-    Updating Q-Package metadata
-    Update metadata information for qpackages domain pylabs5
-    * updateqpackage metadata for domain pylabs5hg clone 'https://bitbucket.org/incubaid/qp5_-unstable-_pylabs5/' . -r default
-                    DONE
-
+    curl http://fileserver.incubaid.com/pylabs5/pylabs5-installer.sh | sh
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100  2481  100  2481    0     0  19258      0 --:--:-- --:--:-- --:--:-- 20170
+    test: 115: xxterm: unexpected operator
+    -e Checking if your system version is Ubuntu 10.10 Maverick
+    test: 115: xxterm: unexpected operator
+    -e Your system is Ubuntu 10.10 Maverick. The install can continue.
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100 2384k  100 2384k    0     0  4311k      0 --:--:-- --:--:-- --:--:-- 4439k
+    test: 116: xxterm: unexpected operator
+    -e Installing ipython python-pkg-resources mercurial python-apt
+    Ignoring install-info called from maintainer script
+    The package global should be rebuilt with new debhelper to get trigger support
+    
+    Creating config file /etc/mercurial/hgrc.d/hgext.rc with new version
+    test: 116: xxterm: unexpected operator
+    -e Adding sitecustomize to system python
+    test: 116: xxterm: unexpected operator
+    -e Updating Q-Package metadata
+     Update metadata information for qpackages domain pylabs5
+     * updateqpackage metadata for domain pylabs5                DONE
+     Update metadata information for qpackages domain pylabs5_test
+     * updateqpackage metadata for domain pylabs5_test           DONE
+     Update metadata information for qpackages domain qpackages5
+     * updateqpackage metadata for domain qpackages5             DONE
+    test: 116: xxterm: unexpected operator
+    -e Installing Q-Package pylabs
+    lastPackages: [IPackage pylabs5 pylabs 5]
+     * Installing QPackage pylabs5 pylabs 5                      RUNNING
+     *  Downloading QPackage pylabs5 pylabs 5                    DONE
+     * Installing QPackage pylabs5 pylabs 5                      FINISHED
+    test: 116: xxterm: unexpected operator
+    -e Configuring Q-Packages
+    test: 120: xxterm: unexpected operator
+    -e Installing Q-Package pyapps_framework
+    lastPackages: [IPackage pylabs5 pyapps_framework 0.5]
+     * Installing QPackage pylabs5 pyapps_framework 0.5          RUNNING
+     *  Installing QPackage pylabs5 alkira 0.5                   RUNNING
+     *   Installing QPackage qpackages5 python-pygraphviz
+     *    0.99.1                                                 RUNNING
+     *    Downloading QPackage qpackages5 python-pygraphviz
+     *     0.99.1                                                DONE
+    Selecting previously deselected package libcdt4.
+    (Reading database ... 146055 files and directories currently installed.)
+    Unpacking libcdt4 (from .../libcdt4_2.26.3-4_amd64.deb) ...
+    Selecting previously deselected package libcgraph5.
+    Unpacking libcgraph5 (from .../libcgraph5_2.26.3-4_amd64.deb) ...
+    Selecting previously deselected package libgraph4.
+    Unpacking libgraph4 (from .../libgraph4_2.26.3-4_amd64.deb) ...
+    Selecting previously deselected package libpathplan4.
+    Unpacking libpathplan4 (from .../libpathplan4_2.26.3-4_amd64.deb) ...
+   
     ...
 
     Setting up python-pygresql (1:4.0-2) ...

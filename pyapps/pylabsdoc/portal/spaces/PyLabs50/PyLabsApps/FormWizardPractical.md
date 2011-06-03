@@ -3,7 +3,7 @@
 [actiontasklet]: /pylabsdoc/#/PyLabs50/ActionTasklet
 [formapi]: /pylabsdoc/#/PyLabs50/FormWizard
 [modeling]: /pylabsdoc/#/PyLabs50/Modeling
-[api]:  /pylabsdoc/#/api/index.html @todo: verify
+[api]:  /pylabsdoc/#/api/Home
 [wizardapi]: /pylabsdoc/#/PyLabs50/WizardApi
 
 
