@@ -32,5 +32,5 @@ The main advantages of the Q-Shell are:
 1. [Getting Familiar with Q-Shell][familiar]
 2. [Using the Q-Shell][practical]
 3. [Q-Shell in Debug Mode][debug]
-4. [Q-Shell Options][option]
+4. [Q-Shell Options][options]
 5. [Q-Shell Magic Functions][magic]
