@@ -1,17 +1,28 @@
+[imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
+[model]: /pylabsdoc/#/PyLabs50/Modeling
+[actions]: /pylabsdoc/#/PyLabs50/Action
+[osisview]: /pylabsdoc/#/PyLabs50/OsisViews
+[osisoperations]: /pylabsdoc/#/PyLabs50/OsisOperations
+[actiontasklet]: /pylabsdoc/#/PyLabs50/ActionTasklet
+[pyappdir]: /pylabsdoc/#/PyLabs50/Sampleapp
+[SAL]: /pylabsdoc/#/PyLabs50/Architecture
+
+
+
 #From DRP to Reality
 The PyLabs framework is not limited to creating objects in the DRP, creating views on Root Objects, or creating wizards and forms. PyLabs gives you also the possibility to interact with the reality, for example sending e-mails.
 
 If you take a look at the architecture schema of a PyApp, we have focused so far on the  DRP, Actions, and the UI wizards sections. In this section we will focus on the interaction between the PyLabs framework and the reality. The reality can be of any kind. Besides the given reality example, e-mail, the reality can also be manipulations of servers, configuration of systems, ...
 
-![PyApp_Architecture](images/images50/pyapps/PyApp_Architecture.png)
+![PyApp_Architecture][imgPyAppArch]
 
 Just like other Root Objects, you can consider the mail server as a Root Object. Therefore, the creation of the mail server and its functions takes the same steps as the other Root Objects:
 
-1. [Modeling the Mail Server](/sampleapp/#/pyappsdoc/Modeling): define the model of the POP3 server, such as IP address, login, and password
-2. [Define the Actions on the POP3 Server](/sampleapp/#/pyappsdoc/Action): define the different methods on the POP3 server, such as creating a POP3 configuration
-3. [Create OSIS View on the POP3 Server](/sampleapp/#/pyappsdoc/OsisViews)
-4. [Create OSIS Operations on the POP3 Server](/sampleapp/#/pyappsdoc/OsisOperations)
-5. [Implement the POP3 Server Configuration Actions](/sampleapp/#/pyappsdoc/ActionTasklet)
+1. [Modeling the Mail Server][model]: define the model of the POP3 server, such as IP address, login, and password
+2. [Define the Actions on the POP3 Server][actions]: define the different methods on the POP3 server, such as creating a POP3 configuration
+3. [Create OSIS View on the POP3 Server][osisview]
+4. [Create OSIS Operations on the POP3 Server][osisoperations]
+5. [Implement the POP3 Server Configuration Actions][actiontasklet]
 
 The POP3 Server configuration does not need a form nor wizard, since this should be a one time only action. 
 By executing the five steps above, you are able to configure a POP3 server for your sample application.
@@ -29,9 +40,9 @@ One level further to the reality, you must implement the actor interface. In thi
 
 ##Actor Actions
 In the actor interface, you define the actions that the actor can execute. In case your PyApp needs to send out mails, you will need an actor who can execute this action.
-In the given example you can define the action `sendMail`. The definition is similar to defining the [actions on Root Objects](/sampleapp/#/pyappsdoc/Action).
+In the given example you can define the action `sendMail`. The definition is similar to defining the [actions on Root Objects][actions].
 
-The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/Sampleapp) for more information about the location of the files. The interface contains one class with the name of the actor.
+The interface definition is located in `<pyapp name>/interface/actor/<domain>`. See the [PyApps Directory Structure][pyappdir] for more information about the location of the files. The interface contains one class with the name of the actor.
 
 [[code]]
 class mailprocessor:
@@ -120,7 +131,7 @@ The file name of an RScript must have the following structure:
 
 The action is the name of the method as defined in the interface file. 
 
-Besides the PyLabs system abstraction layer (SAL), the RScript can also make use of standard Python libraries. If the RScript needs standard Python libraries, you have to import them into the RScript. The PyLabs libraries are all availble without importing.
+Besides the PyLabs system abstraction layer ([SAL][]), the RScript can also make use of standard Python libraries. If the RScript needs standard Python libraries, you have to import them into the RScript. The PyLabs libraries are all available without importing.
 
 [[code]]
 import smtplib

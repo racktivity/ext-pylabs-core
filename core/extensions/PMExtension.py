@@ -201,6 +201,8 @@ class PMExtension(BasePMExtension):
         except Exception, e:
             #Get exception type, exception instance and backtrace
             t, v, tb = sys.exc_info()
+            v = "Error Loading Extention : %s, File: %s, Error: %s" % (self.moduleName, self.moduleInfo[1], v)         
+
             self._handleLoadClassModuleException(t, v, tb)
         finally:
             sys.path.remove(cleanedPath)

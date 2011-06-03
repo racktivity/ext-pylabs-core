@@ -1,8 +1,12 @@
+[reality]: /pylabsdoc/#/PyLabs50/Reality
+[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+
+
 #Scheduling Actions
 In many cases it is desirable that certain actions are executed on a regular basis. In such a situation you can create scheduled actions.
 A scheduled action can launch event-driven actions; for example check a mailbox every five minutes, where an event can be thrown when mails have arrived.
 
-For more details about the setup of the mail server in this sample application, see the [From DRP to Reality section](/sampleapp/#/pyappsdoc/Reality).
+For more details about the setup of the mail server in this sample application, see the [From DRP to Reality section][reality].
 
 
 ##Creating a Scheduled Action
@@ -28,7 +32,7 @@ The tasklet is located in `<pyapp name>/impl/schedule/`. To keep a clear overvie
 
     <pyapp name>/impl/schedule/config/<config app>/
     
-See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/SampleApp) for more information about the location of the files.
+See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
 
 ##PyLabs Scheduling
@@ -39,9 +43,12 @@ The tasklet engine keeps track of the last execution time of each tasklet. This 
 ##Defining the Interval
 In the `match` function you must import the standard Python `time` library. The `params` dictionary, which is used throughout the complete PyLabs framework, keeps track of the execution time of a tasklet with the key `taskletexecutiontime`. This allows us to set the interval for the tasklet.
 
-    def match(q, i, params, tags):
-        import time
-        return (params['taskletlastexecutiontime']  + 300 <= time.time())
+[[code]]
+def match(q, i, params, tags):
+    import time
+    return (params['taskletlastexecutiontime']  + 300 <= time.time())
+[[/code]]        
+       
 
 The example above shows us that the tasklet is executed when the interval is more than 300 seconds.
 

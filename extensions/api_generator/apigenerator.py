@@ -940,7 +940,7 @@ class AppAPIGenerator(object):
                                'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_store.py']},
                                 
            {'template':'ObjectGenerateEventStore.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_generateevent_store.py']},  
+                               'destination':[ 'impl', 'osis', 'osis', 'store',  '1_object_generateevent_store.py']},  
                                  
            {'template':'ObjectDelete.tmpl', 'params':params, 
                                'destination':[ 'impl', 'osis', 'osis', 'delete',  '1_object_delete.py']},

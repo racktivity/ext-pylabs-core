@@ -1,4 +1,4 @@
-[as]: /pylabsdoc/#/PyLabs50/components
+[appserver]: /pylabsdoc/#/PyLabs50/components
 
 
 #PyLabs Debugger Support
@@ -17,7 +17,7 @@ There are three procedures available: `shell`, `configure`, and `setbreakpoint`.
 
 At any stage in a script (which is executed in an interactive environment), a call to `q.debugger.shell()` will launch a shell, similar to the Q-Shell environment you are used to.
 
-The shell will execute in a *copy* of the namespace in which it is launched. As such, you can not overwrite variables. See the demo session below for an example.
+The shell will execute in a *copy* of the name space in which it is launched. As such, you can not overwrite variables. See the demo session below for an example.
 
 Do note the implementation of `q.debugger.shell` does not (and can not) make sure it is being called in an interactive session. As such, one should always remove calls to `q.debugger.shell()` once the call is no longer required. Otherwise the call could launch a shell in a non-interactive environment, for example when the code is executed inside the Applicationserver or Workflow Engine. This situation can lead to blocked processes.
 
@@ -208,7 +208,7 @@ To end the debug mode, press CTRL+c in your screen session and restart the workf
 
 ## Debugging the Application Server
 
-Similar to debugging the workflow engine, you can also debug the [PyLabs Application Server][as]. Therefore run the application server in debug mode:
+Similar to debugging the workflow engine, you can also debug the [PyLabs Application Server][appserver]. Therefore run the application server in debug mode:
 
     q.manage.applicationserver.start(appname, debug=True)
     
