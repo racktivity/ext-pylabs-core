@@ -48,7 +48,7 @@ q.application.stop()
         
         q.system.fs.writeFile(tmpfilepath,commands)
         self.sendfile(tmpfilepath,tmpfilepath)
-        result=self.sshclient.execute("/opt/qbase3/qshell -f %s" % tmpfilepath, dieOnError,timeout=timeout)
+        result=self.sshclient.execute("/opt/qbase5/qshell -f %s" % tmpfilepath, dieOnError,timeout=timeout)
         q.system.fs.removeFile(tmpfilepath)
         q.transaction.stop()
         return result

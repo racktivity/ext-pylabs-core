@@ -651,6 +651,7 @@ class SystemFS:
         Returns the parent of the path:
         /dir1/dir2/file_or_dir -> /dir1/dir2/
         /dir1/dir2/            -> /dir1/
+        @todo why do we have 2 implementations which are almost the same see getParentDirName()
         """
         parts = path.split(os.sep)
         if parts[-1] == '':
