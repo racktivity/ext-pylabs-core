@@ -55,9 +55,11 @@ def ItemGroupClass(itemclass):
         _DESCRIPTION = itemclass.DESCRIPTION
         if hasattr(itemclass, 'SORT_PARAM'):
             _SORT_PARAM = itemclass.SORT_PARAM
+        if hasattr(itemclass, 'KEYS'):
+            _KEYS = itemclass.KEYS
         if hasattr(itemclass, 'SORT_METHOD'):
             _SORT_METHOD = itemclass.SORT_METHOD
-
+        
     return GroupClass
 
 

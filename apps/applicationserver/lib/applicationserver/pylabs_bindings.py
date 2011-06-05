@@ -122,6 +122,28 @@ class SubscriberException(Exception):
 class ApplicationserverConfigManagementItem(ConfigManagementItem):
     CONFIGTYPE = "applicationserver"
     DESCRIPTION = "Application server"
+    KEYS = {}
+    KEYS['xmlrpc_ip'] ="XMLRPC server listening IP address, default=127.0.0.1"
+    KEYS['xmlrpc_port'] =" XMLRPC server listening IP port',  default=8888"
+    KEYS['allow_none'] =" Allow None values in xmlrpc True/False"
+    KEYS['rest_ip'] =" IP address of the REST transport"
+    KEYS['rest_port'] ="REST server listening IP port"
+    KEYS['amf_ip'] ="IP address of the AMF transport"
+    KEYS['amf_port'] ="AMF server listening IP port"
+    KEYS['mail_incoming_server'] ="Incoming mail server"
+    KEYS['mail_incoming_username'] ="Incoming mail username"
+    KEYS['mail_incoming_password'] ="Incoming mail password"
+    KEYS['mail_incoming_ssl'] ="Incoming mail server uses SSL"
+    KEYS['mail_check_interval'] =""
+    KEYS['mail_outgoing_username'] =""
+    KEYS['mail_outgoing_password'] =""
+    KEYS['mail_outgoing_ssl'] =""
+    KEYS['mail_from_address'] =""
+    
+    
+    
+    
+
 
     def ask(self):
         self.dialogMessage("Applicationserver configuration")
@@ -196,7 +218,9 @@ ApplicationserverConfigManagement = ItemSingleClass(ApplicationserverConfigManag
 class ApplicationserverServiceConfigManagementItem(ConfigManagementItem):
     CONFIGTYPE = 'applicationserverservice'
     DESCRIPTION = 'Application server service'
-
+    KEYS = {}
+    KEYS['classspec'] =  'Service implementation class spec'
+    
     def ask(self):
         self.dialogAskString('classspec', 'Service implementation class spec')
 

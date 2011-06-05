@@ -488,8 +488,8 @@ def generateGroupConfigManagementMethods(**kwargs):
         Reconfigure or add a [%(description)s] non-interactively.
         @param itemname:  Name of [%(description)s]
         @type  itemname:  string
-        @param newparams: Complete or partial set of new configuration settings
-        @type  newparams: dict of (string, value)
+        @param newparams: Complete or partial set of new configuration settings [%(keys)s]
+        @type  newparams: dict of (string, value) 
         """
         existingItem = (itemname in self.list())
         if not existingItem:
@@ -527,8 +527,12 @@ class GroupConfigManagement(object):
             except NameError:
                 return type.__new__(cls, name, bases, attrs)
 
-            docstringInformation = {"description" : attrs["_DESCRIPTION"]}
-
+            docstringInformation = {"description" : attrs["_DESCRIPTION"] }
+            if attrs.has_key( "_KEYS"):
+                docstringInformation['keys'] = attrs["_KEYS"]
+            else:
+                docstringInformation['keys'] = ""
+                
             if hasattr(attrs["_ITEMCLASS"], "retrieve") and inspect.ismethod(attrs["_ITEMCLASS"].retrieve):
                 def find(self, itemname=None):
                     """

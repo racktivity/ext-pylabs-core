@@ -206,7 +206,10 @@ class pylabsDebuggerConfigurationItem(ConfigManagementItem):
     '''QConfig item class for the configuration of the debugger subsystem'''
     CONFIGTYPE = 'pylabs_debugger'
     DESCRIPTION = 'pylabs Debugger'
-
+    KEYS={"type":"Debugger type"
+          
+          
+          }
     def ask(self):
         '''Retrieve all required information to configure the debugger
         subsystem'''
