@@ -8,7 +8,7 @@ in order to work with the API.
 
 import httplib
 import urllib
-import simplejson as json
+import json
 from oauth import oauth
 from ConfigParser import SafeConfigParser
 
