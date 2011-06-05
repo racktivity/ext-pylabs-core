@@ -15,7 +15,7 @@ def main(q, i, p, params, tags):
     try:
         $rootobject = p.api.action.${domain}.${rootobject}.getObject(guid)
     except:
-        q.logger.log("Error getting $rootobject with guid %s"% guid , 7)
+        raise Exception("Error getting $rootobject with guid %s"% guid )
     
     
     wizard_params = json.dumps({'${rootobject}guid': ${rootobject}.guid})

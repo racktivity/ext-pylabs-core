@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
     try:
         group = p.api.action.crm.group.getObject(guid)
     except:
-        q.logger.log("Error getting group with guid %s"% guid , 7)
+        raise Exception("Error getting group with guid %s"% guid )
     
     
     wizard_params = json.dumps({'groupguid': group.guid})

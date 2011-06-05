@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
     try:
         permission = p.api.action.crm.permission.getObject(guid)
     except:
-        q.logger.log("Error getting permission with guid %s"% guid , 7)
+        raise Exception("Error getting permission with guid %s"% guid )
     
     
     wizard_params = json.dumps({'permissionguid': permission.guid})

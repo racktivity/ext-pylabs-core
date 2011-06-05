@@ -15,7 +15,7 @@ def main(q, i, p, params, tags):
     try:
         user = p.api.action.crm.user.getObject(guid)
     except:
-        q.logger.log("Error getting user with guid %s"% guid , 7)
+        raise Exception("Error getting user with guid %s"% guid )
     
     
     wizard_params = json.dumps({'userguid': user.guid})
