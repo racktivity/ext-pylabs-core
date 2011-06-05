@@ -39,7 +39,7 @@ get_qbase_remote(){
 }
 
 install_qbase(){
-    if [ ! -t 0 ]; then
+    if [ ! -e $0 ]; then
         get_qbase_remote
         return
     fi

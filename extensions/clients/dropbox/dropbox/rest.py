@@ -6,7 +6,7 @@ unless you're implementing unsupport methods.
 
 
 import httplib
-import simplejson as json
+import json
 import urllib
 
 
