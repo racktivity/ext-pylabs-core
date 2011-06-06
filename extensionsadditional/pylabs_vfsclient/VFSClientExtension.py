@@ -23,17 +23,17 @@ class VFSClientExtension(object):
 
 class VFSClientConnection():
     def __init__(self, host, port, sslEnabled):
-        self.host = host
-        self.port = port
-        self.sslEnabled = sslEnabled
-        self.httpConnection = q.clients.http.getConnection()
+        self._host = host
+        self._port = port
+        self._sslEnabled = sslEnabled
+        self._httpConnection = q.clients.http.getConnection()
     
     def _formatUrl(self, service, **kwargs):
-        args = {'host': self.host,
-                'port': self.port,
+        args = {'host': self._host,
+                'port': self._port,
                 'service': service,
                 'params': urllib.urlencode(kwargs)}
-        if self.sslEnabled:
+        if self._sslEnabled:
             return 'https://%(host)s:%(port)s/%(service)s?%(params)s'%args
         else:            
             return 'http://%(host)s:%(port)s/%(service)s?%(params)s'%args
@@ -47,7 +47,7 @@ class VFSClientConnection():
         '''
         url = self._formatUrl(service='fileGetInfo', path=path)
         try:
-            result = self.httpConnection.get(url)
+            result = self._httpConnection.get(url)
         except Exception as ex:
             return 'Exception encountered. Message: %s'%ex.info
         return eval(result.read())
@@ -61,7 +61,7 @@ class VFSClientConnection():
         '''        
         url = self._formatUrl(service='dirstat', path=path)
         try:
-            result = self.httpConnection.get(url)
+            result = self._httpConnection.get(url)
         except Exception as ex:
             return 'Exception encountered. Message: %s'%ex.info       
         return eval(result.read())
@@ -73,7 +73,7 @@ class VFSClientConnection():
         
         url = self._formatUrl(service='listVersions')
         try:
-            result = self.httpConnection.get(url)
+            result = self._httpConnection.get(url)
         except Exception as ex:
             return 'Exception enountered. Message: %s'%ex.info
         return eval(result.read())
@@ -85,7 +85,7 @@ class VFSClientConnection():
         
         url = self._formatUrl('getFromVersionEpoch', versionEpoch=versionEpoch)
         try:
-            result = self.httpConnection.get(url)
+            result = self._httpConnection.get(url)
         except Exception as ex:
             return 'Exception enountered. Message: %s'%ex.info
         return eval(result.read())
@@ -95,7 +95,7 @@ class VFSClientConnection():
         
         url = self._formatUrl('getLatest')
         try:
-            result = self.httpConnection.get(url)
+            result = self._httpConnection.get(url)
         except Exception as ex:
             return 'Exception enountered. Message: %s'%ex.info
         return eval(result.read())        
