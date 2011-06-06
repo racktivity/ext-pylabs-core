@@ -969,7 +969,10 @@ class AppAPIGenerator(object):
                                'destination':[ 'impl', 'osis', 'osis', 'get',  '1_object_get.py']},   
                                                    
            {'template':'ObjectQuery.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'query',  'object_query.py']}]
+                               'destination':[ 'impl', 'osis', 'osis', 'query',  'object_query.py']},
+                               
+           {'template':'PopulatePortal.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'init', 'portal', '7_populate_portal.py']}]
         for file in files:
             path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
             if not q.system.fs.exists(path):
@@ -1013,7 +1016,8 @@ class AppAPIGenerator(object):
             ['impl', 'osis', 'osis', 'findAsView'],
             ['impl', 'osis', 'osis', 'findObject'],
             ['impl', 'osis', 'osis', 'get'],
-            ['impl', 'osis', 'osis', 'query']
+            ['impl', 'osis', 'osis', 'query'],
+            ['impl', 'init', 'portal']
             ]
         for folder in folders:
             self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname,*folder))
