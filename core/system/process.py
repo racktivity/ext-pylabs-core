@@ -761,6 +761,7 @@ def run(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
     @rtype: tuple(number, string, string)
     '''
     env =  kwargs.pop('env', os.environ)
+    env = env.copy()
 
     # Calculate UID and GID t run as
     if user is not None or group is not None:
@@ -770,13 +771,12 @@ def run(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
         # variables can be passed to processhelper.py with only a slight
         # chance of things going wrong in there
 
-        processhelper_path = os.path.dirname(
-                                inspect.getfile(inspect.getmodule(run)))
+        pylabs_path = os.path.join(pylabs.q.dirs.baseDir, 'lib', 'pylabs', 'core')
 
         cmd = list()
         cmd.append(sys.executable)
 
-        cmd.extend(('-c', '\'from processhelper import main; main()\'', ))
+        cmd.extend(('-c', '\'from pylabs.system.processhelper import main; main()\'', ))
 
         if uid is not None:
             cmd.extend(('--uid', '%d' % uid, ))
@@ -792,9 +792,9 @@ def run(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
         # See Trac #165
         path = env.get('PYTHONPATH', None)
         if path:
-            path = os.pathsep.join((processhelper_path, path, ))
+            path = os.pathsep.join((pylabs_path, path, ))
         else:
-            path = processhelper_path
+            path = pylabs_path
         env['PYTHONPATH'] = path
 
     return _runWithEnv(commandline, showOutput=showOutput,
@@ -1101,13 +1101,12 @@ def runDaemon(commandline, stdout=None, stderr=None, user=None, group=None,
     # variables can be passed to processhelper.py with only a slight chance of
     # things going wrong in there
 
-    processhelper_path = os.path.dirname(
-        inspect.getfile(inspect.getmodule(runDaemon)))
+    pylabs_path = os.path.join(pylabs.q.dirs.baseDir, 'lib', 'pylabs', 'core')
 
     cmd = list()
     cmd.append(sys.executable)
 
-    cmd.extend(('-c', '\'from processhelper import main; main()\'', ))
+    cmd.extend(('-c', '\'from pylabs.system.processhelper import main; main()\'', ))
 
     if stdout:
         pylabs.q.system.fs.createDir(os.path.dirname(stdout))
@@ -1132,9 +1131,9 @@ def runDaemon(commandline, stdout=None, stderr=None, user=None, group=None,
     env['PYTHONUNBUFFERED'] = '1'
     path = env.get('PYTHONPATH', None)
     if path:
-        path = os.pathsep.join((processhelper_path, path, ))
+        path = os.pathsep.join((pylabs_path, path, ))
     else:
-        path = processhelper_path
+        path = pylabs_path
     env['PYTHONPATH'] = path
 
     code, out, err = _runWithEnv(cmd, env=env)
