@@ -1,4 +1,5 @@
 [imgdocSpace]: images/images50/installation/docSpace.png
+[curl]: http://curl.haxx.se/
 
 
 # PyLabs 5 Installation Guide
@@ -9,7 +10,9 @@ PyLabs 5 has an installation script that automatically downloads and installs th
 ## Prerequisites
 
 * Ubuntu 10.10 64-bit (Maverick Meerkat) - Desktop/Server Edition
+* root privileges
 * Internet Connection
+* [cURL][curl]: `apt-get install curl`
 
 
 ## Installing PyLabs 5
