@@ -1,7 +1,6 @@
 import os
 import os.path
 from pylabs import q, p
-from pylabs.db import DBConnection
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
@@ -50,6 +49,7 @@ class PyAppsConfigGen:
             self._load_config()
     
     def setup(self):
+        from pylabs.db import DBConnection
         #create user with applicationname
         if not q.system.unix.unixUserExists(self.appName):
             q.system.unix.addSystemUser(self.appName)
