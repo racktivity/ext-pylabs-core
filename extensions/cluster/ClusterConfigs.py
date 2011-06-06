@@ -6,7 +6,13 @@ from pylabs.Shell import *
 
 class ClusterConfig(ConfigManagementItem):
     CONFIGTYPE = "clusterconfig"
-    DESCRIPTION = "Cluster Configuration"    
+    DESCRIPTION = "Cluster Configuration"   
+    KEYS = {}
+ 
+    KEYS['domain'] ="Domain name for the cluster."
+    KEYS['ip'] ="Ip addresses of clusternodes (comma separated)"
+    KEYS['rootpasswd'] ="rootpassword for cluster"
+    KEYS['master'] ="Which node is the master"
     
     def ask(self):
         self.dialogAskString('domain', 'Domain name for the cluster.')

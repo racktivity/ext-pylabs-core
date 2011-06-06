@@ -1,5 +1,5 @@
 [Mercurial]: http://mercurial.selenic.com/
-[codemanagement]: /pylabsdoc/#/PyLabs50/Q-Packages/QPTasklets
+[codemanagement]: /pylabsdoc/#/PyLabs50/QPTasklets
 
 ## Q-Package Tasklets
 

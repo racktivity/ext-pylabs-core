@@ -46,6 +46,7 @@ import tempfile
 import codecs
 import cPickle as pickle
 from stat import ST_MTIME
+import unicodedata
 
 
 # We import only pylabs as the q.system.fs is used before pylabs is initialized. Thus the q cannot be imported yet
@@ -273,7 +274,8 @@ class SystemFS:
         @param filePath: string (Original file path)
         @param new_name: string (New file path)
         """
-        pylabs.q.logger.log('Rename file of path: %s to new name: %s'%(filePath, new_name),6)
+        #unicodedata.normalize('NFKD',filePath).encode('ascii','ignore')
+        pylabs.q.logger.log('Rename file of path: %s to new name: %s'%(pylabs.q.system.string.decodeUnicode2Asci(filePath), pylabs.q.system.string.decodeUnicode2Asci(new_name)),6)
         if filePath == new_name:
             return
         if ((filePath is None) or (new_name is None)):
@@ -651,6 +653,7 @@ class SystemFS:
         Returns the parent of the path:
         /dir1/dir2/file_or_dir -> /dir1/dir2/
         /dir1/dir2/            -> /dir1/
+        @todo why do we have 2 implementations which are almost the same see getParentDirName()
         """
         parts = path.split(os.sep)
         if parts[-1] == '':
@@ -875,9 +878,9 @@ class SystemFS:
             raise TypeError('Path is not passed in system.fs.exists')
 
         if(os.path.exists(path)):
-            pylabs.q.logger.log('path %s exists' % str(path.encode("utf-8")),8)
+            #pylabs.q.logger.log('path %s exists' % str(path.encode("utf-8")),8)
             return True
-        pylabs.q.logger.log('path %s does not exist' % str(path.encode("utf-8")),8)
+        #pylabs.q.logger.log('path %s does not exist' % str(path.encode("utf-8")),8)
         return False
 
 
@@ -1240,11 +1243,14 @@ class SystemFS:
     WalkExtended = deprecated('q.system.fs.WalkExtended',
                               'q.system.fs.walkExtended', '3.2')(walkExtended)
 
-    def walk(self, root, recurse=0, pattern='*', return_folders=0, return_files=1, followSoftlinks = True ):
+    def walk(self, root, recurse=0, pattern='*', return_folders=0, return_files=1, followSoftlinks = True,unicode=False ):
         """This is to provide ScanDir similar function
         It is going to be used wherever some one wants to list all files and subfolders
-        under one given directlry with specific or none matchers
+        under one given directly with specific or none matchers
         """
+        if unicode:
+            os.path.supports_unicode_filenames=True
+            
         pylabs.q.logger.log('Scanning directory (walk)%s'%root,6)
         # initialize
         result = []
@@ -1278,6 +1284,43 @@ class SystemFS:
         return result
 
     Walk = deprecated('q.system.fs.Walk', 'q.system.fs.walk', '3.2')(walk)
+    
+    def convertFileDirnamesUnicodeToAscii(self,rootdir,spacesToUnderscore=False):
+        os.path.supports_unicode_filenames=True
+        def visit(arg,dirname,names):
+            dirname2=pylabs.q.system.string.decodeUnicode2Asci(dirname)
+            for name in names:
+                name2=pylabs.q.system.string.decodeUnicode2Asci(name)
+                if name2<>name:
+                    ##print "name not unicode"
+                    source=os.path.join(dirname,name)
+                    if spacesToUnderscore:
+                        dirname=dirname.replace(" ","_")
+                        name2=name2.replace(" ","_")
+                    if os.path.isdir(source):
+                        pylabs.q.system.fs.renameDir(source,pylabs.q.system.fs.joinPaths(dirname,name2))
+                    if os.path.isfile(source):
+                      #  #print "renamefile"
+                        pylabs.q.system.fs.renameFile(source,pylabs.q.system.fs.joinPaths(dirname,name2))       
+            if dirname2<>dirname:
+                #dirname not unicode
+                ##print "dirname not unicode"
+                if spacesToUnderscore:
+                    dirname2=dirname2.replace(" ","_")
+                if pylabs.q.system.fs.isDir(dirname):
+                    pylabs.q.system.fs.renameDir(dirname,dirname2)
+        arg={}
+        os.path.walk(rootdir, visit,arg)
+
+    def convertFileDirnamesSpaceToUnderscore(self,rootdir):
+        def visit(arg,dirname,names):
+            if dirname.find(" ")<>-1:
+                #dirname has space inside
+                dirname2=dirname.replace(" ","_")
+                if pylabs.q.system.fs.isDir(dirname):
+                    pylabs.q.system.fs.renameDir(dirname,dirname2)
+        arg={}
+        os.path.walk(rootdir, visit,arg)
 
     def getTmpFilePath(self,cygwin=False):
         """Generate a temp file path

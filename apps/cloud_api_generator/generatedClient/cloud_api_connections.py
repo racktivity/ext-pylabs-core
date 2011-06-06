@@ -135,6 +135,12 @@ class CloudApiConnectionConfig(ConfigManagementItem):
     # (MANDATORY) CONFIGTYPE and DESCRIPTION
     CONFIGTYPE = "cloudapiconnection"
     DESCRIPTION = "Cloud API Connection"
+    KEYS = {}
+    KEYS['server'] =" (IP) address of the Application Server', 127.0.0.1"
+    KEYS['port'] =" port of the Application Server', 80"
+    KEYS['path'] =" URL path of the XML-RPC transport of the Application Server', '/appserver/xmlrpc/'"
+    KEYS['login'] =" customer login (optional)"
+    KEYS['passwd'] =" customer password (optional)"
 
     # MANDATORY IMPLEMENTATION OF ASK METHOD
     def ask(self):

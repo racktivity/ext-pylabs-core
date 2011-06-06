@@ -246,7 +246,13 @@ class LogTargetFSConfigManagementItem(ConfigManagementItem):
     # (MANDATORY) CONFIGTYPE and DESCRIPTION
     CONFIGTYPE = "logtargetfs"
     DESCRIPTION = "Pylabs Filesystem Logtarget"
-
+    KEYS ={"logrotate_enable":"",
+           "logrotate_number_of_lines":"",
+           "logrotate_time":"",
+           "logremove_enable":"",
+           "logremove_age":"",
+           "logremove_check":""           
+           }
     # MANDATORY IMPLEMENTATION OF ASK METHOD
     def ask(self):
         self.dialogAskYesNo('logrotate_enable', 'Enable automatic rotation of logfiles', True)

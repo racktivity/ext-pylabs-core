@@ -26,7 +26,12 @@ class ScribeServerConfigManagementItem(ConfigManagementItem):
 
     CONFIGTYPE = "logservermain"
     DESCRIPTION = "Scribe sever config for logserver"
-
+    KEYS = {}
+    KEYS['port'] ="port(Port on which the server will listen to"
+    KEYS['max_msg_per_second'] ="x_msg_per_second(Max Messages per second)"
+    KEYS['max_queue_size'] ="max_queue_size(Max queue size)"
+    
+   
     def ask(self):
         #the order of the ask questions will define the order of the parameters for review
         self.dialogMessage("Scribe Server configuration for logserver")
@@ -63,7 +68,10 @@ class ScribeStoreConfigManagementItem(ConfigManagementItem):
     """
     CONFIGTYPE = "logserverstore"
     DESCRIPTION = "Scribe Store Configuration for logserver"
-
+    KEYS = {}
+    KEYS['store_def'] ="Store Definition as dictionary"
+    KEYS['max_msg_per_second'] ="x_msg_per_second(Max Messages per second)"
+    KEYS['max_queue_size'] ="max_queue_size(Max queue size)"
     def ask(self):
         #the order of the ask questions will define the order of the parameters for review
         self.dialogMessage("Scribe Store configuration for logserver")

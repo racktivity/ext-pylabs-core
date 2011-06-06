@@ -49,6 +49,7 @@ import pylabs
 from pylabs.enumerators import PlatformType
 from pylabs.Vars import Vars
 from pylabs.system.fs import SystemFS
+from pylabs.system.string import String
 from pylabs.system.net import SystemNet
 from pylabs.system.process import SystemProcess
 if sys.platform.startswith('win'):
@@ -158,6 +159,7 @@ class System:
 
         self.fs = SystemFS()
         self.net = SystemNet()
+        self.string=String()
         self.process = SystemProcess()
         if sys.platform.startswith('win'):
             self.windows = WindowsSystem()
