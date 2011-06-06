@@ -1,6 +1,7 @@
 import os
 import os.path
 from pylabs import q, p
+from pylabs.db import DBConnection
 from wfe_cfg import WfePyApps
 from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
@@ -55,12 +56,23 @@ class PyAppsConfigGen:
         if 'postgresql' in self.components:
             postgres = q.manage.postgresql8
             if self.appName not in postgres.cmdb.databases:
+                q.manage.postgresql8.start()
+                conn = DBConnection.DBConnection('127.0.0.1', 'postgres', POSTGRESUSER)
                 postgres.startChanges()
+                newdb = True
+                if {'datname': self.appName} in conn.sqlexecute("select datname from pg_catalog.pg_database").dictresult():
+                    if q.console.askYesNo('Database already exists, overwrite existing database?'):
+                        q.cmdtools.postgresql8.dropdb(self.appName, POSTGRESUSER)
+                    else:
+                        newdb = False 
                 if not postgres.cmdb.initialized:
                     postgres.cmdb.initialized = True
                     postgres.cmdb.rootLogin = POSTGRESUSER
                     postgres.cmdb.addLogin(POSTGRESUSER)
                 db = postgres.cmdb.addDatabase(self.appName, self.appName)
+                if not newdb:
+                    db.initDone = True
+                    db.new = False
                 db.addACE(self.appName, '', q.enumerators.PostgresqlAccessRightType.WRITE)
                 postgres.cmdb.addLogin(self.appName,  type='host', 
                         cidr_address='127.0.0.1/32',database=self.appName)
