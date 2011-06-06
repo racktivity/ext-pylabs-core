@@ -15,6 +15,7 @@ class portal(LFWService, ActionService):
         module = os.path.abspath(os.path.dirname(__file__))
         tasklet_path = os.path.abspath(os.path.join(module, '..', '..', 'portal'))
         self._tasklet_engine = q.taskletengine.get(tasklet_path)
+        self._tasklet_engine.addFromPath(os.path.join(q.dirs.baseDir,'lib','python','site-packages','alkira', 'tasklets'))
         self.db_config_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'dbconnections.cfg')
 
     @q.manage.applicationserver.expose_authorized()
