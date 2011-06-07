@@ -61,10 +61,13 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         if self.getStatus() == AppStatusType.HALTED:
             try:
                 q.cmdtools.postgresql8.pg_ctl.start(self.cmdb.rootLogin, self.configFileDir)
-                return self.getStatus()
+                if self.getStatus() == AppStatusType.RUNNING:
+                    return True
             except Exception, ex:
                 q.logger.log(ex.message, 4)
-                raise RuntimeError, ex.message
+                #raise RuntimeError, ex.message
+                q.console.echo('failed to start PstgresqlManager. Runtime Error: %s' %ex.message)
+                return False
 
     def stop(self):
         """
@@ -73,10 +76,13 @@ class PostgresqlManager(ManagementApplication, CMDBLockMixin):
         if self.getStatus() == AppStatusType.RUNNING:
             try:
                 q.cmdtools.postgresql8.pg_ctl.stop(self.cmdb.rootLogin, self.configFileDir)
-                return self.getStatus()
+                if self.getStatus() == AppStatusType.HALTED:
+                    return True
             except Exception, ex:
                 q.logger.log(ex.message ,4)
-                raise RuntimeError, ex.message
+                #raise RuntimeError, ex.message
+                q.console.echo('failed to stop PstgresqlManager. Runtime Error: %s' %ex.message)
+                return False
 
     def reload(self):
         """

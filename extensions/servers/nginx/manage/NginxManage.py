@@ -43,11 +43,15 @@ class NginxManage(ManagementApplication, CMDBLockMixin):
         """
         if self.getStatus() == AppStatusType.RUNNING:
             q.console.echo("Nginx is already running")
-            return
+            return True
 
         q.cmdtools.nginx.start()
         if self.getStatus() == AppStatusType.RUNNING:
             q.console.echo('Nginx started successfully')
+            return True
+        else:
+            q.console.echo('failed to start Nginx')
+            return False
 
     def stop(self):
         """
@@ -56,12 +60,16 @@ class NginxManage(ManagementApplication, CMDBLockMixin):
         """
         if self.getStatus() != AppStatusType.RUNNING:
             q.console.echo("Nginx is not running")
-            return
+            return True
 
         q.cmdtools.nginx.stop()
 
         if self.getStatus() == AppStatusType.HALTED:
             q.console.echo('Nginx stopped successfully')
+            return True
+        else:
+            q.console.echo('failed to stop Nginx')
+            return False 
 
     def restart(self):
         """
@@ -71,6 +79,10 @@ class NginxManage(ManagementApplication, CMDBLockMixin):
 
         if self.getStatus() == AppStatusType.RUNNING:
             q.console.echo('Nginx restarted successfully')
+            return True
+        else:
+            q.console.echo('failed to restart Nginx')
+            return False
 
     def applyConfig(self):
         """
