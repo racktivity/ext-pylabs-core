@@ -1,0 +1,208 @@
+<!doctype html>  
+
+<!-- pau  lirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" >
+
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>LFW</title>
+  <meta name="description" content="A Lightning Fast Wiki">
+
+  <!--  Mobile viewport optimized: j.mp/bplateviewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/static/lfw/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/lfw/apple-touch-icon.png">
+
+  <link rel='stylesheet'
+    href='/static/lfw/css/jquery-ui.css'
+    type='text/css' media='screen, projection' /> 
+    
+  <!-- link rel='stylesheet'
+    href='/static/lfw/js/jquery-ui-1.8.9.custom/css/smoothness/jquery-ui-1.8.9.custom.css'
+    type='text/css' media='screen, projection' / -->
+    
+  <!-- link rel='stylesheet'
+    href='/static/lfw/css/vendor/aristo/jquery-ui-1.8.7.custom.css'
+    type='text/css' media='screen, projection' / -->
+
+  <link rel='stylesheet' href='/static/lfw/css/vendor/blueprint-1.0/screen.css'
+    type='text/css' media='screen, projection' />
+    
+  <!-- link rel='stylesheet'
+    href='/static/lfw/css/vendor/aristo/jquery-ui-1.8.7.custom.css'
+    type='text/css' media='screen, projection' / -->
+
+  <link rel='stylesheet' href='/static/lfw/css/vendor/blueprint-1.0/screen.css'
+    type='text/css' media='screen, projection' />
+  <!-- link rel='stylesheet' href='/static/lfw/css/vendor/blueprint-1.0/print.css'
+    type='text/css' media='print' / -->
+  <!--[if lt IE 8]>
+    <link rel='stylesheet' href='/static/lfw/css/vendor/blueprint-1.0/ie.css'
+      type='text/css' media='screen, projection' />
+  <![endif]-->
+
+  <!-- CSS : implied media="all" -->
+  <link rel="stylesheet" href="/static/lfw/css/style.css?v=2">
+
+  <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+  <script src="/static/lfw/js/libs/modernizr-1.6.min.js"></script>
+
+  <!-- customizations -->  
+  <link rel='stylesheet' href='/static/lfw/style/screen.css'
+    type='text/css' media='screen, projection' />
+  <link rel='stylesheet' href='/static/lfw/style/print.css'
+    type='text/css' media='print' />
+     <link rel='stylesheet' href='lfw/css/theme.css' type='text/css' media='screen, projection' />
+
+  <script>
+
+
+    //Call this function after body load
+    function manageDebug(){
+    // Define a cross-browser window.console.log method.
+    // For IE and FF without Firebug, fallback to using an alert.
+    if (!window.console) {
+    var log = window.opera ? window.opera.postError : Sammy.log;
+    window.console = { log: function(str) { log(str) } };
+    }
+    }; //manageDebug ends
+        
+  </script>
+  
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+ 
+
+</head>
+
+<body>
+
+  <div id="container">
+  <a class="logo"></a>
+  <a class="link" href="/pylabsdoc/#/PyLabs50/Installation"></a>
+    <div id='header' class='span-24 last'>
+      <div class='span-5' id='spaces'>
+        <span id='spinner'>&nbsp;</span>
+        <label for='space'>Space:</label>
+        <select name='space' id='space' class='text'></select>
+        <img src='/static/lfw/img/pixel.gif'/>
+      </div>
+      <div class='span-19 last' id='search'>
+      
+        
+        
+        <label for='title'>Title:</label>
+        <input id='title' name='q' placeholder='PageTitle' class='text' />
+
+        <form name='label-search' id='label-search' method='get'>
+          <label for='labels'>Labels:</label>
+          <input type='search' name='q' id='labels' required
+            placeholder='label, label' class='text' />
+          <input type='hidden' name='type' value='labels' />
+        </form>
+
+        <form name='fulltext-search' id='fulltext-search' method='get'>
+          <label for='text'>Search:</label>
+          <input type='search' name='q' id='text' required
+            placeholder='Search Text' class='text' />
+          <input type='hidden' name='type' value='fulltext' />
+        </form>
+      </div>
+    </div>
+    
+    <div class='span-24'>
+      <div id='sidebar' class='span-5'>
+        
+        <div id='tree'></div>
+      </div>
+      
+      <div id='content' class='span-19 last'>
+        <div id='main'>&nbsp;</div>      
+      </div>    
+    </div>
+    
+    <div id='footer' class='span-24 last'>
+      &nbsp;
+    </div>
+    
+  </div> <!--! end of #container -->
+
+  <!-- Templates go here -->
+  <script type='text/mustache' id='error-template'>
+  /*! YUI Compressor fix
+    <h1>Error</h1>
+    <p>{{ message }}</p>
+  YUI Compressor fix */
+  </script>
+
+  <script type='text/mustache' id='search-result-template'>
+  /*! YUI Compressor fix
+    <h1>Search results</h1>
+    <ul>
+      {{#results}}
+        <li>
+          <a href="/{{2}}/#/{{0}}/{{1}}">{{1}}</a>
+        </li>
+      {{/results}}
+    </ul>
+    {{^results}}No results found{{/results}}
+  YUI Compressor fix */
+  </script>
+
+
+  <!-- Javascript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+  <!-- script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script -->
+  <!-- script>!window.jQuery && document.write(unescape('%3Cscript src="/static/lfw/js/libs/jquery-1.4.4.js"%3E%3C/script%3E'))</script -->
+  
+  <script src="/static/lfw/js/libs/jquery-1.5.1.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/static/lfw/js/libs/jquery-1.5.1.js"%3E%3C/script%3E'))</script>
+  
+  
+  <script src='/static/lfw/js/libs/jquery-ui.js'></script>
+  <script>!window.jQuery.ui && document.write(unescape('%3Cscript src="/static/lfw/js/libs/jquery-ui-1.8.7.js"%3E%3C/script%3E'))</script>
+  <script src='/static/lfw/js/libs/jquery.tmpl.js'></script>
+  <script src='/static/lfw/js/libs/jquery.json-2.2.js'></script>
+  <script src='/static/lfw/js/libs/dominoes-1.0-rc2.min.js'></script>
+  
+  <!-- scripts concatenated and minified via ant build script-->
+  <script src='/static/lfw/js/mylibs/sammy-0.6.2.min.js'></script>
+  <script src='/static/lfw/js/mylibs/sammy.mustache-0.6.2.min.js'></script>
+  <script src='/static/lfw/js/mylibs/sammy.title-0.6.2.min.js'></script>
+  <script src='/static/lfw/js/mylibs/showdown-0.9.min.js'></script>
+  <script src="/static/lfw/js/plugins.js"></script>
+  <script src='js/config.js'></script>
+  <script src="/static/lfw/js/script.js"></script>
+  <!-- end concatenated and minified scripts-->  
+  
+  <!--[if lt IE 7 ]>
+    <script src="/static/lfw/js/libs/dd_belatedpng.js"></script>
+    <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+  <![endif]-->
+
+  <!-- yui profiler and profileviewer - remove for production -->
+  <!--
+  <script src="/static/lfw/js/profiling/yahoo-profiling.min.js"></script>
+  <script src="/static/lfw/js/profiling/config.js"></script>
+  -->
+  <!-- end profiling code -->
+  
+  <script>
+  manageDebug();
+  </script>
+</body>
+</html>
+<!-- vim: tabstop=4:shiftwidth=4:expandtab
+-->
