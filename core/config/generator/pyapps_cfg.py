@@ -57,7 +57,7 @@ class PyAppsConfigGen:
             postgres = q.manage.postgresql8
             if self.appName not in postgres.cmdb.databases:
                 q.manage.postgresql8.start()
-                conn = DBConnection.DBConnection('127.0.0.1', 'postgres', POSTGRESUSER)
+                conn = DBConnection.DBConnection(None, 'postgres', POSTGRESUSER)
                 postgres.startChanges()
                 newdb = True
                 if {'datname': self.appName} in conn.sqlexecute("select datname from pg_catalog.pg_database").dictresult():
