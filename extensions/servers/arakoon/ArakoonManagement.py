@@ -763,7 +763,7 @@ class ArakoonCluster:
     
     def _startOne(self, name):
         if self._getStatusOne(name) == q.enumerators.AppStatusType.RUNNING:
-            q.console.echo("node % is already running" %name)
+            q.console.echo("node %s is already running" %name)
             return True
         
         config = self.getNodeConfig(name)
