@@ -9,7 +9,6 @@ OPENOFFICECTRL = 'soffice -accept="socket,host=localhost,port=2002;urp;StarOffic
 class OpenOfficeCtrl(CommandWrapper):
     
     name = 'openoffice'
-
     def start(self, timeout=5):
         """
         Starts Open Office
@@ -19,7 +18,8 @@ class OpenOfficeCtrl(CommandWrapper):
 
         if self.getStatus() is AppStatusType.RUNNING:
             q.logger.log("Start aborted! %s is already running" % self.name, 2)
-            return 0, "%s already running" % self.name
+            q.console.echo("%s already running" % self.name)
+            return True
 
         try:
             q.logger.log('Starting %s' % self.name, 1)
@@ -28,7 +28,8 @@ class OpenOfficeCtrl(CommandWrapper):
             pid = q.system.process.runDaemon(OPENOFFICECTRL)
             if not q.system.process.isPidAlive(pid):
                 q.logger.log("Error executing ['%s']- check %s logs found in %s" % (OPENOFFICECTRL, q.system.fs.joinPaths(q.dirs.logDir, self.name), self.name), 1)
-                return 1, 'Failed to start %s' % self.name
+                q.console.echo('Failed to start %s' % self.name)
+                return False
             else:
                 pidfile = self._getPidFile()
                 q.system.fs.writeFile(pidfile, str(pid))
@@ -40,13 +41,16 @@ class OpenOfficeCtrl(CommandWrapper):
                 times = times - 1
 
             if times == 0:
-                return 1, "Start executed successfully but server not available"
+                q.console.echo("Start executed successfully but server not available")
+                return False
         except:
             exc = q.eventhandler.getCurrentExceptionString()
             q.logger.log("Error received: %s" % exc, 2)
-            return 1, errorMessage + exc
-
-        return 0, '%s started successfully' % self.name
+            q.console.echo(errorMessage + exc)
+            return False
+        
+        q.console.echo('%s started successfully' % self.name)
+        return True
 
     def stop(self, timeout=5):
         """
@@ -55,7 +59,8 @@ class OpenOfficeCtrl(CommandWrapper):
         errorMessage = 'Failed to stop %s' % self.name
         if self.getStatus() != AppStatusType.RUNNING or not self._getPid():
             q.logger.log("Stop aborted! %s is not running" % self.name, 2)
-            return 0, "%s is not running" % self.name
+            q.console.echo("%s is not running" % self.name)
+            return True
 
         q.logger.log('Stopping %s' % self.name, 2)
         pid = self._getPid()
@@ -63,10 +68,12 @@ class OpenOfficeCtrl(CommandWrapper):
             os.kill(pid, signal.SIGTERM)
             q.logger.log('%s stopped' % self.name, 2)
             q.system.fs.removeFile(self._getPidFile())
-            return 0, '%s Stopped' % self.name
+            q.console.echo('%s Stopped' % self.name)
+            return True
         except Exception, e:
             q.logger.log("Error killing process %s\n %s" % (self.name, str(e)), 3)
-            return 1, errorMessage + str(e)
+            q.console.echo(errorMessage + str(e))
+            return False
 
         while timeout > 0 and self.getStatus() is AppStatusType.RUNNING:
             q.logger.log("waiting on Open Office to stop running...", 5)
@@ -75,14 +82,15 @@ class OpenOfficeCtrl(CommandWrapper):
 
         if timeout > 0:
             q.logger.log("Open Office stopped.", 2)
-            return 0, "Open Office stopped"
+            q.console.echo("Open Office stopped")
+            return True
         else:
             q.logger.log("Timed out [%s] seconds, while stopping Open Office" % timeout, 3)
-            return 1, errorMessage
+            q.console.echo(errorMessage)
+            return False
 
         if q.system.process.isPidAlive(pid):
             q.system.process.run('kill %s' % pid)
-
     def getStatus(self):
         """
             Get the status of Open Office
