@@ -67,9 +67,9 @@ test_lead = api.action.crm.lead.getObject(test_lead_guid)
 assert test_lead.name == "Super Test Lead"
 assert test_lead.code == "leadcode"
 assert test_lead.customerguid == jefke_guid
-assert test_lead.source == api.model.enumerators.leadsource.PARTNER
-assert test_lead.type == api.model.enumerators.leadtype.EXISTINGBUSINESS
-assert test_lead.status == api.model.enumerators.leadstatus.PROSPECTING
+assert test_lead.source == appserver_api.model.enumerators.leadsource.PARTNER
+assert test_lead.type == appserver_api.model.enumerators.leadtype.EXISTINGBUSINESS
+assert test_lead.status == appserver_api.model.enumerators.leadstatus.PROSPECTING
 assert test_lead.amount == 0.5
 assert test_lead.probability == 42
 
