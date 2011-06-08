@@ -11,7 +11,7 @@ body {  background: #fff url(../img/bodybg.gif) repeat-x top left scroll ; }
 #footer, #header, .span-24 { float:left; width:100% !important;}
 .span-24 { background:#fff;}
 a.logo {     background: url("../img/pylabs-logo.png") no-repeat scroll left top transparent; float: left; height: 133px; width: 210px; left: 10px; position: absolute; top: 9px; }
-a.link {background: url("../img/download.png") no-repeat scroll bottom top transparent; float: center; height: 170px; width: 150px; left: 525px; position: absolute; top: 9px;}
+a.link {     background: url("../img/download.png") no-repeat scroll left bottom transparent; height: 170px; width: 150px; left: 525px; position: absolute; top: 9px;}
 #header input { width:100px;  height:17px; color:#000; margin-right:10px;margin-top:145px; border:1px solid #7f7f7f;}
 #header select { width:150px;  height:23px; color:#000; margin-top:145px; }
 #header select option { color:#000 !important;}
@@ -20,3 +20,6 @@ a.link {background: url("../img/download.png") no-repeat scroll bottom top trans
 #spaces { width:auto; padding-left:155px !important; margin-right:50px !important;}
 #footer { background:#111;}
 #main { border:none; padding:20px 10px 10px}
+#sidebar { margin-right:50px !important;}
+#sidebar li a  { color: #5e911d !important  ;  font-weight: bold  !important ;}
+#sidebar li li a  { color: #5e911d ; font-weight: normal  !important;}
