@@ -21,7 +21,7 @@ The Q-Shell has three main name spaces:
 
 * **q.**: the main name space of PyLabs, used for automation scripts, configuring PyLabs extensions, ...
 * **i.**: interactive name space, functions in this name space require user input
-* **p.*: the name space to manage PyLabs applications
+* **p.**: the name space to manage PyLabs applications
 
 
 ### Using the Q-Shell
