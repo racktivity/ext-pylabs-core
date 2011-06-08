@@ -135,12 +135,14 @@ class ArakoonManagement:
         Starts all clusters.
         """
         [clus.start() for clus in [self.getCluster(cluster) for cluster in self.listClusters()]]
+        return True
 
     def stop(self):
         """
         Stops all clusters.
         """
         [clus.stop() for clus in [self.getCluster(cluster) for cluster in self.listClusters()]]
+        return True
 
     def restart(self):
         """
@@ -761,7 +763,8 @@ class ArakoonCluster:
     
     def _startOne(self, name):
         if self._getStatusOne(name) == q.enumerators.AppStatusType.RUNNING:
-            return
+            q.console.echo("node % is already running" %name)
+            return True
         
         config = self.getNodeConfig(name)
         cmd = []
