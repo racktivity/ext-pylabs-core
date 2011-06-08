@@ -1,5 +1,5 @@
 ###Table of Contents
 [[children]]
-depth:2
-root_page:Home
+depth:3
+root:all
 [[/children]]
