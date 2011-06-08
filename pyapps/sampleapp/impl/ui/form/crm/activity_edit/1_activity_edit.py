@@ -31,19 +31,19 @@ def getLead(q, api):
     return lead
 
 def getType(q):
-    types = q.enumerators.activitytype._pm_enumeration_items
+    types = p.api.model.enumerators.activitytype._pm_enumeration_items
     for key in types:
         types[key] = str(types[key])
     return types
 
 def getStatus(q):
-    status = q.enumerators.activitystatus._pm_enumeration_items
+    status = p.api.model.enumerators.activitystatus._pm_enumeration_items
     for key in status:
         status[key] = str(status[key])
     return status
 
 def getPriority(q):
-    priority = q.enumerators.activitypriority._pm_enumeration_items
+    priority = p.api.model.enumerators.activitypriority._pm_enumeration_items
     for key in priority:
         priority[key] = str(priority[key])    
     return priority

@@ -226,17 +226,17 @@ class ApplicationAPI(object):
 
         self.appname = appname
         self.action = self._get_actions(appname, context)
-
-        categories = ('model', 'config', 'monitoring')
         
+        categories = ('model', 'config', 'monitoring')
+        from pylabs.baseclasses.BaseEnumeration  import pymodelEnumerators        
         if not context == q.enumerators.AppContext.CLIENT:
             for category in categories:
                 client = self._get_osis_client(appname, category)
+                client.enumerators = pymodelEnumerators.get((appname, category))
                 setattr(self, category, client)
 
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
-            
         
     def _get_actors(self, appname, context):
         from client.actor import actors

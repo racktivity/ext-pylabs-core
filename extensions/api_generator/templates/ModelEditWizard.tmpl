@@ -31,7 +31,7 @@ def main(q, i, p, params, tags):
 
 #for field in $fields
 #if field['type'] == "Enumeration" 
-    choices = q.enumerators.${field['enum']}._pm_enumeration_items.keys()
+    choices = p.api.model.enumerators.${field['enum']}._pm_enumeration_items.keys()
     fieldValue = str(${rootobject}.$field['name'])
 #else
     fieldValue = ${rootobject}.$field['name']

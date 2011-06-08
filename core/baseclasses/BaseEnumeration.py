@@ -157,11 +157,17 @@ def isValidIdentifier(identifier):
         return False
 
     return True
-
 class _EnumerationContainer:
     '''Dummy container class to expose enumerations on q'''
 
 enumerations = _EnumerationContainer()
+
+class PymodelEnumerationContainer:
+    """
+    Dummy object to store the pymodel enumerators on it 
+    """
+    pass
+pymodelEnumerators =dict()
 
 
 def generateRegisterItem():
@@ -339,7 +345,11 @@ class BaseEnumerationMeta(type):
 
         #Call class._initItems
         getattr(ret, '_initItems', lambda: None)()
-
+        if modfile(ret).startswith(os.path.join(os.path.sep,"opt","qbase5","pyapps")):
+            appname = modfile(ret).split(os.path.sep)[4]
+            category = modfile(ret).split(os.path.sep)[6]
+            setattr(pymodelEnumerators.setdefault((appname,category), PymodelEnumerationContainer()), name, ret) 
+        else:    
         #Since we can't hook enumerations on pylabs.q directly, since 'q'
         #could be not initialized when the first enumeration type is created.
         #To get around this, we use a module-global container variable which
@@ -349,10 +359,10 @@ class BaseEnumerationMeta(type):
         #For some reason, it was decided to use smallCapStarting names for
         #enumerations registered on q.enumerators, although they're types.
         #I guess this should be emulated here.
-        if hasattr(enumerations, name):
-            raise RuntimeError('Unable to register enumeration %s, name already in use' % name)
-        else:
-            setattr(enumerations, name, ret)
+            if hasattr(enumerations, name):
+                raise RuntimeError('Unable to register enumeration %s, name already in use' % name)
+            else:
+                setattr(enumerations, name, ret)
 
         return ret
 
