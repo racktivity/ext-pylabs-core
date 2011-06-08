@@ -22,12 +22,6 @@ from pylabs import q
 from amqplib import client_0_8 as amqp
 import socket
 
-#this import to initialize the enums
-#from queuetypes import QueueType
-
-import time
-
-
 class Connection(object):
     
     
@@ -38,12 +32,13 @@ class Connection(object):
     def __init__(self,server="127.0.0.1", port=5672, user="guest", password="guest", virtualhost="/" ):
         self._connected = False
         self._connection = None
-        self.connect(server, port, user, password, virtualhost)
+        self._connectioninfo = (server, port, user, password, virtualhost)
+        self.connect(*self._connectioninfo)
         
     def connect(self, server, port, user, password, virtualhost) :
         try:
             self._connection = amqp.Connection(host='%s:%d'%(server, port), userid = user, password = password, virtual_host = virtualhost, insist = False)
-        except Exception, ex:
+        except Exception:
                 raise RuntimeError('Could not connect to RabbitMQ server using host: %s, port: %d, userid: %s, password: %s, virtualhost: %s . Is the server up and running on this port?'%(server, port, user, password, virtualhost))
         self._channel = self._connection.channel()
         self._connected = True
@@ -73,7 +68,7 @@ class Connection(object):
                 
         if not self.isConnected():
             q.console.echo('Your connection to RabbitMQ is not yet initialized, trying to connect to host: %s and port: %s'%(self._host, self._port))
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
         #if there is a connection and no channel create one
         if not self._writerChannel.is_open:
             self._writerChannel = self._connection.channel()
@@ -96,7 +91,7 @@ class Connection(object):
         except amqp.AMQPChannelException, ex:
             self._connected = False
             q.console.echo('Exception occured and the client needs to be reinitialized, reinitializing the client with the default values...')
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
             if ex[0] == 404:
                 raise ValueError('No Exchange found with name %s. Reason: %s'%(exchangeName, ex[1]))
             raise ex
@@ -124,7 +119,7 @@ class Connection(object):
         """
         if not self.isConnected():
             q.console.echo('Your connection to RabbitMQ is not yet initialized, trying to connect to host: %s and port: %s'%(self._host, self._port))
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
         try:
             self._consumerChannel.basic_consume(queueName, callback = callback, no_ack = noAck, consumer_tag = queueName)
             while True:
@@ -154,7 +149,7 @@ class Connection(object):
 
         if not self.isConnected():
             q.console.echo('Your connection to RabbitMQ is not yet initialized, trying to connect to host: %s and port: %s'%(self._host, self._port))
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
         try:
             self._consumerChannel.basic_consume(queueName, callback=callback, no_ack = True, consumer_tag = queueName)
             while True and not msg:
@@ -212,7 +207,7 @@ class Connection(object):
         
         if not self.isConnected():
             q.console.echo('Your connection to RabbitMQ is not yet initialized, trying to connect to host: %s and port: %s'%(self._host, self._port))
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
         try:
             msg = self._readerChannel.basic_get(queueName)
             if msg:
@@ -222,7 +217,7 @@ class Connection(object):
             #if there is an exception we need to reinitialize the client
             self._connected = False
             q.console.echo('Exception occured and the client needs to be reinitialized, reinitializing the client with the default values...')
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
             if ex[0] == 404:
                 raise ValueError('No queue found with name %s. Reason: %s'%(queueName, ex[1]))
             raise ex
@@ -265,7 +260,7 @@ class Connection(object):
         except amqp.AMQPConnectionException, ex:
             self._connected = False
             q.console.echo('Exception occured and the client needs to be reinitialized, reinitializing the client with the default values...')
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
             if ex[0] == 530:
                 q.logger.log('The exchange %s is already exist but with different configuration. Maybe you should declare the exchange with different name'%exchangeName, 5)
                 raise ValueError('The exchange %s is already exist but with different configuration'%exchangeName)
@@ -291,7 +286,7 @@ class Connection(object):
         except amqp.AMQPConnectionException, ex:
             self._connected = False
             q.console.echo('Exception occured and the client needs to be reinitialized, reinitializing the client with the default values...')
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
             if ex[0] == 530:
                 q.logger.log('The queue %s is already exist but with different configuration. Maybe you should declare the queue with different name'%queueName, 5)
                 raise ValueError('The queue %s is already exist but with different configuration'%queueName)
@@ -300,7 +295,7 @@ class Connection(object):
         except amqp.AMQPChannelException, ex:
             self._connected = False
             q.console.echo('Exception occured and the client needs to be reinitialized, reinitializing the client with the default values...')
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
             raise RuntimeError('Failed to connect to the server using configuration host: %s, port: %s, userid: %s, password: %s, virtualhost: %s. Try to reinitialize your connection using connect mehtod'%(self._host, self._port, self._userid, self._password, self._virtualhost))
         
     
@@ -320,7 +315,7 @@ class Connection(object):
         except amqp.AMQPException, ex:
             self._connected = False
             q.console.echo('Exception occured and the client needs to be reinitialized, reinitializing the client with the default values...')
-            self.connect(self._lastConnectionName)
+            self.connect(*self._connectioninfo)
             raise RuntimeError('Failed to declare binding between exchange: %s and queue: %s using routingKey: %s. Reason: %s'%(exchangeName, queueName, routingKey, ex))
 
 
