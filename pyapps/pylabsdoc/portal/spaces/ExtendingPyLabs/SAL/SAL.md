@@ -1,7 +1,7 @@
 [imgPylabsSystemWrapper]: images/images50/extendingpylabs/PylabsSystemWrapper.png
 [cmdbobjproperty]: /pylabsdoc/#/ExtendingPyLabs/CmdbObjProperty
 
-# ﻿System Abstraction Layer
+#System Abstraction Layer
 
 [[warning]]
 **Warning**
