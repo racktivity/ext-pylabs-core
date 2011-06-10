@@ -1,6 +1,6 @@
-##Type Checks in Pylabs
+## Type Checks in Pylabs
 The Pylabs Type System has been introduced since Python itself is a typeless language.
-The typeless language means that a variable can change from type, just by assigning another value to the variable. By creating the Pylabs Type System, we make it only easier to add property-style attributes to classes, which have strict assignment checks. More information can be found in 3.2 Predefined Enumerators.
+The typeless language means that a variable can change from type, just by assigning another value to the variable. By creating the Pylabs Type System, we make it only easier to add property-style attributes to classes, which have strict assignment checks.
 The Pylabs Type System contains several predefined types, collected in several classes: PrimitiveTypes, CollectionTypes, GenericTypes. Checks are performed if a certain variable is of the correct type.
 Besides the predefined types, the Pylabs Type System contains also custom types, collected in the module Custom Types. For example in the module Custom Types, you can find the type 'IP address'. This allows you to check the validity of a variable to which an IP address is assigned. For example, an IP of 10.100.355.254 results in an error.
 The Pylabs predefined and custom types are all exposed in the name space `q.basetype.*`. All types inherit from one common base class BaseType, `pylabs.pmtypes.base.BaseType`.

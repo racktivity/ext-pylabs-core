@@ -1,4 +1,4 @@
-﻿@todo this content is not up to date, ask Egypte to fix it (look for @todo in page)
+@todo this content is not up to date, ask Egypte to fix it (look for @todo in page)
 
 
 ## HOWTO Build the sandboxes
