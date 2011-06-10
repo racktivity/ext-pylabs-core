@@ -1,11 +1,11 @@
 ## How to Import PyLabs
 
 There are three ways of importing Pymonkey.
-﻿
+
 ### PyLabs in Standard Applications
 
 [[info]]
-*Information** In all applications, use the line below to initialize PyLabs and as a result the '[[[[q]]]]' global variable will be available.
+*Information** In all applications, use the line below to initialize PyLabs and as a result the `q` global variable will be available.
 [[code]]
 from pylabs.InitBase import *
 [[/code]]
