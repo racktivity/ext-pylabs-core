@@ -2,7 +2,7 @@
 [imgInit2]: images/images50/howto/GettingStarted018.png
 
 
-## How to Initialize Q-Shell Scripts﻿
+## How to Initialize Q-Shell Scripts
 
 Q-shell scripts are scripts using py-labs code.
 
