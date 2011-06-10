@@ -1,4 +1,4 @@
-[imgpyappArch]: images/pyapps/PyLabs_Architecture.png
+[imgpyappArch]: images/images50/pyapps/PyApp_Architecture.png
 [imgDRP]: images/images50/pylabs/PyLabs_DRP.png
 
 

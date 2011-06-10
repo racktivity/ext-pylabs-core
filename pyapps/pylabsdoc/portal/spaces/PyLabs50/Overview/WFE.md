@@ -1,5 +1,6 @@
 [architecture]: /pylabsdoc/#/PyLabs50/Architecture
 [stackless]: http://www.stackless.com/
+[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
 [imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
 [imgAC]: images/images50/pylabs/AgentController.png
 [imgWfeTasklet]: images/images50/pylabs/WFETasklets.png
