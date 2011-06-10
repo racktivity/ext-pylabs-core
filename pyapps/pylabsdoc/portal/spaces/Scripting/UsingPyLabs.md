@@ -1,4 +1,4 @@
-[qshell]: /pylabsdoc/#/PyLabs50/Practical
+[qshell]: /pylabsdoc/#/Q-Shell/Practical
 
 
 ##Using PyLabs

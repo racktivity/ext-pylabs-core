@@ -1,6 +1,6 @@
 [tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
-[model]: /pylabsdoc/#/PyLabs50/Modeling
+[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
+[model]: /pylabsdoc/#/PyLabsApp/Modeling
 
 
 #OSIS Operations

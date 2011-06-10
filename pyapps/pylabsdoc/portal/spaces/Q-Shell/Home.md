@@ -1,11 +1,11 @@
 [iPython]: http://ipython.scipy.org/moin/
-[qp]: /pylabsdoc/#/PyLabs50/Q-Packages
-[pyapp]: /pylabsdoc/#/PyLabs50/PyApps
-[familiar]: /pylabsdoc/#/PyLabs50/GettingFamiliar
-[practical]: /pylabsdoc/#/PyLabs50/Practical
-[debug]: /pylabsdoc/#/PyLabs50/DebugMode
-[options]: /pylabsdoc/#/PyLabs50/QShellOptions
-[magic]: /pylabsdoc/#/PyLabs50/MagicFunctions
+[qp]: /pylabsdoc/#/Q-Packages/Q-Packages
+[pyapp]: /pylabsdoc/#/PyLabsApps/Home
+[familiar]: /pylabsdoc/#/Q-Shell/GettingFamiliar
+[practical]: /pylabsdoc/#/Q-Shell/Practical
+[debug]: /pylabsdoc/#/Q-Shell/DebugMode
+[options]: /pylabsdoc/#/Q-Shell/QShellOptions
+[magic]: /pylabsdoc/#/Q-Shell/MagicFunctions
 
 
 #PyLabs Q-Shell

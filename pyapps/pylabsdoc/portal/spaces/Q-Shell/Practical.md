@@ -1,4 +1,4 @@
-[fswalker]: /pylabsdoc/#/PyLabs50/UsingPyLabs
+[fswalker]: /pylabsdoc/#/Scripting/UsingPyLabs
 
 ##Using the Q-Shell
 In the previous sections you have learned how to work with the Q-Shell and what the principles are.

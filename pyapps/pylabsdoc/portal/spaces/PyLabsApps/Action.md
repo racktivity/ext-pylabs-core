@@ -1,4 +1,4 @@
-[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
 
 
 #Defining Actions Interface on Root Objects

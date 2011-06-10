@@ -1,4 +1,4 @@
-[qshell]: /pylabsdoc/#/PyLabs50/Q-Shell
+[qshell]: /pylabsdoc/#/Q-Shell/Home
 [python]: http://www.python.org
 
 

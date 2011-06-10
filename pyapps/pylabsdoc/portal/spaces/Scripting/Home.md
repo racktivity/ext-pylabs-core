@@ -1,7 +1,7 @@
-[first]: /pylabsdoc/#/PyLabs50/YourFirstScript
-[pylabs]: /pylabsdoc/#/PyLabs50/UsingPyLabs
-[config]: /pylabsdoc/#/PyLabs50/WorkingWithConfigFiles
-[interactive]: /pylabsdoc/#/PyLabs50/InteractiveScripting
+[first]: /pylabsdoc/#/Scripting/YourFirstScript
+[pylabs]: /pylabsdoc/#/Scripting/UsingPyLabs
+[config]: /pylabsdoc/#/Scripting/WorkingWithConfigFiles
+[interactive]: /pylabsdoc/#/Scripting/InteractiveScripting
 
 #PyLabs as Scripting Platform
 

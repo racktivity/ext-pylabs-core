@@ -3,7 +3,7 @@
 [arakoon]: http://www.arakoon.org
 [decorator]: http://wiki.python.org/moin/PythonDecorators
 [classmethod]: http://docs.python.org/library/functions.html#classmethod
-[enums]: /pylabsdoc/#/PyLabs50/CreateEnumerators
+[enums]: /pylabsdoc/#/ExtendingPyLabs/CreateEnumerators
 [thrift]: http://thrift.apache.org/
 
 

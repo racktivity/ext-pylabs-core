@@ -6,6 +6,7 @@ Implementation of generic object/method exposed through XML-RPC
 Classes and functions in this module allow you to expose a custom class instance and its methods through an XMLRPC service easily. It allows you to expose several classes in one server instance.
 
 Here is a sample, the `service` module:
+
 [[code]]
 from pylabs.baseclasses.xmlrpc.server import ManagementClassXMLRPCServer
 from pylabs.baseclasses.xmlrpc.server import xmlrpc_expose, xmlrpc_require_authentication

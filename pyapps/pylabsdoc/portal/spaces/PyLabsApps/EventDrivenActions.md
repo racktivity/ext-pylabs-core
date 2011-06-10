@@ -1,5 +1,5 @@
 [rabbit]: http://www.rabbitmq.com/
-[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
 
 #Event-Driven Actions
 In the previous sections you have learned how to create actions. These actions are all triggered by manual intervention, for example creating an object.

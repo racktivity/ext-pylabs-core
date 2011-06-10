@@ -1,4 +1,4 @@
-[command]: /pylabsdoc/#/PyLabs50/AgentCommands
+[command]: /pylabsdoc/#/Components/AgentCommands
 
 
 ## Agent Controller

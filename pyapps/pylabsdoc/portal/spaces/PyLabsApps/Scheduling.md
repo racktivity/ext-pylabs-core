@@ -1,5 +1,5 @@
-[reality]: /pylabsdoc/#/PyLabs50/Reality
-[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
+[reality]: /pylabsdoc/#/PyLabsApp/Reality
+[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
 
 
 #Scheduling Actions

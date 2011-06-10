@@ -1,6 +1,6 @@
-[model]: /sampleapp/#/PyLabs50/Modeling
-[action]: /sampleapp/#/PyLabs50/Action
-[dirs]: /sampleapp/#/PyLabs50/SampleApp
+[model]: /sampleapp/#/PyLabsApp/Modeling
+[action]: /sampleapp/#/PyLabsApp/Action
+[dirs]: /sampleapp/#/PyLabsApp/SampleApp
 
 
 ##CRUD Generation 

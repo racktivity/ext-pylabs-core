@@ -1,4 +1,4 @@
-[pyapps]: /pylabsdoc/#/PyLabs50/PyLabsApp
+[pyapps]: /pylabsdoc/#/PyLabsApp/Home
 
 
 ##Name Spaces

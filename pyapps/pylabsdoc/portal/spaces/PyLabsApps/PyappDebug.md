@@ -1,4 +1,4 @@
-[appserver]: /pylabsdoc/#/PyLabs50/components
+[appserver]: /pylabsdoc/#/Components/Home
 
 
 #PyLabs Debugger Support

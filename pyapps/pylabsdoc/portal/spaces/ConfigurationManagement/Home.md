@@ -1,8 +1,8 @@
-[components]: /pylabsdoc/#/PyLabs50/Components
-[install]: /pylabsdoc/#/PyLabs50/Installation
-[general]: /pylabsdoc/#/PyLabs50/GeneralConfigFunctions
-[simple]: /pylabsdoc/#/PyLabs50/SimpleConfig
-[cmdb]: /pylabsdoc/#/PyLabs50/CMDBConfig
+[components]: /pylabsdoc/#/Components/Home
+[install]: /pylabsdoc/#/Installation/Home
+[general]: /pylabsdoc/#/ConfigurationManagement/GeneralConfigFunctions
+[simple]: /pylabsdoc/#/ConfigurationManagement/SimpleConfig
+[cmdb]: /pylabsdoc/#/ConfigurationManagement/CMDBConfig
 
 
 #Configuration Management

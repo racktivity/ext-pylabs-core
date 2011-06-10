@@ -1,9 +1,9 @@
 [tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabs50/SampleApp
-[formwizard]: /pylabsdoc/#/PyLabs50/FormWizardParctical
-[modeling]: /pylabsdoc/#/PyLabs50/Modeling
-[action]: /pylabsdoc/#/PyLabs50/Action
-[osisview]: /pylabsdoc/#/PyLabs50/OsisViews
+[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
+[formwizard]: /pylabsdoc/#/PyLabsApp/FormWizardParctical
+[modeling]: /pylabsdoc/#/PyLabsApp/Modeling
+[action]: /pylabsdoc/#/PyLabsApp/Action
+[osisview]: /pylabsdoc/#/PyLabsApp/OsisViews
 
 
 #Implementing Action Tasklets
