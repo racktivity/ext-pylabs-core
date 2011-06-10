@@ -2,7 +2,7 @@
 [modeling]: /pylabsdoc/#/PyLabsApps/Modeling
 
 
-# Pymodel﻿
+# Pymodel
 
 The Pymodel extension is a powerful way to define, create and modify complex types.
 This extension gives you the ability to browse your OSIS model's definitions that are categorized by their domain; you can also use many serializers to serialize/deserialize your objects to some formats. It is using thrift underneath.
