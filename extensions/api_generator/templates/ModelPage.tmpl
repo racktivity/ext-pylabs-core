@@ -14,3 +14,7 @@ class page(model.RootObjectModel):
     tags = model.String(thrift_id=5)
     \#@doc actual page content
     content = model.String(thrift_id=6)
+    \#@doc order of the page    
+    order = model.Integer(thrift_id=7)
+    \#@doc title of the page
+    title = model.String(thrift_id=8)

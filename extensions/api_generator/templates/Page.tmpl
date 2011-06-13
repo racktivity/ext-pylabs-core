@@ -3,7 +3,7 @@ class page:
     Page object actions
     """
 
-    def create(self, name, space, category, parent="", tags="", content="", jobguid="", executionparams=None):
+    def create(self, name, space, category, parent="", tags="", content="", order=None, title="", jobguid="", executionparams=None):
         """
         Create a new page object.
 
@@ -25,6 +25,12 @@ class page:
         @param content:          content of the page
         @type content:           string
 
+        @param order:            order of the page
+        @type order:             integer
+
+        @param title:            title of the page
+        @type title:             string
+
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid
 
@@ -37,7 +43,7 @@ class page:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self, name="", space="", category="", parent="", tags="", exact_properties=None, jobguid="", executionparams=None):
+    def find(self, name="", space="", category="", parent="", tags="", order=None, title="", exact_properties=None, jobguid="", executionparams=None):
         """
         Returns a list of page objects which met the find criteria.
  
@@ -58,6 +64,12 @@ class page:
 
         @param tags:                   tags of the page
         @type tags:                    string
+
+        @param order:                  order of the page
+        @type order:                   integer
+
+        @param title:                  title of the page
+        @type title:                   string
 
         @param exact_properties:       an iterable of property names whose values should be matched exactly
         @type exact_properties:        iterable of strings
@@ -123,7 +135,7 @@ class page:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def update(self, pageguid, name, space, category, parent="", tags="", content="", jobguid="", executionparams=dict()):
+    def update(self, pageguid, name, space, category, parent="", tags="", content="", order=None, title="", jobguid="", executionparams=dict()):
         """
         Create a new page object.
 
@@ -147,6 +159,12 @@ class page:
 
         @param content:          content of the page
         @type content:           string
+
+        @param order:            order of the page
+        @type order:             integer
+
+        @param title:            title of the page
+        @type title:             string
 
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid

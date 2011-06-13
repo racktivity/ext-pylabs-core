@@ -5,9 +5,11 @@ def main(q, i, p, params, tags):
     page.category = params['category']
     page.parent = params.get('parent')
     page.tags = params.get('tags')
-    page.content = params.get('content')            
+    page.content = params.get('content')
+    page.order = params['order'] if params['order'] else page.order
+    page.title = params['title'] if params['title'] else page.title
     p.api.model.ui.page.save(page)
     params['result'] = True
     
 def match(q, i, p, params, tags):
-	return True
+    return True

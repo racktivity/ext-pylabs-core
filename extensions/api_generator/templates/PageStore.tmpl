@@ -10,7 +10,9 @@ def main(q, i, p, params, tags):
         'category': rootobject.category,
         'parent': rootobject.parent,
         'tags': rootobject.tags,
-        'content': rootobject.content
+        'content': rootobject.content,
+        'order': rootobject.order,
+        'title': rootobject.title
     }
     osis.viewSave(params['domain'], params['rootobjecttype'], viewname, rootobject.guid, rootobject.version, values)
 
