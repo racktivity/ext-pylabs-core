@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
     user = api.model.crm.user.new()
     user.name = "superadmin"
     user.password = "superadmin"
-    user.groups = "admins,salespersons"
+    user.groups = "admins,sales"
     api.model.crm.user.save(user)
     
     user = api.model.crm.user.new()
@@ -22,7 +22,7 @@ def main(q, i, p, params, tags):
     user = api.model.crm.user.new()
     user.name = "salesperson"
     user.password = "salesperson"
-    user.groups = "salesperson"
+    user.groups = "sales"
     api.model.crm.user.save(user)
     
     

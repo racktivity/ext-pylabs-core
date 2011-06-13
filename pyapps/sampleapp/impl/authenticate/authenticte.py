@@ -32,10 +32,12 @@ def main(q, i, p, params, tags):
         
 
 
-    #permission = p.api.action.crm. permission.find(uri =request._request.uri) 
+ 
     permissions = getpermissions(p) 
         
-    
+    if request._request.uri.endswith("logout"):
+        params['result'] = False
+        return
    
     if request._request.uri not in permissions :
         params['result'] = True

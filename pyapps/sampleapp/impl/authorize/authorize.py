@@ -18,7 +18,6 @@ def getUserGroups(p, username):
     filter = p.api.model.crm.user.getFilterObject()
     filter.add(viewname, "name", username)
     user = osis.objectsFindAsView("crm", "user", filter, viewname)
-    f=open('/home/ahmed/log.txt', 'a');    f.write("\n_puserrrrrrrrrr______%s"%str((user )));    f.close()
     
     return user[0]['groups'].split(",") 
     
@@ -47,7 +46,6 @@ def getAllowedPermissions(p, username):
     
     
     permissions= [("/sampleapp/appserver/rest/ui/portal/page?space=%s&name=%s"%(permission.split("/")[-2],permission.split("/")[-1])).strip() for permission in allowedPermissions]
-    f=open('/home/ahmed/log.txt', 'a');    f.write("\n_permissions______%s"%str((permissions )));    f.close()
      
     return permissions
 
