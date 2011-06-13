@@ -1013,8 +1013,8 @@ class AppAPIGenerator(object):
             ['impl', 'setup', 'osis'],
             ['impl', 'osis', 'osis', 'delete'],
             ['impl', 'osis', 'osis', 'store'],
-            ['impl', 'osis', 'osis', 'findAsView'],
-            ['impl', 'osis', 'osis', 'findObject'],
+            ['impl', 'osis', 'osis', 'findasview'],
+            ['impl', 'osis', 'osis', 'findobject'],
             ['impl', 'osis', 'osis', 'get'],
             ['impl', 'osis', 'osis', 'query'],
             ['impl', 'init', 'portal']
