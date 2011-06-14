@@ -18,6 +18,7 @@ There is no specific file extension required for the configuration file.
 
 
 ###Creating a New Configuration File
+
 [[tip]]
 Do not close your Q-Shell session throughout this complete page.
 [[/tip]]

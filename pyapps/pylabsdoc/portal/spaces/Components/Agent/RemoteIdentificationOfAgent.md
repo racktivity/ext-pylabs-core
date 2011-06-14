@@ -1,4 +1,4 @@
-## remote identification of agent
+## Remote Identification of an Agent
 
 * the identification is implemented as method exposed in the agent service,it returns the agent JID, this method can be called through XMLRPC, REST or EMF.
 

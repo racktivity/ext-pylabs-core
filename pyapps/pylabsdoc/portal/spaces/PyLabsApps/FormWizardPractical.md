@@ -1,10 +1,10 @@
 [tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
-[actiontasklet]: /pylabsdoc/#/PyLabsApp/ActionTasklet
-[formapi]: /pylabsdoc/#/PyLabsApp/FormWizard
-[modeling]: /pylabsdoc/#/PyLabsApp/Modeling
+[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
+[actiontasklet]: /pylabsdoc/#/PyLabsApps/ActionTasklet
+[formapi]: /pylabsdoc/#/PyLabsApps/FormWizard
+[modeling]: /pylabsdoc/#/PyLabsApps/Modeling
 [api]:  /pylabsdoc/#/api/Home
-[wizardapi]: /pylabsdoc/#/PyLabsApp/WizardApi
+[wizardapi]: /pylabsdoc/#/PyLabsApps/WizardApi
 
 
 #Creating Forms and Wizards

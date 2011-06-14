@@ -1,7 +1,7 @@
 [qpintro]: /pylabsdoc/#/Q-Packages/QPIntro
 [qparchitecture]: /pylabsdoc/#/Q-Packages/QPackageArchitecture
 [qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
-[qpcreate]: /pylabsdoc/#/Q-Packages/QPCcreate
+[qpcreate]: /pylabsdoc/#/Q-Packages/QPCreate
 [qpcreatebinary]: /pylabsdoc/#/Q-Packages/QPCcreatebinary
 [qptasklets]: /pylabsdoc/#/Q-Packages/QPTasklets
 [codemgmt]: /pylabsdoc/#/Q-Packages/CodeManagement

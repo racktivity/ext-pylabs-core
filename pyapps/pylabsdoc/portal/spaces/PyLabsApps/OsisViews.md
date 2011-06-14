@@ -1,8 +1,8 @@
 [architecture]: /pylabsdoc/#/PyLabs50/Architecture
 [arakoon]: http://www.arakoon.org
 [tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabsApp/SampleApp
-[model]: /pylabsdoc/#/PyLabsApp/Modeling
+[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
+[model]: /pylabsdoc/#/PyLabsApps/Modeling
 
 
 #OSIS Views

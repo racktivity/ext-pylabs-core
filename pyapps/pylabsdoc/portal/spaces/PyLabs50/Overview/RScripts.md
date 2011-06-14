@@ -25,8 +25,9 @@ The table below shows what each variable represents:
 </tr>
 <tr>
 <td>'hypervisor_initialize'</td><td>The RScript which should be executed.</td>
-</tr><tr>
-<td>{'machineguid': params\['pmachineguid'\]}</td><td>Parameters needed by the RScript.</td>
+</tr>
+<tr>
+<td>{'machineguid': params['pmachineguid']}</td><td>Parameters needed by the RScript.</td>
 </tr>
 </table>
 

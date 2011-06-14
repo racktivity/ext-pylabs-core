@@ -1,6 +1,6 @@
 ## How to Import PyLabs
 
-There are three ways of importing Pymonkey.
+There are three ways of importing PyLabs.
 
 ### PyLabs in Standard Applications
 

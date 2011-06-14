@@ -1,4 +1,4 @@
-[basemsg]: /PyLabsdoc/#/Components/BaseMsg
+[basemsg]: /pylabsdoc/#/Components/BaseMsg
 
 ## jobmessage
 

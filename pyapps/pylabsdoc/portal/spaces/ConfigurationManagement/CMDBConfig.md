@@ -1,7 +1,7 @@
 [nginx]: http://wiki.nginx.org
-[img_nginx_newsite]: (images/images50/pylabs/nginx_newsite.png)
-[img_nginx_fail]: (images/images50/pylabs/nginx_fail.png)
-[img_nginx_newport]: (images/images50/pylabs/nginx_newport.png)
+[imgNginxNewsite]: images/images50/pylabs/nginx_newsite.png
+[imgNginxFail]: images/images50/pylabs/nginx_fail.png
+[imgNginxNewport]: images/images50/pylabs/nginx_newport.png
 
 
 ##CMDB Configuration
@@ -114,7 +114,7 @@ In [11]:
 
 Open an internet browser an go to the URL `http://127.0.0.1:8080`. This is the result:
 
-![nginx_newsite][img_nginx_newsite]
+![nginx_newsite][imgNginxNewsite]
 
 This example is just a basic configuration to give you an idea of how easy it is to configure applications with CMDB.
 
@@ -157,8 +157,8 @@ In [7]: q.manage.nginx.applyConfig()
 
 When we refresh the page `127.0.0.1:8080`, you will notice that that site is no longer reachable.
 
-![nginx_fail][img_nginx_fail]
+![nginx_fail][imgNginxFail]
 
 Now go to the new address `127.0.0.1:8081`:
 
-![nginx_newport][img_nginx_newport]
+![nginx_newport][imgNginxNewport]

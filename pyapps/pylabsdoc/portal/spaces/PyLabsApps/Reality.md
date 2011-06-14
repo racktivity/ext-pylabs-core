@@ -1,10 +1,10 @@
 [imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
-[model]: /pylabsdoc/#/PyLabsApp/Modeling
-[actions]: /pylabsdoc/#/PyLabsApp/Action
-[osisview]: /pylabsdoc/#/PyLabsApp/OsisViews
-[osisoperations]: /pylabsdoc/#/PyLabsApp/OsisOperations
-[actiontasklet]: /pylabsdoc/#/PyLabsApp/ActionTasklet
-[pyappdir]: /pylabsdoc/#/PyLabsApp/Sampleapp
+[model]: /pylabsdoc/#/PyLabsApps/Modeling
+[actions]: /pylabsdoc/#/PyLabsApps/Action
+[osisview]: /pylabsdoc/#/PyLabsApps/OsisViews
+[osisoperations]: /pylabsdoc/#/PyLabsApps/OsisOperations
+[actiontasklet]: /pylabsdoc/#/PyLabsApps/ActionTasklet
+[pyappdir]: /pylabsdoc/#/PyLabsApps/Sampleapp
 [SAL]: /pylabsdoc/#/PyLabs50/Architecture
 
 

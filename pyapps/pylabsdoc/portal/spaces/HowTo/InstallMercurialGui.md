@@ -1,6 +1,6 @@
 ## Install the Mercurial GUI: hgtk
 
-Only applies for Ubuntu 9.1
+Only applies for Ubuntu 9.10
 
 topmenu > system > administration > software sources > add
 or manually

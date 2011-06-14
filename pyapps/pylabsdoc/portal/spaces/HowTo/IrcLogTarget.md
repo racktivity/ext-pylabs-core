@@ -1,4 +1,4 @@
-## How to use the IRC log target
+## How to Use the IRC Log Target
 
 @todo needs to be checked if this code still works and where the extension is, the IrcTarget should be packages as real extension
 

@@ -2,7 +2,7 @@
 
 [[code]]
 from pylabs.InitBase import *
-#from pylabs.Shell import *
+from pylabs.Shell import *
  
 q.application.appname="filesystemwalk"
  

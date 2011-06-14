@@ -1,7 +1,7 @@
 # Pylabs Clusters Example
 
 
-## create a cluster
+## Creating a Cluster
 
 [[code]]
 q.cluster.create(?
@@ -12,7 +12,7 @@ Documentation:
 [[/code]]
 
 
-## get a cluster
+## Retrieving a Cluster
 
 [[code]]
 q.cluster.get(?                                                                                                                                                
@@ -25,14 +25,14 @@ Documentation:
 [[/code]]
 
 
-## the cluster factory class methods
+## Cluster Factory Class Methods
 
     q.cluster.                                                                                                                                                              
     q.cluster.clusters                   q.cluster.create(                    q.cluster.list(                      q.cluster.replicator
     q.cluster.config                     q.cluster.get(                       q.cluster.listAvahiEnabledMachines( 
 
 
-## fetch cluster & show methods on cluster object
+## Fetch Cluster and Show Methods on Cluster Object
 
     In [4]: cl=q.cluster.get()                                                                                                                                                      
      select cluster
@@ -48,11 +48,11 @@ Documentation:
     cl.connectClusterToMyCode(  cl.domainname               cl.listnodes(               cl.restoreQbase(            cl.shareMyNodeToCluster(
 
 
-## an example
+## Eexample
 
 [[code]]
 from pylabs.InitBase import *
-#from pylabs.Shell import *
+from pylabs.Shell import *
 
 q.application.appname = "cluster"
 q.application.start()
@@ -83,7 +83,7 @@ cl.nodes[1].createPublicNfsShare()
 cl.createPublicNfsShare()
 cl.connectMeToNfsShares()
 
-#ipshell()
+ipshell()
 
 q.application.stop()
 [[/code]]

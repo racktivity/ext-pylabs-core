@@ -1,4 +1,4 @@
-## implementation remarks agent v4
+## Implementation Remarks Agent v4
 
 
 * when executing cmd returns a unique nr (sort of jobnr for XMPP, is referred to tasknr in the implementation) does this by retunring JOBNR $jobnr

@@ -1,14 +1,17 @@
-## installation
+## Installation
 
-### requirements 
+
+### Requirements 
 
 * an ejabberd server installed somewhere with a configured user in a configured domain:
 
     i.qp.find('ejabberd').install()
 
-### installation
 
-#### non interactive
+### Installation
+
+
+#### Non-Interactive
 
     q.kernel.agent.register(xmppservers=[...],domain,agentname="",passwd="")
 
@@ -26,7 +29,7 @@
 
 * if multiple xmppservers specified will register to all of them
 
-### q... methods
+### `q.` Methods
 
     q.kernel.agent.stop()
     q.kernel.agent.start()

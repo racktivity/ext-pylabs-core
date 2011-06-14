@@ -2,7 +2,7 @@
 
 [[code]]
 from pylabs.InitBase import *
-#from pylabs.Shell import *
+from pylabs.Shell import *
  
 q.application.appname = "sshtest"
 q.application.start()
@@ -16,7 +16,7 @@ print client.process.executeUnix("ls /") #only works on linux, will do some cont
 print client.process.execute("ls /")
  
 client.close()
-#ipshell()
+ipshell()
  
 q.application.stop()
 [[/code]]

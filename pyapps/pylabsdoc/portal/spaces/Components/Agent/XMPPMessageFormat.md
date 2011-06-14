@@ -1,4 +1,4 @@
-## generic message format over xmpp
+## Generic Message Format over XMPP
 
 ### cmd
 
@@ -14,9 +14,11 @@
 * to mark end of input send \! without cmd
 * first argument will not have '$' prefix
 
+
 ### return
 
 * when executing something output comes back as
+
 
 ### log
 
@@ -39,6 +41,7 @@ when error stacktrace is sent as log on level
 
 ### parameters
 
+
 ####1 parameter
 
     !machine start
@@ -53,6 +56,7 @@ when error stacktrace is sent as log on level
     ls
     !
 
+
 ####2 parameters which are all single line
 
     !acommand
@@ -62,6 +66,7 @@ when error stacktrace is sent as log on level
     !
 
 \#the $ sign is used
+
 
 #### 3 parameters which are a mix of single & multiline
 
@@ -75,6 +80,7 @@ when error stacktrace is sent as log on level
 
 
 ### some examples
+
 
 #### cmd with multiple lines
 

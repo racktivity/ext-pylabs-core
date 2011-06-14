@@ -1,7 +1,7 @@
-[scripts]: /pylabsdoc/#/PyLabs50/Scripting
-[comp]: /pylabsdoc/#/PyLabs50/ExtensionComponents
-[create]: /pylabsdoc/#/PyLabs50/CreateExtension
-[enum]: /pylabsdoc/#/PyLabs50/CreateEnumerators
+[scripts]: /pylabsdoc/#/Scripting/Home
+[comp]: /pylabsdoc/#/ExtendingPyLabs/ExtensionComponents
+[create]: /pylabsdoc/#/ExtendingPyLabs/CreateExtension
+[enum]: /pylabsdoc/#/ExtendingPyLabs/CreateEnumerators
 
 
 

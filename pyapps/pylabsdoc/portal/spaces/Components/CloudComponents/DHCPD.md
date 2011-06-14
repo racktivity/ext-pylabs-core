@@ -9,7 +9,7 @@ It is used to provide IP addresses to physical and virtual machines using the DH
 ### Installing the DHCP Server
 
 Install the latest version of the Q-Package named 'dhcpd'.
-If you are unfamiliar with how to install a Q-Package, please check the Installing Q-Packages][qpinstall] page.
+If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 ### Location in the Sandbox
 

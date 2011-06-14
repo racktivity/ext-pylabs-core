@@ -1,6 +1,6 @@
 ## Commands Over XMPP
 
-### agent
+### Agent
 
 * agent register xmppserver
 
@@ -23,7 +23,8 @@
     newpasswd
     !
 
-### authentication & permissions (*)
+
+### Authentication and Permissions (*)
 
 * perm set $agentsfilter $acl #set permissions for agent
 * this can only be done for user which has perm:1 rights
@@ -68,7 +69,8 @@
 
 * every shellcmd & qshellcmd is executed in separate process
 
-### qpackages (v4)
+
+### Q-Packages (v4)
 
 * qpackages update
 * qpackages setsource $sourcestring of config file for qpackages (allows to redirect to other qpackages server)
@@ -96,7 +98,7 @@
 * These commands are implemented for qpackagesV3 only till now.
 
 
-### portforward
+### Portforward
 
 * portforward `-R $serverport:$localdestination:$portondestination $login:$passwd@$sshServerInPubDC`  
 @todo check can we get it to work using passwds?
@@ -115,7 +117,7 @@
 * syntax used is very close to original SSH syntax
 
 
-### Kill/Stop tasks
+### Kill/Stop Tasks
 
 * this command kills or stops task given its task number
 * syntax
@@ -139,7 +141,7 @@
     !
 
 
-### fs, file, ... (*)
+### File Systems, File, ... (*)
 
 * download $cloudfsUrl $localpath
 * upload $localpath $cloudfsUrl
@@ -150,7 +152,8 @@
 * fs stat $path
 * fs delete $path
 
-#### format of return of dir
+
+#### Format of Return of Dir
 
     $filename f $size
     $dirname d
@@ -159,7 +162,7 @@
 
 ### qbase (*)
 
-* qbase install $tgzlocationOfNewSandbox $destinationpath #if not dest put in /opt/qbase3 of unix and c:\qbase3 for windows
+* qbase install $tgzlocationOfNewSandbox $destinationpath #if not dest put in /opt/qbase5 of unix and c:\qbase5 for windows
     **mark in registry when windows what qbase location is
 * qbase getlocation  #show location of sandbox (only relevant for windows)
 
@@ -183,6 +186,7 @@
     ** askpermission also asks for how long permission should be given, std 1h
     ** otherwise user would have to reconfirm all the time
     ** only relevant for cmd's which need permission to run
+
 
 ### system processes
 
@@ -213,6 +217,7 @@ FUTURE
 
 * cloudapi $category $method $params returnformat=$returnmethod
     ** returnformat= HR, YAML     #HR = human readable
+
 
 ### scheduler
 

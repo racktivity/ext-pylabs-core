@@ -3,15 +3,17 @@
 xmpp robot = the component which terminates the xmpp messages and executes the api
 
 
-### implementation details xmpp robot
+### Implementation Details XMPP Robot
 
-### parsing of incoming XMPP messages
+
+### Parsing Incoming XMPP Messages
 
 * every incoming XMPP message is parsed in
     ** cmd
     ** params  (for way how params need to be parsed see [XMPP Message Format|3.2 XMPP Message Format]
 
-### tasklet engine is used
+
+### Tasklet Engine Used
 
 dirstructure
 
