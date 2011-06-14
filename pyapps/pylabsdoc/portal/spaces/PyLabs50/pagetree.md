@@ -11,3 +11,4 @@
 [[include:space=PyLabsApps,name=pagetree]][[/include]]
 [[include:space=HowTo,name=pagetree]][[/include]]
 [[include:space=CodeExamples,name=pagetree]][[/include]]
+[[include:space=alkiradocs,name=pagetree]][[/pagetree]]

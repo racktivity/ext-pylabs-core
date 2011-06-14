@@ -1,1 +1,1 @@
-[[pagetree]][[/pagetree]]
+[[pagetree:space=HowTo]][[/pagetree]]
