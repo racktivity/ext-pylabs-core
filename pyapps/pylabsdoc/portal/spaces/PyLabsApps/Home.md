@@ -1,3 +1,5 @@
+@metadata spaceorder=11
+
 #PyLabs Applications
 
 This chapter gives you a walk-through in the creation process of a PyLabs Application, or PyApp.

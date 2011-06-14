@@ -1,3 +1,5 @@
+@metadata spaceorder=7
+
 [qpintro]: /pylabsdoc/#/Q-Packages/QPIntro
 [qparchitecture]: /pylabsdoc/#/Q-Packages/QPackageArchitecture
 [qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall

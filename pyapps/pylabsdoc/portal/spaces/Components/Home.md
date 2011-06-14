@@ -1,3 +1,5 @@
+@metadata spaceorder=4
+
 #PyLabs Components
 
 [[warning]]

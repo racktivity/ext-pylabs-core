@@ -1,3 +1,5 @@
+@metadata spaceorder=9
+
 [components]: /pylabsdoc/#/Components/Home
 [install]: /pylabsdoc/#/Installation/Home
 [general]: /pylabsdoc/#/ConfigurationManagement/GeneralConfigFunctions

@@ -1,3 +1,5 @@
+@metadata spaceorder=5
+
 [iPython]: http://ipython.scipy.org/moin/
 [qp]: /pylabsdoc/#/Q-Packages/Q-Packages
 [pyapp]: /pylabsdoc/#/PyLabsApps/Home

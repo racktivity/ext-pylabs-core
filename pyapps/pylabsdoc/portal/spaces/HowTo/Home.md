@@ -1,4 +1,6 @@
-##How To...
+@metadata spaceorder=12
+
+#How To...
 
 This section contains a set of *How To's* for working with the PyLabs framework.
 

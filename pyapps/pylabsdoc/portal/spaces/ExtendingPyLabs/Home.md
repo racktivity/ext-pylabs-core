@@ -1,3 +1,5 @@
+@metadata spaceorder=10
+
 [scripts]: /pylabsdoc/#/Scripting/Home
 [comp]: /pylabsdoc/#/ExtendingPyLabs/ExtensionComponents
 [create]: /pylabsdoc/#/ExtendingPyLabs/CreateExtension

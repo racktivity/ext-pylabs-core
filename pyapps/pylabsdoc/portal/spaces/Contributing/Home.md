@@ -1,3 +1,5 @@
+@metadata spaceorder=8
+
 #Contributing in Style
 
 This chapter is a short intermezzo to provide you the coding guidelines of PyLabs. 

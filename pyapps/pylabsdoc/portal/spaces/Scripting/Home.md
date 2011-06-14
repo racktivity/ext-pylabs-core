@@ -1,3 +1,5 @@
+@metadata spaceorder=6
+
 [first]: /pylabsdoc/#/Scripting/YourFirstScript
 [pylabs]: /pylabsdoc/#/Scripting/UsingPyLabs
 [config]: /pylabsdoc/#/Scripting/WorkingWithConfigFiles

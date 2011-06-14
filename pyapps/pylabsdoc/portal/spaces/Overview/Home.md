@@ -1,3 +1,5 @@
+@metadata spaceorder=2
+
 # PyLabs 5 Overview
 
 In this section you get a high-level overview of what PyLabs is.
