@@ -1,4 +1,6 @@
 @metadata spaceorder=8
+@metadata title=Contributing in Style
+@metadata tagstring=code contribute style guide
 
 #Contributing in Style
 
@@ -8,10 +10,10 @@ When contributing to PyLabs, contribute in style and follow the rules as describ
 
 ## `q` Should Be a Global Var
 
-When you want to use the core PyMonkey class `q`, make sure you call it the right way. 
+When you want to use the core PyLabs class `q`, make sure you call it the right way. 
 
 
-## Import All Relevant PyMonkey Packages
+## Import All Relevant PyLabs Packages
 
 * e.g. `from event import QEvent`
 

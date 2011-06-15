@@ -1,4 +1,6 @@
 @metadata spaceorder=5
+@metadata title=Q-Shell
+@metadata tagstring=qshell Q-Shell ipython
 
 [iPython]: http://ipython.scipy.org/moin/
 [qp]: /pylabsdoc/#/Q-Packages/Q-Packages

@@ -1,4 +1,6 @@
 @metadata spaceorder=4
+@metadata title=PyLabs Components
+@metadata tagstring=components details
 
 #PyLabs Components
 

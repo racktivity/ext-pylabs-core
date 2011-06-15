@@ -1,4 +1,7 @@
 @metadata spaceorder=1
+@metadata title=PyLabs 5
+@metadata tagstring=home
+
 
 #PyLabs 5 Guide
 

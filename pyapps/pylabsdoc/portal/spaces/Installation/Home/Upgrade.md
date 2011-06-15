@@ -1,4 +1,4 @@
-## Upgrade PyLabs
+# Upgrading PyLabs
 
 Update your environment with the following command sequence in the Q-Shell:
 

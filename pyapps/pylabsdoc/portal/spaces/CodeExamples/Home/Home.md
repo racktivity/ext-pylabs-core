@@ -1,4 +1,6 @@
 @metadata spaceorder=13
+@metadata title=Code Examples
+@metadata tagstring=code examples
 
 # Code Examples
 

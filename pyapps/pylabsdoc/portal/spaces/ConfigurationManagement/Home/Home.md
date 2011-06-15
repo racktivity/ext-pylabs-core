@@ -1,4 +1,6 @@
 @metadata spaceorder=9
+@metadata title=Configuration Management
+@metadata tagstring=configuration management
 
 [components]: /pylabsdoc/#/Components/Home
 [install]: /pylabsdoc/#/Installation/Home

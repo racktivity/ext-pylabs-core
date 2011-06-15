@@ -1,4 +1,6 @@
 @metadata spaceorder=6
+@metadata title=PyLabs as Scripting Platform
+@metadata tagstring=script scripts
 
 [first]: /pylabsdoc/#/Scripting/YourFirstScript
 [pylabs]: /pylabsdoc/#/Scripting/UsingPyLabs

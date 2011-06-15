@@ -1,4 +1,7 @@
 @metadata spaceorder=7
+@metadata title=Q-Packages
+@metadata tagstring=qpackage q-package package
+
 
 [qpintro]: /pylabsdoc/#/Q-Packages/QPIntro
 [qparchitecture]: /pylabsdoc/#/Q-Packages/QPackageArchitecture

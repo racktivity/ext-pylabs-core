@@ -1,4 +1,6 @@
 @metadata spaceorder=10
+@metadata title=Extending PyLabs
+@metadata tagstring=extend extension create
 
 [scripts]: /pylabsdoc/#/Scripting/Home
 [comp]: /pylabsdoc/#/ExtendingPyLabs/ExtensionComponents
