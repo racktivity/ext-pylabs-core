@@ -254,7 +254,7 @@ class PyAppsConfigGen:
         sitename = "%s_macros" % self.appName
         if not sitename in vhost.sites:
             site = vhost.addSite(sitename, '/%s/js/macros' % self.appName)
-            site.addOption('root', root)
+            site.addOption('root', jsmacros)
             site.addOption('try_files', '$uri $uri/ @lfw_macros')
             site.addOption('rewrite', '^/%s/js/macros/(.*) /$1 break' % self.appName)
 
