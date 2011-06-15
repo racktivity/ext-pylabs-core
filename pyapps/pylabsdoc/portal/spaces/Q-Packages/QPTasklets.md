@@ -1,5 +1,7 @@
 [Mercurial]: http://mercurial.selenic.com/
 [codemanagement]: /pylabsdoc/#/Q-Packages/QPTasklets
+[configure]: /pylabsdoc/#/Q-Packages/Configure.md
+
 
 ## Q-Package Tasklets
 
@@ -9,8 +11,8 @@ The `backup` tasklet allows one to take a backup of the data stored in the data 
 The restore tasklet lets you put the saved data back in the data structure.
 
 [[code]]
-    Out[1].backup(url='ftp://login:password@10.100.1.1/myroot/')
-    Out[1].restore(url='ftp://login:password@10.100.1.1/myroot/')
+Out[1].backup(url='ftp://login:password@10.100.1.1/myroot/')
+Out[1].restore(url='ftp://login:password@10.100.1.1/myroot/')
 [[/code]]
 
 
@@ -42,7 +44,7 @@ recipe.addSource(?
 Definition: recipe.addSource(self, hgConnection, source_path, destination_path, branch='')
 Documentation:
     Add a source (ingredient) to the recipe
-[[/code    
+[[/code]]
 
 The `addSource()` method takes three parameters:
 
@@ -66,7 +68,7 @@ The tasklet should:
 
 #### configure Tasklet
 The `configure` tasklet is the tasklet tagged with "configure". 
-The `configure` tasklet allows you to configure an application after its installation, for example setting a default configuration of a web server. 
+The `configure` tasklet allows you to configure an application after its installation, for example [setting a default configuration of a web server][configure]. 
 The install tasklet of the Q-Package needs a `signalConfigurationNeeded` parameter in order to execute this tasklet.
 
 [[code]]

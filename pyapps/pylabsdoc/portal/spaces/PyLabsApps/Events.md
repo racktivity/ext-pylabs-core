@@ -3,7 +3,7 @@
 [SSOEvents]: http://confluence.aserver.com/display/SSODOCINT/SSO+Event+List
 [imgExportEventTypes]: images/images50/pyapps/ExportEventTypes.png
 [imgExport]: images/images50/pyapps/Export.png
-[imgSaveAs: images/images50/pyapps/SaveAs.png
+[imgSaveAs]: images/images50/pyapps/SaveAs.png
 
 
 # PyLabs Events
