@@ -193,9 +193,9 @@ class AppManager(object):
         
         return changed_files, created_files, deleted_files, is_changed 
         
-    def syncPortal(self, appname, space=None):
+    def syncPortal(self, appname, space=None, clean_up=False):
         from alkira.sync_md_to_lfw import sync_to_alkira
-        sync_to_alkira(appname, sync_space=space)
+        sync_to_alkira(appname, sync_space=space, clean_up=clean_up)
         
     def start(self, appname):
         gen = PyAppsConfigGen(appname)
