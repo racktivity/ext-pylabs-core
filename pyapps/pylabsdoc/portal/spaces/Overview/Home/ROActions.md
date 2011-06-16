@@ -1,3 +1,8 @@
+@metadata title=Root Object Actions
+@metadata order=60
+@metadata tagstring=root object ro action
+
+
 # Root Object Actions
 
 Root object actions typically implement some kind of control flow. A typical Cloud API call will result in a root object action. This root object action will contain code to change the model, start new sub root object actions or start actor actions.
@@ -57,4 +62,4 @@ Only call new root object actions or actor actions and do DRP changes.
 Do not:
 * Call RScripts.
 * Use a SAL.
-* Change the local configuration or files on the filesystem.
+* Change the local configuration or files on the file system.

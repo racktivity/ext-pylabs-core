@@ -1,3 +1,8 @@
+@metadata title=Installing the SampleApp
+@metadata order=10
+@metadata tagstring=install sampleapp
+
+
 [imgdocSpace]: images/images50/installation/docSpace.png
 
 
@@ -42,5 +47,3 @@ The sample application contains documentation about creating your own PyLabs app
 By default, the '*crm*' space is displayed. Switch the space to '*doc*' to get the PyLabs Application documentation.
 
 ![docSpace][imgdocSpace]
-
-Enjoy the power of *PyLabs 5*!

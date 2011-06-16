@@ -1,4 +1,8 @@
-[RO]: /pylabsdoc/#/PyLabs50/RootObject
+@metadata title=PyLabs Applications
+@metadata order=30
+@metadata tagstring=application pyapp
+
+[RO]: /#/PyLabs50/RootObject
 
 
 ## PyLabs Applications
