@@ -1,5 +1,9 @@
-[extspec]: /pylabsdoc/#/ExtendingPyLabs/ExtensionSpecs
-[qshelloption]: /pylabsdoc/#/Q-Shell/QShellOptions
+@metadata title=CMDB Test Data
+@metadata order=50
+@metadata tagstring=cmdb test data
+
+[extspec]: /#/ExtendingPyLabs/ExtensionSpecs
+[qshelloption]: /#/Q-Shell/QShellOptions
 
 
 # CMDB Test Data

@@ -1,6 +1,10 @@
-## XML-RPC Classes
+@metadata title=XMLRPC Class
+@metadata tagstring=xmlrpc class
 
-### XMLRPC Server
+
+# XML-RPC Classes
+
+## XMLRPC Server
 Implementation of generic object/method exposed through XML-RPC
 
 Classes and functions in this module allow you to expose a custom class instance and its methods through an XMLRPC service easily. It allows you to expose several classes in one server instance.
@@ -43,7 +47,7 @@ server.run()
 Once this service is running, you can access it using any XMLRPC client. See below for a more user-friendly approach.
 
 
-### XMLRPC Client
+## XMLRPC Client
 The `ManagementClassXMLRPCClient` class implemented in this module allows you to auto-generate client classes (including tab-completion support in Q-Shell) for services exposed through XMLRPC as explained above.
 
 Here is a sample, using the server as used above. We assume that `ServiceOne` and `ServiceTwo`) are the classes used in the server (see above), implemented in a `service` module.

@@ -1,17 +1,20 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=Application Server
+@metadata tagstring=application server appserver
+
+[qpinstall]: /#/Q-Packages/QPInstall
 
 
 
-## Application Server
+# Application Server
 
-The Pylabs application server is the component responsible for exposing functionality over several transports. The definition and implementation of an application server service is 100% separated from the underlying transport.
+The PyLabs application server is the component responsible for exposing functionality over several transports. The definition and implementation of an application server service is 100% separated from the underlying transport.
 Out of the box XML-RPC, REST and AMF are available as possible transports. The transport mechanism can be extended by writing your own plug-ins.
 
 Technically the application server is implemented as a Twisted reactor and every application server service is a Twisted service.
 For more information regarding the Twisted framework check the Twisted framework website.
 
 
-### How to Install
+## How to Install
 
 In your Q-Shell, find and install the latest 'applicationserver' Q-Package.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
@@ -37,7 +40,7 @@ Below are the configuration questions:
     Incoming mail server:
 
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 The Application server directories are located at:
 
@@ -48,7 +51,7 @@ The Application server directories are located at:
 * *Configuration file services:* `/opt/qbase5/cfg/qconfig/applicationserverservice.cfg`
 
 
-### Managing the Application Server
+## Managing the Application Server
 
 Below are a set of the most common commands you need to manage the application server:
 
@@ -86,7 +89,7 @@ The name of the service to reload must be one of the values retrieved by the `q.
 
     q.manage.applicationserver.reloadService('service_name')
 
-### Configuring the Application Server
+## Configuring the Application Server
 
 Let's take a look on how to change the server's configuration.
 
@@ -103,16 +106,16 @@ After we change the port, we restart the application server to insure that the n
     q.manage.applicationserver.restart()
 
 
-### Adding & Removing Services
+## Adding & Removing Services
 
 In case you implemented your own application server service, you will need to add it to the list of services served by the application server.
 
-#### Adding Services
+### Adding Services
 
 Adding a service takes 2 parameters:
 
-# Name for the service to add.
-# Location of the module and class to expose.
+* Name for the service to add.
+* Location of the module and class to expose.
 
 [[info]]
 **Information** 
@@ -128,7 +131,7 @@ For example, if you created a folder named 'test_service' underneath the path sp
 In case you add a service, make sure you reload your service as explained above.
 
 
-#### Removing Services
+### Removing Services
 
 Removing a service can be done by executing the following command:
 
@@ -142,12 +145,12 @@ A list of the available services will be shown and you will be asked to select t
         Select Nr (1-2):
 
 
-### Hello World Service Example
+## Hello World Service Example
 
 In this example we will explain how to write your own application server service and show how this service can be called over various transports.
 
 
-#### Service Code
+### Service Code
 
 Create a new Python module on the folowing location:
 
@@ -155,14 +158,15 @@ Create a new Python module on the folowing location:
 
 The module:
 
-    from pymonkey import q
-    class helloworld():
-        @q.manage.applicationserver.expose
-        def sayHello(self):
-            return 'Hello World!'
+[[code]]
+from pylabs import q
+class helloworld():
+    @q.manage.applicationserver.expose
+    def sayHello(self):
+        return 'Hello World!'
+[[/code]]
 
-
-#### Installing the Service
+### Installing the Service
 
 From the Q-Shell execute the following commands to add your service to the application server:
 
@@ -180,15 +184,17 @@ Next, execute the following command to instruct the application server to reload
     q.manage.applicationserver.reloadService('hello_world_service')
 
 
-#### Calling the Service
+### Calling the Service
 
 **Using XML-RPC**
 
 The following code snippet shows you how easy it is to call our application server service over XMP-RPC using Python:
 
-    import xmlrpclib
-    client = xmlrpclib.ServerProxy('http://127.0.0.1:8888/RPC2')
-    print client.hello_world_service.sayHello()
+[[code]]
+import xmlrpclib
+client = xmlrpclib.ServerProxy('http://127.0.0.1:8888/RPC2')
+print client.hello_world_service.sayHello()
+[[/code]]
 
 **Using REST**
 
@@ -198,7 +204,8 @@ The following code snippet shows you how easy it is to call our application serv
     client.get('http://127.0.0.1:8889/hello_world_service/sayHello')
 
 
-### Code Repositories
+## Code Repositories
 
 The source can be found on the following BitBucket code repository:
     http://bitbucket.org/despiegk/applicationserver
+    

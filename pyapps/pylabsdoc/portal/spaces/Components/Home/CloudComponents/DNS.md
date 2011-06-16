@@ -1,23 +1,28 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=DNS
+@metadata tagstring=dns manage
 
-## Domain Name System Server
+
+[qpinstall]: /#/Q-Packages/QPInstall
+
+
+# Domain Name System Server
 
 A DNS server is used to map a DNS name to the server's IP address.
 
-### Installing the DNS Server Extension
+## Installing the DNS Server Extension
 
 In the Q-Shell, look for and install the latest package named 'dnsserver_extension'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 * *DNS server command line extension:* `/opt/qbase5/lib/pymonkey/extensions/servers/dnsserver/`
 
 
-### Managing the DNS Server
+## Managing the DNS Server
 
-#### Management Extensions
+### Management Extensions
 
 * To start the DNS server:
 
@@ -36,7 +41,7 @@ If you are unfamiliar with how to install a Q-Package, please check the [Install
     q.cmdtools.dnsserver.isRunning()
 
 
-#### Q-Packages Start & Stop Tasklets
+### Q-Packages Start & Stop Tasklets
 
 Get a reference of the DNS Server Extension Q-Package that you previously installed. This can be done the same way we installed the package:
 
@@ -55,7 +60,7 @@ Now you can use the start and stop tasklets as follows:
     i.qp.lastPackage.qpackage.stop()
 
 
-### Code Repositories
+## Code Repositories
 
 The source code can be found on the following BitBucket code repository:
     http://bitbucket.org/despiegk/dnsserver_extension

@@ -1,10 +1,14 @@
+@metadata title=CMDB Configuration
+@metadata order=30
+@metadata tagstring=cmdb configuration complex
+
 [nginx]: http://wiki.nginx.org
 [imgNginxNewsite]: images/images50/pylabs/nginx_newsite.png
 [imgNginxFail]: images/images50/pylabs/nginx_fail.png
 [imgNginxNewport]: images/images50/pylabs/nginx_newport.png
 
 
-##CMDB Configuration
+#CMDB Configuration
 
 When you have an application that requires advanced configuration, it is very likely that a key/value configuration is too complex to configure and/or maintain. 
 For example when you have to configure a web server, it would become too hard to configure an ACL with a key/value system.
@@ -13,13 +17,13 @@ Therefore you can use the CMDB (Configuration Management DataBase) of PyLabs. Th
 The configuration of an application with CMDB is available in the `q.manage` name space, for example `q.manage.nginx.cmdb`.
 
 
-###General Application Functions
+##General Application Functions
 
 An application that is to be configured via the CMDB, has some general functions, such as start, stop, restart, getStatus, ... 
 Some functions require one or more parameters, but that is completely application dependent.
 
 
-###Configuring an Application
+##Configuring an Application
 To configure an application with the CMDB platform or update a configuration, you always have to follow the following steps:
 
 1. Start the changes: `q.manage.your_application.startChanges()`
@@ -27,7 +31,7 @@ To configure an application with the CMDB platform or update a configuration, yo
 3. Save and apply the configuration: `q.manage.your_application.save()` and `q.manage.your_application.applyConfig()`
 
 
-###Example
+##Example
 In this example we configure an '[nginx][]' web server.
 
 [[code]]
@@ -119,7 +123,7 @@ Open an internet browser an go to the URL `http://127.0.0.1:8080`. This is the r
 This example is just a basic configuration to give you an idea of how easy it is to configure applications with CMDB.
 
 
-###Updating a Configuration
+##Updating a Configuration
 
 The update of a configuration takes the same steps as creating a configuration:
 

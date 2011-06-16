@@ -1,17 +1,20 @@
-[architecture]: /pylabsdoc/#/PyLabs50/Architecture
+@metadata title=Workflow Engine
+@metadata tagstring=workflow engine tasklet action job
+
+[architecture]: /#/PyLabs50/Architecture
 [stackless]: http://www.stackless.com/
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+[qpinstall]: /#/Q-Packages/QPInstall
 [imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
 [imgAC]: images/images50/pylabs/AgentController.png
 [imgWfeTasklet]: images/images50/pylabs/WFETasklets.png
 
 
-## Workflow Engine
+# Workflow Engine
 
 The Workflow Engine (WFE) acts like a scheduler for an operating system. It is used to execute different Root Object (RO) Actions and Actor Actions. It also starts the RScripts on the correct Agent. The name scheduler is used because the correct order of executing the different actions is scheduled by the workflow engine.
 
 
-### High-Level Overview
+## High-Level Overview
 From a high level perspective, the workflow engine consists of two different components.
 
 ![WFE_Overview][imgWFE]
@@ -28,7 +31,7 @@ When the remote execution of an RScript is requested, the Agent Controller sends
 ![Agent_Controller][imgAC]
 
 
-### Workflow Engine Tasklet Execution Model
+## Workflow Engine Tasklet Execution Model
 
 The workflow engine is a single-threaded Python process that is responsible for the scheduling of the tasklets. Instead of using regular threads to schedule the different tasklets, the workflow engine uses microthreads. 
 The workflow engine schedules the execution of all the different tasklets in a single thread using the microthreads and scheduler provided by [Stackless Python][stackless].
@@ -43,13 +46,13 @@ As you can see in the diagram there are some interactions with the network from 
 One thing worth noting is that all write-interactions with the DRP go through a single tasklet that is responsible for all modifications in the DRP triggered by the Root Object actions.
 
 
-### Installing the Workflow Engine
+## Installing the Workflow Engine
 
 Install the latest version of the Q-Package named 'workflowengine'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 * *XML-RPC interface for debugging the workflow engine:* `/opt/qbase5/apps/applicationserver/services/wfe_debug`
 * *The main workflow engine daemon:* `/opt/qbase5/apps/workflowengine`
@@ -57,9 +60,9 @@ If you are unfamiliar with how to install a Q-Package, please check the [Install
 * *Workflow engine library:* `/opt/qbase5/lib/python/site-packages/workflowengine`
 
 
-### Managing the Workflow Engine
+## Managing the Workflow Engine
 
-#### Management Extensions
+### Management Extensions
 
 * To start the workflow engine:
 
@@ -82,7 +85,7 @@ If you are unfamiliar with how to install a Q-Package, please check the [Install
     q.manage.workflowmanage.kill()
 
 
-#### Q-Packages Start & Stop Tasklets
+### Q-Packages Start & Stop Tasklets
 
 Get a reference of the 'workflowengine' Q-Package that you previously installed. This can be done the same way we installed the package:
 
@@ -101,7 +104,7 @@ Now you can use the start and stop tasklets as follows:
     i.qp.lastPackage.qpackage.stop()
 
 
-### Configuring the Workflow Engine
+## Configuring the Workflow Engine
 
 The Workflow Engine is using the configuration framework and is accessible on:
 
@@ -116,7 +119,7 @@ Parameters which should be configured:
 * *password:* Password of the agent controller on the XMPP server.
 
 
-### Workflow Engine API
+## Workflow Engine API
 
 Every component can be used via the Workflow Engine API.
 Several functions are available in the 'q' tree/namespace.
@@ -127,7 +130,7 @@ The methods in the hooks below are carried out when a workflow engine process st
 [[/note]]
 
 
-#### Agent Controller
+### Agent Controller
 
 Functions to start a remote script on a agent or to kill it.
 
@@ -142,7 +145,7 @@ Accessible on:
 For more parameters check the Q-Shell and use q.workflowengine.agentcontroller. to get more information about the paramters and calls.
 
 
-#### Job Manager
+### Job Manager
 
 Normally you shouldn't use those functions they are mainly used internally in the Workflow Engine.
 
@@ -174,7 +177,7 @@ CreateJob will return a WFLJob object which has the following functions
 * *commit_drp_object():* Commit a job object.
 
 
-#### Action Manager
+### Action Manager
 
 Used to start Actor or RootObject Actions.
 
@@ -189,7 +192,7 @@ More information can be gathered by using the help functionallity in pylabs.
 * *waitForActions(self, jobguids):* Wait for some background jobs to finish.
 
 
-#### Examples
+### Examples
 
 * Start a machine:
 

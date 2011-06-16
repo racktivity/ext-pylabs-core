@@ -1,4 +1,8 @@
-# Code Management Example
+@metadata title=Configuration Management
+@metadata tagstring=config configuration
+
+
+# Configuration Management Example
 
 Below are two example Python files with their extension configuration.
 

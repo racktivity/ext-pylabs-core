@@ -1,24 +1,31 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=DHCP Daemon
+@metadata tagstring=dhcpd manage
 
 
-## Dynamic Host Configuration Protocol Daemon
+[qpinstall]: /#/Q-Packages/QPInstall
+
+
+# Dynamic Host Configuration Protocol Daemon
 
 The DHCPD is an open source DHCP server.
 It is used to provide IP addresses to physical and virtual machines using the DHCP.
 
-### Installing the DHCP Server
+
+## Installing the DHCP Server
 
 Install the latest version of the Q-Package named 'dhcpd'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
-### Location in the Sandbox
+
+## Location in the Sandbox
 
 * *DHCPD server files:* `/opt/qbase5/apps/dhcpd`
 * *DHCP management extensions:* `lib/pymonkey/extensions/servers/dhcp`
 
-### Managing the DHCP Server
 
-#### Management Extensions
+## Managing the DHCP Server
+
+### Management Extensions
 
 * To apply changes in the CMDB DHCP configuration:
 
@@ -53,7 +60,7 @@ If you are unfamiliar with how to install a Q-Package, please check the [Install
     q.manage.dhcpd.isIPAvailable('ip_address'):
 
 
-#### Q-Packages Start & Stop Tasklets
+### Q-Packages Start & Stop Tasklets
 
 Get a reference of the DHCPD Q-Package that you previously installed. This can be done the same way we installed the package:
 
@@ -72,7 +79,7 @@ Now you can use the start and stop tasklets as follows:
     i.qp.lastPackage.qpackage.stop()
 
 
-### Configuring the DHCP Server
+## Configuring the DHCP Server
 
 In the Q-Shell you can configure the DHCP server in an easy way, similar to the normal DHCP server configuration. However, when you configure the DHCP with the Q-Shell, there is better error logging and its configuration is stored in a CMDB.
 
@@ -96,7 +103,7 @@ For every change that you apply in the CMDB configuration of the DHCPD, you have
 [[/note]]
 
 
-#### Configuration
+### Configuration
 
 Some parameters should be set to configure the DHCP server, this can be done by:
 
@@ -107,7 +114,8 @@ Some parameters should be set to configure the DHCP server, this can be done by:
 * *q.manage.dhcpd.cmdb.pxeTftpServer:* Server from which the hosts can mount their root filesystem.
 * *q.manage.dhcpd.cmdb.useHostName:* Use the name of the host declaration as hostname.
 
-#### Shared Networks
+
+### Shared Networks
 
 * Creating a Shared Network
 
@@ -123,7 +131,7 @@ Some parameters should be set to configure the DHCP server, this can be done by:
     ** *addTimeServer(timeServer):* Adds a timeserver (timeServer: time server IP).
 
 
-#### Hosts
+### Hosts
 
 * Adding a Host
 
@@ -141,7 +149,7 @@ Some parameters should be set to configure the DHCP server, this can be done by:
     ** *pxeTftpServer:* Server from which the hosts can mount their root filesystem.
 
 
-#### Creating a Client Class
+### Creating a Client Class
 
 To create a client class, we use:
 
@@ -151,7 +159,8 @@ To create a client class, we use:
 * *machStatement:* is the statement or condition to separate clients e.g. if substring(hardware,1,2) = 00:23
 
 
-#### Code Repositories
+### Code Repositories
 
 The source code can be found on the following BitBucket code repository:
     http://bitbucket.org/despiegk/dhcpd_extension
+    

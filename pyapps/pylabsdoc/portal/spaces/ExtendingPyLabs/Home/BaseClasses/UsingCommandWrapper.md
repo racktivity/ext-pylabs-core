@@ -1,4 +1,8 @@
-## Using the Command Wrapper Class
+@metadata title=Command Wrapper Class
+@metadata tagstring=command wrapper detail
+
+
+# Using the Command Wrapper Class
 
 In a system wrapper, you have seen that there is a management extension and a command tools extension. This command tools extension contains the modules with the command line commands of an application or service. 
 These commands are mainly used by the management module where the commands get the necessary parameters of a CMDB Object. The commands can also be used directly, but then all parameters have to be filled in manually.
@@ -6,11 +10,11 @@ These commands are mainly used by the management module where the commands get t
 The command tools module always inherits from the base class `CommandWrapper`. 
 
 
-### VirtualBoxMachineControl
+## VirtualBoxMachineControl
 This module contains the commands to manage a VirtualBox machine, e.g. start, stop, pause, resume, reboot, ...
 
 
-### Importing the Necessary Modules
+## Importing the Necessary Modules
 In a first phase you need to import all necessary modules. For all command tools modules you need to import the PyLabs framework central class, of which the `q` object is an instance, and the `CommandWrapper` base class.
 Import other modules if necessary.
 
@@ -24,7 +28,7 @@ import init
 [[/code]]
 
 
-### Creating Your Class
+## Creating Your Class
 Create a class that uses the CommandWrapper class and add a Pydoc that briefly explains the purpose of the class.
 [[code]]
 class VirtualBoxMachineControl(CommandWrapper):
@@ -33,7 +37,7 @@ class VirtualBoxMachineControl(CommandWrapper):
 [[/code]] 
 
 
-### Adding the Methods
+## Adding the Methods
 In the example below you find some sample methods of the VirtualBoxMachineControl module. The methods in the command tools contain some logic to avoid conflicts, for example if a VirtualBox machine has the status RUNNING, it can not be started a second time.
 Make sure that you add proper Pydocs to the methods.
 

@@ -1,17 +1,21 @@
-## Installation
+@metadata title=Installation
+@metadata tagstring=installation configuration
 
 
-### Requirements 
+# Installation
+
+
+## Requirements 
 
 * an ejabberd server installed somewhere with a configured user in a configured domain:
 
     i.qp.find('ejabberd').install()
 
 
-### Installation
+## Installation
 
 
-#### Non-Interactive
+### Non-Interactive
 
     q.kernel.agent.register(xmppservers=[...],domain,agentname="",passwd="")
 
@@ -29,7 +33,7 @@
 
 * if multiple xmppservers specified will register to all of them
 
-### `q.` Methods
+## `q.` Methods
 
     q.kernel.agent.stop()
     q.kernel.agent.start()

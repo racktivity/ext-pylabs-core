@@ -1,12 +1,15 @@
-[basemsg]: /pylabsdoc/#/Components/BaseMsg
+@metadata title=PyModel Message
+@metadata tagstring=pymodel message model
+
+[basemsg]: /#/Components/BaseMsg
 
 
-## PyModel Message
+# PyModel Message
 
 * send a changed pymodel message to a robot which will deal with the pymodel object and e.g. store it in a database or forward to another system or execute business logic
 
 
-### basic [basemessage][basemsg] properties
+## basic [basemessage][basemsg] properties
 
 * messagetype = q.enumerators.MessageType.PYMODEL
 * time (epoch = int)
@@ -18,7 +21,7 @@
 * body : thrift representation of pymodel
 
 
-### additional PymodelMessage properties
+## additional PymodelMessage properties
 
 * login (optional): as tag
 * passwd (optional) : as tag
@@ -28,7 +31,7 @@
 * model :in messagebody is json representation of dict of params (params dict like used in tasklets)
 
 
-### Optional tags used
+## Optional tags used
 
 e.g.
 * application (guid)
@@ -52,12 +55,12 @@ e.g.
     print message.getMessageString()
 
 
-### example string representation of logmessage
+## example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)  #if printed without multiline True everything will be serialized on 1 line
 
 
-### PyLabs
+## PyLabs
 
 Inherits from the base MessageObject
 

@@ -1,11 +1,14 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=PostgreSQL
+@metadata tagstring=postgres sql relational database db
+
+[qpinstall]: /#/Q-Packages/QPInstall
 
 
-## PostgreSQL
+# PostgreSQL
 
-PostgreSQL is an open source relational database. Typically it is used to store and retrieve data of a data model. In Pylabs, it is used together with OSIS for storing OSIS views.
+PostgreSQL is an open source relational database. Typically it is used to store and retrieve data of a data model. In PyLabs, it is used together with OSIS for storing OSIS views.
 
-### PostgreSQL Users
+## PostgreSQL Users
 
 To install PostgreSQL you should check if you have the correct user rights and access to the system.
 
@@ -15,7 +18,7 @@ If qbaseusermanagement is not yet installed and configured, it will be automatic
 [[/note]]
 
 
-### Installing PostgreSQL
+## Installing PostgreSQL
 
 Install the latest version of the Q-Package named 'postgresql'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
@@ -27,7 +30,7 @@ The more recent 'postgresql' packages might not have this exact name, so search 
 
 The configuration tasklet of PostgreSQL will initialize the database.
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 * *PostgreSQL command and management extension:* `/opt/qbase5/lib/pymonkey/extensions/servers/postgresql8`
 * *Basic PostgreSQL files:* `/opt/qbase5/apps/postgresql`
@@ -36,9 +39,9 @@ The configuration tasklet of PostgreSQL will initialize the database.
     ** `/opt/qbase5/lib64`
 
 
-### Managing PostgreSQL
+## Managing PostgreSQL
 
-#### Management Extensions
+### Management Extensions
 
 * To start the PostgreSQL server:
 
@@ -77,7 +80,7 @@ The configuration tasklet of PostgreSQL will initialize the database.
     q.manage.postgresql8.save()
 
 
-#### Q-Packages Start & Stop Tasklets
+### Q-Packages Start & Stop Tasklets
 
 Get a reference of the 'postgresql' Q-Package that you previously installed. This can be done the same way we installed the package:
 
@@ -96,7 +99,7 @@ Now you can use the start and stop tasklets as follows:
     i.qp.lastPackage.qpackage.stop()
 
 
-### Configuring PostgreSQL
+## Configuring PostgreSQL
 
 In the Q-Shell you can configure PostgreSQL in an easy way, similar to the normal PostgreSQL HTTPD application. However, when you configure PostgreSQL with the Q-Shell, there is better error logging and its configuration is stored in a CMDB.
 
@@ -120,13 +123,13 @@ For every change that you apply in the CMDB configuration of PostgreSQL, you hav
 [[/code]]
 
 
-#### Creating a Database
+### Creating a Database
 
 To create a database, use the following command:
 
     q.manage.postgresql8.cmdb.addDatabase(name='test')
 
-#### Setting Access Rights
+### Setting Access Rights
 
 To add a user to the access control list, use the command below:
 
@@ -140,7 +143,8 @@ To add a user to the access control list, use the command below:
 * *passwd:* password for the user.
 
 
-### Code Repositories
+## Code Repositories
 
 The source code can be found on the following BitBucket code repository:
     http://bitbucket.org/despiegk/postgresql8_extension
+    

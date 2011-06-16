@@ -1,15 +1,18 @@
-[basemsg]: /pylabsdoc/#/Components/BaseMsg
+@metadata title=Log Message
+@metadata tagstring=log message
 
-## logmessage
+[basemsg]: /#/Components/BaseMsg
+
+# logmessage
 
 
-### serialization
+## serialization
 
 there is nothing special to know here because is only using the basic properties from the MessageObject
 see [BaseMessage] for more info
 
 
-### [BaseMessage][basemsg]
+## [BaseMessage][basemsg]
 
 * messagetype = q.enumerators.MessageType.LOG
 * time (epoch = int)
@@ -21,7 +24,7 @@ see [BaseMessage] for more info
 * body : is the log message by itself
 
 
-### PyLabs
+## PyLabs
 
 Inherits from the base MessageObject
 
@@ -42,7 +45,7 @@ class LogObject(MessageObject):
 [[/code]]
 
 
-### code example
+## code example
 
     logmessage=q.messagehandler.getLogObject()
     logmessage.body="copy file x to file y"
@@ -58,14 +61,14 @@ class LogObject(MessageObject):
     print logmessage.getMessageString()
 
 
-### example string representation of logmessage
+## example string representation of logmessage
 
 * is result of : logmessage.getMessageString()
 
     '1|1266749848|5|unknown.somewhere.com||qshell|copyos customerid:100|copy file x to file y'
 
 
-#### LogLevel
+### LogLevel
 
 LogLevel classifies the message towards its intended reader and/or targeted device for reading.
 

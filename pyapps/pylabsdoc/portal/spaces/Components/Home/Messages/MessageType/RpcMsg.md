@@ -1,9 +1,12 @@
-[basemsg]: /pylabsdoc/#/Components/BaseMsg
+@metadata title=RPC Message
+@metadata tagstring=rpc message
 
-## RPC Message
+[basemsg]: /#/Components/BaseMsg
+
+# RPC Message
 
 
-### basic [basemessage][basemsg] properties
+## basic [basemessage][basemsg] properties
 
 * messagetype = q.enumerators.MessageType.RPC
 * time (epoch = int)
@@ -15,7 +18,7 @@
 * body : encoded string holding additional RCP properties
 
 
-### additional RPCMessage properties
+## additional RPCMessage properties
 
 * login (optional): as tag
 * passwd (optional) : as tag
@@ -25,7 +28,7 @@
 * params :in messagebody is json representation of dict of params (params dict like used in tasklets)
 
 
-### Optional tags used
+## Optional tags used
 
 e.g.
 * application (guid)
@@ -34,7 +37,7 @@ e.g.
 * job (guid or unique id) e.g. when RPC call was linked to a job
 
 
-### code examples
+## code examples
 
     rpccall=q.messagehandler.getRPCMessageObject()
     #we do it the long way there is also a rpccall.init(,,, method
@@ -48,7 +51,7 @@ e.g.
     print rpccall.getMessageString()
 
 
-### example string representation of logmessage
+## example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)  #if printed without multiline True everything will be serialized on 1 line
 
@@ -56,7 +59,7 @@ e.g.
     {"machineguid": "aavbb-dfdsfsdfsd-dfff"}
 
 
-### PyLabs
+## PyLabs
 
 Inherits from the base MessageObject
 

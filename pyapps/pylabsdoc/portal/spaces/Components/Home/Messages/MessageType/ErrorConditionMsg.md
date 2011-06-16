@@ -1,10 +1,13 @@
-[basemsg]: /pylabsdoc/#/Components/BaseMsg
+@metadata title=Error Condition Message
+@metadata tagstring=error condition 
+
+[basemsg]: /#/Components/BaseMsg
 
 
-## logmessage
+# logmessage
 
 
-### basic [basemessage][basemsg] properties
+## basic [basemessage][basemsg] properties
 
 * messagetype = q.enumerators.MessageType.ERRORCONDITION
 * time (epoch = int)
@@ -16,7 +19,7 @@
 * body : encoded string holding additional errorcondition properties
 
 
-### additional errorcondition properties
+## additional errorcondition properties
 
 * errormessagepublic -> encoded in messagebbody 
 * errormessageprivate -> encoded in messagebbody 
@@ -28,7 +31,7 @@
 ** is string which describes the errorcondition type  see http://spreadsheets.google.com/ccc?key=0Ap_pNb5g_5DwdHZYN05IZlk3c3NEWmxyU1dwUFoySmc&hl=en
 
 
-### Encoding Of MessageBody
+## Encoding Of MessageBody
 
 Message body is constructed out of optional parts
 
@@ -52,7 +55,7 @@ e.g
 backtrace, backtraceextra, logs, transactions are only relevent when errorcondition is found in which it is usefull to know context of script running
 this information is gathered from python interpreter    
 
-### Sample Message Body (for ErrorCondition Messagetype)
+## Sample Message Body (for ErrorCondition Messagetype)
 
     *#***public***#*************************************-*
     My Pub Message
@@ -67,9 +70,9 @@ this information is gathered from python interpreter
     File "/opt/qbase3/lib/python2.6/site-packages/IPython/iplib.py", line 1622, in embed_mainloop
 
 
-### code examples
+## code examples
 
-### errorcondition where no pylabs debugging is involved
+## errorcondition where no pylabs debugging is involved
 
     message=q.messagehandler.getErrorconditionObject()
     
@@ -87,7 +90,7 @@ this information is gathered from python interpreter
     print message.getMessageString()
 
 
-### example string representation of logmessage
+## example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)  #if printed without multiline True everything will be serialized on 1 line
 
@@ -98,7 +101,7 @@ this information is gathered from python interpreter
     pmachine overloaded
 
 
-### errorcondition where pylabs debugging is involved
+## errorcondition where pylabs debugging is involved
 
     #clear the logs
     q.logger.clear()
@@ -109,7 +112,7 @@ this information is gathered from python interpreter
     print message.getMessageString()
 
 
-### example string representation of logmessage
+## example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)
 
@@ -146,7 +149,7 @@ this information is gathered from python interpreter
     1/|1266753235/|5/|unknown.somewhere.com/|/|qshell/|/|1 log message
 
 
-### PyLabs
+## PyLabs
 
 Inherits from the base MessageObject
 
@@ -179,7 +182,7 @@ class ErrorconditionObject(MessageObject):
         
 [[/code]]
 
-### errorconditionlevels
+## errorconditionlevels
 
 1: end user message
 2: operator message

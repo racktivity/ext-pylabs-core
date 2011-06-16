@@ -1,5 +1,9 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
-[modeling]: /pylabsdoc/#/PyLabsApps/Modeling
+@metadata title=PyModel Extension
+@metadata order=40
+@metadata tagstring=extension practical example pymodel
+
+[qpinstall]: /#/Q-Packages/QPInstall
+[modeling]: /#/PyLabsApps/Modeling
 
 
 # Pymodel

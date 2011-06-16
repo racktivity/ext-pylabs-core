@@ -1,7 +1,11 @@
-[importpylabs]: /pylabsdoc/#/HowTo/ImportPyLabs
-[importextension]: /pylabsdoc/#/HowTo/ImportExtensionClass
-[baseclass]: /pylabsdoc/#/ExtendingPyLabs/BaseClasses
-[contribute]: /pylabsdoc/#/PyLabs50/Contributing
+@metadata title=CMDB SubObject
+@metadata order=40
+@metadata tagstring=cmdb subobject property
+
+[importpylabs]: /#/HowTo/ImportPyLabs
+[importextension]: /#/HowTo/ImportExtensionClass
+[baseclass]: /#/ExtendingPyLabs/BaseClasses
+[contribute]: /#/PyLabs50/Contributing
 
 
 # CMDB Sub Object Specifications
@@ -131,4 +135,4 @@ class DhcpSubnet(CMDBSubObject):
         configLines.append("    Domain name : %s;"%self.domainName)               
         
         return "\n".join(configLines)
-[[/code
+[[/code]]

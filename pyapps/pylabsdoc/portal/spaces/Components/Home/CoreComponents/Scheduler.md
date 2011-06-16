@@ -1,3 +1,6 @@
+@metadata title=Scheduler
+@metadata tagstring=schedule rabbitmq queue workflow engine
+
 ## Scheduler
 
 * the workflowengine acts as a scheduler for the OS.

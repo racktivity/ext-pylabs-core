@@ -1,5 +1,9 @@
+@metadata title=System Abstraction Layer
+@metadata order=60
+@metadata tagstring=system abstraction layer sal
+
 [imgPylabsSystemWrapper]: images/images50/extendingpylabs/PylabsSystemWrapper.png
-[cmdbobjproperty]: /pylabsdoc/#/ExtendingPyLabs/CmdbObjProperty
+[cmdbobjproperty]: /#/ExtendingPyLabs/CmdbObjProperty
 
 #System Abstraction Layer
 

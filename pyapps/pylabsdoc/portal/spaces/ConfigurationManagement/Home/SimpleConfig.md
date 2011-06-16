@@ -1,9 +1,13 @@
-##Simple Configuration
+@metadata title=Simple Configuration
+@metadata order=30
+@metadata tagstring=simple configuration
+
+#Simple Configuration
 
 Configuring applications which have simple configurations, which is plain key/value pairs, is very easy and goes in an interactive way.
 
 
-###Creating a New Configuration
+##Creating a New Configuration
 
 To create a new configuration, call the `add` method without any parameter. As example we take a Mercurial configuration:
 
@@ -21,7 +25,7 @@ In [2]:
 [[/code]]
 
 
-###Updating a Configuration
+##Updating a Configuration
 If you want to change parameters of a configuration, use the `review` function. If there are more than one configurations available, a list is first shown. If only one configuration is available, the review starts immediately.
 The default values of each parameter is shown between square brackets. If such a value is not to be updated, just press ENTER, otherwise enter a new value.
 
@@ -43,8 +47,7 @@ In [60]:
 [[/code]]
 
 
-
-###Alternative Way to Update a Configuration
+##Alternative Way to Update a Configuration
 If you need to configure an application via a script, you can not use the interactive way, but you can use the `configure` method.
 This method takes two parameters:
 
@@ -56,7 +59,7 @@ i.config.clients.mercurial.configure('my_mercurial_connection', {'login':'my_new
 [[/code]]
 
 
-###Removing a Configuration
+##Removing a Configuration
 If a configuration has become obsolete, you can remove it easily. 
 
 [[code]]

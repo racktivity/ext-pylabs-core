@@ -2,10 +2,10 @@
 @metadata title=Extending PyLabs
 @metadata tagstring=extend extension create
 
-[scripts]: /pylabsdoc/#/Scripting/Home
-[comp]: /pylabsdoc/#/ExtendingPyLabs/ExtensionComponents
-[create]: /pylabsdoc/#/ExtendingPyLabs/CreateExtension
-[enum]: /pylabsdoc/#/ExtendingPyLabs/CreateEnumerators
+[scripts]: /#/Scripting/Home
+[comp]: /#/ExtendingPyLabs/ExtensionComponents
+[create]: /#/ExtendingPyLabs/CreateExtension
+[enum]: /#/ExtendingPyLabs/CreateEnumerators
 
 
 

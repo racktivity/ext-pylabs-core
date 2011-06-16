@@ -1,4 +1,8 @@
-[extensiontutorial]: /pylabsdoc/#/ExtendingPyLabs/CreateExtension
+@metadata title=Creating a SAL
+@metadata order=10
+@metadata tagstring=create sal extension
+
+[extensiontutorial]: /#/ExtendingPyLabs/CreateExtension
 
 
 # Creating SAL's

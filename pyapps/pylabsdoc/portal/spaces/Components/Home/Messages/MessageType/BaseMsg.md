@@ -1,10 +1,14 @@
-## Base Message
+@metadata title=Base Message
+@metadata order=1
+@metadata tagstring=base message serialization format
+
+# Base Message
 
 The base message used as basis for all specific messages.
 
-### Serialization Format
+## Serialization Format
 
-#### Message Format
+### Message Format
 
 Can be represented as 1 line or multi-line (when multi-line encoding: \n -> /n)
 Standard representation is 1 line (this way can be stored as log)
@@ -42,7 +46,7 @@ Example:
     1|754545|9|||performancetester|cpuperf pmachine:dfdf-sdfsdfsdfsddf-sdfsdf|copy file from a to b
 
 
-#### In PyLabs
+### In PyLabs
 
 * q.messagehandler.getMessageObject()
 * implemented in pymonkey/core/messages/MessageObject.py
@@ -78,7 +82,7 @@ Additional information is available on UNIX TimeStamp. You may convert the EPOCH
 8. Message body: Additional information on Body of the Message
 
 
-### Code Example
+## Code Example
 
 * Interactive:
 

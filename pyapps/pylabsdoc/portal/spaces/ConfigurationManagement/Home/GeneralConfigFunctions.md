@@ -1,4 +1,9 @@
-##General Configuration Functions
+@metadata title=General Configuration Functions
+@metadata order=10
+@metadata tagstring=config function general
+
+
+#General Configuration Functions
 
 The configuration of applications may be complex if you have to configure it via the command line. PyLabs gets rid of this complexity and offers you instead an easy to use configuration platform.
 All PyLabs-compatible applications make use of this configuration platform.
@@ -9,7 +14,7 @@ There are two sections where you can configure an application:
 * `q.manage` name space: mainly used for complex configurations, for example a webserver configuration. A 
 
 
-###List of Configurations
+##List of Configurations
 To get a list of configurations of an application:
 
 [[code]]
@@ -23,7 +28,7 @@ Out[8]: {'80': <NginxVirtualHost.VirtualHost object at 0x27f2d50>}
 In the given examples, the configuration of the Mercurial clients are key/value pairs, the configuration of nginx is a complex configuration.
 
 
-###Displaying Configurations
+##Displaying Configurations
 If you want to see the details of a configuration of a simple configuration:
 
 [[code]]

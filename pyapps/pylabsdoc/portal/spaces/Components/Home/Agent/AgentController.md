@@ -1,9 +1,13 @@
-[command]: /pylabsdoc/#/Components/AgentCommands
+@metadata title=Agent Controller
+@metadata tagstring=agent controller agentcontroller
 
 
-## Agent Controller
+[command]: /#/Components/AgentCommands
 
-### intro (this is not implemeted yet)
+
+# Agent Controller
+
+## intro (this is not implemeted yet)
 
 * is ejabberd (cluster) + xmpp robot providing agent controller config mgmt functionality
 * this robot always listens to agentcontroller@$domainname
@@ -11,7 +15,7 @@
     ** e.g. domaincontroller@eur.daas.com
 
 
-### agentcontroller api
+## agentcontroller api
 
 * see: [Agent Commands][command] for basic protocol used to call for cmd's
 
@@ -37,7 +41,7 @@
     ** add $agentnameToAddToRoster to agent roster, do this in XMPP server (ejabberd)
 
 
-### how does it get installed
+## how does it get installed
 
 * qpackage:  agentcontroller 4
 * installs the appropriate tasklets in the AgentXMPPRobot tasklet dirs
