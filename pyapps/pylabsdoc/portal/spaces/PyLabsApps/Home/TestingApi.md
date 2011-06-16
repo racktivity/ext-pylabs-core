@@ -1,6 +1,10 @@
-[actions]: /pylabsdoc/#/PyLabsApps/Action
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
-[appserver]: /pylabsdoc/#/Components/AppServer
+@metadata title=Testing API
+@metadata order=130
+@metadata tagstring=test api pyapp
+
+[actions]: /#/PyLabsApps/Action
+[qpinstall]: /#/Q-Packages/QPInstall
+[appserver]: /#/Components/AppServer
 
 
 # Testing your API

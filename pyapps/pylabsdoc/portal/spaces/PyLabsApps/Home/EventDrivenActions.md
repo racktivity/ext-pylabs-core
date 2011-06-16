@@ -1,5 +1,10 @@
+@metadata title=Event-Driven Actions
+@metadata order=90
+@metadata tagstring=event actions event-driven
+
 [rabbit]: http://www.rabbitmq.com/
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
+[pyappdir]: /#/PyLabsApps/Introduction
+[events]: /#/Overview/Events
 
 #Event-Driven Actions
 In the previous sections you have learned how to create actions. These actions are all triggered by manual intervention, for example creating an object.
@@ -8,7 +13,7 @@ In many cases you want actions to be executed automatically, for example send a 
 
 
 ##PyLabs 5 Events
-Pylabs 5 introduces a new standardized way for publishing and consuming events using tasklets. The event framework uses [RabbitMQ][rabbit] as messaging system. The three important components in this event framework are:
+Pylabs 5 introduces a new standardized way for publishing and consuming [events][] using tasklets. The event framework uses [RabbitMQ][rabbit] as messaging system. The three important components in this event framework are:
 
 * Producer: publishes event messages in a specific format
 * Consumer: reads the event messages in the RabbitMQ network and triggers an action if the event message matches specific criteria
@@ -17,14 +22,14 @@ Pylabs 5 introduces a new standardized way for publishing and consuming events u
 Each application is able to define multiple consumers which are registered for certain types of events. These events can be published by any application and be consumed by any other application.
 
 
-###Event Structure
+##Event Structure
 An event in PyLabs 5 consists of two strings. The first string is the 'event' key, used to categorize the event. The second string can span multiple lines, where each line is a PyLabs tags/label-string. For example:
 
     customer_pending state:created guid:5a1b2969-7f7f-46b0-a0f8-4060f5f8ca5b
     status:new guid:1fdcd5cd-e9a5-4f3c-a329-f6ed72f790e2
 
 
-###Event Producer
+##Event Producer
 If your application, or an action in your application, must publish an event, you must execute the following API call:
     
     p.events.publish(routingKey, tagString)
@@ -51,7 +56,7 @@ def main(q, i, p, params, tags):
 [[/code]]
     
 
-###Event Consumer
+##Event Consumer
 A PyLabs event consumer is a client that reacts on a given event. The consumer consists of a configuration file and at least one tasklet.
 
 The configuration file has one section `[main]` with the following entries:
@@ -61,7 +66,7 @@ The configuration file has one section `[main]` with the following entries:
     workers = 1
 
 
-###Event key
+##Event Key
 Two wildcards are allowed in the event_key entry:
 
 * `*`: matches a single word delimited by periods
@@ -80,7 +85,7 @@ The events with following routing keys will not match:
     pylabs.event.crm.cancel.operation.confirmed
 
 
-###Workers
+##Workers
 The number of workers define how many processes can be started. Each process will be a instance of a tasklet engine. The incoming events, matching the event key, are distributed over the worker processes in a load balanced way. 
 
 

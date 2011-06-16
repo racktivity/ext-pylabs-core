@@ -1,9 +1,13 @@
-[tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
-[formwizard]: /pylabsdoc/#/PyLabsApps/FormWizardParctical
-[modeling]: /pylabsdoc/#/PyLabsApps/Modeling
-[action]: /pylabsdoc/#/PyLabsApps/Action
-[osisview]: /pylabsdoc/#/PyLabsApps/OsisViews
+@metadata title=Action Tasklets
+@metadata order=50
+@metadata tagstring=action tasklet create object property
+
+[tasklet]: /#/Overview/Tasklets
+[pyappdir]: /#/PyLabsApps/Introduction
+[formwizard]: /#/PyLabsApps/FormWizardParctical
+[modeling]: /#/PyLabsApps/Modeling
+[action]: /#/PyLabsApps/Action
+[osisview]: /#/PyLabsApps/OsisViews
 
 
 #Implementing Action Tasklets

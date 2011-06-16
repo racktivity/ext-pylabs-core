@@ -1,8 +1,12 @@
-[architecture]: /pylabsdoc/#/PyLabs50/Architecture
+@metadata title=OSIS Views
+@metadata order=40
+@metadata tagstring=osis view create connection index
+
+[architecture]: /#/Overview/Architecture
 [arakoon]: http://www.arakoon.org
-[tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
-[model]: /pylabsdoc/#/PyLabsApps/Modeling
+[tasklet]: /#/Overview/Tasklets
+[pyappdir]: /#/PyLabsApps/Introduction
+[model]: /#/PyLabsApps/Modeling
 
 
 #OSIS Views

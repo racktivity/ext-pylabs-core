@@ -1,6 +1,10 @@
-[tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
-[model]: /pylabsdoc/#/PyLabsApps/Modeling
+@metadata title=OSIS Operations
+@metadata order=45
+@metadata tagstring=osis operation delete get store
+
+[tasklet]: /#/Overview/Tasklets
+[pyappdir]: /#/PyLabsApps/Introduction
+[model]: /#/PyLabsApps/Modeling
 
 
 #OSIS Operations

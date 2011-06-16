@@ -1,10 +1,14 @@
+@metadata title=Form API
+@metadata order=66
+@metadata tagstring=form api
+
 #Form API
 
 In this section you can find the API documentation of the methods to create forms in a PyLabs Application.
 The methods to create a form are available in the name space `q.gui.form.`.
 
 
-###createForm()
+##createForm()
 
 This method instructs the wizard engine to create new form. The return value is a new wizard form object.
 
@@ -21,7 +25,7 @@ Example:
     form = q.gui.form.createForm()
 
 
-###askForm()
+##askForm()
 
 This method presents the constructed form to the end-user and wait until this user completes the wizard.
 
@@ -33,7 +37,7 @@ Example:
     retvalue = q.gui.dialog.askForm(form)
 
 
-###loadForm()
+##loadForm()
 
 Load a form object from a result of the askForm call.
 This transforms the dict to a form object.
@@ -43,7 +47,7 @@ Example:
     form = q.gui.form.loadForm(q.guid.dialog.askForm(form))
 
 
-###addTab()
+##addTab()
 
 Multiple tab pages can be created on a wizard form object. Tab pages allow you to group a set of related controls.
 At least 1 tab must be created before you can start adding other controls.
@@ -67,7 +71,7 @@ Example:
     tab = form.addTab('tab_general', 'General')
 
 
-###message()
+##message()
 
 The message control allows you to display read-only information to the end-user.
 Message controls can only be added on tab pages.
@@ -91,7 +95,7 @@ Example:
     tab.message('msg_welcome', 'Welcome to the sample wizard', True, False)
 
 
-###addText()
+##addText()
 
 The text control allows you to retrieve string input from the end-user.
 Text controls can only be added on tab pages.
@@ -121,7 +125,7 @@ Example:
     tab.addText(name='txt_name', text='Please give name',value='<YOUR NAME>', multiline=False, validator='[az-AZ-09]', helpText='Please provide your name. Allowed characters are A to Z and 0 to 9')
 
 
-###addMultiline()
+##addMultiline()
 
 The multiline control allows you to retrieve large string input from the end-user.
 Multiline controls can only be added on tab pages.
@@ -149,7 +153,7 @@ Example:
     tab.addMultiline(name='txt_notes', text='Additional notes', helpText='Please provide additional notes')
 
 
-###addInteger()
+##addInteger()
 
 The integer control allows you to retrieve integer value input from the end-user.
 Integer controls can only be added on tab pages.
@@ -179,7 +183,7 @@ Example:
     tab.addInteger(name='num_licenses', text='Number of licenses', minValue=1, maxValue=100, selectedValue=1)
 
 
-###addIntegers()
+##addIntegers()
 
 The integers control allows you to retrieve a list of comma separated integer values from the end-user.
 Integer controls can only be added on tab pages.
@@ -207,7 +211,7 @@ Example:
      tab.addIntegers(name='num_list', question='Please provide 2 numbers between 1 and 10', helpText='Provide 2 numbers separated by a comma')
 
 
-###addPassword()
+##addPassword()
 
 The password control allows you to retrieve password input from the end-user.
 Password controls can only be added on tab pages.
@@ -235,7 +239,7 @@ Example:
     tab.addPassword(name='passwd', text='Enter your password', helpText='Please provide your desired password')
 
 
-###addYesNo()
+##addYesNo()
 
 The YesNo control allows you to retrieve boolean input from the end-user.
 YesNo controls can only be added on tab pages.
@@ -263,7 +267,7 @@ Example:
     tab.addYesNo(name='yesno_finish', question='Are you sure this information is correct?')
 
 
-###addChoice()
+##addChoice()
 
 The choice control allows you to retrieve 1 selected value from a list of choices from the end-user. If the list of possible values contains 5 items or less, radio buttons are shown.
 If the list of possible values is more than 5, the control automatically shows a dropdown list.
@@ -294,7 +298,7 @@ Example:
                    selectedValue='ENG', helpText='Please select your department')
 
 
-###addChoiceMultiple()
+##addChoiceMultiple()
 
 The multiple choice control allows you to retrieve multiple values from a list of choices from the end-user.
 Multiple choice controls can only be added on tab pages.
@@ -332,7 +336,7 @@ Example:
                           selectedValue=[0,2], helpText='Please select all supported operating systems')
 
 
-###addDropDown()
+##addDropDown()
 
 The drop down control allows you to retrieve one value from a list of values from the end-user.
 Drop down controls can only be added on tab pages.
@@ -362,7 +366,7 @@ Example:
                     selectedValue='WIN', helpText='Please select the supported operating system')
 
 
-###addDate()
+##addDate()
 
 The date control allows you to retrieve a date value from the end-user. In a wizard UI the date is selected from a UI date selector.
 Date controls can only be added on tab pages.
@@ -393,7 +397,7 @@ Example:
     tab.addDate(name='date_birth', question='Enter date of birth', helpText='Please enter your date of birth')
 
 
-###addDateTime()
+##addDateTime()
 
 The datetime control allows you to retrieve a date / time value from the end-user. In a wizard UI the date and time are selected from a UI date and time selector.
 Datetime controls can only be added on tab pages.

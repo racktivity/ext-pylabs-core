@@ -2,7 +2,7 @@
 @metadata title=PyLabs Applications
 @metadata tagstring=pyapp toc applications
 
-[intro][/pylabsdoc/#/PyLabsApps/SampleApp]
+[intro][/pylabsdoc/#/PyLabsApps/Introduction]
 [modeling][/pylabsdoc/#/PyLabsApps/Modeling]
 [action][/pylabsdoc/#/PyLabsApps/Action]
 [osisview][/pylabsdoc/#/PyLabsApps/OsisViews]
@@ -14,7 +14,6 @@
 [wizardapi][/pylabsdoc/#/PyLabsApps/WizardApi]
 [reality][/pylabsdoc/#/PyLabsApps/Reality]
 [crud][/pylabsdoc/#/PyLabsApps/CRUD]
-[events][/pylabsdoc/#/PyLabsApps/Events]
 [eventdrivenaction][/pylabsdoc/#/PyLabsApps/EventDrivenActions]
 [scheduling][/pylabsdoc/#/PyLabsApps/Scheduling]
 [debug][/pylabsdoc/#/PyLabsApps/PyappDebug]
