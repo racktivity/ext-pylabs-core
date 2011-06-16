@@ -3,13 +3,13 @@
 @metadata tagstring=qshell Q-Shell ipython
 
 [iPython]: http://ipython.scipy.org/moin/
-[qp]: /pylabsdoc/#/Q-Packages/Q-Packages
-[pyapp]: /pylabsdoc/#/PyLabsApps/Home
-[familiar]: /pylabsdoc/#/Q-Shell/GettingFamiliar
-[practical]: /pylabsdoc/#/Q-Shell/Practical
-[debug]: /pylabsdoc/#/Q-Shell/DebugMode
-[options]: /pylabsdoc/#/Q-Shell/QShellOptions
-[magic]: /pylabsdoc/#/Q-Shell/MagicFunctions
+[qp]: /#/Q-Packages/Home
+[pyapp]: /#/PyLabsApps/Home
+[familiar]: /#/Q-Shell/GettingFamiliar
+[practical]: /#/Q-Shell/Practical
+[debug]: /#/Q-Shell/DebugMode
+[options]: /#/Q-Shell/QShellOptions
+[magic]: /#/Q-Shell/MagicFunctions
 
 
 #PyLabs Q-Shell
