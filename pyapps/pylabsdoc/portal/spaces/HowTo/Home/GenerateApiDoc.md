@@ -1,11 +1,14 @@
-## Generating the Cloud API Documentation
+@metadata title=Generate API Documentation
+@metadata tagstring=generate cloud api doc pydoc confluence alkira
+
+# How to Generate the Cloud API Documentation
 
 With the addition of the Alkira wiki, there are two types of documentation that can be generated:
 
 * Confluence format.
 * Alkira format.
 
-### Step 1: Installing the Extension
+## Step 1: Installing the Extension
 
 To generate and publish either documentation formats, you need to have the 'cloud_api_generator' Q-Package. This can be obtained by running the Q-Shell and doing the following:
 
@@ -26,7 +29,7 @@ If there are multiple versions, you will be asked to choose one. Latest tested v
 i.qp.lastPackage.install()
 [[/code]]
 
-### Step 2: Checking  the SSO Specifications
+## Step 2: Checking  the SSO Specifications
 
 * First, you need to get the cloud API specifications from mercurial. To do this run the command below:
 
@@ -52,7 +55,7 @@ q.generator.cloudapi.checkoutSpecs(destination='your_destination', login='login_
 [[/info]]
 
 
-### Step 3: Generate the Specifications
+## Step 3: Generate the Specifications
 
 Here is where the documentation format is decided, read the section relative to the format that you need.
 
@@ -91,7 +94,7 @@ The generated content can be found under the following directories:
 * *CloudAPI Server:* `/opt/qbase5/apps/cloud_api_generator/generatedServer`
 
 
-#### Alkira Format
+### Alkira Format
 
 To generate the specifications in Alkira format, run the generateAll method with 'documentationFormat='alkira':
 
@@ -100,7 +103,7 @@ q.generator.cloudapi.generateAll(documentationFormat='alkira')
 [[code]]
 
 
-#### Confluence Format
+### Confluence Format
 
 To generate the specifications in Confluence format, run the generateAll method with 'documentationFormat='confluence':
 
@@ -109,11 +112,11 @@ q.generator.cloudapi.generateAll(documentationFormat='confluence')
 [[code]]
 
 
-### Publish the Specification
+## Publish the Specification
 
 You can publish the generated specification on either Confluence or Alkira. Read the section relative to your requirement.
 
-#### Alkira
+### Alkira
 
 [[warning]]
 **Warning** 
@@ -148,7 +151,7 @@ Where:
 * *hostname:* is the IP that the Alkira Client will use to get a connection and add the pages.
 
 
-#### Confluence
+### Confluence
 
 To publish the documentation on Confluence, you need to insure that the confluence client is installed. You can do this as follows:
 

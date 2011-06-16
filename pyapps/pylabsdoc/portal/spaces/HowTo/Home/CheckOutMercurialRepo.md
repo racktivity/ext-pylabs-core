@@ -1,4 +1,8 @@
-## How to Check Out a Mercurial Repository in PyLabs
+@metadata title=Check Out Mercurial Repo
+@metadata tagstring=checkout mercurial repository
+
+
+# How to Check Out a Mercurial Repository in PyLabs
 
 To check out a mercurial repository in PyLabs, use this one-liner in the Q-Shell:
 

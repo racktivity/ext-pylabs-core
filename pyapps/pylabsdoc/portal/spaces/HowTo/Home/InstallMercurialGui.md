@@ -1,4 +1,8 @@
-## Install the Mercurial GUI: hgtk
+@metadata title=Install Mercurial GUI
+@metadata tagstring=install mercurial hgtk ubuntu 9.10 karmic koala
+
+
+# How to Install the Mercurial GUI (hgtk)
 
 Only applies for Ubuntu 9.10
 

@@ -1,8 +1,12 @@
-## How to Import PyLabs
+@metadata title=Import PyLabs
+@metadata tagstring=import library extension application
+
+
+# How to Import PyLabs
 
 There are three ways of importing PyLabs.
 
-### PyLabs in Standard Applications
+## PyLabs in Standard Applications
 
 [[info]]
 *Information** In all applications, use the line below to initialize PyLabs and as a result the `q` global variable will be available.
@@ -21,7 +25,7 @@ class testclass()
 [[/code]]
 
 
-### PyLabs in Extensions
+## PyLabs in Extensions
 
 [[code]]
 from pylabs import q
@@ -31,7 +35,7 @@ class testclass()
 [[/code]]        
    
         
-### PyLabs in a PyLabs Library
+## PyLabs in a PyLabs Library
 
 [[code]]
 import pylabs

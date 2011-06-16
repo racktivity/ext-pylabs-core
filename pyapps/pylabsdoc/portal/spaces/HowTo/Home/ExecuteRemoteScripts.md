@@ -1,11 +1,14 @@
-## How to  Execute Scripts on a Remote Server using the PyLabs Framework
+@metadata title=Execute Remote Scripts
+@metadata tagstring=remote script execute
+
+# How to  Execute Scripts on a Remote Server using the PyLabs Framework
 
 [[warning]]
 **Warning**
 This information is outdated.
 [[/warning]]
 
-### Installing `qshell_remote`
+## Installing `qshell_remote`
 
 To enable remote execution over ssh you require to install the qpackage qshell_remote
 [[code]]
@@ -41,7 +44,7 @@ Documentation:
 [[/code]]
 
 
-### Creating a Client for a Remote Connection
+## Creating a Client for a Remote Connection
 
 To access a remote system over ssh, you need to create a client connection first:
 
@@ -65,7 +68,8 @@ client.client         client.getOutPut(     client.logSSHToFile(  client.timeout
 client.execute(       client.host           client.password       client.username      
 [[/code]]
 
-### Executing a Remote Script
+
+## Executing a Remote Script
 
 Here is a little sample where I try to get the remote system's kernel info:
 
