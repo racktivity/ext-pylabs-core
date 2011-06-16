@@ -1,36 +1,18 @@
-class page:
+class space:
     """
-    Page object actions
+    space object actions
     """
 
-    def create(self, name, space, category, parent="", tags="", content="", order=None, title="", jobguid="", executionparams=None):
+    def create(self, name, tags="", jobguid="", executionparams=None):
         """
-        Create a new page object.
+        Create a new space object.
 
-        @param name:             name of the page
+        @param name:             name of the space
         @type name:              string
 
-        @param space:            space of the page
-        @type space:             guid
-
-        @param category:         category of the page
-        @type category:          string
-
-        @param parent:           parent of the page
-        @type parent:            string
-
-        @param tags:             tags of the page
+        @param tags:             tags of the space
         @type tags:              string
-
-        @param content:          content of the page
-        @type content:           string
-
-        @param order:            order of the page
-        @type order:             integer
-
-        @param title:            title of the page
-        @type title:             string
-
+        
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid
 
@@ -43,33 +25,18 @@ class page:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self, name="", space="", category="", parent="", tags="", order=None, title="", exact_properties=None, jobguid="", executionparams=None):
+    def find(self, name="", tags="", exact_properties=None, jobguid="", executionparams=None):
         """
-        Returns a list of page objects which met the find criteria.
+        Returns a list of space objects which met the find criteria.
  
         @execution_method = sync
         @security administrators
  
-        @param name:                   name of the page
+        @param name:                   name of the space
         @type name:                    string
 
-        @param space:                  space of the page
-        @type space:                   guid
-
-        @param category:               category of the page
-        @type category:                string
-
-        @param parent:                 parent of the page
-        @type parent:                  string
-
-        @param tags:                   tags of the page
+        @param tags:                   tags of the space
         @type tags:                    string
-
-        @param order:                  order of the page
-        @type order:                   integer
-
-        @param title:                  title of the page
-        @type title:                   string
 
         @param exact_properties:       an iterable of property names whose values should be matched exactly
         @type exact_properties:        iterable of strings
@@ -112,16 +79,16 @@ class page:
         @warning:                Only usable using the python client.
         """
         
-    def delete(self, pageguid, jobguid="",executionparams=None):
+    def delete(self, spaceguid, jobguid="",executionparams=None):
         """
-        Delete the page object with the guid specified.
+        Delete the space object with the guid specified.
         
         @security: administrator
         
         @execution_method = sync
         
-        @param pageguid:                 guid of the page object
-        @type pageguid:                  guid
+        @param spaceguid:                 guid of the space object
+        @type spaceguid:                  guid
         
         @param jobguid:                  guid of the job if available else empty string
         @type jobguid:                   guid
@@ -135,36 +102,18 @@ class page:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def update(self, pageguid, name, space, category, parent="", tags="", content="", order=None, title="", jobguid="", executionparams=dict()):
+    def update(self, spaceguid, name, tags="", jobguid="", executionparams=dict()):
         """
-        Create a new page object.
+        Create a new space object.
 
-        @param pageguid:         guid of the page object
-        @type pageguid:          guid
+        @param spaceguid:         guid of the space object
+        @type spaceguid:          guid
 
-        @param name:             name of the page
+        @param name:             name of the space
         @type name:              string
 
-        @param space:            space of the page
-        @type space:             guid
-
-        @param category:         category of the page
-        @type category:          string
-
-        @param parent:           parent of the page
-        @type parent:            string
-
-        @param tags:             tags of the page
+        @param tags:             tags of the space
         @type tags:              string
-
-        @param content:          content of the page
-        @type content:           string
-
-        @param order:            order of the page
-        @type order:             integer
-
-        @param title:            title of the page
-        @type title:             string
 
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid
