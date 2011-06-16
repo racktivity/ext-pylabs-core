@@ -1,8 +1,12 @@
-[qptasklets]: /pylabsdoc/#/Q-Packages/QPTasklets
+@metadata title=Creating a Binary Q-Package
+@metadata order=45
+@metadata tagstring=binary create qpackage
+
+[qptasklets]: /#/Q-Packages/QPTasklets
 [Ocaml]: http://caml.inria.fr/ocaml/index.en.html
 
 
-## Creating a Binary Q-Package
+# Creating a Binary Q-Package
 
 A binary Q-Package is a Q-Package that contains binary files from an existing application. The creation of a Binary Q-Package itself is complete similar as explained in the [Creating a Q-Package] section.
 
@@ -15,19 +19,19 @@ The typical procedure to create such a Q-Package:
 Below you find the `codemanagement`, `compile`, and `package` tasklet for the [Ocaml][] Package.
 
 
-#### Example of codemanagement Tasklet
+## Example of codemanagement Tasklet
 In this example, the source of the OCaml package is a `tar.gz` file. The tasklet downloads the source code, and extracted in the PyLabs temporary directory.
 
 [[include:name=codemanagement]][[/include]]
 
 
-#### Example of compile Tasklet
+## Example of compile Tasklet
 The `compile` tasklet is responsible to make OCaml PyLabs aware.
 
 [[include:name=compile]][[/include]]
 
 
-#### Example of package Tasklet
+## Example of package Tasklet
 The `package` tasklet copies the compiled package to the proper location in PyLabs.
 
 [[include:name=package]][[/include]]

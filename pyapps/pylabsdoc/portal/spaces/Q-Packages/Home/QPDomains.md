@@ -1,6 +1,11 @@
-[qparchitecture]: /pylabsdoc/#/Q-Packages/QPackageArchitecture
+@metadata title=Q-Package Domains
+@metadata order=70
+@metadata tagstring=qpackage domain
 
-## Q-Package Domains
+[qparchitecture]: /#/Q-Packages/QPackageArchitecture
+
+
+# Q-Package Domains
 
 Q-Packages are gathered per domain to keep their management easy. PyLabs 5 has by default three domains:
 
@@ -36,7 +41,7 @@ The Q-Package domains are defined in the file `sources.cfg`, located in `/opt/qb
     bundleupload = ftp://fileserver.incubaid.com/fileserver/qpackages5/bundles
 
 
-#### Domain Details
+## Domain Details
 Let's take `pylabs5` as example to provide more details about a domain.
 
 * **metadatabranch**: the branch for the metadata of the Q-Packages
