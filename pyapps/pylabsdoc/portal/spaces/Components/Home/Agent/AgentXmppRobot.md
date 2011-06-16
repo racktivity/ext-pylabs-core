@@ -1,19 +1,23 @@
-## Agent XMPP Robot
+@metadata title=Agent XMPP Robot
+@metadata tagstring=xmpp robot
+
+
+# Agent XMPP Robot
 
 xmpp robot = the component which terminates the xmpp messages and executes the api
 
 
-### Implementation Details XMPP Robot
+## Implementation Details XMPP Robot
 
 
-### Parsing Incoming XMPP Messages
+## Parsing Incoming XMPP Messages
 
 * every incoming XMPP message is parsed in
     ** cmd
     ** params  (for way how params need to be parsed see [XMPP Message Format|3.2 XMPP Message Format]
 
 
-### Tasklet Engine Used
+## Tasklet Engine Used
 
 dirstructure
 

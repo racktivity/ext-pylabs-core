@@ -1,4 +1,8 @@
-## Message Tags
+@metadata title=Message Tags
+@metadata order=20
+@metadata tagstring=tag message
+
+# Message Tags
 
 There are two types of tag formats, labels and tags.
 
@@ -11,7 +15,7 @@ Tags on the other hand, are in a key & value format separated with a colon:
     Key:Value
 
 
-### Reserved Tags
+## Reserved Tags
 
 The two reserved tags are:
 
@@ -21,7 +25,7 @@ The two reserved tags are:
 Of course physically, they are all strings.
 
 
-### Allowed Characters
+## Allowed Characters
 
 The allowed characters are listed below:
 
@@ -37,7 +41,7 @@ Other characters are allowed in the value field yet will not be displayed proper
 [[/note]]
 
 
-### Example
+## Example
 
 First, let's get a tag object:
 

@@ -1,3 +1,7 @@
+@metadata title=Tar.gz
+@metadata tagstring=targz archive
+
+
 # Tar.gz Example
 
 [[code]]

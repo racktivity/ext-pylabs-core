@@ -1,6 +1,10 @@
-## Generic Message Format over XMPP
+@metadata title=XMPP Message Format
+@metadata tagstring=xmpp message format
 
-### cmd
+
+# Generic Message Format over XMPP
+
+## cmd
 
     !$cmd
     param1
@@ -15,12 +19,12 @@
 * first argument will not have '$' prefix
 
 
-### return
+## return
 
 * when executing something output comes back as
 
 
-### log
+## log
 
 * all stderr, stdout, endusermessage, operatormessages, tracing comes back over log
 * logEntry will be the original log fields logtype\|timestamp\|source\|level\|tags\|message
@@ -28,7 +32,7 @@
     @$jobnr|$logEntry
 
 
-### return code when executing cmd
+## return code when executing cmd
 
     !!!$jobnr $returncodebiggernthan0
     $errormessage
@@ -39,17 +43,17 @@
 when error stacktrace is sent as log on level
 
 
-### parameters
+## parameters
 
 
-####1 parameter
+###1 parameter
 
     !machine start
     mymachine
     !
     
 
-####1 parameter which is multiline
+###1 parameter which is multiline
 
     !shell execute
     cd /
@@ -57,7 +61,7 @@ when error stacktrace is sent as log on level
     !
 
 
-####2 parameters which are all single line
+###2 parameters which are all single line
 
     !acommand
     customerx
@@ -68,7 +72,7 @@ when error stacktrace is sent as log on level
 \#the $ sign is used
 
 
-#### 3 parameters which are a mix of single & multiline
+### 3 parameters which are a mix of single & multiline
 
     !acommand
     customerx
@@ -79,10 +83,10 @@ when error stacktrace is sent as log on level
     !
 
 
-### some examples
+## some examples
 
 
-#### cmd with multiple lines
+### cmd with multiple lines
 
     !shellcmd
     cd /
@@ -101,7 +105,7 @@ return with error (errorcode is 3) and there is a backtrace available
     @5|3|...
 
 
-#### save file
+### save file
 
     !fs write
     /etc/avahi/services/something.service

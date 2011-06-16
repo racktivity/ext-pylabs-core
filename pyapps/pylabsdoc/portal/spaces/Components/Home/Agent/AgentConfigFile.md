@@ -1,4 +1,8 @@
-## Configuration File for XMPP Agent
+@metadata title=Configuration File
+@metadata tagstring=configuration file config xmpp agent
+
+
+# Configuration File for XMPP Agent
 
 On agent, stored in `/opt/qbase5/cfg/qconfig/agent.cfg`
 

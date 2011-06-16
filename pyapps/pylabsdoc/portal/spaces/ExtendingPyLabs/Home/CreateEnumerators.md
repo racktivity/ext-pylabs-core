@@ -1,4 +1,8 @@
-##Creating Custom Enumerators
+@metadata title=Custom Enumerators
+@metadata order=30
+@metadata tagstring=custom enumerator create
+
+#Creating Custom Enumerators
 
 An enumerator is a static/constant collection of instances of a specific type. It is accessible as attribute on the class of this type. In most situations you only want to allow some specific instances to exist (enumeration items) and disallow an external consumer to create extra type instances.
 Enumerator classes are ordinary classes which have always the `BaseEnumeration` class as base. The `BaseEnumeration` class itself provides not much functionality, next to basic implementations of `__str__` and `__repr__`, a check method which checks whether a given variable is a valid enumeration item (alike check methods on other _pmtype_ classes), and a generic `getByName` method which retrieves an enumeration item based on its name.
@@ -14,7 +18,7 @@ These are the four steps to create a custom enumerator:
 These are the minimum steps for creating an enumerator. Extra functionality can be added, for example to show human readable values instead of some PyLabs internal codes.
 
 
-###Example
+##Example
 Below you find an example of an enumerator in its simplest way.
 
 [[code]]
@@ -50,7 +54,7 @@ q.enumerators.YourCustomEnum.PARROT       q.enumerators.YourCustomEnum.getByName
 [[/code]]
 
 
-###Assign a Code to an Enumerator Value
+##Assign a Code to an Enumerator Value
 When retrieving an enumerator value, you get an instance of the enumerator, which is often not easy to work with. 
 Instead of getting an enumerator instance, it is also possible to assign an integer value and retrieve this integer.
 

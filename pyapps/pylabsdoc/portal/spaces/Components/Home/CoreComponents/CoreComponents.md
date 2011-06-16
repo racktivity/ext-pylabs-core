@@ -1,4 +1,8 @@
-##PyLabs Core Components
+@metadata title=Core Components
+@metadata order=10
+@metadata tagstring=core component
+
+#PyLabs Core Components
 
 [[warning]]
 **Warning**

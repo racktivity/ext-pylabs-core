@@ -1,3 +1,6 @@
+@metadata title=SSH
+@metadata tagstring=ssh test remote connection
+
 # SSH Test Example
 
 [[code]]

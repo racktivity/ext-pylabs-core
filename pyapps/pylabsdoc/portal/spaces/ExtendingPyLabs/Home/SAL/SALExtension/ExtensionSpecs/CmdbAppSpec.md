@@ -1,8 +1,12 @@
-[importpylabs]: /pylabsdoc/#/HowTo/ImportPyLabs
-[importextension]: /pylabsdoc/#/HowTo/ImportExtensionClass
-[baseclass]: /pylabsdoc/#/ExtendingPyLabs/BaseClasses
-[contribute]: /pylabsdoc/#/PyLabs50/Contributing
-[testdata]: /pylabsdoc/#/ExtendingPyLabs/CmdbTestData
+@metadata title=CMDB Application
+@metadata order=20
+@metadata tagstring=cmdb application
+
+[importpylabs]: /#/HowTo/ImportPyLabs
+[importextension]: /#/HowTo/ImportExtensionClass
+[baseclass]: /#/ExtendingPyLabs/BaseClasses
+[contribute]: /#/PyLabs50/Contributing
+[testdata]: /#/ExtendingPyLabs/CmdbTestData
 
 
 # CMDB Application Specifications

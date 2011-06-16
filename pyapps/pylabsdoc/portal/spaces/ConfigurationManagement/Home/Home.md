@@ -2,11 +2,12 @@
 @metadata title=Configuration Management
 @metadata tagstring=configuration management
 
-[components]: /pylabsdoc/#/Components/Home
-[install]: /pylabsdoc/#/Installation/Home
-[general]: /pylabsdoc/#/ConfigurationManagement/GeneralConfigFunctions
-[simple]: /pylabsdoc/#/ConfigurationManagement/SimpleConfig
-[cmdb]: /pylabsdoc/#/ConfigurationManagement/CMDBConfig
+[components]: /#/Components/Home
+[install]: /#/Installation/Home
+[general]: /#/ConfigurationManagement/GeneralConfigFunctions
+[simple]: /#/ConfigurationManagement/SimpleConfig
+[cmdb]: /#/ConfigurationManagement/CMDBConfig
+[nginx]: http://wiki.nginx.org
 
 
 #Configuration Management

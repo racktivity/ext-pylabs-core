@@ -1,3 +1,7 @@
+@metadata title=Messages
+@metadata order=40
+@metadata tagstring=message
+
 # PyLabs Messages
 
 [[warning]]

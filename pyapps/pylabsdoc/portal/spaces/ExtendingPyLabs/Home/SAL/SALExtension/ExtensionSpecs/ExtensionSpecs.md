@@ -1,3 +1,7 @@
+@metadata title=Extension Specifications
+@metadata tagstring=extension spec sal
+
+
 # Writing Specifications for a PyLabs Extension
 
 Specifications define the interface of a PyLabs Extension, or in other words the specification provides information on the methods exposed by a PyLabs Extension.

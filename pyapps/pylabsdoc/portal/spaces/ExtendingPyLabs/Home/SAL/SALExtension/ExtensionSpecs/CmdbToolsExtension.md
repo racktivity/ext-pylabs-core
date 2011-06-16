@@ -1,8 +1,12 @@
-[importpylabs]: /pylabsdoc/#/HowTo/ImportPyLabs
-[importextension]: /pylabsdoc/#/HowTo/ImportExtensionClass
-[baseclass]: /pylabsdoc/#/ExtendingPyLabs/BaseClasses
-[contribute]: /pylabsdoc/#/PyLabs50/Contributing
-[namespace]: /pylabsdoc/#/PyLabs50/NameSpaces
+@metadata title=CMDB Tools
+@metadata order=10
+@metadata tagstring=cmdb tools spec
+
+[importpylabs]: /#/HowTo/ImportPyLabs
+[importextension]: /#/HowTo/ImportExtensionClass
+[baseclass]: /#/ExtendingPyLabs/BaseClasses
+[contribute]: /#/PyLabs50/Contributing
+[namespace]: /#/PyLabs50/NameSpaces
 
 
 # CMD Tools Extension Specifications
