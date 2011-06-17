@@ -1,4 +1,4 @@
-@metadata spaceorder=10
+@metadata spaceorder=100
 @metadata title=Extending PyLabs
 @metadata tagstring=extend extension create
 

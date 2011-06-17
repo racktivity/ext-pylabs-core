@@ -1,4 +1,4 @@
-@metadata spaceorder=3
+@metadata spaceorder=30
 @metadata title=Installing PyLabs
 @metadata tagstring=installation install prerequisite
 

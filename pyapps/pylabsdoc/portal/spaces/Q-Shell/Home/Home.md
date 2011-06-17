@@ -1,4 +1,4 @@
-@metadata spaceorder=5
+@metadata spaceorder=50
 @metadata title=Q-Shell
 @metadata tagstring=qshell Q-Shell ipython
 

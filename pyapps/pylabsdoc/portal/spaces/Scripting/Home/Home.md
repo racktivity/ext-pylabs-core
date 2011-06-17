@@ -1,4 +1,4 @@
-@metadata spaceorder=6
+@metadata spaceorder=60
 @metadata title=PyLabs as Scripting Platform
 @metadata tagstring=script scripts
 
