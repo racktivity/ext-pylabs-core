@@ -1,5 +1,5 @@
 @metadata spaceorder=60
-@metadata title=PyLabs as Scripting Platform
+@metadata title=Scripting with PyLabs
 @metadata tagstring=script scripts
 
 [first]: /#/Scripting/YourFirstScript
