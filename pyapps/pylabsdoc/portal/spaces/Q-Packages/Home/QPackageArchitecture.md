@@ -3,7 +3,7 @@
 @metadata tagstring=architecture q-package package
 
 [Confluence]: http://www.atlassian.com/software/confluence/
-[imgQPArch]: images/qpackages/qp5_architecture.gif
+[imgQPArch]: images/images50/qpackages/qp5_architecture.gif
 
 
 # Q-Packages Architecture

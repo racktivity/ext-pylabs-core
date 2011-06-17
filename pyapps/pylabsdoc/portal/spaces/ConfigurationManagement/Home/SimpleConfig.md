@@ -1,5 +1,5 @@
 @metadata title=Simple Configuration
-@metadata order=30
+@metadata order=20
 @metadata tagstring=simple configuration
 
 #Simple Configuration

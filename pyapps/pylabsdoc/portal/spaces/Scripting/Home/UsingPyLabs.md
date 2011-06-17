@@ -9,6 +9,8 @@
 In the introduction you have seen a first example of a PyLabs script, by means of printing 'Hello World!' on your screen. In this section you find some more practical examples of PyLabs scripts.
 
 [[tip]]
+**Tip**
+
 Remember that you can simulate everything in the Q-Shell and call the help function with the question mark
 [[/tip]]
 
@@ -16,7 +18,9 @@ Remember that you can simulate everything in the Q-Shell and call the help funct
 ##Working with Files and Directories
 In the [Q-Shell chapter][qshell] you have seen the basics of file system manipulations via the Q-Shell. Below you can find some more examples.
 
-**Create `tar.gz` File**
+
+###Create `tar.gz` File
+
 Compress a directory (recursively) to a `.tar.gz` file
 
 [[code]]
@@ -39,7 +43,8 @@ q.system.fs.targzCompress('/foo', '/foo/bar.tar.gz')
 
 The function works in a recursive way.
 
-**Extract `.tar.gz` File**
+
+###Extract `.tar.gz` File
 Extract a `tar.gz` archive to a destination directory:
 
 [[code]]
@@ -56,7 +61,8 @@ Documentation:
 q.system.fs.targzUncompress('/foo/bar.tar.gz', '/home/user/Documents')
 [[/code]]
 
-**Calculate `md5`**
+
+###Calculate `md5`
 Calculate the `md5` checksum of a file:
 
 [[code]]
@@ -73,7 +79,8 @@ In [77]: q.system.fs.md5sum('/foo/bar.tar.gz')
 Out[77]: 'cc37263f7e3139ed178d87ea393d92eb'
 [[/code]]
 
-**Get Subdirectories**
+
+###Get Subdirectories
 Get the list subdirectories in a given directory (non-recursive):
 
 [[code]]
@@ -134,7 +141,7 @@ q.application.stop()
 ##Network Functions
 So far we have focused on the PyLabs file system functions. In this paragraph we will show some network functionalities.
 
-**Download Files**
+###Download Files
 Download a file from an URI or local file path. The supported protocols are `http`, `https`, `ftp`, and `file`.
 
 [[code]]
@@ -164,7 +171,7 @@ In [106]: q.system.net.getMacAddressForIp('192.168.16.199')
 Out[106]: '08:00:27:d6:30:1a'
 [[/code]]
 
-**Check if a Port is Open**
+###Check if a Port is Open
 Some services require a TCP/IP port to be open, for example SSH. To check this, you can verify if the port is listening to incoming calls:
 
 [[code]]

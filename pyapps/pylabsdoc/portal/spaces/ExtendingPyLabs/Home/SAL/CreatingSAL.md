@@ -5,7 +5,7 @@
 [extensiontutorial]: /#/ExtendingPyLabs/CreateExtension
 
 
-# Creating SAL's
+#Creating SAL's
 
 SAL means 'System Abstraction Layer' it is used to abstract an underlying layer.
 Typically it means creating extensions to support the same API to manage or use applications on different platforms.

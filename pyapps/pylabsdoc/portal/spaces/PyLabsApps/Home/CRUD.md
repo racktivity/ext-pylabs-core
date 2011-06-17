@@ -109,7 +109,9 @@ class order:
         """
 [[/code]]
 
-[[note]]   
+[[note]]  
+**Note**
+ 
 * Name of parameters *must* be <rootobject>guid and all attribute names should be the same as defined in the model.
 * Methods that return objects, like 'getObject', should have "@execution_method = sync" in its doc string.
 [[/note]]

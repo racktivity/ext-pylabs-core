@@ -1,5 +1,5 @@
 @metadata title=Wizard API
-@metadata order=67
+@metadata order=30
 @metadata tagstring=wizard api
 
 #Wizard API

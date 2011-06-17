@@ -85,6 +85,7 @@ In the Q-Shell you can configure the DHCP server in an easy way, similar to the 
 
 [[note]]
 **Note** 
+
 For every change that you apply in the CMDB configuration of the DHCPD, you have to execute the following steps:
 
 1 - Start the changes for the DHCPD CMDB configuration:

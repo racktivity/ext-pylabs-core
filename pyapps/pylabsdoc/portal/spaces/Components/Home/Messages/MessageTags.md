@@ -37,6 +37,7 @@ The allowed characters are listed below:
 
 [[note]]
 **Note** 
+
 Other characters are allowed in the value field yet will not be displayed properly. These characters are: , ; ? ! # $ % ^ & * ( ) [ ] { } '
 [[/note]]
 

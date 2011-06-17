@@ -10,7 +10,7 @@ Samba is an open source implementation of the SMB protocol for Linux, Solaris an
 ## Installing Samba
 
 Install the latest version of the Q-Packages named 'samba' and 'samba_extension'.
-If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall]] page.
+If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 ## Location in the Sandbox
 
@@ -73,6 +73,7 @@ In the Q-Shell you can configure Samba in an easy way, similar to the normal Sam
 
 [[note]]
 **Note** 
+
 For every change that you apply in the CMDB configuration of Samba, you have to execute the following steps:
 
 1 - Start the changes for the Samba CMDB configuration:

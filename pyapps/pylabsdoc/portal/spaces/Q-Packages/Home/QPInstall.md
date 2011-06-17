@@ -72,6 +72,8 @@ With the found Q-Package from the previous section you can easily install the Q-
 [[/code]]
 
 [[tip]]
+**Tip**
+
 If you know the name of the Q-Package, you can install it with one line:
 
     In [20]: i.qp.findByName('agent').install()

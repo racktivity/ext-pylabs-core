@@ -19,6 +19,7 @@ The code below initializes a hypervisor:
 
 [[note]]
 **Note** 
+
 This call should be executed in an environment where the workflow engine is running and initialized.
 [[/note]]
 

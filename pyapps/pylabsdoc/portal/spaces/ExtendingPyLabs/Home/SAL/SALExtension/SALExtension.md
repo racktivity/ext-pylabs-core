@@ -1,5 +1,5 @@
 @metadata title=SAL Extensions
-@metadata order=1
+@metadata order=20
 @metadata tagstring=sal extension overview
 
 # PyLabs SAL Extensions

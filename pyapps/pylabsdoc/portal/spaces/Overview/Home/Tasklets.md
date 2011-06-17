@@ -2,7 +2,7 @@
 @metadata order=50
 @metadata tagstring=tasklet engine structure
 
-[ns]: /#/PyLabs50/NameSpaces
+[ns]: /#/Overview/NameSpaces
 [dict]: http://docs.python.org/release/2.6.6/library/stdtypes.html#dict
 
 

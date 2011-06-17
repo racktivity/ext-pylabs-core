@@ -20,6 +20,7 @@ i.qp.find('cloud_api_generator')
 
 [[note]]
 **Note** 
+
 If there are multiple versions, you will be asked to choose one. Latest tested version is 3.1.6.
 [[/note]]
 
@@ -37,22 +38,18 @@ i.qp.lastPackage.install()
 q.generator.cloudapi.checkoutSpecs(login='login_name', password='password')
 [[/code]]
 
-[[info]]
-**Information**
+[[note]]
+**Note**
 
 The default directory where the SSO specifications are checked out is:
 
-[[code]]
-/opt/qbase5/tmp/ssospecs
-[[/code]]
+    /opt/qbase5/tmp/ssospecs
 
 If you would like to change this directory, you need to execute the checkoutSpecs method with an extra parameter, which is 'destination'.
 
-[[code]]
-q.generator.cloudapi.checkoutSpecs(destination='your_destination', login='login_name', password='password')  
-[[/code]]
+    q.generator.cloudapi.checkoutSpecs(destination='your_destination', login='login_name', password='password')  
 
-[[/info]]
+[[/note]]
 
 
 ## Step 3: Generate the Specifications

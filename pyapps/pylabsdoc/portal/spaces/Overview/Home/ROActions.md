@@ -22,7 +22,8 @@ Use the action manager of the workflow engine to start a root object action. A  
     q.actions.rootobject.machine.restore(backupmachineguid, executionparams=executionparams)
 
 [[note]]
-**Note** 
+**Note**
+
 This call should be executed in an environment where the workflow engine is running and initialized.
 [[/note]]
 

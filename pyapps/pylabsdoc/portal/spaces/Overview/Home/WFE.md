@@ -2,7 +2,7 @@
 @metadata order=40
 @metadata tagstring=wfe workflow engine
 
-[architecture]: /#/PyLabs50/Architecture
+[architecture]: /#/Overview/Architecture
 [stackless]: http://www.stackless.com/
 [qpinstall]: /#/Q-Packages/QPInstall
 [imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png

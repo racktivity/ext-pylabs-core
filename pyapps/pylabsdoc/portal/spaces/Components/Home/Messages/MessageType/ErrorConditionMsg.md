@@ -37,12 +37,12 @@ Message body is constructed out of optional parts
 
 Keywords for these parts are
 
-# public
-# private
-# backtrace
-# backtraceextra
-# logs
-# transactions
+* public
+* private
+* backtrace
+* backtraceextra
+* logs
+* transactions
 
 Each part starts with 
 
@@ -72,7 +72,7 @@ this information is gathered from python interpreter
 
 ## code examples
 
-## errorcondition where no pylabs debugging is involved
+### errorcondition where no pylabs debugging is involved
 
     message=q.messagehandler.getErrorconditionObject()
     
@@ -90,7 +90,7 @@ this information is gathered from python interpreter
     print message.getMessageString()
 
 
-## example string representation of logmessage
+### example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)  #if printed without multiline True everything will be serialized on 1 line
 
@@ -101,7 +101,7 @@ this information is gathered from python interpreter
     pmachine overloaded
 
 
-## errorcondition where pylabs debugging is involved
+### errorcondition where pylabs debugging is involved
 
     #clear the logs
     q.logger.clear()
@@ -112,7 +112,7 @@ this information is gathered from python interpreter
     print message.getMessageString()
 
 
-## example string representation of logmessage
+### example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)
 

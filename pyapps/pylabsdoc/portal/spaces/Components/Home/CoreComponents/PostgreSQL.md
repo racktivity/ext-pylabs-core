@@ -14,6 +14,7 @@ To install PostgreSQL you should check if you have the correct user rights and a
 
 [[note]]
 **Note** 
+
 If qbaseusermanagement is not yet installed and configured, it will be automatically installed and configured.
 [[/note]]
 
@@ -25,6 +26,7 @@ If you are unfamiliar with how to install a Q-Package, please check the [Install
 
 [[note]]
 **Note** 
+
 The more recent 'postgresql' packages might not have this exact name, so search for the package with 'postgresql*' instead. For this tutorial, I worked with the package 'postgresql_8_4_3'.
 [[/note]]
 

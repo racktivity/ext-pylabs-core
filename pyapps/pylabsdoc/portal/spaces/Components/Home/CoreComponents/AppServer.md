@@ -25,6 +25,7 @@ Once it restarts you will be asked a series of question regarding the configurat
 
 [[note]]
 **Note** 
+
 The values present between square brackets are the defaults, you do not have to type them, simply press the enter key unless you would like to change them.
 [[/note]]
 
@@ -84,6 +85,7 @@ To reload a specific service:
 
 [[note]]
 **Note** 
+
 The name of the service to reload must be one of the values retrieved by the `q.manage.applicationserver.listServices()` command.
 [[/note]]
 

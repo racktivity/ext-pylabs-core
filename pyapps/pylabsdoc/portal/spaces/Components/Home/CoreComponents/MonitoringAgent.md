@@ -14,7 +14,8 @@ Install the latest version of the Q-Package named 'cloud_monitoring_agent'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 [[note]]
-**Note** 
+**Note**
+ 
 When you restart your Q-Shell, you will be asked to configure the Clould API Connection, followed by the Monitoring Agent.
 [[/note]]
 

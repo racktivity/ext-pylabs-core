@@ -14,7 +14,7 @@
 [ejabberd]: /#/Components/Ejabberd
 [monitoring]: /#/Components/MonitoringAgent
 [PostgreSQL]: /#/Components/PostgreSQL
-[Tasklets]: /#/PyLabs50/Tasklets
+[Tasklets]: /#/Overview/Tasklets
 [wfe]: /#/Components/WFE
 [DHCPD]: /#/Components/DHCPD
 [dns]: /#/Components/DNS
@@ -26,6 +26,7 @@
 
 [[warning]]
 **Warning**
+
 This PyLabs Components section needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.

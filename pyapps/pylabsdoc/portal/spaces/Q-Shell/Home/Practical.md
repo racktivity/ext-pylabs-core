@@ -16,7 +16,6 @@ All operating system commands are located under `q.system.` in the Q-Shell.
 * unix commands: `q.system.unix`, for example create users, create groups, ...
 * file system walker: `q.system.fswalker`, for example browse through directories and list specific files while browsing
 
-[[toc]][[/toc]]
 
 ##Working with Files and Directories
 Below you find various Q-Shell commands and its output. More examples can be found in the [Scripting chapter][fswalker].

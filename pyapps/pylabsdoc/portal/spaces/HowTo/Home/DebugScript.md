@@ -15,6 +15,7 @@ Let's take this example script. The script is completely functional, but it is u
 
 [[note]]
 **Note**
+
 Do not forget to remove this line when your script is completely debugged.
 [[/note]]
 

@@ -1,5 +1,5 @@
 @metadata title=Form and Wizard Conventions
-@metadata order=63
+@metadata order=10
 @metadata tagstring=form wizard convention rules naming
 
 [map]:  http://docs.python.org/library/functions.html?highlight=map#map

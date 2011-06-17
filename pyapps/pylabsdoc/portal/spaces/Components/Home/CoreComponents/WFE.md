@@ -1,7 +1,7 @@
 @metadata title=Workflow Engine
 @metadata tagstring=workflow engine tasklet action job
 
-[architecture]: /#/PyLabs50/Architecture
+[architecture]: /#/Overview/Architecture
 [stackless]: http://www.stackless.com/
 [qpinstall]: /#/Q-Packages/QPInstall
 [imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
@@ -126,6 +126,7 @@ Several functions are available in the 'q' tree/namespace.
 
 [[note]]
 **Note**
+
 The methods in the hooks below are carried out when a workflow engine process starts, yet you do not have direct access to them.
 [[/note]]
 

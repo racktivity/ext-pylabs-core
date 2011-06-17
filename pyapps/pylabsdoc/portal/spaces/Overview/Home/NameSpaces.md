@@ -14,4 +14,4 @@ is not interactive it can still be used inside the Q-Shell, mainly for testing p
 The `i.` name space provides interactivity in the Q-Shell: commands do not have to be entered with sets of parameters unlike in the `q.` name space. Instead the user is asked to enter the parameters step by step. 
 As a result, many Q-Shell operations are much more user-friendly, because you do not need to know all the parameters for the commands. Commands in the `i.` name space cannot be used inside a script if the script needs to run without user interaction.
 
-The last name space, `p.`, is used to control PyLabs applications ([PyApps][pyapps], for example to install or start a PyApp.
+The last name space, `p.`, is used to control PyLabs applications ([PyApps][pyapps], for example to install or start a PyApp).

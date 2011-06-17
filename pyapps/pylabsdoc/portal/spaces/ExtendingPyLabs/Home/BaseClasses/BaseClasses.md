@@ -15,11 +15,11 @@ The PyLabs base classes module contains different classes which are required for
 ----
 ## In this Chapter...
 
-* Overview of the PyLabs BaseClasses
+Overview of the PyLabs BaseClasses
 
 [[children/]]
 
-----
+
 ## BaseCMDBObject
 The BaseCMDBObject class is the base for _all_ CMDB object types, e.g. CMDBServerObject or CMDBApplicationObject. All types of CMDB objects must inherit from this class. This class adds the attributes _timestampcreated_ and _timestampmodified_ to a new type of CMDB Object. Both attributes are integers and represent epoch time.
 

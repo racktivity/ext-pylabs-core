@@ -9,6 +9,7 @@
 
 [[warning]]
 **Warning**
+
 This page needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.
@@ -86,6 +87,7 @@ Typically those are the actions which should be performed on the node which will
 
 [[note]]
 **Note** 
+
 Choose 'admin' as your login and password.
 [[/note]]
 

@@ -151,6 +151,7 @@ The destination folder of the cloned repository is very important for the furthe
 
 [[tip]]
 **Tip**
+
 Most of the generated tasklets start with the line `qpackage = params['qpackage']`. If you want to simulate this `qpackage` object in your Q-Shell session, execute this line in the Q-Shell:
 
 `In [1]: qpackage = i.qp.find("packagename").qpackage`
@@ -176,6 +177,8 @@ In a last step, you have to put all the files from the source directories (via t
     i.qp.lastPackage.package()
 
 [[tip]]
+**Tip**
+
 These three above described steps (checkout, compile, and package) are all automated in one method, `quickPackage()`.
 [[/tip]]
 

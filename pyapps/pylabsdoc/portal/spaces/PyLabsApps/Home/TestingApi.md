@@ -11,6 +11,7 @@
 
 [[warning]]
 **Warning**
+
 This page needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.
@@ -37,6 +38,7 @@ Prior to generating the API, we need to set the directory from which the generat
 
 [[note]]
 **Note** 
+
 You need to reconfigure this everytime you restart your Q-Shell.
 [[/note]]
 
@@ -54,12 +56,15 @@ Find and install the latest versions of the Q-Packages named 'applicationserver'
 
 [[note]]
 **Note** 
+
 When you restart the Q-Shell after installing the application server, you will be asked to configure it. Details of this configuration can be found on the [Application Server][[appserver] page. Also if you would like more details on the workflow engine, you can check the [Workflow Engine] page.
 [[/note]]
 
 Restart the shell after the configuration.
 
 [[warning]]
+**Warning**
+
 Because we have no agent configured and we are not going to use the storage backend we will get some errors during reconfiguration.
 Just answer with 1 (Skip this one) on the first question (no agent config) then enter the default values for the configuration questions that you will be asked.
 
@@ -118,6 +123,7 @@ We should only put the generated code in the right location and start creating r
 Here we add a cloud API connection named 'main'.
 [[note]]
 **Note** 
+
 Choose 'admin' for customer login and customer password.
 [[/note]]
 

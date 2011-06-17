@@ -23,7 +23,8 @@ PyLabs 5 has an installation script that automatically downloads and installs th
 To install PyLabs 5 only, follow the steps as described below:
 
 1. Get root privileges: `sudo su`
-2. Launch the installer with the following command: 
+2. Launch the installer with the following command:
+
 `curl http://fileserver.incubaid.com/pylabs5/pylabs5-installer.sh | sh`
 
 
