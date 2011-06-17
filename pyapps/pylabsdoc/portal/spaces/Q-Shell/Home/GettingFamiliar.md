@@ -1,3 +1,7 @@
+@metadata title=Getting Familiar
+@metadata order=10
+@metadata tagstring=getting familiar
+
 [imgQshell1]: images/images50/qshell/Q-Shell_01.png
 [imgQshell2]: images/images50/qshell/Q-Shell_02.png
 [imgQshell3]: images/images50/qshell/Q-Shell_03.png
@@ -5,9 +9,9 @@
 [imgQshell5]: images/images50/qshell/Q-Shell_05.png
 
 
-##Getting Familiar with the Q-Shell
+#Getting Familiar with the Q-Shell
 
-### Starting the Q-Shell
+## Starting the Q-Shell
 When you have installed PyLabs, go to the folder `/opt/qbase5`.
 
 Enter the following command to launch the Q-Shell: `./qshell`
@@ -15,7 +19,7 @@ Enter the following command to launch the Q-Shell: `./qshell`
 ![Q-Shell window][imgQshell1]
 
 
-### Name Spaces
+## Name Spaces
 
 The Q-Shell has three main name spaces:
 
@@ -24,7 +28,7 @@ The Q-Shell has three main name spaces:
 * **p.**: the name space to manage PyLabs applications
 
 
-### Using the Q-Shell
+## Using the Q-Shell
 
 Throughout the complete Q-Shell you can use TAB-completion for minimizing the time in entering commands and avoiding to enter erroneous commands.
 

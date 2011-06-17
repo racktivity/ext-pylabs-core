@@ -1,6 +1,9 @@
+@metadata title=Q-Package Tasklets
+@metadata order=50
+@metadata tagstring=tasklet compile backup codemanagement configure install package start stop
+
 [Mercurial]: http://mercurial.selenic.com/
-[codemanagement]: /pylabsdoc/#/Q-Packages/QPTasklets
-[configure]: /pylabsdoc/#/Q-Packages/Configure.md
+[configure]: /#/Q-Packages/Configure
 
 
 ## Q-Package Tasklets
@@ -57,7 +60,7 @@ The `addSource()` method takes three parameters:
 The `compile` tasklet is the tasklet tagged with "compile". 
 The tasklet is only necessary if the package needs to be compiled in order to become usable for PyLabs, for example the _ocaml_ Q-Package.
 
-This tasklet compiles the source files and put the resulting files in their proper location in PyLabs. The tasklet can assume that the source files are put in PyLabs in advance, for example by the [codemanagement][] tasklet.
+This tasklet compiles the source files and put the resulting files in their proper location in PyLabs. The tasklet can assume that the source files are put in PyLabs in advance, for example by the codemanagement tasklet.
 
 The tasklet should:
 

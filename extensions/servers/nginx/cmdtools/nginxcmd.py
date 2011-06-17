@@ -62,11 +62,13 @@ class NginxCmd(CommandWrapper):
         started = False
         while t > 0:
             if q.system.fs.exists(self._getPifFilePath()):
-                pid = int(q.system.fs.fileGetContents(self._getPifFilePath()))
-                if q.system.process.isPidAlive(pid):
-                    if q.system.process.checkProcess('nginx') == 0:
-                        started = True
-                        break
+                pid = q.system.fs.fileGetContents(self._getPifFilePath()).strip()
+                if pid:
+                    pid = int(pid)
+                    if q.system.process.isPidAlive(pid):
+                        if q.system.process.checkProcess('nginx') == 0:
+                            started = True
+                            break
             t = t - 1
             time.sleep(1)
 

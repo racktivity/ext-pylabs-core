@@ -1,4 +1,7 @@
-##How to Debug PyLabs Scripts
+@metadata title=Debug Scripts
+@metadata tagstring=debug script pdb shell breakpoint
+
+#How to Debug PyLabs Scripts
 
 When creating PyLabs scripts, it is possible that you need to debug some errors. In that case you have two options:
 
@@ -6,7 +9,7 @@ When creating PyLabs scripts, it is possible that you need to debug some errors.
 * via debug breakpoints: set breakpoints in your script to start an interactive debugger
 
 
-###Q-Shell Debug
+##Q-Shell Debug
 
 Let's take this example script. The script is completely functional, but it is used to show its behavior. To start an interactive Q-Shell session, add `q.debbuger.shell()` anywhere in your script.
 
@@ -64,7 +67,7 @@ You notice that the variable `age` is available in the Q-Shell. This allows you 
 When leaving the Q-Shell, your script continues.
 
 
-###Debug Breakpoints
+##Debug Breakpoints
 PyLabs supports several Python debuggers, including standard PDB, the IPython enhanced PDB, and RPDB2/WinPDB (when available on the system). The debugger to be used can be configured using `q.debugger.configure()`. A specific debugger
 can also be selected by calling `q.debugger.configure('name')`, where *name* should be one of 'pdb', 'ipython', 'winpdb' or 'disabled' (to disable all breakpoint calls).
 

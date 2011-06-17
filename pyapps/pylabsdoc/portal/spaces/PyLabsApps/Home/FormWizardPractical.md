@@ -1,10 +1,14 @@
-[tasklet]: /pylabsdoc/#/PyLabs50/Tasklets
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
-[actiontasklet]: /pylabsdoc/#/PyLabsApps/ActionTasklet
-[formapi]: /pylabsdoc/#/PyLabsApps/FormWizard
-[modeling]: /pylabsdoc/#/PyLabsApps/Modeling
-[api]:  /pylabsdoc/#/api/Home
-[wizardapi]: /pylabsdoc/#/PyLabsApps/WizardApi
+@metadata title=Forms and Wizards
+@metadata order=60
+@metadata tagstring=form wizard create structure
+
+[tasklet]: /#/Overview/Tasklets
+[pyappdir]: /#/PyLabsApps/Introduction
+[actiontasklet]: /#/PyLabsApps/ActionTasklet
+[formapi]: /#/PyLabsApps/FormWizard
+[modeling]: /#/PyLabsApps/Modeling
+[api]:  /#/api/Home
+[wizardapi]: /#/PyLabsApps/WizardApi
 
 
 #Creating Forms and Wizards

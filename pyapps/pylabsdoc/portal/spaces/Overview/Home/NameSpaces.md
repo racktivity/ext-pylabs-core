@@ -1,7 +1,11 @@
-[pyapps]: /pylabsdoc/#/PyLabsApps/Home
+@metadata title=Name Spaces
+@metadata order=90
+@metadata tagstring=name spaces q i p libraries
+
+[pyapps]: /#/PyLabsApps/Home
 
 
-##Name Spaces
+#Name Spaces
 PyLabs has three name spaces, `i.`, `p.`, and `q.`, that give access to the PyLabs libraries. Each of the name spaces has its own specific purpose in PyLabs.
 
 The `q.` name space is used when writing scripts. The commands in this name space are not interactive, they require that all input parameters are given when the command is called. Although the `q.` name space

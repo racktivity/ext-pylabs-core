@@ -1,7 +1,11 @@
-[appserver]: /pylabsdoc/#/Components/AppServer
-[wfe]: /pylabsdoc/#/Components/WFE
+@metadata title=Generating PyApp API
+@metadata order=120
+@metadata tagstring=generate pyapp api
 
-# Generating an API
+[appserver]: /#/Components/AppServer
+[wfe]: /#/Components/WFE
+
+# Generating the PyApp API
 
 [[warning]]
 **Warning**

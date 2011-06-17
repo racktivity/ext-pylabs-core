@@ -1,4 +1,8 @@
-## Installing a Q-Package
+@metadata title=Installing a Q-Package
+@metadata order=30
+@metadata tagstring=install find
+
+# Installing a Q-Package
 The installation of a Q-Package is a simple procedure of two steps, executed in PyLabs' Q-Shell. When you know the exact name of the Q-Package you can even install the Q-Package with one command.
 
 The two steps to install a Q-Package:
@@ -6,7 +10,7 @@ The two steps to install a Q-Package:
 2. Installing a Q-Package
 
 
-#### Before Installing a Q-Package
+## Before Installing a Q-Package
 Prior to the installation of a Q-Package it is recommended to update the Q-Package metadata of your PyLabs framework.
 
 [[code]]
@@ -21,7 +25,8 @@ Prior to the installation of a Q-Package it is recommended to update the Q-Packa
 
 The `updateMetaDataAll` method updates the metadata repositories of all domains in your PyLabs framework. This action assures that you will look up the most up to date Q-Packages.
 
-#### Finding a Q-Package
+
+## Finding a Q-Package
 In the Q-Shell use the `findByName` method. This method accepts one argument, the name of the Q-Package. The argument can contain '*' as wildcard, as starting as well as ending character. See the examples below:
 
 [[code]]
@@ -55,7 +60,7 @@ It is possible that your `findByName` action returns more than one result. In th
 To work with the found Q-Package you can either use `i.qp.lastPackage` or store the Q-Package instance in a variable, `package = i.qp.findByName('agent')`.
 
 
-#### Installing a Q-Package
+## Installing a Q-Package
 With the found Q-Package from the previous section you can easily install the Q-Package with the `install` method.
 
 [[code]]

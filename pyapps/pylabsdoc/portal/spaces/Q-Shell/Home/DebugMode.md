@@ -1,4 +1,8 @@
-##Q-Shell Debug Mode
+@metadata title=Debug Mode
+@metadata order=30
+@metadata tagstring=debug mode qshell
+
+#Q-Shell Debug Mode
 
 It might occur that something goes wrong in your Q-Shell and that you get a message that you must run Q-Shell in debug mode for more information. To do so:
 
@@ -7,7 +11,7 @@ It might occur that something goes wrong in your Q-Shell and that you get a mess
 
 Your Q-Shell starts in debug mode.
 
-### Extra Functionality
+## Extra Functionality
 
 When Q-Shell debug mode is activated, following functionality is available in Q-Shell:
 * Private methods and members (starting with `pm_` or an underscore) are visible when using tab completion.

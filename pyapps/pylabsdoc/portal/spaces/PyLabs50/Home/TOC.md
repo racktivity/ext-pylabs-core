@@ -1,3 +1,7 @@
+@metadata title=Table of Contents
+@metadata order=10
+@metadata tagstring=table contents toc
+
 ##Table of Contents
 
 [[pagetree:space=PyLabs50]][[/pagetree]]

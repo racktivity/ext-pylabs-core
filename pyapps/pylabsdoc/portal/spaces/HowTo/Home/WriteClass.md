@@ -1,6 +1,10 @@
-## How to Write a Class in PyLabs
+@metadata title=Write a Class
+@metadata tagstring=class write
 
-### Example Class
+
+# How to Write a Class in PyLabs
+
+## Example Class
 
 [[code]]
 # for entry level programs we use:

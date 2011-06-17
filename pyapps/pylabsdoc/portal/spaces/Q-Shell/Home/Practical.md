@@ -1,6 +1,10 @@
-[fswalker]: /pylabsdoc/#/Scripting/UsingPyLabs
+@metadata title=Using Q-Shell
+@metadata order=20
+@metadata tagstring=practical usage qshell script file system directories network
 
-##Using the Q-Shell
+[fswalker]: /#/Scripting/UsingPyLabs
+
+#Using the Q-Shell
 In the previous sections you have learned how to work with the Q-Shell and what the principles are.
 In this section you will get some more practical examples to use the Q-Shell.
 
@@ -14,7 +18,7 @@ All operating system commands are located under `q.system.` in the Q-Shell.
 
 [[toc]][[/toc]]
 
-###Working with Files and Directories
+##Working with Files and Directories
 Below you find various Q-Shell commands and its output. More examples can be found in the [Scripting chapter][fswalker].
 
 **Copy File**
@@ -173,7 +177,7 @@ Instead of just looking up the files, the `fswalker` can also execute an action 
 See [the Scripting Chapter][fswalker] for examples of this function.
 
 
-###Some Other OS Examples
+##Some Other OS Examples
 
 **Networking**
 Ping a machine:

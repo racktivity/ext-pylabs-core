@@ -1,7 +1,11 @@
-[qshell]: /pylabsdoc/#/Q-Shell/Practical
+@metadata title=Using PyLabs
+@metadata order=20
+@metadata tagstring=files directories network archive md5
+
+[qshell]: /#/Q-Shell/Practical
 
 
-##Using PyLabs
+#Using PyLabs
 In the introduction you have seen a first example of a PyLabs script, by means of printing 'Hello World!' on your screen. In this section you find some more practical examples of PyLabs scripts.
 
 [[tip]]
@@ -9,7 +13,7 @@ Remember that you can simulate everything in the Q-Shell and call the help funct
 [[/tip]]
 
 
-###Working with Files and Directories
+##Working with Files and Directories
 In the [Q-Shell chapter][qshell] you have seen the basics of file system manipulations via the Q-Shell. Below you can find some more examples.
 
 **Create `tar.gz` File**
@@ -87,7 +91,7 @@ Out[92]:
 [[/code]]
 
 
-###File System Walker
+##File System Walker
 In this paragraph we will give you two examples of working with the `fswalker.walk` function. This allows you to recursively walk through a directory and execute commands on the files.
 
 Below you find an example to look up the files with a file size larger than 1MB. Therefore we need to create a function (callback function)
@@ -127,7 +131,7 @@ q.application.stop()
 [[/code]]
 
 
-###Network Functions
+##Network Functions
 So far we have focused on the PyLabs file system functions. In this paragraph we will show some network functionalities.
 
 **Download Files**

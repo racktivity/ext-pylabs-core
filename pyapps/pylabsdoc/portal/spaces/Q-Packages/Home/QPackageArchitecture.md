@@ -1,8 +1,12 @@
+@metadata title=Q-Package Architecture
+@metadata order=20
+@metadata tagstring=architecture q-package package
+
 [Confluence]: http://www.atlassian.com/software/confluence/
 [imgQPArch]: images/qpackages/qp5_architecture.gif
 
 
-## Q-Packages Architecture
+# Q-Packages Architecture
 
 The Q-Package framework consists of different components as shown in the image below:
 
@@ -14,7 +18,7 @@ As input for a Q-Package, you have source code repositories, here displayed as `
 A `mercurial` instance exists in the Q-Package framework as Q-Package metadata repository. In the framework there is a special Q-Package directory structure from where you can publish or install the Q-Packages.
 
 
-### Q-Package Directory Structure
+## Q-Package Directory Structure
 
     /opt/qbase5/var/qpackages4/
     |
@@ -68,7 +72,7 @@ A `mercurial` instance exists in the Q-Package framework as Q-Package metadata r
         `-- domainX
 
 
-### What's in the Directories?
+## What's in the Directories?
 In the above schema, you see the complete directory structure, related to Q-Packages. In this section you find the details of the different directories and files, also with their relationship with the components of the framework overview image.
 
 * *bundles*: the bundles directory contains the applications in an archived format. The archives are published on an FTP server.

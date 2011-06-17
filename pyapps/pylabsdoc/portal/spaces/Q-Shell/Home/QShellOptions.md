@@ -1,4 +1,8 @@
-## Other Q-Shell Options
+@metadata title=Q-Shell Options
+@metadata order=40
+@metadata tagstring=options log help file
+
+# Other Q-Shell Options
 
 Besides the debug mode of Q-Shell, you can start Q-Shell with other options:
 

@@ -1,14 +1,17 @@
+@metadata title=Initialize PyLabs Scripts
+@metadata tagstring=initialize script import custom
+
 [imgInit1]: images/images50/howto/GettingStarted017.png
 [imgInit2]: images/images50/howto/GettingStarted018.png
 
 
-## How to Initialize Q-Shell Scripts
+# How to Initialize PyLabs Scripts
 
-Q-shell scripts are scripts using py-labs code.
+Q-Shell scripts are scripts using PyLabs code.
 
 This doc shows you how you can perform a custom PyLabs initialization.
 
-### Example Initialization of PyLabs
+## Example Initialization of PyLabs
 
 Applications using the PyLabs framework are themselves responsible for the initialization of the PyLabs framework. 
 There are several initialization methods which be can optionally called before using the PyLabs object called `q`.
@@ -36,7 +39,7 @@ q.application.stop(exitcode)
 ![defaultInit][imgInit1]
 
 
-### Custom Initialization Script
+## Custom Initialization Script
 
 Out of the box any script (application) like above does not need a custom initialization. However, you can also create your own initialization routines.
 
@@ -44,7 +47,7 @@ Convention:
 Create an `init_<yourapplicationName>.py` file and put in same directory as your application.
 
 
-#### `init_testapp.py`
+### `init_testapp.py`
 [[code]]
 from pylabs.inifile import IniFile
 from pylabs.Vars import Vars
@@ -78,7 +81,7 @@ q.logger.log("Custom Initialization finished.")
 [[/code]]
 
 
-#### `testAppCustomInitialization.py`
+### `testAppCustomInitialization.py`
 
 [[code]]
 #in all apps use next line to initialize pylabs, as a result the q global var will be available.
@@ -107,7 +110,7 @@ q.application.stop(exitcode)
 ![customInit][imgInit2]
 
 
-###Remark
+##Remark
 
 The PyLabs singleton is exposed in the main PyLabs package, so any module using it (applications, utility modules, libraries,..) should import it using: 
 

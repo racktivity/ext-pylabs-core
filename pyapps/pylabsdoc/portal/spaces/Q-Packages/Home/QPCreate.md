@@ -1,8 +1,12 @@
-[qptasklets]: /pylabsdoc/#/Q-Packages/QPTasklets
-[qpcreatebinary]: /pylabsdoc/#/Q-Packages/QPCreatebinary
+@metadata title=Creating a Q-Package
+@metadata order=40
+@metadata tagstring=create tasklet package
+
+[qptasklets]: /#/Q-Packages/QPTasklets
+[qpcreatebinary]: /#/Q-Packages/QPCreatebinary
 
 
-## Creating a Q-Package
+# Creating a Q-Package
 
 A Q-Package is a package that you install in PyLabs 5.
 Each Q-Package is defined by the domain it belongs to, by its name and by its version. A build number further specifies the build of the Q-Package, but no Q-Packages that only differ in the build number can coexist on the same system.
@@ -19,7 +23,7 @@ Metadata consists of:
 * tasklets: small pieces of code which execute tasks for easier management of the Q-Package
 
 
-#### Overview Steps of Creating a Q-Package
+## Overview Steps of Creating a Q-Package
 Below you can find the subsequent steps to create a Q-Package:
 
 1. Create an empty Q-Package in a domain on the system repository (/opt/qbase5/var/qpackages4)
@@ -34,7 +38,7 @@ Below you can find the subsequent steps to create a Q-Package:
     During the complete process of creating a Q-Package, leave the Q-Shell session open!
 
 
-#### Creating a Q-Package
+## Creating a Q-Package
 To create a Q-Package on your local workstation:
 
 1. Create a new Q-Package:
@@ -127,12 +131,13 @@ The last question when adding a dependency sets a dependency type:
 * *build*: indicates that the selected Q-Package is only needed to build your Q-Package
 * *runtime*: indicates that the selected Q-Package is required to make your Q-Package functional, and thus must be installed together with your Q-Package
 
-#### Create the necessary tasklets
+
+## Create the necessary tasklets
 Default tasklets have been generated when the Q-Package was created. Now is the time to customize the appropriate tasklets.
 For more info see [Q-Package Tasklets][qptasklets].
 
 
-#### Building the Q-Package
+## Building the Q-Package
 
 Make sure that you have correctly created the [codemanagement][qptasklets] tasklet. To execute the `codemanagement` tasklet, call the `checkout` method on your new Q-Package object:
 
@@ -175,7 +180,7 @@ These three above described steps (checkout, compile, and package) are all autom
 [[/tip]]
 
 
-#### Publishing the Q-Package
+## Publishing the Q-Package
 In the previous sections you have learned to create a Q-Package. A last step is to publish the new Q-Package in the domain, in order to become available to other users.
 
 To publish a new Q-Package you publish a domain. This action executes the following steps:

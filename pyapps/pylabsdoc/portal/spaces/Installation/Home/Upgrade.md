@@ -1,3 +1,7 @@
+@metadata title=Upgrading PyLabs
+@metadata order=20
+@metadata tagstring=upgrade
+
 # Upgrading PyLabs
 
 Update your environment with the following command sequence in the Q-Shell:
