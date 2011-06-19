@@ -1,4 +1,6 @@
 def main(q, i, p, params, tags):
+    for page in p.api.action.ui.page.find(space=params['spaceguid'])['result']:
+        p.api.model.ui.page.delete(page)
     p.api.model.ui.space.delete(params['spaceguid'])
     params['result'] = True
     
