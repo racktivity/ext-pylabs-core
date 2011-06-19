@@ -17,7 +17,7 @@ class ActionService:
         params['methodname'] = methodname
         params['args'] = args
         params['kwargs'] = kwargs
-        _authenticate.execute(params, tags=tags)
+        ActionService._authenticate.execute(params, tags=tags)
         return params.get('result', False)
 
     def checkAuthorization(self, criteria, request, domain, service, methodname, args, kwargs):
@@ -30,5 +30,5 @@ class ActionService:
         params['methodname'] = methodname
         params['args'] = args
         params['kwargs'] = kwargs
-        _authorize.execute(params, tags=tags)
+        ActionService._authorize.execute(params, tags=tags)
         return params.get('result', False)
