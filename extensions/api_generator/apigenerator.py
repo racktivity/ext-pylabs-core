@@ -927,7 +927,7 @@ class AppAPIGenerator(object):
                                'destination':['impl', 'action', 'ui', 'page', 'update', '1_page_update.py']},
             
            {'template':'UiSpaceCreate.tmpl', 'params':params, 
-                   'destination':['impl', 'action', 'ui', 'dpsvr', 'create', '1_space_create.py']},
+                   'destination':['impl', 'action', 'ui', 'space', 'create', '1_space_create.py']},
                                 
            {'template':'UiSpaceDelete.tmpl', 'params':params, 
                                'destination':['impl', 'action', 'ui', 'space', 'delete', '1_space_delete.py']},
