@@ -27,6 +27,10 @@ class AppManager(object):
     
     
     def install (self, appname):
+        app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+        if not q.system.fs.exists(app_dir):
+            raise RuntimeError('Application "%s" does not exist'%appname)
+        
         p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         q.action.start("Generating config for %s" % appname)
@@ -198,14 +202,23 @@ class AppManager(object):
         sync_to_alkira(appname, sync_space=space, clean_up=clean_up)
         
     def start(self, appname):
+        app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
+        if not q.system.fs.exists(app_cfg_dir):
+            raise RuntimeError('Application "%s" does not exist'%appname)
         gen = PyAppsConfigGen(appname)
         gen.start()
     
     def stop(self, appname):
+        app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
+        if not q.system.fs.exists(app_cfg_dir):
+            raise RuntimeError('Application "%s" does not exist'%appname)
         gen = PyAppsConfigGen(appname)
         gen.stop()
  
     def restart(self, appname):
+        app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
+        if not q.system.fs.exists(app_cfg_dir):
+            raise RuntimeError('Application "%s" does not exist'%appname)
         gen = PyAppsConfigGen(appname)
         gen.stop()
         gen.start()
