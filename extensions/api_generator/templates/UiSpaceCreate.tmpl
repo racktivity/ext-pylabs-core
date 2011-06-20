@@ -3,8 +3,9 @@ def main(q, i, p, params, tags):
     space = p.api.model.ui.space.new()
     space.name = params['name']
     space.tags = params.get('tags')
+    space.repository = params.get('repository')
     p.api.model.ui.space.save(space)
     params['result'] = True
-    
+
 def match(q, i, p, params, tags):
     return True

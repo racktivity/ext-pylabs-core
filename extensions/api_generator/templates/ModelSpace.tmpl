@@ -6,3 +6,5 @@ class space(model.RootObjectModel):
     name = model.String(thrift_id=1)
     \#@doc tags related to the space
     tags = model.String(thrift_id=2)
+    \#@doc mercurial repository related to the space
+    repository = model.String(thrift_id=3)
