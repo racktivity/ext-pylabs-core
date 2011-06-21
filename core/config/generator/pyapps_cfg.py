@@ -274,6 +274,8 @@ LFW_CONFIG = {
         'createSpace': '/%(appname)s/appserver/rest/ui/portal/createSpace',
         'deleteSpace': '/%(appname)s/appserver/rest/ui/portal/deleteSpace',
         'updateSpace': '/%(appname)s/appserver/rest/ui/portal/updateSpace',
+        'importSpace': '/%(appname)s/appserver/rest/ui/portal/importSpace',
+        'exportSpace': '/%(appname)s/appserver/rest/ui/portal/exportSpace',
         'macros': '/%(appname)s/js/macros/'
     },
     'appname' : '%(appname)s'
