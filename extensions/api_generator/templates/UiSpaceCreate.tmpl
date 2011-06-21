@@ -3,7 +3,13 @@ def main(q, i, p, params, tags):
     space = p.api.model.ui.space.new()
     space.name = params['name']
     space.tags = params.get('tags')
-    space.repository = params.get('repository')
+
+    repo = space.repository.new()
+    repo.url = params.get('repository')
+    repo.username = params.get('repo_username')
+    repo.password = params.get('repo_password')
+    space.repository = repo
+
     p.api.model.ui.space.save(space)
     params['result'] = True
 

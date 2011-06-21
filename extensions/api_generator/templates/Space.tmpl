@@ -3,7 +3,7 @@ class space:
     space object actions
     """
 
-    def create(self, name, tags="", repository="", jobguid="", executionparams=None):
+    def create(self, name, tags="", repository="", repo_username="", repo_password="", jobguid="", executionparams=None):
         """
         Create a new space object.
 
@@ -13,8 +13,14 @@ class space:
         @param tags:             tags of the space
         @type tags:              string
 
-        @param repository:       mercurial repository of the space
+        @param repository:       repository of the space
         @type repository:        string
+
+        @param repo_username:    username of the repository
+        @type repo_username:     string
+
+        @param repo_password:    password of the repository
+        @type repo_password:     string
 
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid
@@ -41,7 +47,7 @@ class space:
         @param tags:                   tags of the space
         @type tags:                    string
 
-        @param repository:             mercurial repository of the space
+        @param repository:             repository of the space
         @type repository:              string
 
         @param exact_properties:       an iterable of property names whose values should be matched exactly
@@ -108,7 +114,7 @@ class space:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def update(self, spaceguid, name, tags="", repository="", jobguid="", executionparams=dict()):
+    def update(self, spaceguid, name, tags="", repository="", repo_username="", repo_password="", jobguid="", executionparams=dict()):
         """
         Create a new space object.
 
@@ -121,8 +127,14 @@ class space:
         @param tags:             tags of the space
         @type tags:              string
 
-        @param repository:       mercurial repository of the space
+        @param repository:       repository of the space
         @type repository:        string
+
+        @param repo_username:    username of the repository
+        @type repo_username:     string
+
+        @param repo_password:    password of the repository
+        @type repo_password:     string
 
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid

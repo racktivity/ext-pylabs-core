@@ -15,6 +15,7 @@ def main(q, i, params, tags):
         view.setCol('name', q.enumerators.OsisType.STRING, True)
         view.setCol('tags', q.enumerators.OsisType.STRING, True)
         view.setCol('repository', q.enumerators.OsisType.STRING, True)
+        view.setCol('repo_username', q.enumerators.OsisType.STRING, True)
         connection.viewAdd(view)
 
         indexes = ['tags', 'repository']
