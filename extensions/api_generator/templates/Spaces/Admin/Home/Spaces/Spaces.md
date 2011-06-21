@@ -9,11 +9,7 @@ $(document).ready(function(){
     $("#spaceform").dialog({autoOpen: false,
             width: 550,
             modal: true});
-    
-    $("#portform").dialog({autoOpen: false,
-            width: 550,
-            modal: true});
-    
+            
     $("#alert").dialog({
         autoOpen: false,
         width: 400,
@@ -112,63 +108,11 @@ $(document).ready(function(){
                                     if (space == "Admin") return;
                                     
                                     tbody.append($("<tr>").append($("<td>").text(space))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('import').click(function(){
+                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
                                                                 var space = $(this).data('space');
-                                                                $("#portform").dialog("option", "title", "Import Space");
-                                                                $("#portform").find("button").attr("disabled", false);
-                                                                $("#portform").dialog("option", "buttons", {"Import": function() {
-                                                                                                                $dialog = $(this);
-                                                                                                                $dialog.find("input").removeClass("ui-state-error");
-                                                                                                                var path = $.trim($dialog.find("#path").val());
-                                                                                                                if (path == ""){
-                                                                                                                    $dialog.find("#path").addClass("ui-state-error");
-                                                                                                                    return;
-                                                                                                                }
-                                                                                                                $dialog.find("button").attr("disabled", true);
-                                                                                                                importspace(space, path, {success: function() {
-                                                                                                                    $("portform").find("button").attr("disabled", false);
-                                                                                                                    $dialog.dialog("close");
-                                                                                                                }, error: function(xhr, text, exc){
-                                                                                                                    messagealert("Import Error", "Failed to do import from file '" + path + "'");
-                                                                                                                }});
-                                                                                                            },
-                                                                                                           "Cancel": function() {
-                                                                                                               $(this).dialog("close");
-                                                                                                            }});
-                                                                $("#portform").dialog("open");
-                                                                
-                                                              })))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('export').click(function(){
-                                                                var space = $(this).data('space');
-                                                                $("#portform").dialog("option", "title", "Export Space");
-                                                                $("#portform").find("button").attr("disabled", false);
-                                                                $("#portform").dialog("option", "buttons", {"Export": function() {
-                                                                                                                $dialog = $(this);
-                                                                                                                $dialog.find("input").removeClass("ui-state-error");
-                                                                                                                var path = $.trim($dialog.find("#path").val());
-                                                                                                                if (path == ""){
-                                                                                                                    $dialog.find("#path").addClass("ui-state-error");
-                                                                                                                    return;
-                                                                                                                }
-                                                                                                                $dialog.find("button").attr("disabled", true);
-                                                                                                                exportspace(space, path, {success: function() {
-                                                                                                                    $("portform").find("button").attr("disabled", false);
-                                                                                                                    $dialog.dialog("close");
-                                                                                                                }, error: function(xhr, text, exc){
-                                                                                                                    messagealert("Export Error", "Failed to do export to file '" + path + "'");
-                                                                                                                }});
-                                                                                                            },
-                                                                                                           "Cancel": function() {
-                                                                                                               $(this).dialog("close");
-                                                                                                            }});
-                                                                $("#portform").dialog("open");
-                                                              })))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('edit').click(function() {
-                                                                var space = $(this).data('space');
-                                                                
                                                                 $("#spaceform input").removeClass("ui-state-error").val(space);
                                                                 $("#spaceform").dialog("option", "title", "Edit Space");
-                                                                $("#spaceform").dialog("option", "buttons", {"Edit Space": function(){
+                                                                $("#spaceform").dialog("option", "buttons", {"Rename Space": function(){
                                                                                                             $dialog = $(this);
                                                                                                             $input = $dialog.find("input").removeClass("ui-state-error");
                                                                                                             
@@ -264,22 +208,13 @@ $(document).ready(function(){
     </form>
 </div>
 
-<div id="portform">
-    <form>
-    <fieldset>
-        <label for="name">Archive:</label>
-        <input type="text" name="path" id="path" class="text ui-widget-content ui-corner-all" />
-    </fieldset>
-    </form>
-</div>
+
 
 <table id='spaceslist' style='width: 80%;'>
 <thead>
     <tr>
         <th style='width: 50%;'>Space</th>
-        <th>Import</th>
-        <th>Export</th>
-        <th>Edit</th>
+        <th>Rename</th>
         <th>Delete</th>
     </tr>
 </thead>

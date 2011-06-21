@@ -287,14 +287,16 @@ class CloudApiGenerator:
     def __init__(self, appName):
         self._appName = appName
 
+    def _generateCodeStr(self, templatePath, params):
+        template = Template(q.system.fs.fileGetContents(templatePath), params)
+        return str(template)
+    
     def _generateCode(self, templatePath, params, destPath):
        
         if not q.system.fs.exists(q.system.fs.getDirName(destPath)):
             q.system.fs.createDir(q.system.fs.getDirName(destPath))
-                                        
-        template = Template(q.system.fs.fileGetContents(templatePath), params)
-        
-        contents = str(template)
+            
+        contents = self._generateCodeStr(templatePath, params)
         
         q.system.fs.writeFile(destPath, contents)
 
@@ -768,7 +770,14 @@ class AppAPIGenerator(object):
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'setup', 'osis'))
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
          
-         
+    def getSpacePage(self, space):
+        """
+        Gets the content of a space
+        """
+        self._generator = CloudApiGenerator("")
+        return self._generate_str("SpacePage.tmpl", {'space': space})
+        
+        
     def generate(self, appname):
         """
         For a given application:
@@ -1018,8 +1027,11 @@ class AppAPIGenerator(object):
             if not q.system.fs.exists(path):
                 self._generate_file(file['template'], file['params'], path)
 
-        
-                            
+    
+    def _generate_str(self, template, params):
+        return self._generator._generateCodeStr(
+            q.system.fs.joinPaths(self._template_path, template), params)
+    
     def _generate_file(self, template, params, path):
         self._generator._generateCode(
             q.system.fs.joinPaths(self._template_path, template), 
