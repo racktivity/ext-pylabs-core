@@ -1,0 +1,123 @@
+<script>
+\$(document).ready(function(){
+    \$("\#alert").dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true,
+        buttons: {"Ok": function(){
+                \$(this).dialog("close");
+            }}});
+    
+    var messagealert = function(title, message){
+        \$dialog = \$("\#alert");
+        \$dialog.dialog("option", "title", title);
+        \$dialog.find("\#alertmessage").html(message);
+        \$dialog.dialog("open");
+    };
+    
+    var remotecall = function(options) {
+        var options = \$.extend({success: \$.noop,
+                                error: function(xhr, text, exc){
+                                        messagealert("Error", "Got error while executing action: " + exc);
+                                        },
+                                data: {}}, options);
+                                    
+        
+        \$.ajax({url: options.uri,
+                dataType: 'json',
+                data: options.data,
+                success: options.success,
+                error: options.error});
+    };
+    
+    var importspace = function(space, path, options){
+        var options = \$.extend(options, {uri: LFW_CONFIG['uris']['importSpace'],
+                                        data: {space: space,
+                                               filename: path}});
+        remotecall(options);
+    };
+    
+    var exportspace = function(space, path, options){
+        var options = \$.extend(options, {uri: LFW_CONFIG['uris']['exportSpace'],
+                                        data: {space: space,
+                                               filename: path}});
+        remotecall(options);
+    };
+    
+    \$("\#portform").dialog({autoOpen: false,
+            width: 550,
+            modal: true});
+            
+    \$("\#import").button().click(function(){
+        var space = '${space}';
+        \$("\#portform").dialog("option", "title", "Import Space");
+        \$("\#portform").find("button").attr("disabled", false);
+        \$("\#portform").dialog("option", "buttons", {"Import": function() {
+                                                        \$dialog = \$(this);
+                                                        \$dialog.find("input").removeClass("ui-state-error");
+                                                        var path = \$.trim(\$dialog.find("\#path").val());
+                                                        if (path == ""){
+                                                            \$dialog.find("\#path").addClass("ui-state-error");
+                                                            return;
+                                                        }
+                                                        \$dialog.find("button").attr("disabled", true);
+                                                        importspace(space, path, {success: function() {
+                                                            \$("portform").find("button").attr("disabled", false);
+                                                            \$dialog.dialog("close");
+                                                        }, error: function(xhr, text, exc){
+                                                            messagealert("Import Error", "Failed to do import from file '" + path + "'");
+                                                        }});
+                                                    },
+                                                   "Cancel": function() {
+                                                       \$(this).dialog("close");
+                                                    }});
+        \$("\#portform").dialog("open");
+    });
+    
+    \$("\#export").button().click(function(){
+        var space = '${space}';
+        \$("\#portform").dialog("option", "title", "Export Space");
+        \$("\#portform").find("button").attr("disabled", false);
+        \$("\#portform").dialog("option", "buttons", {"Export": function() {
+                                                        \$dialog = \$(this);
+                                                        \$dialog.find("input").removeClass("ui-state-error");
+                                                        var path = \$.trim(\$dialog.find("\#path").val());
+                                                        if (path == ""){
+                                                            \$dialog.find("\#path").addClass("ui-state-error");
+                                                            return;
+                                                        }
+                                                        \$dialog.find("button").attr("disabled", true);
+                                                        exportspace(space, path, {success: function() {
+                                                            \$("portform").find("button").attr("disabled", false);
+                                                            \$dialog.dialog("close");
+                                                        }, error: function(xhr, text, exc){
+                                                            messagealert("Export Error", "Failed to do export to file '" + path + "'");
+                                                        }});
+                                                    },
+                                                   "Cancel": function() {
+                                                       \$(this).dialog("close");
+                                                    }});
+        \$("\#portform").dialog("open");
+    });
+});
+</script>
+<div id="portform">
+    <form>
+    <fieldset>
+        <label for="name">Archive:</label>
+        <input type="text" name="path" id="path" class="text ui-widget-content ui-corner-all" />
+    </fieldset>
+    </form>
+</div>
+
+<div id='alert'>
+<p id='alertmessage'></p>
+</div>
+
+\#\# ${space}
+
+\#\#\# Import Space
+<button id='import'>Import Space</button>
+
+\#\#\# Export Space
+<button id='export'>Export Space</button>
