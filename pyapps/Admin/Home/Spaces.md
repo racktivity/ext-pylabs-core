@@ -5,7 +5,11 @@ $(document).ready(function(){
     $("#confirmdelete").dialog({autoOpen: false,
                                 width: 550,
                                 modal: true});
-                
+    
+    $("#spaceform").dialog({autoOpen: false,
+            width: 550,
+            modal: true});
+    
     var confirmdelete = function(options){
         var options = $.extend({space: 'this',
                                 ok: $.noop,
@@ -57,6 +61,13 @@ $(document).ready(function(){
         remotecall(options);
     };
     
+    var editspace = function(name, newname, options){
+        var options = $.extend(options, {uri: LFW_CONFIG['uris']['updateSpace'],
+                                        data: {name: name,
+                                               newname: newname}});
+        remotecall(options);
+    };
+    
     console.log("Doing a list spaces call");
     
     var render = function(){
@@ -71,6 +82,36 @@ $(document).ready(function(){
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('edit').click(function() {
                                                                 var space = $(this).data('space');
                                                                 
+                                                                $("#spaceform input").removeClass("ui-state-error").val(space);
+                                                                $("#spaceform").dialog("option", "title", "Edit Space");
+                                                                $("#spaceform").dialog("option", "buttons", {"Edit Space": function(){
+                                                                                                            $dialog = $(this);
+                                                                                                            $input = $(this).find("input").removeClass("ui-state-error");
+                                                                                                            
+                                                                                                            var spacename = $.trim($dialog.find("#name").val());
+                                                                                                            if (spacename == ""){
+                                                                                                                $input.addClass("ui-state-error");
+                                                                                                                return;
+                                                                                                            }
+                                                                                                            if (space == spacename){
+                                                                                                                $dialog.dialog("close");
+                                                                                                                return;
+                                                                                                            }
+                                                                                                            
+                                                                                                            editspace(space, spacename, {success: function(){
+                                                                                                                render();
+                                                                                                                $dialog.dialog("close");
+                                                                                                            }, error: function(){
+                                                                                                                alert("Failed to create space");
+                                                                                                                $dialog.dialog("close");
+                                                                                                            }});
+                                                                                                        },
+                                                                                                        
+                                                                                                      "Cancel": function(){
+                                                                                                          $(this).dialog("close");
+                                                                                                        }});
+                                                                                
+                                                                $("#spaceform").dialog("open");
                                                               })))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('delete').click(function(){
                                                                 var space = $(this).data('space');
@@ -84,35 +125,34 @@ $(document).ready(function(){
                                 });
                             }});
     };
-
-    $("#createform").dialog({autoOpen: false,
-                width: 550,
-                modal: true,
-                buttons: {"Create Space": function(){
-                                $dialog = $(this);
-                                $input = $(this).find("input").removeClass("ui-state-error");
-                                
-                                var spacename = $.trim($(this).find("#name").val());
-                                if (spacename == ""){
-                                    $input.addClass("ui-state-error");
-                                    return;
-                                }
-                                
-                                createspace(spacename, {success: function(){
-                                    render();
-                                    $dialog.dialog("close");
-                                }, error: function(){
-                                    alert("Failed to create space");
-                                    $dialog.dialog("close");
-                                }});
-                            },
-                            
-                          "Cancel": function(){
-                              $(this).dialog("close");
-                            }}});
     
-    $("#createspace").button().click(function(){
-        $("#createform").dialog("open");
+    $("#createspace").button().click(function() {
+        $("#spaceform").dialog("option", "title", "Create Space");
+        $("#spaceform  input").removeClass("ui-state-error").val("");
+        $("#spaceform").dialog("option", "buttons", {"Create Space": function(){
+                                                    $dialog = $(this);
+                                                    $input = $(this).find("input").removeClass("ui-state-error");
+                                                    
+                                                    var spacename = $.trim($(this).find("#name").val());
+                                                    if (spacename == ""){
+                                                        $input.addClass("ui-state-error");
+                                                        return;
+                                                    }
+                                                    
+                                                    createspace(spacename, {success: function(){
+                                                        render();
+                                                        $dialog.dialog("close");
+                                                    }, error: function(){
+                                                        alert("Failed to create space");
+                                                        $dialog.dialog("close");
+                                                    }});
+                                                },
+                                                
+                                              "Cancel": function(){
+                                                  $(this).dialog("close");
+                                                }});
+                        
+        $("#spaceform").dialog("open");
     });
 
 
@@ -125,10 +165,14 @@ function createspace() {
 </script>
 
 <div id='confirmdelete' title='Delete Space'>
-Are you sure you want to delete <b id='space'></b> space?
+    Are you sure you want to delete <b id='space'></b> space?
+    <div class='notice' style='margin-top: 25px;'>
+    Deleting a space will delete all the pages in that space. There
+    is noway to restore it back, so an "export" is adviced.
+    </div>
 </div>
 
-<div id="createform" title="Create new space">
+<div id="spaceform" title="Create new space">
     <form>
     <fieldset>
         <label for="name">Name</label>
