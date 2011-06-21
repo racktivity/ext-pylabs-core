@@ -16,7 +16,7 @@ $(document).ready(function(){
     
     $("#alert").dialog({
         autoOpen: false,
-        width: 550,
+        width: 400,
         modal: true,
         buttons: {"Ok": function(){
                 $(this).dialog("close");
