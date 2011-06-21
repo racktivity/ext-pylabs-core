@@ -1,0 +1,9 @@
+def main(q, i, p, params, tags):
+    space = p.api.model.ui.space.get(params['spaceguid'])
+    space.name = params['name']
+    space.tags = params.get('tags')
+    p.api.model.ui.space.save(space)
+    params['result'] = True
+    
+def match(q, i, p, params, tags):
+    return True

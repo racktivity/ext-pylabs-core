@@ -875,6 +875,9 @@ class AppAPIGenerator(object):
            {'template':'Page.tmpl', 'params':params, 
                                'destination':['interface', 'action', 'ui', 'page.py']},
            
+           {'template':'Space.tmpl', 'params':params, 
+                               'destination':['interface', 'action', 'ui', 'space.py']},
+                               
            {'template':'JobClear.tmpl', 'params':params, 
                                'destination':['impl', 'action', 'core', 'job', 'clear', '1_job_clear.py']},
                                                    
@@ -922,18 +925,42 @@ class AppAPIGenerator(object):
                                 
            {'template':'UiPageUpdate.tmpl', 'params':params, 
                                'destination':['impl', 'action', 'ui', 'page', 'update', '1_page_update.py']},
+            
+           {'template':'UiSpaceCreate.tmpl', 'params':params, 
+                   'destination':['impl', 'action', 'ui', 'space', 'create', '1_space_create.py']},
                                 
+           {'template':'UiSpaceDelete.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'delete', '1_space_delete.py']},
+
+           {'template':'UiSpaceFind.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'find', '1_space_find.py']},
+                                
+           {'template':'UiSpaceGetObject.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'getObject', '1_space_getObject.py']},
+                                
+           {'template':'UiSpaceUpdate.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'update', '1_space_update.py']},
+                               
            {'template':'ModelJob.tmpl', 'params':params, 
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'core', 'job.py']},
 
            {'template':'ModelPage.tmpl', 'params':params, 
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'page.py']},
+                               
+           {'template':'ModelSpace.tmpl', 'params': params,
+                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'space.py']},
              
            {'template':'PageView.tmpl', 'params':params, 
                            'destination':['impl', 'setup', 'osis', 'page_view.py']},
-                            
+           
+           {'template':'SpaceView.tmpl', 'params':params, 
+                           'destination':['impl', 'setup', 'osis', 'space_view.py']},
+           
            {'template':'PageViewTags.tmpl', 'params':params, 
                                'destination':['impl', 'setup', 'osis', 'page_view_tags.py']},
+                               
+           {'template':'SpaceViewTags.tmpl', 'params':params, 
+                               'destination':['impl', 'setup', 'osis', 'space_view_tags.py']},
                                 
            {'template':'JobViewList.tmpl', 'params':params, 
                                'destination':['impl', 'setup', 'osis', 'job_view_list.py']},
@@ -946,7 +973,13 @@ class AppAPIGenerator(object):
                                 
            {'template':'PageStore.tmpl', 'params':params, 
                                'destination':[ 'impl', 'osis', 'osis', 'store', '3_page_store.py']},
-             
+                               
+           {'template':'SpaceDelete.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_space_delete.py']},
+                                
+           {'template':'SpaceStore.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_space_store.py']},
+                               
            {'template':'ObjectStore.tmpl', 'params':params, 
                                'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_store.py']},
                                 
