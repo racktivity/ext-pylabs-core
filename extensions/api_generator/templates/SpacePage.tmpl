@@ -7,47 +7,47 @@
         buttons: {"Ok": function(){
                 \$(this).dialog("close");
             }}});
-    
+
     var messagealert = function(title, message){
         \$dialog = \$("\#alert");
         \$dialog.dialog("option", "title", title);
         \$dialog.find("\#alertmessage").html(message);
         \$dialog.dialog("open");
     };
-    
+
     var remotecall = function(options) {
         var options = \$.extend({success: \$.noop,
                                 error: function(xhr, text, exc){
                                         messagealert("Error", "Got error while executing action: " + exc);
                                         },
                                 data: {}}, options);
-                                    
-        
+
+
         \$.ajax({url: options.uri,
                 dataType: 'json',
                 data: options.data,
                 success: options.success,
                 error: options.error});
     };
-    
+
     var importspace = function(space, path, options){
         var options = \$.extend(options, {uri: LFW_CONFIG['uris']['importSpace'],
                                         data: {space: space,
                                                filename: path}});
         remotecall(options);
     };
-    
+
     var exportspace = function(space, path, options){
         var options = \$.extend(options, {uri: LFW_CONFIG['uris']['exportSpace'],
                                         data: {space: space,
                                                filename: path}});
         remotecall(options);
     };
-    
+
     \$("\#portform").dialog({autoOpen: false,
             width: 550,
             modal: true});
-            
+
     \$("\#import").button().click(function(){
         var space = '${space}';
         \$("\#portform").dialog("option", "title", "Import Space");
@@ -73,7 +73,7 @@
                                                     }});
         \$("\#portform").dialog("open");
     });
-    
+
     \$("\#export").button().click(function(){
         var space = '${space}';
         \$("\#portform").dialog("option", "title", "Export Space");
@@ -99,6 +99,81 @@
                                                     }});
         \$("\#portform").dialog("open");
     });
+
+    \$("\#confirm").dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true,
+        buttons: {
+            "Perform a pull now": function() { pull(push); \$(this).dialog("close"); },
+            Cancel: function() { \$(this).dialog("close"); }
+        }
+
+    });
+
+    //Get repo info
+    var getRepoInfo = function() {
+        return {space: '${space}', repository: \$("\#repo").val(), repo_username: \$("\#repo-username").val(),
+            repo_password: \$("\#repo-password").val()};
+    };
+
+    //Do a pull
+    var pull = function(callback) {
+        $.get(LFW_CONFIG.uris.hgPullSpace, getRepoInfo(), "json").success((callback ? callback : pullSuccess))
+            .error(pullError);
+    };
+
+    //Do a push
+    var push = function() {
+        $.get(LFW_CONFIG.uris.hgPushSpace, getRepoInfo(), "json").success(pushSuccess).error(pushError);
+    };
+
+    //Our push was successful
+    var pushSuccess = function(data) {
+        if (typeof(data) === "boolean") {
+            if (!data) {
+                \$("\#confirm").dialog("open");
+            } else {
+                messagealert("Push Successful", "Push done.");
+            }
+        } else {
+            pushError(data);
+        }
+    };
+
+    //We had an error while pushing
+    var pushError = function(data) {
+        if (typeof(data) === "object") {
+            data = JSON.parse(data.responseText).exception;
+        }
+        messagealert("Push Error", data);
+    };
+
+    //Our pull was successful
+    var pullSuccess = function(data) {
+        if (typeof(data) === "boolean" && data) {
+            messagealert("Pull Successful", "Pull done.");
+        } else {
+            pullError(data);
+        }
+    };
+
+    //We had an error while pulling
+    var pullError = function(data) {
+        if (typeof(data) === "object") {
+            data = JSON.parse(data.responseText).exception;
+        }
+        messagealert("Pull Error", data);
+    };
+
+    \$("\#push").button().click(push);
+    \$("\#pull").button().click(function() { pull(); });
+
+    //fill in the info
+    \$.get(LFW_CONFIG.uris.space, {space: '${space}'}, function(data) {
+        \$("\#repo").val(data.repository.url);
+        \$("\#repo-username").val(data.repository.username);
+    });
 });
 </script>
 <div id="portform">
@@ -114,6 +189,12 @@
 <p id='alertmessage'></p>
 </div>
 
+<div id="confirm" title="Out of date">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 40px 0;"></span>
+    Your local data is currently out of sync.<br />It is advisable to do a pull first.<br />
+    There might be some merge conflicts that you will need to solve manually.</p>
+</div>
+
 \#\# ${space}
 
 \#\#\# Import Space
@@ -121,3 +202,11 @@
 
 \#\#\# Export Space
 <button id='export'>Export Space</button>
+
+\#\#\# Synchronize Space
+<table>
+    <tr><td style="vertical-align: middle;">Repository:</td><td style="vertical-align: middle;"><input id="repo" type="text" value="" style="width: 100%;" /></td></tr>
+    <tr><td style="vertical-align: middle;">Username:</td><td style="vertical-align: middle;"><input id="repo-username" type="text" value="" /></td></tr>
+    <tr><td style="vertical-align: middle;">Password:</td><td style="vertical-align: middle;"><input id="repo-password" type="password" value="" /></td></tr>
+</table>
+<button id='push'>Push</button><button id='pull'>Pull</button>

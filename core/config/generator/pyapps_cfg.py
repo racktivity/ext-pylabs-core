@@ -278,6 +278,7 @@ LFW_CONFIG = {
         'exportSpace': '/%(appname)s/appserver/rest/ui/portal/exportSpace',
         'hgPushSpace': '/%(appname)s/appserver/rest/ui/portal/hgPushSpace',
         'hgPullSpace': '/%(appname)s/appserver/rest/ui/portal/hgPullSpace',
+        'space': '/%(appname)s/appserver/rest/ui/portal/space',
         'macros': '/%(appname)s/js/macros/'
     },
     'appname' : '%(appname)s'
