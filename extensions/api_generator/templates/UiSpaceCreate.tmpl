@@ -1,9 +1,9 @@
 def main(q, i, p, params, tags):
     q.logger.log('Creating space %s' % params['name'], 1)
-    space = p.api.model.ui.space.new()
-    space.name = params['name']
-    space.tags = params.get('tags')
-    p.api.model.ui.space.save(space)
+    alkira = q.clients.alkira.getClientByApi(p.api)
+    alkira.createSpace(params['name'],
+        params.get("tags", "").split(" "))
+        
     params['result'] = True
     
 def match(q, i, p, params, tags):

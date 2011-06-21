@@ -1,8 +1,7 @@
 def main(q, i, p, params, tags):
-    space = p.api.model.ui.space.get(params['spaceguid'])
-    space.name = params['name']
-    space.tags = params.get('tags')
-    p.api.model.ui.space.save(space)
+    alkira = q.clients.alkira.getClientByApi(p.api)
+    tags = param.get("tags")
+    alkira.updateSpace(params['spaceguid'], params['name'], tags.split(" ") if tags else None)
     params['result'] = True
     
 def match(q, i, p, params, tags):
