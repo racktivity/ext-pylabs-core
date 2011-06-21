@@ -42,7 +42,7 @@ class MercurialConfigManagementItem(ConfigManagementItem):
                     authstring += ":%s" % self.params.get("passwd")
                 authstring += "@"
             url = "%s://%s%s" % (result.group('protocol'), authstring, result.group("other"))
-        return q.clients.mercurial.getclient(self.params.get('destination', ''), url)
+        return q.clients.mercurial.getclient(self.params.get('destination', ''), url, username=self.params.get('login', None))
 
 MercurialConfigManagement = ItemGroupClass(MercurialConfigManagementItem)
 
