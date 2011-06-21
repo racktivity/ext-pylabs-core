@@ -79,6 +79,12 @@ $(document).ready(function(){
                                     if (space == "Admin") return;
                                     
                                     tbody.append($("<tr>").append($("<td>").text(space))
+                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('import').click(function(){
+                                                                alert("import");
+                                                              })))
+                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('export').click(function(){
+                                                              alert("export");
+                                                              })))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('edit').click(function() {
                                                                 var space = $(this).data('space');
                                                                 
@@ -185,6 +191,8 @@ function createspace() {
 <thead>
     <tr>
         <th style='width: 50%;'>Space</th>
+        <th>Import</th>
+        <th>Export</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
