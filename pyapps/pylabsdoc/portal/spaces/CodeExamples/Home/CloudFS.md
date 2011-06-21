@@ -1,3 +1,7 @@
+@metadata title=Cloud File System
+@metadata tagstring=cloud filesystem file system fs cloudfs
+
+
 # Cloud Filesystem Example
 
 [[code]]

@@ -1,3 +1,5 @@
+@metadata title=CodeManagement Tasklet
+
 [[code]]
 # -*- coding: utf-8 -*-
 __author__ = 'incubaid'
@@ -17,5 +19,4 @@ def main(q, i, params, tags):
     localArchive = 'file://%s' % q.system.fs.joinPaths(q.dirs.tmpDir, fileName)
     q.cloud.system.fs.copyFile(remoteArchive, localArchive)
     q.system.fs.targzUncompress(q.system.fs.joinPaths(q.dirs.tmpDir, fileName), q.system.fs.joinPaths(q.dirs.tmpDir), False)
-    
 [[/code]]

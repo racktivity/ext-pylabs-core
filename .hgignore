@@ -3,3 +3,8 @@
 ~$
 .project
 .pydevproject
+
+syntax: regexp
+.project
+syntax: regexp
+.hgignore

@@ -1,5 +1,9 @@
-[reality]: /pylabsdoc/#/PyLabsApps/Reality
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
+@metadata title=Scheduling Actions
+@metadata order=100
+@metadata tagstring=schedule action
+
+[reality]: /#/PyLabsApps/Reality
+[pyappdir]: /#/PyLabsApps/Introduction
 
 
 #Scheduling Actions

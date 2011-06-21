@@ -1,11 +1,15 @@
+@metadata title=From Model to Reality
+@metadata order=70
+@metadata tagstring=reality rscript actor agent
+
 [imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
-[model]: /pylabsdoc/#/PyLabsApps/Modeling
-[actions]: /pylabsdoc/#/PyLabsApps/Action
-[osisview]: /pylabsdoc/#/PyLabsApps/OsisViews
-[osisoperations]: /pylabsdoc/#/PyLabsApps/OsisOperations
-[actiontasklet]: /pylabsdoc/#/PyLabsApps/ActionTasklet
-[pyappdir]: /pylabsdoc/#/PyLabsApps/Sampleapp
-[SAL]: /pylabsdoc/#/PyLabs50/Architecture
+[model]: /#/PyLabsApps/Modeling
+[actions]: /#/PyLabsApps/Action
+[osisview]: /#/PyLabsApps/OsisViews
+[osisoperations]: /#/PyLabsApps/OsisOperations
+[actiontasklet]: /#/PyLabsApps/ActionTasklet
+[pyappdir]: /#/PyLabsApps/Introduction
+[SAL]: /#/Overview/Architecture
 
 
 

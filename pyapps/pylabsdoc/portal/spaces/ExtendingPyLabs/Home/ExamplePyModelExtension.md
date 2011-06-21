@@ -1,5 +1,9 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
-[modeling]: /pylabsdoc/#/PyLabsApps/Modeling
+@metadata title=PyModel Extension
+@metadata order=40
+@metadata tagstring=extension practical example pymodel
+
+[qpinstall]: /#/Q-Packages/QPInstall
+[modeling]: /#/PyLabsApps/Modeling
 
 
 # Pymodel
@@ -43,6 +47,7 @@ You can also import some domains on the fly without restarting the Q-Shell by ca
 
 [[note]]
 **Note** 
+
 The domain that you import will be lost once you close your Q-Shell session.
 [[/note]]
 
@@ -55,7 +60,6 @@ There are some serializers that help you to serialize/deserialize your objects, 
 * Thrift Serializer
 * Thrift Base64 Serializer
 
-[[tip]]
 Here's a complete scenario for using the Pymodel extension.
 
 * First, create an empty model object:
@@ -79,10 +83,10 @@ Here's a complete scenario for using the Pymodel extension.
     model_object = q.pymodel.drp.lan.YAML2object(yaml_str)
     model_object = q.pymodel.drp.lan.thriftByteStr2object(byte_str)
     model_object = q.pymodel.drp.lan.thriftBase64Str2object(base64_str)
-[[/tip]]
 
 [[note]]
 **Note** 
+
 The XML serializer  does not allow the conversion of an empty object to XML.
 [[/note]]
 

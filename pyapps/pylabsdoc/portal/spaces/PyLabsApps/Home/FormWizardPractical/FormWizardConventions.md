@@ -1,3 +1,7 @@
+@metadata title=Form and Wizard Conventions
+@metadata order=10
+@metadata tagstring=form wizard convention rules naming
+
 [map]:  http://docs.python.org/library/functions.html?highlight=map#map
 [lambda]: http://docs.python.org/tutorial/controlflow.html#lambda-forms
 

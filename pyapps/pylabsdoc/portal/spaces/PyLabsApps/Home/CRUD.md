@@ -1,9 +1,13 @@
-[model]: /pylabsdoc/#/PyLabsApps/Modeling
-[action]: /pylabsdoc/#/PyLabsApps/Action
-[dirs]: /pylabsdoc/#/PyLabsApps/SampleApp
+@metadata title=Generating CRUD Methods
+@metadata order=80
+@metadata tagstring=generate methods create read update delete root object
+
+[model]: /#/PyLabsApps/Modeling
+[action]: /#/PyLabsApps/Action
+[dirs]: /#/PyLabsApps/Introduction
 
 
-##CRUD Generation 
+#CRUD Generation 
 
 Some steps of creating a PyApp can be automated. Since all root objects of a PyApp always have some common actions, you can generate these actions. Besides these common actions you have of course to develop the other actions on a Root Object.
 
@@ -16,7 +20,7 @@ This PyLabs function takes the [model][] and [action][] interfaces. Files should
 
 To generate CRUD for a new Root Object, follow the following steps: 
 
-###Generate Model
+##Generate Model
 
 Below is a sample of a model file:  
 
@@ -56,7 +60,8 @@ def __str__(self)
 
 __Note__ The method \_\_str\_\_ is implemented since it is used to show a human readable representation of the object. 
 
-###Generate Action Interface  
+
+##Generate Action Interface  
 
 Below is a sample of an action interface file:
 
@@ -104,12 +109,15 @@ class order:
         """
 [[/code]]
 
-[[note]]   
+[[note]]  
+**Note**
+ 
 * Name of parameters *must* be <rootobject>guid and all attribute names should be the same as defined in the model.
 * Methods that return objects, like 'getObject', should have "@execution_method = sync" in its doc string.
 [[/note]]
 
-###Auto-Generate CRUD Files
+
+##Auto-Generate CRUD Files
 
 Run the following command on Q-Shell: 
 

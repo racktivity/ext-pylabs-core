@@ -1,4 +1,8 @@
-[pyappdir]: /pylabsdoc/#/PyLabsApps/SampleApp
+@metadata title=Actions Interface
+@metadata order=30
+@metadata tagstring=action interface ro create
+
+[pyappdir]: /pylabsdoc/#/PyLabsApps/Introduction
 
 
 #Defining Actions Interface on Root Objects

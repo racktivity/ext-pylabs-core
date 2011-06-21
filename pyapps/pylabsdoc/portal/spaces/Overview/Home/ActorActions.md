@@ -1,3 +1,7 @@
+@metadata title=Actor Actions
+@metadata order=70
+@metadata tagstring=actor actions use manage hypervisor
+
 # Actor Actions
 
 After updating the model in a root object action, typically an actor action is called. An example of an actor action is changing the status of a machine or updating the IP address.
@@ -15,6 +19,7 @@ The code below initializes a hypervisor:
 
 [[note]]
 **Note** 
+
 This call should be executed in an environment where the workflow engine is running and initialized.
 [[/note]]
 

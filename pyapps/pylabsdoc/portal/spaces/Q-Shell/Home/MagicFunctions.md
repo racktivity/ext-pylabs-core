@@ -1,7 +1,11 @@
+@metadata title=Magic Functions
+@metadata order=50
+@metadata tagstring=magic function
+
 [imgQshell6]: images/images50/qshell/Q-Shell_06.png
 
 
-## Q-Shell's Magic Functions
+# Q-Shell's Magic Functions
 
 Since the Q-Shell is completely based on IPython, you can use the magic commands (often referred to as magic functions) of IPython in the Q-Shell. A _magic command_ provides a series of functions which allow you to control the behavior of IPython itself, plus a lot of system-type features. All these functions are prefixed with a % character, but parameters are given without parentheses or quotes.
 
@@ -21,7 +25,7 @@ Just like the PyLabs functions, you can call the help of a magic function by add
 [[/code]]
         
 
-### Store Session Variables
+## Store Session Variables
 When using the Q-Shell in an interactive way, it is possible that you have defined several variables. It is possible to store these variables in the internal Q-Shell database. When closing and restarting your Q-Shell you can recall the stored variables.
 
 [[code]]
@@ -48,7 +52,7 @@ Recall the complete list of stored variables by calling the function `%store`.
 To remove all variables: `%store -z`
 
 
-###Run a Python File
+##Run a Python File
 Supposed that you have created a small script (`helloWorld.py`) that you have saved in the directory `/home/user`. The script only prints "Hello World!" on your screen. To run this script from the Q-Shell:
 
 [[code]]
@@ -59,7 +63,8 @@ Supposed that you have created a small script (`helloWorld.py`) that you have sa
     Hello World!
 [[/code]]
 
-### Save Lines to a File
+
+## Save Lines to a File
 When you are testing in the Q-Shell, you do not want to lose or retype all the lines to obtain a script. With the `%save` function, you can select the lines that you want to save to a file. Automatically the `.py` extension is added to the file name.
 
 [[code]]

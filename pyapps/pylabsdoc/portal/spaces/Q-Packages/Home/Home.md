@@ -1,20 +1,21 @@
-@metadata spaceorder=7
+@metadata spaceorder=70
 @metadata title=Q-Packages
 @metadata tagstring=qpackage q-package package
 
 
-[qpintro]: /pylabsdoc/#/Q-Packages/QPIntro
-[qparchitecture]: /pylabsdoc/#/Q-Packages/QPackageArchitecture
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
-[qpcreate]: /pylabsdoc/#/Q-Packages/QPCreate
-[qpcreatebinary]: /pylabsdoc/#/Q-Packages/QPCcreatebinary
-[qptasklets]: /pylabsdoc/#/Q-Packages/QPTasklets
-[codemgmt]: /pylabsdoc/#/Q-Packages/CodeManagement
-[compile]: /pylabsdoc/#/Q-Packages/Compile
-[package]: /pylabsdoc/#/Q-Packages/Package
-[qpupdate]: /pylabsdoc/#/Q-Packages/QPUpdate
-[qpdomains]: /pylabsdoc/#/Q-Packages/QPDomains
-[qplist]: /pylabsdoc/#/Q-Packages/QPList
+[qpintro]: /#/Q-Packages/QPIntro
+[qparchitecture]: /#/Q-Packages/QPackageArchitecture
+[qpinstall]: /#/Q-Packages/QPInstall
+[qpcreate]: /#/Q-Packages/QPCreate
+[qpcreatebinary]: /#/Q-Packages/QPCreatebinary
+[qptasklets]: /#/Q-Packages/QPTasklets
+[codemgmt]: /#/Q-Packages/CodeManagement
+[compile]: /#/Q-Packages/Compile
+[configure]: /#/Q-Packages/Configure
+[package]: /#/Q-Packages/Package
+[qpupdate]: /#/Q-Packages/QPUpdate
+[qpdomains]: /#/Q-Packages/QPDomains
+[qplist]: /#/Q-Packages/QPList
 
 
 #Q-Packages
@@ -38,6 +39,8 @@ Welcome to Q-Packages, a revolution in cloud application installations.
     6.1. [Example codemanagement Tasklet][codemgmt]
     
     6.2. [Example compile Tasklet][compile]
+    
+    6.3. [Example configure Tasklet][configure]
     
     6.3. [Example package Tasklet][package]
     

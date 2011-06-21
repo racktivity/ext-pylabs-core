@@ -1,29 +1,33 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=Monitoring Agent
+@metadata tagstring=monitor agent cloud
+
+[qpinstall]: /#/Q-Packages/QPInstall
 
 
-## Monitoring Agent
+# Monitoring Agent
 
 The monitoring agent is a python application that contains a scheduler. This scheduler is responsible for starting tasklets which gather monitor information at fixed moments. The monitor information is saved in the DRP model.
 
-### Installing the Monitoring Agent
+##Installing the Monitoring Agent
 
 Install the latest version of the Q-Package named 'cloud_monitoring_agent'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 [[note]]
-**Note** 
+**Note**
+ 
 When you restart your Q-Shell, you will be asked to configure the Clould API Connection, followed by the Monitoring Agent.
 [[/note]]
 
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 * *Monitoring agent service:* `/opt/qbase5/apps/monitor_agent/`
 * *Monitoring management extension:* `/opt/qbase5/lib/pymonkey/extensions/monitor_agent`
 * *Monitoring model:* `/opt/qbase5/lib/python/site-packages`
 
 
-### Managing the Monitoring Agent
+## Managing the Monitoring Agent
 
 * To start the monitoring agent:
 
@@ -46,7 +50,7 @@ When you restart your Q-Shell, you will be asked to configure the Clould API Con
     q.manage.monitoringagent.kill()
 
 
-### Configuring the Monitoring Agent
+## Configuring the Monitoring Agent
 
 The monitoring agent needs a monitor server to change the internal monitor object model.
 
@@ -55,20 +59,21 @@ Initially, you configure this once you restart your Q-Shell, but if you need to 
     i.config.monAgentOSIS.review()                                         
 
 
-### Creating Monitoring Agent Tasklets
+## Creating Monitoring Agent Tasklets
 
 The tasklets have a basic structure and contain a match and a main function.
 
 The match function is mainly used to check if the time between two executions is big enough, and the main function contains code to raise warnings or to populate the monitor mode.
 
 
-### Examples
+## Examples
 
 @todo: add examples
 
 
-### Code Repositories
+## Code Repositories
 
 The source code can be found on the following BitBucket code repository:
     
     http://bitbucket.org/despiegk/monitoring_agent
+    

@@ -1,4 +1,8 @@
-[appserver]: /pylabsdoc/#/Components/Home
+@metadata title=Debugging a PyApp
+@metadata order=110
+@metadata tagstring=debug pyapp
+
+[appserver]: /#/Components/Home
 
 
 #PyLabs Debugger Support

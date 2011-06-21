@@ -1,11 +1,15 @@
-## Pylabs Message Console
+@metadata title=Message Console
+@metadata tagstring=message console
+
+
+# PyLabs Message Console
 
 * lets call for now messageconsole (NO LONGER logserver)
 * logs to stdout all kind of messages
 
-### Principles
+## Principles
 
-* output to stdout using print (do not use py-labs primitives)
+* output to stdout using print (do not use PyLabs primitives)
 * reformat message message to fit nicely on screen (use screenwidth param)
 
     ** messages -> get nicely formatted
@@ -15,12 +19,12 @@
 
     ** screenwidth (std 120)
 
-### Interactivity
+## Interactivity
 
 * implement possibility to control messageconsole (filters)
 
 
-#@todo check implementation
+@todo check implementation
     #include which apps to see and not to see (defined as part of sourcestring)
     q.messages.console.filterSourceApplications(includes[],excludes=[])  #e.g. includes=["*test*"]
     #show list of all applications found so far in active messageserver session and allow selection of which ones to see or not to see (multiple)
@@ -42,7 +46,7 @@
     i.messages.console.showFoundTags(sinceXNrMinutes=0)
 
 
-### How to communicate with console socket server?
+##How to communicate with console socket server?
 
 * do this by implementing a control mechanism on the socket of the console socket server
 

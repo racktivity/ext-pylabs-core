@@ -1,4 +1,9 @@
-##Adding Interactivity to Scripts
+@metadata title=Interactive Scripts
+@metadata order=40
+@metadata tagstring=interactive qshellconfig
+
+
+#Adding Interactivity to Scripts
 
 The PyLabs framework is designed to create scripts. These scripts can be executed in an unattended way. However sometimes you may need user input to complete a script, for example in an installation script asking for the hostname of the machine.
 PyLabs scripts are by default non-interactive and therefore you must enable the interactivity in your scripts, if interactivity is required.
@@ -10,7 +15,7 @@ q.qshellconfig.interactive = True
 [[/code]]
 
 
-###Interactive Methods in PyLabs
+##Interactive Methods in PyLabs
 In the Q-Shell, the interactive methods are all located in the `q.gui.dialog` name space:
 
     q.gui.dialog.askChoice(          q.gui.dialog.askString(
@@ -84,7 +89,7 @@ Out[225]: True
 [[/code]] 
 
 
-###Example of an Interactive Script
+##Example of an Interactive Script
 Your first PyLabs script was the Hello World script. In the example below we add some interactivity to this script:
 
 [[code]]

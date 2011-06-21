@@ -1,3 +1,7 @@
+@metadata title=Exceptions
+@metadata tagstring=exeption python
+
+
 # Exceptions
 
 ## Python Exception

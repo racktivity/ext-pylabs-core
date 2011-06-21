@@ -1,10 +1,15 @@
-[appserver]: /pylabsdoc/#/Components/AppServer
-[wfe]: /pylabsdoc/#/Components/WFE
+@metadata title=Generating PyApp API
+@metadata order=120
+@metadata tagstring=generate pyapp api
 
-# Generating an API
+[appserver]: /#/Components/AppServer
+[wfe]: /#/Components/WFE
+
+# Generating the PyApp API
 
 [[warning]]
 **Warning**
+
 This page needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.
@@ -82,6 +87,7 @@ Typically those are the actions which should be performed on the node which will
 
 [[note]]
 **Note** 
+
 Choose 'admin' as your login and password.
 [[/note]]
 

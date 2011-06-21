@@ -1,3 +1,7 @@
+@metadata title=Table of Contents
+@metadata order=10
+@metadata tagstring=table contents toc
+
 ##Table of Contents
 
 [[pagetree:space=PyLabs50]][[/pagetree]]
@@ -14,3 +18,4 @@
 [[include:space=HowTo,name=pagetree]][[/include]]
 [[include:space=CodeExamples,name=pagetree]][[/include]]
 [[include:space=alkiradocs,name=pagetree]][[/include]]
+[[include:space=Glossary,name=pagetree]][[/include]]

@@ -1,4 +1,7 @@
-# Pylabs Clusters Example
+@metadata title=PyLabs Clusters
+@metadata tagstring=cluster
+
+# PyLabs Clusters Example
 
 
 ## Creating a Cluster

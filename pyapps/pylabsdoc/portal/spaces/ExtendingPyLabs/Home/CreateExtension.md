@@ -1,9 +1,13 @@
-##Creating and Testing an Extension
+@metadata title=Creating an Extension
+@metadata order=10
+@metadata tagstring=extension test create
+
+#Creating and Testing an Extension
 
 In this section we show you step by step how you can create a PyLabs extension. A simple Hello World application is used as example.
 
 
-###1. Creating the Extension Files
+##1. Creating the Extension Files
 A first step to create a PyLabs extension is to create the extension files.
 
 1. Go to `/opt/qbase5/lib/pylabs/extensions` and create a directory in it, for example `demo`.
@@ -29,7 +33,7 @@ class ClassHelloWorld:
 [[/code]]
 
 
-###2. Testing the Extension
+##2. Testing the Extension
 
 Open a Q-Shell session and type `q.` + TAB.
 
@@ -71,7 +75,7 @@ This is the `qlocation` from the extension file. From this location you can acce
 [[/code]]
      
 
-###Multi-Hook
+##Multi-Hook
 
 To hook multiple classes on the `q.` object in one extension, add the hook definitions in the configuration file, optionally you can create a module per hook.
 
@@ -124,7 +128,7 @@ class ClassHelloWorld:
 [[/code]]
 
 
-###Testing Multi-Hook
+##Testing Multi-Hook
 
 Open or restart the Q-Shell and check the `do` functions:
 

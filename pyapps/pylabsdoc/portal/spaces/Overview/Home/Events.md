@@ -1,3 +1,7 @@
+@metadata title=Events
+@metadata order=100
+@metadata tagstring=event types handler
+
 [downloadevent]: http://bitbucket.org/despiegk/sso_openerp/
 [tour]: http://doc.openerp.com/book/1/1_2_Guided_Tour/1_2_Guided_Tour_install_functionality.html
 [SSOEvents]: http://confluence.aserver.com/display/SSODOCINT/SSO+Event+List
@@ -10,6 +14,7 @@
 
 [[warning]]
 **Warning**
+
 This page needs complete revision and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.

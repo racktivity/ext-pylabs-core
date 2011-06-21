@@ -1,8 +1,11 @@
-[basemsg]: /pylabsdoc/#/Components/BaseMsg
+@metadata title=Job Message
+@metadata tagstring=job message
 
-## jobmessage
+[basemsg]: /#/Components/BaseMsg
 
-### basic [basemessage][basemsg] properties
+# jobmessage
+
+## basic [basemessage][basemsg] properties
 
 * messagetype = q.enumerators.MessageType.JOB
 * time (epoch = int)
@@ -14,7 +17,7 @@
 * body : encoded string holding the params (json encoded)
 
 
-### additional JobMessage properties
+## additional JobMessage properties
 
 encoded as tags
 * jobguid: as tag
@@ -36,7 +39,7 @@ encoded in body:
 * params : in messagebody is json representation of dict of params (params dict like used in tasklets)
 
 
-### Optional tags used
+## Optional tags used
 
 e.g.
 * application (guid)
@@ -44,7 +47,7 @@ e.g.
 * pmachine (guid)
 
 
-### jobstatustype
+## jobstatustype
 
     q.enumerators.JobStatusType.CREATED     
     q.enumerators.JobStatusType.WAITING   
@@ -54,7 +57,7 @@ e.g.
     q.enumerators.JobStatusType.RUNNING     
 
 
-### code examples
+## code examples
 
 
     message=q.messagehandler.getJobMessageObject()
@@ -78,7 +81,7 @@ e.g.
     print message.getMessageString()
 
 
-#### example string representation of logmessage
+### example string representation of logmessage
 
 * is result of : message.getMessageString(multiline=True)  #if printed without multiline True everything will be serialized on 1 line
 
@@ -88,7 +91,7 @@ e.g.
     {"machineguid": "aavbb-dfdsfsdfsd-dfff"}
 
 
-### PyLabs
+## PyLabs
 
 Inherits from the base MessageObject
 

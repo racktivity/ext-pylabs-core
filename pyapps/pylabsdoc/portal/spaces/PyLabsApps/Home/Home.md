@@ -1,25 +1,24 @@
-@metadata spaceorder=11
+@metadata spaceorder=110
 @metadata title=PyLabs Applications
 @metadata tagstring=pyapp toc applications
 
-[intro][/pylabsdoc/#/PyLabsApps/SampleApp]
-[modeling][/pylabsdoc/#/PyLabsApps/Modeling]
-[action][/pylabsdoc/#/PyLabsApps/Action]
-[osisview][/pylabsdoc/#/PyLabsApps/OsisViews]
-[osisoperation][/pylabsdoc/#/PyLabsApps/OsisOperations]
-[actiontasklet][/pylabsdoc/#/PyLabsApps/ActionTasklet]
-[formwizard][/pylabsdoc/#/PyLabsApps/FormWizardPractical]
-[convention][/pylabsdoc/#/PyLabsApps/FormWizardConventions]
-[formapi][/pylabsdoc/#/PyLabsApps/FormApi]
-[wizardapi][/pylabsdoc/#/PyLabsApps/WizardApi]
-[reality][/pylabsdoc/#/PyLabsApps/Reality]
-[crud][/pylabsdoc/#/PyLabsApps/CRUD]
-[events][/pylabsdoc/#/PyLabsApps/Events]
-[eventdrivenaction][/pylabsdoc/#/PyLabsApps/EventDrivenActions]
-[scheduling][/pylabsdoc/#/PyLabsApps/Scheduling]
-[debug][/pylabsdoc/#/PyLabsApps/PyappDebug]
-[apidoc][/pylabsdoc/#/PyLabsApps/GenerateApi]
-[testapi][/pylabsdoc/#/PyLabsApps/TestingApi]
+[intro]: /#/PyLabsApps/Introduction
+[modeling]: /#/PyLabsApps/Modeling
+[action]: /#/PyLabsApps/Action
+[osisview]: /#/PyLabsApps/OsisViews
+[osisoperation]: /#/PyLabsApps/OsisOperations
+[actiontasklet]: /#/PyLabsApps/ActionTasklet
+[formwizard]: /#/PyLabsApps/FormWizardPractical
+[convention]: /#/PyLabsApps/FormWizardConventions
+[formapi]: /#/PyLabsApps/FormApi
+[wizardapi]: /#/PyLabsApps/WizardApi
+[reality]: /#/PyLabsApps/Reality
+[crud]: /#/PyLabsApps/CRUD
+[eventdrivenaction]: /#/PyLabsApps/EventDrivenActions
+[scheduling]: /#/PyLabsApps/Scheduling
+[debug]: /#/PyLabsApps/PyappDebug
+[apidoc]: /#/PyLabsApps/GenerateApi
+[testapi]: /#/PyLabsApps/TestingApi
 
 
 #PyLabs Applications

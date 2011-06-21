@@ -1,4 +1,8 @@
-[qshell]: /pylabsdoc/#/Q-Shell/Home
+@metadata title=Introducing PyLabs 5
+@metadata order=20
+@metadata tagstring=introduction what datacenter automation application scripts
+
+[qshell]: /#/Q-Shell/Home
 [python]: http://www.python.org
 
 
