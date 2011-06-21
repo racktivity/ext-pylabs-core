@@ -40,7 +40,6 @@ This chapter gives you a walk-through in the creation process of a PyLabs Applic
     * [Wizard API][wizardapi]
 8. [From DRP to Reality][reality]
 9. [Generating CRUD Actions][crud]
-10. [PyLabs Events][events]
 10. [Event-Driven Actions][eventdrivenaction]
 11. [Scheduling Actions][scheduling]
 12. [Debugging your PyApp][debug]
