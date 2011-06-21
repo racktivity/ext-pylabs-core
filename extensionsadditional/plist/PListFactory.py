@@ -46,13 +46,43 @@ class PListFactory(object):
     """
     def __init__(self):
         self._find=PFind()
+
     def getFilterObject(self):
         return PFilter()
-    
-    def find(self,root,pfilter=None):
+                
+    def filesystemScan(self,root,pfilter=None):
         """
-        do a find starting from root with an optional filter
+        do a find starting from root in filesystem with an optional filter
         use the getFilterObject to define a filter first
+        returns a new plistObject with the result of this find
         """
         return self._find.createPlist(root,pfilter)
+    
+    def filter(self,plistObject,pfilter=None):
+        """
+        use the getFilterObject to define a filter first
+        returns a new plistObject with the result of this filteroperation
+        """
+        return self._find.createPlist(root,pfilter)
+        
+      
+    def diff(self,plistObjectSource,plistObjectDest,plistObjectNew,plistObjectDeleted,plistObjectModified,ignoreDates=False):
+        """
+        compare 2 plists
+        returns a new changeListObject with the result of this method
+        """
+       
+    def add(plistObject1,plistObject1,failIfDuplicateObjects=True):
+        """
+        add 2 plists
+        returns a new changeListObject with the result of this method
+        result needs to be unique per filepath in plist
+        @param failIfDuplicateObjects if False the file with most recent moddate wins
+        """
+        
+    def substract(self,plistObjectSource,plistObjectToSustract):
+      
+      
+     
+
         
