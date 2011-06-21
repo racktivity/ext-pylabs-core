@@ -107,7 +107,7 @@ $(document).ready(function(){
                                 $.each(data, function(i, space){
                                     if (space == "Admin") return;
                                     
-                                    tbody.append($("<tr>").append($("<td>").text(space))
+                                    tbody.append($("<tr>").append($("<td>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
                                                                 var space = $(this).data('space');
                                                                 $("#spaceform input").removeClass("ui-state-error").val(space);
@@ -208,7 +208,7 @@ $(document).ready(function(){
     </form>
 </div>
 
-
+## Spaces
 
 <table id='spaceslist' style='width: 80%;'>
 <thead>

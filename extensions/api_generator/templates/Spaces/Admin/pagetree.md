@@ -1,1 +1,1 @@
-[[pagetree]][[/pagetree]]
+[[children]]depth:1 root:Home[[/children]]
