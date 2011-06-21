@@ -829,6 +829,13 @@ class AppAPIGenerator(object):
         self._generator.generatePythonRoot()
         q.action.stop()
         
+        q.action.start("Generating Default Spaces")
+        
+        appspacesdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'portal', 'spaces')
+        self._create_folder(appspacesdir)
+        q.system.fs.copyDirTree(q.system.fs.joinPaths(self._template_path, "Spaces"), appspacesdir)
+        q.action.stop()
+        
         q.action.start('Generating actor API')
         spec_path = q.system.fs.joinPaths(interface_path, 'actor')
         if not q.system.fs.exists(spec_path):
