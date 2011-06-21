@@ -1,3 +1,6 @@
+@metadata title=Filesystem Walker
+@metadata tagstring=fs walk filesystem file system
+
 # Filesystem Walker Example
 
 [[code]]

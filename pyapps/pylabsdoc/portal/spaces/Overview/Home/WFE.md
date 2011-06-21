@@ -1,17 +1,21 @@
-[architecture]: /pylabsdoc/#/PyLabs50/Architecture
+@metadata title=Workflow Engine
+@metadata order=40
+@metadata tagstring=wfe workflow engine
+
+[architecture]: /#/Overview/Architecture
 [stackless]: http://www.stackless.com/
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+[qpinstall]: /#/Q-Packages/QPInstall
 [imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
 [imgAC]: images/images50/pylabs/AgentController.png
 [imgWfeTasklet]: images/images50/pylabs/WFETasklets.png
 
 
-## Workflow Engine
+# Workflow Engine
 
 The Workflow Engine (WFE) acts like a scheduler for an operating system. It is used to execute different Root Object (RO) Actions and Actor Actions. It also starts the RScripts on the correct Agent. The name scheduler is used because the correct order of executing the different actions is scheduled by the workflow engine.
 
 
-### High-Level Overview
+## High-Level Overview
 From a high level perspective, the workflow engine consists of two different components.
 
 ![WFE_Overview][imgWFE]
@@ -28,7 +32,7 @@ When the remote execution of an RScript is requested, the Agent Controller sends
 ![Agent_Controller][imgAC]
 
 
-### Workflow Engine Tasklet Execution Model
+## Workflow Engine Tasklet Execution Model
 
 The workflow engine is a single-threaded Python process that is responsible for the scheduling of the tasklets. Instead of using regular threads to schedule the different tasklets, the workflow engine uses microthreads. 
 The workflow engine schedules the execution of all the different tasklets in a single thread using the microthreads and scheduler provided by [Stackless Python][stackless].

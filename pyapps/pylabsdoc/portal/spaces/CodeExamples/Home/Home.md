@@ -1,4 +1,4 @@
-@metadata spaceorder=13
+@metadata spaceorder=130
 @metadata title=Code Examples
 @metadata tagstring=code examples
 
@@ -6,6 +6,7 @@
 
 [[warning]]
 **Warning**
+
 This PyLabs Code Examples section needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.

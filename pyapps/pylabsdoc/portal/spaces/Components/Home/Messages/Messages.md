@@ -1,7 +1,12 @@
+@metadata title=Messages
+@metadata order=40
+@metadata tagstring=message
+
 # PyLabs Messages
 
 [[warning]]
 **Warning**
+
 This PyLabs Messages section needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.

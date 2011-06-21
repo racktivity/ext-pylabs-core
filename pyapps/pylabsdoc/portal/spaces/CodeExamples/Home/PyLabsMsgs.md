@@ -1,3 +1,7 @@
+@metadata title=Messages
+@metadata tagstring=message
+
+
 # PyLabs Messages Test Example
 
 [[code]]

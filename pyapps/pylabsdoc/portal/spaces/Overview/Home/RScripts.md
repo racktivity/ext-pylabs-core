@@ -1,3 +1,8 @@
+@metadata title=RScripts
+@metadata order=80
+@metadata tagstring=rscript reality agent
+
+
 # RScripts
 
 RScripts are simple scripts which are executed remotely by an agent. They are linked to and started by an actor action. Typically SAL Pylabs extensions are used in the RScript.
@@ -27,12 +32,13 @@ The table below shows what each variable represents:
 <td>'hypervisor_initialize'</td><td>The RScript which should be executed.</td>
 </tr>
 <tr>
-<td>{'machineguid': params['pmachineguid']}</td><td>Parameters needed by the RScript.</td>
+<td>{'machineguid': params\['pmachineguid'\]}</td><td>Parameters needed by the RScript.</td>
 </tr>
 </table>
 
 [[note]]
 **Note** 
+
 This call should be executed in an environment where the workflow engine is running and initialized.
 [[/note]]
 

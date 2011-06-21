@@ -1,15 +1,18 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=Samba
+@metadata tagstring=samba manage
 
-## Samba
+[qpinstall]: /#/Q-Packages/QPInstall
+
+# Samba
 
 Samba is an open source implementation of the SMB protocol for Linux, Solaris and other operating systems. It provides a daemon for sharing files and directories over the network, and client applications to access other SMB shares.
 
-### Installing Samba
+## Installing Samba
 
 Install the latest version of the Q-Packages named 'samba' and 'samba_extension'.
-If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall]] page.
+If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 The Samba files are installed in:
 
@@ -24,9 +27,9 @@ The Samba files are installed in:
 [[/note]]
 
 
-### Managing Samba
+## Managing Samba
 
-#### Management Extensions
+### Management Extensions
 
 * To start the Samba server:
 
@@ -45,7 +48,7 @@ The Samba files are installed in:
     q.manage.samba.getStatus()
 
 
-#### Q-Packages Start & Stop Tasklets
+### Q-Packages Start & Stop Tasklets
 
 Get a reference of the 'samba' Q-Package that you previously installed. This can be done the same way we installed the package:
 
@@ -64,12 +67,13 @@ Now you can use the start and stop tasklets as follows:
     i.qp.lastPackage.qpackage.stop()
 
 
-### Configuring Samba
+## Configuring Samba
 
 In the Q-Shell you can configure Samba in an easy way, similar to the normal Samba application. However, when you configure Samba with the Q-Shell, there is better error logging and its configuration is stored in a CMDB.
 
 [[note]]
 **Note** 
+
 For every change that you apply in the CMDB configuration of Samba, you have to execute the following steps:
 
 1 - Start the changes for the Samba CMDB configuration:
@@ -88,7 +92,7 @@ For every change that you apply in the CMDB configuration of Samba, you have to 
 [[/note]]
 
 
-#### Creating a Samba Share
+### Creating a Samba Share
 
 To create a new Samba share, we use the command below:
 
@@ -98,7 +102,7 @@ To create a new Samba share, we use the command below:
 * *path:* path of the folder to share.
 
 
-### Code Repositories
+## Code Repositories
 
 The source code can be found on the following BitBucket code repository:
     http://bitbucket.org/despiegk/samba_extension

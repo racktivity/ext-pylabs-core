@@ -1,10 +1,14 @@
+@metadata title=Introducing Q-Packages
+@metadata order=10
+@metadata tagstring=introduction q-package
+
 [apt]: http://en.wikipedia.org/wiki/Advanced_Packaging_Tool
 [yum]: http://en.wikipedia.org/wiki/Yellowdog_Updater,_Modified
 [nginx]: http://www.nginx.org/
 [PostgreSQL]: http://www.postgresql.org
 
 
-## Introducing Q-Packages
+# Introducing Q-Packages
 
 Q-Packages is Incubaid's platform independent software and content distribution system. It is similar to conventional package systems ([apt][], [yum][], ...), but without their complexity.
 
@@ -15,7 +19,7 @@ The Q-Package framework is part of the PyLabs 5 framework. By using PyLabs it be
 Whatever you need to distribute in PyLabs 5, Q-Package is your friend.
 
 
-#### Q-Package Features
+## Q-Package Features
 
 * Configure applications in a uniform way
 * Control applications in a uniform way
@@ -26,6 +30,6 @@ Whatever you need to distribute in PyLabs 5, Q-Package is your friend.
 * Quality-level system
 
 
-#### License
+## License
 Open-source packages which are converted in Q-Packages hold the same license as the original open-source packages.
 

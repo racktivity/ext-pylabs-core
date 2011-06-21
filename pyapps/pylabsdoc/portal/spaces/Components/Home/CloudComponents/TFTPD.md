@@ -1,24 +1,27 @@
-[qpinstall]: /pylabsdoc/#/Q-Packages/QPInstall
+@metadata title=TFTP Daemon
+@metadata tagstring=tftpd tftp daemon
 
-## Trivial File Transfer Protocol Daemon
+[qpinstall]: /#/Q-Packages/QPInstall
+
+# Trivial File Transfer Protocol Daemon
 
 TFTPD is a FTP server used for Preboot Execution Environment (PXE) booting; it hosts the system images of the corresponding machines.
 
-### Installing TFTPD
+## Installing TFTPD
 
 Install the latest version of the Q-Package named 'tftpd'.
 If you are unfamiliar with how to install a Q-Package, please check the [Installing Q-Packages][qpinstall] page.
 
 
-### Location in the Sandbox
+## Location in the Sandbox
 
 * *TFTPD application:* `/opt/qbase5/apps/tftpd/`
 * *TFTPD extension:* `/opt/qbase5/lib/pymonkey/extensions/servers/tftp/`
 
 
-### Managing the TFTPD Server
+## Managing the TFTPD Server
 
-#### Management Extensions
+### Management Extensions
 
 The server has a management extension to start and stop the server and to do configuration management, some of the commands are listed below.
 
@@ -39,7 +42,7 @@ The server has a management extension to start and stop the server and to do con
     q.manage.tftp.getStatus()
 
 
-#### Q-Packages Start & Stop Tasklets
+### Q-Packages Start & Stop Tasklets
 
 Get a reference of the 'tftpd' Q-Package that you previously installed. This can be done the same way we installed the package:
 
@@ -58,7 +61,7 @@ Now you can use the start and stop tasklets as follows:
     i.qp.lastPackage.qpackage.stop()
 
 
-### Configuring the TFTPD Server
+## Configuring the TFTPD Server
 
 * *q.manage.tftp.cmdb.ipAddress:* The IP address of the TFTPD server.
 * *q.manage.tftp.cmdb.port:* The port on which the TFTPD is listening.
@@ -66,7 +69,8 @@ Now you can use the start and stop tasklets as follows:
 * *q.manage.tftp.cmdb.startAtReboot:* Enable when the server should start at reboot.
 
 
-### Code Repositories
+## Code Repositories
 
 The source code can be found on the following BitBucket code repository:
     http://bitbucket.org/despiegk/tftp_extension
+    

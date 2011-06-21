@@ -1,4 +1,4 @@
-@metadata spaceorder=8
+@metadata spaceorder=80
 @metadata title=Contributing in Style
 @metadata tagstring=code contribute style guide
 

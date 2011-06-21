@@ -1,11 +1,15 @@
-## Using the Management Application Class
+@metadata title=Management Application Class
+@metadata tagstring=management application class
+
+
+# Using the Management Application Class
 
 The `ManagementApplication` Class is used for creating the management module of your Application Management extension. This management module contains the methods to manage your application or service, by using the CMDB Objects of the application or service.
 
 The `ManagementApplication` class _always_ inherits from the `ManagementConfiguration` Class. The `ManagementConfiguration` class provides some methods to manage a configuration, such as applyConfig and printConfig. The `ManagementApplication` class provides the basic management functions for the application or service.
 Obviously these base classes do not contain any logic nor code, they only provide empty methods for the management module.
 
-### Code Snippet of ManagementApplication.py
+## Code Snippet of ManagementApplication.py
 
 [[code]]
 def stop(self):
@@ -16,10 +20,10 @@ def stop(self):
     raise NotImplementedError("%s.stop()" % self.cmdb.name)
 [[/code]]
 
-### VirtualBoxManager
+## VirtualBoxManager
 With this management module you can control and configure your VirtualBox application. 
 
-### Importing the Necessary Modules
+## Importing the Necessary Modules
 In a first phase you need to import all necessary modules. For all management modules you need to import the PyLabs framework central class, of which the `q` object is an instance, and the ManagementApplication base class.
 Import other modules if necessary.
 
@@ -34,7 +38,7 @@ from VirtualboxHypervisor import VirtualboxHypervisor
 [[code]]
 
 
-### Creating Your Class
+## Creating Your Class
 Create a class that uses the `ManagementApplication` class and add a Pydoc that briefly explains the purpose of the class. 
 
 [[code]]
@@ -47,7 +51,7 @@ class VirtualBoxManager(ManagementApplication):
     cmdb = VirtualboxHypervisor()
 [[/code]]
 
-### Adding the Methods
+## Adding the Methods
 Besides the methods that are provided by the base classes (save, applyConfig, start, stop, ...), it is possible that you need to add other methods to fully manage your application or service. In this example we give you some of the methods that are available for this management module.
 Make sure that you add proper Pydocs for each method, as done in the example below.
 

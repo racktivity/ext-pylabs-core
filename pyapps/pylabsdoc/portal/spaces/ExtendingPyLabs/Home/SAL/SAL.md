@@ -1,10 +1,15 @@
+@metadata title=System Abstraction Layer
+@metadata order=60
+@metadata tagstring=system abstraction layer sal
+
 [imgPylabsSystemWrapper]: images/images50/extendingpylabs/PylabsSystemWrapper.png
-[cmdbobjproperty]: /pylabsdoc/#/ExtendingPyLabs/CmdbObjProperty
+[cmdbobjproperty]: /#/ExtendingPyLabs/CmdbObjProperty
 
 #System Abstraction Layer
 
 [[warning]]
 **Warning**
+
 This PyLabs System Abstraction Layer section needs complete review and may be inaccurate at this moment. We try to get it up to date as soon as possible.
 
 Our apologies for any inconvenience.
@@ -35,7 +40,8 @@ The schema below shows the structure of a System Wrapper.
 ![PylabsSystemWrapper][imgPylabsSystemWrapper]
 
 [[note]]
-**Note** 
+**Note**
+ 
 Starting from PyLabs 5.0 it is recommended not to use the CMDB (Configuration Management Data Base) approach anymore, but just wrap system calls and implement the logic from a CMDB in your Q-Shell script calling the SAL.
 [[/note]]
 

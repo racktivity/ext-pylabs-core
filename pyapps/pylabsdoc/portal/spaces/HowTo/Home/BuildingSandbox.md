@@ -1,7 +1,10 @@
+@metadata title=Build PyLabs
+@metadata tagstring=build sandbox
+
 @todo this content is not up to date, ask Egypte to fix it (look for @todo in page)
 
 
-## HOWTO Build the sandboxes
+# How to Build PyLabs 5
 
 Building the sandboxes is still some manual work.
 The biggest part is fully automated, but afterward(the cleanup step, is still some manual work)
@@ -14,7 +17,7 @@ The linux contains a full glibc and a gcc compiled with the new glibc, its almos
 Its totally different for solaris, because solaris is one fixed platform(not like linux with different distributions).
 
 
-### Get the Build Scripts
+## Get the Build Scripts
 
 Create a BUILD directory somewhere on your system(be sure you have enough disk space free).
 
@@ -23,14 +26,14 @@ Create a BUILD directory somewhere on your system(be sure you have enough disk s
 @todo
 Export the files with git from
 
-http://staging.pymonkey.org/projects/pymonkey/repos/trunk/trees/master/scripts/sandboxbuildscripts
+http://staging.pylabs.org/projects/pylabs/repos/trunk/trees/master/scripts/sandboxbuildscripts
 
 Be sure there is no old sandbox installed.
 
     rm -rf /opt/qbase5
 
 
-### Start Compiling!
+## Start Compiling!
 
 The scripts contains for every application and library a build scripts(e.g. bld_sed.sh)
 Also a general configuring script is used, to sed the location of the sandbox(e.g `/opt/qbase5`) or set some compile paths.
@@ -44,7 +47,7 @@ Start watching a couple of movies, go home or start a other task because this ru
 Probably you better use a screen session or run the script in the background.
 
 
-### Cleaning up the Sandbox.
+## Cleaning up the Sandbox.
 
 Every install step of a application is installing to much files in the sandbox, afterwards we need to remove some files.
 
@@ -53,13 +56,13 @@ Every install step of a application is installing to much files in the sandbox, 
 * man/info/... files
 
 
-### Installing Extra Files in the Sandbox
+## Installing Extra Files in the Sandbox
 
 @todo: check links
-* qshell bash script: http://staging.pymonkey.org/projects/pymonkey/repos/trunk/trees/master/scripts/sandboxdefaultcontents/qshell in /opt/qbase5
-* ipython initialization script: http://staging.pymonkey.org/projects/pymonkey/repos/trunk/trees/master/scripts/sandboxdefaultcontents/init /opt/qbase5/init
-* init_bootstrap script: http://staging.pymonkey.org/projects/pymonkey/repos/trunk/trees/master/scripts/sandboxdefaultcontents/bin/init-bootstrap.sh /opt/qbase5/bin
-* utils: http://staging.pymonkey.org/projects/pymonkey/repos/trunk/trees/master/utils in utils/
+* qshell bash script: http://staging.pylabs.org/projects/pylabs/repos/trunk/trees/master/scripts/sandboxdefaultcontents/qshell in /opt/qbase5
+* ipython initialization script: http://staging.pylabs.org/projects/pylabs/repos/trunk/trees/master/scripts/sandboxdefaultcontents/init /opt/qbase5/init
+* init_bootstrap script: http://staging.pylabs.org/projects/pylabs/repos/trunk/trees/master/scripts/sandboxdefaultcontents/bin/init-bootstrap.sh /opt/qbase5/bin
+* utils: http://staging.pylabs.org/projects/pylabs/repos/trunk/trees/master/utils in utils/
 * config directory: create a directory cfg/qconfig/, create a new file main.cfg, which contains following entries
 
     [main]
@@ -69,11 +72,11 @@ Every install step of a application is installing to much files in the sandbox, 
     logserver_ip = 127.0.0.1
     qshell_firstrun = True
 
-* pymonkey, latest pymonkey egg should be installed in /opt/qbase3/lib/pymonkey/core/ 
-* sitecustomze.py should be saved in /opt/qbase3/lib/python2.5/ and can be found in http://staging.pymonkey.org/projects/pymonkey/repos/trunk/blobs/master/scripts/sitecustomize.py
+* pylabs, latest pylabs egg should be installed in /opt/qbase3/lib/pylabs/core/ 
+* sitecustomze.py should be saved in /opt/qbase3/lib/python2.5/ and can be found in http://staging.pylabs.org/projects/pylabs/repos/trunk/blobs/master/scripts/sitecustomize.py
 
 
-### Package the Sandbox
+## Package the Sandbox
 
 Create a tar file of the sandbox contents:
 

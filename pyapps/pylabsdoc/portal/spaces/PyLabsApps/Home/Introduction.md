@@ -1,8 +1,12 @@
+@metadata title=Introducing PyApps
+@metadata order=10
+@metadata tagstring=intro pyapp architecture drp create
+
 [imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
 [imgDrp]: images/images50/pyapps/PyLabs_DRP.png
 [imgPyApp]: images/images50/pyapps/PyApp.png
 [imgPyAppCreate]: images/images50/pyapps/PyApp_Create.png
-[drp]: /pylabsdoc/#/PyLabs50/Architecture
+[drp]: /#/PyLabs50/Architecture
 [epydoc]: http://epydoc.sourceforge.net/
 
 

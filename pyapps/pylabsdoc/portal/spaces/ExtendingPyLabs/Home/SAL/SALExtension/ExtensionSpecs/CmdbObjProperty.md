@@ -1,5 +1,9 @@
-[baseclass]: /pylabsdoc/#/ExtendingPyLabs/BaseClasses
-[createenum]: /pylabsdoc/#/ExtendingPyLabs/CreateEnumerators
+@metadata title=CMDB Object
+@metadata order=30
+@metadata tagstring=cmdb object property
+
+[baseclass]: /#/ExtendingPyLabs/BaseClasses
+[createenum]: /#/ExtendingPyLabs/CreateEnumerators
 
 
 # Properties of PyLabs CMDB Objects
@@ -8,11 +12,11 @@ Each PyLabs extension that manages an existing application or service will have 
 
 There are three types of CMDB Objects:
 
-# *CMDB Object*:
+* *CMDB Object*:
 This is a configuration of a simple object that does not belong to an application, such as a disk partition. A CMDB Object will always inherit from the base class CMDB Object. The CMDB Object class inherits on its turn from the base class Base CMDB Object.
-# *CMDB Application Object*:
+* *CMDB Application Object*:
 This is a configuration of an application object that is not a server application, such as a machine. A CMDB Application Object always inherits from the base class CMDB Application Object. The CMDB Application Object class inherits on its turn from the base class CMDB Object.
-# *CMDB Server Object*:
+* *CMDB Server Object*:
 This is a configuration of a server object, such as a Port Forwarding rule. A CMDB Server Object always inherits from the base class CMDB Server Object. The CMDB Server Object class inherits on its turn from the base class CMDB Application Object.
 
 [[info]]

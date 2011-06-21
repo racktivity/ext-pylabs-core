@@ -1,18 +1,22 @@
+@metadata title=Extension Components
+@metadata order=20
+@metadata tagstring=component extension configuration location
+
 [hook]: http://en.wikipedia.org/wiki/Hooking
 
-##Components of an Extension
+#Components of an Extension
 
 A PyLabs extension consists of at least two files, a configuration file and a module. For more advanced extensions, it may be necessary to create your own libraries.
 Every PyLabs extension has its specific location in the PyLabs directory structure.
 
 
-###Extension Location
+##Extension Location
 
 Each PyLabs extension is a subdirectory of `/opt/qbase5/lib/pylabs/extensions` (can be called in the Q-Shell via the command `q.dirs.extensionsDir`).
 The name of the subdirectory must be lowercase, use underscores to separate words, for example `my_extension`.
 
 
-###Extension Configuration File
+##Extension Configuration File
 The name of an extension configuration file is always `extension.cfg`.
 Each PyLabs extension has a [hook][] which contains the following information:
 
@@ -46,6 +50,6 @@ Example of a configuration file:
     enabled=1
 
     
-###Extension Module
+##Extension Module
 The module of the extension is a Python file with at least one class, containing one or more methods. 
 The file name must match the `modulename` in the extension configuration file and the class name must match the `classname`.

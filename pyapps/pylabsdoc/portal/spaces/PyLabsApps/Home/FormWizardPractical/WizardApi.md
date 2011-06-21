@@ -1,10 +1,14 @@
+@metadata title=Wizard API
+@metadata order=30
+@metadata tagstring=wizard api
+
 #Wizard API
 
 In this section you can find the API documentation of the methods to create wizards in a PyLabs Application.
 The methods to create a wizard are available in the name space `q.gui.dialog.`.
 
 
-###askChoice
+##askChoice
 
 [[code]]
 def askChoice(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
@@ -39,8 +43,9 @@ Example:
 
     In [4]: mychoice
     Out[4]: 'foo'
+    
         
-###askChoiceMultiple
+##askChoiceMultiple
 
 [[code]]
 def askChoiceMultiple(self, question, choices, defaultValue = None, pageSize = 10, sortChoices=False, sortCallBack=None):
@@ -75,8 +80,9 @@ Example:
 
     In [4]: mychoices
     Out[4]: ['foo', 'bar']        
+    
         
-###askDate
+##askDate
 
 [[code]]
 def askDate(self, question, minValue = None, maxValue = None, selectedValue = None, format = 'YYYY/MM/DD'):
@@ -102,8 +108,9 @@ Example:
     
     In [2]: date
     Out[2]: '1939/10/27'
+       
         
-###askDateTime
+##askDateTime
 
 [[code]]
 def askDateTime(self, question, minValue = None, maxValue = None, selectedValue = None, format = 'YYYY/MM/DD hh:mm'):
@@ -120,7 +127,8 @@ def askDateTime(self, question, minValue = None, maxValue = None, selectedValue 
     """
 [[/code]]    
         
-###askDirPath
+        
+##askDirPath
 
 [[code]]
 def askDirPath(self,message, startPath = None):
@@ -132,8 +140,9 @@ def askDirPath(self,message, startPath = None):
     @return: path to the directory selected
     """
 [[/code]]
+ 
         
-###askFilePath
+##askFilePath
 
 [[code]]
 def askFilePath(self,message, startPath = None):
@@ -146,7 +155,7 @@ def askFilePath(self,message, startPath = None):
     """
 [[/code]]
         
-###askInteger
+##askInteger
 
 [[code]]
 def askInteger(self, question, defaultValue = None):
@@ -163,8 +172,9 @@ Example:
 
     In [1]: age = q.gui.dialog.askInteger('Age')
     Age: 71
-        
-###askIntegers
+    
+       
+##askIntegers
 
 [[code]]
 def askIntegers(self, question):
@@ -176,7 +186,8 @@ def askIntegers(self, question):
     """
 [[/code]]
         
-###askMultiline
+
+##askMultiline
 
 [[code]]
 def askMultiline(self, question, defaultValue=None):
@@ -187,7 +198,8 @@ def askMultiline(self, question, defaultValue=None):
     """
 [[/code]]
        
-###askPassword
+
+##askPassword
 Asks for a password (with confirmation), including a check if the entered passwords are identical.
 
 [[code]]
@@ -216,7 +228,8 @@ Example:
 
     In [3]:
         
-###askString
+
+##askString
 
 [[code]]
 def askString(self,question, defaultValue = None, validator=None):
@@ -235,7 +248,7 @@ Example:
     Name: John Cleese
         
         
-###askYesNo
+##askYesNo
 
 [[code]]
 def askYesNo(self,question, defaultValue = None):
@@ -254,7 +267,8 @@ Example:
     In [1]: answer = q.gui.dialog.askYesNo('Are you John Cleese')
     Are you 18 or older (y/n):y   
         
-###message
+
+##message
 
 [[code]]
 def message(self, message):
@@ -270,7 +284,8 @@ Example:
     In [20]: q.gui.dialog.message('Hello World')
      Hello World
         
-###showMessageBox
+
+##showMessageBox
 
 [[code]]
 def showMessageBox(self, message, title, msgboxButtons = "OK", msgboxIcon = "Information", defaultButton = "OK"):
@@ -287,7 +302,8 @@ def showMessageBox(self, message, title, msgboxButtons = "OK", msgboxIcon = "Inf
     """
 [[/code]]    
         
-###showProgress
+
+##showProgress
 
 [[code]]
 def showProgress(self, minvalue, maxvalue, currentvalue):

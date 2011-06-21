@@ -1,4 +1,7 @@
-## PyLabs Process Handler
+@metadata title=Process Handler
+@metadata tagstring=process handle tasklet engine
+
+# PyLabs Process Handler
 
 * run a process per processhandlerdirectory
 * per process run a taskletengine which runs a main loop with params which are always given to each tasklet, the params stay in memory 
@@ -11,8 +14,7 @@
     $paramname=$paramvalue
     $paramname=$paramvalue1,$paramvalue2
 
-
-### Process Handler
+## Process Handler
 
 * main loop which calls tasklet engine every 10 second to execute on all tasklets  
 * in tasklets the match function implements its own scheduling (e.g. after 23h, once a day)
@@ -22,7 +24,7 @@
 * a separate process per schedulegroup
 
 
-### usecases
+## usecases
 
 * monitoring capturing tasklets
 * monitoring rules
@@ -33,7 +35,7 @@
     ** e.g. juggernautdb requires zookeeper, juggernaut checks is there zookper running, if yes I run too
 
 
-### directory structure processhandler
+## directory structure processhandler
 
 each dir implements a `$processgroup`
 `$qbasedir/apps/processhandler/$processgroupname/`
@@ -44,7 +46,7 @@ each dir implements a `$processgroup`
     [qbase]/apps/processhandler/autotasks/$appname.py  #generic task processhandler of whatever needs to be scheduled
 
 
-### new install of application (FUTURE)
+## new install of application (FUTURE)
 
 * when actor application.init() called 
 
@@ -53,7 +55,7 @@ each dir implements a `$processgroup`
     ** the e.g. monitoring capture rules can be part of main qpackage or of sub qpackage or even a non related specific monitoring qpackage
 
 
-### q... methods
+## q... methods
 
     q.kernel.processhandler.stop($optionalschedulegroupname)  (informs agent that scheduling does not need to happen for now, then all looping over tasklets is stopped)
     q.kernel.processhandler.start($optionalschedulegroupname)

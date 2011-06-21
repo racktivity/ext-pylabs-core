@@ -1,14 +1,18 @@
-[ns]: /pylabsdoc/#/PyLabs50/NameSpaces
+@metadata title=Tasklets
+@metadata order=50
+@metadata tagstring=tasklet engine structure
+
+[ns]: /#/Overview/NameSpaces
 [dict]: http://docs.python.org/release/2.6.6/library/stdtypes.html#dict
 
 
-## Tasklets
+# Tasklets
 
 Tasklets are small pieces of code that are executed by a PyLabs Tasklet Engine. The tasklet engine is the component responsible for loading, categorizing, and executing tasklets. Tasklets are executed based on _tags_ and _priority_, but can also be triggered by events or other specific criteria.
 Tasklets are used over the full PyLabs framework stack, from displaying wizards to storing object in a database.
 
 
-### Tasklet Structure
+## Tasklet Structure
 
 In PyLabs, it is recommended that the file name of an action tasklet has the following structure:
 
@@ -55,7 +59,7 @@ def match(q, i, p, params, tags):
 [[/code]]
 
 
-### The Tasklet Main-Function
+## The Tasklet Main-Function
 The `main` function of a tasklet contains the code that will be executed when the tasklet is triggered. In this function you can use all PyLabs [name spaces][ns] (i, p, and q).
 Besides the three name spaces you get a [dictionary][dict] of parameters and a tuple of tags.
 If you need more libraries in your function, you can import them inside this function.
@@ -77,7 +81,7 @@ As shown in the example above, you add the value `something` to the key `result`
 Beware that a tasklet should execute one and only one task, so don't execute more than one task in the tasklet.
 
 
-### The Tasklet Match-Function
+## The Tasklet Match-Function
 The `match` function is the first function that is executed when a tasklet is triggered. If the function returns `True`, then the `main` function of the tasklet is executed. 
 When the `main` function must be executed without specific filters, which means that the tasklet is triggered by tags only, then you can omit the `match` function in the tasklet.
 This could be done in the shown example.

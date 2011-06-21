@@ -1,4 +1,9 @@
-##Your First Script
+@metadata title=Your First Script
+@metadata order=10
+@metadata tagstring=first script
+
+
+#Your First Script
 
 To create a PyLabs compatible script, you have to import PyLabs InitBase. This makes sure that all default and custom (i.e. self-made) PyLabs extensions are loaded into memory.
 When done you have the same functionalities as in the Q-Shell.

@@ -1,8 +1,12 @@
+@metadata title=Architecture
+@metadata order=10
+@metadata tagstring=architecture drp layer osis arakoon postgres
+
 [imgpyappArch]: images/images50/pyapps/PyApp_Architecture.png
 [imgDRP]: images/images50/pylabs/PyLabs_DRP.png
 
 
-## PyLabs Architecture
+# PyLabs Architecture
 The PyLabs framework is a Python framework, specifically aimed at cloud application development. It provides all required components needed to build a typical cloud application. 
 PyLabs covers a very wide range of functionality, from the basics such as logging services to an advanced workflow engine to oversee distributed program execution.
 
@@ -22,7 +26,7 @@ OSIS: Object Store and Indexing System, this is a layer on top of Arakoon and Po
 * store and update views in PostgreSQL
 
 
-### PyLabs Layers
+## PyLabs Layers
 
 * **Cloud API** and **Wizards**: This layer is the interface to the end-user. It provides the functionality to manage for example a virtualized datacenter.
 

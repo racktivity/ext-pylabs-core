@@ -1,6 +1,10 @@
-## Commands Over XMPP
+@metadata title=Commands over XMPP
+@metadata tagstring=agent commands xmpp
 
-### Agent
+
+# Commands Over XMPP
+
+## Agent
 
 * agent register xmppserver
 
@@ -24,7 +28,7 @@
     !
 
 
-### Authentication and Permissions (*)
+## Authentication and Permissions (*)
 
 * perm set $agentsfilter $acl #set permissions for agent
 * this can only be done for user which has perm:1 rights
@@ -46,7 +50,7 @@
 * dump all permissions
 
 
-### (q)shellcmd
+## (q)shellcmd
 
 * shellcmd \-$stringWhateverNeedsToBeExecuted    #theString can be multiple lines
     ** options
@@ -70,7 +74,7 @@
 * every shellcmd & qshellcmd is executed in separate process
 
 
-### Q-Packages (v4)
+## Q-Packages (v4)
 
 * qpackages update
 * qpackages setsource $sourcestring of config file for qpackages (allows to redirect to other qpackages server)
@@ -98,7 +102,7 @@
 * These commands are implemented for qpackagesV3 only till now.
 
 
-### Portforward
+## Portforward
 
 * portforward `-R $serverport:$localdestination:$portondestination $login:$passwd@$sshServerInPubDC`  
 @todo check can we get it to work using passwds?
@@ -117,7 +121,7 @@
 * syntax used is very close to original SSH syntax
 
 
-### Kill/Stop Tasks
+## Kill/Stop Tasks
 
 * this command kills or stops task given its task number
 * syntax
@@ -141,7 +145,7 @@
     !
 
 
-### File Systems, File, ... (*)
+## File Systems, File, ... (*)
 
 * download $cloudfsUrl $localpath
 * upload $localpath $cloudfsUrl
@@ -153,34 +157,34 @@
 * fs delete $path
 
 
-#### Format of Return of Dir
+### Format of Return of Dir
 
     $filename f $size
     $dirname d
     $linkname l
 
 
-### qbase (*)
+## qbase (*)
 
 * qbase install $tgzlocationOfNewSandbox $destinationpath #if not dest put in /opt/qbase5 of unix and c:\qbase5 for windows
     **mark in registry when windows what qbase location is
 * qbase getlocation  #show location of sandbox (only relevant for windows)
 
 
-### dialog (*)
+## dialog (*)
 
 * dialog message $message #which will popup on screen where icon is running
 * rdp $login:$passwd@$dest:$port
 
 
-### taskbar (*)
+## taskbar (*)
 
 * taskbar icon enable  #enable taskbar agent with logo of agent
 * taskbar icon disable
 * taskbar icontooltip $tooltipmessage #e.g. "downloading of qbase 90%"
 
 
-### askpermission (*)
+## askpermission (*)
 
 * askpermission $message  #tells agent to ask permission use optional message how to ask permission
     ** askpermission also asks for how long permission should be given, std 1h
@@ -188,7 +192,7 @@
     ** only relevant for cmd's which need permission to run
 
 
-### system processes
+## system processes
 
 * system setpasswd $username $passwd
 * process list
@@ -205,7 +209,7 @@
     !
 
 
-### future (*)
+## future (*)
 
 FUTURE
 * system service start $servicename
@@ -219,7 +223,7 @@ FUTURE
     ** returnformat= HR, YAML     #HR = human readable
 
 
-### scheduler
+## scheduler
 
 * scheduler start  #starts scheduler as service/daemon which works with the tasklets see [AgentV4Scheduler]
 * scheduler stop

@@ -1,8 +1,11 @@
-## Using the CMDB Classes
+@metadata title=CMDB Class
+@metadata tagstring=cmdb class detail
+
+# Using the CMDB Classes
 
 In the previous section, you have seen some basic information about the PyLabs BaseClasses. In this section you will get to know some practical information about using the CMDB classes.
 
-### Levels of the CMDB Classes
+## Levels of the CMDB Classes
 The CMDB classes are split into several levels: 
 * The bottom level is the *BaseCMDBObject* Class. All levels above this class inherit the properties (i.e. _timestampcreated_ and _timestampmodified_).
 * One level higher you have the *CMDBObject* Class and the *CMDBSubObject* Class. 
@@ -16,7 +19,7 @@ The CMDB classes are split into several levels:
 
 Now that you have seen the levels of the CMDB classes, we will move on with some examples to show you the usages of these classes. Since we only have four top level classes (namely CMDBObject, CMDBSubObject, CMDBApplicationObject and CMDBServerObject), we will only give examples of three of them (CMDBObject, CMDBSubObject and CMDBServerObject), since we do not have applications available.
 
-### VirtualboxHypervisor (CMDBObject)
+## VirtualboxHypervisor (CMDBObject)
 
 [[code]]
 import re
@@ -77,7 +80,7 @@ class VirtualboxHypervisor(CMDBObject):
         self.dirtyProperties.add('machines')
 [[/code]]
 
-### VirtualboxDisk (CMDBSubObject)
+## VirtualboxDisk (CMDBSubObject)
 
 [[code]]
 from pylabs import q
@@ -120,7 +123,7 @@ class VirtualboxDisk(CMDBSubObject):
 [[/code]]
 
 
-### PostgresqlServer (CMDBServerObject)
+## PostgresqlServer (CMDBServerObject)
 
 [[code]]
 from pylabs import q
