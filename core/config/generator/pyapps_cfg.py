@@ -28,7 +28,7 @@ class PyAppsConfigGen:
         self.config = None
         self.components = None
         self._load_config()
-    
+
     def _load_config(self):
         self.config = q.config.getConfig('pyapps').get(self.appName)
         self.components = self.list_needed_components()
@@ -47,7 +47,7 @@ class PyAppsConfigGen:
                 pyappsCfg.addParam(self.appName, key, value)
             pyappsCfg.write()
             self._load_config()
-    
+
     def setup(self):
         from pylabs.db import DBConnection
         #create user with applicationname
@@ -65,7 +65,7 @@ class PyAppsConfigGen:
                 db.initDone = True
                 db.new = False
                 db.addACE(self.appName, '', q.enumerators.PostgresqlAccessRightType.WRITE)
-                postgres.cmdb.addLogin(self.appName,  type='host', 
+                postgres.cmdb.addLogin(self.appName,  type='host',
                         cidr_address='127.0.0.1/32',database=self.appName)
                 postgres.save()
                 postgres.applyConfig()
@@ -136,7 +136,7 @@ class PyAppsConfigGen:
         if 'event_consumers' in self.components:
             p.events.startConsumers(self.appName)
 
-    
+
     def stop(self):
         if 'appserver' in self.components:
             q.manage.applicationserver.stop(self.appName)
@@ -147,7 +147,7 @@ class PyAppsConfigGen:
             cluster.stop()
         if 'event_consumers' in self.components:
             p.events.stopConsumers(self.appName)
-    
+
     def generateAll(self):
         self.pyapps_configuration()
         if 'wfe_port' in self.config:
@@ -158,25 +158,25 @@ class PyAppsConfigGen:
             self.generateOsisConfig()
         if 'app_server_xmlrpc_port' in self.config:
             self.generateAppServerConfig()
-    
+
     def generateWfeConfig(self):
         wfe = WfePyApps(self.appName)
         wfe.generate_cfg(self.config['wfe_port'])
-    
+
     def generateArakoonConfig(self):
         arakoon = ArakoonPyApps(self.appName)
         arakoon.generate_cfg(self.config['arakoon_baseport'])
-    
+
     def generateOsisConfig(self):
         osis = OsisPyApps(self.appName)
         osis.generate_cfg()
-    
+
     def generateAppServerConfig(self):
         appserver = AppServerPyApps(self.appName)
         appserver.generate_cfg(self.config['app_server_xmlrpc_port'],
                                 self.config['app_server_rest_port'],
                                 self.config['app_server_amf_port'])
-    
+
     def list_needed_components(self):
         implPath =  join(q.dirs.pyAppsDir, self.appName, 'impl')
         interfacePath = join(q.dirs.pyAppsDir, self.appName, 'interface')
@@ -199,7 +199,7 @@ class PyAppsConfigGen:
         if 'events' in dirBaseNames:
             params.add('event_consumers')
         return params
-    
+
     def get_needed_params(self, minRange):
         params = dict()
         if 'wfe' in self.components:
@@ -276,11 +276,14 @@ LFW_CONFIG = {
         'updateSpace': '/%(appname)s/appserver/rest/ui/portal/updateSpace',
         'importSpace': '/%(appname)s/appserver/rest/ui/portal/importSpace',
         'exportSpace': '/%(appname)s/appserver/rest/ui/portal/exportSpace',
+        'hgPushSpace': '/%(appname)s/appserver/rest/ui/portal/hgPushSpace',
+        'hgPullSpace': '/%(appname)s/appserver/rest/ui/portal/hgPullSpace',
+        'space': '/%(appname)s/appserver/rest/ui/portal/space',
         'macros': '/%(appname)s/js/macros/'
     },
     'appname' : '%(appname)s'
 };
-''' 
+'''
 
         config = config_template % {
             'appname': self.appName,
