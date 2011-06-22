@@ -27,6 +27,10 @@ class AppManager(object):
     
     
     def install (self, appname):
+        app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+        if not q.system.fs.exists(app_dir):
+            raise RuntimeError('Application "%s" does not exist'%appname)
+        
         p.core.codemanagement.api.generate(appname)
         gen = PyAppsConfigGen(appname)
         q.action.start("Generating config for %s" % appname)
@@ -196,20 +200,40 @@ class AppManager(object):
     def syncPortal(self, appname, space=None, clean_up=False):
         from alkira.sync_md_to_lfw import sync_to_alkira
         sync_to_alkira(appname, sync_space=space, clean_up=clean_up)
+
+
+    def check_application(function):
         
+        def _check_application(self, appname):
+            app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+            if not q.system.fs.exists(app_dir):
+                raise RuntimeError('Application "%s" does not exist'%appname)
+            
+            app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
+            if not q.system.fs.exists(app_cfg_dir):
+                raise RuntimeError('Application "%s" configuration does not exist ... Please install application first'%appname)
+            
+            return function(self, appname)
+        
+        return _check_application
+
+    @check_application
     def start(self, appname):
         gen = PyAppsConfigGen(appname)
         gen.start()
-    
+
+    @check_application
     def stop(self, appname):
         gen = PyAppsConfigGen(appname)
         gen.stop()
- 
+
+    @check_application
     def restart(self, appname):
         gen = PyAppsConfigGen(appname)
         gen.stop()
         gen.start()
-        
+
+
 class ApplicationAPI(object):
     
     def __init__(self, appname, host=None, context=None):

@@ -38,6 +38,8 @@ from pylabs import q
 from pylabs.Shell import *
 import os
 
+#@todo make sure its implemented using unicode (in plist use utf8)
+
 class PList(pylabs.baseclasses.BaseType):
     """
     Meta-Data container for a collection of pfiles
@@ -119,18 +121,24 @@ class PList(pylabs.baseclasses.BaseType):
     ################################################
     def copyTo(self, destinationdir): 
         pass 
+       #@todo implement
     def hardlinkTo(self, destinationdir): 
         pass 
+      #@todo implement
     def symlinkTo(self, destinationdir): 
         pass 
+      #@todo implement
     
     def compressTarGZip(self, compressedDestFile): 
         pass 
+      #@todo implement
     #just tar no compression 
     def compressTar(self, compressedDestFile): 
         pass 
-    def resyncTO(self, rsyncDestination): 
-        pass 
+      #@todo implement
+    def rsyncTO(self, rsyncDestination): 
+        pass
+      #@todo implement
     
     def _fromFile(self, plistPath):
         

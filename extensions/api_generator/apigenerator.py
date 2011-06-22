@@ -287,14 +287,16 @@ class CloudApiGenerator:
     def __init__(self, appName):
         self._appName = appName
 
+    def _generateCodeStr(self, templatePath, params):
+        template = Template(q.system.fs.fileGetContents(templatePath), params)
+        return str(template)
+    
     def _generateCode(self, templatePath, params, destPath):
        
         if not q.system.fs.exists(q.system.fs.getDirName(destPath)):
             q.system.fs.createDir(q.system.fs.getDirName(destPath))
-                                        
-        template = Template(q.system.fs.fileGetContents(templatePath), params)
-        
-        contents = str(template)
+            
+        contents = self._generateCodeStr(templatePath, params)
         
         q.system.fs.writeFile(destPath, contents)
 
@@ -768,7 +770,14 @@ class AppAPIGenerator(object):
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'setup', 'osis'))
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
          
-         
+    def getSpacePage(self, space):
+        """
+        Gets the content of a space
+        """
+        self._generator = CloudApiGenerator("")
+        return self._generate_str("SpacePage.tmpl", {'space': space})
+        
+        
     def generate(self, appname):
         """
         For a given application:
@@ -829,6 +838,13 @@ class AppAPIGenerator(object):
         self._generator.generatePythonRoot()
         q.action.stop()
         
+        q.action.start("Generating Default Spaces")
+        
+        appspacesdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'portal', 'spaces')
+        self._create_folder(appspacesdir)
+        q.system.fs.copyDirTree(q.system.fs.joinPaths(self._template_path, "Spaces"), appspacesdir)
+        q.action.stop()
+        
         q.action.start('Generating actor API')
         spec_path = q.system.fs.joinPaths(interface_path, 'actor')
         if not q.system.fs.exists(spec_path):
@@ -875,6 +891,9 @@ class AppAPIGenerator(object):
            {'template':'Page.tmpl', 'params':params, 
                                'destination':['interface', 'action', 'ui', 'page.py']},
            
+           {'template':'Space.tmpl', 'params':params, 
+                               'destination':['interface', 'action', 'ui', 'space.py']},
+                               
            {'template':'JobClear.tmpl', 'params':params, 
                                'destination':['impl', 'action', 'core', 'job', 'clear', '1_job_clear.py']},
                                                    
@@ -922,18 +941,42 @@ class AppAPIGenerator(object):
                                 
            {'template':'UiPageUpdate.tmpl', 'params':params, 
                                'destination':['impl', 'action', 'ui', 'page', 'update', '1_page_update.py']},
+            
+           {'template':'UiSpaceCreate.tmpl', 'params':params, 
+                   'destination':['impl', 'action', 'ui', 'space', 'create', '1_space_create.py']},
                                 
+           {'template':'UiSpaceDelete.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'delete', '1_space_delete.py']},
+
+           {'template':'UiSpaceFind.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'find', '1_space_find.py']},
+                                
+           {'template':'UiSpaceGetObject.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'getObject', '1_space_getObject.py']},
+                                
+           {'template':'UiSpaceUpdate.tmpl', 'params':params, 
+                               'destination':['impl', 'action', 'ui', 'space', 'update', '1_space_update.py']},
+                               
            {'template':'ModelJob.tmpl', 'params':params, 
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'core', 'job.py']},
 
            {'template':'ModelPage.tmpl', 'params':params, 
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'page.py']},
+                               
+           {'template':'ModelSpace.tmpl', 'params': params,
+                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'space.py']},
              
            {'template':'PageView.tmpl', 'params':params, 
                            'destination':['impl', 'setup', 'osis', 'page_view.py']},
-                            
+           
+           {'template':'SpaceView.tmpl', 'params':params, 
+                           'destination':['impl', 'setup', 'osis', 'space_view.py']},
+           
            {'template':'PageViewTags.tmpl', 'params':params, 
                                'destination':['impl', 'setup', 'osis', 'page_view_tags.py']},
+                               
+           {'template':'SpaceViewTags.tmpl', 'params':params, 
+                               'destination':['impl', 'setup', 'osis', 'space_view_tags.py']},
                                 
            {'template':'JobViewList.tmpl', 'params':params, 
                                'destination':['impl', 'setup', 'osis', 'job_view_list.py']},
@@ -946,7 +989,13 @@ class AppAPIGenerator(object):
                                 
            {'template':'PageStore.tmpl', 'params':params, 
                                'destination':[ 'impl', 'osis', 'osis', 'store', '3_page_store.py']},
-             
+                               
+           {'template':'SpaceDelete.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_space_delete.py']},
+                                
+           {'template':'SpaceStore.tmpl', 'params':params, 
+                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_space_store.py']},
+                               
            {'template':'ObjectStore.tmpl', 'params':params, 
                                'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_store.py']},
                                 
@@ -978,8 +1027,11 @@ class AppAPIGenerator(object):
             if not q.system.fs.exists(path):
                 self._generate_file(file['template'], file['params'], path)
 
-        
-                            
+    
+    def _generate_str(self, template, params):
+        return self._generator._generateCodeStr(
+            q.system.fs.joinPaths(self._template_path, template), params)
+    
     def _generate_file(self, template, params, path):
         self._generator._generateCode(
             q.system.fs.joinPaths(self._template_path, template), 

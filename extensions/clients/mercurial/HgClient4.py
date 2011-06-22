@@ -11,7 +11,7 @@ class NewUI(ui.ui):
         
 class HgClient4:    
     
-    def __init__(self,hgbasedir,remoteUrl="",branchname=None):
+    def __init__(self,hgbasedir,remoteUrl="",branchname=None, username=None):
         """
         @param base dir where local hgrepository will be stored
         @param remote url of hg repository, can be empty if local repo is created
@@ -21,6 +21,7 @@ class HgClient4:
         self.branchname=branchname
         self.reponame=""
         self.repokey=""
+        self.username=username
         self._ui = NewUI()
         self._log("Init hgclient: basedir:%s remoteurl:%s branchname:%s" %(hgbasedir,remoteUrl,branchname))
         
@@ -230,7 +231,7 @@ class HgClient4:
                 self._hgCmdExecutor(cmd, file)
                 cmd = 'commit'
                 message = "removed backup file '%s' " % (file)
-                self._hgCmdExecutor(cmd, message = message)
+                self._hgCmdExecutor(cmd, message=message, user=self.username)
 
         self._removeRedundantFiles()
         output = self.status()
@@ -481,7 +482,7 @@ class HgClient4:
         
     identify = id
 
-    def commit(self, message="", force=False):
+    def commit(self, message="", force=False, username=None):
         """
         does not work interactive
         """
@@ -499,7 +500,10 @@ class HgClient4:
                 self._raise("cannot commit because commit message is empty")
         self._log("commit %s" % (self.basedir))
         cmd="commit"
-        self._hgCmdExecutor(cmd, message = message)
+
+        if not username:
+            username = self.username
+        self._hgCmdExecutor(cmd, message=message, user=username)
         return message
 
     def addremove(self,message="",commit=True):
