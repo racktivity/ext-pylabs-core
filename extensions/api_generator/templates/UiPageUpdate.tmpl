@@ -1,14 +1,20 @@
 def main(q, i, p, params, tags):
-    page = p.api.model.ui.page.get(params['pageguid'])
-    page.name = params['name']
-    page.space = params['space']
-    page.category = params['category']
-    page.parent = params.get('parent')
-    page.tags = params.get('tags')
-    page.content = params.get('content')
-    page.order = params['order'] if params['order'] else page.order
-    page.title = params['title'] if params['title'] else page.title
-    p.api.model.ui.page.save(page)
+
+    alkira = q.clients.alkira.getClientByApi(p.api)
+    page = alkira.getPageByGUID(params['pageguid'])
+    parent = alkira.getPageByGUID(params["parent"]).name if params['parent'] else None
+    
+    alkira.updatePage(old_space=page.space,
+                      old_name=page.name,
+                      space=params['space'],
+                      name=params['name'],
+                      content=params['content'],
+                      order=params['order'] if params['order'] else 10000,
+                      title=params['title'] if params['title'] else params['name'],
+                      tagsList=params.get('tags', '').split(" "),
+                      category=params['category'],
+                      parent=parent)
+                      
     params['result'] = True
     
 def match(q, i, p, params, tags):
