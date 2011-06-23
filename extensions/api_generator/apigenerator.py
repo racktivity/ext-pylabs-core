@@ -44,7 +44,7 @@ def getTypeConverter(pymodelType):
     typeMapping['GUID'] = 'str'
     typeMapping['Enumeration'] = 'str'
     return typeMapping[pymodelType]
-    
+
 
 
 def getUIType(pymodelType):
@@ -58,7 +58,7 @@ def getUIType(pymodelType):
     typeMapping['GUID'] = 'Text'
     typeMapping['Enumeration'] = 'Choice'
     return typeMapping[pymodelType]
-    
+
 
 def getOsisType(pymodelType):
     typeMapping = dict()
@@ -71,14 +71,14 @@ def getOsisType(pymodelType):
     typeMapping['GUID'] = 'UUID'
     typeMapping['Enumeration'] = 'STRING'
     return typeMapping[pymodelType]
-    
-    #these types needs to review their mapping , is that possble to get these types in the model specs?                                                             
-    #model.Model                        
-                
-        #model.Dict              
+
+    #these types needs to review their mapping , is that possble to get these types in the model specs?
+    #model.Model
+
+        #model.Dict
         #model.Enumeration
         #model.List
-        
+
         #typeMapping['']='TEXT'
         #typeMapping['']='BIGINT'
 
@@ -93,12 +93,12 @@ def listFields(claZ):
         field ['Osistype'] = getOsisType(field ['type'])
         field ['uitype'] = getUIType(field ['type'])
         field ['converter'] = getTypeConverter(field ['type'])
-        
+
         if field ['type'] == "Enumeration":
             field ['enum'] = att.attribute.type_.__name__
-            
+
         fields.append(field)
-        
+
     return fields
 
 def getTemplateParams(specFile, appname = "", domain = "", params = dict() ):
@@ -203,7 +203,7 @@ def _encode(contents):
 
     for tag in tags.iterkeys():
         contents = contents.replace(tag,tags[tag])
-        
+
     return contents
 
 def getClassMethods(specFile, className):
@@ -290,40 +290,40 @@ class CloudApiGenerator:
     def _generateCodeStr(self, templatePath, params):
         template = Template(q.system.fs.fileGetContents(templatePath), params)
         return str(template)
-    
+
     def _generateCode(self, templatePath, params, destPath):
-       
+
         if not q.system.fs.exists(q.system.fs.getDirName(destPath)):
             q.system.fs.createDir(q.system.fs.getDirName(destPath))
-            
+
         contents = self._generateCodeStr(templatePath, params)
-        
+
         q.system.fs.writeFile(destPath, contents)
 
-                  
+
     def _generateModelImpl(self, specFile, appname, domain ):
         params = getTemplateParams(specFile, appname, domain)
-        
+
         params['table'] = "%s_view_%s_list"% (params['domain'], params['rootobject'] )
         params['schema'] = "%s_%s"% (params['domain'], params['rootobject'] )
-        
+
         sqlSelect = "Select "
         for field in params['fields']:
             sqlSelect += "%s.%s, " %(params['table'], field['name'])
         sqlSelect =sqlSelect[:-2]
         sqlSelect += " FROM %s.%s "%(params['schema'] , params['table'])
         params['sqlSelect'] = sqlSelect
-        
-        
+
+
         actionsList = []
-        #generating view files 
+        #generating view files
         actionsList.append( ['ModelView.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "setup", "osis", "%s_view.py"% params['rootobject'])])
-        
+
         #_generateOsisStoreDeleteCode
         actionsList.append( ['ModelStore.tmpl',q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "osis", "osis" , "store", "3_%s_store.py"% params['rootobject'])])
         actionsList.append( ['ModelDelete.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl" , "osis", "osis" , "delete", "1_%s_delete.py"% params['rootobject'])])
-        
-        #genarting action files 
+
+        #genarting action files
         actionsList.append( ['ModelCreateAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "create",  "1_%s_create.py"% params['rootobject'])])
         actionsList.append( ['ModelDeleteAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "delete",  "1_%s_delete.py"% params['rootobject'])])
         actionsList.append( ['ModelGetObjectAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "getObject",  "1_%s_getObject.py"% params['rootobject'])])
@@ -332,22 +332,22 @@ class CloudApiGenerator:
         actionsList.append( ['ModelFindAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "find", "1_%s_find.py"% params['rootobject'])])
         actionsList.append( ['GenerateModelDetailsPage.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "events" , "page_generator" , "generate_%s_page.py"% params['rootobject'])])
         actionsList.append( ['ModelOverview.md.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "portal", "spaces" , params["domain"], "%sOverview.md"% params['rootobject'].capitalize())])
-        
+
         #generateViewWizards
         actionsList.append( ['ModelCreateWizard.tmpl',q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "form", params["domain"], "%s_create"% params["rootobject"],   "1_%s_create.py"% params['rootobject'])])
         actionsList.append( ['ModelEditWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "form", params["domain"], "%s_edit"% params["rootobject"],   "1_%s_edit.py"% params['rootobject'])])
         actionsList.append( ['ModelDeleteWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "wizard", params["domain"], "%s_delete"% params["rootobject"],   "1_%s_delete.py"% params['rootobject'])])
-        
+
         generatedFiles = []
         for action in actionsList:
             templatePath = q.system.fs.joinPaths(self._template_path, action[0])
             self._generateCode(templatePath, params, action[1])
             generatedFiles.append(action[1])
-        
+
         return generatedFiles
-    
+
     def _generateClientCode(self, specFile, serviceName, templatePath, destPath, className =""):
-        
+
         claZ = getClass(specFile, className)
         methods = getClassMethods(specFile, className)
         typedArgs = getMethodTypedArgument(specFile)
@@ -358,14 +358,14 @@ class CloudApiGenerator:
 
         name = getClassName(claZ)
         self._generateCode(templatePath, {'className': name, 'methods':methods, 'serviceName':serviceName}, destPath)
-       
-        if self._documentationFormat == 'confluence': 
+
+        if self._documentationFormat == 'confluence':
             roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'rest_%s'%name)
             roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'xmlrpc_%s'%name)
         elif self._documentationFormat == 'alkira':
             roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest', 'rest_%s'%name)
             roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'Home', 'xmlrpc', 'xmlrpc_%s'%name)
-	
+
         if not q.system.fs.exists(roDirRestClass): q.system.fs.createDir(roDirRestClass)
         if not q.system.fs.exists(roDirXmlrpcClass): q.system.fs.createDir(roDirXmlrpcClass)
 
@@ -385,10 +385,10 @@ class CloudApiGenerator:
         claZ = getClass(specFile, className)
         methods = getClassMethods(specFile, className)
         name = getClassName(claZ)
-        
+
         params = params or {}
         params.update({'className': name, 'methods': methods, 'appname': self._appName})
-        
+
         self._generateCode(templatePath,  params, destPath)
 
         if serverExtensionDest and serverExtensionTemplate:
@@ -402,7 +402,7 @@ class CloudApiGenerator:
         q.system.fs.createDir(taskletsDir)
         self._generateTasklets(str(name), methods, taskletsDir, self.taskletTemplate)
         """
-        
+
         return name
 
     def _generateTasklets(self, rootobject, listOfMethods, outputDir, template):
@@ -410,7 +410,7 @@ class CloudApiGenerator:
             tasklets = q.system.fs.joinPaths(outputDir, method.name)
             q.system.fs.createDir(tasklets)
             self._generateCode(template, {'rootobject':rootobject, 'methodName':method.name}, q.system.fs.joinPaths(tasklets, '%s_%s.py'%(rootobject, method.name)))
-   
+
     def generatePythonRoot(self):
         """
         Input Dir = specDir
@@ -441,27 +441,27 @@ class CloudApiGenerator:
         q.system.fs.createDir(self.rootobject_serverOutputDir)
         q.system.fs.createDir(self.rootobject_serverExtensionDest)
         q.system.fs.createDir(self.rootobjects_libDir)
-        
+
         modules = dict()
         #extensions = list()
-        
+
         ##generate root object actions
-        
+
         domains = list()
-               
-        
+
+
         for domain_spec in q.system.fs.listDirsInDir(self.specDir):
-            
+
             domain = domain_spec.split(os.sep)[-1]
             domains.append({'modulename': domain, 'classname': domain})
-            
+
             #domain_path = q.system.fs.joinPaths(self.actorOutputDir, domain)
             #q.system.fs.createDir(domain_path)
             #if not q.system.fs.exists(q.system.fs.joinPaths(domain_path, '__init__.py')):
             #    q.system.fs.createEmptyFile(q.system.fs.joinPaths(domain_path, '__init__.py'))
-            
+
             actions = list()
-            
+
             for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
                 fileName = q.system.fs.getBaseName(spec)
                 if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
@@ -473,15 +473,15 @@ class CloudApiGenerator:
                 # Check whether this specification belongs to a configuration model specification or not
                 isconfig = q.system.fs.exists(spec.replace('action', 'config'))
                 params = {'domain': domain, 'appname': self._appName, 'isconfig': isconfig}
-    
+
                 className = self._generateServerCode(spec,self.rootobject_serverTemplate, q.system.fs.joinPaths(self.rootobject_serverOutputDir, domain, '%s.py'%rootObject), \
                                                      self.rootobject_serverExtensionTemplate, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, domain, '%s.py'%rootObject),\
                                                      q.system.fs.joinPaths(self.rootobjects_libDir, 'cloud_api_%s.py'%rootObject), self.rootobject_libTemplate, params=params)
-                
+
                 actions.append({'modulename': rootObject, 'classname': className})
-            
+
                 self._generateCode(self.importSubModulesTemplate, {'imports':actions, 'classname': domain}, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, domain, '__init__.py'))
-                
+
                 modules[rootObject] = className
                 #extensions.append(Extension(className, className, 'q.actions.rootobject.%s'%className))
         self._generateCode(self.importSubModulesTemplate, {'imports':domains, 'classname': 'actions'}, q.system.fs.joinPaths(self.rootobject_serverExtensionDest, '__init__.py'))
@@ -514,36 +514,36 @@ class CloudApiGenerator:
         q.system.fs.createDir(self.actorOutputDir)
         #extensions = list()
         domains = list()
-        
+
         for domain_spec in q.system.fs.listDirsInDir(self.specDirActors):
-            
+
             domain = domain_spec.split(os.sep)[-1]
             domain_path = q.system.fs.joinPaths(self.actorOutputDir, domain)
             q.system.fs.createDir(domain_path)
-            
+
             params = {'domain': domain, 'appname': self._appName}
             domains.append({'modulename': domain, 'classname': domain})
-            
+
             for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
-                
+
                 actors = list()
-                
+
                 fileName = q.system.fs.getBaseName(spec)
                 if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
                     continue
                 moduleName =  fileName.split('.')[0]
-    
+
                 className = self._generateServerCode(spec,self.actorTemplate, q.system.fs.joinPaths(domain_path, fileName), wizards=False, params=params)
 
                 #modules['client_ro_%s'%rootObject] = className/
                 actors.append({'modulename': moduleName, 'classname': className})
                 #extensions.append(Extension(className, moduleName, 'p.api.actor.%s.%s' % (domain, moduleName)))
             ##
-            
+
             self._generateCode(self.importSubModulesTemplate, {'imports':actors, 'classname': domain}, q.system.fs.joinPaths(self.actorOutputDir, domain_path, '__init__.py'))
         #self._generateCode(self.extensionTemplate, {'extensions':extensions}, q.system.fs.joinPaths(self.actorOutputDir, 'extension.cfg'))
-            
-        
+
+
         self._generateCode(self.importSubModulesTemplate, {'imports':domains, 'classname': 'actors'}, q.system.fs.joinPaths(self.actorOutputDir, '__init__.py'))
 
 
@@ -582,30 +582,30 @@ class CloudApiGenerator:
         self.flexClientservicetemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','flexamfservice.tmpl')
         self.flexServiceFileName = 'CloudApiAMFService.as'
         self.generateFlexRoot()
-        
+
     def _forceCreatePage(self, space, parentid, pageTitle, contents):
         pageid = self._checkPageExists(space, pageTitle)
         if pageid:
             q.clients.confluence.removePage(pageid)
         id = q.clients.confluence.addPage(space, pageTitle, parentid, contents)
         return id
-        
-        
+
+
     def _checkPageExists(self, space, pageTitle):
         try:
            page = q.clients.confluence.findPage(space, pageTitle)
         except:
            return None
-        return page.id 
-        
-        
+        return page.id
+
+
     def _login(self, URI, login, password):
         if q.clients.confluence._impl:
             q.clients.confluence.logout()
             q.clients.confluence.connect(URI, login, password)
         else:
             q.clients.confluence.connect(URI, login, password)
-            
+
     def checkoutSpecs(self, destination = '', remoteUrl="bitbucket.org/despiegk/ssospecs/", login="", password=""):
         if not destination:
             destination = self.baseSpecDir
@@ -614,36 +614,36 @@ class CloudApiGenerator:
         self.specDirActors = q.system.fs.joinPaths(self.baseSpecDir, '1.1', 'codepackages', 'Actions_Interface_Actor')
         remoteurl = "http://%s:%s@%s" % (login, password, remoteUrl)
         q.clients.mercurial.getclient(self.baseSpecDir,remoteurl)
-                     
+
     def publishDocumentation(self,confluenceUri, login, password, space, parentpage):
         self._login(confluenceUri, login, password)
-        
+
         try:
             parent = q.clients.confluence.findPage(space, parentpage)
         except:
-            raise 
+            raise
         parentid = parent.id
-            
+
         #Creating REST Documentation
-        
-        
+
+
         page = 'CLOUD_API'
         contents = '{children}'
         mainid    = self._forceCreatePage(space, parentid, page, contents)
-        
+
         page = 'REST'
         contents = '{children}'
         restid = self._forceCreatePage(space, mainid, page, contents)
-        
+
         for dir in q.system.fs.listDirsInDir(self.roDirRest):
             rootobject = q.system.fs.getBaseName(dir)
             rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(dir, "%s.txt"%rootobject))
             self._forceCreatePage(space, restid, rootobject, _encode(rootobjectcontent))
-            
+
         page = 'XMLRPC'
         contents = '{children}'
         xmlrpcid = self._forceCreatePage(space, mainid, page, contents)
-        
+
         for dir in q.system.fs.listDirsInDir(self.roDirXmlrpc):
             rootobject = q.system.fs.getBaseName(dir)
             rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(dir, "%s.txt"%rootobject))
@@ -672,7 +672,7 @@ class CloudApiGenerator:
             alkira_client.createPage(space, main_page, content=main_content, parent=parent_name)
         else:
             alkira_client.createPage(space, main_page, content=main_content)
-        
+
         rest_page = 'REST Documentation'
         rest_content = '# %s' %rest_page
         alkira_client.createPage(space, rest_page, content=rest_content, parent=main_page)
@@ -704,7 +704,7 @@ class CloudApiGenerator:
             alkira_client.updatePage(space, xmlrpc_page, content=xmlrpc_content)
 
 class AppAPIGenerator(object):
-    
+
     def __init__(self):
         self._template_path = q.system.fs.joinPaths(os.path.dirname(__file__), 'templates')
     def generateCRUDImpl(self, appname, domain = None, modelSpec = None):
@@ -712,20 +712,20 @@ class AppAPIGenerator(object):
         print "(generateCRUDImpl(self, %s, %s,%s):)"%(appname, domain , modelSpec )
         if not appname:
             raise Exception ("appname should be provided ")
-        
+
         if appname and not domain and not modelSpec:
-            result = dict() 
+            result = dict()
             for domain_spec in q.system.fs.listDirsInDir(specDir):
                 domain = domain_spec.split(os.sep)[-1]
                 domainFiles = self._generateCRUDImplForDomain(appname, domain)
                 result[domain] =  domainFiles
         elif appname and domain and not modelSpec:
             return self._generateCRUDImplForDomain(appname, domain)
-        
+
         elif appname and domain and modelSpec:
             return self._generateCRUDImplForModel(appname, domain, modelSpec )
-                
-                
+
+
     def _generateCRUDImplForDomain(self, appname, domain ):
         print "    _generateCRUDImplForDomain( %s, %s )"%(appname, domain)
         domainSpecDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model", domain)
@@ -736,24 +736,24 @@ class AppAPIGenerator(object):
             files = self._generateCRUDImplForModel(appname, domain, model )
             generatedFiles[model] = files
         return generatedFiles
-     
+
     def _generateCRUDImplForModel(self, appname, domain, modelSpec ):
         """
         Generates CRUD files for model spec file
-        modelSpecFile: can be the full path of model file ,  
-                       or can be the class name , in case of class name , spec file will be retrived from 
+        modelSpecFile: can be the full path of model file ,
+                       or can be the class name , in case of class name , spec file will be retrived from
                        /opt/qbase/pyapps/<appname>/interface/model/<domain>/<modelSpec>.py
-                       N.B: in both cases , file name should be the same as model class name    
+                       N.B: in both cases , file name should be the same as model class name
         """
-        
+
         modelSpecFile = None
         if not q.system.fs.isFile(modelSpec):
             model_spec_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model")
             modelSpecFile =  q.system.fs.joinPaths (model_spec_dir, domain, "%s.py"%modelSpec )
         self._generator = CloudApiGenerator(appname)
-        self._generator._template_path = self._template_path 
-        
-        modelFiles = self._generator._generateModelImpl(modelSpecFile, appname, domain ) 
+        self._generator._template_path = self._template_path
+
+        modelFiles = self._generator._generateModelImpl(modelSpecFile, appname, domain )
 
         print "Generated Files are :%s"%modelFiles
         return modelFiles
@@ -769,15 +769,15 @@ class AppAPIGenerator(object):
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'wizard'))
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'setup', 'osis'))
          self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
-         
+
     def getSpacePage(self, space):
         """
         Gets the content of a space
         """
         self._generator = CloudApiGenerator("")
         return self._generate_str("SpacePage.tmpl", {'space': space})
-        
-        
+
+
     def generate(self, appname):
         """
         For a given application:
@@ -793,36 +793,36 @@ class AppAPIGenerator(object):
         q.action.start('Generating base services')
         self._generate_default_services(appname)
         q.action.stop()
-        
+
         q.action.start('Generating API for %s application' % appname)
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         if not q.system.fs.exists(app_path):
             raise ValueError('Application %s not found', appname)
-        
+
         interface_path = q.system.fs.joinPaths(app_path, 'interface')
         if not q.system.fs.exists(interface_path):
             raise ValueError('Interfaces for application %s not found' % appname)
-        
+
         q.action.start('Generating action API')
         spec_path = q.system.fs.joinPaths(interface_path, 'action')
         if not q.system.fs.exists(spec_path):
             raise ValueError('Interfaces of type "action" for application %s not found' % appname)
-        
+
         self._generator.importSubModulesTemplate = q.system.fs.joinPaths(self._template_path, 'AppImportSubmodules.tmpl')
-        
+
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'service'))
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'action'))
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'actor'))
 
         docdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'portal', 'spaces', 'api')
         self._create_folder(docdir)
-        
+
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, '__init__.py'))
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, '__init__.py'))
         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'client'))
         self._create_file(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'client', '__init__.py'))
-                          
-        
+
+
         self._generator.specDir = spec_path
         self._generator.rootobject_serverTemplate = q.system.fs.joinPaths(self._template_path, 'AppApiActionService.tmpl')
         self._generator.rootobject_serverExtensionTemplate = q.system.fs.joinPaths(self._template_path, 'AppApiAction.tmpl')
@@ -830,213 +830,243 @@ class AppAPIGenerator(object):
         self._generator.rootobjects_libDir  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'lib')
         self._generator.rootobject_serverOutputDir  = q.system.fs.joinPaths(app_path, 'impl', 'service')
         self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'client', 'action')
-        
+
         self._generator.roDirRest = docdir
         self._generator.roDirXmlrpc = docdir
 
         #self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'extension')
         self._generator.generatePythonRoot()
         q.action.stop()
-        
+
         q.action.start("Generating Default Spaces")
-        
+
         appspacesdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'portal', 'spaces')
         self._create_folder(appspacesdir)
         q.system.fs.copyDirTree(q.system.fs.joinPaths(self._template_path, "Spaces"), appspacesdir)
         q.action.stop()
-        
+
         q.action.start('Generating actor API')
         spec_path = q.system.fs.joinPaths(interface_path, 'actor')
         if not q.system.fs.exists(spec_path):
             raise ValueError('Interfaces of type "actor" for application %s not found' % appname)
-        
+
         self._generator.actorTemplate = q.system.fs.joinPaths(self._template_path, 'AppApiActor.tmpl')
         self._generator.specDirActors = spec_path
         self._generator.actorOutputDir = q.system.fs.joinPaths(app_path, 'client', 'actor')
         self._generator.generatePythonActor()
-        q.action.stop()        
-        
         q.action.stop()
 
-   
-    
+        q.action.stop()
+
+
+
     def _generate_default_services(self, appname):
-        
+
         service_path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'service')
-        
+
         # Generate default services
         params = {'appname': appname}
-        
+
         #Create folders
         self._generateFolders(appname)
 
-        files = [{'template':'SchedulerService.tmpl', 'params':params, 
+        files = [{'template':'SchedulerService.tmpl', 'params':params,
                             'destination':['impl', 'service', 'Scheduler.py']},
-                            
-           {'template':'OsisService.tmpl', 'params':params, 
+
+           {'template':'OsisService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'osissvc.py']},
 
-           {'template':'WizardService.tmpl', 'params':params, 
+           {'template':'WizardService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'ui', 'wizard.py']},
-            
-           {'template':'PortalService.tmpl', 'params':params, 
+
+           {'template':'PortalService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'ui', 'portal.py']},
-            
-           {'template':'AgentService.tmpl', 'params':params, 
+
+           {'template':'AgentService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'AgentSVC.py']},
-      
-           {'template':'Job.tmpl', 'params':params, 
+
+           {'template':'Job.tmpl', 'params':params,
                                'destination':['interface', 'action', 'core', 'job.py']},
-       
-           {'template':'Page.tmpl', 'params':params, 
+
+           {'template':'Page.tmpl', 'params':params,
                                'destination':['interface', 'action', 'ui', 'page.py']},
-           
-           {'template':'Space.tmpl', 'params':params, 
+
+           {'template':'Space.tmpl', 'params':params,
                                'destination':['interface', 'action', 'ui', 'space.py']},
-                               
-           {'template':'JobClear.tmpl', 'params':params, 
+
+           {'template':'Config.tmpl', 'params':params,
+                               'destination':['interface', 'action', 'ui', 'config.py']},
+
+           {'template':'JobClear.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'clear', '1_job_clear.py']},
-                                                   
-           {'template':'JobCreate.tmpl', 'params':params, 
+
+           {'template':'JobCreate.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'create', '1_job_create.py']},
-                                
-           {'template':'JobDelete.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'delete', '1_job_delete.py']},    
-                                
-           {'template':'JobFind.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'find', '1_job_find.py']},   
-                                     
-           {'template':'JobFindLatestJob.tmpl', 'params':params, 
+
+           {'template':'JobDelete.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'core', 'job', 'delete', '1_job_delete.py']},
+
+           {'template':'JobFind.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'core', 'job', 'find', '1_job_find.py']},
+
+           {'template':'JobFindLatestJob.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'findLatestJob', '1_job_findLatestJob.py']},
-            
-           {'template':'JobGetJobTree.tmpl', 'params':params, 
+
+           {'template':'JobGetJobTree.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'getJobTree', '1_job_getJobTree.py']},
-             
-           {'template':'JobGetLogoInfo.tmpl', 'params':params, 
+
+           {'template':'JobGetLogoInfo.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'getLogoInfo', '1_job_getLogoInfo.py']},
-                                                
-           {'template':'JobGetObject.tmpl', 'params':params, 
+
+           {'template':'JobGetObject.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'getObject', '1_job_getObject.py']},
-                                
-           {'template':'JobGetXML.tmpl', 'params':params, 
+
+           {'template':'JobGetXML.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'getXML', '1_job_getXML.py']},
-                                
-           {'template':'JobGetXMLSchema.tmpl', 'params':params, 
+
+           {'template':'JobGetXMLSchema.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'getXMLSchema', '1_job_getXMLSchema.py']},
-                                
-           {'template':'JobGetYAML.tmpl', 'params':params, 
+
+           {'template':'JobGetYAML.tmpl', 'params':params,
                                'destination':['impl', 'action', 'core', 'job', 'getYAML', '1_job_getYAML.py']},
-                                
-           {'template':'UiPageCreate.tmpl', 'params':params, 
+
+           {'template':'UiPageCreate.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'page', 'create', '1_page_create.py']},
-                                
-           {'template':'UiPageDelete.tmpl', 'params':params, 
+
+           {'template':'UiPageDelete.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'page', 'delete', '1_page_delete.py']},
 
-           {'template':'UiPageFind.tmpl', 'params':params, 
+           {'template':'UiPageFind.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'page', 'find', '1_page_find.py']},
-                                
-           {'template':'UiPageGetObject.tmpl', 'params':params, 
+
+           {'template':'UiPageGetObject.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'page', 'getObject', '1_page_getObject.py']},
-                                
-           {'template':'UiPageUpdate.tmpl', 'params':params, 
+
+           {'template':'UiPageUpdate.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'page', 'update', '1_page_update.py']},
-            
-           {'template':'UiSpaceCreate.tmpl', 'params':params, 
+
+           {'template':'UiSpaceCreate.tmpl', 'params':params,
                    'destination':['impl', 'action', 'ui', 'space', 'create', '1_space_create.py']},
-                                
-           {'template':'UiSpaceDelete.tmpl', 'params':params, 
+
+           {'template':'UiSpaceDelete.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'space', 'delete', '1_space_delete.py']},
 
-           {'template':'UiSpaceFind.tmpl', 'params':params, 
+           {'template':'UiSpaceFind.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'space', 'find', '1_space_find.py']},
-                                
-           {'template':'UiSpaceGetObject.tmpl', 'params':params, 
+
+           {'template':'UiSpaceGetObject.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'space', 'getObject', '1_space_getObject.py']},
-                                
-           {'template':'UiSpaceUpdate.tmpl', 'params':params, 
+
+           {'template':'UiSpaceUpdate.tmpl', 'params':params,
                                'destination':['impl', 'action', 'ui', 'space', 'update', '1_space_update.py']},
-                               
-           {'template':'ModelJob.tmpl', 'params':params, 
+
+           {'template':'UiConfigCreate.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'ui', 'config', 'create', '1_config_create.py']},
+
+           {'template':'UiConfigDelete.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'ui', 'config', 'delete', '1_config_delete.py']},
+
+           {'template':'UiConfigFind.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'ui', 'config', 'find', '1_config_find.py']},
+
+           {'template':'UiConfigGetObject.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'ui', 'config', 'getObject', '1_config_getObject.py']},
+
+           {'template':'UiConfigUpdate.tmpl', 'params':params,
+                               'destination':['impl', 'action', 'ui', 'config', 'update', '1_config_update.py']},
+
+           {'template':'ModelJob.tmpl', 'params':params,
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'core', 'job.py']},
 
-           {'template':'ModelPage.tmpl', 'params':params, 
+           {'template':'ModelPage.tmpl', 'params':params,
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'page.py']},
-                               
+
            {'template':'ModelSpace.tmpl', 'params': params,
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'space.py']},
-             
-           {'template':'PageView.tmpl', 'params':params, 
+
+           {'template':'ModelConfig.tmpl', 'params':params,
+                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'config.py']},
+
+           {'template':'PageView.tmpl', 'params':params,
                            'destination':['impl', 'setup', 'osis', 'page_view.py']},
-           
-           {'template':'SpaceView.tmpl', 'params':params, 
+
+           {'template':'SpaceView.tmpl', 'params':params,
                            'destination':['impl', 'setup', 'osis', 'space_view.py']},
-           
-           {'template':'PageViewTags.tmpl', 'params':params, 
+
+           {'template':'ConfigView.tmpl', 'params':params,
+                           'destination':['impl', 'setup', 'osis', 'config_view.py']},
+
+           {'template':'PageViewTags.tmpl', 'params':params,
                                'destination':['impl', 'setup', 'osis', 'page_view_tags.py']},
-                               
-           {'template':'SpaceViewTags.tmpl', 'params':params, 
+
+           {'template':'SpaceViewTags.tmpl', 'params':params,
                                'destination':['impl', 'setup', 'osis', 'space_view_tags.py']},
-                                
-           {'template':'JobViewList.tmpl', 'params':params, 
+
+           {'template':'JobViewList.tmpl', 'params':params,
                                'destination':['impl', 'setup', 'osis', 'job_view_list.py']},
-                                
-           {'template':'JobViewParentList.tmpl', 'params':params, 
+
+           {'template':'JobViewParentList.tmpl', 'params':params,
                                'destination':['impl', 'setup', 'osis', 'job_view_parentlist.py']},
-                                
-           {'template':'PageDelete.tmpl', 'params':params, 
+
+           {'template':'PageDelete.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'delete', '3_page_delete.py']},
-                                
-           {'template':'PageStore.tmpl', 'params':params, 
+
+           {'template':'PageStore.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'store', '3_page_store.py']},
-                               
-           {'template':'SpaceDelete.tmpl', 'params':params, 
+
+           {'template':'SpaceDelete.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'delete', '3_space_delete.py']},
-                                
-           {'template':'SpaceStore.tmpl', 'params':params, 
+
+           {'template':'SpaceStore.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'store', '3_space_store.py']},
-                               
-           {'template':'ObjectStore.tmpl', 'params':params, 
+
+           {'template':'ConfigDelete.tmpl', 'params':params,
+                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_config_delete.py']},
+
+           {'template':'ConfigStore.tmpl', 'params':params,
+                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_config_store.py']},
+
+           {'template':'ObjectStore.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_store.py']},
-                                
-           {'template':'ObjectGenerateEventStore.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'store',  '1_object_generateevent_store.py']},  
-                                 
-           {'template':'ObjectDelete.tmpl', 'params':params, 
+
+           {'template':'ObjectGenerateEventStore.tmpl', 'params':params,
+                               'destination':[ 'impl', 'osis', 'osis', 'store',  '1_object_generateevent_store.py']},
+
+           {'template':'ObjectDelete.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'delete',  '1_object_delete.py']},
-                                
-           {'template':'ObjectGenerateEventDelete.tmpl', 'params':params, 
+
+           {'template':'ObjectGenerateEventDelete.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'delete',  '3_object_generateevent_delete.py']},
-                                                   
-           {'template':'ObjectFindAsView.tmpl', 'params':params, 
+
+           {'template':'ObjectFindAsView.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'findasview',  'object_findasview.py']},
-                      
-           {'template':'ObjectFind.tmpl', 'params':params, 
+
+           {'template':'ObjectFind.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'findobject',  'object_find.py']},
-                        
-           {'template':'ObjectGet.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'get',  '1_object_get.py']},   
-                                                   
-           {'template':'ObjectQuery.tmpl', 'params':params, 
+
+           {'template':'ObjectGet.tmpl', 'params':params,
+                               'destination':[ 'impl', 'osis', 'osis', 'get',  '1_object_get.py']},
+
+           {'template':'ObjectQuery.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'query',  'object_query.py']},
-                               
-           {'template':'PopulatePortal.tmpl', 'params':params, 
+
+           {'template':'PopulatePortal.tmpl', 'params':params,
                                'destination':[ 'impl', 'init', 'portal', '7_populate_portal.py']}]
         for file in files:
             path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
             if not q.system.fs.exists(path):
                 self._generate_file(file['template'], file['params'], path)
 
-    
+
     def _generate_str(self, template, params):
         return self._generator._generateCodeStr(
             q.system.fs.joinPaths(self._template_path, template), params)
-    
+
     def _generate_file(self, template, params, path):
         self._generator._generateCode(
-            q.system.fs.joinPaths(self._template_path, template), 
+            q.system.fs.joinPaths(self._template_path, template),
             params, path)
-    
+
     def _generateFolders(self, appname):
         folders = [['impl', 'schedule'],
             ['impl', 'osis'],
@@ -1073,12 +1103,12 @@ class AppAPIGenerator(object):
             ]
         for folder in folders:
             self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname,*folder))
-        
-        
+
+
     def _create_folder(self, path):
         if not q.system.fs.exists(path):
             q.system.fs.createDir(path)
-            
+
     def _create_file(self, path):
         if not q.system.fs.exists(path):
             q.system.fs.createEmptyFile(path)

@@ -287,12 +287,14 @@ LFW_CONFIG = {
         'hgPushSpace': '/%(appname)s/appserver/rest/ui/portal/hgPushSpace',
         'hgPullSpace': '/%(appname)s/appserver/rest/ui/portal/hgPullSpace',
         'space': '/%(appname)s/appserver/rest/ui/portal/space',
-        'macros': '/%(appname)s/js/macros/'
+        'macros': '/%(appname)s/js/macros/',
+        'macroConfig': '/%(appname)s/appserver/rest/ui/portal/macroConfig',
+        'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig'
     },
     'appname' : '%(appname)s',
     'oauthservice': '%(oauthservice_url)s'
 };
-''' 
+'''
 
         config = config_template % {
             'appname': self.appName,
