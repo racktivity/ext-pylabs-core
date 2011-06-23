@@ -4,7 +4,7 @@ from actionservice import ActionService
 class ${className}(ActionService):
 
 #for $method in $methods:
-    @q.manage.applicationserver.expose
+    @q.manage.applicationserver.expose_authenticated
     def $method.name (self, $method.args):
         """
         $method.docs
