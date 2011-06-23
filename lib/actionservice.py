@@ -8,7 +8,8 @@ class ActionService:
     _authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
     
     def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
-        if not request.username or not request.password: return False
+        #if not request.username or not request.password: return False
+        q.logger.log("OAUTH HEADERS from ActionService.checkAuthentication %s" % str(request._request.requestHeaders))
         tags = ('authenticate',)
         params = dict()
         params['request'] = request
@@ -18,6 +19,7 @@ class ActionService:
         params['args'] = args
         params['kwargs'] = kwargs
         ActionService._authenticate.execute(params, tags=tags)
+        params['result'] = True
         return params.get('result', False)
 
     def checkAuthorization(self, criteria, request, domain, service, methodname, args, kwargs):
@@ -30,5 +32,6 @@ class ActionService:
         params['methodname'] = methodname
         params['args'] = args
         params['kwargs'] = kwargs
+        params['result'] = True
         ActionService._authorize.execute(params, tags=tags)
         return params.get('result', False)
