@@ -4,6 +4,62 @@ from pylabs import q, p
 
 from alkira.lfw import *
 
+import oauth2 as oauth
+
+class HelperServer(oauth.Server):
+
+    def __init__(self):
+        self.authenticated = {}
+        self.signature_methods = {}
+        self.add_signature_method(oauth.SignatureMethod_HMAC_SHA1())
+        self.cluster_name = q.config.getConfig('dist_auth')['arakoon']['cluster_name']
+
+    def getTokenAttributesFromStore(self, tokenKey):
+        client = q.clients.arakoon.getClient(self.cluster_name)
+        return client.get(tokenKey)
+
+    def check_access_token(self, oauth_request):
+        try:
+            q.logger.log('CALLING check_access_token', 2)
+            self.verify_request(oauth_request, self.consumer, self.access_token)
+            return True
+        except oauth.Error, err:
+            q.logger.log('EXCEPTION inside check_access_token', 2)
+            q.logger.log(err, 2)
+            return False
+        return
+
+
 class portal(LFWService):
-    pass
+
+    def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
+        q.logger.log("OAUTH HEADERS from portal.checkAuthentication %s" % str(request._request.requestHeaders))
+        tags = ('authenticate',)
+        params = dict()
+        params['request'] = request
+        params['domain'] = domain
+        params['service'] = service
+        params['methodname'] = methodname
+        params['args'] = args
+        params['kwargs'] = kwargs
+        _authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))
+        _authenticate.execute(params, tags=tags)
+        params['result'] = True
+        return params.get('result', False)
+
+    def checkAuthorization(self, criteria, request, domain, service, methodname, args, kwargs):
+        tags = ('authorize',)
+        params = dict()
+        params['criteria'] = criteria
+        params['request'] = request
+        params['domain'] = domain
+        params['service'] = service
+        params['methodname'] = methodname
+        params['args'] = args
+        params['kwargs'] = kwargs
+        _authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
+        _authorize.execute(params, tags=tags)
+        params['result'] = True
+        return params.get('result', False)
+
 
