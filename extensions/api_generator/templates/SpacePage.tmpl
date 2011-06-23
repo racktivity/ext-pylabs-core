@@ -17,9 +17,7 @@
 
     var remotecall = function(options) {
         var options = \$.extend({success: \$.noop,
-                                error: function(xhr, text, exc){
-                                        messagealert("Error", "Got error while executing action: " + exc);
-                                        },
+                                error: \$.alerterror,
                                 data: {}}, options);
 
 
@@ -64,9 +62,7 @@
                                                         importspace(space, path, {success: function() {
                                                             \$("portform").find("button").attr("disabled", false);
                                                             \$dialog.dialog("close");
-                                                        }, error: function(xhr, text, exc){
-                                                            messagealert("Import Error", "Failed to do import from file '" + path + "'");
-                                                        }});
+                                                        }, error: \$.alerterror});
                                                     },
                                                    "Cancel": function() {
                                                        \$(this).dialog("close");
@@ -90,9 +86,7 @@
                                                         exportspace(space, path, {success: function() {
                                                             \$("portform").find("button").attr("disabled", false);
                                                             \$dialog.dialog("close");
-                                                        }, error: function(xhr, text, exc){
-                                                            messagealert("Export Error", "Failed to do export to file '" + path + "'");
-                                                        }});
+                                                        }, error: \$.alerterror});
                                                     },
                                                    "Cancel": function() {
                                                        \$(this).dialog("close");

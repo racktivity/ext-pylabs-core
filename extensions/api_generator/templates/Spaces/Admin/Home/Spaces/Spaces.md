@@ -46,9 +46,7 @@ $(document).ready(function(){
     
     var remotecall = function(options) {
         var options = $.extend({success: $.noop,
-                                error: function(xhr, text, exc){
-                                        messagealert("Error", "Got error while executing action: " + exc);
-                                        },
+                                error: $.alerterror,
                                 data: {}}, options);
                                     
         
@@ -129,9 +127,7 @@ $(document).ready(function(){
                                                                                                             editspace(space, spacename, {success: function(){
                                                                                                                 render();
                                                                                                                 $dialog.dialog("close");
-                                                                                                            }, error: function(xhr, text, exc){
-                                                                                                                messagealert("Update Error", "Failed to rename space");
-                                                                                                            }});
+                                                                                                            }, error: $.alerterror});
                                                                                                         },
                                                                                                         
                                                                                                       "Cancel": function(){
@@ -169,9 +165,7 @@ $(document).ready(function(){
                                                     createspace(spacename, {success: function(){
                                                         render();
                                                         $dialog.dialog("close");
-                                                    }, error: function(xhr, text, exc){
-                                                        messagealert("Create Error", "Failed to create space");
-                                                    }});
+                                                    }, error: $.alerterror});
                                                 },
                                                 
                                               "Cancel": function(){
