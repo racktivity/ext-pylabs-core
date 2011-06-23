@@ -279,6 +279,8 @@ LFW_CONFIG = {
         'tags': '/%(appname)s/appserver/rest/ui/portal/tags',
         'title': '/%(appname)s/appserver/rest/ui/portal/pages',
         'pages': '/%(appname)s/appserver/rest/ui/portal/page',
+        'savePage': '/%(appname)s/appserver/rest/ui/portal/savePage',
+        'deletePage': '/%(appname)s/appserver/rest/ui/portal/deletePage',
         'createSpace': '/%(appname)s/appserver/rest/ui/portal/createSpace',
         'deleteSpace': '/%(appname)s/appserver/rest/ui/portal/deleteSpace',
         'updateSpace': '/%(appname)s/appserver/rest/ui/portal/updateSpace',
