@@ -193,6 +193,10 @@ This will open a screen with the following:
     
 
 In that screen you will be able to interactively debug your PyApp on workflow engine level.
+For example, when you launch an action in which you have inserted a `q.debugger.shell()` line, the action starts a shell session in your wfe screen session. 
+In this shell session you can then debug your action. To end the shell session, close it like any other shell session, i.e. with CTRL+d.
+
+After debugging the action, do not forget to remove the debug lines that launch the selected debugger.
 
 If you want to leave the screen session and want the workflow engine to stay running in debug mode, press CTRL+a followed by the `d` key.
 However, it is recommended not to run the workflow engine in debug mode for better performance.
@@ -210,7 +214,7 @@ To end the debug mode, press CTRL+c in your screen session and restart the workf
     Workflowengine started
     
 
-## Debugging the Application Server
+## Debugging in the Application Server
 
 Similar to debugging the workflow engine, you can also debug the [PyLabs Application Server][appserver]. Therefore run the application server in debug mode:
 
@@ -231,4 +235,11 @@ Replace _appname_ by the name of your PyApp, for example _sampleapp_.
 
 *Tip: enter `screen -ls` to get a list of active screen sessions.*
 
-In that screen you will be able to interactively debug your PyApp on application server level. To return to the normal mode of the application server, see the previous paragraph.
+In that screen you will be able to interactively debug your PyApp on application server level.
+For example, a wizard is executed in the application server. If you want to start a shell-session in a wizard, add a `q.debugger.shell()` line somewhere in your wizard.
+When you run the wizard, you see a shell session appear (in your screen session) from where you can start debugging your wizard. Close the shell to continue.
+
+After debugging the wizard, do not forget to remove the debug lines that launch the selected debugger.
+
+To return to the normal mode of the application server, see the previous paragraph.
+
