@@ -136,5 +136,11 @@ If you put the old property in a comment line and create two new properties, you
 ##How to Use the Model
 In the above sections you have learned how you can model the Root Objects of your PyApp. This step in fact only creates the model, which you can consider to be the schema of your Root Object, similar to XML schemas for XML documents. The model is used in your PyApp for the actual creation of Root Objects, which are stored in the DRP [Arakoon][arakoon] data store.
 
+[[information]]
+**Information**
+
+When you want to make the new model available in the Q-Shell, you have to (re-)install you PyApp.
+[[/information]]
+
 ##What's Next?
 After defining a Root Object, you have to define the different actions that can be executed on a Root Object. That step too is only a modeling phase. You define the possible actions, their arguments, and what the action must return as result.

@@ -8,6 +8,7 @@
 [modeling]: /#/PyLabsApps/Modeling
 [action]: /#/PyLabsApps/Action
 [osisview]: /#/PyLabsApps/OsisViews
+[wfe]: /#/Components/WFE
 
 
 #Implementing Action Tasklets
@@ -63,6 +64,19 @@ The `params` dictionary lives throughout the whole PyLabs framework. You will se
 All of this is part of the PyLabs framework.
 
 The next sections will cover the basic principles of implementing the actions.
+
+
+###Application Context
+When you use the Q-Shell to develop your PyApp, you have to get its API via the [model][modeling] and [action][] files that you have created. 
+
+`p.application.getAPI('yourPyApp')`
+
+However, this command gets the API with restricted access. You have only the actions at your disposal. If you want to explore the complete API of a PyApp, you have to change the context:
+
+`p.application.getAPI('yourPyApp', context = q.enumerators.AppContext.WFE)`
+
+When changing the context to [WFE][], it is as if you are working in the workflow engine of your application.
+
 
 ##Creating Objects
 Creating objects to store in the DRP always takes three phases:
@@ -130,7 +144,7 @@ The alternative is to grab the object via the model, but this is only possible i
 
 To get the object:
 
-[[code
+[[code]]
 object = p.api.model.domain.rootobject.get('rootobjectguid')
 params['result'] = object
 [[/code]]
