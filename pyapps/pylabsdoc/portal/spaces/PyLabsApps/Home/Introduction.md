@@ -309,7 +309,7 @@ After this installation command you see the API that you have created.
 
 After _each change_ in your PyApp, for example you have added a new Root Object model, you have to reinstall your PyApp:
 
-`p.application.reinstall('yourPyApp')`
+`p.application.install('yourPyApp')`
 [[/information]]
 
 

@@ -139,7 +139,7 @@ In the above sections you have learned how you can model the Root Objects of you
 [[information]]
 **Information**
 
-When you want to make the new model available in the Q-Shell, you have to (re-)install you PyApp.
+When you want to make the new model available in the Q-Shell, you have to install you PyApp again, using `p.application.install('yourPyApp')`.
 [[/information]]
 
 ##What's Next?
