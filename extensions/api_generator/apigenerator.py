@@ -344,6 +344,16 @@ class CloudApiGenerator:
             self._generateCode(templatePath, params, action[1])
             generatedFiles.append(action[1])
         
+        
+        try :
+            templatePath = q.system.fs.joinPaths(self._template_path, "consumer.cfg.tmpl")
+            dest = q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "events" , "page_generator" , "consumer.cfg")
+            self._generateCode(templatePath, params, dest)
+            generatedFiles.append(action[1])
+            
+        except:
+            q.logger.log('Error Generating consumer.cfg file', level=2)
+
         return generatedFiles
     
     def _generateClientCode(self, specFile, serviceName, templatePath, destPath, className =""):
@@ -365,7 +375,7 @@ class CloudApiGenerator:
         elif self._documentationFormat == 'alkira':
             roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest', 'rest_%s'%name)
             roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'Home', 'xmlrpc', 'xmlrpc_%s'%name)
-	
+    
         if not q.system.fs.exists(roDirRestClass): q.system.fs.createDir(roDirRestClass)
         if not q.system.fs.exists(roDirXmlrpcClass): q.system.fs.createDir(roDirXmlrpcClass)
 
@@ -523,11 +533,9 @@ class CloudApiGenerator:
             
             params = {'domain': domain, 'appname': self._appName}
             domains.append({'modulename': domain, 'classname': domain})
+            actors = list()
             
             for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
-                
-                actors = list()
-                
                 fileName = q.system.fs.getBaseName(spec)
                 if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
                     continue
