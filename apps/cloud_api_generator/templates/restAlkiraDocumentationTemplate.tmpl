@@ -65,6 +65,37 @@ List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
 * Return result: $retval
 * Return type: $rettype
 
+
+\#\#\# Test Form
+
+<form name="testform_$method.name" id="testform" style="display:none" method="GET" action="http://localhost:20301/sampleapp/appserver/rest/ui/$className/$method.name">
+<table border=1>
+    <tr>
+        <!--<td width="20%">Method URL for $method.name:</td><td width="80%"><input type="text" name="methodurl"/></td>-->
+    </tr>
+    <tr>
+#for $arg in $method.argClasses :
+    #if $params.has_key($arg.name) and $arg.name not in ["executionparams", "jobguid"]:
+        <td>$arg.name (type: $arg.argtype)</td><td><input type="text" name="$arg.name"/></td>
+    #end if
+    </tr>
+#end for
+    <tr><td colspan="2"><input type="button" value="Execute method" onclick="javascript:submitForm(this.form, 'resturl_$method.name')"/></td></tr>
+</table>
+</form>
+Enter REST URL: <input size="70" type="text" name="resturl_$method.name" id="resturl_$method.name" value="http://localhost:20301/sampleapp/appserver/rest/ui/$className/$method.name" />
+<input type="button" value="Open test form" onclick="javascript:showTestForm(testform_$method.name);"/>
 - - -
     #end if
 #end for
+<script>
+    function showTestForm(formName)
+    {
+        jQuery(formName).dialog({title: 'Test Form', closeOnEscape: false, width: 460, height:400, resizable: false});
+    }
+    function submitForm(form, resturl)
+    {
+        form.action = document.getElementById(resturl).value;
+        form.submit();
+    }
+</script>
