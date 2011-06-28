@@ -125,6 +125,9 @@ $(document).ready(function(){
                                                                                                             }
                                                                                                             
                                                                                                             editspace(space, spacename, {success: function(){
+                                                                                                                $("#space").find("option[value=" + space + "]").attr("value", spacename)
+                                                                                                                    .text(spacename);
+                                                                                                                    
                                                                                                                 render();
                                                                                                                 $dialog.dialog("close");
                                                                                                             }, error: $.alerterror});
@@ -141,6 +144,7 @@ $(document).ready(function(){
                                                                 confirmdelete({space: space,
                                                                          ok: function(){
                                                                              deletespace(space, {success: function(){
+                                                                                    $("#space").find("option[value=" + space + "]").remove();
                                                                                     render();
                                                                                  }});
                                                                          }});
@@ -163,6 +167,7 @@ $(document).ready(function(){
                                                     }
                                                     
                                                     createspace(spacename, {success: function(){
+                                                        $("#space").append($("<option>", {'value': spacename}).text(spacename));
                                                         render();
                                                         $dialog.dialog("close");
                                                     }, error: $.alerterror});
