@@ -6,6 +6,7 @@ def main(q, i, p, params, tags):
     rootobject = params['rootobject']
     values = {
         'name': rootobject.name,
+        'password': rootobject.password,
         'spaces': ','.join(rootobject.spaces),
         'pages': ','.join(rootobject.pages),
         'tags': rootobject.tags

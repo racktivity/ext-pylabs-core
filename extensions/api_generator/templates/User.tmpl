@@ -3,12 +3,15 @@ class user:
     User object actions
     """
 
-    def create(self, name, spaces=[], pages=[], tags="", jobguid="", executionparams=None):
+    def create(self, name, password, spaces=[], pages=[], tags="", jobguid="", executionparams=None):
         """
         Create a new user object.
 
         @param name:             name of the user
         @type name:              string
+
+        @param password:             name of the user
+        @type password:              string
 
         @param spaces:            list of user spaces
         @type spaces:             List
@@ -105,7 +108,7 @@ class user:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def update(self, userguid, name, tags="", jobguid="", executionparams=dict()):
+    def update(self, userguid, name="", password="", tags="", jobguid="", executionparams=dict()):
         """
         Update a user object name and tags.
 
@@ -114,6 +117,9 @@ class user:
 
         @param name:             name of the user
         @type name:              string
+
+        @param password:             password of the user
+        @type password:              string
 
         @param tags:             tags of the user
         @type tags:              string

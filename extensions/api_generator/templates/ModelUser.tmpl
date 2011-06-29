@@ -10,3 +10,5 @@ class user(model.RootObjectModel):
     spaces = model.list(model.String(), thrift_id=3)
     \#@doc list of user pages
     pages = model.list(model.String(), thrift_id=4)
+    \#@doc password for the user
+    password = model.String(thrift_id=5)
