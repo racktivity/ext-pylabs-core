@@ -894,6 +894,9 @@ class AppAPIGenerator(object):
            {'template':'Space.tmpl', 'params':params,
                                'destination':['interface', 'action', 'ui', 'space.py']},
 
+           {'template':'User.tmpl', 'params':params,
+                               'destination':['interface', 'action', 'ui', 'user.py']},
+
            {'template':'Config.tmpl', 'params':params,
                                'destination':['interface', 'action', 'ui', 'config.py']},
 
@@ -984,6 +987,9 @@ class AppAPIGenerator(object):
            {'template':'ModelSpace.tmpl', 'params': params,
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'space.py']},
 
+           {'template':'ModelUser.tmpl', 'params': params,
+                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'user.py']},
+
            {'template':'ModelConfig.tmpl', 'params':params,
                                'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'config.py']},
 
@@ -993,6 +999,9 @@ class AppAPIGenerator(object):
            {'template':'SpaceView.tmpl', 'params':params,
                            'destination':['impl', 'setup', 'osis', 'space_view.py']},
 
+           {'template':'UserView.tmpl', 'params':params,
+                           'destination':['impl', 'setup', 'osis', 'user_view.py']},
+
            {'template':'ConfigView.tmpl', 'params':params,
                            'destination':['impl', 'setup', 'osis', 'config_view.py']},
 
@@ -1001,6 +1010,9 @@ class AppAPIGenerator(object):
 
            {'template':'SpaceViewTags.tmpl', 'params':params,
                                'destination':['impl', 'setup', 'osis', 'space_view_tags.py']},
+
+           {'template':'UserViewTags.tmpl', 'params':params,
+                               'destination':['impl', 'setup', 'osis', 'user_view_tags.py']},
 
            {'template':'JobViewList.tmpl', 'params':params,
                                'destination':['impl', 'setup', 'osis', 'job_view_list.py']},
@@ -1019,6 +1031,13 @@ class AppAPIGenerator(object):
 
            {'template':'SpaceStore.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'store', '3_space_store.py']},
+
+           {'template':'UserDelete.tmpl', 'params':params,
+                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_user_delete.py']},
+
+           {'template':'UserStore.tmpl', 'params':params,
+                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_user_store.py']},
+
 
            {'template':'ConfigDelete.tmpl', 'params':params,
                                'destination':[ 'impl', 'osis', 'osis', 'delete', '3_config_delete.py']},
