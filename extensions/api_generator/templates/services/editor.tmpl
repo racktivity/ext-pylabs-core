@@ -12,7 +12,7 @@ class editor(ActionService):
             data["state"] = "closed" if isdir else "leaf"
             data["data"] = {"children": [],
                             "title": item,
-                            "attr":{"href": "#", "onclick":"nodeClicked('" + dirfullname + "');return false"}
+                            "attr":{"href": "javascript:nodeClicked('" + dirfullname + "');"}
                            }
             data["attr"] = { "class":"TreeTitle", "id":dirfullname }
             result.append(data)
@@ -99,10 +99,10 @@ class editor(ActionService):
         if not self.checkPath(appname) or not self.checkPath(dirname):
             raise ValueError("invalid characters in the application name or path (.. or /) were detected")
         
-        path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, dirname)
-        lenpath = len(path)
-        result = list(item[lenpath + 1:] for item in q.system.fs.listFilesInDir(path))
-        return self.list2jstree(appname, dirname, result, False)
+        rpath = q.system.fs.joinPaths(appname, dirname)
+        abspath = q.system.fs.joinPaths(q.dirs.pyAppsDir, rpath)
+        lenpath = len(abspath)
+        return {"path":rpath, "files": list(item[lenpath + 1:] for item in q.system.fs.listFilesInDir(abspath))}
     
     @q.manage.applicationserver.expose
     def listDirsInDir(self, appname, id = ".", jobguid = "", executionparams = None):
@@ -132,22 +132,22 @@ class editor(ActionService):
         path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, dirname)
         result = q.system.fs.listDirsInDir(path, dirNameOnly=True)
         return self.list2jstree(appname, dirname, result, True)
-    
+        
     @q.manage.applicationserver.expose
-    def importDir(self, appname, space, dirname, jobguid = "", executionparams = None):
+    def importProject(self, appname, projectname, source):
         """
-        Import directory "dirname" located in the directory of application "appname" into space "space"
+        Import directory "source" path should be relative to the directory of application "appname"
         
         @execution_method = sync
         
         @param appname:   name of the application
         @type appname:    string
-        
-        @param space:   name of the space
-        @type space:    string
 
-        @param dirname:   name of the direcotry relative to the application path
-        @type dirname:    string
+        @param source:   name of the source direcotry relative to the application path
+        @type source:    string
+
+        @param projectname:   name of the project
+        @type projectname:    string
 
         @param jobguid:          guid of the job if available else empty string
         @type jobguid:           guid
@@ -158,10 +158,30 @@ class editor(ActionService):
         @return:          list of directories in the directory "dirname"
         @rtype:           list
         """
-        dest = q.system.fs.joinPaths(appname, "portal/spaces/", space)
-        if not self.checkPath(dest) or not self.checkPath(dirname):
-            raise ValueError("invalid characters in the application name, space or dirname (.. or initial /) were detected")
-        dest = q.system.fs.joinPaths(q.dirs.pyAppsDir, path)
-        src = q.system.fs.joinPaths(q.dirs.pyAppsDir, dirname)
+        join = q.system.fs.joinPaths
+        if not self.checkPath(appname) or not self.checkPath(projectname) or not self.checkPath(source):
+            raise ValueError("invalid characters in the application name, project name  or source (.. or initial /) were detected")
+        
+        dest = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
+        if q.system.fs.exists(dest):
+            raise ValueError("Project %s already exists,\nplease choose a different name or remove the porject"%projectname);
+        q.system.fs.createDir(dest)
+        
+        source = join(q.dirs.pyAppsDir, appname, source)
+        if not q.system.fs.isDir(source):
+            raise ValueError("%s doesn't exists or not a directory"%source);
+        
+        q.system.fs.copyDirTree(source, dest)
+        alkira = q.clients.alkira.getClient("localhost", appname)
+        spaceguid = alkira.getSpace("Imported").guid
+        
+        destlen = len(dest)
+        for fullfilename in q.system.fs.walk(dest, recurse=True, followSoftlinks=True):
+            #convert it to relative path
+            filename = fullfilename[destlen + 1:]
+            #should I store this file in alkira?
+            if not alkira._getType(filename):
+                continue
+            alkira.createPage(spaceguid, join(projectname, filename), fullfilename, category='imported', parent="Home", filename=join(source, filename), contentIsFilePath=True)
         
         return True
