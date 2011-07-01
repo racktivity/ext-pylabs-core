@@ -11,13 +11,10 @@
     </tr>
     <tr>
         <td>
-            <div id="demo1" class="demo"></div></td>
+            <div id="treediv"></div>
+        </td>
         <td>
-            Directory to import <input type="text" name="dirname" id="dirname" /><br/>
-            <!-- Destination space <select id="cbospace" name="space"/> <a href="#/Admin/Spaces" target="_blank">New space</a><br/> -->
-            Project name <input type="text" name="projectname" id="projectname" /><br/>
-            <button onclick="btnImportClicked();return false;">Import</button>
-            <div id="msg"></div>
+            <div id="filediv"></div>
         </td>
     </tr>
 </table>
@@ -27,9 +24,46 @@
 x = null
 //jsTree node clicked
 function nodeClicked(path) {
-    $("#dirname").val(path);
     node = document.getElementById(path)
-    $("#demo1").jstree("open_node", node)
+    $("#treediv").jstree("open_node", node)
+    //update the file view
+    $.ajax({
+      url: "appserver/rest/ui/editor/listFilesInDir",
+      type: "POST",
+      data: "appname=" + getCurrentApp() + "&id=" + path,
+      success: refreshFileView,
+      error: importFail
+    });
+}
+
+function refreshFileView(data)
+{
+    var ROW_NUM = 3
+    var c = 0;
+    var html = "<table border=1>"
+    files = data["files"];
+    path = data["path"];
+    //remove the first part of the path until the word Imported
+    idx = path.indexOf("Imported/") + 9
+    path = path.substr(idx,path.length)
+    //encode the slashes /
+    path = path.replace("/", '%2f');
+
+    for (var i=0; i < files.length; i++)
+    {
+        c++;
+        if (c == 1)
+            html += "<tr>";
+        pagelink="<a href='#/Imported/" + path + "%2f" + files[i] + "' target='blank_'>" + files[i] + "</a>";
+        html += "<td>" + pagelink + "</td>"
+        if (c == ROW_NUM)
+        {
+            html += "</tr>\n";
+            c = 0;
+        }
+    }
+    html += "</table>";
+    document.getElementById("filediv").innerHTML = html;
 }
 
 //Select "appname" value changed
@@ -40,21 +74,19 @@ function appChanged()
     loadTree(getCurrentApp());
     return true;
 }
-
 //return currently selected application
 function getCurrentApp() {
     return $("#appname").val();
 }
-
 //Load specific app's tree
 function loadTree(appname){
         $("#appname").val(appname)
-    	var tree = $("#demo1").jstree({
+    	var tree = $("#treediv").jstree({
     		"json_data": {
     			"ajax": {
     				"url": "appserver/rest/ui/editor/listDirsInDir?appname=" + appname,
     				"data": function(n) {
-    					return {id: n.attr ? n.attr("id") : "."};
+    					return {id: n.attr ? n.attr("id") : "portal/spaces/Imported"};
     				},
     			"progressive_render" : true
     			}
@@ -67,20 +99,9 @@ function loadTree(appname){
         tree.click = nodeClicked;
 };
 
-function btnImportClicked()
-{
-    $.ajax({
-      url: "appserver/rest/ui/editor/importProject",
-      type: "POST",
-      data: "appname=" + getCurrentApp() + "&source=" + $("#dirname").val() + "&projectname=" + $("#projectname").val(),
-      success: importSuccess,
-      error: importFail
-    });
-}
-
 function importSuccess(data)
 {
-    alert("Porject has been imported successfully");
+    alert("Success: " + data);
 }
 
 function importFail(data)
