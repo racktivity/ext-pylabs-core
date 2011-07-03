@@ -12,7 +12,7 @@ class editor(ActionService):
             data["state"] = "closed" if isdir else "leaf"
             data["data"] = {"children": [],
                             "title": item,
-                            "attr":{"href": "javascript:nodeClicked('" + dirfullname + "');"}
+                            "attr":{"href": "#"}
                            }
             data["attr"] = { "class":"TreeTitle", "id":dirfullname }
             result.append(data)
@@ -134,7 +134,7 @@ class editor(ActionService):
         return self.list2jstree(appname, dirname, result, True)
         
     @q.manage.applicationserver.expose
-    def importProject(self, appname, projectname, source):
+    def importProject(self, appname, projectname, source, jobguid = "", executionparams = None):
         """
         Import directory "source" path should be relative to the directory of application "appname"
         
@@ -179,9 +179,103 @@ class editor(ActionService):
         for fullfilename in q.system.fs.walk(dest, recurse=True, followSoftlinks=True):
             #convert it to relative path
             filename = fullfilename[destlen + 1:]
+            filetype =  alkira._getType(filename)
             #should I store this file in alkira?
-            if not alkira._getType(filename):
+            if not filetype:
                 continue
-            alkira.createPage(spaceguid, join(projectname, filename), fullfilename, category='imported', parent="Home", filename=join(source, filename), contentIsFilePath=True)
+            alkira.createPage(spaceguid, join(projectname, filename), fullfilename, category='imported', parent="Home", filename=join(source, filename), contentIsFilePath=True, pagetype=filetype)
         
         return True
+
+    @q.manage.applicationserver.expose
+    def exportProject(self, appname, projectname, dest = "", jobguid = "", executionparams = None):
+        """
+        Export files to directory "dest", if dest was not set 
+        
+        @execution_method = sync
+        
+        @param appname:   name of the application
+        @type appname:    string
+
+        @param dest:   destination, if set it will simply copy the project's contents to this directory
+        @type dest:    string
+
+        @param projectname:   name of the project
+        @type projectname:    string
+
+        @param jobguid:          guid of the job if available else empty string
+        @type jobguid:           guid
+
+        @param executionparams:  dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:   dictionary
+        
+        @return:          list of directories in the directory "dirname"
+        @rtype:           list
+        """
+        if not self.checkPath(appname) or not self.checkPath(projectname) or not self.checkPath(dest):
+            raise ValueError("invalid characters in the application name, project name  or dest (.. or initial /) were detected")
+        
+        join = q.system.fs.joinPaths
+        #gussing the dest, this very bad and must be changed in the future
+        if not dest:
+            conn = p.application.getOsisConnection(appname)
+            alkira = q.clients.alkira.getClient("localhost", appname)
+            result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "%/'")
+            samplepage = None
+            for row in result:
+                pagename = row["name"]
+                originalpagename = pagename[len(projectname) + 1:]
+                page = alkira.getPage("Imported", pagename)
+                if page.filename:
+                    #make sure the pagename match its filename
+                    if page.filename.endswith(originalpagename):
+                        samplepage = page
+                        break
+            if not page:
+                raise Exception("Unable to determine destination")
+            
+            dest = page.filename[:-len(originalpagename)]
+        #End of bad section
+        
+        src = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
+        q.system.fs.removeDirTree(dest)
+        q.system.fs.copyDirTree(src, dest)
+        return "Project has been successfully exported"
+
+    @q.manage.applicationserver.expose
+    def deleteProject(self, appname, projectname, jobguid = "", executionparams = None):
+        """
+        Delete all files/data related to a specific project 
+        
+        @execution_method = sync
+        
+        @param appname:   name of the application
+        @type appname:    string
+
+        @param projectname:   name of the project
+        @type projectname:    string
+
+        @param jobguid:          guid of the job if available else empty string
+        @type jobguid:           guid
+
+        @param executionparams:  dictionary of job specific params e.g. userErrormsg, maxduration ...
+        @type executionparams:   dictionary
+        
+        @return:          list of directories in the directory "dirname"
+        @rtype:           list
+        """
+        if not self.checkPath(appname) or not self.checkPath(projectname):
+            raise ValueError("invalid characters in the application name, project name (.. or initial /) were detected")
+        
+        join = q.system.fs.joinPaths
+        conn = p.application.getOsisConnection(appname)
+        alkira = q.clients.alkira.getClient("localhost", appname)
+        result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "%/'")
+        samplepage = None
+        for row in result:
+            pagename = row["name"]
+            alkira.deletePage("Imported", pagename)
+        #remove the directory
+        src = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
+        q.system.fs.removeDirTree(src)
+        return "Project has been successfully deleted"

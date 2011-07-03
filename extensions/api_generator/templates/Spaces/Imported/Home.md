@@ -23,17 +23,23 @@
 <script language="javascript">
 x = null
 //jsTree node clicked
-function nodeClicked(path) {
-    node = document.getElementById(path)
-    $("#treediv").jstree("open_node", node)
+function nodeSelected(event, data) {
+    path = data.inst._get_node().attr("id");
+    data.inst.open_node()
+    
     //update the file view
     $.ajax({
       url: "appserver/rest/ui/editor/listFilesInDir",
       type: "POST",
       data: "appname=" + getCurrentApp() + "&id=" + path,
       success: refreshFileView,
-      error: importFail
+      error: error
     });
+}
+
+function success(data)
+{
+    alert(data);
 }
 
 function refreshFileView(data)
@@ -47,14 +53,14 @@ function refreshFileView(data)
     idx = path.indexOf("Imported/") + 9
     path = path.substr(idx,path.length)
     //encode the slashes /
-    path = path.replace("/", '%2f');
+    path = path.replace(/\//g, "%2f");
 
     for (var i=0; i < files.length; i++)
     {
         c++;
         if (c == 1)
             html += "<tr>";
-        pagelink="<a href='#/Imported/" + path + "%2f" + files[i] + "' target='blank_'>" + files[i] + "</a>";
+        pagelink="<a href='/../" + getCurrentApp() + "/#/Imported/" + path + "%2f" + files[i] + "' target='blank_'>" + files[i] + "</a>";
         html += "<td>" + pagelink + "</td>"
         if (c == ROW_NUM)
         {
@@ -72,16 +78,73 @@ function appChanged()
     $("#dirname").val("");
     //Reload tree
     loadTree(getCurrentApp());
+    //Reload applications
+    //reloadApps();
     return true;
 }
 //return currently selected application
 function getCurrentApp() {
     return $("#appname").val();
 }
+
+function getContextMenu(node)
+{
+    root = this._get_parent(node) == -1;
+    text = this.get_text(node);
+    result = null;
+    if (root)
+    {
+        result = {
+            "export": {
+                "label"				: "Export project '"  + text + "'",
+                "action"			: exportProject },
+            "delete" : {
+                "label"				: "Delete project '"  + text + "'",
+                "action"			: deleteProject }
+        }
+    }
+    return result;
+}
+
+function deleteProject(node)
+{
+    text = this.get_text(node);
+    
+    //update the file view
+    $.ajax({
+      url: "appserver/rest/ui/editor/deleteProject",
+      type: "POST",
+      data: "appname=" + getCurrentApp() + "&projectname=" + text,
+      success: success,
+      error: error
+    });
+}
+
+function exportProject(node)
+{
+    text = this.get_text(node);
+    
+    //update the file view
+    $.ajax({
+      url: "appserver/rest/ui/editor/exportProject",
+      type: "POST",
+      data: "appname=" + getCurrentApp() + "&projectname=" + text,
+      success: success,
+      error: error
+    });
+
+}
+
 //Load specific app's tree
 function loadTree(appname){
         $("#appname").val(appname)
     	var tree = $("#treediv").jstree({
+            "contextmenu" : {
+                "items" : getContextMenu
+    	        },
+            "ui": {
+                "select_limit": 1
+            },
     		"json_data": {
     			"ajax": {
     				"url": "appserver/rest/ui/editor/listDirsInDir?appname=" + appname,
@@ -94,17 +157,12 @@ function loadTree(appname){
             "themes" : {
                "theme" : "classic",
             },
-    		"plugins": ["themes", "json_data"]
+    		"plugins": ["themes", "json_data", "crrm", "ui", "contextmenu"]
     	});
-        tree.click = nodeClicked;
+        tree.bind("select_node.jstree", nodeSelected);
 };
 
-function importSuccess(data)
-{
-    alert("Success: " + data);
-}
-
-function importFail(data)
+function error(data)
 {
     data = $.parseJSON(data.responseText);
     alert("Fail: " + data["exception"]);

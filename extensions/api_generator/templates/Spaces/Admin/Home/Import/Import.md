@@ -2,7 +2,6 @@
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 
-<form target="appserver/rest/ui/editor/lisDirsInDir">
 <table>
     <tr>
         <td colspan=2>
@@ -16,21 +15,20 @@
             Directory to import <input type="text" name="dirname" id="dirname" /><br/>
             <!-- Destination space <select id="cbospace" name="space"/> <a href="#/Admin/Spaces" target="_blank">New space</a><br/> -->
             Project name <input type="text" name="projectname" id="projectname" /><br/>
-            <button onclick="btnImportClicked();return false;">Import</button>
+            <button onclick="btnImportClicked();">Import</button>
             <div id="msg"></div>
         </td>
     </tr>
 </table>
-</form>
+<h4><a href="./#/Imported/Home">Imported projects</a></h4>
 
 <script language="javascript">
-x = null
-//jsTree node clicked
-function nodeClicked(path) {
+
+function nodeSelected(event, data) {
+    path = data.inst._get_node().attr("id");
+    data.inst.open_node()
     $("#dirname").val(path);
-    node = document.getElementById(path)
-    $("#demo1").jstree("open_node", node)
-}
+ }
 
 //Select "appname" value changed
 function appChanged()
@@ -59,12 +57,15 @@ function loadTree(appname){
     			"progressive_render" : true
     			}
     		},
+            "ui": {
+                "select_limit":1
+            },
             "themes" : {
                "theme" : "classic",
             },
-    		"plugins": ["themes", "json_data"]
+    		"plugins": ["themes", "json_data", "ui"]
     	});
-        tree.click = nodeClicked;
+        tree.bind("select_node.jstree", nodeSelected);
 };
 
 function btnImportClicked()
@@ -80,7 +81,7 @@ function btnImportClicked()
 
 function importSuccess(data)
 {
-    alert("Porject has been imported successfully");
+    alert("Porject has been imported successfully\nPlease click on 'Imported projects' link below to see your project");
 }
 
 function importFail(data)
