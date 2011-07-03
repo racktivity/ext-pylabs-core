@@ -340,7 +340,7 @@ class CloudApiGenerator:
         
         generatedFiles = []
         for action in actionsList:
-            templatePath = q.system.fs.joinPaths(self._template_path, action[0])
+            templatePath = q.system.fs.joinPaths(self._template_path, 'CRUD', action[0])
             self._generateCode(templatePath, params, action[1])
             generatedFiles.append(action[1])
         
@@ -891,149 +891,21 @@ class AppAPIGenerator(object):
                                'destination':['impl', 'service', 'ui', 'portal.py']},
             
            {'template':'AgentService.tmpl', 'params':params, 
-                               'destination':['impl', 'service', 'AgentSVC.py']},
-      
-           {'template':'Job.tmpl', 'params':params, 
-                               'destination':['interface', 'action', 'core', 'job.py']},
-       
-           {'template':'Page.tmpl', 'params':params, 
-                               'destination':['interface', 'action', 'ui', 'page.py']},
-           
-           {'template':'Space.tmpl', 'params':params, 
-                               'destination':['interface', 'action', 'ui', 'space.py']},
+                               'destination':['impl', 'service', 'AgentSVC.py']}]
                                
-           {'template':'JobClear.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'clear', '1_job_clear.py']},
-                                                   
-           {'template':'JobCreate.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'create', '1_job_create.py']},
-                                
-           {'template':'JobDelete.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'delete', '1_job_delete.py']},    
-                                
-           {'template':'JobFind.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'find', '1_job_find.py']},   
-                                     
-           {'template':'JobFindLatestJob.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'findLatestJob', '1_job_findLatestJob.py']},
-            
-           {'template':'JobGetJobTree.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'getJobTree', '1_job_getJobTree.py']},
-             
-           {'template':'JobGetLogoInfo.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'getLogoInfo', '1_job_getLogoInfo.py']},
-                                                
-           {'template':'JobGetObject.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'getObject', '1_job_getObject.py']},
-                                
-           {'template':'JobGetXML.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'getXML', '1_job_getXML.py']},
-                                
-           {'template':'JobGetXMLSchema.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'getXMLSchema', '1_job_getXMLSchema.py']},
-                                
-           {'template':'JobGetYAML.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'core', 'job', 'getYAML', '1_job_getYAML.py']},
-                                
-           {'template':'UiPageCreate.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'page', 'create', '1_page_create.py']},
-                                
-           {'template':'UiPageDelete.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'page', 'delete', '1_page_delete.py']},
-
-           {'template':'UiPageFind.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'page', 'find', '1_page_find.py']},
-                                
-           {'template':'UiPageGetObject.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'page', 'getObject', '1_page_getObject.py']},
-                                
-           {'template':'UiPageUpdate.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'page', 'update', '1_page_update.py']},
-            
-           {'template':'UiSpaceCreate.tmpl', 'params':params, 
-                   'destination':['impl', 'action', 'ui', 'space', 'create', '1_space_create.py']},
-                                
-           {'template':'UiSpaceDelete.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'space', 'delete', '1_space_delete.py']},
-
-           {'template':'UiSpaceFind.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'space', 'find', '1_space_find.py']},
-                                
-           {'template':'UiSpaceGetObject.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'space', 'getObject', '1_space_getObject.py']},
-                                
-           {'template':'UiSpaceUpdate.tmpl', 'params':params, 
-                               'destination':['impl', 'action', 'ui', 'space', 'update', '1_space_update.py']},
-                               
-           {'template':'ModelJob.tmpl', 'params':params, 
-                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'core', 'job.py']},
-
-           {'template':'ModelPage.tmpl', 'params':params, 
-                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'page.py']},
-                               
-           {'template':'ModelSpace.tmpl', 'params': params,
-                               'destination':[q.dirs.pyAppsDir, appname, 'interface', 'model', 'ui', 'space.py']},
-             
-           {'template':'PageView.tmpl', 'params':params, 
-                           'destination':['impl', 'setup', 'osis', 'page_view.py']},
-           
-           {'template':'SpaceView.tmpl', 'params':params, 
-                           'destination':['impl', 'setup', 'osis', 'space_view.py']},
-           
-           {'template':'PageViewTags.tmpl', 'params':params, 
-                               'destination':['impl', 'setup', 'osis', 'page_view_tags.py']},
-                               
-           {'template':'SpaceViewTags.tmpl', 'params':params, 
-                               'destination':['impl', 'setup', 'osis', 'space_view_tags.py']},
-                                
-           {'template':'JobViewList.tmpl', 'params':params, 
-                               'destination':['impl', 'setup', 'osis', 'job_view_list.py']},
-                                
-           {'template':'JobViewParentList.tmpl', 'params':params, 
-                               'destination':['impl', 'setup', 'osis', 'job_view_parentlist.py']},
-                                
-           {'template':'PageDelete.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_page_delete.py']},
-                                
-           {'template':'PageStore.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_page_store.py']},
-                               
-           {'template':'SpaceDelete.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'delete', '3_space_delete.py']},
-                                
-           {'template':'SpaceStore.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'store', '3_space_store.py']},
-                               
-           {'template':'ObjectStore.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'store',  '3_object_store.py']},
-                                
-           {'template':'ObjectGenerateEventStore.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'store',  '1_object_generateevent_store.py']},  
-                                 
-           {'template':'ObjectDelete.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'delete',  '1_object_delete.py']},
-                                
-           {'template':'ObjectGenerateEventDelete.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'delete',  '3_object_generateevent_delete.py']},
-                                                   
-           {'template':'ObjectFindAsView.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'findasview',  'object_findasview.py']},
-                      
-           {'template':'ObjectFind.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'findobject',  'object_find.py']},
-                        
-           {'template':'ObjectGet.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'get',  '1_object_get.py']},   
-                                                   
-           {'template':'ObjectQuery.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'osis', 'osis', 'query',  'object_query.py']},
-                               
-           {'template':'PopulatePortal.tmpl', 'params':params, 
-                               'destination':[ 'impl', 'init', 'portal', '7_populate_portal.py']}]
         for file in files:
             path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
             if not q.system.fs.exists(path):
                 self._generate_file(file['template'], file['params'], path)
+                
+        defaults_path = q.system.fs.joinPaths( q.dirs.extensionsDir, 'defaults')
+        
+        defaults = q.system.fs.walk(defaults_path, recurse=1)
+        
+        for file in defaults:
+           app_file = file.replace(defaults_path, q.system.fs.joinPaths(q.dirs.pyAppsDir, appname))
+           if not q.system.fs.exists(app_file):
+               q.system.fs.copyFile(file, app_file)
 
     
     def _generate_str(self, template, params):
@@ -1090,4 +962,3 @@ class AppAPIGenerator(object):
     def _create_file(self, path):
         if not q.system.fs.exists(path):
             q.system.fs.createEmptyFile(path)
-
