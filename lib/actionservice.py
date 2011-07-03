@@ -68,7 +68,12 @@ class ActionService:
             http_url = "http://alkira"
             params = request._request.args
             q.logger.log(params)
-            oauth_request = oauth.Request.from_request(request._request.method, '%s' % http_url, headers=headers, parameters=params)
+            ##TODO: Check why signing the request on the client side does not work
+            #oauth_request = oauth.Request.from_request(request._request.method, http_url, headers=headers, parameters=params)
+            ## <more dirty hack>
+            oauth_request = oauth.Request.from_consumer_and_token(helperServer.consumer, token=helperServer.access_token, http_method=request._request.method, http_url=http_url, parameters=params)
+            oauth.Request.sign_request(oauth_request, oauth.SignatureMethod_HMAC_SHA1(), helperServer.consumer, helperServer.access_token)
+            ## </more dirty hack>
             return helperServer.check_access_token(oauth_request)
 
         tags = ('authenticate',)

@@ -24,8 +24,6 @@ class HelperServer(oauth.Server):
     def check_access_token(self, oauth_request):
         try:
             q.logger.log('CALLING check_access_token', 2)
-            #TODO: check the problem in request verification
-            return True
             self.verify_request(oauth_request, self.consumer, self.access_token)
             return True
         except oauth.Error, err:
@@ -74,7 +72,13 @@ class portal(LFWService):
             ## </dirty hack>
             params = request._request.args
             q.logger.log(params)
-            oauth_request = oauth.Request.from_request(request._request.method, http_url, headers=headers, parameters=params)
+            
+            ##TODO: Check why signing the request on the client side does not work
+            #oauth_request = oauth.Request.from_request(request._request.method, http_url, headers=headers, parameters=params)
+            ## <more dirty hack>
+            oauth_request = oauth.Request.from_consumer_and_token(helperServer.consumer, token=helperServer.access_token, http_method=request._request.method, http_url=http_url, parameters=params)
+            oauth.Request.sign_request(oauth_request, oauth.SignatureMethod_HMAC_SHA1(), helperServer.consumer, helperServer.access_token)
+            ## </more dirty hack>
             return helperServer.check_access_token(oauth_request)
 
         tags = ('authenticate',)
