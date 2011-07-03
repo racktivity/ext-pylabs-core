@@ -536,7 +536,11 @@ class UnknownSessionException(Exception):
 
 class EndOfWizard(Exception):
     '''The end of the wizard was reached'''
-    ACTION = '{"action": "endofwizard"}'
+    def __init__(self, result):
+        self.result = result
+
+    def __str__(self):
+        return '{"action": "endofwizard", "result": %s}' % json.dumps(self.result)
 
 
 class DialogMessage(object):
@@ -747,7 +751,7 @@ class RunningWizardManager(object):
 
         wizard = wizard_func(*args, **kwargs)
 
-        self._wizards[session] = wizard
+        self._wizards[session] = { "wizard": wizard, "params": params}
 
         #creating an RLock is created for the wizard, note that RLock is required since a thread that
         #executing a step() call may try to re acquire the lock while calling stop() causing a deadlock in
@@ -769,11 +773,10 @@ class RunningWizardManager(object):
         lock.acquire()
 
         try:
-            wizard = self._get_wizard(session)
+            wizard = self._get_wizard(session)["wizard"]
             return wizard.next()
         except StopIteration:
-            self.stop(session)
-            raise EndOfWizard
+            raise EndOfWizard(self.stop(session))
         finally:
             lock.release()
 
@@ -789,7 +792,9 @@ class RunningWizardManager(object):
 
         try:
             try:
-                self._wizards[session].close()
+                wizard = self._wizards[session]
+                result = wizard["params"]["result"] if "result" in wizard["params"] else {}
+                wizard["wizard"].close()
             except StopIteration:
                 pass
             except RuntimeError, e:
@@ -814,6 +819,8 @@ class RunningWizardManager(object):
             del self._locks[session]
             lock.release()
 
+        return result
+
     def step(self, session, data):
         '''Execute one step of the wizard
 
@@ -830,11 +837,10 @@ class RunningWizardManager(object):
         lock.acquire()
 
         try:
-            wizard = self._get_wizard(session)
+            wizard = self._get_wizard(session)["wizard"]
             return wizard.send(data)
         except StopIteration:
-            self.stop(session)
-            raise EndOfWizard
+            raise EndOfWizard(self.stop(session))
         finally:
             lock.release()
 
@@ -920,7 +926,7 @@ class ApplicationserverWizardService(object):
                 try:
                     step = self._manager.start(session)
                 except EndOfWizard, e:
-                    return session, e.ACTION
+                    return session, str(e)
 
                 return session, step
 
@@ -959,7 +965,7 @@ class ApplicationserverWizardService(object):
     def stop(self, sessionId):
         q.logger.log('Stop wizard %s' % sessionId, 7)
         self._manager.stop(sessionId)
-        return EndOfWizard.ACTION
+        return str(EndOfWizard())
 
     @q.manage.applicationserver.expose
     def result(self, sessionId, result):
@@ -969,7 +975,7 @@ class ApplicationserverWizardService(object):
             step = self._manager.step(sessionId, result)
         except EndOfWizard, e:
             q.logger.log('End of wizard %s' % sessionId, 7)
-            step = e.ACTION
+            step = str(e)
 
         return step
 
