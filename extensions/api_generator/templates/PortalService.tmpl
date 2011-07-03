@@ -9,6 +9,8 @@ import urllib2
 import ast
 import time
 
+basedir = os.path.join(q.dirs.pyAppsDir, p.api.appname)
+
 class HelperServer(oauth.Server):
 
     def __init__(self):
@@ -81,6 +83,9 @@ class portal(LFWService):
             ## </more dirty hack>
             return helperServer.check_access_token(oauth_request)
 
+        #An unauthenticated user cannot access the administration space
+        if request._request.uri.find("/appserver/rest/ui/portal/page?space=Admin") > 0:
+            return False
         tags = ('authenticate',)
         params = dict()
         params['request'] = request
