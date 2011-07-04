@@ -536,11 +536,14 @@ class UnknownSessionException(Exception):
 
 class EndOfWizard(Exception):
     '''The end of the wizard was reached'''
+
+
     def __init__(self, result):
         self.result = result
 
     def __str__(self):
-        return '{"action": "endofwizard", "result": %s}' % json.dumps(self.result)
+        return '{"action": "endofwizard", "result": %s}' % \
+            json.dumps(self.result) if self.result else ""
 
 
 class DialogMessage(object):
@@ -965,7 +968,7 @@ class ApplicationserverWizardService(object):
     def stop(self, sessionId):
         q.logger.log('Stop wizard %s' % sessionId, 7)
         self._manager.stop(sessionId)
-        return str(EndOfWizard())
+        return str(EndOfWizard(""))
 
     @q.manage.applicationserver.expose
     def result(self, sessionId, result):
