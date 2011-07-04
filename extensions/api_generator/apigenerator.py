@@ -891,7 +891,7 @@ class AppAPIGenerator(object):
                                'destination':['impl', 'service', 'ui', 'portal.py']},
 
            {'template':'services/editor.tmpl', 'params':params,
-                               'destination':['impl', 'service', 'editor.py']}]
+                               'destination':['impl', 'service', 'editor.py']},
 
            {'template':'AgentService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'AgentSVC.py']}]
