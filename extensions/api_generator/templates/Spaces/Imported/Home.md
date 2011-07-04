@@ -1,8 +1,7 @@
+<link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
-<link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 
-<form target="appserver/rest/ui/editor/lisDirsInDir">
 <table>
     <tr>
         <td colspan=2>
@@ -18,7 +17,6 @@
         </td>
     </tr>
 </table>
-</form>
 
 <script language="javascript">
 x = null
@@ -35,11 +33,6 @@ function nodeSelected(event, data) {
       success: refreshFileView,
       error: error
     });
-}
-
-function success(data)
-{
-    alert(data);
 }
 
 function refreshFileView(data)
@@ -60,7 +53,12 @@ function refreshFileView(data)
         c++;
         if (c == 1)
             html += "<tr>";
-        pagelink="<a href='/../" + getCurrentApp() + "/#/Imported/" + path + "%2f" + files[i] + "' target='blank_'>" + files[i] + "</a>";
+        filename = files[i][0]
+        fileext = files[i][1]
+        if (fileext)
+            pagelink="<a href='/../" + getCurrentApp() + "/#/Imported/" + path + "%2f" + filename + "' target='_blank'>" +filename + "</a>";
+        else
+            pagelink="<b>" + filename + "</b>";
         html += "<td>" + pagelink + "</td>"
         if (c == ROW_NUM)
         {
@@ -115,7 +113,10 @@ function deleteProject(node)
       url: "appserver/rest/ui/editor/deleteProject",
       type: "POST",
       data: "appname=" + getCurrentApp() + "&projectname=" + text,
-      success: success,
+      success: function () {
+          alert("Project " + text + " has been deleted"); 
+          loadTree(getCurrentApp());
+        },
       error: error
     });
 }
@@ -129,7 +130,9 @@ function exportProject(node)
       url: "appserver/rest/ui/editor/exportProject",
       type: "POST",
       data: "appname=" + getCurrentApp() + "&projectname=" + text,
-      success: success,
+      success:  function () {
+          alert("Project " + text + " has been exported"); 
+        },
       error: error
     });
 
@@ -137,29 +140,32 @@ function exportProject(node)
 
 //Load specific app's tree
 function loadTree(appname){
-        $("#appname").val(appname)
-    	var tree = $("#treediv").jstree({
-            "contextmenu" : {
-                "items" : getContextMenu
-    	        },
-            "ui": {
-                "select_limit": 1
+    //Clear the file view
+    document.getElementById("filediv").innerHTML = "";
+
+    $("#appname").val(appname)
+    var tree = $("#treediv").jstree({
+        "contextmenu" : {
+            "items" : getContextMenu
             },
-    		"json_data": {
-    			"ajax": {
-    				"url": "appserver/rest/ui/editor/listDirsInDir?appname=" + appname,
-    				"data": function(n) {
-    					return {id: n.attr ? n.attr("id") : "portal/spaces/Imported"};
-    				},
-    			"progressive_render" : true
-    			}
-    		},
-            "themes" : {
-               "theme" : "classic",
-            },
-    		"plugins": ["themes", "json_data", "crrm", "ui", "contextmenu"]
-    	});
-        tree.bind("select_node.jstree", nodeSelected);
+        "ui": {
+            "select_limit": 1
+        },
+        "json_data": {
+            "ajax": {
+                "url": "appserver/rest/ui/editor/listDirsInDir?appname=" + appname,
+                "data": function(n) {
+                    return {id: n.attr ? n.attr("id") : "portal/spaces/Imported"};
+                },
+            "progressive_render" : true
+            }
+        },
+        "themes" : {
+           "theme" : "classic",
+        },
+        "plugins": ["themes", "json_data", "crrm", "ui", "contextmenu"]
+    });
+    tree.bind("select_node.jstree", nodeSelected);
 };
 
 function error(data)
