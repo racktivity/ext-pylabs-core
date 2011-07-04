@@ -154,14 +154,14 @@ The destination folder of the cloned repository is very important for the furthe
 
 Most of the generated tasklets start with the line `qpackage = params['qpackage']`. If you want to simulate this `qpackage` object in your Q-Shell session, execute this line in the Q-Shell:
 
-`In [1]: qpackage = i.qp.find("packagename").qpackage`
-`lastPackages: [IPackage <package domain> <package name> <package version>]`
+	In [1]: qpackage = i.qp.find("packagename").qpackage
+	lastPackages: [IPackage <package domain> <package name> <package version>]
 
 or if you have stored your new Q-Package object in a variable:
 
-`In [1]: newQPackage = i.qp.createNewPackage()`
-
-`In [2]: newQPackage = newQPackage.qpackage`
+	In [1]: newQPackage = i.qp.createNewPackage()
+	
+	In [2]: newQPackage = newQPackage.qpackage
 [[/tip]]
 
 Instead of calling this `checkout` method, you can also manipulate the Q-Package directories, by creating your own directory-structure and putting your files in the proper directories.

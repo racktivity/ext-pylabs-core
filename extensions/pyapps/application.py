@@ -197,9 +197,9 @@ class AppManager(object):
         
         return changed_files, created_files, deleted_files, is_changed 
         
-    def syncPortal(self, appname, space=None, clean_up=False):
+    def syncPortal(self, appname, space=None, page=None, clean_up=False):
         from alkira.sync_md_to_lfw import sync_to_alkira
-        sync_to_alkira(appname, sync_space=space, clean_up=clean_up)
+        sync_to_alkira(appname, sync_space=space, sync_page=page, clean_up=clean_up)
 
 
     def check_application(function):

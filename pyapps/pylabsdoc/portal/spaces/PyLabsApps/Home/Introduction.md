@@ -295,6 +295,23 @@ Below you can find a general overview of the creation process of a PyApp.
 6. Implement the defined interfaces
 7. Implement wizards and forms
 
+From a practical point of view, you have to:
+
+1. Install PyLabs
+2. Create the PyApp Directory structure
+3. Create at least one model file
+4. Install the PyApp via the Q-Shell: `p.application.install('yourPyApp')`
+
+After this installation command you see the API that you have created.
+
+[[information]]
+**Information**
+
+After _each change_ in your PyApp, for example you have added a new Root Object model, you have to reinstall your PyApp:
+
+`p.application.install('yourPyApp')`
+[[/information]]
+
 
 ###Advanced
 1. Define actions triggered by Events
