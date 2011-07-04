@@ -95,6 +95,7 @@ class editor(ActionService):
         @return:                 list of files in the directory "dirname"
         @rtype:                  list
         """
+        alkira = q.clients.alkira.getClient("localhost", appname)
         dirname = id
         if not self.checkPath(appname) or not self.checkPath(dirname):
             raise ValueError("invalid characters in the application name or path (.. or /) were detected")
@@ -102,7 +103,12 @@ class editor(ActionService):
         rpath = q.system.fs.joinPaths(appname, dirname)
         abspath = q.system.fs.joinPaths(q.dirs.pyAppsDir, rpath)
         lenpath = len(abspath)
-        return {"path":rpath, "files": list(item[lenpath + 1:] for item in q.system.fs.listFilesInDir(abspath))}
+        files = list()
+        for item in q.system.fs.listFilesInDir(abspath):
+            filename = item[lenpath + 1:]
+            files.append((filename, alkira._getType(filename)))
+        
+        return {"path":rpath, "files": files}
     
     @q.manage.applicationserver.expose
     def listDirsInDir(self, appname, id = ".", jobguid = "", executionparams = None):
@@ -165,12 +171,18 @@ class editor(ActionService):
         dest = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
         if q.system.fs.exists(dest):
             raise ValueError("Project %s already exists,\nplease choose a different name or remove the porject"%projectname);
-        q.system.fs.createDir(dest)
         
         source = join(q.dirs.pyAppsDir, appname, source)
         if not q.system.fs.isDir(source):
             raise ValueError("%s doesn't exists or not a directory"%source);
         
+        if dest.startswith(source):
+            raise ValueError("You can't import any directory that contains the directory portal/spaces/Imported/")
+        
+        if not q.manage.applicationserver.isRunning(appname):
+            raise Exception("Applicationserver for %s is not running\ntry q.manage.applicationserver.restart('%s')"%(appname, appname))
+        
+        q.system.fs.createDir(dest)
         q.system.fs.copyDirTree(source, dest)
         alkira = q.clients.alkira.getClient("localhost", appname)
         spaceguid = alkira.getSpace("Imported").guid
@@ -218,9 +230,10 @@ class editor(ActionService):
         join = q.system.fs.joinPaths
         #gussing the dest, this very bad and must be changed in the future
         if not dest:
+            page = None
             conn = p.application.getOsisConnection(appname)
             alkira = q.clients.alkira.getClient("localhost", appname)
-            result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "%/'")
+            result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "/%'")
             samplepage = None
             for row in result:
                 pagename = row["name"]
@@ -240,7 +253,7 @@ class editor(ActionService):
         src = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
         q.system.fs.removeDirTree(dest)
         q.system.fs.copyDirTree(src, dest)
-        return "Project has been successfully exported"
+        return True
 
     @q.manage.applicationserver.expose
     def deleteProject(self, appname, projectname, jobguid = "", executionparams = None):
@@ -278,4 +291,4 @@ class editor(ActionService):
         #remove the directory
         src = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
         q.system.fs.removeDirTree(src)
-        return "Project has been successfully deleted"
+        return True
