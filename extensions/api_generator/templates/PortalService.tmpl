@@ -39,9 +39,9 @@ class portal(LFWService):
 
     def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
         q.logger.log("OAUTH HEADERS from portal.checkAuthentication %s" % str(request._request.requestHeaders))
-        if request._request.requestHeaders.hasHeader('Authorization'):
+        headers = self._getHeaders(request)
+        if headers.has_key('Authorization') and headers['Authorization'].find('OAuth realm="alkira"') >= 0 :
             helperServer = HelperServer()
-            headers = self._getHeaders(request)
             oAuthHeaders = self._getAuthHeaders(headers)
             tokenkey = oAuthHeaders['oauth_token']
             token_attributes = helperServer.getTokenAttributesFromStore(tokenkey)
