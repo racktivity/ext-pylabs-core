@@ -32,7 +32,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
- 
+
 import functools
 
 import json
@@ -117,7 +117,7 @@ class RESTDomain(Resource):
         Resource.__init__(self)
         self.dispatcher = dispatcher
         self.domain = domain
-    
+
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
@@ -192,7 +192,7 @@ class RESTMethod(Resource):
                     value = json.loads(value)
                 except ValueError:
                     value = value
-                
+
                 args[name] = value
 
             return args
@@ -213,20 +213,19 @@ class RESTMethod(Resource):
         try:
             d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
         except AuthenticationError, e:
-            request.setResponseCode(http.UNAUTHORIZED)
+            request.setResponseCode(http.FORBIDDEN)
             request.setHeader('Content-Type', contenttype)
-            request.setHeader('WWW-authenticate', 'basic realm="Applicationserver"')
             return JSONException(e.MESSAGE, e).dumps()
         except (NoSuchService, NoSuchMethod), e:
             request.setResponseCode(http.NOT_FOUND)
             request.setHeader('Content-Type', contenttype)
             return JSONException(e.MESSAGE, e).dumps()
-        
+
         def write(data):
             if callback:
                 data = "%s(%s)" % (callback, data)
             request.write(data)
-        
+
         def finish_render(data):
             try:
                 jsondata = json.dumps(data, indent=2)
