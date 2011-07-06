@@ -293,6 +293,7 @@ class LogConsoleServer(BaseLogConsole):
         SocketServer.ThreadingTCPServer.allow_reuse_address = True
         self.server = SocketServer.ThreadingTCPServer((self.ip, self.port), LogConsoleRequestHandler)
         self.started = True
+        self.server.daemon_threads = True
         self.server.serve_forever()
         
     def stop(self):
