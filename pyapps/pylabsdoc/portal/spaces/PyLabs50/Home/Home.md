@@ -13,5 +13,6 @@ Then PyLabs is comes to the rescue.
 
 PyLabs is the ideal framework for easy datacenter automation and for rapid application development.
 
-[[children/]]
+Browse through the documentation by selecting a space from the drop-down list above or via the Table of Contents on the left.
+
 
