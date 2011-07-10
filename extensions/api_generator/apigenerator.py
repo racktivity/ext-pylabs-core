@@ -900,9 +900,9 @@ class AppAPIGenerator(object):
             path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
             if not q.system.fs.exists(path):
                 self._generate_file(file['template'], file['params'], path)
-
-        defaults_path = q.system.fs.joinPaths( q.dirs.extensionsDir, 'defaults')
-
+                
+        defaults_path = q.system.fs.joinPaths( q.dirs.extensionsDir, 'api_generator', 'defaults')
+        
         defaults = q.system.fs.walk(defaults_path, recurse=1)
 
         for file in defaults:
