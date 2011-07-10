@@ -338,12 +338,18 @@ class CloudApiGenerator:
         actionsList.append( ['ModelEditWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "form", params["domain"], "%s_edit"% params["rootobject"],   "1_%s_edit.py"% params['rootobject'])])
         actionsList.append( ['ModelDeleteWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "wizard", params["domain"], "%s_delete"% params["rootobject"],   "1_%s_delete.py"% params['rootobject'])])
         
+        #generateinterfaceaction
+        if domain <> 'core' and domain <> 'ui':
+            actionsList.append( ['InterfaceAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "interface", "action", params["domain"], "%s.py"% params["rootobject"])])
+
+
         generatedFiles = []
         for action in actionsList:
             templatePath = q.system.fs.joinPaths(self._template_path, 'CRUD', action[0])
-            self._generateCode(templatePath, params, action[1])
-            generatedFiles.append(action[1])
-        
+            if  not q.system.fs.exists(action[1]):
+                self._generateCode(templatePath, params, action[1])
+                generatedFiles.append(action[1])
+            
         
         try :
             templatePath = q.system.fs.joinPaths(self._template_path, "consumer.cfg.tmpl")
@@ -869,6 +875,8 @@ class AppAPIGenerator(object):
    
     
     def _generate_default_services(self, appname):
+        
+        print 'Generate Default Services'
         
         service_path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'service')
         
