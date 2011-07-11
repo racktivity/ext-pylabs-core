@@ -302,13 +302,39 @@ class ApplicationAPI(object):
         serializer = serializers.ThriftSerializer
 
         return load(path, transport, serializer)
-        
+
+#Override the get_host_info method to add the OAuth headers
+class OAuthTransport(xmlrpclib.Transport):
+    def get_host_info(self, host):
+        import urllib
+        auth, host = urllib.splituser(host)
+        q.logger.log('auth='+str(auth))
+        if auth:
+            user = auth.split(':')[0]
+            path = q.system.fs.joinPaths(q.dirs.baseDir, "var", user + '.token')
+            if not q.system.fs.exists(path): return host, None, None
+            token_dict = q.system.fs.readObjectFromFile(path)
+            #sign the oauth request
+            consumer = oauth.Consumer(user, '')
+            token = oauth.Token('token_\$(%s)'%token_dict['oauth_token'], token_dict['oauth_token_secret'])
+            oauth_req = oauth.Request.from_consumer_and_token(consumer, token, http_method='POST', http_url='http://alkira/')
+            oauth_req.sign_request(oauth.SignatureMethod_HMAC_SHA1(), consumer, token)
+            oauth_headers = oauth_req.to_header()
+            q.logger.log('EXTRA HEADERS after signing : '+str(oauth_headers))
+            extra_headers = list()
+            if oauth_headers.has_key('Authorization'):
+                extra_headers = [("Authorization", oauth_headers['Authorization'])]
+        else:
+            extra_headers = None
+        return host, extra_headers, None
+
+
 import xmlrpclib
 class XmlRpcActionProxy(object):
     
     def __init__(self, url):
         self.client = xmlrpclib.ServerProxy(url, allow_none=True)
-    
+
     def __call__(self, domainname, classname, methodname, *args):
 
         try:

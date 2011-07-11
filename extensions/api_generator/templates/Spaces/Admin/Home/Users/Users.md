@@ -1,15 +1,15 @@
 
 <script language='javascript'>
 $(document).ready(function(){
-    
+
     $("#confirmdelete").dialog({autoOpen: false,
                                 width: 550,
                                 modal: true});
-    
+
     $("#userform").dialog({autoOpen: false,
             width: 550,
             modal: true});
-    
+
     var confirmdelete = function(options){
         var options = $.extend({user: 'this',
                                 ok: $.noop,
@@ -26,47 +26,47 @@ $(document).ready(function(){
                                                          });
         $("#confirmdelete").dialog("open");
     };
-    
-    
-    
+
+
+
     var remotecall = function(options) {
         var options = $.extend({success: $.noop,
                                 error: $.alerterror,
                                 data: {}}, options);
-                                    
-        
+
+
         $.ajax({url: options.uri,
                 dataType: 'json',
                 data: options.data,
                 success: options.success,
                 error: options.error});
     };
-    
+
     var listusers = function(options) {
         var options = $.extend(options, {uri: LFW_CONFIG['uris']['users']});
         remotecall(options);
     };
-    
+
     var deleteuser = function(username, options){
         var options = $.extend(options, {uri: LFW_CONFIG['uris']['deleteUser'],
                                         data: {name: username}});
         remotecall(options);
     };
-    
+
     var createuser = function(username, passwd, options){
         var options = $.extend(options, {uri: LFW_CONFIG['uris']['createUser'],
                                         data: {name: username,
                                                password: passwd}});
         remotecall(options);
     };
-    
+
     var edituser = function(username, passwd, options){
         var options = $.extend(options, {uri: LFW_CONFIG['uris']['updateUser'],
                                         data: {name: username,
                                                password: passwd}});
         remotecall(options);
     };
-    
+
     var render = function(){
         listusers({success: function(data){
                                 var tbody = $("#userslist > tbody");
@@ -76,43 +76,43 @@ $(document).ready(function(){
                                 $.each(data, function(i, user){
                                     tbody.append($("<tr>").append($("<td>").text(user))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('Change Password').click(function() {
-                                                                
+
                                                                 var user = $(this).data('user');
                                                                 $("#userform input").removeClass("ui-state-error").val('');
                                                                 $("#userform").find("#name").attr("disabled", true).val(user);
                                                                 $("#userform").dialog("option", "title", "Edit User");
                                                                 $("#userform").dialog("option", "buttons", {"Change Password": function(){
-                                                                                                            
+
                                                                                                             $dialog = $(this);
                                                                                                             $input = $dialog.find("input").removeClass("ui-state-error");
                                                                                                             var passwd = $.trim($dialog.find("#password").val());
                                                                                                             var cpasswd = $.trim($dialog.find("#cpassword").val());
-                                                                                                            
+
                                                                                                             if (!passwd) {
                                                                                                                 $dialog.find("#password").addClass("ui-state-error");
                                                                                                                 $.alert("Password is required", {title: "Validation Error"});
                                                                                                                 return;
                                                                                                             }
-                                                                                                            
+
                                                                                                             if (passwd != cpasswd) {
                                                                                                                 $dialog.find("#cpassword").addClass("ui-state-error");
                                                                                                                 $.alert("Passwords don't match", {title: "Validation Error"});
                                                                                                                 return;
                                                                                                             }
-                                                                                                            
+
                                                                                                             edituser(user, passwd, {success: function() {
                                                                                                                 $.alert("Password updated successfully", {title: 'Password Changed'});
                                                                                                                 $dialog.dialog("close");
                                                                                                             }, error: $.alerterror});
-                                                                                                            
+
                                                                                                         },
-                                                                                                        
+
                                                                                                       "Cancel": function(){
                                                                                                           $(this).dialog("close");
                                                                                                         }});
-                                                                                
+
                                                                 $("#userform").dialog("open");
-                                                                
+
                                                               })))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('delete').click(function(){
                                                                 var user = $(this).data('user');
@@ -126,37 +126,35 @@ $(document).ready(function(){
                                 });
                             }});
     };
-    
+
     $("#createuser").button().click(function() {
-        $("#userform").dialog("option", "title", "Create User");
+        var $dialog = $("#userform").dialog("option", "title", "Create User");
         $("#userform").find("#name").attr("disabled", false);
         $("#userform  input").removeClass("ui-state-error").val("");
         $("#userform").dialog("option", "buttons", {"Create User": function(){
-                                                    $dialog = $(this);
-                                                    
                                                     $dialog.find("input").removeClass("ui-state-error");
                                                     var username = $.trim($dialog.find("#name").val());
                                                     var passwd = $.trim($dialog.find("#password").val());
                                                     var cpasswd = $.trim($dialog.find("#cpassword").val());
-                                                    
+
                                                     if (username == "") {
                                                         $dialog.find("#name").addClass("ui-state-error");
                                                         $.alert("Name is required", {title: "Validation Error"});
                                                         return;
                                                     }
-                                                    
+
                                                     if (!passwd) {
                                                         $dialog.find("#password").addClass("ui-state-error");
                                                         $.alert("Password is required", {title: "Validation Error"});
                                                         return;
                                                     }
-                                                    
+
                                                     if (passwd != cpasswd) {
                                                         $dialog.find("#cpassword").addClass("ui-state-error");
                                                         $.alert("Passwords don't match", {title: "Validation Error"});
                                                         return;
                                                     }
-                                                    
+
                                                     createuser(username, passwd, {success: function() {
                                                         render();
                                                         $dialog.dialog("close");
@@ -165,8 +163,16 @@ $(document).ready(function(){
                                               "Cancel": function() {
                                                   $(this).dialog("close");
                                                 }});
-                        
+
         $("#userform").dialog("open");
+
+        $("#userform").keydown(function(e) {
+            if (e.keyCode == 13) {
+                var buttons = $( "#userform" ).dialog( "option", "buttons" );
+                var button = buttons["Create User"];
+                button();
+            }
+        });
     });
 
 
