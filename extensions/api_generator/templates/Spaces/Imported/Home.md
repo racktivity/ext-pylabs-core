@@ -1,6 +1,7 @@
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
+<script language="javascript" src="/static/lfw/js/filetree.js"/>
 
 <table>
     <tr>
@@ -144,27 +145,7 @@ function loadTree(appname){
     document.getElementById("filediv").innerHTML = "";
 
     $("#appname").val(appname)
-    var tree = $("#treediv").jstree({
-        "contextmenu" : {
-            "items" : getContextMenu
-            },
-        "ui": {
-            "select_limit": 1
-        },
-        "json_data": {
-            "ajax": {
-                "url": "appserver/rest/ui/editor/listDirsInDir?appname=" + appname,
-                "data": function(n) {
-                    return {id: n.attr ? n.attr("id") : "portal/spaces/Imported"};
-                },
-            "progressive_render" : true
-            }
-        },
-        "themes" : {
-           "theme" : "classic",
-        },
-        "plugins": ["themes", "json_data", "crrm", "ui", "contextmenu"]
-    });
+    tree = loadFileTree("#treediv", appname, "portal/spaces/Imported", getContextMenu);
     tree.bind("select_node.jstree", nodeSelected);
 };
 

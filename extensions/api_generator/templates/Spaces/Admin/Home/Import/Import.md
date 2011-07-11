@@ -1,6 +1,7 @@
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
+<script language="javascript" src="/static/lfw/js/filetree.js"/>
 
 <table>
     <tr>
@@ -10,7 +11,7 @@
     </tr>
     <tr>
         <td>
-            <div id="demo1" class="demo"></div></td>
+            <div id="treediv" class="demo"></div></td>
         <td>
             Directory to import <input type="text" name="dirname" id="dirname" /><br/>
             <!-- Destination space <select id="cbospace" name="space"/> <a href="#/Admin/Spaces" target="_blank">New space</a><br/> -->
@@ -47,24 +48,7 @@ function getCurrentApp() {
 //Load specific app's tree
 function loadTree(appname){
         $("#appname").val(appname)
-    	var tree = $("#demo1").jstree({
-    		"json_data": {
-    			"ajax": {
-    				"url": "appserver/rest/ui/editor/listDirsInDir?appname=" + appname,
-    				"data": function(n) {
-    					return {id: n.attr ? n.attr("id") : "."};
-    				},
-    			"progressive_render" : true
-    			}
-    		},
-            "ui": {
-                "select_limit":1
-            },
-            "themes" : {
-               "theme" : "classic",
-            },
-    		"plugins": ["themes", "json_data", "ui"]
-    	});
+        tree = loadFileTree("#treediv", appname, ".")
         tree.bind("select_node.jstree", nodeSelected);
 };
 
