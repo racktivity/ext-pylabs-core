@@ -109,9 +109,8 @@ $(document).ready(function(){
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
                                                                 var space = $(this).data('space');
                                                                 $("#spaceform input").removeClass("ui-state-error").val(space);
-                                                                $("#spaceform").dialog("option", "title", "Edit Space");
+                                                                var $dialog = $("#spaceform").dialog("option", "title", "Edit Space");
                                                                 $("#spaceform").dialog("option", "buttons", {"Rename Space": function(){
-                                                                                                            $dialog = $(this);
                                                                                                             $input = $dialog.find("input").removeClass("ui-state-error");
 
                                                                                                             var spacename = $.trim($dialog.find("#name").val());
@@ -136,6 +135,13 @@ $(document).ready(function(){
                                                                                                       "Cancel": function(){
                                                                                                           $(this).dialog("close");
                                                                                                         }});
+                                                                $("#spaceform").keydown(function(e) {
+                                                                    if (e.keyCode == 13) {
+                                                                        var buttons = $( "#spaceform" ).dialog( "option", "buttons" );
+                                                                        var button = buttons["Rename Space"];
+                                                                        button();
+                                                                    }
+                                                                });
 
                                                                 $("#spaceform").dialog("open");
                                                               })))

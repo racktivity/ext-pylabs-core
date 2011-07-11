@@ -80,10 +80,8 @@ $(document).ready(function(){
                                                                 var user = $(this).data('user');
                                                                 $("#userform input").removeClass("ui-state-error").val('');
                                                                 $("#userform").find("#name").attr("disabled", true).val(user);
-                                                                $("#userform").dialog("option", "title", "Edit User");
+                                                                var $dialog = $("#userform").dialog("option", "title", "Edit User");
                                                                 $("#userform").dialog("option", "buttons", {"Change Password": function(){
-
-                                                                                                            $dialog = $(this);
                                                                                                             $input = $dialog.find("input").removeClass("ui-state-error");
                                                                                                             var passwd = $.trim($dialog.find("#password").val());
                                                                                                             var cpasswd = $.trim($dialog.find("#cpassword").val());
@@ -112,7 +110,13 @@ $(document).ready(function(){
                                                                                                         }});
 
                                                                 $("#userform").dialog("open");
-
+                                                                $("#userform").keydown(function(e) {
+                                                                    if (e.keyCode == 13) {
+                                                                        var buttons = $( "#userform" ).dialog( "option", "buttons" );
+                                                                        var button = buttons["Change Password"];
+                                                                        button();
+                                                                    }
+                                                                });
                                                               })))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('delete').click(function(){
                                                                 var user = $(this).data('user');
