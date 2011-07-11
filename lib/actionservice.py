@@ -17,6 +17,8 @@ class HelperServer(oauth.Server):
 
     def getTokenAttributesFromStore(self, tokenKey):
         client = q.clients.arakoon.getClient(self.cluster_name)
+        if not client.exists(key=tokenKey):
+            return False
         return client.get(tokenKey)
 
     def check_access_token(self, oauth_request):
