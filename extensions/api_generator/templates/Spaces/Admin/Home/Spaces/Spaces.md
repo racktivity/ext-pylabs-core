@@ -125,8 +125,9 @@ $(document).ready(function(){
                                                                                                             }
 
                                                                                                             editspace(space, spacename, {success: function(){
-                                                                                                                $("#space").find("option[value=" + space + "]").attr("value", spacename)
-                                                                                                                    .text(spacename);
+                                                                                                                $.fillSpacesList({success: function(){
+                                                                                                                    $("#space").val("Admin");
+                                                                                                                }});
 
                                                                                                                 render();
                                                                                                                 $dialog.dialog("close");
@@ -144,7 +145,9 @@ $(document).ready(function(){
                                                                 confirmdelete({space: space,
                                                                          ok: function(){
                                                                              deletespace(space, {success: function(){
-                                                                                    $("#space").find("option[value=" + space + "]").remove();
+                                                                                    $.fillSpacesList({success: function(){
+                                                                                        $("#space").val("Admin");
+                                                                                    }});
                                                                                     render();
                                                                                  }});
                                                                          }});
@@ -166,7 +169,9 @@ $(document).ready(function(){
                                                     }
 
                                                     createspace(spacename, {success: function(){
-                                                        $("#space").append($("<option>", {'value': spacename}).text(spacename));
+                                                        $.fillSpacesList({success: function(){
+                                                            $("#space").val("Admin");
+                                                        }});
                                                         render();
                                                         $dialog.dialog("close");
                                                     }, error: $.alerterror});
