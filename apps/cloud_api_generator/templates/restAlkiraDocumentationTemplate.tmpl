@@ -72,11 +72,11 @@ List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
     <tr>
 #for $arg in $method.argClasses :
     #if $params.has_key($arg.name) and $arg.name not in ["executionparams", "jobguid"]:
-        <td>$arg.name (type: $arg.argtype)</td><td><input type="text" name="$arg.name"/></td>
+        <td>$arg.name (type: $arg.argtype)</td><td><input type="text" name="param_$arg.name" size="30"/></td>
     #end if
     </tr>
 #end for
-    <tr><td colspan="2"><input type="button" value="Execute method" onclick="javascript:doRestCall('resturl_$method.name', 'result_$method.name')"/></td></tr>
+    <tr><td colspan="2"><input type="submit" value="Execute method"/></td></tr>
     <tr>
         <td>Result</td>
         <td><textarea name="result_$method.name" id="result_$method.name" style="width:300px;"></textarea></td>
@@ -84,7 +84,7 @@ List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
 </table>
 </Form>
 Enter REST URL: <input size="70" type="text" name="resturl_$method.name" id="resturl_$method.name" value="" />
-<input type="button" value="Open test form" onclick="javascript:showTestForm(testform_$method.name, '$method.name');"/>
+<input type="button" value="Open test form" onclick="javascript:showTestForm(testform_$method.name, '$method.name', 'resturl_$method.name', 'result_$method.name');"/>
 <script>
     jQuery(document).ready(function() {
         document.getElementById("resturl_$method.name").value = "http://"+window.location.hostname+"/"+LFW_CONFIG.appname+"/appserver/rest/ui/$className/$method.name";
@@ -94,22 +94,35 @@ Enter REST URL: <input size="70" type="text" name="resturl_$method.name" id="res
     #end if
 #end for
 <script>
-    function showTestForm(formName, methodname)
+    function showTestForm(formName, methodname, resturl, result)
     {
-        jQuery(formName).dialog({title: 'Test Form for '+ methodname, closeOnEscape: false, width: 600, height:400, resizable: false});
-    }
-    function doRestCall(resturl, result)
-    {
-        jQuery.ajax({
-            type: "GET",
-            dataType: 'json',
-            url: document.getElementById(resturl).value,
-            success: function(data){
-                document.getElementById(result).value = JSON.stringify(data);
-           },
-            error: function(error){
-                document.getElementById(result).value = JSON.stringify(error);
-           }
+        jQuery(formName).dialog({title: 'Test Form for '+ methodname, closeOnEscape: false, width: 600, height:600, resizable: false});
+        jQuery(formName).submit(function(event) {
+            event.preventDefault();
+            var requesttype = "POST";
+            if(methodname == "find" || methodname == "getObject")
+            {
+                requesttype = "GET";
+            }
+            var values = {};
+            jQuery.each(jQuery(formName).serializeArray(), function(i, field) {
+                if(field.value != "" && field.name.indexOf("param_")>=0)
+                {
+                    values[field.name.replace("param_","")] = field.value;
+                }
+            });
+            jQuery.ajax({
+                type: requesttype,
+                dataType: 'json',
+                data: values,
+                url: document.getElementById(resturl).value,
+                success: function(data){
+                    document.getElementById(result).value = JSON.stringify(data);
+                },
+                error: function(error){
+                    document.getElementById(result).value = JSON.stringify(error);
+                }
+            });
         });
     }
 </script>
