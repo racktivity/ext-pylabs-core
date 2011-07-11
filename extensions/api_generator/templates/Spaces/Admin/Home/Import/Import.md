@@ -28,7 +28,7 @@ function nodeSelected(event, data) {
     path = data.inst._get_node().attr("id");
     data.inst.open_node()
     $("#dirname").val(path);
- }
+}
 
 //Select "appname" value changed
 function appChanged()
@@ -81,13 +81,13 @@ function btnImportClicked()
 
 function importSuccess(data)
 {
-    alert("Porject has been imported successfully\nPlease click on 'Imported projects' link below to see your project");
+    $.alert("Porject has been imported successfully\nPlease click on 'Imported projects' link below to see your project", {title: 'Info'});
 }
 
 function importFail(data)
 {
     data = $.parseJSON(data.responseText);
-    alert("Fail: " + data["exception"]);
+    $.alert("Fail: " + data["exception"], {title: 'Failed'});
 }
 
 function init()

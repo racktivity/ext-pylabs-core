@@ -103,7 +103,7 @@ $(document).ready(function(){
                                 console.log("listspaces succeeded, rendering list...");
                                 tbody.empty();
                                 $.each(data, function(i, space){
-                                    if (space == "Admin") return;
+                                    if ((space == "Admin") || (space == "Imported")) return;
                                     
                                     tbody.append($("<tr>").append($("<td>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
