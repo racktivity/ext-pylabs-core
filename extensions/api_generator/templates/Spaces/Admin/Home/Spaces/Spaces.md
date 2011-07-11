@@ -103,7 +103,7 @@ $(document).ready(function(){
                                 console.log("listspaces succeeded, rendering list...");
                                 tbody.empty();
                                 $.each(data, function(i, space){
-                                    if (space == "Admin") return;
+                                    if ((space == "Admin") || (space == "Imported")) return;
                                     
                                     tbody.append($("<tr>").append($("<td>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
@@ -125,9 +125,10 @@ $(document).ready(function(){
                                                                                                             }
                                                                                                             
                                                                                                             editspace(space, spacename, {success: function(){
-                                                                                                                $("#space").find("option[value=" + space + "]").attr("value", spacename)
-                                                                                                                    .text(spacename);
-                                                                                                                    
+                                                                                                                $.fillSpacesList({success: function(){
+                                                                                                                    $("#space").val("Admin");
+                                                                                                                }});
+
                                                                                                                 render();
                                                                                                                 $dialog.dialog("close");
                                                                                                             }, error: $.alerterror});
@@ -144,7 +145,9 @@ $(document).ready(function(){
                                                                 confirmdelete({space: space,
                                                                          ok: function(){
                                                                              deletespace(space, {success: function(){
-                                                                                    $("#space").find("option[value=" + space + "]").remove();
+                                                                                    $.fillSpacesList({success: function(){
+                                                                                        $("#space").val("Admin");
+                                                                                    }});
                                                                                     render();
                                                                                  }});
                                                                          }});
@@ -154,10 +157,9 @@ $(document).ready(function(){
     };
     
     $("#createspace").button().click(function() {
-        $("#spaceform").dialog("option", "title", "Create Space");
+        var $dialog = $("#spaceform").dialog("option", "title", "Create Space");
         $("#spaceform  input").removeClass("ui-state-error").val("");
         $("#spaceform").dialog("option", "buttons", {"Create Space": function(){
-                                                    $dialog = $(this);
                                                     $input = $dialog.find("input").removeClass("ui-state-error");
                                                     
                                                     var spacename = $.trim($dialog.find("#name").val());
@@ -167,7 +169,9 @@ $(document).ready(function(){
                                                     }
                                                     
                                                     createspace(spacename, {success: function(){
-                                                        $("#space").append($("<option>", {'value': spacename}).text(spacename));
+                                                        $.fillSpacesList({success: function(){
+                                                            $("#space").val("Admin");
+                                                        }});
                                                         render();
                                                         $dialog.dialog("close");
                                                     }, error: $.alerterror});
@@ -178,6 +182,13 @@ $(document).ready(function(){
                                                 }});
                         
         $("#spaceform").dialog("open");
+        $("#spaceform").keydown(function(e) {
+            if (e.keyCode == 13) {
+                var buttons = $( "#spaceform" ).dialog( "option", "buttons" );
+                var button = buttons["Create Space"];
+                button();
+            }
+        });
     });
 
 
