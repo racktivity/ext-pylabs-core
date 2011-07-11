@@ -37,9 +37,11 @@ class PyAppsConfigGen:
     def _get_authentication_serviceurl(self):
         oauthservice_cfg = q.config.getConfig('dist_auth')
         if oauthservice_cfg:
-            self.oauthservice_url  = oauthservice_cfg['main']['access_token_url']
+            url = "http://[HOST]:%s%s" % (oauthservice_cfg['main']['port'], oauthservice_cfg['main']['access_path'])
         else:
-            self.oauthservice_url = "http://localhost:6543/ACCESS_TOKEN"
+            url = "http://[HOST]:6543/ACCESS_TOKEN"
+
+        self.oauthservice_url = url
 
     def pyapps_configuration(self):
         pyappsCfg = q.config.getInifile('pyapps')

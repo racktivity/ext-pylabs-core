@@ -67,12 +67,8 @@ List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
 
 
 \#\#\# Test Form
-
-<form name="testform_$method.name" id="testform" style="display:none" method="GET" action="http://localhost:20301/sampleapp/appserver/rest/ui/$className/$method.name">
+<Form name="testform_$method.name" id="testform_$method.name" style="display:none">
 <table border=1>
-    <tr>
-        <!--<td width="20%">Method URL for $method.name:</td><td width="80%"><input type="text" name="methodurl"/></td>-->
-    </tr>
     <tr>
 #for $arg in $method.argClasses :
     #if $params.has_key($arg.name) and $arg.name not in ["executionparams", "jobguid"]:
@@ -80,22 +76,40 @@ List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
     #end if
     </tr>
 #end for
-    <tr><td colspan="2"><input type="button" value="Execute method" onclick="javascript:submitForm(this.form, 'resturl_$method.name')"/></td></tr>
+    <tr><td colspan="2"><input type="button" value="Execute method" onclick="javascript:doRestCall('resturl_$method.name', 'result_$method.name')"/></td></tr>
+    <tr>
+        <td>Result</td>
+        <td><textarea name="result_$method.name" id="result_$method.name" style="width:300px;"></textarea></td>
+    </tr>
 </table>
-</form>
-Enter REST URL: <input size="70" type="text" name="resturl_$method.name" id="resturl_$method.name" value="http://localhost:20301/sampleapp/appserver/rest/ui/$className/$method.name" />
-<input type="button" value="Open test form" onclick="javascript:showTestForm(testform_$method.name);"/>
+</Form>
+Enter REST URL: <input size="70" type="text" name="resturl_$method.name" id="resturl_$method.name" value="" />
+<input type="button" value="Open test form" onclick="javascript:showTestForm(testform_$method.name, '$method.name');"/>
+<script>
+    jQuery(document).ready(function() {
+        document.getElementById("resturl_$method.name").value = "http://"+window.location.hostname+"/"+LFW_CONFIG.appname+"/appserver/rest/ui/$className/$method.name";
+    });
+</script>
 - - -
     #end if
 #end for
 <script>
-    function showTestForm(formName)
+    function showTestForm(formName, methodname)
     {
-        jQuery(formName).dialog({title: 'Test Form', closeOnEscape: false, width: 460, height:400, resizable: false});
+        jQuery(formName).dialog({title: 'Test Form for '+ methodname, closeOnEscape: false, width: 600, height:400, resizable: false});
     }
-    function submitForm(form, resturl)
+    function doRestCall(resturl, result)
     {
-        form.action = document.getElementById(resturl).value;
-        form.submit();
+        jQuery.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: document.getElementById(resturl).value,
+            success: function(data){
+                document.getElementById(result).value = JSON.stringify(data);
+           },
+            error: function(error){
+                document.getElementById(result).value = JSON.stringify(error);
+           }
+        });
     }
 </script>
