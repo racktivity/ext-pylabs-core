@@ -1,0 +1,56 @@
+class ${rootobject}:
+    """
+    
+    """
+#set $create = ''
+#for $field in $fields
+    #if $field["type"] == "Integer"
+        #set $create = $create + $field["name"] + "=None, "
+    #else
+        #set $create = $create + $field["name"] + "='', "
+    #end if
+#end for
+#set $guid = $rootobject+"guid"
+
+    def create(self, $create jobguid="", executionparams=None):
+        """
+        Create a new rootobject
+
+        """
+
+    def find(self, $create jobguid="",executionparams=None):
+        """        
+        @execution_method = sync
+
+        """   
+
+    def getObject(self, $guid, jobguid="",executionparams=None):
+        """
+        Gets the rootobject.
+
+        @execution_method = sync
+    
+        """
+
+    def delete(self, $guid, jobguid="",executionparams=None):
+        """
+        Delete
+        
+        @security: administrator
+        
+        @execution_method = sync
+        """
+
+    def update(self, $guid,  $create jobguid="", executionparams=dict()):
+        """
+
+        @raise e:                In case an error occurred, exception is raised
+        """
+            
+    def list(self,$create jobguid='', executionparams=None):
+        """
+        List 
+
+        @execution_method = sync
+
+        """
