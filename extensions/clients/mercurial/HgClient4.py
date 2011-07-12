@@ -11,10 +11,12 @@ class NewUI(ui.ui):
         
 class HgClient4:    
     
-    def __init__(self,hgbasedir,remoteUrl="",branchname=None, username=None):
+    def __init__(self,hgbasedir,remoteUrl="",branchname=None, username=None, cleandir=None):
         """
         @param base dir where local hgrepository will be stored
         @param remote url of hg repository, can be empty if local repo is created
+        @param cleandir: If True, files in that directory will be deleted before doing clone (if it wasn't an mercurial) if set to False,
+                         an exception will be raised if directory has files, if None, the user will be asked interactively.
         """
         self.remoteUrl=remoteUrl.strip()
         self.basedir=hgbasedir
@@ -37,14 +39,14 @@ class HgClient4:
             else:
                 #did not find the mercurial dir
                 if q.qshellconfig.interactive:
-                    response=q.gui.dialog.askYesNo("\nDid find a directory but there was no mercurial metadata inside.\n\tdir: %s\n\turl:%s\n\tIs it ok to remove all files from the target destination before cloning the repository?"\
-                                                   % (self.basedir,self.remoteUrl))
-                    if response:
-                        q.system.fs.removeDirTree(self.basedir)
-                        q.system.fs.createDir(self.basedir)
-                        self._clone()
-                    else:
-                        self._raise("Could not clone %s to %s, target dir was not empty" % (self.basedir,self.remoteUrl))
+                    if cleandir == None:
+                        cleandir = q.gui.dialog.askYesNo("\nDid find a directory but there was no mercurial metadata inside.\n\tdir: %s\n\turl:%s\n\tIs it ok to remove all files from the target destination before cloning the repository?"\
+                                                       % (self.basedir,self.remoteUrl))
+                        
+                if cleandir:
+                    q.system.fs.removeDirTree(self.basedir)
+                    q.system.fs.createDir(self.basedir)
+                    self._clone()
                 else:
                     self._raise("Could not clone %s to %s, target dir was not empty" % (self.basedir,self.remoteUrl))
                     
