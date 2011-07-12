@@ -157,6 +157,8 @@ function error(data)
 
 function init()
 {
+    //Hide the toolbox
+     $("#toolbar").css("visibility", "hidden")
     //Initalize appname combobox
     select = $('#appname');
     var applist = $.ajax({
