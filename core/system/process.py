@@ -1419,7 +1419,7 @@ class SystemProcess:
                 # For some awkward reason you need to include the stdin pipe, or you get an error deep inside
                 # the subprocess module if you use QRedirectStdOut in the calling script
                 # We do not use the stdin.
-                childprocess = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True, shell=useShell, env=os.environ)
+                childprocess = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=False, shell=useShell, env=os.environ)
                 output = ""; OUT_LINE = ""; ERR_LINE = ""
                 childRunning = True
 
