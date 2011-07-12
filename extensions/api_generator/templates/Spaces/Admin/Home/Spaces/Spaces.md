@@ -1,4 +1,6 @@
-
+<style>
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+</style>
 <script language='javascript'>
 $(document).ready(function(){
     
@@ -74,6 +76,12 @@ $(document).ready(function(){
         remotecall(options);
     };
     
+    var sortspaces = function(spaces, options){
+        var options = $.extend(options, {uri: LFW_CONFIG['uris']['sortSpaces'],
+                                        data: {"spaces": JSON.stringify(spaces)}});
+        remotecall(options);
+    };
+    
     var editspace = function(name, newname, options){
         var options = $.extend(options, {uri: LFW_CONFIG['uris']['updateSpace'],
                                         data: {name: name,
@@ -105,7 +113,8 @@ $(document).ready(function(){
                                 $.each(data, function(i, space){
                                     if ((space == "Admin") || (space == "Imported")) return;
                                     
-                                    tbody.append($("<tr>").append($("<td>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
+                                    tbody.append($('<tr class="ui-state-default">').append('<td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>')
+                                                          .append($("<td class='td_spacename'>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
                                                                 var space = $(this).data('space');
                                                                 $("#spaceform input").removeClass("ui-state-error").val(space);
@@ -199,6 +208,19 @@ $(document).ready(function(){
 
 
     render();
+    //Make spaces sortable
+    var tablebody = $( "#spaceslist tbody")
+    tablebody.sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            spaces = new Array()
+            tds = $(".td_spacename")
+            for (var i=0; i < tds.length; i++)
+                spaces[i] = tds[i].textContent
+            sortspaces(spaces, {error: $.alerterror});
+        }
+    });
+    $( "#spaceslist tbody").disableSelection();
 });
 
 </script>
@@ -229,6 +251,7 @@ $(document).ready(function(){
 <table id='spaceslist' style='width: 80%;'>
 <thead>
     <tr>
+        <th></th>
         <th style='width: 50%;'>Space</th>
         <th>Rename</th>
         <th>Delete</th>

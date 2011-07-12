@@ -292,6 +292,7 @@ LFW_CONFIG = {
         'createSpace': '/%(appname)s/appserver/rest/ui/portal/createSpace',
         'deleteSpace': '/%(appname)s/appserver/rest/ui/portal/deleteSpace',
         'updateSpace': '/%(appname)s/appserver/rest/ui/portal/updateSpace',
+        'sortSpaces': '/%(appname)s/appserver/rest/ui/portal/sortSpaces',
         'importSpace': '/%(appname)s/appserver/rest/ui/portal/importSpace',
         'exportSpace': '/%(appname)s/appserver/rest/ui/portal/exportSpace',
         'hgPushSpace': '/%(appname)s/appserver/rest/ui/portal/hgPushSpace',
