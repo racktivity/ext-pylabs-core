@@ -1,5 +1,6 @@
 from pylabs import q, p
 from actionservice import ActionService
+from alkira import Alkira
 
 class editor(ActionService):
     def list2jstree(self, appname, path, items, isdir=False):
@@ -95,7 +96,7 @@ class editor(ActionService):
         @return:                 list of files in the directory "dirname"
         @rtype:                  list
         """
-        alkira = q.clients.alkira.getClient("localhost", appname)
+        alkira = Alkira(p.api)
         dirname = id
         if not self.checkPath(appname) or not self.checkPath(dirname):
             raise ValueError("invalid characters in the application name or path (.. or /) were detected")
@@ -184,7 +185,7 @@ class editor(ActionService):
         
         q.system.fs.createDir(dest)
         q.system.fs.copyDirTree(source, dest)
-        alkira = q.clients.alkira.getClient("localhost", appname)
+        alkira = Alkira(p.api)
         spaceguid = alkira.getSpace("Imported").guid
         
         destlen = len(dest)
@@ -232,7 +233,7 @@ class editor(ActionService):
         if not dest:
             page = None
             conn = p.application.getOsisConnection(appname)
-            alkira = q.clients.alkira.getClient("localhost", appname)
+            alkira = Alkira(p.api)
             result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "/%'")
             samplepage = None
             for row in result:
@@ -282,7 +283,7 @@ class editor(ActionService):
         
         join = q.system.fs.joinPaths
         conn = p.application.getOsisConnection(appname)
-        alkira = q.clients.alkira.getClient("localhost", appname)
+        alkira = Alkira(p.api)
         result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "%/'")
         samplepage = None
         for row in result:
