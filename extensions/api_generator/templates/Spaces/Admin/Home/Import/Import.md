@@ -6,7 +6,7 @@
 <table>
     <tr>
         <td colspan=2>
-            <select id="appname" name="appname"></select>
+            <select id="appname" name="appname" style="display: none;"></select>
         </td>
     </tr>
     <tr>
@@ -42,14 +42,18 @@ function appChanged()
 
 //return currently selected application
 function getCurrentApp() {
-    return $("#appname").val();
+    if (LFW_CONFIG["development"])
+        return $("#appname").val()
+    else
+        return LFW_CONFIG["appname"]
 }
 
 //Load specific app's tree
 function loadTree(appname){
+    if (LFW_CONFIG["development"])
         $("#appname").val(appname)
-        tree = loadFileTree("#treediv", appname, ".")
-        tree.bind("select_node.jstree", nodeSelected);
+    tree = loadFileTree("#treediv", appname, ".")
+    tree.bind("select_node.jstree", nodeSelected);
 };
 
 function btnImportClicked()
@@ -78,15 +82,21 @@ function init()
 {
     //Initalize appname combobox
     select = $('#appname');
-    var applist = $.ajax({
-        url: "appserver/rest/ui/editor/listPyApps",
-        async: false}).responseText;
-    applist = $.parseJSON(applist)
+    if (LFW_CONFIG["development"]) {
+        var applist = $.ajax({
+            url: "appserver/rest/ui/editor/listPyApps",
+            async: false}).responseText;
+        applist = $.parseJSON(applist)
 
-    $.each(applist, function(index, app) { 
-      select.append($("<option></option>").text(app));
-    });
-    select.change(appChanged);
+        $.each(applist, function(index, app) { 
+          select.append($("<option></option>").text(app));
+        });
+        select.change(appChanged);
+        select.show()
+    }
+    else {
+        select.remove();
+    }
     //Initalize tree
     appChanged();
 }

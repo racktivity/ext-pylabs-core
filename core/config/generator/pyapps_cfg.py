@@ -303,6 +303,7 @@ LFW_CONFIG = {
         'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig'
     },
     'appname' : '%(appname)s',
+    'development'  : true,
     'oauthservice': '%(oauthservice_url)s'
 };
 '''

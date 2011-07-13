@@ -6,7 +6,7 @@
 <table>
     <tr>
         <td colspan=2>
-            <select id="appname" name="appname"></select>
+            <select id="appname" name="appname" style="display: none;"></select>
         </td>
     </tr>
     <tr>
@@ -77,13 +77,15 @@ function appChanged()
     $("#dirname").val("");
     //Reload tree
     loadTree(getCurrentApp());
-    //Reload applications
-    //reloadApps();
     return true;
 }
+
 //return currently selected application
 function getCurrentApp() {
-    return $("#appname").val();
+    if (LFW_CONFIG["development"])
+        return $("#appname").val()
+    else
+        return LFW_CONFIG["appname"]
 }
 
 function getContextMenu(node)
@@ -144,7 +146,8 @@ function loadTree(appname){
     //Clear the file view
     document.getElementById("filediv").innerHTML = "";
 
-    $("#appname").val(appname)
+    if (LFW_CONFIG["development"])
+        $("#appname").val(appname)
     tree = loadFileTree("#treediv", appname, "portal/spaces/Imported", getContextMenu);
     tree.bind("select_node.jstree", nodeSelected);
 };
@@ -161,15 +164,21 @@ function init()
      $("#toolbar").css("visibility", "hidden")
     //Initalize appname combobox
     select = $('#appname');
-    var applist = $.ajax({
-        url: "appserver/rest/ui/editor/listPyApps",
-        async: false}).responseText;
-    applist = $.parseJSON(applist)
+    if (LFW_CONFIG["development"]) {
+        var applist = $.ajax({
+            url: "appserver/rest/ui/editor/listPyApps",
+            async: false}).responseText;
+        applist = $.parseJSON(applist)
 
-    $.each(applist, function(index, app) { 
-      select.append($("<option></option>").text(app));
-    });
-    select.change(appChanged);
+        $.each(applist, function(index, app) { 
+          select.append($("<option></option>").text(app));
+        });
+        select.change(appChanged);
+        select.show();
+    }
+    else {
+        select.remove();
+    }
     //Initalize tree
     appChanged();
 }
