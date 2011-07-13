@@ -288,17 +288,17 @@ class PyAppsConfigGen:
         config_template = '''
 LFW_CONFIG = {
     'uris': {
-        'listSpaces': '/%(appname)s/appserver/rest/ui/portal/spaces',
+        'listSpaces': '/%(appname)s/appserver/rest/ui/portal/listSpaces',
         'completion': '/%(appname)s/appserver/rest/ui/portal/tags',
         'search': '/%(appname)s/appserver/rest/ui/portal/search',
         'tags': '/%(appname)s/appserver/rest/ui/portal/tags',
-        'title': '/%(appname)s/appserver/rest/ui/portal/pages',
-        'pages': '/%(appname)s/appserver/rest/ui/portal/page',
+        'title': '/%(appname)s/appserver/rest/ui/portal/listPages',
+        'pages': '/%(appname)s/appserver/rest/ui/portal/getPage',
         'breadcrumbs': '/%(appname)s/appserver/rest/ui/portal/breadcrumbs',
         'createPage': '/%(appname)s/appserver/rest/ui/portal/createPage',
         'updatePage': '/%(appname)s/appserver/rest/ui/portal/updatePage',
         'deletePage': '/%(appname)s/appserver/rest/ui/portal/deletePage',
-        'users': '/%(appname)s/appserver/rest/ui/portal/users',
+        'users': '/%(appname)s/appserver/rest/ui/portal/listUsers',
         'createUser': '/%(appname)s/appserver/rest/ui/portal/createUser',
         'updateUser': '/%(appname)s/appserver/rest/ui/portal/updateUser',
         'deleteUser': '/%(appname)s/appserver/rest/ui/portal/deleteUser',
@@ -310,7 +310,7 @@ LFW_CONFIG = {
         'exportSpace': '/%(appname)s/appserver/rest/ui/portal/exportSpace',
         'hgPushSpace': '/%(appname)s/appserver/rest/ui/portal/hgPushSpace',
         'hgPullSpace': '/%(appname)s/appserver/rest/ui/portal/hgPullSpace',
-        'space': '/%(appname)s/appserver/rest/ui/portal/space',
+        'space': '/%(appname)s/appserver/rest/ui/portal/getSpace',
         'macros': '/%(appname)s/js/macros/',
         'macroConfig': '/%(appname)s/appserver/rest/ui/portal/macroConfig',
         'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig'
