@@ -8,6 +8,7 @@ import oauth2 as oauth
 import urllib2
 import ast
 import time
+from datetime import datetime, timedelta
 
 basedir = os.path.join(q.dirs.pyAppsDir, p.api.appname)
 
@@ -36,6 +37,12 @@ class HelperServer(oauth.Server):
             return False
         return
 
+    def renewToken(self, tokenKey, token):
+        client = q.clients.arakoon.getClient(self.cluster_name)
+        validuntil = (datetime.now() +timedelta(hours=float(q.config.getConfig('dist_auth')['main']['lifespan']))).strftime("%s")
+        client.set(key=tokenKey, value=str({'validuntil': validuntil, 'tokensecret': token['tokensecret'], \
+            'groupguids': token['groupguids'] }))
+
 
 class portal(LFWService):
 
@@ -58,9 +65,16 @@ class portal(LFWService):
 
             #check validuntil
             validuntil = float(token_attributes['validuntil'])
-            if time.time() > validuntil:
+            now = time.time()
+            if now > validuntil:
                 q.logger.log("The token existing in the Arakoon store is expired", 4)
                 return False
+
+            #check if we need to renew
+            renewaltime = validuntil - timedelta(hours=float(q.config.getConfig('dist_auth')['main']['lifespan']) * 0.75).seconds
+            if now > renewaltime:
+                q.logger.log("Renewing the token in the Arakoon store", 4)
+                helperServer.renewToken(tokenkey, token_attributes)
 
             self._username = oAuthHeaders['oauth_consumer_key']
             helperServer.consumer = oauth.Consumer(oAuthHeaders['oauth_consumer_key'], '')
@@ -76,7 +90,7 @@ class portal(LFWService):
             ## </dirty hack>
             params = request._request.args
             q.logger.log(params)
-            
+
             ##TODO: Check why signing the request on the client side does not work
             #oauth_request = oauth.Request.from_request(request._request.method, http_url, headers=headers, parameters=params)
             ## <more dirty hack>
