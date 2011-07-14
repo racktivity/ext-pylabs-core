@@ -217,7 +217,12 @@ $(document).ready(function(){
             tds = $(".td_spacename")
             for (var i=0; i < tds.length; i++)
                 spaces[i] = tds[i].textContent
-            sortspaces(spaces, {error: $.alerterror});
+            sortspaces(spaces, {success: function(){
+                                                $.fillSpacesList({success: function(){
+                                                    $("#space").val("Admin");
+                                                }});
+                                            },
+                                error: $.alerterror});
         }
     });
     $( "#spaceslist tbody").disableSelection();
