@@ -196,10 +196,64 @@ class editor(ActionService):
             #should I store this file in alkira?
             if not filetype:
                 continue
-            alkira.createPage(spaceguid, join(projectname, filename), fullfilename, category='imported', parent="Home", filename=join(source, filename), contentIsFilePath=True, pagetype=filetype)
+            alkira.createPage(spaceguid, join(projectname, filename), fullfilename, category='imported', parent="Home", filename=source, contentIsFilePath=True, pagetype=filetype)
         
         return True
-
+    
+    def _guessExportDest(self, projectname):
+        page = None
+        alkira = Alkira(p.api)
+        con = p.api.model.ui
+        result = con.page.query("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "/%'")
+        samplepage = None
+        for row in result:
+            pagename = row["name"]
+            page = alkira.getPage("Imported", pagename)
+            if page.filename:
+                samplepage = page
+                break
+        if not samplepage:
+            raise Exception("Unable to determine destination")
+        
+        return samplepage.filename
+        
+        
+    @q.manage.applicationserver.expose
+    def exportFile(self, pagename, oldpagename=None, jobguid = "", executionparams = None):
+        if pagename == 'Home':
+            return
+        if not pagename.count('/'):
+            raise RuntimeError("Invalid pagename")
+        
+        projectname = pagename.split('/')[0]
+        alkira = Alkira(p.api)
+        page = alkira.getPage("Imported", pagename)
+        dest = page.filename
+        if not dest:
+            dest = self._guessExportDest(projectname)
+        
+        justname = lambda x: x.replace("%s/" % projectname, '', 1)
+        
+        j = q.system.fs.joinPaths
+        if oldpagename and oldpagename != pagename:
+            q.system.fs.removeFile(j(dest, justname(oldpagename)))
+        
+        q.system.fs.writeFile(j(dest, justname(pagename)), page.content)
+    
+    @q.manage.applicationserver.expose
+    def deleteFile(self, pagename, jobguid = "", executionparams = None):
+        if pagename == 'Home':
+            return
+        if not pagename.count('/'):
+            raise RuntimeError("Invalid pagename")
+        
+        projectname = pagename.split('/')[0]
+        alkira = Alkira(p.api)
+        dest = self._guessExportDest(projectname)
+        
+        justname = lambda x: x.replace("%s/" % projectname, '', 1)
+        q.system.fs.removeFile(q.system.fs.joinPaths(dest, justname(pagename)))
+        
     @q.manage.applicationserver.expose
     def exportProject(self, appname, projectname, dest = "", jobguid = "", executionparams = None):
         """
@@ -229,27 +283,10 @@ class editor(ActionService):
             raise ValueError("invalid characters in the application name, project name  or dest (.. or initial /) were detected")
         
         join = q.system.fs.joinPaths
+        
         #gussing the dest, this very bad and must be changed in the future
         if not dest:
-            page = None
-            conn = p.application.getOsisConnection(appname)
-            alkira = Alkira(p.api)
-            result = conn.runQuery("SELECT name FROM ui_page.ui_view_page_list where name like '" + projectname + "/%'")
-            samplepage = None
-            for row in result:
-                pagename = row["name"]
-                originalpagename = pagename[len(projectname) + 1:]
-                page = alkira.getPage("Imported", pagename)
-                if page.filename:
-                    #make sure the pagename match its filename
-                    if page.filename.endswith(originalpagename):
-                        samplepage = page
-                        break
-            if not page:
-                raise Exception("Unable to determine destination")
-            
-            dest = page.filename[:-len(originalpagename)]
-        #End of bad section
+            dest = self._guessExportDest(projectname)
         
         src = join(q.dirs.pyAppsDir, appname, "portal", "spaces", "Imported", projectname)
         q.system.fs.removeDirTree(dest)
