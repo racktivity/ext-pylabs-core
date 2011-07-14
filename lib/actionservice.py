@@ -41,11 +41,10 @@ class ActionService:
     _authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
     
     def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
-        #if not request.username or not request.password: return False
         q.logger.log("OAUTH HEADERS from ActionService.checkAuthentication %s" % str(request._request.requestHeaders))
-        if request._request.requestHeaders.hasHeader('Authorization'):
+        headers = self._getHeaders(request)
+        if headers.has_key('Authorization') and headers['Authorization'].find('OAuth realm="alkira"') >= 0 :
             helperServer = HelperServer()
-            headers = self._getHeaders(request)
             oAuthHeaders = self._getAuthHeaders(headers)
             tokenkey = oAuthHeaders['oauth_token']
             token_attributes = helperServer.getTokenAttributesFromStore(tokenkey)
@@ -60,22 +59,33 @@ class ActionService:
 
             #check validuntil
             validuntil = float(token_attributes['validuntil'])
-            if time.time() > validuntil:
+            now = time.time()
+            if now > validuntil:
                 q.logger.log("The token existing in the Arakoon store is expired", 4)
                 return False
+
+            #check if we need to renew
+            renewaltime = validuntil - timedelta(hours=float(q.config.getConfig('dist_auth')['main']['lifespan']) * 0.75).seconds
+            if now > renewaltime:
+                q.logger.log("Renewing the token in the Arakoon store", 4)
+                helperServer.renewToken(tokenkey, token_attributes)
 
             self._username = oAuthHeaders['oauth_consumer_key']
             helperServer.consumer = oauth.Consumer(oAuthHeaders['oauth_consumer_key'], '')
             helperServer.access_token = oauth.Token(tokenkey, tokensecret)
-            http_url = "http://alkira"
+            ## <dirty hack> because of reverse proxy in client
+            path = request._request.uri
+
+            # Take the substring of path, starting from the first '/' (ignoring the first character)
+            index = path.find("/", 1)
+            if index > 0:
+                path = path[index:]
+            http_url = "http://alkira%s" % (path)
+            ## </dirty hack>
             params = request._request.args
             q.logger.log(params)
-            ##TODO: Check why signing the request on the client side does not work
-            #oauth_request = oauth.Request.from_request(request._request.method, http_url, headers=headers, parameters=params)
-            ## <more dirty hack>
-            oauth_request = oauth.Request.from_consumer_and_token(helperServer.consumer, token=helperServer.access_token, http_method=request._request.method, http_url=http_url, parameters=params)
-            oauth.Request.sign_request(oauth_request, oauth.SignatureMethod_HMAC_SHA1(), helperServer.consumer, helperServer.access_token)
-            ## </more dirty hack>
+
+            oauth_request = oauth.Request.from_request(request._request.method, http_url, headers=headers, parameters=params)
             return helperServer.check_access_token(oauth_request)
 
         tags = ('authenticate',)
