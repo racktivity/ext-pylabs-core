@@ -213,7 +213,8 @@ class RESTMethod(Resource):
         try:
             d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
         except AuthenticationError, e:
-            request.setResponseCode(http.FORBIDDEN)
+            if request.code == http.OK:
+                request.setResponseCode(http.UNAUTHORIZED)
             request.setHeader('Content-Type', contenttype)
             return JSONException(e.MESSAGE, e).dumps()
         except (NoSuchService, NoSuchMethod), e:
