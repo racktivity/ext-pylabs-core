@@ -2,6 +2,9 @@ from pylabs import q, p
 from actionservice import ActionService
 from alkira import Alkira
 
+TASKLETS = ('impl/ui/form',
+            'impl/ui/wizard')
+            
 class editor(ActionService):
     def list2jstree(self, appname, path, items, isdir=False):
         result = list()
@@ -238,8 +241,14 @@ class editor(ActionService):
         if oldpagename and oldpagename != pagename:
             q.system.fs.removeFile(j(dest, justname(oldpagename)))
         
-        q.system.fs.writeFile(j(dest, justname(pagename)), page.content)
-    
+        filepath = j(dest, justname(pagename))
+        q.system.fs.writeFile(filepath, page.content)
+        
+        for tdir in TASKLETS:
+            tdir = j(q.dirs.pyAppsDir, p.api.appname, tdir)
+            if filepath.startswith(tdir):
+                q.system.fs.createEmptyFile(j(tdir, "tasklets_updated"))
+                
     @q.manage.applicationserver.expose
     def deleteFile(self, pagename, jobguid = "", executionparams = None):
         if pagename == 'Home':
