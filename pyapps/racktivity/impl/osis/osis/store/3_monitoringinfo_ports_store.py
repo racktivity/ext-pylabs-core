@@ -1,7 +1,8 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_ports' % (params['domain'], params['rootobjecttype'])
     rootobject = params['rootobject']
     fields = ('sequence', 'status', 'frequency', 'energyactive', 'energyapparent', 'power', 'powermax', 'power5minuteaverages', 'voltage', 
               'voltagemax', 'voltage5minuteaverages', 'voltageaverage60minutes', 'current', 'currentmax', 'current5minuteaverages', 'currentaverage60minutes', 
@@ -12,7 +13,7 @@ def main(q, i, p, params, tags):
         for field in fields:
             values[field] = getattr(port, field)
         records.append(values)
-    osis.viewSave('monitoringinfo', 'view_monitoringinfo_ports', rootobject.guid, rootobject.version, records)
+    osis.viewSave(params['domain'], 'monitoringinfo', viewname, rootobject.guid, rootobject.version, records)
 
 def match(q, i, params, tags):
     return params['rootobjecttype'] == 'monitoringinfo'

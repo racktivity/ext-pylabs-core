@@ -1,9 +1,10 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
-    osis.viewSave('autodiscoverysnmpmap', 'view_autodiscoverysnmpmap_list',
+    osis.viewSave(params['domain'], 'autodiscoverysnmpmap', viewname,
                   root.guid,
                   root.version,
                   {'manufacturer':root.manufacturer,

@@ -1,9 +1,10 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
-    osis.viewSave('datacenter', 'view_datacenter_list', root.guid, root.version, {'name':root.name,
+    osis.viewSave(params['domain'], 'datacenter', viewname, root.guid, root.version, {'name':root.name,
                                                                                   'locationguid':root.locationguid,
                                                                                   'description':root.description or "",
                                                                                   'clouduserguid':root.clouduserguid,
