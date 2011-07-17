@@ -1,4 +1,4 @@
-from pymonkey import q,i
+from pylabs import q,i
 
 def isAuthorized(login, drpobj, method):
     #get the user groups

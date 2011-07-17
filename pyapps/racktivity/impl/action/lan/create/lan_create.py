@@ -30,7 +30,7 @@ def exists(view, obj, key, value):
 def main(q, i, params, tags):
     logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
-    from pymonkey.pmtypes import IPv4Address, IPv4Range
+    from pylabs.pmtypes import IPv4Address, IPv4Range
 
     #Check if another datacenter with the same name already exist
     if exists('view_lan_list', q.drp.lan, "name", params['name']):

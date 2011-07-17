@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 def exists(view, obj, key, value):
     """

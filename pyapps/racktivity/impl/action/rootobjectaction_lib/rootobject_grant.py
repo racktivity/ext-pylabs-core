@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 from rootobjectaction_lib import rootobjectaction_find, rootobjectaction_list
  
 def grantUser(rootobjectguid, rootobjecttype, cloudusername):

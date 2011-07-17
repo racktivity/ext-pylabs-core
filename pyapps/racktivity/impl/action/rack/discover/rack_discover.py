@@ -2,7 +2,7 @@ __author__ = 'aserver'
 __tags__ = 'rack', 'discover'
 __priority__= 3
 
-from pymonkey.pmtypes import IPv4Range, IPv4Address
+from pylabs.pmtypes import IPv4Range, IPv4Address
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from racktivity_mibs import racktivity_mib
 import pysnmp.proto

@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 def acl_list():
     filterObj = q.drp.acl.getFilterObject()

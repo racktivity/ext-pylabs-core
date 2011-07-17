@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 import rootobjectaction_find
 
 GENERIC_OBJECT_NOT_FOUND = "RACTKVITIY-MON-GENERIC-0119"

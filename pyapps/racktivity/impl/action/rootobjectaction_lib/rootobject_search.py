@@ -1,5 +1,5 @@
 from rootobjectaction_lib import rootobject_tree
-from pymonkey import q
+from pylabs import q
 
 def getGuids(q, types, names, tags):
     #SELECT X.root,X.guid FROM  (SELECT 'datacenter' AS root,guid FROM datacenter.view_datacenter_list UNION SELECT 'room' AS root,guid FROM room.view_room_list) as X

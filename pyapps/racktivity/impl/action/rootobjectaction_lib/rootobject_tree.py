@@ -1,4 +1,4 @@
-from pymonkey import q
+from pylabs import q
 
 def _getChildren(result, depth = "INF"):
     result["children"] = q.drp.racktivity.query("select guid, name, type, tags from parenttree where parentguid = '%s'"% result["guid"])
