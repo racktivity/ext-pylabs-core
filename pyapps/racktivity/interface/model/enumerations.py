@@ -1,5 +1,5 @@
-from pymonkey.baseclasses.BaseEnumeration import BaseEnumeration
-from pymonkey.baseclasses.BaseEnumeration import EnumerationWithValue
+from pylabs.baseclasses.BaseEnumeration import BaseEnumeration
+from pylabs.baseclasses.BaseEnumeration import EnumerationWithValue
 
 # @doc None
 class applicationstatustype(BaseEnumeration):
