@@ -31,20 +31,10 @@ class PyAppsConfigGen:
         self.config = None
         self.components = None
         self._load_config()
-        self._get_authentication_serviceurl()
 
     def _load_config(self):
         self.config = q.config.getConfig('pyapps').get(self.appName)
         self.components = self.list_needed_components()
-
-    def _get_authentication_serviceurl(self):
-        oauthservice_cfg = q.config.getConfig('dist_auth')
-        if oauthservice_cfg:
-            url = "http://[HOST]:%s%s" % (oauthservice_cfg['main']['port'], oauthservice_cfg['main']['access_path'])
-        else:
-            url = "http://[HOST]:6543/ACCESS_TOKEN"
-
-        self.oauthservice_url = url
 
     def pyapps_configuration(self):
         pyappsCfg = q.config.getInifile('pyapps')
@@ -313,18 +303,16 @@ LFW_CONFIG = {
         'space': '/%(appname)s/appserver/rest/ui/portal/getSpace',
         'macros': '/%(appname)s/js/macros/',
         'macroConfig': '/%(appname)s/appserver/rest/ui/portal/macroConfig',
-        'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig'
+        'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig',
+        'oauthservice': '/%(appname)s/oauth/ACCESS_TOKEN'
     },
     'appname' : '%(appname)s',
-    'development'  : true,
-    'oauthservice': '%(oauthservice_url)s'
+    'development'  : true
 };
 '''
 
         config = config_template % {
-            'appname': self.appName,
-            'oauthservice_url' : self.oauthservice_url
-        }
+            'appname': self.appName}
 
         config_dir = os.path.join(root, 'js')
         config_file = os.path.join(config_dir, 'config.js')
