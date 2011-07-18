@@ -1,7 +1,8 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_services' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
     records = []
     for service in root.services:
@@ -53,7 +54,7 @@ def main(q, i, p, params, tags):
             fields['service2resourcegroupguid'] = service2resourcegroup.resourcegroupguid
             records.append(fields)
 
-    osis.viewSave('racktivity_application', 'view_racktivity_application_services', root.guid, root.version, records)
+    osis.viewSave(params['domain'], 'racktivity_application', viewname, root.guid, root.version, records)
 
 def match(q, i, params, tags):
     return params['rootobjecttype'] == 'racktivity_application'

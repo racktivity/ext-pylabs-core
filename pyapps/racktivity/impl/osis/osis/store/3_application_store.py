@@ -1,13 +1,14 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
     parentapps = root.parentapplicationguids
     parentstr = ""
     if parentapps:
         parentstr = ",".join(parentapps)
-    osis.viewSave('racktivity_application', 'view_racktivity_application_list', root.guid, root.version, {'name'                  :root.name, \
+    osis.viewSave(params['domain'], 'racktivity_application', viewname, root.guid, root.version, {'name'                  :root.name, \
                                                                                     'description'           :root.description, \
                                                                                     'status'                :str(root.status), \
                                                                                     'template'              :root.template, \

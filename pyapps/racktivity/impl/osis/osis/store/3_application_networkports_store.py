@@ -1,7 +1,8 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_networkports' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
     records = [] 
     for service in root.networkservices:
@@ -22,7 +23,7 @@ def main(q, i, p, params, tags):
                 fields['servicemonitor']= servicemonitor
                 records.append(fields)        
     
-    osis.viewSave('racktivity_application', 'view_racktivity_application_networkports', root.guid, root.version, records)
+    osis.viewSave(params['domain'], 'racktivity_application', viewname, root.guid, root.version, records)
                 
     
 def match(q, i, params, tags):

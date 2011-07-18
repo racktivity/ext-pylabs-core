@@ -1,7 +1,8 @@
 __author__ = 'Incubaid'
 
 def main(q, i, p, params, tags):
-    osis = OsisDB().getConnection('main')
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     rootobject = params['rootobject']
     columns = ('name', 'id', 'template', 'meteringdevicetype', 'parentmeteringdeviceguid', 'rackguid',
                'clouduserguid', 'positionx', 'positiony', 'positionz', 'height',
@@ -10,7 +11,7 @@ def main(q, i, p, params, tags):
     for col in columns:
         values[col] = getattr(rootobject, col)
     values['cloudusergroupactions'] = ','.join(rootobject.acl.cloudusergroupactions.keys())
-    osis.viewSave('meteringdevice', 'view_meteringdevice_list', rootobject.guid, rootobject.version, values)
+    osis.viewSave(params['domain'], 'meteringdevice', viewname, rootobject.guid, rootobject.version, values)
 
     q.logger.log('metering device rootobject saved', 3)
 
