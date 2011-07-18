@@ -264,7 +264,7 @@ class PyAppsConfigGen:
             site = vhost.addSite(self.appName, '/%s' % self.appName)
             site.addOption('root', root)
             site.addOption('try_files', '$uri $uri/ @lfw')
-            site.addOption('rewrite', '^/%s$ /%s/ permanent' % \
+            site.addOption('rewrite', '^/%s$ http://$host/%s/ permanent' % \
                 (self.appName, self.appName))
             site.addOption('rewrite', '^/%s/$ /index.html break' % \
                 self.appName)
