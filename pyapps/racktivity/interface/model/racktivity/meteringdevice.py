@@ -1,5 +1,5 @@
-from enumerations import *
 import pymodel as model
+from enumerations import *
 
  # @doc account for managing access to the device       
 class account(model.Model):
