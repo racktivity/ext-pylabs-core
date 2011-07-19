@@ -189,7 +189,7 @@ class configuration(model.Model):
 
 from acl import acl
 
-class racktivity_application(model.RootObjectModel):
+class application(model.RootObjectModel):
 
     #@doc application name, is free text defined in template e.g. kvm, virtualboxhypervisor, xenhypervisor, sshserver, backupserver, ...
     name = model.String(thrift_id=1)

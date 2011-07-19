@@ -8,8 +8,7 @@ def main(q, i, params, tags):
     rootobject = 'racktivity'
     domain = "racktivity"
     appname = params['appname']
-    #use "application" instead of "racktivity_application" because the name becomes too long
-    view_name = '%s_view_%s_list' % (domain, "application")
+    view_name = '%s_view_%s_list' % (domain, rootobject)
     connection = OsisDB().getConnection(appname)
     if not connection.viewExists(domain, rootobject, view_name):
         view = connection.viewCreate(domain, rootobject, view_name)

@@ -6,4 +6,4 @@ def main(q, i, p, params, tags):
     osis.viewDelete(params['domain'], params['rootobjecttype'], viewname, params['rootobjectguid'])
 
 def match(q, i, params, tags):
-    return params['rootobjecttype'] == 'racktivity_application'
+    return params['rootobjecttype'] == 'application'
