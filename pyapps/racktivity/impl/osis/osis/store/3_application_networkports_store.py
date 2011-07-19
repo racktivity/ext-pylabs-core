@@ -23,8 +23,8 @@ def main(q, i, p, params, tags):
                 fields['servicemonitor']= servicemonitor
                 records.append(fields)        
     
-    osis.viewSave(params['domain'], 'racktivity_application', viewname, root.guid, root.version, records)
+    osis.viewSave(params['domain'], 'application', viewname, root.guid, root.version, records)
                 
     
 def match(q, i, params, tags):
-    return params['rootobjecttype'] == 'racktivity_application'
+    return params['rootobjecttype'] == 'application'

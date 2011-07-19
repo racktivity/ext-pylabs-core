@@ -8,7 +8,7 @@ def main(q, i, p, params, tags):
     parentstr = ""
     if parentapps:
         parentstr = ",".join(parentapps)
-    osis.viewSave(params['domain'], 'racktivity_application', viewname, root.guid, root.version, {'name'                  :root.name, \
+    osis.viewSave(params['domain'], 'application', viewname, root.guid, root.version, {'name'                  :root.name, \
                                                                                     'description'           :root.description, \
                                                                                     'status'                :str(root.status), \
                                                                                     'template'              :root.template, \
@@ -22,4 +22,4 @@ def main(q, i, p, params, tags):
                                                                                     'tags'                   :root.tags})
     
 def match(q, i, params, tags):
-    return params['rootobjecttype'] == 'racktivity_application'
+    return params['rootobjecttype'] == 'application'
