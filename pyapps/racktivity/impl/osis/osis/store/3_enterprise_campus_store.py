@@ -4,7 +4,6 @@ def main(q, i, p, params, tags):
     osis = p.application.getOsisConnection(p.api.appname)
     viewname = '%s_view_%s_campus' % (params['domain'], params['rootobjecttype'])
     rootobject = params['rootobject']
-    viewname = 'view_enterprise_campus'
     records = []
     for campusguid in rootobject.campuses:
         records.append({'campus': campusguid})

@@ -4,7 +4,6 @@ def main(q, i, p, params, tags):
     osis = p.application.getOsisConnection(p.api.appname)
     viewname = '%s_view_%s_thresholds' % (params['domain'], params['rootobjecttype'])
     rootobject = params['rootobject']
-    viewname = 'view_meteringdevice_thresholds'
     records = []
     for poweroutput in rootobject.poweroutputs:
         for thresholdguid in poweroutput.thresholdguids:

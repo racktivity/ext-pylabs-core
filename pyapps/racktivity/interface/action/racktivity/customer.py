@@ -1,4 +1,4 @@
-class ro_customer:
+class customer:
     """
     root object actions
     these actions do modify the DRP and call the actor actions to do the work in the reality
