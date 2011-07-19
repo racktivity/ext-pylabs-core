@@ -201,7 +201,7 @@ def factory(providername, **params):
 CONFIG_TYPE = "storelib"
 
 def cfgfactory():
-    from pymonkey import q
+    from pylabs import q
     config = q.config.getConfig(CONFIG_TYPE)
     if 'main' not in config:
         raise RuntimeError("Failed to start the store service, no main section in %s.cfg" % CONFIG_TYPE)
