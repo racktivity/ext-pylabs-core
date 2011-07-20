@@ -15,3 +15,5 @@
 [[include:space=CodeExamples,name=pagetree]][[/include]]
 [[include:space=alkiradocs,name=pagetree]][[/include]]
 [[include:space=Glossary,name=pagetree]][[/include]]
+
+serviceupandrunning
