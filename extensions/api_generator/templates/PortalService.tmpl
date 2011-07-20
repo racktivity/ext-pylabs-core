@@ -18,6 +18,7 @@ class portal(LFWService):
         params['methodname'] = methodname
         params['args'] = args
         params['kwargs'] = kwargs
+        params['result'] = True
         _authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))
         _authenticate.execute(params, tags=tags)
         return params.get('result', False)
@@ -32,7 +33,7 @@ class portal(LFWService):
         params['methodname'] = methodname
         params['args'] = args
         params['kwargs'] = kwargs
+        params['result'] = True
         _authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
         _authorize.execute(params, tags=tags)
-        params['result'] = True
         return params.get('result', False)
