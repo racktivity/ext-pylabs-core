@@ -75,7 +75,7 @@ $(document).ready(function(){
                                 console.log(data);
                                 $.each(data, function(i, user){
                                     tbody.append($("<tr>").append($("<td>").text(user))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('Change Password').click(function() {
+                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('change password').click(function() {
 
                                                                 var user = $(this).data('user');
                                                                 $("#userform input").removeClass("ui-state-error").val('');
