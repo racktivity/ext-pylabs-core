@@ -13,7 +13,8 @@ class editor(ActionService):
             if dirfullname.startswith("./"):
                 dirfullname = dirfullname[2:]
             data = dict()
-            data["state"] = "closed" if isdir else "leaf"
+            closed = isdir and bool(q.system.fs.listDirsInDir(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, dirfullname) , dirNameOnly=True))
+            data["state"] = "closed" if closed else "leaf"
             data["data"] = {"children": [],
                             "title": item,
                             "attr":{"href": "#"}
