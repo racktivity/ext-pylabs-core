@@ -5,7 +5,7 @@ __priority__= 3
 from osis.store.OsisDB import OsisDB
 
 def main(q, i, params, tags):
-    rootobject = 'application'
+    rootobject = 'pod'
     domain = "racktivity"
     appname = params['appname']
     view_name = '%s_view_%s_list' % (domain, rootobject)
