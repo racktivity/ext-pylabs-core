@@ -16,3 +16,4 @@ PyLabs is the ideal framework for easy datacenter automation and for rapid appli
 Browse through the documentation by selecting a space from the drop-down list above or via the Table of Contents on the left.
 
 
+<div id="hideme"> serviceupandrunning </div>
