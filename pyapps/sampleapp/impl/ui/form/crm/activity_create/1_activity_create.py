@@ -59,6 +59,7 @@ def getPriority(api):
 
 
 def main(q, i, p, params, tags):
+    q.logger.log("Creating activity wizard  for lead "+params['leadguid'],level=10)
     type = getType(p.api)
     status= getStatus(p.api)
     priority = getPriority(p.api)
@@ -101,9 +102,9 @@ def main(q, i, p, params, tags):
                             values = customers,
                             selectedValue = 0)
     
-    tab_general.addDropDown(name = 'lead',
+    tab_general.addText(name = 'lead',
                         text = TAB_GENERAL_LEAD,
-                        values = leads)
+                        value = params['leadguid'])
     
     
     tab_general.addDateTime(name = 'starttime',
