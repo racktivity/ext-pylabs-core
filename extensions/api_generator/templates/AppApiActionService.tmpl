@@ -16,10 +16,13 @@ class ${className}(ActionService):
         o = result
         result = {}
         import base64
-        from pymodel.serializers import ThriftSerializer
-        serialized_result = o.serialize(ThriftSerializer)
-        encoded_result = base64.encodestring(serialized_result)
-        result['result'] = encoded_result
+        import pymodel
+        if issubclass(o.__class__, pymodel.Model):
+            serialized_result = o.serialize(pymodel.serializers.ThriftSerializer)
+            encoded_result = base64.encodestring(serialized_result)
+            result['result'] = encoded_result
+        else:
+            result['result'] = o
         return result
 #else
         return result
