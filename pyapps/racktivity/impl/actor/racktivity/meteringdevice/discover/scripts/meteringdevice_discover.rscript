@@ -1,0 +1,4 @@
+
+params['result'] = q.cmdtools.autodiscoveryagent.discover(params['ipaddress'],
+                                                          params['port'],
+                                                          params['communitystring'])

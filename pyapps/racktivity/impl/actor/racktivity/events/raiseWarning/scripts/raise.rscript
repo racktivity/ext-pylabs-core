@@ -1,0 +1,9 @@
+
+try:
+    q.racktivity.eventhandler.raiseWarning(message=params['message'],
+                                            messageprivate=params['messageprivate'],
+                                            typeid=params['typeid'],
+                                            tags=params['tags'],
+                                            escalate=params['escalate'])
+except Exception, e:
+    params['result'] = e
