@@ -43,6 +43,9 @@ def getTypeConverter(pymodelType):
     typeMapping['Integer'] = 'int'
     typeMapping['GUID'] = 'str'
     typeMapping['Enumeration'] = 'str'
+    typeMapping['Dict'] = 'eval'
+    typeMapping['List'] = 'eval'
+    
     return typeMapping[pymodelType]
     
 
@@ -57,6 +60,9 @@ def getUIType(pymodelType):
     typeMapping['Integer'] = 'Integer'
     typeMapping['GUID'] = 'Text'
     typeMapping['Enumeration'] = 'Choice'
+    typeMapping['Dict'] = 'Text'
+    typeMapping['List'] = 'Text'
+    
     return typeMapping[pymodelType]
     
 
@@ -70,6 +76,9 @@ def getOsisType(pymodelType):
     typeMapping['Integer'] = 'INTEGER'
     typeMapping['GUID'] = 'UUID'
     typeMapping['Enumeration'] = 'STRING'
+    typeMapping['Dict'] = 'STRING'
+    typeMapping['List'] = 'STRING'
+    
     return typeMapping[pymodelType]
     
     #these types needs to review their mapping , is that possble to get these types in the model specs?                                                             
@@ -317,11 +326,11 @@ class CloudApiGenerator:
         
         actionsList = []
         #generating view files 
-        actionsList.append( ['ModelView.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "setup", "osis", "%s_%s_view.py"% (params['domain'],params['rootobject']))])
+        actionsList.append( ['ModelView.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "setup", "osis", "%s_view.py"% params['rootobject'])])
         
         #_generateOsisStoreDeleteCode
-        actionsList.append( ['ModelStore.tmpl',q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "osis", "osis" , "store", "3_%s_%s_store.py"% (params['domain'],params['rootobject']))])
-        actionsList.append( ['ModelDelete.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl" , "osis", "osis" , "delete", "1_%s_%s_delete.py"%(params['domain'],params['rootobject']))])
+        actionsList.append( ['ModelStore.tmpl',q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "osis", "osis" , "store", "3_%s_store.py"% params['rootobject'])])
+        actionsList.append( ['ModelDelete.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl" , "osis", "osis" , "delete", "1_%s_delete.py"% params['rootobject'])])
         
         #genarting action files 
         actionsList.append( ['ModelCreateAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "action" , params["domain"], params["rootobject"], "create",  "1_%s_create.py"% params['rootobject'])])
