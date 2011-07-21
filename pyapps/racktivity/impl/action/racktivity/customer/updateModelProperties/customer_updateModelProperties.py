@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'customer', 'updateModelProperties'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating customer properties in the model', 3)
-    customer = q.drp.customer.get(params['customerguid'])
+    customer = p.api.model.racktivity.customer.get(params['customerguid'])
     
     paramKeys = ('name','description','address','city','country',
                  'retentionpolicyguid', 'tags')
@@ -17,8 +16,8 @@ def main(q, i, params, tags):
             setattr(customer, paramKey, params[paramKey])
             changed = True
     if changed:
-        logger.log_tasklet(__tags__, params, paramKeys)
-        q.drp.customer.save(customer)
+        #logger.log_tasklet(__tags__, params, paramKeys)
+        p.api.model.racktivity.customer.save(customer)
     
     params['result'] = {'returncode':True, 'customerguid': customer.guid}
 

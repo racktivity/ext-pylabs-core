@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'discoverIpAddress'
 from rootobjectaction_lib import rootobjectaction_find
 from rootobjectaction_lib import events
 
@@ -7,13 +6,13 @@ def getAgentGuid():
     """
     Gets the agent guid
     """
-    matches = rootobjectaction_find.racktivity_application_find(name='racktivity_agent', istemplate=None)
+    matches = rootobjectaction_find.application_find(name='racktivity_agent', istemplate=None)
     if not matches:
         events.raiseError("No agent found", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0007', tags='', escalate=False)
 
     return matches[0]
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     
     agentguid = getAgentGuid()

@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'listThresholdsOnPowerPort'
 from rootobjectaction_lib import events
 
 def getPowerPort(meteringdevice, label):
@@ -10,9 +9,9 @@ def getPowerPort(meteringdevice, label):
             break
     return returnvalue
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    meteringdevice = q.drp.meteringdevice.get(params['meteringdeviceguid'])
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(params['meteringdeviceguid'])
     label = params['powerportlabel']
     powerport = getPowerPort(meteringdevice, label)
     if not powerport:

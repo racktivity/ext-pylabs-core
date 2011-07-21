@@ -1,20 +1,19 @@
 __author__ = 'racktivity'
-__tags__ = 'monitoringinfo', 'create'
 from logger import logger
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params)
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
      
     fields = ('monitoringdeviceguid', 'portmonitoringlist', 'sensormonitoringlist')
-    monitoringinfo = q.drp.monitoringinfo.new()
+    monitoringinfo = p.api.model.racktivity.monitoringinfo.new()
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(monitoringinfo, key, value)
-    q.drp.monitoringinfo.save(monitoringinfo)
+    p.api.model.racktivity.monitoringinfo.save(monitoringinfo)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(monitoringinfo.guid, 'monitoringinfo', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(monitoringinfo.guid, 'monitoringinfo', params['request']['username'])
 
     params['result'] = monitoringinfo.guid
 

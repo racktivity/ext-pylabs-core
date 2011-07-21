@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'getCo2UsageData'
 
 from rootobjectaction_lib import rootobjectaction_find
 from rootobjectaction_lib import events
@@ -25,10 +24,10 @@ def getFeed(powerinputs):
 
     return feedguids.pop()
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
     meteringdeviceguid = params['meteringdeviceguid']
-    meteringdevice = q.drp.meteringdevice.get(meteringdeviceguid)
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(meteringdeviceguid)
     
     powerinputs = list()
     for input in meteringdevice.powerinputs:
@@ -36,9 +35,9 @@ def main(q, i, params, tags):
             powerinputs.append(input)
     
     feedguid = getFeed(powerinputs)
-    feed = q.drp.feed.get(feedguid)
+    feed = p.api.model.racktivity.feed.get(feedguid)
     
-    devicedata = q.actions.rootobject.meteringdevice.getCurrentDeviceData(meteringdeviceguid, "all", request = params["request"])['result']['value']
+    devicedata = p.api.action.racktivity.meteringdevice.getCurrentDeviceData(meteringdeviceguid, "all", request = params["request"])['result']['value']
     
     co2emission = CO2_MAP[str(feed.productiontype)]
     portsdata = devicedata['Ports']

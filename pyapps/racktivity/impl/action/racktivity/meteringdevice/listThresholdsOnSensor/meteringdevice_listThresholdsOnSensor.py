@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'listThresholdsOnSensor'
 from rootobjectaction_lib import events
 
 def getSensor(meteringdevice, label):
@@ -10,9 +9,9 @@ def getSensor(meteringdevice, label):
             break
     return toreturn
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    meteringdevice = q.drp.meteringdevice.get(params['meteringdeviceguid'])
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(params['meteringdeviceguid'])
     label = params['sensorlabel']
     sensor = getSensor(meteringdevice, label)
     if not sensor:

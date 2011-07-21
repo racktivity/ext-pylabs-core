@@ -1,11 +1,10 @@
 __author__ = 'aserver'
-__tags__ = 'rack', 'discover'
 __priority__= 3
 
-from pylabs.pmtypes import IPv4Range, IPv4Address
-from pysnmp.entity.rfc3413.oneliner import cmdgen
-from racktivity_mibs import racktivity_mib
-import pysnmp.proto
+#from pylabs.pmtypes import IPv4Range, IPv4Address
+#from pysnmp.entity.rfc3413.oneliner import cmdgen
+#from racktivity_mibs import racktivity_mib
+#import pysnmp.proto
 
 
 class snmpModule(object):
@@ -76,11 +75,11 @@ class snmpModule(object):
         q = self.q
         q.logger.log("Discovery: getting info of device %s with id %s"%(address, sysobjectid))
         #Do I have info for this device?
-        guids = q.actions.rootobject.autodiscoverysnmpmap.find(sysobjectid = str(sysobjectid))["result"]["guidlist"]
+        guids = p.api.action.racktivity.autodiscoverysnmpmap.find(sysobjectid = str(sysobjectid))["result"]["guidlist"]
         if not guids:
             q.logger.log("Discovery: Device with sysobjectid %s is not supported"%sysobjectid)
             return None
-        snmpInfo = q.actions.rootobject.autodiscoverysnmpmap.getObject(guids[0])
+        snmpInfo = p.api.action.racktivity.autodiscoverysnmpmap.getObject(guids[0])
         oids = snmpInfo.oidmapping
         
         #fill predefined/default info
@@ -101,12 +100,12 @@ class snmpModule(object):
 
 
 def configureMD(q, address, data, replace, request):
-    ipguids = q.actions.rootobject.ipaddress.find(address=address)['result']['guidlist']
+    ipguids = p.api.action.racktivity.ipaddress.find(address=address)['result']['guidlist']
     if ipguids:
         if replace:
-            mdguids = q.actions.rootobject.meteringdevice.find(ipaddressguid = ipguids[0])["result"]["guidlist"]
+            mdguids = p.api.action.racktivity.meteringdevice.find(ipaddressguid = ipguids[0])["result"]["guidlist"]
             for guid in mdguids:
-                q.actions.rootobject.meteringdevice.delete(guid, request = request)
+                p.api.action.racktivity.meteringdevice.delete(guid, request = request)
         else:
             q.logger.log("autodiscovery: IP address already used, skipping ..")
             return
@@ -114,10 +113,10 @@ def configureMD(q, address, data, replace, request):
     productName = data["product"]
     rackguid = data["rackguid"]
     port = data["port"]
-    ipaddressguid = q.actions.rootobject.ipaddress.create(name=address, address=address, request = request)['result']['ipaddressguid']
+    ipaddressguid = p.api.action.racktivity.ipaddress.create(name=address, address=address, request = request)['result']['ipaddressguid']
 
     #model master module.
-    masterguid = q.actions.rootobject.meteringdevice.create(name="%s-%s" % (productName, address),
+    masterguid = p.api.action.racktivity.meteringdevice.create(name="%s-%s" % (productName, address),
                                    id='M1',
                                    meteringdevicetype=data["type"],
                                    template=False,
@@ -129,7 +128,7 @@ def configureMD(q, address, data, replace, request):
                                    request = request,
                                    )['result']['meteringdeviceguid']
     #model power module.
-    q.actions.rootobject.meteringdevice.create(name="%s-%s-P1" % (productName, address),
+    p.api.action.racktivity.meteringdevice.create(name="%s-%s-P1" % (productName, address),
                                    id='P1',
                                    meteringdevicetype=data["type"],
                                    template=False,
@@ -141,7 +140,7 @@ def configureMD(q, address, data, replace, request):
                                    )
     
     #model temperature module.
-    q.actions.rootobject.meteringdevice.create(name="%s-%s-T1" % (productName, address),
+    p.api.action.racktivity.meteringdevice.create(name="%s-%s-T1" % (productName, address),
                                    id='T1',
                                    meteringdevicetype=data["type"],
                                    template=False,
@@ -152,7 +151,7 @@ def configureMD(q, address, data, replace, request):
                                    request = request
                                    )
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     ips = params["ipaddresslist"]
     rackguid = params["rackguid"]
     port = params["port"]

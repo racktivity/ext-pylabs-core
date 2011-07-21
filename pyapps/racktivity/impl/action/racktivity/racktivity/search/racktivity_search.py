@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'racktivity', 'search'
 
 from rootobjectaction_lib import rootobjectaction_find
 
@@ -10,7 +9,7 @@ rootobjectmap = {'datacenter': rootobjectaction_find.datacenter_find,
                  'device': rootobjectaction_find.device_find}
 
 def getData(q, rootobjecttype, guids):
-    objtype = getattr(q.drp, rootobjecttype)
+    objtype = getattr(p.api.model.racktivity, rootobjecttype)
     
     for guid in guids:
         o = objtype.get(guid)
@@ -37,7 +36,7 @@ def search(q, rootobjecttype, **searchkeys):
                 yield obj
             
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
     
     rootobjecttype = params.get('rootobjecttype')

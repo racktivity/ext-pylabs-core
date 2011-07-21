@@ -13,7 +13,6 @@ def main(q, i, p, params, tags):
                                                                                     'status'                :str(root.status), \
                                                                                     'template'              :root.template, \
                                                                                     'applicationtemplateguid':root.applicationtemplateguid, \
-                                                                                    'machineguid'           :root.machineguid, \
                                                                                     'meteringdeviceguid'    :root.meteringdeviceguid, \
                                                                                     'customsettings'        :root.customsettings, \
                                                                                     'meteringdeviceguid'    :root.meteringdeviceguid, \

@@ -1,17 +1,16 @@
 __author__ = 'racktivity'
-__tags__ = 'clouduser', 'listDatacenters'
 __priority__= 3
 def exists(view, obj, key, value):
     filterObject = obj.getFilterObject()
     filterObject.add(view, key, value, exactMatch=True)
     return len(obj.find(filterObject)) > 0
     
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    if not exists('view_clouduser_list', q.drp.clouduser, "guid", params['clouduserguid']):
+    if not exists('racktivity_view_clouduser_list', p.api.model.racktivity.clouduser, "guid", params['clouduserguid']):
         raise ValueError("invalid guid for clouduser, guid doesn't exists")
 
-    usr = q.drp.clouduser
+    usr = p.api.model.racktivity.clouduser
     from rootobjectaction_lib import rootobjectaction_find
     datacenters = rootobjectaction_find.datacenter_find(clouduserguid=params['clouduserguid'])
     params['result'] = {'returncode': True,

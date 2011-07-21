@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdeviceevent', 'create'
 from logger import logger
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
-    event = q.drp.meteringdeviceevent.new()
+    event = p.api.model.racktivity.meteringdeviceevent.new()
     fields = ('eventtype', 'timestamp', 'level', 'meteringdeviceguid', 'portsequence', 'sensorsequence', 
               'thresholdguid', 'tags', 'errmessagepublic', 'errmessagprivate', 'logs', 'tags')
     map = {'errmessagepublic': 'errormessagepublic', 'errmessageprivate': 'errormessageprivate'}
@@ -13,10 +12,10 @@ def main(q, i, params, tags):
             setattr(event, map.get(key, key), value)
     acl = event.acl.new()
     event.acl = acl
-    q.drp.meteringdeviceevent.save(event)
+    p.api.model.racktivity.meteringdeviceevent.save(event)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(event.guid, 'meteringdeviceevent', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(event.guid, 'meteringdeviceevent', params['request']['username'])
 
     params['result'] = {'returncode': True, 'guid': event.guid}
 

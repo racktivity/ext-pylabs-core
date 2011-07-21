@@ -1,19 +1,18 @@
 __author__ = 'racktivity'
-__tags__ = 'row', 'getMeteringdevicesCount'
 __priority__= 3
 
 from rootobjectaction_lib import rootobjectaction_find, rootobjectaction_list
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
     rowguid = params['rowguid']
-    #datacenter = q.drp.datacenter.get()
+    #datacenter = p.api.model.racktivity.datacenter.get()
     
     configured = 0
     used = 0
     identified = 0
     
-    row = q.drp.row.get(rowguid)
+    row = p.api.model.racktivity.row.get(rowguid)
     for rackguid in row.racks:
         for md in rootobjectaction_list.meteringdevice_list(rackguid=rackguid):
             if md['parentmeteringdeviceguid']:

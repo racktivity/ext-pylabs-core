@@ -1,8 +1,7 @@
 __author__ = 'aserver'
-__tags__ = 'datacenter', 'list'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     datacenterguid = params['datacenterguid'] if 'datacenterguid' in params else None
     from rootobjectaction_lib import rootobjectaction_list

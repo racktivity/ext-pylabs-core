@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'lan', 'setLanType'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    lan = q.drp.lan.get(params['languid'])
+    lan = p.api.model.racktivity.lan.get(params['languid'])
     lan.lantype = params['lantype']
-    q.drp.lan.save(lan)
+    p.api.model.racktivity.lan.save(lan)
     params['result'] = {'returncode': True}
 
 def match(q, i, params, tags):

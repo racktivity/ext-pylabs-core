@@ -1,8 +1,7 @@
 __author__ = 'racktivity'
-__tags__ = 'lan', 'listIPAddresses'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     
     sql = \
@@ -20,7 +19,7 @@ inner join only lan.view_lan_list on cast(lan.view_lan_list.guid as varchar) = i
 where ipaddress.view_ipaddress_list.languid = '%s'
     """ % params["languid"]
 
-    result = q.drp.ipaddress.query(sql)
+    result = p.api.model.racktivity.ipaddress.query(sql)
     
     params['result'] = {'returncode': True,
                         'ipinfo': result}

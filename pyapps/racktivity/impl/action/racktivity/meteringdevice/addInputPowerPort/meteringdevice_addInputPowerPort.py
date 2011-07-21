@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'addInputPowerPort'
 from rootobjectaction_lib import events
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    meteringdevice = q.drp.meteringdevice.get(params['meteringdeviceguid'])
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(params['meteringdeviceguid'])
     powerinputs = meteringdevice.powerinputs
     for powerinput in powerinputs:
         if powerinput.label == params['label']:
@@ -31,11 +30,11 @@ def main(q, i, params, tags):
             events.raiseError("Sequence '%s' is already taken by another port" % powerinput.sequence, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0066', tags='', escalate=False)
             
     meteringdevice.powerinputs.append(powerinput)
-    q.drp.meteringdevice.save(meteringdevice)
+    p.api.model.racktivity.meteringdevice.save(meteringdevice)
     params['result'] = {'returncode':True}
     
-    import racktivityui.uigenerator.meteringdevice
-    racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
+    #import racktivityui.uigenerator.meteringdevice
+    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
 
 def match(q, i, params, tags):
     return True

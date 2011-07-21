@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'getJSON'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     import json
     info = dict()
     meteringdeviceguid = params['meteringdeviceguid']
-    meteringdevice = q.drp.meteringdevice.get(meteringdeviceguid)
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(meteringdeviceguid)
     fields=['name', 'id', 'parentmeteringdeviceguid', 'rackguid', 'clouduserguid', 'positionx', 'positionz', 'tags']
     for field in fields:
         info[field] = getattr(meteringdevice, field, None)
@@ -36,17 +35,17 @@ def main(q, i, params, tags):
     if not meteringdevice.parentmeteringdeviceguid:
         master = meteringdevice
     else:
-        master = q.drp.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
+        master = p.api.model.racktivity.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
      
     from rootobjectaction_lib import rootobjectaction_find
-    applications = rootobjectaction_find.racktivity_application_find(meteringdeviceguid=master.guid, name='MeteringdeviceAPI')
+    applications = rootobjectaction_find.application_find(meteringdeviceguid=master.guid, name='MeteringdeviceAPI')
     masteripaddress = None
     deviceapiport = 0
     if applications:
-        racktivity_application = q.drp.racktivity_application.get(applications[0])
-        service = racktivity_application.networkservices[0]
+        application = p.api.model.racktivity.racktivity_application.get(applications[0])
+        service = application.networkservices[0]
         if service.ipaddressguids:
-            ipaddress = q.drp.ipaddress.get(service.ipaddressguids[0])
+            ipaddress = p.api.model.racktivity.ipaddress.get(service.ipaddressguids[0])
             masteripaddress = ipaddress.address
         else:
             masteripaddress = None

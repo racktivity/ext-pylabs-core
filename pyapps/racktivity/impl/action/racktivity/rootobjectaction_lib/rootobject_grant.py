@@ -1,4 +1,4 @@
-from pylabs import q
+from pylabs import q,p
 from rootobjectaction_lib import rootobjectaction_find, rootobjectaction_list
  
 def grantUser(rootobjectguid, rootobjecttype, cloudusername):
@@ -7,7 +7,7 @@ def grantUser(rootobjectguid, rootobjecttype, cloudusername):
     grants access to all actions of the given rootobject instance to the cloudusergroup of the cloudusername
 
     """
-    drpobject = getattr(q.drp, rootobjecttype)
+    drpobject = getattr(p.api.model.racktivity, rootobjecttype)
     rootobjectinstance = drpobject.get(rootobjectguid)
     acl = rootobjectinstance.acl
     if not acl:
@@ -28,7 +28,7 @@ def grantUser(rootobjectguid, rootobjecttype, cloudusername):
     if not groups:
         q.logger.log("The group list for the cloud user %s is empty" % clouduserguid)
         return
-    actions = dir(getattr(q.actions.rootobject, rootobjecttype))
+    actions = dir(getattr(p.api.action.racktivity, rootobjecttype))
     for group in groups:
         for action in actions:
             if action.startswith("_"):

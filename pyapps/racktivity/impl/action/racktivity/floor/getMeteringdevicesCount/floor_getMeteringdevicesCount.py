@@ -1,13 +1,12 @@
 __author__ = 'racktivity'
-__tags__ = 'floor', 'getMeteringdevicesCount'
 __priority__= 3
 
 from rootobjectaction_lib import rootobjectaction_find, rootobjectaction_list
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
     floorguid = params['floorguid']
-    #datacenter = q.drp.datacenter.get()
+    #datacenter = p.api.model.racktivity.datacenter.get()
     
     configured = 0
     used = 0

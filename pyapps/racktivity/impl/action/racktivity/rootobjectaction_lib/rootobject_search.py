@@ -1,5 +1,5 @@
 from rootobjectaction_lib import rootobject_tree
-from pylabs import q
+from pylabs import q,p
 
 def getGuids(q, types, names, tags):
     #SELECT X.root,X.guid FROM  (SELECT 'datacenter' AS root,guid FROM datacenter.view_datacenter_list UNION SELECT 'room' AS root,guid FROM room.view_room_list) as X
@@ -37,7 +37,7 @@ def getGuids(q, types, names, tags):
     #If no result, select all
     if sqlstr.endswith("WHERE "):
         sqlstr = "SELECT guid, name, type, tags FROM parenttree"
-    return q.drp.racktivity.query(sqlstr)
+    return p.api.model.racktivity.racktivity.query(sqlstr)
 
 def parentFilter(data, parenttree): #No, its not what u think it is
     type, name = parenttree
@@ -128,7 +128,7 @@ def search(searchstr, aggregated = False):
         if not mdguid:
             return
         #Get the metering device that I found
-        md = q.drp.meteringdevice.get(mdguid)
+        md = p.api.model.racktivity.meteringdevice.get(mdguid)
         #Prepare the search string
         searchstr = re.escape(data["name"])
         #after escapping convert \\* into .* [to allow the use of * as wild card]
@@ -138,7 +138,7 @@ def search(searchstr, aggregated = False):
         for port in md.poweroutputs:
             if re.match(searchstr, port.label):
                 key = {"name":port.label, "description":"", "guid": md.guid, "type":"powerport"}
-                data = q.actions.rootobject.meteringdevice.getViewData(md.guid, portlabel=port.label)["result"]["data"]
+                data = p.api.action.racktivity.meteringdevice.getViewData(md.guid, portlabel=port.label)["result"]["data"]
                 for item in data:
                     item['viewdatastr'] = "%0.1f"%item["viewdatavalue"]
                 key["data"] = data
@@ -152,7 +152,7 @@ def search(searchstr, aggregated = False):
             result = parentFilter(result, parenttree)
         if aggregated:
             for key in result:
-                data = getattr(q.actions.rootobject, key["type"]).getViewData(key["guid"])["result"]["data"]
+                data = getattr(p.api.action.racktivity, key["type"]).getViewData(key["guid"])["result"]["data"]
                 #Add the string represnation "viewdatastr"
                 for item in data:
                     item['viewdatastr'] = "%0.1f"%item["viewdatavalue"]

@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'ipaddress', 'create'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params)
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
-    ipaddress = q.drp.ipaddress.new()
+    ipaddress = p.api.model.racktivity.ipaddress.new()
     ipaddress.iptype = q.enumerators.iptype.STATIC
     ipaddress.ipversion = q.enumerators.ipversion.IPV4
     ipaddress.block = False
@@ -25,10 +24,10 @@ def main(q, i, params, tags):
             setattr(ipaddress, key, value)
     acl = ipaddress.acl.new()
     ipaddress.acl = acl
-    q.drp.ipaddress.save(ipaddress)
+    p.api.model.racktivity.ipaddress.save(ipaddress)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(ipaddress.guid, 'ipaddress', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(ipaddress.guid, 'ipaddress', params['request']['username'])
 
     params['result'] = {'returncode': True,
                         'ipaddressguid': ipaddress.guid}

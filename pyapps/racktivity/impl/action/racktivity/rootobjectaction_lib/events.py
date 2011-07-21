@@ -1,4 +1,4 @@
-from pylabs import q
+from pylabs import q,p
 import rootobjectaction_find
 
 GENERIC_OBJECT_NOT_FOUND = "RACTKVITIY-MON-GENERIC-0119"
@@ -9,7 +9,7 @@ _agentguid = None
 def _getAgentGuid():
     global _agentguid
     if not _agentguid:
-        applicationguids = rootobjectaction_find.racktivity_application_find(name='racktivity_agent')
+        applicationguids = rootobjectaction_find.application_find(name='racktivity_agent')
         if applicationguids:
             _agentguid = applicationguids[0]
         else:

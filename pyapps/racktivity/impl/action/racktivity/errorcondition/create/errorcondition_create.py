@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'errorcondition', 'create'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params)
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
-    errorcondition = q.drp.errorcondition.new()
+    errorcondition = p.api.model.racktivity.errorcondition.new()
     keys = ('errorconditiontype', 'timestamp', 'level', 'agent', 'tags', 'errormessagepublic',
             'errormessageprivate', 'application', 'backtrace', 'logs', 'transactioninfo', 'tags')
 
@@ -15,10 +14,10 @@ def main(q, i, params, tags):
             setattr(errorcondition, key, value)
     acl = errorcondition.acl.new()
     errorcondition.acl = acl
-    q.drp.errorcondition.save(errorcondition)
+    p.api.model.racktivity.errorcondition.save(errorcondition)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(errorcondition.guid, 'errorcondition', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(errorcondition.guid, 'errorcondition', params['request']['username'])
 
     params['result'] = {'returncode': True,
                         'errorconditionguid': errorcondition.guid} 

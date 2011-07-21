@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'deletePort'
 from rootobjectaction_lib import events
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     meteringdeviceguid = params['meteringdeviceguid']
-    meteringdevice = q.drp.meteringdevice.get(meteringdeviceguid)
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(meteringdeviceguid)
     port = None
     for p in meteringdevice.ports:
         if p.label == params['label']:
@@ -16,12 +15,12 @@ def main(q, i, params, tags):
 
     #Delete the port from the meteringdevice and save to drp
     meteringdevice.ports.remove(port)
-    q.drp.meteringdevice.save(meteringdevice)
+    p.api.model.racktivity.meteringdevice.save(meteringdevice)
 
     params['result'] = {'returncode':True}
     
-    import racktivityui.uigenerator.meteringdevice
-    racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
+    #import racktivityui.uigenerator.meteringdevice
+    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
 
 def match(q, i, params, tags):
     return True

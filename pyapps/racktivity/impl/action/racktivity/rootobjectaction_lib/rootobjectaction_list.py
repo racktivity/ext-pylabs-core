@@ -1,8 +1,8 @@
-from pylabs import q
+from pylabs import q,p
 
 def acl_list():
-    filterObj = q.drp.acl.getFilterObject()
-    acls = q.drp.acl.findAsView(filterObj, 'view_acl_list')
+    filterObj = p.api.model.racktivity.acl.getFilterObject()
+    acls = p.api.model.racktivity.acl.findAsView(filterObj, 'racktivity_view_acl_list')
     removekeys = ('viewguid', 'version')
     results = list()
     for acl in acls:
@@ -13,9 +13,9 @@ def acl_list():
         results.append(result)
     return results
 
-def racktivity_application_list(deviceguid="", meteringdeviceguid="",  applicationguid="", name="",status=""):
+def application_list(deviceguid="", meteringdeviceguid="",  applicationguid="", name="",status=""):
     params = [deviceguid, meteringdeviceguid, applicationguid, name, status]
-    filterObject = q.drp.racktivity_application.getFilterObject()
+    filterObject = p.api.model.racktivity.application.getFilterObject()
     filters = {'applicationguid    ':   'guid',
                'status'             :   'status',
                'name'               :   'name',
@@ -23,18 +23,18 @@ def racktivity_application_list(deviceguid="", meteringdeviceguid="",  applicati
                'meteringdeviceguid' :   'meteringdeviceguid'}
     for param in filters.iterkeys():
         if param in params and not params[param] in (None, ''):
-            filterObject.add('view_racktivity_application_list', filters[param] , params[param])
+            filterObject.add('racktivity_view_application_list', filters[param] , params[param])
             
-    result = q.drp.racktivity_application.findAsView(filterObject,'view_racktivity_application_list')
+    result = p.api.model.racktivity.application.findAsView(filterObject,'racktivity_view_application_list')
     return result
 
 def backplane_list(backplaneguid=""):
-    view =  'view_backplane_list'
-    filterObj = q.drp.backplane.getFilterObject()
+    view =  'racktivity_view_backplane_list'
+    filterObj = p.api.model.racktivity.backplane.getFilterObject()
     if backplaneguid:
         filterObj.add(view, 'guid', backplaneguid)
 
-    backplanes = q.drp.backplane.findAsView(filterObj, view)
+    backplanes = p.api.model.racktivity.backplane.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version', 'guid')
     results = list()
     for backplane in backplanes:
@@ -48,11 +48,11 @@ def backplane_list(backplaneguid=""):
     return results
 
 def cable_list(cableguid=""):
-    view =  'view_cable_list'
-    filterObj = q.drp.cable.getFilterObject()
+    view =  'racktivity_view_cable_list'
+    filterObj = p.api.model.racktivity.cable.getFilterObject()
     if cableguid:
         filterObj.add(view, 'guid', cableguid)
-    cables = q.drp.cable.findAsView(filterObj, view)
+    cables = p.api.model.racktivity.cable.findAsView(filterObj, view)
     keys = ['guid','name','description','cabletype','label', 'cloudusergroupactions']
     results = list()
     for cable in cables:
@@ -67,11 +67,11 @@ def cable_list(cableguid=""):
     return results
 
 def clouduser_list(clouduserguid=""):
-    view =  'view_clouduser_list'
-    filterObj = q.drp.clouduser.getFilterObject()
+    view =  'racktivity_view_clouduser_list'
+    filterObj = p.api.model.racktivity.clouduser.getFilterObject()
     if clouduserguid:
         filterObj.add(view, 'guid', clouduserguid)
-    cloudusers = q.drp.clouduser.findAsView(filterObj, view)
+    cloudusers = p.api.model.racktivity.clouduser.findAsView(filterObj, view)
     removekeys = ('viewguid','version')
     results = list()
     groupquery = """
@@ -84,19 +84,19 @@ def clouduser_list(clouduserguid=""):
         for k in clouduser.iterkeys():
             if k not in removekeys:
                 result[k] = clouduser[k]
-        result['groups'] = q.drp.cloudusergroup.query(groupquery % result['guid'])
+        result['groups'] = p.api.model.racktivity.cloudusergroup.query(groupquery % result['guid'])
         results.append(result)
     return results
 
 def cloudusergroup_list(customerguid="", cloudusergroupguid=""):
-    view =  'view_cloudusergroup_list'
+    view =  'racktivity_view_cloudusergroup_list'
     params={'guid':cloudusergroupguid, 'customerguid':customerguid}
-    filterObj = q.drp.cloudusergroup.getFilterObject()
+    filterObj = p.api.model.racktivity.cloudusergroup.getFilterObject()
     for key, value in params.iteritems():
         if value:
             filterObj.add(view, key, value)
 
-    cloudusergroups = q.drp.cloudusergroup.findAsView(filterObj, view)
+    cloudusergroups = p.api.model.racktivity.cloudusergroup.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for cloudusergroup in cloudusergroups:
@@ -108,10 +108,10 @@ def cloudusergroup_list(customerguid="", cloudusergroupguid=""):
     return results
 
 def customer_list(customerguid=""):
-    filterObj = q.drp.customer.getFilterObject()
+    filterObj = p.api.model.racktivity.customer.getFilterObject()
     if customerguid:
-        filterObj.add('view_customer_list', 'guid', customerguid)
-    customers = q.drp.customer.findAsView(filterObj, 'view_customer_list')
+        filterObj.add('racktivity_view_customer_list', 'guid', customerguid)
+    customers = p.api.model.racktivity.customer.findAsView(filterObj, 'racktivity_view_customer_list')
     q.logger.log("Found '%s' customer" % len(customers))
     keys = ['guid','name','description','address','city','country','status','retentionpolicyguid','registered', 'cloudusergroupactions']
     results = list()
@@ -124,11 +124,11 @@ def customer_list(customerguid=""):
     return results
 
 def datacenter_list(datacenterguid=""):
-    view =  'view_datacenter_list'
-    filterObj = q.drp.datacenter.getFilterObject()
+    view =  'racktivity_view_datacenter_list'
+    filterObj = p.api.model.racktivity.datacenter.getFilterObject()
     if datacenterguid:
         filterObj.add(view, 'guid', datacenterguid)
-    datacenters = q.drp.datacenter.findAsView(filterObj, view)
+    datacenters = p.api.model.racktivity.datacenter.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for datacenter in datacenters:
@@ -141,11 +141,11 @@ def datacenter_list(datacenterguid=""):
     return results
 
 def device_list(deviceguid=""):
-    view =  'view_device_list'
-    filterObj = q.drp.device.getFilterObject()
+    view =  'racktivity_view_device_list'
+    filterObj = p.api.model.racktivity.device.getFilterObject()
     if deviceguid:
         filterObj.add(view, 'guid', deviceguid)
-    devices = q.drp.device.findAsView(filterObj, view)
+    devices = p.api.model.racktivity.device.findAsView(filterObj, view)
     removekeys = ('viewguid','version')
     results = list()
     for device in devices:
@@ -156,12 +156,12 @@ def device_list(deviceguid=""):
         results.append(result)
     connectioninfo = dict()
     for device in results:
-        deviceobject = q.drp.device.get(device['guid'])
+        deviceobject = p.api.model.racktivity.device.get(device['guid'])
         for powerport in deviceobject.powerports:
             if powerport.cableguid:
-                filterObject = q.drp.meteringdevice.getFilterObject()
-                filterObject.add('view_meteringdevice_poweroutput', 'cableguid', powerport.cableguid)
-                meteringdeviceguid = q.drp.meteringdevice.find(filterObject)[0]
+                filterObject = p.api.model.racktivity.meteringdevice.getFilterObject()
+                filterObject.add('racktivity_view_meteringdevice_poweroutput', 'cableguid', powerport.cableguid)
+                meteringdeviceguid = p.api.model.racktivity.meteringdevice.find(filterObject)[0]
                 connectioninfo[powerport.sequence] = {'meteringdeviceguid': meteringdeviceguid, 'label': powerport.name}
             else:
                 connectioninfo[powerport.sequence] = {'meteringdeviceguid': '', 'label': powerport.name}
@@ -169,11 +169,11 @@ def device_list(deviceguid=""):
     return results
 
 def errorcondition_list(errorconditionguid=""):
-    view =  'view_errorcondition_list'
-    filterObj = q.drp.errorcondition.getFilterObject()
+    view =  'racktivity_view_errorcondition_list'
+    filterObj = p.api.model.racktivity.errorcondition.getFilterObject()
     if errorconditionguid:
         filterObj.add(view, 'errorconditionguid', errorconditionguid)
-    errorconditions = q.drp.errorcondition.findAsView(filterObj, view)
+    errorconditions = p.api.model.racktivity.errorcondition.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for errorcondition in errorconditions:
@@ -185,11 +185,11 @@ def errorcondition_list(errorconditionguid=""):
     return results
 
 def ipaddress_list(ipaddressguid=""):
-    view =  'view_ipaddress_list'
-    filterObj = q.drp.ipaddress.getFilterObject()
+    view =  'racktivity_view_ipaddress_list'
+    filterObj = p.api.model.racktivity.ipaddress.getFilterObject()
     if ipaddressguid:
         filterObj.add(view, 'guid', ipaddressguid)
-    ipaddresses = q.drp.ipaddress.findAsView(filterObj, view)
+    ipaddresses = p.api.model.racktivity.ipaddress.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for ipaddress in ipaddresses:
@@ -201,13 +201,13 @@ def ipaddress_list(ipaddressguid=""):
     return results
 
 def lan_list(backplaneguid="", languid=""):
-    view =  'view_lan_list'
+    view =  'racktivity_view_lan_list'
     params={'backplaneguid':backplaneguid, 'guid':languid}
-    filterObj = q.drp.lan.getFilterObject()
+    filterObj = p.api.model.racktivity.lan.getFilterObject()
     for key,value in params.iteritems():
         if value:
             filterObj.add(view, key, value)
-    lans = q.drp.lan.findAsView(filterObj, view)
+    lans = p.api.model.racktivity.lan.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for lan in lans:
@@ -219,11 +219,11 @@ def lan_list(backplaneguid="", languid=""):
     return results
 
 def location_list(locationguid=""):
-    view =  'view_location_list'
-    filterObj = q.drp.location.getFilterObject()
+    view =  'racktivity_view_location_list'
+    filterObj = p.api.model.racktivity.location.getFilterObject()
     if locationguid:
         filterObj.add(view, 'guid', locationguid)
-    locations = q.drp.location.findAsView(filterObj, view)
+    locations = p.api.model.racktivity.location.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for location in locations:
@@ -235,13 +235,13 @@ def location_list(locationguid=""):
     return results
 
 def logicalview_list(name="", clouduserguid="", share="", tags=""):
-    view =  'view_logicalview_list'
+    view =  'racktivity_view_logicalview_list'
     data = {"name":name, "clouduserguid":clouduserguid,"share":share, "tags":tags}
-    filterObj = q.drp.logicalview.getFilterObject()
+    filterObj = p.api.model.racktivity.logicalview.getFilterObject()
     for key in data:
         if data[key] != "":
             filterObj.add(view, key, data[key])
-    logicalviews = q.drp.logicalview.findAsView(filterObj, view)
+    logicalviews = p.api.model.racktivity.logicalview.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for logicalview in logicalviews:
@@ -254,14 +254,14 @@ def logicalview_list(name="", clouduserguid="", share="", tags=""):
 
 
 def meteringdevice_list(meteringdevicetype="", rackguid="", parentmeteringdeviceguid=""):
-    view = 'view_meteringdevice_list'
+    view = 'racktivity_view_meteringdevice_list'
     filters = ('meteringdevicetype', 'rackguid', 'parentmeteringdeviceguid')
     params={'meteringdevicetype':meteringdevicetype, 'rackguid':rackguid, 'parentmeteringdeviceguid': parentmeteringdeviceguid};
-    filterobj = q.drp.meteringdevice.getFilterObject()
+    filterobj = p.api.model.racktivity.meteringdevice.getFilterObject()
     for key, value in params.iteritems():
         if key in filters and value:
             filterobj.add(view, key, value)
-    meteringdevices = q.drp.meteringdevice.findAsView(filterobj, view)
+    meteringdevices = p.api.model.racktivity.meteringdevice.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for meteringdevice in meteringdevices:
@@ -273,15 +273,15 @@ def meteringdevice_list(meteringdevicetype="", rackguid="", parentmeteringdevice
     return results
 
 def meteringdeviceevent_list(meteringdeviceguid="", portsequence="", sensorsequence="", eventtype="", level="", thresholdguid="", latest=""):
-    view =  'view_meteringdeviceevent_list'
+    view =  'racktivity_view_meteringdeviceevent_list'
     params = {'meteringdeviceguid':meteringdeviceguid, 'portsequence':portsequence, 'sensorsequence':sensorsequence,
               'eventtype':eventtype, 'level':level, 'thresholdguid':thresholdguid, 'latest':latest}
-    filterObj = q.drp.meteringdeviceevent.getFilterObject()
+    filterObj = p.api.model.racktivity.meteringdeviceevent.getFilterObject()
     filters = ('meteringdeviceguid', 'portsequence', 'sensorsequence', 'eventtype', 'level', 'thresholdguid', 'latest')
     for key, value in params.iteritems():
         if key in filters and value:
             filterObj.add(view, key, value)
-    events = q.drp.meteringdeviceevent.findAsView(filterObj, view)
+    events = p.api.model.racktivity.meteringdeviceevent.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for event in events:
@@ -293,11 +293,11 @@ def meteringdeviceevent_list(meteringdeviceguid="", portsequence="", sensorseque
     return results
 
 def monitoringinfo_list(monitoringinfoguid=""):
-    view =  'view_monitoringinfo_list'
-    filterObj = q.drp.monitoringinfo.getFilterObject()
+    view =  'racktivity_view_monitoringinfo_list'
+    filterObj = p.api.model.racktivity.monitoringinfo.getFilterObject()
     if monitoringinfoguid:
         filterObj.add(view, 'guid', monitoringinfoguid)
-    moninfos = q.drp.monitoringinfo.findAsView(filterObj, view)
+    moninfos = p.api.model.racktivity.monitoringinfo.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for moninfo in moninfos:
@@ -310,13 +310,13 @@ def monitoringinfo_list(monitoringinfoguid=""):
 
 def policy_list(policyguid="",name="", rootobjectaction="", rootobjecttype=""):
     filters = ('guid', 'name' ,'rootobjectaction','rootobjecttype')
-    filterobj = q.drp.policy.getFilterObject()
-    view = 'view_policy_list'
+    filterobj = p.api.model.racktivity.policy.getFilterObject()
+    view = 'racktivity_view_policy_list'
     params={'guid':policyguid, 'name':name, 'rootobjectaction':rootobjectaction, 'rootobjecttype':rootobjecttype}
     for key, value in params.iteritems():
         if key in filters and value:
             filterobj.add(view, key, value)
-    policies = q.drp.policy.findAsView(filterobj, view)
+    policies = p.api.model.racktivity.policy.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for policy in policies:
@@ -331,13 +331,13 @@ def resourcegroup_list(resourcegroupguid="",  customerguid="", deviceguid=""):
     params = {'guid': resourcegroupguid,
               'device': deviceguid}
     
-    filterobj = q.drp.resourcegroup.getFilterObject()
-    defaultview = 'view_resourcegroup_list'
-    viewmap = {"device": "view_resourcegroup_device"}
+    filterobj = p.api.model.racktivity.resourcegroup.getFilterObject()
+    defaultview = 'racktivity_view_resourcegroup_list'
+    viewmap = {"device": "racktivity_view_resourcegroup_device"}
     if customerguid:
         customer = None
         try:
-            customer = q.drp.customer.get(customerguid)
+            customer = p.api.model.racktivity.customer.get(customerguid)
         except:
             pass
         if customer and customer.resourcegroupguid:
@@ -349,7 +349,7 @@ def resourcegroup_list(resourcegroupguid="",  customerguid="", deviceguid=""):
         if value:
             view = viewmap.get(key, defaultview)
             filterobj.add(view, key, value)
-    results = q.drp.resourcegroup.findAsView(filterobj, view)
+    results = p.api.model.racktivity.resourcegroup.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     for result in results:
         for key in removekeys:
@@ -357,11 +357,11 @@ def resourcegroup_list(resourcegroupguid="",  customerguid="", deviceguid=""):
     return results
 
 def rack_list(rackguid=""):
-    view =  'view_rack_list'
-    filterobj = q.drp.rack.getFilterObject()
+    view =  'racktivity_view_rack_list'
+    filterobj = p.api.model.racktivity.rack.getFilterObject()
     if rackguid:
         filterobj.add(view, 'guid', rackguid)
-    racks = q.drp.rack.findAsView(filterobj, view)
+    racks = p.api.model.racktivity.rack.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for rack in racks:
@@ -373,11 +373,11 @@ def rack_list(rackguid=""):
     return results
 
 def room_list(roomguid=""):
-    view = 'view_room_list'
-    filterobj = q.drp.room.getFilterObject()
+    view = 'racktivity_view_room_list'
+    filterobj = p.api.model.racktivity.room.getFilterObject()
     if roomguid:
         filterobj.add(view, 'guid', roomguid)
-    rooms = q.drp.room.findAsView(filterobj, view)
+    rooms = p.api.model.racktivity.room.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for room in rooms:
@@ -389,11 +389,11 @@ def room_list(roomguid=""):
     return results
 
 def floor_list(floorguid=""):
-    view = 'view_floor_list'
-    filterobj = q.drp.floor.getFilterObject()
+    view = 'racktivity_view_floor_list'
+    filterobj = p.api.model.racktivity.floor.getFilterObject()
     if floorguid:
         filterobj.add(view, 'guid', floorguid)
-    floors = q.drp.floor.findAsView(filterobj, view)
+    floors = p.api.model.racktivity.floor.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for floor in floors:
@@ -405,14 +405,14 @@ def floor_list(floorguid=""):
     return results
 
 def threshold_list(thresholdguid="", thresholdtype="",  thresholdimpacttype=""):
-    view = 'view_threshold_list'
-    filterobj = q.drp.threshold.getFilterObject()
+    view = 'racktivity_view_threshold_list'
+    filterobj = p.api.model.racktivity.threshold.getFilterObject()
     filters=('thresholdguid', 'thresholdtype', 'thresholdimpacttype')
     params={'guid':thresholdguid, 'thresholdtype':thresholdtype, 'thresholdimpacttype':thresholdimpacttype}
     for key, value in params.iteritems():
         if key in filters and value:
             filterobj.add(view, key, value)
-    thresholds = q.drp.threshold.findAsView(filterobj, view)
+    thresholds = p.api.model.racktivity.threshold.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for threshold in thresholds:
@@ -424,13 +424,13 @@ def threshold_list(thresholdguid="", thresholdtype="",  thresholdimpacttype=""):
     return results
 
 def feed_list(feedguid="", datacenterguid="", feedproductiontype="", tags=""):
-    view = 'view_feed_list'
-    filterobj = q.drp.feed.getFilterObject()
+    view = 'racktivity_view_feed_list'
+    filterobj = p.api.model.racktivity.feed.getFilterObject()
     params={'guid':feedguid, 'datacenterguid':datacenterguid, 'feedproductiontype':feedproductiontype, 'tags':tags}
     for key, value in params.iteritems():
         if value:
             filterobj.add(view, key, value)
-    feeds = q.drp.feed.findAsView(filterobj, view)
+    feeds = p.api.model.racktivity.feed.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for feed in feeds:
@@ -442,16 +442,16 @@ def feed_list(feedguid="", datacenterguid="", feedproductiontype="", tags=""):
     return results
 
 def enterprise_list(name="", campus="", tags=""):
-    defaultview =  'view_enterprise_list'
+    defaultview =  'racktivity_view_enterprise_list'
     data = {"name":name, 'campus': campus, "tags":tags}
-    viewmap = {'campus': 'view_enterprise_campus'}
-    filterObj = q.drp.enterprise.getFilterObject()
+    viewmap = {'campus': 'racktivity_view_enterprise_campus'}
+    filterObj = p.api.model.racktivity.enterprise.getFilterObject()
     for key, value in data.iteritems():
         if value:
             view = viewmap.get(key, defaultview)
             filterObj.add(view, key, data[key])
     
-    enterprises = q.drp.enterprise.findAsView(filterObj, defaultview)
+    enterprises = p.api.model.racktivity.enterprise.findAsView(filterObj, defaultview)
     removekeys = ('viewguid', 'version')
     results = list()
     for enterprise in enterprises:
@@ -463,13 +463,13 @@ def enterprise_list(name="", campus="", tags=""):
     return results
 
 def pod_list(podguid="", name="", alias="", room="", tags=""):
-    view =  'view_pod_list'
+    view =  'racktivity_view_pod_list'
     data = {"guid": podguid, "name":name, "alias":alias, "room":room, "tags":tags}
-    filterObj = q.drp.pod.getFilterObject()
+    filterObj = p.api.model.racktivity.pod.getFilterObject()
     for key in data:
         if data[key] != "":
             filterObj.add(view, key, data[key])
-    pods = q.drp.pod.findAsView(filterObj, view)
+    pods = p.api.model.racktivity.pod.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for pod in pods:
@@ -481,13 +481,13 @@ def pod_list(podguid="", name="", alias="", room="", tags=""):
     return results
 
 def row_list(rowguid="", name="", alias="", room="", pod="", tags=""):
-    view =  'view_row_list'
+    view =  'racktivity_view_row_list'
     data = {"guid": rowguid, "name":name, "alias":alias, "room":room, "pod":pod, "tags":tags}
-    filterObj = q.drp.row.getFilterObject()
+    filterObj = p.api.model.racktivity.row.getFilterObject()
     for key in data:
         if data[key] != "":
             filterObj.add(view, key, data[key])
-    rows = q.drp.row.findAsView(filterObj, view)
+    rows = p.api.model.racktivity.row.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for row in rows:
@@ -499,13 +499,13 @@ def row_list(rowguid="", name="", alias="", room="", pod="", tags=""):
     return results
 
 def autodiscoverysnmpmap_list(autodiscoverysnmpmapguid, manufacturer):
-    view =  'view_autodiscoverysnmpmap_list'
-    filterObj = q.drp.autodiscoverysnmpmap.getFilterObject()
+    view =  'racktivity_view_autodiscoverysnmpmap_list'
+    filterObj = p.api.model.racktivity.autodiscoverysnmpmap.getFilterObject()
     if autodiscoverysnmpmapguid is not None:
         filterObj.add(view, 'guid', autodiscoverysnmpmapguid)
     if manufacturer is not None:
         filterObj.add(view, 'manufacturer', manufacturer)
-    autodiscoverysnmpmaps = q.drp.autodiscoverysnmpmap.findAsView(filterObj, view)
+    autodiscoverysnmpmaps = p.api.model.racktivity.autodiscoverysnmpmap.findAsView(filterObj, view)
     keys = ['guid','manufacturer']
     results = list()
     for autodiscoverysnmpmap in autodiscoverysnmpmaps:

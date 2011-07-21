@@ -1,8 +1,7 @@
 __author__ = 'racktivity'
-__tags__ = 'job', 'find'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     # rootobjecttype: application, datacenter, device
     # fromTime/endTime: YYYY-MM-DD hh:mm:ss
     from rootobjectaction_lib import rootobjectaction_find

@@ -1,8 +1,7 @@
 __author__ = 'racktivity'
-__tags__ = 'job', 'findLatestJobs'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     sql= '''SELECT 
 	JOBLIST.guid, 
 	JOBLIST.parentjobguid, 
@@ -25,7 +24,7 @@ ORDER BY JOBLIST.starttime DESC LIMIT %(maxrows)s'''
         jobStatus = "'ERROR'"
 
     params['result'] = {'returncode': True,
-                        'joblist': q.drp.job.query(sql%{'jobstatus': jobStatus, 'maxrows':params['maxrows']})}
+                        'joblist': p.api.model.racktivity.job.query(sql%{'jobstatus': jobStatus, 'maxrows':params['maxrows']})}
 
 def match(q, i, params, tags):
     return True

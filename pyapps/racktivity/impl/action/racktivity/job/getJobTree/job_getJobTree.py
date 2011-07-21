@@ -1,8 +1,7 @@
 __author__ = 'racktivity'
-__tags__ = 'job', 'getJobTree'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     sql= '''SELECT DISTINCT JOBLIST.guid,
                 JOBLIST.parentjobguid,
                 CLOUDUSER.login as cloudusername,
@@ -36,7 +35,7 @@ def main(q, i, params, tags):
                 or JOBLIST.guid = '%(rootobjectguid)s'
                 ORDER BY JOBLIST.starttime;'''
                 
-    jobs = q.drp.job.query(sql%{'rootobjectguid': params['rootobjectguid']})
+    jobs = p.api.model.racktivity.job.query(sql%{'rootobjectguid': params['rootobjectguid']})
     
     params['result'] = {'returncode': True,
                         'jobtree': jobs}

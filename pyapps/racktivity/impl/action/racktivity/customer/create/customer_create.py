@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ ='customer', 'create'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params)
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
-    customer = q.drp.customer.new()
+    customer = p.api.model.racktivity.customer.new()
     customer.status = str(q.enumerators.customerstatustype.CONFIGURED)
     
     fields = ('description', 'address', 'city', 'country', 'name', 'tags')
@@ -16,10 +15,10 @@ def main(q, i, params, tags):
             setattr(customer, key, value)
     acl = customer.acl.new()
     customer.acl = acl
-    q.drp.customer.save(customer)
+    p.api.model.racktivity.customer.save(customer)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(customer.guid, 'customer', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(customer.guid, 'customer', params['request']['username'])
 
     params['result'] = {'returncode':True, 'customerguid': customer.guid}
     

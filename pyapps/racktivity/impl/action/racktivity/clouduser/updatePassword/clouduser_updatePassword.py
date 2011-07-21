@@ -1,22 +1,21 @@
 __author__ = 'racktivity'
-__tags__ = 'clouduser', 'updatePassword'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params, nameKey = "login")
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params, nameKey = "login")
     params['result'] = {'returncode':False}
 
     clouduserguid = params['clouduserguid'] 
     currentpassword = params['currentpassword']
     newPassword = params['newpassword']
     
-    clouduser = q.drp.clouduser.get(clouduserguid)
+    clouduser = p.api.model.racktivity.clouduser.get(clouduserguid)
      
     def updateModel():
         if clouduser.password == currentpassword:
             clouduser.password = newPassword
-            q.drp.clouduser.save(clouduser)
+            p.api.model.racktivity.clouduser.save(clouduser)
         else:
             q.eventhandler.raiseError('Invalid current password')
    

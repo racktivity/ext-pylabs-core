@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'feed', 'create'
 __priority__= 3
 from logger import logger
 from rootobjectaction_lib import rootobjectaction_find
@@ -18,18 +17,18 @@ CO2EMISSIONS = {'COAL':800.0,
                 'SOLAR':60.0,
                 'WIND':3.0}
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params)
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
     #Check if another feed with the same name already exist
     datacenterguid = params['datacenterguid']
-    if exists('view_feed_list', q.drp.feed, "name", params['name']):
+    if exists('racktivity_view_feed_list', p.api.model.racktivity.feed, "name", params['name']):
         raise ValueError("Feed with the same name already exists")
     
-    if datacenterguid and not exists('view_datacenter_list', q.drp.datacenter, "guid", datacenterguid):
+    if datacenterguid and not exists('racktivity_view_datacenter_list', p.api.model.racktivity.datacenter, "guid", datacenterguid):
         raise ValueError("Datacenter with guid %s doesn't exist"%params['datacenterguid'])
     
-    feed = q.drp.feed.new()
+    feed = p.api.model.racktivity.feed.new()
     
     fields = ('name', 'datacenterguid', 'description', 'productiontype', 'system', 'tags')
     fieldsmap = {'productiontype': 'feedproductiontype'}
@@ -57,21 +56,21 @@ def main(q, i, params, tags):
     feed.co2emission["%d" % time.time()] = co2factor
     acl = feed.acl.new()
     feed.acl = acl
-    q.drp.feed.save(feed)
+    p.api.model.racktivity.feed.save(feed)
     
     if params['datacenterguid']:
         dcguid = params['datacenterguid']
         for guid in rootobjectaction_find.feed_find(datacenterguid=dcguid):
             if guid != feed.guid:
-                wrongfeed = q.drp.feed.get(guid)
+                wrongfeed = p.api.model.racktivity.feed.get(guid)
                 wrongfeed.datacenterguid = ''
-                q.drp.feed.save(wrongfeed)
+                p.api.model.racktivity.feed.save(wrongfeed)
                 
-    import racktivityui.uigenerator.feed
-    racktivityui.uigenerator.feed.create(feed.guid)
+    #import racktivityui.uigenerator.feed
+    #racktivityui.uigenerator.feed.create(feed.guid)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(feed.guid, 'feed', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(feed.guid, 'feed', params['request']['username'])
 
     params['result'] = {'returncode':True, 'feedguid': feed.guid}
 

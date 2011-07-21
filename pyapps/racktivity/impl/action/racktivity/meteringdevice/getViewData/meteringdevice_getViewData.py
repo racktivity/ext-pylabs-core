@@ -1,5 +1,4 @@
 __author__ = 'aserver'
-__tags__ = 'meteringdevice', 'getViewData'
 __priority__= 3
 from rootobjectaction_lib import events
 
@@ -9,7 +8,7 @@ def getPort(ports, seq):
             return port
     return False
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False, "data" :list()}
     guid = params["rootobjectguid"]
     portlabel = params["portlabel"] 

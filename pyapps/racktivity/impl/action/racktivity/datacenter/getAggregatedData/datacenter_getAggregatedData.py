@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'datacenter', 'getAggregatedData'
 __priority__= 3
 
 import collections
@@ -10,14 +9,14 @@ def avg(v1, v2):
     else:
         return (v1 + v2) / 2
     
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     datacenterguid = params['datacenterguid']
     meteringtypes = params['meteringtypes']
     from rootobjectaction_lib import rootobjectaction_find
     from rootobjectaction_lib import rootobject_authorization
     floorguids = rootobjectaction_find.floor_find(datacenterguid=datacenterguid)
-    floorguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], floorguids, q.drp.floor , "getAggregatedData")
+    floorguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], floorguids, p.api.model.racktivity.floor , "getAggregatedData")
     
     result = {'Current': 0.0,
               'Voltage': 0.0,
@@ -40,7 +39,7 @@ def main(q, i, params, tags):
               'Co2': [0.0, 0.0, 0.0, 0.0]}
     
     for floorguid in floorguids:
-        floorvalues = q.actions.rootobject.floor.getAggregatedData(floorguid, meteringtypes, request = params["request"])['result']
+        floorvalues = p.api.action.racktivity.floor.getAggregatedData(floorguid, meteringtypes, request = params["request"])['result']
         for meteringtype, value in floorvalues['value'].iteritems():
             if meteringtype in ('Voltage', 'Frequency'):
                 result[meteringtype] = avg(result[meteringtype], float(value))

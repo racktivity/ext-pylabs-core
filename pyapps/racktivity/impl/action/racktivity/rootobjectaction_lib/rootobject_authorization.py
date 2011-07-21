@@ -1,12 +1,12 @@
-from pylabs import q,i
+from pylabs import q,i,p
 
 def isAuthorized(login, drpobj, method):
     #get the user groups
-    userguid = q.actions.rootobject.clouduser.find(login = login)["result"]["guidlist"]
+    userguid = p.api.action.racktivity.clouduser.find(login = login)["result"]["guidlist"]
     if not userguid:
         raise ValueError("User with login %s was not found in clouduser list"%login)
     userguid = userguid[0]
-    groups = q.actions.rootobject.clouduser.listGroups(userguid)["result"]["groupinfo"][0]["groups"]
+    groups = p.api.action.racktivity.clouduser.listGroups(userguid)["result"]["groupinfo"][0]["groups"]
     #get the object's acl and do the validation
     if "acl" in dir(drpobj) and drpobj.acl.cloudusergroupactions:
         acl = drpobj.acl

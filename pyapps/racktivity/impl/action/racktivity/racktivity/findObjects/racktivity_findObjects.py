@@ -1,8 +1,7 @@
 __author__ = 'aserver'
-__tags__ = 'racktivity', 'findObjects'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from rootobjectaction_lib import rootobject_search
     result = rootobject_search.search(params["searchstring"])
     maxresults = params["maxresults"]

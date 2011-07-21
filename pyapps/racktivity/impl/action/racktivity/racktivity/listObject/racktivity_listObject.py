@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'racktivity', 'listObject'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
-    filterobj = q.drp.racktivity.getFilterObject()
+    filterobj = p.api.model.racktivity.racktivity.getFilterObject()
     
-    objects = q.drp.racktivity.findAsView(filterobj, "view_racktivity_list")
+    objects = p.api.model.racktivity.racktivity.findAsView(filterobj, "racktivity_view_racktivity_list")
     for obj in objects:
         for k in ('viewguid', 'version'):
             del obj[k]

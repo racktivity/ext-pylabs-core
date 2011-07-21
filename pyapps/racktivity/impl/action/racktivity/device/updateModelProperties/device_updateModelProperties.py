@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'device', 'updateModelProperties'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating device properties in the model', 3)
-    device = q.drp.device.get(params['deviceguid'])
+    device = p.api.model.racktivity.device.get(params['deviceguid'])
 
     fields = ('name', 'devicetype', 'description', 'template', 'rackguid', 'datacenterguid', 'racku', 'racky', 'rackz',
               'modelnr', 'serialnr', 'firmware', 'lastcheck', 'status', 'parentdeviceguid', 'lastrealitycheck', 'tags')
@@ -27,14 +26,14 @@ def main(q, i, params, tags):
                 changed = True
                 
     if changed:
-        logger.log_tasklet(__tags__, params, fields)
-        q.drp.device.save(device)
+        #logger.log_tasklet(__tags__, params, fields)
+        p.api.model.racktivity.device.save(device)
     
     params['result'] = {'returncode': True,
                         'deviceguid': device.guid}
     
-    import racktivityui.uigenerator.device
-    racktivityui.uigenerator.device.update(device.guid)
+    #import racktivityui.uigenerator.device
+    #racktivityui.uigenerator.device.update(device.guid)
 
 def match(q, i, params, tags):
     return True

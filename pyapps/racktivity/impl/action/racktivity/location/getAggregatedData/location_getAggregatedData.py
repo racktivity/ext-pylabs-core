@@ -1,5 +1,4 @@
 __author__ = 'roomtivity'
-__tags__ = 'location', 'getAggregatedData'
 __priority__= 3
 
 import collections
@@ -15,10 +14,10 @@ def avg(v1, v2):
     else:
         return (v1 + v2) / 2
     
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
     locationguid = params['locationguid']
-    if not exists('view_location_list', q.drp.location, "guid", locationguid):
+    if not exists('racktivity_view_location_list', p.api.model.racktivity.location, "guid", locationguid):
         raise ValueError("No location with this guid (%s) exists"%locationguid)
     
     meteringtypes = params['meteringtypes']
@@ -26,7 +25,7 @@ def main(q, i, params, tags):
     datacenterguids = rootobjectaction_find.datacenter_find(locationguid=locationguid)
     
     from rootobjectaction_lib import rootobject_authorization
-    datacenterguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], datacenterguids, q.drp.datacenter , "getAggregatedData")
+    datacenterguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], datacenterguids, p.api.model.racktivity.datacenter , "getAggregatedData")
     
     result = {'Current': 0.0,
               'Voltage': 0.0,
@@ -49,7 +48,7 @@ def main(q, i, params, tags):
               'Co2': [0.0, 0.0, 0.0, 0.0]}
     
     for datacenterguid in datacenterguids:
-        datacenterresult = q.actions.rootobject.datacenter.getAggregatedData(datacenterguid, meteringtypes, request = params["request"])['result']
+        datacenterresult = p.api.action.racktivity.datacenter.getAggregatedData(datacenterguid, meteringtypes, request = params["request"])['result']
         for meteringtype, value in datacenterresult['value'].iteritems():
             if meteringtype in ('Voltage', 'Frequency'):
                 result[meteringtype] = avg(result[meteringtype], float(value))

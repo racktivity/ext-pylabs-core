@@ -1,34 +1,33 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'getSignal'
 from rootobjectaction_lib import events
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
         
     meteringdeviceguid = params['meteringdeviceguid']
-    meteringdevice = q.drp.meteringdevice.get(meteringdeviceguid)
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(meteringdeviceguid)
     
     if not meteringdevice.parentmeteringdeviceguid:
         master = meteringdevice
     else:
-        master = q.drp.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
+        master = p.api.model.racktivity.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
 
     from rootobjectaction_lib import rootobjectaction_find
-    applicationguids = rootobjectaction_find.racktivity_application_find(meteringdeviceguid=master.guid, name='MeteringdeviceAPI')
+    applicationguids = rootobjectaction_find.application_find(meteringdeviceguid=master.guid, name='MeteringdeviceAPI')
 
     masteripaddress = None
     deviceapiport = 0
     if applications:
-        racktivity_application = q.drp.racktivity_application.get(applications[0])
-        services = racktivity_application.networkservices
+        application = p.api.model.racktivity.racktivity_application.get(applications[0])
+        services = application.networkservices
         if services:
             service = services[0]
-            ipaddress = q.drp.ipaddress.get(service.ipaddressguids[0])
+            ipaddress = p.api.model.racktivity.ipaddress.get(service.ipaddressguids[0])
             masteripaddress = ipaddress.address
             masternetworkport = service.ports[0]
             deviceapiport = masternetworkport.portnr
     else:
-        events.raiseError("Can't find racktivity_application with meteringdeviceguid '%s'" % master.guid, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0030', tags='', escalate=False)
+        events.raiseError("Can't find application with meteringdeviceguid '%s'" % master.guid, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0030', tags='', escalate=False)
     portid = None
     for port in meteringdevice.ports:
         if port.label == params['label']:

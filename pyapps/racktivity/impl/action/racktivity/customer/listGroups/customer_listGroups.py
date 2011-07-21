@@ -1,14 +1,13 @@
 __author__ = 'racktivity'
-__tags__ = 'customer', 'listGroups'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    customer = q.drp.customer.get(params['customerguid'])
+    customer = p.api.model.racktivity.customer.get(params['customerguid'])
     groups = list()
     for groupguid in customer.cloudusergroups:
-        #q.drp.cloudusergroup.query('select guid, name, description from cloudusergroup.view_cloudusergroup_list where cloudusers contains %s')
-        cloudusergroup = q.drp.cloudusergroup.get(groupguid)
+        #p.api.model.racktivity.cloudusergroup.query('select guid, name, description from cloudusergroup.view_cloudusergroup_list where cloudusers contains %s')
+        cloudusergroup = p.api.model.racktivity.cloudusergroup.get(groupguid)
         groups.append({'guid': groupguid, 'name': cloudusergroup.name, 'description': cloudusergroup.description})
     
     params['result'] = {'returncode': True,

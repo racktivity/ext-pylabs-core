@@ -1,13 +1,12 @@
 __author__ = 'racktivity'
-__tags__ = 'device', 'listPowerPorts'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
 
-    filterObject = q.drp.device.getFilterObject()
-    filterObject.add('view_device_powerports', 'guid' , params['deviceguid'])
-    result = q.drp.device.findAsView(filterObject,'view_device_powerports')
+    filterObject = p.api.model.racktivity.device.getFilterObject()
+    filterObject.add('racktivity_view_device_powerports', 'guid' , params['deviceguid'])
+    result = p.api.model.racktivity.device.findAsView(filterObject,'racktivity_view_device_powerports')
 
     params['result'] = {'returncode': True, 'powerports': result}
 

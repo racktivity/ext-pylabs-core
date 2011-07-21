@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'enterprise', 'updateModelProperties'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating enterprise properties in the model', 3)
-    enterprise = q.drp.enterprise.get(params['enterpriseguid'])
+    enterprise = p.api.model.racktivity.enterprise.get(params['enterpriseguid'])
     fields = ('name', 'description', 'tags')
     changed = False
 
@@ -15,11 +14,11 @@ def main(q, i, params, tags):
             setattr(enterprise, key, value)
             changed = True
     if changed:
-        logger.log_tasklet(__tags__, params, fields)
-        q.drp.enterprise.save(enterprise)
+        #logger.log_tasklet(__tags__, params, fields)
+        p.api.model.racktivity.enterprise.save(enterprise)
     
-    import racktivityui.uigenerator.enterprise
-    racktivityui.uigenerator.enterprise.update()
+    #import racktivityui.uigenerator.enterprise
+    #racktivityui.uigenerator.enterprise.update()
     
     
     params['result'] = {'returncode': True,

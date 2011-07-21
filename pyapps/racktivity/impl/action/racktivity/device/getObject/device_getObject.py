@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'device', 'getObject'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from osis.model.serializers import ThriftSerializer
     import base64
-    device  = q.drp.device.get(params['rootobjectguid'])
+    device  = p.api.model.racktivity.device.get(params['rootobjectguid'])
     params['result'] = base64.encodestring(ThriftSerializer.serialize(device))
 
 

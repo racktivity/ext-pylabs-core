@@ -1,43 +1,12 @@
 __author__ = 'racktivity'
-__tags__ = ('acl',
- 'application',
- 'backplane',
- 'cable',
- 'clouduser',
- 'cloudusergroup',
- 'collector',
- 'customer',
- 'datacenter',
- 'device',
- 'enterprise',
- 'errorcondition',
- 'feed',
- 'floor',
- 'ipaddress',
- 'job',
- 'lan',
- 'location',
- 'logicalview',
- 'meteringdevice',
- 'meteringdeviceevent',
- 'monitoringinfo',
- 'pod',
- 'policy',
- 'rack',
- 'racktivity',
- 'racktivity_application',
- 'resourcegroup',
- 'room',
- 'row',
- 'threshold'), 'deleteGroup'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from logger import logger
     from rootobjectaction_lib import rootobject_tree
-    logger.log_tasklet(tags, params)
+    #logger.log_tasklet(tags, params)
     params['result'] = {'returncode':False}
-    rootobject = getattr(q.drp, tags[0])
+    rootobject = getattr(p.api.model.racktivity, tags[0])
     rootobjectinstance = rootobject.get(params['rootobjectguid'])
     acl = rootobjectinstance.acl
     if not acl:
@@ -66,7 +35,7 @@ def main(q, i, params, tags):
     if params["recursive"]:
         children = rootobject_tree.getTree(params['rootobjectguid'], 1)["children"]
         for child in children:
-            obj = getattr(q.actions.rootobject, child["type"])
+            obj = getattr(p.api.action.racktivity, child["type"])
             obj.deleteGroup(rootobjectguid = child["guid"], group = group, action=action, recursive=True, request = params["request"])
 
 

@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdeviceevent', 'listLatest'
 
 from pg import escape_string
 import time
@@ -35,7 +34,7 @@ def searchRoom(q, guid):
 
 
 def searchPod(q, guid):
-    pod = q.drp.pod.get(guid)
+    pod = p.api.model.racktivity.pod.get(guid)
     mds = []
     for rack in pod.racks:
         mds += searchRack(q, rack)
@@ -46,7 +45,7 @@ def searchPod(q, guid):
     return mds
 
 def searchRow(q, guid):
-    row = q.drp.row.get(guid)
+    row = p.api.model.racktivity.row.get(guid)
     mds = []
     for rack in row.racks:
         mds += searchRack(q, rack)
@@ -67,7 +66,7 @@ SEARCHMETHODS = {'datacenterguid': searchDatacenter,
                  'rackguid': searchRack,
                  'meteringdeviceguid': searchMeteringDevice}
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False,
                         'racktivitydeviceeventinformation': []}
     
@@ -104,7 +103,7 @@ def main(q, i, params, tags):
     where.append("""event.meteringdeviceguid in (%s)""" % ", ".join(["'%s'" % g for g in mds])) 
     
     
-    results = q.drp.meteringdeviceevent.query(sql % {'where': "where %s" % " and ".join(where) if where else '',
+    results = p.api.model.racktivity.meteringdeviceevent.query(sql % {'where': "where %s" % " and ".join(where) if where else '',
                                                      'limit': limit})
     
     levelmap = {1: 'CRITICAL', 3: 'ERROR', 5: 'INFO', 0: 'UNKNOWN', 2: 'URGENT', 4: 'WARNING'}
@@ -112,8 +111,8 @@ def main(q, i, params, tags):
     for result in results:
         tags = q.base.tags.getObject(result['tags'])
         if result["meteringdeviceguid"]:
-            md = q.drp.meteringdevice.get(result["meteringdeviceguid"])
-            rack = q.drp.rack.get(md.rackguid)
+            md = p.api.model.racktivity.meteringdevice.get(result["meteringdeviceguid"])
+            rack = p.api.model.racktivity.rack.get(md.rackguid)
             result["meteringdevice"] = md.name
             result["rack"] = rack.name
             result["rackguid"] = rack.guid

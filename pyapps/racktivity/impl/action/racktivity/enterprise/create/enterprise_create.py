@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'enterprise', 'create'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
-    logger.log_tasklet(__tags__, params)
+def main(q, i, p, params, tags):
+    #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
     
     from rootobjectaction_lib import rootobjectaction_find
@@ -12,7 +11,7 @@ def main(q, i, params, tags):
         raise RuntimeError("Can't create more than one enterprise object")
 
     fields = ('name', 'description', 'tags')
-    enterprise = q.drp.enterprise.new()
+    enterprise = p.api.model.racktivity.enterprise.new()
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(enterprise, key, value)
@@ -24,16 +23,16 @@ def main(q, i, params, tags):
         enterprise.campuses.append(campus)
     acl = enterprise.acl.new()
     enterprise.acl = acl
-    q.drp.enterprise.save(enterprise)
+    p.api.model.racktivity.enterprise.save(enterprise)
 
-    from rootobjectaction_lib import rootobject_grant
-    rootobject_grant.grantUser(enterprise.guid, 'enterprise', params['request']['username'])
+    #from rootobjectaction_lib import rootobject_grant
+    #rootobject_grant.grantUser(enterprise.guid, 'enterprise', params['request']['username'])
 
     params['result'] = {'returncode': True,
                         'enterpriseguid': enterprise.guid}
 
-    import racktivityui.uigenerator.enterprise
-    racktivityui.uigenerator.enterprise.update()
+    #import racktivityui.uigenerator.enterprise
+    #racktivityui.uigenerator.enterprise.update()
 
 def match(q, i, params, tags):
     return True

@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
 __author__ = 'racktivity'
-__tags__ = 'autodiscoverysnmpmap', 'getObject'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from osis.model.serializers import ThriftSerializer
     import base64
-    autodiscoverysnmpmap  = q.drp.autodiscoverysnmpmap.get(params['rootobjectguid'])
+    autodiscoverysnmpmap  = p.api.model.racktivity.autodiscoverysnmpmap.get(params['rootobjectguid'])
     params['result'] = base64.encodestring(ThriftSerializer.serialize(autodiscoverysnmpmap))
 
 

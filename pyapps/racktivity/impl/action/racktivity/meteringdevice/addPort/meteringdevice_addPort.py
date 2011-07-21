@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'addPort'
 from rootobjectaction_lib import events
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     meteringdeviceguid = params['meteringdeviceguid']
-    meteringdevice = q.drp.meteringdevice.get(meteringdeviceguid)
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(meteringdeviceguid)
     for port in meteringdevice.ports:
         if port.label == params['label']:
             events.raiseError('Port label must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0044', tags='', escalate=False)
@@ -31,12 +30,12 @@ def main(q, i, params, tags):
             events.raiseError("Sequence '%s' is already taken by another port" % port.sequence, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0046', tags='', escalate=False)
         
     meteringdevice.ports.append(port)
-    q.drp.meteringdevice.save(meteringdevice)
+    p.api.model.racktivity.meteringdevice.save(meteringdevice)
 
     params['result'] = {'returncode':True}
     
-    import racktivityui.uigenerator.meteringdevice
-    racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
+    #import racktivityui.uigenerator.meteringdevice
+    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
 
 def match(q, i, params, tags):
     return True

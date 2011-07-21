@@ -1,8 +1,7 @@
 __author__ = 'racktivity'
-__tags__ = 'errorcondition', 'raiseErrorCondition'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     level = params['level']
     if not level:

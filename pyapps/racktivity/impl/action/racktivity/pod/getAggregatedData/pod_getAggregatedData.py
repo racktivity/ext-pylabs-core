@@ -1,5 +1,4 @@
 __author__ = 'roomtivity'
-__tags__ = 'pod', 'getAggregatedData'
 __priority__= 3
 
 import collections
@@ -15,16 +14,16 @@ def avg(v1, v2):
     else:
         return (v1 + v2) / 2
     
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     podguid = params['podguid']
-    pod = q.drp.pod.get(podguid)
+    pod = p.api.model.racktivity.pod.get(podguid)
     
     meteringtypes = params['meteringtypes']
     from rootobjectaction_lib import rootobjectaction_find
     rowguids = rootobjectaction_find.row_find(pod=podguid)
     from rootobjectaction_lib import rootobject_authorization
-    rowguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rowguids, q.drp.row , "getAggregatedData")
+    rowguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rowguids, p.api.model.racktivity.row , "getAggregatedData")
 
     result = {'Current': 0.0,
               'Voltage': 0.0,
@@ -47,7 +46,7 @@ def main(q, i, params, tags):
               'Co2': [0.0, 0.0, 0.0, 0.0]}
     
     for rowguid in rowguids:
-        rowresult = q.actions.rootobject.row.getAggregatedData(rowguid, meteringtypes, request = params["request"])['result']
+        rowresult = p.api.action.racktivity.row.getAggregatedData(rowguid, meteringtypes, request = params["request"])['result']
         for meteringtype, value in rowresult['value'].iteritems():
             if meteringtype in ("Temperature", "Humidity", "Airflow"):
                 result[meteringtype] = avg(result[meteringtype], float(value))
@@ -62,7 +61,7 @@ def main(q, i, params, tags):
                     averages[meteringtype][i] += float(value)
                     
     for rackguid in pod.racks:
-        rackresult = q.actions.rootobject.rack.getAggregatedData(rackguid, meteringtypes, request = params["request"])['result']
+        rackresult = p.api.action.racktivity.rack.getAggregatedData(rackguid, meteringtypes, request = params["request"])['result']
         for meteringtype, value in rackresult['value'].iteritems():
             if meteringtype in ('Voltage', 'Frequency'):
                 result[meteringtype] = avg(result[meteringtype], float(value))

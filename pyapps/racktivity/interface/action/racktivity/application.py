@@ -1,6 +1,6 @@
-class Application():
+class Racktivity_Application():
 
-    def create(self, name, deviceguid="",  parentapplicactionguid="",description="", customsettings="", template=False, tags="",  request="", jobguid="", executionparams=dict()):
+    def create(self, name, deviceguid="", meteringdeviceguid="", parentapplicactionguid="",description="", customsettings="", template=False, tags="",  request="", jobguid="", executionparams=dict()):
         """
         Creates a new application, does not provision application yet
         Application does not have to be linked to a machine.
@@ -10,6 +10,9 @@ class Application():
         @param deviceguid:            guid of the device related to this application
         @type deviceguid:             guid
         
+        @param meteringdeviceguid:            guid of the meteringdevice related to this application
+        @type meteringdeviceguid:             guid
+
         @param name:                   Name for this new application. The name is a freely chosen name, which has to be unique in SPACE.
         @type name:                    string
 
@@ -40,13 +43,16 @@ class Application():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def createFromTemplate(self, deviceguid, applicationtemplateguid, name, description="", customsettings="", tags="",  request="", jobguid="", executionparams=dict()):
+    def createFromTemplate(self, deviceguid, meteringdeviceguid, applicationtemplateguid, name, description="", customsettings="", tags="",  request="", jobguid="", executionparams=dict()):
         """
         Creates a new application, does not provision application yet
 
         @param deviceguid:                      guid of the device related to this application
         @type deviceguid:                       guid
         
+        @param meteringdeviceguid:            guid of the meteringdevice related to this application
+        @type meteringdeviceguid:             guid
+
         @param applicationtemplateguid:          guid of the applicationtemplate to create this application from
         @type applicationtemplateguid:           guid
 
@@ -248,7 +254,7 @@ class Application():
         """
         
         
-    def list(self, deviceguid="",  applicationguid="", name="",status="", request="", jobguid="", executionparams=dict()):
+    def list(self, deviceguid="", meteringdeviceguid="",  applicationguid="", name="",status="", request="", jobguid="", executionparams=dict()):
         """
         Returns a list of applications.
         @SECURITY administrator only
@@ -258,6 +264,9 @@ class Application():
         @param deviceguid:       guid of the device on which the application is running if avalailable else empty string
         @type deviceguid:        guid
         
+        @param meteringdeviceguid:            guid of the meteringdevice related to this application
+        @type meteringdeviceguid:             guid
+
         @param applicationguid:   guid of the application if avalailable else empty string
         @type applicationguid:    guid
         
@@ -909,7 +918,6 @@ class Application():
         @return:                 dictionary with True as and status as result and jobguid: {'result': {'returncode':True, 'status':, 'jobguid': guid}
         @rtype:                  dictionary
         """
-
     def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
         """
         Update ACL in a rootobject.

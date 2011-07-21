@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'enterprise', 'addCampus'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    enterprise = q.drp.enterprise.get(params['enterpriseguid'])
+    enterprise = p.api.model.racktivity.enterprise.get(params['enterpriseguid'])
     
     if params['campus'] in enterprise.campuses:
         raise ValueError("Campus with guid %s already exists in the enterprise"%params['campus'])
@@ -13,10 +12,10 @@ def main(q, i, params, tags):
         raise ValueError("Campus with guid %s is not found in the system" % params['campus'])
     
     enterprise.campuses.append(params['campus'])
-    q.drp.enterprise.save(enterprise)
+    p.api.model.racktivity.enterprise.save(enterprise)
     
-    import racktivityui.uigenerator.enterprise
-    racktivityui.uigenerator.enterprise.update()
+    #import racktivityui.uigenerator.enterprise
+    #racktivityui.uigenerator.enterprise.update()
     
     params['result'] = {'returncode': True}
 

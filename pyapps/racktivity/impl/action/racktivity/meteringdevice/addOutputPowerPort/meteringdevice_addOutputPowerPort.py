@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'meteringdevice', 'addOutputPowerPort'
 from rootobjectaction_lib import events
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    meteringdevice = q.drp.meteringdevice.get(params['meteringdeviceguid'])
+    meteringdevice = p.api.model.racktivity.meteringdevice.get(params['meteringdeviceguid'])
     poweroutputs = meteringdevice.poweroutputs
     for poweroutput in poweroutputs:
         if poweroutput.label == params['label']:
@@ -32,15 +31,15 @@ def main(q, i, params, tags):
     
     
     meteringdevice.poweroutputs.append(poweroutput)
-    q.drp.meteringdevice.save(meteringdevice)
+    p.api.model.racktivity.meteringdevice.save(meteringdevice)
     params['result'] = {'returncode': True}
 
     from rootobjectaction_lib import rootobjectaction_find
-    appserverguids = rootobjectaction_find.racktivity_application_find(name='appserverrpc')
+    appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
     if not appserverguids:
         raise RuntimeError("Application 'appserverrpc' not found/configured")
     
-    appserver = q.drp.racktivity_application.get(appserverguids[0])
+    appserver = p.api.model.racktivity.application.get(appserverguids[0])
     url = appserver.networkservices[0].name
     
     portsmtypes = ('current', 'powerfactor', 'activeenergy',
@@ -56,8 +55,8 @@ def main(q, i, params, tags):
             
     q.actions.actor.graphdatabase.createStores(url, stores)
 
-    import racktivityui.uigenerator.meteringdevice
-    racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
+    #import racktivityui.uigenerator.meteringdevice
+    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
 
 def match(q, i, params, tags):
     return True

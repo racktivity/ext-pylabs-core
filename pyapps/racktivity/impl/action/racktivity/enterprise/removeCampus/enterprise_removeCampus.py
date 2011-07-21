@@ -1,15 +1,14 @@
 __author__ = 'racktivity'
-__tags__ = 'enterprise', 'removeCampus'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    enterprise = q.drp.enterprise.get(params['enterpriseguid'])
+    enterprise = p.api.model.racktivity.enterprise.get(params['enterpriseguid'])
     enterprise.campuses.remove(params['campus'])
-    q.drp.enterprise.save(enterprise)
+    p.api.model.racktivity.enterprise.save(enterprise)
     
-    import racktivityui.uigenerator.enterprise
-    racktivityui.uigenerator.enterprise.update()
+    #import racktivityui.uigenerator.enterprise
+    #racktivityui.uigenerator.enterprise.update()
     
     params['result'] = {'returncode': True}
 

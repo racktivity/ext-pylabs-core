@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'racktivity', 'findObject'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
-    filterobj = q.drp.racktivity.getFilterObject()
+    filterobj = p.api.model.racktivity.racktivity.getFilterObject()
     
-    guids = q.drp.racktivity.find(filterobj)
+    guids = p.api.model.racktivity.racktivity.find(filterobj)
     if guids:
         params['result'] = {'returncode': True,
                             'guid': guids[0]}

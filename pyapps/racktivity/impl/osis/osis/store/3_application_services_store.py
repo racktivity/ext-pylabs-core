@@ -11,7 +11,6 @@ def main(q, i, p, params, tags):
                   'status': root.status, 
                   'template': root.template, 
                   'applicationtemplateguid': root.applicationtemplateguid,
-                  'machineguid': root.machineguid, 
                   'customsettings': root.customsettings, 
                   'servicename':'', 
                   'servicedescription':'', 
@@ -43,7 +42,7 @@ def main(q, i, p, params, tags):
             records.append(fields)
     
         for service2machine in service.service2machines:
-            fields['service2machineguid'] = service2machine.machineguid
+            fields['service2machineguid'] = None #service2machine.machineguid
             records.append(fields)
         
         for service2networkzone in service.service2networkzones:

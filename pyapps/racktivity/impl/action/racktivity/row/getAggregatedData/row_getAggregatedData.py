@@ -1,5 +1,4 @@
 __author__ = 'roomtivity'
-__tags__ = 'row', 'getAggregatedData'
 __priority__= 3
 
 import collections
@@ -15,13 +14,13 @@ def avg(v1, v2):
     else:
         return (v1 + v2) / 2
     
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     rowguid = params['rowguid']
-    row = q.drp.row.get(rowguid)
+    row = p.api.model.racktivity.row.get(rowguid)
     rackguids = row.racks;
     from rootobjectaction_lib import rootobject_authorization
-    rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, q.drp.rack , "getAggregatedData")
+    rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
     
     meteringtypes = params['meteringtypes']
     
@@ -46,7 +45,7 @@ def main(q, i, params, tags):
               'Co2': [0.0, 0.0, 0.0, 0.0]}
     
     for rackguid in rackguids:
-        rackresult = q.actions.rootobject.rack.getAggregatedData(rackguid, meteringtypes, request = params["request"])['result']
+        rackresult = p.api.action.racktivity.rack.getAggregatedData(rackguid, meteringtypes, request = params["request"])['result']
         for meteringtype, value in rackresult['value'].iteritems():
             if meteringtype in ('Voltage', 'Frequency'):
                 result[meteringtype] = avg(result[meteringtype], float(value))

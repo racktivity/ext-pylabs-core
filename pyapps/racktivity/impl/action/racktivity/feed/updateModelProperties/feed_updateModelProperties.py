@@ -1,14 +1,13 @@
 __author__ = 'racktivity'
-__tags__ = 'feed', 'updateModelProperties'
 __priority__= 3
 from logger import logger
 from rootobjectaction_lib import rootobjectaction_find
 import time
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating feed properties in the model', 3)
-    feed = q.drp.feed.get(params['feedguid'])
+    feed = p.api.model.racktivity.feed.get(params['feedguid'])
     
     fields = ('name', 'datacenterguid', 'description', 'productiontype', 'co2emission', 'tags')
     #changes to co2emission is not logged
@@ -34,20 +33,20 @@ def main(q, i, params, tags):
         #log this event
         parms = dict(params)
         parms["productiontype"] = parms["feedproductiontype"]
-        logger.log_tasklet(__tags__, parms, logged_fields)
+        #logger.log_tasklet(__tags__, parms, logged_fields)
         #save the object
-        q.drp.feed.save(feed)
+        p.api.model.racktivity.feed.save(feed)
         
     if params['datacenterguid']:
         dcguid = params['datacenterguid']
         for guid in rootobjectaction_find.feed_find(datacenterguid=dcguid):
             if guid != feed.guid:
-                wrongfeed = q.drp.feed.get(guid)
+                wrongfeed = p.api.model.racktivity.feed.get(guid)
                 wrongfeed.datacenterguid = ''
-                q.drp.feed.save(wrongfeed)
+                p.api.model.racktivity.feed.save(wrongfeed)
                 
-    import racktivityui.uigenerator.feed
-    racktivityui.uigenerator.feed.update(feed.guid)
+    #import racktivityui.uigenerator.feed
+    #racktivityui.uigenerator.feed.update(feed.guid)
     
     params['result'] = {'returncode':True, 'feedguid': feed.guid}
 

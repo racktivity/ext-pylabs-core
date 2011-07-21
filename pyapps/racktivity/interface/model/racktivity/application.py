@@ -210,7 +210,7 @@ class application(model.RootObjectModel):
     applicationtemplateguid = model.GUID(thrift_id=6)
 
     #@doc guid of the machine on which the application is installed / running, optional
-    machineguid = model.GUID(thrift_id=7)
+    deviceguid = model.GUID(thrift_id=7)
 
     #@doc guid of the application which uses this application e.g. dssstore uses dssstoragedaemon, dssstoragedaemon is linked to a machine
     parentapplicationguids = model.List(model.GUID(),thrift_id=8)

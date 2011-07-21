@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'rack', 'getAggregatedData'
 __priority__= 3
 
 import collections
@@ -27,7 +26,7 @@ CO2EMISSIONS = {'COAL':800.0,
 
 def getEmissionFactor(q, mdguid):
     feeds = set()
-    device = q.drp.meteringdevice.get(mdguid)
+    device = p.api.model.racktivity.meteringdevice.get(mdguid)
     for input in device.powerinputs:
         if input.cableguid:
             guids = rootobjectaction_find.feed_find(cableguid=input.cableguid)
@@ -41,7 +40,7 @@ def getEmissionFactor(q, mdguid):
         q.logger.log("Metering deivce '%s' is connected to multiple feeds, Can't calculate CO2 emission")
         return 0
     
-    feed = q.drp.feed.get(feeds.pop())
+    feed = p.api.model.racktivity.feed.get(feeds.pop())
     timestamps = feed.co2emission.keys()
     
     if timestamps:
@@ -91,10 +90,10 @@ class KeyGen(object):
     def apparentpower(self):
         return self("ApparentPower")
     
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     rackguid = params['rackguid']
-    if not exists('view_rack_list', q.drp.rack, "guid", rackguid):
+    if not exists('racktivity_view_rack_list', p.api.model.racktivity.rack, "guid", rackguid):
         raise ValueError("No rack with this guid (%s) exists"%rackguid)
     
     meteringtypes = params['meteringtypes']
@@ -104,11 +103,11 @@ def main(q, i, params, tags):
                      'ActiveEnergy', 'ApparentEnergy', 'ApparentPower',
                      'Co2']
     
-    appserverguids = rootobjectaction_find.racktivity_application_find(name='appserverrpc')
+    appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
     if not appserverguids:
         raise RuntimeError("Application 'appserverrpc' not found/configured")
     
-    appserver = q.drp.racktivity_application.get(appserverguids[0])
+    appserver = p.api.model.racktivity.application.get(appserverguids[0])
     url = appserver.networkservices[0].name
     mdguids = rootobjectaction_find.meteringdevice_find(rackguid=rackguid)
     
@@ -140,7 +139,7 @@ def main(q, i, params, tags):
     
     
     for mdguid in mdguids:
-        md = q.drp.meteringdevice.get(mdguid)
+        md = p.api.model.racktivity.meteringdevice.get(mdguid)
         key = KeyGen(mdguid)
         
         databases[key.current] = "%s_current" % md.guid

@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'feed', 'addConnector'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     feedguid = params['feedguid']
     
-    feed = q.drp.feed.get(feedguid)
+    feed = p.api.model.racktivity.feed.get(feedguid)
     for feedconnector in feed.feedconnectors:
         if feedconnector.name == params['name']:
             raise ValueError('Connector name must be unique within the module')
@@ -31,7 +30,7 @@ def main(q, i, params, tags):
             raise RuntimeError("Sequence '%s' is already taken by another feedconnector" % feedconnector.sequence)
         
     feed.feedconnectors.append(feedconnector)
-    q.drp.feed.save(feed)
+    p.api.model.racktivity.feed.save(feed)
 
     params['result'] = {'returncode':True}
 

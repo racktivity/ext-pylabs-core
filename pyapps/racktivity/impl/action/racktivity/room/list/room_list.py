@@ -1,7 +1,6 @@
 __author__ = 'racktivity'
-__tags__ = 'room', 'list'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     roomguid = params['roomguid'] or None
     from rootobjectaction_lib import rootobjectaction_list

@@ -1,12 +1,11 @@
 __author__ = 'racktivity'
-__tags__ = 'location', 'updateModelProperties'
 __priority__= 3
 from logger import logger
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating location properties in the model', 3)
-    location = q.drp.location.get(params['locationguid'])
+    location = p.api.model.racktivity.location.get(params['locationguid'])
     fields = ('name', 'description', 'alias', 'address', 'city', 'country', 
               'public', 'timezonename', 'timezonedelta', 'tags')
     changed = False
@@ -23,18 +22,18 @@ def main(q, i, params, tags):
         changed = True
         
     if changed:
-        logger.log_tasklet(__tags__, params, fields)
-        q.drp.location.save(location)
+        #logger.log_tasklet(__tags__, params, fields)
+        p.api.model.racktivity.location.save(location)
     
-    import racktivityui.uigenerator.campus
-    import racktivityui.uigenerator.enterprise
-    racktivityui.uigenerator.campus.update(location.guid)
-    racktivityui.uigenerator.enterprise.update()
+    #import racktivityui.uigenerator.campus
+    #import racktivityui.uigenerator.enterprise
+    #racktivityui.uigenerator.campus.update(location.guid)
+    #racktivityui.uigenerator.enterprise.update()
 
     from rootobjectaction_lib import rootobjectaction_find
-    import racktivityui.uigenerator.datacenter
-    for dcguid in rootobjectaction_find.datacenter_find(locationguid=location.guid):
-        racktivityui.uigenerator.datacenter.update(dcguid)
+    #import racktivityui.uigenerator.datacenter
+    #for dcguid in rootobjectaction_find.datacenter_find(locationguid=location.guid):
+        #racktivityui.uigenerator.datacenter.update(dcguid)
     
     params['result'] = {'returncode': True,
                         'locationguid': location.guid}

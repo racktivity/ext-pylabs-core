@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'floor', 'getObject'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from osis.model.serializers import ThriftSerializer
     import base64
-    room  = q.drp.floor.get(params['rootobjectguid'])
+    room  = p.api.model.racktivity.floor.get(params['rootobjectguid'])
     params['result'] = base64.encodestring(ThriftSerializer.serialize(room))
 
 def match(q, i, params, tags):

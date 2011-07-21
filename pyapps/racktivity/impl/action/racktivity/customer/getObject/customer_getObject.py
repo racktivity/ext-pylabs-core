@@ -1,11 +1,10 @@
 __author__ = 'racktivity'
-__tags__ = 'customer', 'getObject'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from osis.model.serializers import ThriftSerializer
     import base64
-    customer  = q.drp.customer.get(params['rootobjectguid'])
+    customer  = p.api.model.racktivity.customer.get(params['rootobjectguid'])
     params['result'] = base64.encodestring(ThriftSerializer.serialize(customer))
 
 

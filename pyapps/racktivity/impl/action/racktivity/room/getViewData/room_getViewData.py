@@ -1,8 +1,7 @@
 __author__ = 'aserver'
-__tags__ = 'room', 'getViewData'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False, "data" :list()}
     meteringUnits = {"Voltage":"V", "Power":"W", "Current":"A", "PowerFactor":"", "ActiveEnergy":"kwh"}
     from rootobjectaction_lib import rootobjectaction_find

@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'customer', 'getAggregatedData'
 __priority__= 3
 
 import collections
@@ -26,7 +25,7 @@ def expanddevices(guids):
     
     return set(devices)
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     customerguid = params['customerguid']
     meteringtypes = params['meteringtypes']
@@ -42,11 +41,11 @@ def main(q, i, params, tags):
     if not meteringtypes:
         raise RuntimeError("Empty list of meteringtypes")
     
-    appserverguids = rootobjectaction_find.racktivity_application_find(name='appserverrpc')
+    appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
     if not appserverguids:
         raise RuntimeError("Application 'appserverrpc' not found/configured")
     
-    appserver = q.drp.racktivity_application.get(appserverguids[0])
+    appserver = p.api.model.racktivity.application.get(appserverguids[0])
     url = appserver.networkservices[0].name
     
     resourcesguids = rootobjectaction_find.resourcegroup_find(customerguid=customerguid)
@@ -60,10 +59,10 @@ def main(q, i, params, tags):
     resolution = 300
     
     for resourceguid in resourcesguids:
-        resource = q.drp.resourcegroup.get(resourceguid)
+        resource = p.api.model.racktivity.resourcegroup.get(resourceguid)
         mdguids = expanddevices(resource.deviceguids)
         for deviceguid in mdguids:
-            md = q.drp.meteringdevice.get(deviceguid)
+            md = p.api.model.racktivity.meteringdevice.get(deviceguid)
             for port in md.poweroutputs:
                 if 'Current' in meteringtypes:
                     databases['Current-%s' % portseq] = {'databasename': "%s_%d_current" % (md.guid, port.sequence),

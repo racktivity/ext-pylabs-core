@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'lan', 'getNextMacRange'
 __priority__= 3
 
 def increment(mac):
@@ -22,10 +21,10 @@ def increment(mac):
     if incremented:
        return ':'.join(reversed(newmac))
           
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     sql = "select macrange from lan.view_lan_list where not macrange is null order by macrange desc"
-    result = q.drp.lan.query(sql)
+    result = p.api.model.racktivity.lan.query(sql)
     result = increment(result[0]['macrange'])
     params['result'] = {'returncode': True,
                         'macrange': result}

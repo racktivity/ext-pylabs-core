@@ -1,45 +1,14 @@
 __author__ = 'racktivity'
-__tags__ = ('acl',
- 'application',
- 'backplane',
- 'cable',
- 'clouduser',
- 'cloudusergroup',
- 'collector',
- 'customer',
- 'datacenter',
- 'device',
- 'enterprise',
- 'errorcondition',
- 'feed',
- 'floor',
- 'ipaddress',
- 'job',
- 'lan',
- 'location',
- 'logicalview',
- 'meteringdevice',
- 'meteringdeviceevent',
- 'monitoringinfo',
- 'pod',
- 'policy',
- 'rack',
- 'racktivity',
- 'racktivity_application',
- 'resourcegroup',
- 'room',
- 'row',
- 'threshold'), 'addGroup'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     from logger import logger
     from rootobjectaction_lib import rootobject_tree
-    logger.log_tasklet(tags, params)
+    #logger.log_tasklet(tags, params)
     q.logger.log('params='+str(params))
     q.logger.log('tags='+str(tags))
     params['result'] = {'returncode':False}
-    rootobject = getattr(q.drp, tags[0])
+    rootobject = getattr(p.api.model.racktivity, tags[0])
     rootobjectinstance = rootobject.get(params['rootobjectguid'])
     acl = rootobjectinstance.acl
     if not acl:
@@ -48,7 +17,7 @@ def main(q, i, params, tags):
     group = params['group']
     groupaction = None
     action = params['action']
-    actions = dir(getattr(q.actions.rootobject, tags[0]))
+    actions = dir(getattr(p.api.action.racktivity, tags[0]))
     if action:
         if action not in actions:
             q.logger.log("action '%s' is not defined for root object"%action)
@@ -64,7 +33,7 @@ def main(q, i, params, tags):
     if params["recursive"]:
         children = rootobject_tree.getTree(params['rootobjectguid'], 1)["children"]
         for child in children:
-            obj = getattr(q.actions.rootobject, child["type"])
+            obj = getattr(p.api.action.racktivity, child["type"])
             obj.addGroup(rootobjectguid = child["guid"], group = group, action=action, recursive=True, request = params["request"])
 
 def match(q, i, params, tags):

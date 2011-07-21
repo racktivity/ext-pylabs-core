@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'threshold', 'updateModelProperties'
 from logger import logger
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
-    threshold = q.drp.threshold.get(params['thresholdguid'])
+    threshold = p.api.model.racktivity.threshold.get(params['thresholdguid'])
     q.logger.log('Updating model properties of threshold %s' % params['thresholdguid'], 3)
     fields = ('thresholdtype', 'minimum', 'maximum', 'thresholdimpacttype', 
               'clouduserguid', 'tags')
@@ -15,8 +14,8 @@ def main(q, i, params, tags):
             setattr(threshold, key, value)
             changed = True
     if changed:
-        logger.log_tasklet(__tags__, params, fields)
-        q.drp.threshold.save(threshold)
+        #logger.log_tasklet(__tags__, params, fields)
+        p.api.model.racktivity.threshold.save(threshold)
     params['result'] = {'returncode': True,
                         'thresholdguid': threshold.guid}
 

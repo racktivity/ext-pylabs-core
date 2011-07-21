@@ -1,10 +1,9 @@
 __author__ = 'racktivity'
-__tags__ = 'feed', 'deleteConnector'
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     feedguid = params['feedguid']
-    feed = q.drp.feed.get(feedguid)
+    feed = p.api.model.racktivity.feed.get(feedguid)
     connector = None
     for p in feed.feedconnectors:
         if p.name == params['name']:
@@ -15,7 +14,7 @@ def main(q, i, params, tags):
     
     #Delete the connector from the feed and save to drp
     feed.feedconnectors.remove(connector)
-    q.drp.feed.save(feed)
+    p.api.model.racktivity.feed.save(feed)
 
     params['result'] = {'returncode':True}
 

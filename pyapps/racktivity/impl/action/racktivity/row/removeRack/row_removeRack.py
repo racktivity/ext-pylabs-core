@@ -1,16 +1,15 @@
 __author__ = 'racktivity'
-__tags__ = 'row', 'removeRack'
 __priority__= 3
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     rowguid = params['rowguid']
-    row = q.drp.row.get(rowguid)
+    row = p.api.model.racktivity.row.get(rowguid)
     row.racks.remove(params['rackguid'])
-    q.drp.row.save(row)
+    p.api.model.racktivity.row.save(row)
     
-    import racktivityui.uigenerator.row
-    racktivityui.uigenerator.row.update(rowguid)
+    #import racktivityui.uigenerator.row
+    #racktivityui.uigenerator.row.update(rowguid)
     
     params['result'] = {'returncode': True}
 

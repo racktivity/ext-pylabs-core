@@ -1,12 +1,11 @@
 __author__ = 'aserver'
-__tags__ = 'resourcegroup', 'removeDevice'
 __priority__= 3
 
-def main(q, i, params, tags):
-    resourcegroup = q.drp.resourcegroup.get(params['resourcegroupguid'])
+def main(q, i, p, params, tags):
+    resourcegroup = p.api.model.racktivity.resourcegroup.get(params['resourcegroupguid'])
     if params['deviceguid'] in resourcegroup.deviceguids:
         resourcegroup.deviceguids.remove(params['deviceguid'])
-    q.drp.resourcegroup.save(resourcegroup)
+    p.api.model.racktivity.resourcegroup.save(resourcegroup)
     params['result'] = True
 
 def match(q, i, params, tags):

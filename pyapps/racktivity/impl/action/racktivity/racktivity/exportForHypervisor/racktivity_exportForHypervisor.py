@@ -1,5 +1,4 @@
 __author__ = 'racktivity'
-__tags__ = 'racktivity', 'exportForHypervisor'
 
 import re
 import time
@@ -36,7 +35,7 @@ def searchRoom(q, guid, request):
 
 
 def searchPod(q, guid, request):
-    pod = q.drp.pod.get(guid)
+    pod = p.api.model.racktivity.pod.get(guid)
     mds = []
     for rack in pod.racks:
         mds += searchRack(q, rack, request)
@@ -47,7 +46,7 @@ def searchPod(q, guid, request):
     return mds
 
 def searchRow(q, guid, request):
-    row = q.drp.row.get(guid)
+    row = p.api.model.racktivity.row.get(guid)
     mds = []
     for rack in row.racks:
         mds += searchRack(q, rack, request)
@@ -61,7 +60,7 @@ def searchMeteringDevice(q, guid, request):
     return [guid]
 
 def searchLogicalView(q, guid, request):
-    results = q.actions.rootobject.logicalview.getViewResult(guid, request=request)['result']['info']
+    results = p.api.action.racktivity.logicalview.getViewResult(guid, request=request)['result']['info']
     meteringdevices = list()
     
     for result in results:
@@ -132,14 +131,14 @@ def getPortsAndSensors(q, md):
                         'type': sn.type,
                         'label': sn.label})
     for mdguid in rootobjectaction_find.meteringdevice_find(parentmeteringdeviceguid=md.guid):
-        submd = q.drp.meteringdevice.get(mdguid)
+        submd = p.api.model.racktivity.meteringdevice.get(mdguid)
         subports, subsensors = getPortsAndSensors(q, submd)
         ports += subports
         sensors += subsensors
         
     return ports, sensors
 
-def main(q, i, params, tags):
+def main(q, i, p, params, tags):
     params['result'] = {'returncode': False}
     
     rootobjectguid = params['rootobjectguid']
@@ -148,7 +147,7 @@ def main(q, i, params, tags):
     obj = None
     searchmethod = None
     for type, search in SEARCH_OBJ.iteritems():
-        objtype = getattr(q.drp, type)
+        objtype = getattr(p.api.model.racktivity, type)
         try:
             obj = objtype.get(rootobjectguid)
             searchmethod = search
@@ -166,13 +165,13 @@ def main(q, i, params, tags):
     devicesxml = []
     for mdguid in meteringdevices:
         #get it's data.
-        md = q.drp.meteringdevice.get(mdguid)
+        md = p.api.model.racktivity.meteringdevice.get(mdguid)
         if md.parentmeteringdeviceguid:
             continue
         portsxml = []
         sensorsxml = []
         
-        data = q.actions.rootobject.meteringdevice.getCurrentDeviceData(mdguid, "all")['result']['value']
+        data = p.api.action.racktivity.meteringdevice.getCurrentDeviceData(mdguid, "all")['result']['value']
         ports, sensors = getPortsAndSensors(q, md)
         
         for port in ports:
@@ -204,9 +203,9 @@ def main(q, i, params, tags):
                                                 'max': sensordata['MaxValue'],
                                                 'min': sensordata['MinValue']})
                 
-        rackappguid = rootobjectaction_find.racktivity_application_find(meteringdeviceguid=md.guid)
-        rackapp = q.drp.racktivity_application.get(rackappguid[0])
-        ipaddress = q.drp.ipaddress.get(rackapp.networkservices[0].ipaddressguids[0])
+        rackappguid = rootobjectaction_find.application_find(meteringdeviceguid=md.guid)
+        rackapp = p.api.model.racktivity.application.get(rackappguid[0])
+        ipaddress = p.api.model.racktivity.ipaddress.get(rackapp.networkservices[0].ipaddressguids[0])
         
         devicesxml.append(XML_DEVICE % {'fwver': data.get('FirmwareVersion', ""),
                                   'hwver': data.get('HardwareVersion', ""),
@@ -222,7 +221,7 @@ def main(q, i, params, tags):
     if returnformat == "raw":
         params['result'] = {'returncode': True, 'export': exportxml}
     elif returnformat == "filename":
-        applicationguids = rootobjectaction_find.racktivity_application_find(name='racktivity_agent')
+        applicationguids = rootobjectaction_find.application_find(name='racktivity_agent')
         agentguid = None
         if applicationguids:
             agentguid = applicationguids[0]
