@@ -6,7 +6,6 @@ from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
 from agent_cfg import AgentPyApps
 from applicationserver_cfg import AppServerPyApps
-import uuid
 
 POSTGRESUSER = "postgres"
 join = q.system.fs.joinPaths
@@ -17,8 +16,6 @@ def min_range(pyappsCfg):
         return 20000
     minRange = list()
     for section in sections:
-        if section == "admin":
-            continue
         portrange = pyappsCfg.getValue(section, 'port_range')
         minRange.append(int(portrange.split(':')[1]))
     return max(minRange)
@@ -48,15 +45,6 @@ class PyAppsConfigGen:
             params = self.get_needed_params(min_)
             for key, value in params.iteritems():
                 pyappsCfg.addParam(self.appName, key, value)
-
-            #Create/update the admin account section whenever a pyapp application is created
-            exists = pyappsCfg.checkSection("admin")
-            if not exists:
-                pyappsCfg.addSection("admin")
-                pyappsCfg.addParam("admin", "username", "admin")
-                pyappsCfg.addParam("admin", "password", str(uuid.uuid4()))
-            else:
-                pyappsCfg.setParam("admin", "password", str(uuid.uuid4()));
 
             pyappsCfg.write()
             self._load_config()
