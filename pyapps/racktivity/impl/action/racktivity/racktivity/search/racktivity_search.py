@@ -5,7 +5,7 @@ from rootobjectaction_lib import rootobjectaction_find
 rootobjectmap = {'datacenter': rootobjectaction_find.datacenter_find,
                  'room': rootobjectaction_find.room_find,
                  'rack': rootobjectaction_find.rack_find,
-                 'meteringdevice': rootobjectaction_find.meteringdevice_find,
+                 'meteringdevice': rootobjectaction_find.find,
                  'device': rootobjectaction_find.device_find}
 
 def getData(q, rootobjecttype, guids):
