@@ -7,16 +7,15 @@ def main(q, i, p, params, tags):
                                                                                                   id=params['id'],
                                                                                                   meteringdevicetype=params['meteringdevicetype'],
                                                                                                   template=params['template'],
-                                                                                                  thresholdguid=params['thresholdguid'],
                                                                                                   rackguid=params['rackguid'],
                                                                                                   cableguid=params['cableguid'],
                                                                                                   parentmeteringdeviceguid=params['parentmeteringdeviceguid'],
                                                                                                   clouduserguid=params['clouduserguid'],
                                                                                                   height=params['height'],
+                                                                                                  ipaddress=params['ipaddress'],
                                                                                                   positionx=params['positionx'],
                                                                                                   positiony=params['positiony'],
                                                                                                   positionz=params['positionz'],
-                                                                                                  ipaddressguid=params['ipaddressguid'],
                                                                                                   tags=params['tags'],
                                                                                                   meteringdeviceconfigstatus=params['meteringdeviceconfigstatus'])}
 

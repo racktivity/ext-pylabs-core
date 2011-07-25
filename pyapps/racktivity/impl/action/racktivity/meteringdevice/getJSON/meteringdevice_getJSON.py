@@ -37,19 +37,7 @@ def main(q, i, p, params, tags):
     else:
         master = p.api.model.racktivity.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
      
-    from rootobjectaction_lib import rootobjectaction_find
-    applications = rootobjectaction_find.application_find(meteringdeviceguid=master.guid, name='MeteringdeviceAPI')
-    masteripaddress = None
-    deviceapiport = 0
-    if applications:
-        application = p.api.model.racktivity.racktivity_application.get(applications[0])
-        service = application.networkservices[0]
-        if service.ipaddressguids:
-            ipaddress = p.api.model.racktivity.ipaddress.get(service.ipaddressguids[0])
-            masteripaddress = ipaddress.address
-        else:
-            masteripaddress = None
-    info['ipaddress'] = masteripaddress
+    info['ipaddress'] = master.network.ipaddress
 
     params['result'] = json.dumps(info)
 

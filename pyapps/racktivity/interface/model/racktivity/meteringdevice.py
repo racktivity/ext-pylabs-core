@@ -46,7 +46,7 @@ class sensor(model.Model):
     attributes = model.Dict(model.String(), thrift_id=5)
 
 # @doc class which provides the properties of a metering device input
-class powerinput(model.Model):
+class powerports(model.Model):
 
     #@doc label of the input
     label = model.String(thrift_id=1)
@@ -60,41 +60,11 @@ class powerinput(model.Model):
     #@doc specific attributes for this powerinput
     attributes = model.Dict(model.String(), thrift_id=4)
 
-# @doc class which provides the properties of a metering device output
-class poweroutput(model.Model):
-
-    #@doc label of the input
-    label = model.String(thrift_id=1)
-
-    #@doc sequence of the port
-    sequence = model.Integer(thrift_id=2)
-    
-    #@doc guid of the cable to which the power input is connected
-    cableguid = model.GUID(thrift_id=3)
-    
-    #@doc guid of the thresholds which are defined on the poweroutput
-    thresholdguids = model.List(model.GUID(),thrift_id=4)
-
-    #@doc specific attributes for this powerinput
-    attributes = model.Dict(model.String(), thrift_id=5)
-    
-# @doc nic interface
-class nic(model.Model):
-
+class network(model.Model):
     #@doc hardware address like macaddr
-    hwaddr = model.String(thrift_id=1)
-
-    #@doc type of nic
-    nictype = model.Enumeration(nictype,thrift_id=2)
-
-    #@doc status of nic
-    status = model.Enumeration(nicstatustype,thrift_id=3)
-
-    #@doc NIC order to identify how the NICs come up e.g. 0 for eth0, 1 for eth1
-    order = model.Integer(thrift_id=4)
-
-    #@doc list of IP addresses on the NIC
-    ipaddressguids = model.List(model.GUID(),thrift_id=5)    
+    ipaddress = model.String(thrift_id=1)
+    port = model.Integer(thrift_id=2)
+    protocol = model.String(thrift_id=3)
 
 from acl import acl
 # @doc power device
@@ -106,8 +76,8 @@ class meteringdevice(model.RootObjectModel):
     #@doc id of the the slave e.g T1, P1
     id = model.String(thrift_id=2)
     
-    #@doc meteringdevicetype, listed in the enumerator meteringdeviceype
-    meteringdevicetype = model.Enumeration(meteringdevicetype,thrift_id=3)
+    #@doc meteringdevicetype, string that specify the type of meteringdevice
+    meteringdevicetype = model.String(thrift_id=3)
 
     #@doc guid of the parent meteringdevice, in case of master/slave configurations
     parentmeteringdeviceguid = model.GUID(thrift_id=4)
@@ -131,44 +101,37 @@ class meteringdevice(model.RootObjectModel):
     height = model.Integer(thrift_id=10)
 
     #@doc list of power inputs for the meteringdevice
-    powerinputs = model.List(model.Object(powerinput),thrift_id=11)
+    powerinputs = model.List(model.Object(powerports),thrift_id=11)
     
     #@doc list of power outputs for the meteringdevice
-    poweroutputs = model.List(model.Object(poweroutput),thrift_id=12)
+    poweroutputs = model.List(model.Object(powerports),thrift_id=12)
     
     #@doc list of sensors for the meteringdevice
     sensors = model.List(model.Object(sensor),thrift_id=13)
-     
-    #@doc list of NICs on the machine
-    nics = model.List(model.Object(nic),thrift_id=14)
  
     #@doc guid of the application which holds all SNMP related information
     snmpapplicationguid = model.String(thrift_id=15)
-
-    #@doc specific attributes e.g oled brighteness.
-    attributes = model.Dict(model.String(), thrift_id=16)
     
     #@doc list of ports(e.g serial, ...) connected to the device
-    ports = model.List(model.Object(port),thrift_id=17)
+    ports = model.List(model.Object(port),thrift_id=16)
     
     #@doc list of accounts who can access the meteringdevice
-    accounts = model.List(model.Object(account),thrift_id=18)
+    accounts = model.List(model.Object(account),thrift_id=17)
     
     #@doc is template, when template used as template for the meteringdevice
-    template = model.Boolean(thrift_id=19)
+    template = model.Boolean(thrift_id=18)
     
     #@doc series of tags format
-    tags = model.String(thrift_id=20)
+    tags = model.String(thrift_id=19)
     
     #@doc meteringdeviceconfigstatus, listed in the enumerator meteringdeviceconfigstatus
-    meteringdeviceconfigstatus = model.Enumeration(meteringdeviceconfigstatus,thrift_id=21)
-    
-    #@doc meteringdeviceconfigstatus, listed in the enumerator meteringdeviceconfigstatus
-    collectorguid = model.GUID(thrift_id=22)
+    meteringdeviceconfigstatus = model.Enumeration(meteringdeviceconfigstatus,thrift_id=20)
 
     #@doc access control list
-    acl = model.Object(acl,thrift_id=23)
+    acl = model.Object(acl,thrift_id=21)
     
     #@doc last accessed time
-    lastaccessed = model.Integer(thrift_id=24)
-
+    lastaccessed = model.Integer(thrift_id=22)
+    
+    #@doc network information
+    network = model.Object(network,thrift_id=23)

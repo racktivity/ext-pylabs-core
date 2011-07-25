@@ -4,7 +4,7 @@ class MeteringDevice():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     """
     
-    def create(self, name, id, meteringdevicetype, template, rackguid, parentmeteringdeviceguid="", clouduserguid="", height=1, positionx=0, positiony=0, positionz=0, attributes={}, nicinfo= [], powerinputinfo=[], poweroutputinfo=[], portsinfo=[], sensorinfo=[],  accounts=[], tags="", meteringdeviceconfigstatus="CONFIGURED", request="", jobguid="", executionparams=dict()):
+    def create(self, name, id, meteringdevicetype, template, rackguid, parentmeteringdeviceguid=None, clouduserguid=None, height=1, positionx=0, positiony=0, positionz=0, attributes={}, networkinfo=None, powerinputinfo=[], poweroutputinfo=[], portsinfo=[], sensorinfo=[],  accounts=[], tags=None, meteringdeviceconfigstatus="CONFIGURED", request=None, jobguid=None, executionparams=dict()):
         """
         Create a meteringdevice.
        
@@ -43,8 +43,8 @@ class MeteringDevice():
         @param positionz:              Z position of the meteringdevice in rack. 0 means at the front side of the rack, 1 at the back side.
         @type positionz:               integer
         
-        @param nicinfo: list of nicinfo information [{hardwareaddr:"", nictype:"", status:""}]
-        @param nicinfo: array
+        @param networkinfo:            network information {ipaddress:"", port:"", protocol:""}
+        @param networkinfo:            dictionary
                 
         @param powerinputinfo:         list of powerinputinfo information [{label:"", sequence:0, cableguid: ""}]
         @type powerinputinfo:            array
@@ -79,7 +79,7 @@ class MeteringDevice():
         @raise e:                      In case an error occurred, exception is raised
         """
         
-    def delete(self, meteringdeviceguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, meteringdeviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a meteringdevice.
       
@@ -100,8 +100,8 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, meteringdeviceguid, name="", id="", meteringdevicetype="", template=False, rackguid="", parentmeteringdeviceguid="", clouduserguid="", \
-                              height=1, positionx=0, positiony=0, positionz=0, attributes="", accounts = [], tags="", meteringdeviceconfigstatus="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, meteringdeviceguid, name=None, id=None, meteringdevicetype=None, template=False, rackguid=None, parentmeteringdeviceguid=None, clouduserguid=None, networkinfo=None, \
+                              height=1, positionx=0, positiony=0, positionz=0, attributes=None, accounts = [], tags=None, meteringdeviceconfigstatus=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
      
@@ -130,6 +130,9 @@ class MeteringDevice():
 
         @param clouduserguid:          Guid of the cloud user who owns this meteringdevice
         @type clouduserguid:           guid
+
+        @param networkinfo:            network information {ipaddress:"", port:"", protocol:""}
+        @param networkinfo:            dictionary
 
         @param height:                 Height of the meteringdevice in U.
         @type height:                  integer
@@ -168,9 +171,9 @@ class MeteringDevice():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", id="", meteringdevicetype="", template=False, rackguid="", parentmeteringdeviceguid="", clouduserguid="", \
-             height=0, positionx=0, positiony=0, positionz=0,  cableguid="", thresholdguid="", ipaddressguid="", tags="", \
-             meteringdeviceconfigstatus="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, id=None, meteringdevicetype=None, template=False, rackguid=None, parentmeteringdeviceguid=None, clouduserguid=None, \
+             height=0, positionx=0, positiony=0, positionz=0, ipaddress=None,  cableguid=None, tags=None, \
+             meteringdeviceconfigstatus=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of meteringdevice guids which are matching the find criteria.
         
@@ -209,14 +212,11 @@ class MeteringDevice():
         @param positionz:              Z position of the meteringdevice in rack. 0 means at the front side of the rack, 1 at the back side.
         @type positionz:               integer
 
+        @param ipaddress:              Ip address of this meteringdevice (i.e. "127.0.0.1")
+        @type ipaddress:               string
+
         @param cableguid:         Guid of the cable to which the device is connected via his powerport
         @type cableguid:            guid
-        
-        @param ipaddressguid:         Guid of the ipaddress of the meteringdevice
-        @type ipaddressguid:          guid
-        
-        @param thresholdguid:  Guid of a threshold defined on a port or a sensor
-        @type guid
         
         @param tags: string of tags
         @type tags: string
@@ -241,7 +241,7 @@ class MeteringDevice():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, meteringdevicetype="", rackguid="", parentmeteringdeviceguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, meteringdevicetype=None, rackguid=None, parentmeteringdeviceguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all meteringdevice.
 
@@ -280,7 +280,7 @@ class MeteringDevice():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, meteringdeviceguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, meteringdeviceguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
        
@@ -293,7 +293,7 @@ class MeteringDevice():
         @warning:                   Only usable using the python client.
         """
 
-    def powerOnPowerPort(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def powerOnPowerPort(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Power on a port of a meteringdevice.
       
@@ -317,7 +317,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def powerOffPowerPort(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def powerOffPowerPort(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Power off a port of a meteringdevice.
       
@@ -341,7 +341,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def togglePowerPort(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def togglePowerPort(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Toggle a power port of a meteringdevice.
         (Power off the port if on  and power on a port if on on a meteringdevice)
@@ -366,7 +366,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def setPowerPortStartupDelay(self, meteringdeviceguid, label,delay, request="", jobguid="", executionparams=dict()):
+    def setPowerPortStartupDelay(self, meteringdeviceguid, label,delay, request=None, jobguid=None, executionparams=dict()):
         """
         Change the startup delay of a specific port on the metering device
       
@@ -393,7 +393,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def enableDHCP(self, meteringdeviceguid, request="", jobguid="", executionparams=dict()):
+    def enableDHCP(self, meteringdeviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Enable DHCP for a meteringdevice.
       
@@ -414,7 +414,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def disableDHCP(self, meteringdeviceguid, request="", jobguid="", executionparams=dict()):
+    def disableDHCP(self, meteringdeviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Disable DHCP for a meteringdevice.
       
@@ -435,9 +435,9 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def setFixedIPAddress(self, meteringdeviceguid, ipaddress, subnetmask, defaultgateway, request="", jobguid="", executionparams=dict()):
+    def setFixedIPAddress(self, meteringdeviceguid, ipaddress, subnetmask, defaultgateway, request=None, jobguid=None, executionparams=dict()):
         """
-        Set a fixed ipaddress on the meteringdevice
+        Set a fixed ipaddress on the meteringdevice and update the meteringdevice model
       
         @security administrators
 
@@ -465,7 +465,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """   
     
-    def addInputPowerPort(self, meteringdeviceguid, label, sequence="", request="", jobguid="", executionparams=dict()):
+    def addInputPowerPort(self, meteringdeviceguid, label, sequence=None, request=None, jobguid=None, executionparams=dict()):
         """
         Add a input powerport to the meteringdevice.
         
@@ -485,7 +485,7 @@ class MeteringDevice():
         """
         
         
-    def addOutputPowerPort(self, meteringdeviceguid, label, sequence="", request="", jobguid="", executionparams=dict()):
+    def addOutputPowerPort(self, meteringdeviceguid, label, sequence=None, request=None, jobguid=None, executionparams=dict()):
         """
         Add a output powerport to the meteringdevice.
         
@@ -504,7 +504,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
         
-    def deleteOutputPowerPort(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def deleteOutputPowerPort(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a output powerport from the meteringdevice.
         
@@ -520,7 +520,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
         
-    def deleteInputPowerPort(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def deleteInputPowerPort(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a input powerport from the meteringdevice.
         
@@ -536,7 +536,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
     
-    def addPort(self, meteringdeviceguid, label, porttype, sequence=0, request="", jobguid="", executionparams=dict()):
+    def addPort(self, meteringdeviceguid, label, porttype, sequence=0, request=None, jobguid=None, executionparams=dict()):
         """
         Add a port to the meteringdevice
         
@@ -555,7 +555,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
         
-    def deletePort(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def deletePort(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a port from the meteringdevice
         
@@ -572,7 +572,7 @@ class MeteringDevice():
         """
         
         
-    def addSensor(self, meteringdeviceguid, label, sensortype, sequence=0, request="", jobguid="", executionparams=dict()):
+    def addSensor(self, meteringdeviceguid, label, sensortype, sequence=0, request=None, jobguid=None, executionparams=dict()):
         """
         Add a sensor to the meteringdevice
         
@@ -592,7 +592,7 @@ class MeteringDevice():
         """
                 
     
-    def deleteSensor(self, meteringdeviceguid, label, request="", jobguid="", executionparams=dict()):
+    def deleteSensor(self, meteringdeviceguid, label, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a sensor from the meteringdevice
         
@@ -608,7 +608,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
            
-    def connectPowerInputPort(self, meteringdeviceguid, portlabel, cableguid, request="", jobguid="", executionparams=dict()):
+    def connectPowerInputPort(self, meteringdeviceguid, portlabel, cableguid, request=None, jobguid=None, executionparams=dict()):
         """
         Connect a cable to the powerinput of the meteringdevice 
         
@@ -625,7 +625,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
         
-    def connectPowerOutputPort(self, meteringdeviceguid, portlabel, cableguid, request="", jobguid="", executionparams=dict()):
+    def connectPowerOutputPort(self, meteringdeviceguid, portlabel, cableguid, request=None, jobguid=None, executionparams=dict()):
         """
         Connect a cable to the poweroutput of the meteringdevice 
         
@@ -642,7 +642,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """  
         
-    def disconnectPowerInputPort(self, meteringdeviceguid, portlabel="", cableguid="",  request="", jobguid="", executionparams=dict()):
+    def disconnectPowerInputPort(self, meteringdeviceguid, portlabel=None, cableguid=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Disconnect a cable from a power input port of the meteringdevice
         
@@ -659,7 +659,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """
         
-    def disconnectPowerOutputPort(self, meteringdeviceguid, portlabel="", cableguid="",  request="", jobguid="", executionparams=dict()):
+    def disconnectPowerOutputPort(self, meteringdeviceguid, portlabel=None, cableguid=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Disconnect a cable from a power output port of the meteringdevice
         
@@ -676,7 +676,7 @@ class MeteringDevice():
         @rtype:                       dictionary
         """   
         
-    def updatePowerInputPort(self, meteringdeviceguid, portlabel, newportlabel="", sequence="", attributes="", request="", jobguid="", executionparams=dict()):
+    def updatePowerInputPort(self, meteringdeviceguid, portlabel, newportlabel=None, sequence=None, attributes=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update a powerinput port identified by portlabel, set portlabel, honsequence, and optional attributes in the model and the meteringdevice
         
@@ -699,7 +699,7 @@ class MeteringDevice():
         @rtype:    dictionary
         """
         
-    def updatePowerOutputPort(self, meteringdeviceguid, portlabel, newportlabel="", sequence="", thresholds ="", attributes="", request="", jobguid="", executionparams=dict()):
+    def updatePowerOutputPort(self, meteringdeviceguid, portlabel, newportlabel=None, sequence=None, attributes=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update a poweroutput port , set portlabel, sequence, threshold and optional attributes in the model and the meteringdevice
         
@@ -715,9 +715,6 @@ class MeteringDevice():
         @param sequence: sequence of the power output port
         @type sequence: integer
         
-        @param thresholds: list of threshold guids which are defined on the poweroutput port
-        @type thresholds: array
-        
         @param attributes: dictionary of values to set on the power output port
         @type attributes: dictionary
         
@@ -725,7 +722,7 @@ class MeteringDevice():
         @rtype:    dictionary
         """
         
-    def updateSensor(self, meteringdeviceguid, sensorlabel, newsensorlabel="",  sequence="", sensortype="", thresholds="", attributes="", request="", jobguid="", executionparams=dict()):
+    def updateSensor(self, meteringdeviceguid, sensorlabel, newsensorlabel=None,  sequence=None, sensortype=None, attributes=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update sensor settings in the model and on the meteringdevice
             
@@ -741,9 +738,6 @@ class MeteringDevice():
             @param sequence: sequence of the power output port
             @type sequence: integer
         
-            @param thresholds: list of threshold guids which are defined on the poweroutput port
-            @type thresholds: array
-        
            @param attributes: dictionary of values to set on the power output port
            @type attributes: dictionary
         
@@ -753,7 +747,7 @@ class MeteringDevice():
         
 
 
-    def setAccount(self, meteringdeviceguid, login, password, usertype, request="", jobguid="", executionparams=dict()):
+    def setAccount(self, meteringdeviceguid, login, password, usertype, request=None, jobguid=None, executionparams=dict()):
         """
         Configure account information on the meteringdevice.
       
@@ -783,7 +777,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised
         """
         
-    def getPowerPortStatus(self, meteringdeviceguid, portlabel, request="", jobguid="", executionparams=dict()):
+    def getPowerPortStatus(self, meteringdeviceguid, portlabel, request=None, jobguid=None, executionparams=dict()):
         """
         Get the current status of a powerport
         
@@ -804,10 +798,8 @@ class MeteringDevice():
 
         @raise e:                     In case an error occurred, exception is raised
         """
-        
-        
     
-    def getCurrentPowerPortData(self, meteringdeviceguid, portlabel, meteringtype, request="", jobguid="", executionparams=dict()):
+    def getCurrentPowerPortData(self, meteringdeviceguid, portlabel, meteringtype, request=None, jobguid=None, executionparams=dict()):
         """
         Get the current value of a certain meteringtype on a powerport, this can be power, voltage ...
         
@@ -832,7 +824,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised       
         """
      
-    def getCurrentDeviceData(self, meteringdeviceguid, meteringtype, request="", jobguid="", executionparams=dict()):
+    def getCurrentDeviceData(self, meteringdeviceguid, meteringtype, request=None, jobguid=None, executionparams=dict()):
         """
         Get the current value of a certain meteringtype on a powerport, this can be power, voltage ...
         If the meteringtype is 'all', all currentdata(also from ports and sensors is returned in a dict() format).
@@ -862,8 +854,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised       
         """
 
-    
-    def getCurrentSensorData(self, meteringdeviceguid, sensorlabel, meteringtype, request="", jobguid="", executionparams=dict()):       
+    def getCurrentSensorData(self, meteringdeviceguid, sensorlabel, meteringtype, request=None, jobguid=None, executionparams=dict()):       
         """
         Get the current value of a certain meteringtype on a sensor, this can be temperature, humidity.
         
@@ -887,125 +878,8 @@ class MeteringDevice():
 
         @raise e:                     In case an error occurred, exception is raised       
         """
-           
-    def deleteThreshold(self, meteringdeviceguid, thresholdguid, request="", jobguid="", executionparams=dict()):
-        """
-        Delete a threshold from a meteringdevice.
-        
-        @meteringdeviceguid: guid of the meteringdevice
-        @type meteringdevice: guid 
-        
-        @param thresholdguid: guid of the threshold 
-        @type thresholdguid: guid
-        
-        @param jobguid:                Guid of the job if avalailable else empty string
-        @type jobguid:                 guid
-
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
-
-        @return:                        dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                        dictionary
-
-        @raise e:                     In case an error occurred, exception is raised       
-        """
-           
-    def listThresholdsOnPowerPort(self, meteringdeviceguid, powerportlabel, request="", jobguid="", executionparams=dict()):
-        """
-        Return a list of thresholds on a output powerport
-        
-        @param meteringdeviceguid: Guid of the meteringdevice.
-        @type meteringdeviceguid: guid
-        
-        @param powerportlabel: label of the powerport
-        @type powerportlabel: string
-        
-        @param jobguid:                Guid of the job if avalailable else empty string
-        @type jobguid:                 guid
-
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
-
-        @return:                       dictionary with a thresholdguids(list of thresholdguids), returncode(True)  as result and jobguid: {'result': {returncode:True, thresholdguid:['A8639879-5FEC-4D13-A091-BA111E050B72', 'A8639879-5FEC-4D13-A091-BA111E050B72']}, 'jobguid': guid}
-        @rtype:                        dictionary
-
-        @raise e:                     In case an error occurred, exception is raised       
-        """
-           
-    def listThresholdsOnSensor(self, meteringdeviceguid, sensorlabel, request="", jobguid="", executionparams=dict()):
-        """
-         Return a list of thresholds on a sensor 
-        
-        @param meteringdeviceguid: Guid of the meteringdevice.
-        @type meteringdeviceguid: guid
-        
-        @param sensorlabel: label of the sensor
-        @type sensorlabel: string
-        
-        @param jobguid:                Guid of the job if avalailable else empty string
-        @type jobguid:                 guid
-
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
-
-        @return:                       dictionary with a thresholdguids(list of thresholdguids), returncode(True)  as result and jobguid: {'result': {returncode:True, thresholdguid:['A8639879-5FEC-4D13-A091-BA111E050B72', 'A8639879-5FEC-4D13-A091-BA111E050B72']}, 'jobguid': guid}
-        @rtype:                        dictionary
-
-        @raise e:                     In case an error occurred, exception is raised       
-        """
-        
-    def addThresholdOnPowerPort(self, meteringdeviceguid, powerportlabel, thresholdguid, request="", jobguid="", executionparams=dict()):
-        """
-        Add a threshold on a powerport
-        
-        @param meteringdeviceguid: Guid of the meteringdevice.
-        @type meteringdeviceguid: guid
-        
-        @param powerportlabel: label of the powerport
-        @type powerportlabel: string
-        
-        @param thresholdguid: guid of the threshold to add
-        @type thresholdguid: guid
-        
-        @param jobguid:                Guid of the job if avalailable else empty string
-        @type jobguid:                 guid
-
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
-
-        @return:                       dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                        dictionary
-
-        @raise e:                     In case an error occurred, exception is raised       
-        """
-        
-    def addThresholdOnSensor(self, meteringdeviceguid, sensorlabel, thresholdguid, request="", jobguid="", executionparams=dict()):
-                """
-        Add a threshold on a sensor
-        
-        @param meteringdeviceguid: Guid of the meteringdevice.
-        @type meteringdeviceguid: guid
-        
-        @param sensorlabel: label of the sensor
-        @type sensorlabel: string
-        
-        @param thresholdguid: guid of the threshold to add
-        @type thresholdguid: guid
-        
-        @param jobguid:                Guid of the job if avalailable else empty string
-        @type jobguid:                 guid
-
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
-
-        @return:                       dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                        dictionary
-
-        @raise e:                     In case an error occurred, exception is raised       
-        """
-        
     
-    def getCo2UsageData(self, meteringdeviceguid, request="", jobguid="", executionparams=dict()):
+    def getCo2UsageData(self, meteringdeviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Get the current co2 usage of a meteringdevice and ports on a meteringdevice.
         The  result format will be:
@@ -1030,7 +904,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised       
         """
 
-    def setThresholdOnPowerPort(self, meteringdeviceguid, powerportlabel, thresholdtype, thresholdvalue, request="", jobguid="", executionparams=dict()):
+    def setThresholdOnPowerPort(self, meteringdeviceguid, powerportlabel, thresholdtype, thresholdvalue, request=None, jobguid=None, executionparams=dict()):
         """
         Set threshold on a powerport
         
@@ -1058,7 +932,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised       
         """
         
-    def setThreshold(self, meteringdeviceguid, thresholdtype, thresholdvalue, request="", jobguid="", executionparams=dict()):
+    def setThreshold(self, meteringdeviceguid, thresholdtype, thresholdvalue, request=None, jobguid=None, executionparams=dict()):
         """
         Set threshold on a device
         
@@ -1083,7 +957,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised       
         """
         
-    def getThresholdOnPowerPort(self, meteringdeviceguid, powerportlabel, thresholdtype, request="", jobguid="", executionparams=dict()):
+    def getThresholdOnPowerPort(self, meteringdeviceguid, powerportlabel, thresholdtype, request=None, jobguid=None, executionparams=dict()):
         """
         Get threshold on power port
         
@@ -1108,7 +982,7 @@ class MeteringDevice():
         @raise e:                     In case an error occurred, exception is raised       
         """
 
-    def getViewData(self, rootobjectguid, portlabel = '', request="", jobguid="", executionparams=dict()):
+    def getViewData(self, rootobjectguid, portlabel = '', request=None, jobguid=None, executionparams=dict()):
         """
         Returns view data as a list for this rootobject.
 
@@ -1121,7 +995,7 @@ class MeteringDevice():
         @return: [{viewdatatype:, viewdatavalue:, viewdataunit:},]
         """
         
-    def getTree(meteringdeviceguid, depth=2, jobguid="", executionparams=dict()):
+    def getTree(meteringdeviceguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
         
@@ -1138,7 +1012,7 @@ class MeteringDevice():
         @rtype:                   dictionary                
         """
 
-    def getJSON(self, meteringdeviceguid, request="", jobguid="",executionparams=dict()):
+    def getJSON(self, meteringdeviceguid, request=None, jobguid=None,executionparams=dict()):
         """
         Returns a JSON dict of the energyswitch.
         This is the format:
@@ -1155,7 +1029,7 @@ class MeteringDevice():
         """
 
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -1179,7 +1053,7 @@ class MeteringDevice():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -1210,7 +1084,7 @@ class MeteringDevice():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -1240,7 +1114,7 @@ class MeteringDevice():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def getPduHealthStatus(self, guid, timing = [3600, 86400], jobguid="", executionparams=dict()):
+    def getPduHealthStatus(self, guid, timing = [3600, 86400], jobguid=None, executionparams=dict()):
         """
         getPduHealtStatus, returns a list of 3 values, the first list contains the amount of pdus  which monitoring data is more recent then currenttime-timing[0], the second the  # of pdus  which are last monitored between currenttime - timing[0] and currenttime - timing[1] and the last list contains the amount of pdus which are monitored later then currenttime - timing[1]
         

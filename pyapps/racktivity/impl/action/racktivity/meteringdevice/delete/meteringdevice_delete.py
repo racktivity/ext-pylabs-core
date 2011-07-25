@@ -62,23 +62,6 @@ def main(q, i, p, params, tags):
         
     #q.actions.actor.graphdatabase.destroyStores(url, stores)
 
-    #if not meteringdevice.parentmeteringdeviceguid:
-        #q.logger.log('Deleting the MeteringdeviceAPI application', 3)
-        #applications = rootobjectaction_find.application_find(meteringdeviceguid = meteringdeviceguid, name="MeteringdeviceAPI")
-        #if applications:
-            #applicationguid = applications[0]
-            #p.api.action.racktivity.application.delete(applicationguid, request = params["request"])
-    
-    #Delete the ipaddress attached to this meteringdevice
-    q.logger.log('Deleting ipaddresses attached to the meteringdevice', 3)
-    for nic in meteringdevice.nics:
-        for ipaddressguid in nic.ipaddressguids:
-            try:
-                p.api.model.racktivity.ipaddress.get(ipaddressguid)
-            except:
-                continue
-            p.api.action.racktivity.ipaddress.delete(ipaddressguid, request = params["request"])
-    
     params['result'] = {'returncode': p.api.model.racktivity.meteringdevice.delete(meteringdeviceguid)}
 
     #Delete the meteringdevice page and update the rack page

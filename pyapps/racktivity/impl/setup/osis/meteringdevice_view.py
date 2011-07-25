@@ -25,6 +25,7 @@ def main(q, i, params, tags):
         view.setCol('height', q.enumerators.OsisType.INTEGER, True)
         view.setCol('snmpapplicationguid', q.enumerators.OsisType.UUID, True)
         view.setCol('template', q.enumerators.OsisType.BOOLEAN, True)
+        view.setCol('ipaddress', q.enumerators.OsisType.STRING, True)
         view.setCol('cloudusergroupactions',q.enumerators.OsisType.TEXT,True)
         view.setCol('tags', q.enumerators.OsisType.STRING, True)
         connection.viewAdd(view)

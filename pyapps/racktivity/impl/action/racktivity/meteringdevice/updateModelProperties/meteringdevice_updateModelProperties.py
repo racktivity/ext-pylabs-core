@@ -17,7 +17,7 @@ def main(q, i, p, params, tags):
         if key in fields and (value is not None) and value != '':
             setattr(meteringdevice, key, value)
             changed = True
-    if 'accounts' in params and params['accounts']:
+    if params['accounts']:
         for accountdict in params['accounts']:
             if 'guid' in accountdict:
                 for account in meteringdevice.accounts:
@@ -26,23 +26,16 @@ def main(q, i, p, params, tags):
                             setattr(account, key, value)
         changed = True
 
+    if params["networkinfo"]:
+        meteringdevice.network.ipaddress = params["networkinfo"]["ipaddress"]
+        meteringdevice.network.port = params["networkinfo"]["port"]
+        meteringdevice.network.protocol = params["networkinfo"]["protocol"]
+        changed = True
+
     if changed:
         #logger.log_tasklet(__tags__, params, fields)
         p.api.model.racktivity.meteringdevice.save(meteringdevice)
     params['result'] = {'returncode': True, 'meteringdeviceguid': meteringdevice.guid}
     
-    #if meteringdevice.meteringdeviceconfigstatus in (status.CONFIGURED, status.USED):
-        #import racktivityui.uigenerator.meteringdevice
-        #if previousStatus == status.IDENTIFIED:
-            #if not meteringdevice.parentmeteringdeviceguid:
-                #The device was in the identified state and now it's in the Configured/Used state
-                #we also only create a page for the master metering device
-                #assuming the rackguid is set correctly
-                #racktivityui.uigenerator.meteringdevice.create(meteringdevice.guid, meteringdevice.rackguid)
-        #else:
-            #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
-        #import racktivityui.uigenerator.rack
-        #racktivityui.uigenerator.rack.update(meteringdevice.rackguid)
-
 def match(q, i, params, tags):
     return True

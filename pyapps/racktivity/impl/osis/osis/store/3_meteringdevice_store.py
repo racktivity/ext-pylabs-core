@@ -5,11 +5,12 @@ def main(q, i, p, params, tags):
     viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     rootobject = params['rootobject']
     columns = ('name', 'id', 'template', 'meteringdevicetype', 'parentmeteringdeviceguid', 'rackguid',
-               'clouduserguid', 'positionx', 'positiony', 'positionz', 'height',
+               'clouduserguid', 'positionx', 'positiony', 'positionz', 'height', 
                'snmpapplicationguid', 'tags', 'meteringdeviceconfigstatus')
     values = dict()
     for col in columns:
         values[col] = getattr(rootobject, col)
+    values["ipaddress"] = rootobject.network.ipaddress
     values['cloudusergroupactions'] = ','.join(rootobject.acl.cloudusergroupactions.keys())
     osis.viewSave(params['domain'], 'meteringdevice', viewname, rootobject.guid, rootobject.version, values)
 

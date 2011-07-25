@@ -26,7 +26,7 @@ def main(q, i, p, params, tags):
 
     oldname = requiredpoweroutput.label
     
-    fields = {'label': 'newportlabel', 'sequence': 'sequence', 'thresholdguids': 'thresholds', 'attributes': 'attributes'}
+    fields = {'label': 'newportlabel', 'sequence': 'sequence', 'attributes': 'attributes'}
     for fieldkey, fieldvalue in fields.iteritems():
         if fieldvalue in params and params[fieldvalue]:
             if fieldkey == 'attributes':
@@ -38,27 +38,9 @@ def main(q, i, p, params, tags):
         p.api.model.racktivity.meteringdevice.save(meteringdevice)
     params['result'] = {'returncode':True}
     
-    from rootobjectaction_lib import rootobjectaction_find
-    applications = rootobjectaction_find.application_find(meteringdeviceguid=master.guid, name='MeteringdeviceAPI')
-    masteripaddress = None
-    deviceapiport = 0
-    if applications:
-        application = p.api.model.racktivity.racktivity_application.get(applications[0])
-        service = application.networkservices[0]
-        if not  service.ipaddressguids:
-            events.raiseError("Can't find ipaddress attached to this meteringdeviceguid '%s'" % master.guid, messageprivate='', typeid='', tags='', escalate=False)
-        ipaddress = p.api.model.racktivity.ipaddress.get(service.ipaddressguids[0])
-        masteripaddress = ipaddress.address
-        deviceapiport = service.ports[0].portnr
-    else:
-        events.raiseError("Can't find application with meteringdeviceguid '%s'" % master.guid, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0030', tags='', escalate=False)
-        
     if oldname != requiredpoweroutput.label:
-        success = q.actions.actor.meteringdevice.setPortData(params['meteringdeviceguid'], master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, requiredpoweroutput.sequence,
+        success = q.actions.actor.meteringdevice.setPortData(params['meteringdeviceguid'], master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, requiredpoweroutput.sequence,
                                                            'PortName', requiredpoweroutput.label, master.accounts[0].login, master.accounts[0].password)['result']['returncode']
-        
-    #import racktivityui.uigenerator.meteringdevice
-    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
 
 def match(q, i, params, tags):
     return True

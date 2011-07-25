@@ -10,6 +10,8 @@ def exists(view, obj, key, value):
     filterObject.add(view, key, value, exactMatch=True)
     return len(obj.find(filterObject)) > 0
 
+#def find(model, params)
+
 def acl_find(rootobjecttype, rootobjectguid=""):
     params={'rootobjecttype':rootobjecttype, 'rootobjectguid':rootobjectguid}
     filterObject = p.api.model.racktivity.acl.getFilterObject()
@@ -20,7 +22,7 @@ def acl_find(rootobjecttype, rootobjectguid=""):
     result = p.api.model.racktivity.acl.find(filterObject)
     return result
 
-def application_find(deviceguid="", meteringdeviceguid="", name="",status="", tags=""):
+def application_find(deviceguid=None, meteringdeviceguid=None, name="",status=None, tags=""):
     params={'deviceguid':deviceguid, 'meteringdeviceguid':meteringdeviceguid, 'name':name, 'status':status, 'tags':tags}
     filterObject = p.api.model.racktivity.application.getFilterObject()
     for param in params.iterkeys():
@@ -29,7 +31,7 @@ def application_find(deviceguid="", meteringdeviceguid="", name="",status="", ta
     result = p.api.model.racktivity.application.find(filterObject)
     return result
 
-def backplane_find(name="", managementflag="", publicflag="", storageflag="", backplanetype="", tags=""):
+def backplane_find(name=None, managementflag=None, publicflag=None, storageflag=None, backplanetype=None, tags=""):
     view =  'racktivity_view_backplane_list'
     filterObject = p.api.model.racktivity.backplane.getFilterObject()
     params={'name':name, 'managementflag':managementflag, 'storageflag':storageflag, 'backplanetype':backplanetype, 'tags':tags}
@@ -39,7 +41,7 @@ def backplane_find(name="", managementflag="", publicflag="", storageflag="", ba
     result = p.api.model.racktivity.backplane.find(filterObject)
     return result
 
-def cable_find(name="", cabletype="", description="", label="", tags=""):
+def cable_find(name=None, cabletype=None, description=None, label=None, tags=""):
     view =  'racktivity_view_cable_list'
     params={'name':name, 'cabletype':cabletype, 'description':description, 'label':label, 'tags':tags}
     filterObject = p.api.model.racktivity.cable.getFilterObject()
@@ -49,7 +51,7 @@ def cable_find(name="", cabletype="", description="", label="", tags=""):
     result = p.api.model.racktivity.cable.find(filterObject)
     return result
 
-def clouduser_find(login="", email="", name="", status="", tags=""):
+def clouduser_find(login=None, email=None, name=None, status=None, tags=""):
     view = 'racktivity_view_clouduser_list'
     params={'login':login, 'email':email, 'name':name, 'status':status, 'tags':tags}
     filterObject = p.api.model.racktivity.clouduser.getFilterObject()
@@ -59,7 +61,7 @@ def clouduser_find(login="", email="", name="", status="", tags=""):
     result = p.api.model.racktivity.clouduser.find(filterObject)
     return result
 
-def cloudusergroup_find(name="", tags=""):
+def cloudusergroup_find(name=None, tags=""):
     filterObject = p.api.model.racktivity.cloudusergroup.getFilterObject()
     view = 'racktivity_view_cloudusergroup_list'
     params = {'name': name, 'tags': tags}
@@ -69,7 +71,7 @@ def cloudusergroup_find(name="", tags=""):
     result = p.api.model.racktivity.cloudusergroup.find(filterObject)
     return result
 
-def customer_find(name="", status="", tags=""):
+def customer_find(name=None, status=None, tags=""):
     filterObject = p.api.model.racktivity.customer.getFilterObject()
     view = 'racktivity_view_customer_list'
     params={'name':name, 'status':status, 'tags':tags}
@@ -79,7 +81,7 @@ def customer_find(name="", status="", tags=""):
     result = p.api.model.racktivity.customer.find(filterObject)
     return result
 
-def datacenter_find(name="",  description="", locationguid="", clouduserguid="", tags=""):
+def datacenter_find(name=None,  description=None, locationguid=None, clouduserguid=None, tags=""):
     params = {'name':name, 'description':description, 'locationguid':locationguid, 'clouduserguid':clouduserguid, 'tags':tags}
     view = 'racktivity_view_datacenter_list'
     filterObject = p.api.model.racktivity.datacenter.getFilterObject()
@@ -89,8 +91,8 @@ def datacenter_find(name="",  description="", locationguid="", clouduserguid="",
     result = p.api.model.racktivity.datacenter.find(filterObject)
     return result
 
-def device_find(name="", macaddress="", status="", devicetype="", description="", template="", modelnr="",serialnr="",firmware="", \
-                rackguid="",datacenterguid="", parentdeviceguid="",cableguid="", tags=""):
+def device_find(name=None, macaddress=None, status=None, devicetype=None, description=None, template=None, modelnr="",serialnr="",firmware=None, \
+                rackguid="",datacenterguid=None, parentdeviceguid="",cableguid=None, tags=""):
     filterObject = p.api.model.racktivity.device.getFilterObject()
     params = {'name': name, 'macaddress':macaddress, 'cableguid':cableguid, 'status':status, 'devicetype':devicetype, 'description':description,\
               'template':template, 'modelnr':modelnr, 'serialnr':serialnr, 'firmware':firmware, 'rackguid':rackguid, 'datacenterguid':datacenterguid, \
@@ -104,7 +106,7 @@ def device_find(name="", macaddress="", status="", devicetype="", description=""
     result = p.api.model.racktivity.device.find(filterObject)
     return result
 
-def errorcondition_find(errorconditiontype="", timestamp="", level="", agent="", tags=[], application=""):
+def errorcondition_find(errorconditiontype=None, timestamp=None, level=None, agent=None, tags=[], application=""):
     filterObject = p.api.model.racktivity.errorcondition.getFilterObject()
     params = {'errorconditiontype':errorconditiontype, 'timestamp':timestamp, 'level':level, 'agent':agent, 'tags':tags, 'application':application}
     view = 'racktivity_view_errorcondition_list'
@@ -114,7 +116,7 @@ def errorcondition_find(errorconditiontype="", timestamp="", level="", agent="",
     result = p.api.model.racktivity.errorcondition.find(filterObject)    
     return result
 
-def ipaddress_find(name="", description="", address="", netmask="",block = False, iptype="", ipversion="", languid="", cloudspaceguid="", virtual=None, tags=""):
+def ipaddress_find(name=None, description=None, address=None, netmask="",block = False, iptype=None, ipversion=None, languid=None, cloudspaceguid=None, virtual=None, tags=""):
     view = 'racktivity_view_ipaddress_list'
     blockval = 'f'
     if block:
@@ -131,8 +133,8 @@ def ipaddress_find(name="", description="", address="", netmask="",block = False
     result = p.api.model.racktivity.ipaddress.find(filterObject)
     return result
 
-def lan_find(backplaneguid="", name="", status="", startip="", endip="", gateway="", managementflag="", publicflag="", storageflag="", \
-             network="", netmask="", parentlanguid="", vlantag="", lantype="", dhcpflag="", tags=""):
+def lan_find(backplaneguid=None, name=None, status=None, startip=None, endip=None, gateway=None, managementflag=None, publicflag=None, storageflag=None, \
+             network=None, netmask=None, parentlanguid=None, vlantag=None, lantype=None, dhcpflag=None, tags=""):
     filterObject = p.api.model.racktivity.lan.getFilterObject()
     params = {'backplaneguid':backplaneguid, 'name':name, 'status':status, 'startip':startip, 'endip':endip, 'gateway':gateway, \
               'managementflag':managementflag, 'publicflag':publicflag, 'storageflag':storageflag, 'network':network, 'netmask':netmask, \
@@ -143,7 +145,7 @@ def lan_find(backplaneguid="", name="", status="", startip="", endip="", gateway
     result = p.api.model.racktivity.lan.find(filterObject)
     return result
 
-def location_find(name="", description="", alias="", address="", city="", country="", public=False, tags=""):
+def location_find(name=None, description=None, alias=None, address=None, city=None, country=None, public=False, tags=""):
     filterObject = p.api.model.racktivity.location.getFilterObject()
     params = {'name':name, 'description':description, 'alias':alias, 'address':address, 'city':city, 'country':country, 'public':public, 'tags':tags}
     for key,value in params.iteritems():
@@ -152,7 +154,7 @@ def location_find(name="", description="", alias="", address="", city="", countr
     result = p.api.model.racktivity.location.find(filterObject)
     return result
 
-def logicalview_find(name="", clouduserguid="", share="", tags=""):
+def logicalview_find(name=None, clouduserguid=None, share=None, tags=""):
     filterObject = p.api.model.racktivity.logicalview.getFilterObject()
     params = {'name':name, 'clouduserguid':clouduserguid, 'share':share, 'tags':tags}
     for key, value in params.iteritems():
@@ -162,17 +164,17 @@ def logicalview_find(name="", clouduserguid="", share="", tags=""):
     return result
 
 
-def meteringdevice_find(name="", id="", meteringdevicetype="", template=False, rackguid="", parentmeteringdeviceguid="", clouduserguid="", \
-                        height=0, positionx=0, positiony=0, positionz=0,  cableguid="", thresholdguid="", ipaddressguid="", tags="", meteringdeviceconfigstatus=""):
+def meteringdevice_find(name=None, id=None, meteringdevicetype=None, template=False, rackguid=None, parentmeteringdeviceguid=None, clouduserguid=None, \
+                        height=None, positionx=None, positiony=None, positionz=None,  cableguid=None, ipaddress=None, tags=None, meteringdeviceconfigstatus=""):
     
-    params = {'name':name, 'id':id, 'meteringdevicetype':meteringdevicetype, 'template':template, 'thresholdguid':thresholdguid, \
+    params = {'name':name, 'id':id, 'meteringdevicetype':meteringdevicetype, 'template':template, \
               'rackguid':rackguid, 'cableguid':cableguid, 'parentmeteringdeviceguid':parentmeteringdeviceguid, \
               'clouduserguid':clouduserguid, 'height':height, 'positionx':positionx, 'positiony':positiony, \
-              'positionz':positionz, 'ipaddressguid':ipaddressguid, 'tags':tags, 'meteringdeviceconfigstatus': meteringdeviceconfigstatus}
+              'positionz':positionz, 'ipaddress':ipaddress, 'tags':tags, 'meteringdeviceconfigstatus': meteringdeviceconfigstatus}
     
     filterobj = p.api.model.racktivity.meteringdevice.getFilterObject()
     defaultview = 'racktivity_view_meteringdevice_list'
-    viewmap = {"cableguid": "racktivity_view_meteringdevice_poweroutput", 'thresholdguid': 'view_meteringdevice_thresholds', 'ipaddressguid': 'view_meteringdevice_ipaddresses'}
+    viewmap = {"cableguid": "racktivity_view_meteringdevice_poweroutput"}
     for key, value in params.iteritems():
         if value:
             view = viewmap.get(key, defaultview)
@@ -180,10 +182,10 @@ def meteringdevice_find(name="", id="", meteringdevicetype="", template=False, r
     result = p.api.model.racktivity.meteringdevice.find(filterobj)
     return result
 
-def meteringdeviceevent_find(meteringdeviceguid="", portsequence="", sensorsequence="", eventtype="", level="", thresholdguid="", latest="", tags=""):
+def meteringdeviceevent_find(meteringdeviceguid=None, portsequence=None, sensorsequence=None, eventtype=None, level=None, latest=None, tags=""):
     filterObject = p.api.model.racktivity.meteringdeviceevent.getFilterObject()
     params = {'eventtype':eventtype, 'level':level, 'meteringdeviceguid':meteringdeviceguid, 'portsequence':portsequence, \
-              'sensorsequence':sensorsequence, 'thresholdguid':thresholdguid, 'latest':latest, 'tags':tags}
+              'sensorsequence':sensorsequence, 'latest':latest, 'tags':tags}
 
     for key, value in params.iteritems():
         if value:
@@ -191,7 +193,7 @@ def meteringdeviceevent_find(meteringdeviceguid="", portsequence="", sensorseque
     result = p.api.model.racktivity.meteringdeviceevent.find(filterObject)
     return result
 
-def monitoringinfo_find(monitoringinfoguid="", tags=""):
+def monitoringinfo_find(monitoringinfoguid=None, tags=""):
     view =  'racktivity_view_monitoringinfo_find'
     filterObj = p.api.model.racktivity.monitoringinfo.getFilterObject()
     if monitoringinfoguid:
@@ -207,7 +209,7 @@ def monitoringinfo_find(monitoringinfoguid="", tags=""):
         results.append(result)
     return results
 
-def policy_find(name="", description="", rootobjecttype="", rootobjectaction="", rootobjectguid="", interval="", tags=""):
+def policy_find(name=None, description=None, rootobjecttype=None, rootobjectaction=None, rootobjectguid=None, interval=None, tags=""):
     params = {'name':name, 'description':description, 'rootobjecttype':rootobjecttype, 'rootobjectaction':rootobjectaction, \
               'rootobjectguid':rootobjectguid, 'interval':interval, 'tags':tags}
     view = 'racktivity_view_policy_list'
@@ -218,7 +220,7 @@ def policy_find(name="", description="", rootobjecttype="", rootobjectaction="",
     result = p.api.model.racktivity.policy.find(filterobj)
     return result
 
-def resourcegroup_find(name="", customerguid="", description="", deviceguid=""):
+def resourcegroup_find(name=None, customerguid=None, description=None, deviceguid=""):
     params = {'name': name,
               'description': description,
               'device': deviceguid}
@@ -245,7 +247,7 @@ def resourcegroup_find(name="", customerguid="", description="", deviceguid=""):
     return results
 
 
-def rack_find(name="", racktype="", description="", roomguid="", floor="", corridor="", position="", height="", tags=""):
+def rack_find(name=None, racktype=None, description=None, roomguid=None, floor=None, corridor=None, position=None, height=None, tags=""):
     params = {'name':name, 'racktype':racktype, 'description':description, 'roomguid':roomguid, 'floor':floor, \
               'corridor':corridor, 'position':position, 'height':height, 'tags':tags}
     filterobj = p.api.model.racktivity.rack.getFilterObject()
@@ -255,7 +257,7 @@ def rack_find(name="", racktype="", description="", roomguid="", floor="", corri
     result = p.api.model.racktivity.rack.find(filterobj)
     return result
 
-def room_find(name="", description="", datacenterguid="", floor="", alias="", tags=""):
+def room_find(name=None, description=None, datacenterguid=None, floor=None, alias=None, tags=""):
     params = {'name':name, 'description':description, 'datacenterguid':datacenterguid, 'floor':floor, 'alias':alias, 'tags':tags}
     view = 'racktivity_view_room_list'
     filterobj = p.api.model.racktivity.room.getFilterObject()
@@ -265,7 +267,7 @@ def room_find(name="", description="", datacenterguid="", floor="", alias="", ta
     result = p.api.model.racktivity.room.find(filterobj)
     return result
 
-def floor_find(name="", datacenterguid="", floor=None, alias="", tags=""):
+def floor_find(name=None, datacenterguid=None, floor=None, alias=None, tags=""):
     params = {'name': name,
               'datacenterguid': datacenterguid,
               'floor': floor,
@@ -280,7 +282,7 @@ def floor_find(name="", datacenterguid="", floor=None, alias="", tags=""):
     result = p.api.model.racktivity.floor.find(filterobj)
     return result
 
-def threshold_find(thresholdtype="", thresholdimpacttype="", tags=""):
+def threshold_find(thresholdtype=None, thresholdimpacttype=None, tags=""):
     params = {'thresholdtype':thresholdtype, 'thresholdimpacttype':thresholdimpacttype, 'tags':tags}
     view = 'racktivity_view_threshold_list'
     filterobj = p.api.model.racktivity.threshold.getFilterObject()
@@ -290,7 +292,7 @@ def threshold_find(thresholdtype="", thresholdimpacttype="", tags=""):
     result = p.api.model.racktivity.threshold.find(filterobj)
     return result
 
-def job_find(actionname="", deviceguid ="", agentguid="",applicationguid="",datacenterguid="",fromTime="",toTime="",clouduserguid=""):
+def job_find(actionname=None, deviceguid =None, agentguid="",applicationguid="",datacenterguid="",fromTime="",toTime="",clouduserguid=""):
     params = {'actionname':actionname, 'deviceguid':deviceguid, 'agentguid':agentguid,'applicationguid':applicationguid,'datacenterguid':datacenterguid, \
               'fromTime':fromTime, 'toTime':toTime, 'clouduserguid':clouduserguid}
     baseQuery = 'select guid as jobguid, clouduserguid, rootobjectguid, description, parentjobguid, viewguid,\
@@ -317,7 +319,7 @@ def job_find(actionname="", deviceguid ="", agentguid="",applicationguid="",data
     baseQuery += ' order by starttime desc'
     return p.api.model.racktivity.job.query(baseQuery)
 
-def feed_find(name="", datacenterguid="", feedproductiontype="", cableguid="", tags=""):
+def feed_find(name=None, datacenterguid=None, feedproductiontype=None, cableguid=None, tags=""):
     params = {'name':name, 'datacenterguid':datacenterguid, 'feedproductiontype':feedproductiontype, 'cableguid':cableguid, 'tags':tags}
     defaultview = 'racktivity_view_feed_list'
     viewmap = {'cableguid': 'racktivity_view_feed_feedconnectors'}
@@ -329,7 +331,7 @@ def feed_find(name="", datacenterguid="", feedproductiontype="", cableguid="", t
     result = p.api.model.racktivity.feed.find(filterobj)
     return result
 
-def enterprise_find(name="", campus="", tags=""):
+def enterprise_find(name=None, campus=None, tags=""):
     params = {'name':name, 'campus': campus, 'tags':tags}
     defaultview = 'racktivity_view_enterprise_list'
     viewmap = {'campus': 'racktivity_view_enterprise_campus'}
@@ -343,7 +345,7 @@ def enterprise_find(name="", campus="", tags=""):
     result = p.api.model.racktivity.enterprise.find(filterobj)
     return result
 
-def pod_find(name="", alias="", room="", rack="", tags=""):
+def pod_find(name=None, alias=None, room=None, rack=None, tags=""):
     params = {'name':name, 'alias':alias, 'room':room, 'rack': rack, 'tags':tags}
     defaultview = 'racktivity_view_pod_list'
     viewmap = {'rack': 'racktivity_view_pod_rack'}
@@ -355,7 +357,7 @@ def pod_find(name="", alias="", room="", rack="", tags=""):
     result = p.api.model.racktivity.pod.find(filterobj)
     return result
 
-def row_find(name="", alias="", room="", pod="", rack="", tags=""):
+def row_find(name=None, alias=None, room=None, pod=None, rack=None, tags=""):
     params = {'name':name, 'alias':alias, 'rack': rack, 'room':room, 'pod':pod, 'tags':tags}
     defaultview = 'racktivity_view_row_list'
     viewmap = {'rack': 'racktivity_view_row_rack'}
