@@ -1,5 +1,13 @@
 from pylabs import q,p
 
+SPECIAL_VIEWS = {
+    "device": {
+        "macaddress": "racktivity_view_device_nicports",
+        "cableguid": "racktivity_view_device_powerports"},
+    "meteringdevice": {
+        "cableguid": "racktivity_view_meteringdevice_poweroutput"}
+}
+
 def exists(view, obj, key, value):
     """
     This function determine if the "value" of the attribute "key" in onject "obj" exists or not
@@ -10,7 +18,20 @@ def exists(view, obj, key, value):
     filterObject.add(view, key, value, exactMatch=True)
     return len(obj.find(filterObject)) > 0
 
-#def find(model, params)
+def find(rootobjectName, **params):
+    model = getattr(p.api.model.racktivity, rootobjectName)
+    defaultView = 'racktivity_view_%s_list'%rootobjectName
+    specialViews = SPECIAL_VIEWS[rootobjectName] if rootobjectName in SPECIAL_VIEWS else None
+    filterObject = model.getFilterObject()
+    for param in params.iterkeys():
+        if params[param] is None:
+            continue
+        if specialViews and param in specialViews:
+            filterObject.add(specialViews[param], param , params[param])
+        else:
+            filterObject.add(defaultView, param , params[param])
+    result = model.find(filterObject)
+    return result
 
 def acl_find(rootobjecttype, rootobjectguid=""):
     params={'rootobjecttype':rootobjecttype, 'rootobjectguid':rootobjectguid}
@@ -161,25 +182,6 @@ def logicalview_find(name=None, clouduserguid=None, share=None, tags=""):
         if value:
             filterObject.add('racktivity_view_logicalview_list', key, value)
     result = p.api.model.racktivity.logicalview.find(filterObject)
-    return result
-
-
-def meteringdevice_find(name=None, id=None, meteringdevicetype=None, template=False, rackguid=None, parentmeteringdeviceguid=None, clouduserguid=None, \
-                        height=None, positionx=None, positiony=None, positionz=None,  cableguid=None, ipaddress=None, tags=None, meteringdeviceconfigstatus=""):
-    
-    params = {'name':name, 'id':id, 'meteringdevicetype':meteringdevicetype, 'template':template, \
-              'rackguid':rackguid, 'cableguid':cableguid, 'parentmeteringdeviceguid':parentmeteringdeviceguid, \
-              'clouduserguid':clouduserguid, 'height':height, 'positionx':positionx, 'positiony':positiony, \
-              'positionz':positionz, 'ipaddress':ipaddress, 'tags':tags, 'meteringdeviceconfigstatus': meteringdeviceconfigstatus}
-    
-    filterobj = p.api.model.racktivity.meteringdevice.getFilterObject()
-    defaultview = 'racktivity_view_meteringdevice_list'
-    viewmap = {"cableguid": "racktivity_view_meteringdevice_poweroutput"}
-    for key, value in params.iteritems():
-        if value:
-            view = viewmap.get(key, defaultview)
-            filterobj.add(view, key, value)
-    result = p.api.model.racktivity.meteringdevice.find(filterobj)
     return result
 
 def meteringdeviceevent_find(meteringdeviceguid=None, portsequence=None, sensorsequence=None, eventtype=None, level=None, latest=None, tags=""):
