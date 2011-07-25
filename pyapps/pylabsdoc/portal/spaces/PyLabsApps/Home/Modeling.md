@@ -40,10 +40,16 @@ class enumeration(BaseEnumeration):
 
 #@doc some doc about the root object
 class RO(model.RootObjectModel):
+
     #@doc some doc about RO property
     property1 = model.valuetype(thrift_id=1)
 [[/code]]    
-        
+
+[[information]]
+**Important**
+
+Make sure that each class and each property starts with a documentation line as shown in the example above.
+[[/information]]        
 
 ##File Details
 
