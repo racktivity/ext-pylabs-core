@@ -107,6 +107,7 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.applyConfig()
 
         self._configurePortal()
+        self._configureAuth()
 
         taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'setup')
         if q.system.fs.exists(taskletpath):
@@ -292,7 +293,7 @@ LFW_CONFIG = {
         'macros': '/%(appname)s/js/macros/',
         'macroConfig': '/%(appname)s/appserver/rest/ui/portal/macroConfig',
         'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig',
-        'oauthservice': '/%(appname)s/oauth/ACCESS_TOKEN'
+        'oauthservice': '/%(appname)s/appserver/rest/ui/oauth/getToken'
     },
     'appname' : '%(appname)s',
     'development'  : true
@@ -315,4 +316,20 @@ LFW_CONFIG = {
             finally:
                 fd.close()
 
+    def _configureAuth(self):
+        configdir = os.path.join(q.dirs.pyAppsDir, self.appName, "cfg")
 
+        if not os.path.isdir(configdir):
+            os.makedirs(configdir, 0755)
+
+        oauthfile = os.path.join(configdir, "oauth.cfg")
+        oauth_template = """[oauth]
+hoursvalid=1
+tokencleanup=10
+"""
+        if not os.path.exists(oauthfile):
+            fd = open(oauthfile, "w")
+            try:
+                fd.write(oauth_template)
+            finally:
+                fd.close()
