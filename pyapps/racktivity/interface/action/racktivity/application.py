@@ -1,4 +1,4 @@
-class Racktivity_Application():
+class Application():
 
     def create(self, name, deviceguid="", meteringdeviceguid="", parentapplicactionguid="",description="", customsettings="", template=False, tags="",  request="", jobguid="", executionparams=dict()):
         """
