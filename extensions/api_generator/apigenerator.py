@@ -904,6 +904,9 @@ class AppAPIGenerator(object):
            {'template':'services/oauth.tmpl', 'params':params,
                                'destination':['impl', 'service', 'ui', 'oauth.py']},
 
+           {'template':'services/auth.tmpl', 'params':params,
+                               'destination':['impl', 'service', 'ui', 'auth.py']},
+
            {'template':'AgentService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'AgentSVC.py']}]
 

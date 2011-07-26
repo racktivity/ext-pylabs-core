@@ -317,19 +317,41 @@ LFW_CONFIG = {
                 fd.close()
 
     def _configureAuth(self):
-        configdir = os.path.join(q.dirs.pyAppsDir, self.appName, "cfg")
+        def createConfig(name, template):
+            configdir = os.path.join(q.dirs.pyAppsDir, self.appName, "cfg")
 
-        if not os.path.isdir(configdir):
-            os.makedirs(configdir, 0755)
+            if not os.path.isdir(configdir):
+                os.makedirs(configdir, 0755)
 
-        oauthfile = os.path.join(configdir, "oauth.cfg")
-        oauth_template = """[oauth]
+            fn = os.path.join(configdir, name)
+
+            if not os.path.exists(fn):
+                fd = open(fn, "w")
+                try:
+                    fd.write(template)
+                finally:
+                    fd.close()
+
+
+        auth_template = """[auth]
+backend=local
+
+[oauth]
 hoursvalid=1
 tokencleanup=10
 """
-        if not os.path.exists(oauthfile):
-            fd = open(oauthfile, "w")
-            try:
-                fd.write(oauth_template)
-            finally:
-                fd.close()
+
+        authlocal_template = """[admin]
+password=21232f297a57a5a743894a0e4a801fc3
+"""
+
+        authldap_template = """[LDAP]
+hostname=172.19.8.158
+port=389
+people_rdn=ou=people
+base_dn=dc=example,dc=com
+"""
+
+        createConfig("auth.cfg", auth_template)
+        createConfig("auth_local.cfg", authlocal_template)
+        createConfig("auth_ldap.cfg", authldap_template)
