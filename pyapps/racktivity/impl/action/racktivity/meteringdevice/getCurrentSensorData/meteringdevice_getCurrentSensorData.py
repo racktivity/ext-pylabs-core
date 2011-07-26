@@ -17,7 +17,7 @@ def main(q, i, p, params, tags):
             sensorid = sensor.sequence
             break
         
-    result = q.actions.actor.meteringdevice.getSensorData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, sensorid, params['meteringtype'], master.accounts[0].login, master.accounts[0].password)
+    result = p.api.actor.meteringdevice.getSensorData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, sensorid, params['meteringtype'], master.accounts[0].login, master.accounts[0].password)
     params['result'] = {'returncode': True,
                         'value': result['value']}
 

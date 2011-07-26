@@ -11,7 +11,7 @@ def main(q, i, p, params, tags):
     else:
         master = p.api.model.racktivity.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
 
-    result = q.actions.actor.meteringdevice.getDeviceData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, datatype, master.accounts[0].login, master.accounts[0].password)
+    result = p.api.actor.meteringdevice.getDeviceData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, datatype, master.accounts[0].login, master.accounts[0].password)
     params['result'] = result['result']
   
 

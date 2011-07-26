@@ -20,8 +20,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value  != '':
             setattr(logicalview, key, value)
-    acl = logicalview.acl.new()
-    logicalview.acl = acl
+
     p.api.model.racktivity.logicalview.save(logicalview)
     #from rootobjectaction_lib import rootobject_grant
     #rootobject_grant.grantUser(logicalview.guid, 'logicalview', params['request']['username'])

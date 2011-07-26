@@ -17,7 +17,7 @@ def main(q, i, p, params, tags):
     sensordbname = str(sensor.sensortype).replace("SENSOR", "").lower()
     databasenames = ('%s_%s_%s' % (meteringdeviceguid, sensor.sequence, sensordbname), )
         
-    q.actions.actor.graphdatabase.destroyStores(databasenames)
+    p.api.actor.graphdatabase.destroyStores(databasenames)
 
     meteringdevice.sensors.remove(sensor)
     p.api.model.racktivity.meteringdevice.save(meteringdevice)

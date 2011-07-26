@@ -229,7 +229,7 @@ def main(q, i, p, params, tags):
             events.raiseError("No Agent installed on this environment", messageprivate='', typeid=events.GENERIC_NO_AGENT_INSTALLED)
         filename = "%s.xml" % str(uuid.uuid4())
         expath = q.system.fs.joinPaths(q.dirs.baseDir, "www", filename)
-        res = q.actions.actor.fs.writeFile(agentguid, expath, exportxml)
+        res = p.api.actor.fs.writeFile(agentguid, expath, exportxml)
         rempath = "http://%s/%s" % (q.config.getConfig("agent")['main']['hostname'], filename)
         params['result'] = {'returncode': res['result']['returncode'], 'export': rempath}
     else:

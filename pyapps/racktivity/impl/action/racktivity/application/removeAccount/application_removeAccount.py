@@ -12,7 +12,7 @@ def main(q, i, p, params, tags):
     application.accounts.remove(accounts[0])
     p.api.model.racktivity.application.save(application)
     q.logger.log('Calling actor action to remove application account', 3)
-    #q.actions.actor.application.removeAccount(application.guid, account.guid)
+    #p.api.actor.application.removeAccount(application.guid, account.guid)
     params['result'] = {'returncode':True}
 
 def match(q, i, params, tags):

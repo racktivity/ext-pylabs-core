@@ -21,11 +21,11 @@ def main(q, i, p, params, tags):
 
     masteripaddress = master.network.ipaddress
     deviceapiport = master.network.port
-    result = q.actions.actor.meteringdevice.getPowerPortStatus(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)['result']
+    result = p.api.actor.meteringdevice.getPowerPortStatus(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)['result']
     if (result['status']):
-        q.actions.actor.meteringdevice.powerOffPowerPort(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)
+        p.api.actor.meteringdevice.powerOffPowerPort(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)
     else:
-        q.actions.actor.meteringdevice.powerOnPowerPort(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)
+        p.api.actor.meteringdevice.powerOnPowerPort(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)
     params['result'] = {'returncode':True, 'portStatus':not result['status']}
 
 def match(q, i, params, tags):

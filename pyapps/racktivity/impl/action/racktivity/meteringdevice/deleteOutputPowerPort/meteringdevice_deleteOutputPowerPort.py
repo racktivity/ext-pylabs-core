@@ -22,7 +22,7 @@ def main(q, i, p, params, tags):
     for type in portsmtypes:
         databasenames.append('%s_%s_%s' % (meteringdeviceguid, port.sequence, type))
     
-    q.actions.actor.graphdatabase.destroyStores(databasenames)
+    p.api.actor.graphdatabase.destroyStores(databasenames)
 
     meteringdevice.poweroutputs.remove(port)
     p.api.model.racktivity.meteringdevice.save(meteringdevice)

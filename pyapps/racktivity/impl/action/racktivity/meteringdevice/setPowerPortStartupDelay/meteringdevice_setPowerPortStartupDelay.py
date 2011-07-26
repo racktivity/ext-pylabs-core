@@ -18,7 +18,7 @@ def main(q, i, p, params, tags):
     if portid == None:
         events.raiseError("Could not find powerport with label %s" % label, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0053', tags='', escalate=False)
     
-    result = q.actions.actor.meteringdevice.setPowerPortStartupDelay(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid,
+    result = p.api.actor.meteringdevice.setPowerPortStartupDelay(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid,
                                                            params['delay'], master.accounts[0].login, master.accounts[0].password)['result']
     params['result'] = {'returncode':result}
 

@@ -39,7 +39,7 @@ def main(q, i, p, params, tags):
     for type in mtypes:
         stores.append('%s_%s' % (floorguid, type))
     
-    q.actions.actor.graphdatabase.createStores(stores)
+    p.api.actor.graphdatabase.createStores(stores)
 
     params['result'] = {'returncode': True,
                         'floorguid': floor.guid}

@@ -24,7 +24,7 @@ def main(q, i, p, params, tags):
         admin = p.api.model.racktivity.clouduser.get(result[0])
         to = admin.email
 
-    q.actions.actor.alertandcontactagent.sendMail(smtpserver=racktivityconfig.smtp, subject=params['subject'], body=params['body'],
+    p.api.actor.alertandcontactagent.sendMail(smtpserver=racktivityconfig.smtp, subject=params['subject'], body=params['body'],
                                  sender=params['sender'], to=to, smtplogin=racktivityconfig.smtplogin, smtppassword=racktivityconfig.smtppassword,
                                  jobguid = params['jobguid'],
                                  executionparams = {'description' : 'Sending email to admin'})
