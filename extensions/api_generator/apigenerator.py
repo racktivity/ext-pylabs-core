@@ -898,8 +898,8 @@ class AppAPIGenerator(object):
            {'template':'PortalService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'ui', 'portal.py']},
 
-           {'template':'services/editor.tmpl', 'params':params,
-                               'destination':['impl', 'service', 'ui', 'editor.py']},
+           {'template':'services/ide.tmpl', 'params':params,
+                               'destination':['impl', 'service', 'ui', 'ide.py']},
 
            {'template':'services/oauth.tmpl', 'params':params,
                                'destination':['impl', 'service', 'ui', 'oauth.py']},
