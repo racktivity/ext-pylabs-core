@@ -31,4 +31,4 @@ class backplane(model.RootObjectModel):
     tags = model.String(thrift_id=8)
 
     # A dictionary in the form {'group1_action1':None, 'group2_action1':None, 'group1_action2': None}
-    cloudusergroupactions = model.Dict(model.String(),,thrift_id=9)
+    cloudusergroupactions = model.Dict(model.String(), thrift_id=9)
