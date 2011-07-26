@@ -11,7 +11,11 @@
 $(document).ready(function() {
     METHODS = {getnode: "getNode",
                getfile: "getFile",
-               setfile: "setFile"};
+               setfile: "setFile",
+               newfile: "newFile",
+               newdir:  "newDir",
+               del: "delete",
+               rename: "rename"};
                
     var remotecall = function(method, options) {
         var options = $.extend({success: $.noop,
@@ -31,7 +35,104 @@ $(document).ready(function() {
         return Math.floor(Math.random() * 100000000);
     };
     
-    $("#tree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui'],
+    var createNewFile = function(item) {
+        var id = item.attr("id");
+        var tree = this;
+        $.prompt("New file Name ?", {title: "Create new file",
+                                     pattern: /.+/,
+                                     error: "File name can't be empty",
+                                     ok: function(name) {
+                                        var fid = id + "/" + name;
+                                        remotecall(METHODS.newfile, {data: {id: fid},
+                                            success: function() {
+                                                tree.create(item, "last", {data: name,
+                                                                           state: 'leaf',
+                                                                           attr: {id: fid, rel: 'file'}},
+                                                                        $.noop,
+                                                                        true);
+                                            }});
+                                    }});
+    };
+    
+    var createNewDir = function(item) {
+        var id = item.attr("id");
+        var tree = this;
+        $.prompt("New directory Name ?", {title: "Create new directory",
+                                     pattern: /.+/,
+                                     error: "Directory name can't be empty",
+                                     ok: function(name) {
+                                        var fid = id + "/" + name;
+                                        remotecall(METHODS.newdir, {data: {id: fid},
+                                            success: function() {
+                                                tree.create(item, "first", {data: name,
+                                                                           state: 'leaf',
+                                                                           attr: {id: fid}},
+                                                                        $.noop,
+                                                                        true);
+                                            }});
+                                    }});
+    };
+    
+    var deleteItem = function(item){
+        var id = item.attr("id");
+        var type = item.attr("rel") == "file" ? "file" : "folder";
+        var tree = this;
+        $.confirm("Are you sure you want to delete this " + type + "?", {title: "Delete " + type,
+                                     ok: function(name) {
+                                        remotecall(METHODS.del, {data: {id: id},
+                                            success: function(){
+                                                tree.remove(item);
+                                            }});
+                                    }});
+    };
+    
+    var rename = function(item){
+        var id = item.attr("id");
+        var tree = this;
+        
+        $.prompt("New Name ?", {title: "Rename",
+                                 value: tree.get_text(item),
+                                 pattern: /.+/,
+                                 error: "New name can't be empty",
+                                 ok: function(name) {
+                                    remotecall(METHODS.rename, {data: {id: id, name: name},
+                                        success: function() {
+                                            console.log(item);
+                                            tree.rename_node(item, name);
+                                            var m = /(.+)\/[^\/]+$/.exec(id);
+                                            if (!m){
+                                                $.alert("Failed to update node ID");
+                                            }
+                                            item.attr("id", m[1] + "/" + name);
+                                        }});
+                                }});
+    };
+    var contextmenu = function(item) {
+        var type = item.attr("rel");
+        if (type === undefined) type = "folder";
+        
+        var actions = [];
+        
+        if (type === "folder" || type === "project") {
+            actions.push({label: "Create New File",
+                          action: createNewFile});
+            actions.push({label: "Create New Directory",
+                          action: createNewDir,
+                          separator_after: true});
+        }
+        
+        if (type === "file" || type === "folder") {
+            actions.push({label: "Rename",
+                        action: rename,
+                        separator_after: true});
+            actions.push({label: "Delete",
+                          action: deleteItem});
+        }
+        
+        return actions;
+    };
+    
+    $("#tree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui', 'contextmenu', 'crrm'],
                         ui: {
                             select_limit: 1,
                         },
@@ -39,6 +140,9 @@ $(document).ready(function() {
                             types: { project: {icon: {image: '/static/lfw/img/editor/project.png'}},
                                      file: {icon: {image: '/static/lfw/img/editor/file.png'}},
                                      default: {}}
+                        },
+                        contextmenu: {
+                            items: contextmenu,
                         },
                         json_data: {
                                 ajax: { url: 'appserver/rest/ui/ide/getNode',
