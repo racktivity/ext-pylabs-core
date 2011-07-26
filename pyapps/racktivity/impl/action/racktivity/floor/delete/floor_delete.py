@@ -33,7 +33,7 @@ def main(q, i, p, params, tags):
     for type in mtypes:
         databasenames.append('%s_%s' % (floorguid, type))
     
-    p.api.actor.graphdatabase.destroyStores(databasenames)
+    p.api.actor.racktivity.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

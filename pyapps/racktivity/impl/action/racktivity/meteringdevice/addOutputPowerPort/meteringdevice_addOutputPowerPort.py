@@ -46,7 +46,7 @@ def main(q, i, p, params, tags):
         storename = '%s_%s_%s' % (meteringdeviceguid, portindex, type)
         stores.append(storename)
             
-    p.api.actor.graphdatabase.createStores(stores)
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
 
 
 def match(q, i, params, tags):

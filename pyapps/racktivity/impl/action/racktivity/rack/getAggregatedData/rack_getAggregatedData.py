@@ -143,8 +143,8 @@ def main(q, i, p, params, tags):
         databases[key.activeenergy] = "%s_activeenergy" % md.guid
         databases[key.apparentenergy] = "%s_apparentenergy" % md.guid
     
-    res = p.api.actor.graphdatabase.getLatests(databases)['result']['values']
-    averagesres = p.api.actor.graphdatabase.getAverageValues(databases)['result']['values']
+    res = p.api.actor.racktivity.graphdatabase.getLatests(databases)['result']['values']
+    averagesres = p.api.actor.racktivity.graphdatabase.getAverageValues(databases)['result']['values']
     
     for mdguid in mdguids:
         key = KeyGen(mdguid)

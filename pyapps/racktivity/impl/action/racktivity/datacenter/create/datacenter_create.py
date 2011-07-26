@@ -57,7 +57,7 @@ def main(q, i, p, params, tags):
               'apparentenergy', 'powerfactor')
     for type in mtypes:
         stores.append('%s_%s' % (datacenterguid, type))
-    p.api.actor.graphdatabase.createStores(stores)
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
 
 def match(q, i, params, tags):
     return True

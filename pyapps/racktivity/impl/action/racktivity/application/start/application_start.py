@@ -16,7 +16,7 @@ def main(q, i, p, params, tags):
     try:
         application.status = q.enumerators.applicationstatustype.STARTING
         p.api.model.racktivity.application.save(application)
-        p.api.actor.application.start(applicationguid)
+        p.api.actor.racktivity.application.start(applicationguid)
     except Exception, e:
         q.eventhandler.raiseError('Unable to start application %s. Error: %s'%(application.name, str(e)))
         

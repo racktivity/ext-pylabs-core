@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     q.logger.log('Calling actor actions to initialize the application specified', 3)
     application = p.api.model.racktivity.application.get(params['applicationguid'])
     q.logger.log('Updating application status, applicationguid is %s and jobguid is %s' %(application.guid, params['jobguid']), 3)
-    p.api.actor.application.initialize(jobguid=params['jobguid'], applicationguid=application.guid, executionparams = {'description' : 'Initialize the application'})
+    p.api.actor.racktivity.application.initialize(jobguid=params['jobguid'], applicationguid=application.guid, executionparams = {'description' : 'Initialize the application'})
     
     application = p.api.model.racktivity.application.get(params['applicationguid'])
     application.status = q.enumerators.applicationstatustype.ACTIVE

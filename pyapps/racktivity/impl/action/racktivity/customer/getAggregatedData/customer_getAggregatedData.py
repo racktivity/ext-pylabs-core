@@ -100,7 +100,7 @@ def main(q, i, p, params, tags):
                                                             'resolution': resolution}
                 sensorseq += 1
         
-    res = p.api.actor.graphdatabase.getLatestValues(databases)['result']['values']
+    res = p.api.actor.racktivity.graphdatabase.getLatestValues(databases)['result']['values']
     
     for valuekey, value in res.iteritems():
         kt = valuekey.split("-")[0]

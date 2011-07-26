@@ -39,7 +39,7 @@ def main(q, i, p, params, tags):
     
     sensordbname = str(sensor.sensortype).replace("SENSOR", "").lower()
     storename = '%s_%s_%s' % (meteringdeviceguid, sensorsequence, sensordbname)
-    p.api.actor.graphdatabase.createStore(storename)
+    p.api.actor.racktivity.graphdatabase.createStore(storename)
 
     params['result'] = {'returncode':True}
 

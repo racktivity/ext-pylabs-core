@@ -35,17 +35,17 @@ def main(q, i, p, params, tags):
             updateModel()     
         #First change config of non appliance nodes
         for pmachine in pmachines:
-            p.api.actor.pmachine.reconfigureUser(machineguid = pmachine,
+            p.api.actor.racktivity.pmachine.reconfigureUser(machineguid = pmachine,
                                                      clouduserguid =  clouduser.guid,
                                                      newpassword =  newPassword,
                                                      executionparams={"description":"Reconfigure user on machine %s" %pmachine})
             
-        p.api.actor.pmachine.reconfigureUser(machineguid = applianceGuid,
+        p.api.actor.racktivity.pmachine.reconfigureUser(machineguid = applianceGuid,
                                                  clouduserguid =  clouduser.guid,
                                                  newpassword =  newPassword,
                                                  executionparams={"description":"Reconfigure user on machine %s" %applianceGuid})        
     if clouduser.login == 'admin':
-        p.api.actor.systemnas.setCredentials(clouduser.login, newPassword)
+        p.api.actor.racktivity.systemnas.setCredentials(clouduser.login, newPassword)
     updateModel()
 
     params['result'] = {'returncode': True}

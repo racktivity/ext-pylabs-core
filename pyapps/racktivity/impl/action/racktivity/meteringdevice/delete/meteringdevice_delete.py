@@ -55,7 +55,7 @@ def main(q, i, p, params, tags):
         for type in mtypes:
             stores.append('%s_%s' % (meteringdeviceguid, type))
 
-    p.api.actor.graphdatabase.destroyStores(stores)
+    p.api.actor.racktivity.graphdatabase.destroyStores(stores)
 
     params['result'] = {'returncode': p.api.model.racktivity.meteringdevice.delete(meteringdeviceguid)}
 

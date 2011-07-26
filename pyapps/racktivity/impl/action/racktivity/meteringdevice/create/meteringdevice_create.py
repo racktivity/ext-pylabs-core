@@ -85,7 +85,7 @@ def main(q, i, p, params, tags):
             storename = '%s_%s' % (meteringdeviceguid, type)
             stores.append(storename)
 
-    p.api.actor.graphdatabase.createStores(stores)
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
     
     params['result'] = {'returncode': True, 'meteringdeviceguid': meteringdevice.guid}
 

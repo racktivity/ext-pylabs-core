@@ -41,7 +41,7 @@ def main(q, i, p, params, tags):
     for type in mtypes:
         stores.append('%s_%s' % (roomguid, type))
 
-    p.api.actor.graphdatabase.createStores(stores)
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
 
 
     params['result'] = {'returncode': True,
