@@ -1,4 +1,34 @@
 __author__ = 'racktivity'
+__tags__ = ('application',
+ 'backplane',
+ 'cable',
+ 'clouduser',
+ 'cloudusergroup',
+ 'collector',
+ 'customer',
+ 'datacenter',
+ 'device',
+ 'enterprise',
+ 'errorcondition',
+ 'feed',
+ 'floor',
+ 'ipaddress',
+ 'job',
+ 'lan',
+ 'location',
+ 'logicalview',
+ 'meteringdevice',
+ 'meteringdeviceevent',
+ 'monitoringinfo',
+ 'pod',
+ 'policy',
+ 'rack',
+ 'racktivity',
+ 'racktivity_application',
+ 'resourcegroup',
+ 'room',
+ 'row',
+ 'threshold'), 'deleteGroup'
 __priority__= 3
 
 def main(q, i, p, params, tags):
@@ -8,27 +38,24 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     rootobject = getattr(p.api.model.racktivity, tags[0])
     rootobjectinstance = rootobject.get(params['rootobjectguid'])
-    acl = rootobjectinstance.acl
-    if not acl:
-        q.logger.log('no acl object for the rootobject')
-        return
+
     group = params['group']
     groupaction = None
     action = params['action']
     if action:
         groupaction = group+"_"+action
-        if groupaction in acl.cloudusergroupactions:
-            del acl.cloudusergroupactions[groupaction]
+        if groupaction in rootobjectinstance.cloudusergroupactions:
+            del rootobjectinstance.cloudusergroupactions[groupaction]
         else:
             q.logger.log("group/action %s/%s doesn't exist, deleteGroup has no effect"%(group, action))
     else:
         #action is empty
         newgroupactions = dict()
-        for key in acl.cloudusergroupactions.keys():
+        for key in rootobjectinstance.cloudusergroupactions.keys():
             if group != key.split('_')[0]:
                 newgroupactions[key] = ''
-        del acl.cloudusergroupactions
-        acl.cloudusergroupactions = newgroupactions
+        del rootobjectinstance.cloudusergroupactions
+        rootobjectinstance.cloudusergroupactions = newgroupactions
 
     rootobject.save(rootobjectinstance)
     params['result'] = {'returncode':True}

@@ -67,8 +67,7 @@ def main(q, i, p, params, tags):
     lan.publicflag = backplane.publicflag
     lan.storageflag = False
     lan.macrange = getMacRange(q)
-    acl = lan.acl.new()
-    lan.acl = acl
+
     p.api.model.racktivity.lan.save(lan)
 
     #from rootobjectaction_lib import rootobject_grant

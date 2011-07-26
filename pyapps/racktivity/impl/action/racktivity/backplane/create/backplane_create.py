@@ -20,8 +20,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(backplane, key, value)
-    acl = backplane.acl.new()
-    backplane.acl = acl
+
     p.api.model.racktivity.backplane.save(backplane)
 
     #from rootobjectaction_lib import rootobject_grant

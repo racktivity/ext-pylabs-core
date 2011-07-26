@@ -12,8 +12,7 @@ def main(q, i, p, params, tags):
     
     resourcegroup.name = params['name']
     resourcegroup.description = params['description']
-    acl = resourcegroup.acl.new()
-    resourcegroup.acl = acl
+
     p.api.model.racktivity.resourcegroup.save(resourcegroup)
 
     #from rootobjectaction_lib import rootobject_grant

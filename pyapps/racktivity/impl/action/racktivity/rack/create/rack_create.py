@@ -25,8 +25,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(rack, key, value)
-    acl = rack.acl.new()
-    rack.acl = acl
+
     p.api.model.racktivity.rack.save(rack)
 
     #from rootobjectaction_lib import rootobject_grant

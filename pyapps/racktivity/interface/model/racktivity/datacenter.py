@@ -29,5 +29,5 @@ class datacenter(model.RootObjectModel):
     
     coordinates = model.Object(coordinates, thrift_id=7)
 
-    #@doc access control list
-    acl = model.Object(acl,thrift_id=8)
+    # A dictionary in the form {'group1_action1':None, 'group2_action1':None, 'group1_action2': None}
+    cloudusergroupactions = model.Dict(model.String(),thrift_id=8)

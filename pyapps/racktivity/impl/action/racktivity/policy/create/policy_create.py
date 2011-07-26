@@ -22,8 +22,7 @@ def main(q, i, p, params, tags):
             if key == 'interval':
                 value = float(value)
             setattr(policy, key, value)
-    acl = policy.acl.new()
-    policy.acl = acl
+
     p.api.model.racktivity.policy.save(policy)
 
     #from rootobjectaction_lib import rootobject_grant

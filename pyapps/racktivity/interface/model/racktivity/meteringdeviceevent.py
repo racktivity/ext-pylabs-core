@@ -38,5 +38,5 @@ class meteringdeviceevent(model.RootObjectModel):
         #@doc logs of errorcondition
         logs = model.String(thrift_id=11)
 
-        #@doc access control list
-        acl = model.Object(acl,thrift_id=22)
+        # A dictionary in the form {'group1_action1':None, 'group2_action1':None, 'group1_action2': None}
+        cloudusergroupactions = model.Dict(model.String(),thrift_id=22)

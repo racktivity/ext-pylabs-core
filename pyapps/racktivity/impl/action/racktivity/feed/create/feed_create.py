@@ -54,8 +54,7 @@ def main(q, i, p, params, tags):
     co2factor = params['co2emission']
     co2factor = float(co2factor) if co2factor != None else CO2EMISSIONS.get(str(params['feedproductiontype']), 0.0)
     feed.co2emission["%d" % time.time()] = co2factor
-    acl = feed.acl.new()
-    feed.acl = acl
+
     p.api.model.racktivity.feed.save(feed)
     
     if params['datacenterguid']:

@@ -9,8 +9,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value not in ['', None]:
             setattr(racktivity, key, value)
-    acl = racktivity.acl.new()
-    racktivity.acl = acl
+
     p.api.model.racktivity.racktivity.save(racktivity)
 
     #from rootobjectaction_lib import rootobject_grant

@@ -36,8 +36,7 @@ def main(q, i, p, params, tags):
         coordinatesinfo = params['coordinatesinfo']
         coordinates.latitude = float(coordinatesinfo['latitude'])
         coordinates.longitude = float(coordinatesinfo['longitude'])
-    acl = datacenter.acl.new()
-    datacenter.acl = acl
+
     p.api.model.racktivity.datacenter.save(datacenter)
 
     #from rootobjectaction_lib import rootobject_grant

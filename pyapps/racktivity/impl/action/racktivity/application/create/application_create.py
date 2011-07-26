@@ -12,8 +12,6 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value not in ['', None]:
             setattr(application, key, value)
-    acl = application.acl.new()
-    application.acl = acl
     p.api.model.racktivity.application.save(application)
 
     #from rootobjectaction_lib import rootobject_grant

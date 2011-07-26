@@ -22,8 +22,7 @@ def main(q, i, p, params, tags):
                 if not q.system.net.validateIpAddress(value):
                     raise ValueError('Invalid IP address')
             setattr(ipaddress, key, value)
-    acl = ipaddress.acl.new()
-    ipaddress.acl = acl
+
     p.api.model.racktivity.ipaddress.save(ipaddress)
 
     #from rootobjectaction_lib import rootobject_grant

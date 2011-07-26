@@ -33,8 +33,7 @@ def main(q, i, p, params, tags):
     
     for rackguid in params['racks']:
         row.racks.append(rackguid)
-    acl = row.acl.new()
-    row.acl = acl
+
     p.api.model.racktivity.row.save(row)
 
     #from rootobjectaction_lib import rootobject_grant

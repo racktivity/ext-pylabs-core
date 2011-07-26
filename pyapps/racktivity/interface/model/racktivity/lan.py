@@ -82,5 +82,5 @@ class lan(model.RootObjectModel):
     #@doc series of tags format
     tags = model.String(thrift_id=23)
 
-    #@doc access control list
-    acl = model.Object(acl,thrift_id=24)
+    # A dictionary in the form {'group1_action1':None, 'group2_action1':None, 'group1_action2': None}
+    cloudusergroupactions = model.Dict(model.String(),thrift_id=24)

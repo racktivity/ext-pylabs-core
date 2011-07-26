@@ -10,8 +10,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value not in ['', None]:
             setattr(event, map.get(key, key), value)
-    acl = event.acl.new()
-    event.acl = acl
+
     p.api.model.racktivity.meteringdeviceevent.save(event)
 
     #from rootobjectaction_lib import rootobject_grant

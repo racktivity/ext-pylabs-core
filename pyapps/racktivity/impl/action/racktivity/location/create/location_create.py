@@ -30,8 +30,7 @@ def main(q, i, p, params, tags):
         coordinatesinfo = params['coordinatesinfo']
         coordinates.latitude = float(coordinatesinfo['latitude'])
         coordinates.longitude = float(coordinatesinfo['longitude'])
-    acl = location.acl.new()
-    location.acl = acl
+
     p.api.model.racktivity.location.save(location)
     #from rootobjectaction_lib import rootobject_grant
     #rootobject_grant.grantUser(location.guid, 'location', params['request']['username'])

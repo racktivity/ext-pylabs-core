@@ -22,8 +22,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value not in (None, ""):
             setattr(floor, key, value)
-    acl = floor.acl.new()
-    floor.acl = acl
+
     p.api.model.racktivity.floor.save(floor)
 
     #from rootobjectaction_lib import rootobject_grant

@@ -21,8 +21,7 @@ def main(q, i, p, params, tags):
         if not rootobjectaction_list.location_list(campus):
             raise ValueError("Campus with guid %s is not found in the system" % campus)
         enterprise.campuses.append(campus)
-    acl = enterprise.acl.new()
-    enterprise.acl = acl
+
     p.api.model.racktivity.enterprise.save(enterprise)
 
     #from rootobjectaction_lib import rootobject_grant

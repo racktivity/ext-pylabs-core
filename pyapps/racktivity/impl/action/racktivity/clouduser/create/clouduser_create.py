@@ -18,8 +18,7 @@ def main(q, i, p, params, tags):
             setattr(clouduser, key, value)
     
     clouduser.status = q.enumerators.clouduserstatustype.CREATED
-    acl = clouduser.acl.new()
-    clouduser.acl = acl
+
     p.api.model.racktivity.clouduser.save(clouduser)
 
     #from rootobjectaction_lib import rootobject_grant

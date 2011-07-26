@@ -27,4 +27,4 @@ class logicalview(model.RootObjectModel):
     tags = model.String(thrift_id=7)
 
    #@doc access control list
-    acl = model.Object(acl,thrift_id=8)
+    cloudusergroupactions = model.Dict(model.String(),thrift_id=8)

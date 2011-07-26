@@ -22,8 +22,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(room, key, value)
-    acl = room.acl.new()
-    room.acl = acl
+
     p.api.model.racktivity.room.save(room)
 
     #from rootobjectaction_lib import rootobject_grant

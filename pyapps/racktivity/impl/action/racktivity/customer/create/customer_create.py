@@ -13,8 +13,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(customer, key, value)
-    acl = customer.acl.new()
-    customer.acl = acl
+
     p.api.model.racktivity.customer.save(customer)
 
     #from rootobjectaction_lib import rootobject_grant

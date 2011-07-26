@@ -29,8 +29,7 @@ def main(q, i, p, params, tags):
     
     for rackguid in params['racks']:
         pod.racks.append(rackguid)
-    acl = pod.acl.new()
-    pod.acl = acl
+
     p.api.model.racktivity.pod.save(pod)
 
     #from rootobjectaction_lib import rootobject_grant

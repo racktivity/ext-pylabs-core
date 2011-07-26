@@ -6,8 +6,7 @@ def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params)
     q.logger.log('Creating the new job in the model', 3)
     job = p.api.model.racktivity.job.new()
-    acl = job.acl.new()
-    job.acl = acl
+
     p.api.model.racktivity.job.save(job)
 
     #from rootobjectaction_lib import rootobject_grant

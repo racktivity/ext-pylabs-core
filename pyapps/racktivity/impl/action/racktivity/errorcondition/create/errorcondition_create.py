@@ -12,8 +12,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in keys and value:
             setattr(errorcondition, key, value)
-    acl = errorcondition.acl.new()
-    errorcondition.acl = acl
+
     p.api.model.racktivity.errorcondition.save(errorcondition)
 
     #from rootobjectaction_lib import rootobject_grant

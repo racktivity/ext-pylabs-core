@@ -9,8 +9,7 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(cloudusergroup, key, value)
-    acl = cloudusergroup.acl.new()
-    cloudusergroup.acl = acl
+
     p.api.model.racktivity.cloudusergroup.save(cloudusergroup)
 
     #from rootobjectaction_lib import rootobject_grant

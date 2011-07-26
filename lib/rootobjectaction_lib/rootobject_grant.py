@@ -9,11 +9,6 @@ def grantUser(rootobjectguid, rootobjecttype, cloudusername):
     """
     drpobject = getattr(p.api.model.racktivity, rootobjecttype)
     rootobjectinstance = drpobject.get(rootobjectguid)
-    acl = rootobjectinstance.acl
-    if not acl:
-        acl = rootobjectinstance.acl.new()
-        rootobjectinstance.acl = acl
-        drpobject.save(rootobjectinstance)
 
     clouduserguids = rootobjectaction_find.clouduser_find(login=cloudusername)
     if not clouduserguids:
@@ -33,5 +28,5 @@ def grantUser(rootobjectguid, rootobjecttype, cloudusername):
         for action in actions:
             if action.startswith("_"):
                 continue
-            acl.cloudusergroupactions[group['guid']+"_"+action] = ""
+            rootobjectinstance.cloudusergroupactions[group['guid']+"_"+action] = ""
     drpobject.save(rootobjectinstance)

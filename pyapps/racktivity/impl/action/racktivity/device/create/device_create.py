@@ -21,8 +21,7 @@ def main(q, i, p, params, tags):
                 for k, v in objdata.iteritems():
                     setattr(newobj, k, v)
                 objectlist.append(newobj)
-    acl = device.acl.new()
-    device.acl = acl
+
     p.api.model.racktivity.device.save(device)
 
     #from rootobjectaction_lib import rootobject_grant
