@@ -66,7 +66,6 @@ class network(model.Model):
     port = model.Integer(thrift_id=2)
     protocol = model.String(thrift_id=3)
 
-from acl import acl
 # @doc power device
 class meteringdevice(model.RootObjectModel):
     
