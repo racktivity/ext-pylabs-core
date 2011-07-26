@@ -30,8 +30,6 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode': True,
                         'enterpriseguid': enterprise.guid}
 
-    #import racktivityui.uigenerator.enterprise
-    #racktivityui.uigenerator.enterprise.update()
 
 def match(q, i, params, tags):
     return True

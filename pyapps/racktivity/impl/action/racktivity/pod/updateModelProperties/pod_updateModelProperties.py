@@ -16,12 +16,8 @@ def main(q, i, p, params, tags):
     if changed:
         #logger.log_tasklet(__tags__, params, fields)
         p.api.model.racktivity.pod.save(pod)
-    
-    #import racktivityui.uigenerator.pod
-    #racktivityui.uigenerator.pod.update(pod.guid)
-    #import racktivityui.uigenerator.room
-    #racktivityui.uigenerator.room.update(pod.room)
-    
+
+
     params['result'] = {'returncode': True,
                         'podguid': pod.guid}
 

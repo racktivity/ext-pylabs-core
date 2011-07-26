@@ -6,10 +6,7 @@ def main(q, i, p, params, tags):
     enterprise = p.api.model.racktivity.enterprise.get(params['enterpriseguid'])
     enterprise.campuses.remove(params['campus'])
     p.api.model.racktivity.enterprise.save(enterprise)
-    
-    #import racktivityui.uigenerator.enterprise
-    #racktivityui.uigenerator.enterprise.update()
-    
+
     params['result'] = {'returncode': True}
 
 def match(q, i, params, tags):

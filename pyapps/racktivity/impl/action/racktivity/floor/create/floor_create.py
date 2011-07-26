@@ -32,12 +32,14 @@ def main(q, i, p, params, tags):
     p.api.action.racktivity.policy.create('floor_%s' % floor.name, rootobjecttype='floor', rootobjectaction='monitor',
                                        rootobjectguid=floor.guid, interval=3.0, runbetween='[("00:00", "24:00")]', runnotbetween='[]', request = params["request"])
 
-    #Generate UI page
-    #import racktivityui.uigenerator.datacenter
-    #import racktivityui.uigenerator.floor
-
-    #racktivityui.uigenerator.floor.create(floor.guid, floor.datacenterguid)
-    #racktivityui.uigenerator.datacenter.update(floor.datacenterguid)
+    floorguid = floor.guid
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (floorguid, type))
+    
+    q.actions.actor.graphdatabase.createStores(stores)
 
     params['result'] = {'returncode': True,
                         'floorguid': floor.guid}

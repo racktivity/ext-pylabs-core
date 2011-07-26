@@ -19,19 +19,21 @@ def main(q, i, p, params, tags):
     datacenterguid = p.api.model.racktivity.floor.get(floorguid).datacenterguid
     params['result'] = {'returncode': p.api.model.racktivity.floor.delete(floorguid)}
 
-    #Update UI Pages
-    #import racktivityui.uigenerator.datacenter
-    #import racktivityui.uigenerator
-
-    #racktivityui.uigenerator.deletePage(floorguid)
-    #racktivityui.uigenerator.datacenter.update(datacenterguid)
-
     #Delete the policy linked to this floor
     q.logger.log('Deleting policies linked to this floor', 3)
     policyguids = rootobjectaction_find.policy_find(rootobjectguid=floorguid)
     if policyguids:
         policyguid = policyguids[0]
         p.api.model.racktivity.policy.delete(policyguid)
+
+    #Delete the data stores
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (floorguid, type))
+    
+    q.actions.actor.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

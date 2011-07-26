@@ -18,18 +18,21 @@ def main(q, i, p, params, tags):
     if location.guid in enterprise.campuses:
         enterprise.campuses.remove(location.guid)
         p.api.model.racktivity.enterprise.save(enterprise)
-    
-    #import racktivityui.uigenerator
-    #import racktivityui.uigenerator.enterprise
-    #racktivityui.uigenerator.deletePage(location.guid)
-    #racktivityui.uigenerator.enterprise.update()
-    
+
+
     q.logger.log('Deleting policies linked to this location', 3)
     policyguids = rootobjectaction_find.policy_find(rootobjectguid=locationguid)
     if policyguids:
         policyguid = policyguids[0]
         p.api.model.racktivity.policy.delete(policyguid)
 
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (locationguid, type))
+
+    q.actions.actor.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

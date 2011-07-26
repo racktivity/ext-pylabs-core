@@ -44,11 +44,6 @@ def main(q, i, p, params, tags):
         p.api.model.racktivity.datacenter.save(datacenter)
     params['result'] = {'returncode': True, 
                         'datacenterguid': datacenter.guid}
-    
-    #import racktivityui.uigenerator.datacenter
-    #racktivityui.uigenerator.datacenter.update(datacenter.guid)
-    #import racktivityui.uigenerator.campus
-    #racktivityui.uigenerator.campus.update(datacenter.locationguid)
 
 def match(q, i, params, tags):
     return True

@@ -20,13 +20,6 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode': True,
                         'roomguid': room.guid}
 
-    #import racktivityui.uigenerator.room
-    #import racktivityui.uigenerator.floor
-    
-    #racktivityui.uigenerator.room.update(room.guid)
-    #if room.floor:
-        #racktivityui.uigenerator.floor.update(room.floor)
-
 
 def match(q, i, params, tags):
     return True

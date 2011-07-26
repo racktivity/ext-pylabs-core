@@ -35,7 +35,17 @@ def main(q, i, p, params, tags):
     p.api.action.racktivity.policy.create('rack_%s' % rack.name, rootobjecttype='rack', rootobjectaction='monitor',
                                        rootobjectguid=rack.guid, interval=3.0, runbetween='[("00:00", "24:00")]', runnotbetween='[]',
                                        request = params["request"])
+
+    rackguid = rack.guid
     
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency',  'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (rackguid, type))
+    
+    q.actions.actor.graphdatabase.createStores(stores)
+
     params['result'] = {'returncode': True,
                         'rackguid': rack.guid}
 

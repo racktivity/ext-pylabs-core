@@ -7,10 +7,8 @@ def main(q, i, p, params, tags):
     row = p.api.model.racktivity.row.get(rowguid)
     row.racks.remove(params['rackguid'])
     p.api.model.racktivity.row.save(row)
-    
-    #import racktivityui.uigenerator.row
-    #racktivityui.uigenerator.row.update(rowguid)
-    
+
+
     params['result'] = {'returncode': True}
 
 def match(q, i, params, tags):

@@ -65,11 +65,6 @@ def main(q, i, p, params, tags):
                 wrongfeed.datacenterguid = ''
                 p.api.model.racktivity.feed.save(wrongfeed)
                 
-    #import racktivityui.uigenerator.feed
-    #racktivityui.uigenerator.feed.create(feed.guid)
-
-    #from rootobjectaction_lib import rootobject_grant
-    #rootobject_grant.grantUser(feed.guid, 'feed', params['request']['username'])
 
     params['result'] = {'returncode':True, 'feedguid': feed.guid}
 

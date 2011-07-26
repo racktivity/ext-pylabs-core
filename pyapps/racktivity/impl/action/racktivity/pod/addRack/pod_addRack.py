@@ -14,8 +14,7 @@ def main(q, i, p, params, tags):
     pod.racks.append(rackguid)
     p.api.model.racktivity.pod.save(pod)
     p.api.action.racktivity.rack.uiCreatePageUnderParent(rackguid, podguid, request = params["request"])
-    #import racktivityui.uigenerator.pod
-    #racktivityui.uigenerator.pod.update(podguid)
+
     params['result'] = {'returncode': True}
 
 def match(q, i, params, tags):

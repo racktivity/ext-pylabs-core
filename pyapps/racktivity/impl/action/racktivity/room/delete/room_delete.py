@@ -18,12 +18,6 @@ def main(q, i, p, params, tags):
     floorguid = p.api.model.racktivity.room.get(roomguid).floor
     params['result'] = {'returncode': p.api.model.racktivity.room.delete(roomguid)}
 
-    #import racktivityui.uigenerator.floor
-    #import racktivityui.uigenerator
-
-    #racktivityui.uigenerator.deletePage(roomguid)
-    #if floorguid:
-        #racktivityui.uigenerator.floor.update(floorguid)
 
     #Delete the policy linked to this room
     q.logger.log('Deleting policies linked to this room', 3)
@@ -31,6 +25,15 @@ def main(q, i, p, params, tags):
     if policyguids:
         policyguid = policyguids[0]
         p.api.model.racktivity.policy.delete(policyguid)
+
+    #Delete the data stores linked to this room
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (roomguid, type))
+    
+    q.actions.actor.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

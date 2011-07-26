@@ -102,13 +102,7 @@ def main(q, i, p, params, tags):
     meteringtypes = ['Current', 'Voltage', 'Frequency', 'Power', 'PowerFactor',
                      'ActiveEnergy', 'ApparentEnergy', 'ApparentPower',
                      'Co2']
-    
-    appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
-    if not appserverguids:
-        raise RuntimeError("Application 'appserverrpc' not found/configured")
-    
-    appserver = p.api.model.racktivity.application.get(appserverguids[0])
-    url = appserver.networkservices[0].name
+
     mdguids = rootobjectaction_find.find("meteringdevice", rackguid=rackguid)
     
     result = {'Current': 0.0,
@@ -149,8 +143,8 @@ def main(q, i, p, params, tags):
         databases[key.activeenergy] = "%s_activeenergy" % md.guid
         databases[key.apparentenergy] = "%s_apparentenergy" % md.guid
     
-    res = q.actions.actor.graphdatabase.getLatests(url, databases)['result']['values']
-    averagesres = q.actions.actor.graphdatabase.getAverageValues(url, databases)['result']['values']
+    res = q.actions.actor.graphdatabase.getLatests(databases)['result']['values']
+    averagesres = q.actions.actor.graphdatabase.getAverageValues(databases)['result']['values']
     
     for mdguid in mdguids:
         key = KeyGen(mdguid)

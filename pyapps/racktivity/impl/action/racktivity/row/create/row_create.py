@@ -40,20 +40,23 @@ def main(q, i, p, params, tags):
     #rootobject_grant.grantUser(row.guid, 'row', params['request']['username'])
 
     params['result'] = {'returncode': True, 'rowguid': row.guid}
-    
-    #UI generation
-    #import racktivityui.uigenerator.row
-    #racktivityui.uigenerator.row.create(row.guid, row.pod)
-    #import racktivityui.uigenerator.pod
-    #racktivityui.uigenerator.pod.update(row.pod)
-    
+
+
     q.logger.log('Creating a policy for row %s' % row.name, 3)
 
     p.api.action.racktivity.policy.create('row_monitor_%s' % row.name, rootobjecttype='row', rootobjectaction='monitor',
                                        rootobjectguid=row.guid, interval=3.0, runbetween='[("00:00", "24:00")]', runnotbetween='[]',
                                        request = params["request"]
                                        )
-    
+
+    rowguid = row.guid
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency',  'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (rowguid, type))
+
+    q.actions.actor.graphdatabase.createStores(stores)
 
 def match(q, i, params, tags):
     return True

@@ -44,10 +44,8 @@ def main(q, i, p, params, tags):
                 wrongfeed = p.api.model.racktivity.feed.get(guid)
                 wrongfeed.datacenterguid = ''
                 p.api.model.racktivity.feed.save(wrongfeed)
-                
-    #import racktivityui.uigenerator.feed
-    #racktivityui.uigenerator.feed.update(feed.guid)
-    
+
+
     params['result'] = {'returncode':True, 'feedguid': feed.guid}
 
 def match(q, i, params, tags):

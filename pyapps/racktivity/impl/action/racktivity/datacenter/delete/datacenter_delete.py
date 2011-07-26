@@ -24,12 +24,7 @@ def main(q, i, p, params, tags):
             p.api.model.racktivity.feed.save(feed)
 
     params['result'] = {'returncode': p.api.model.racktivity.datacenter.delete(datacenterguid)}
-    
-    #import racktivityui.uigenerator
-    #import racktivityui.uigenerator.campus
-    #racktivityui.uigenerator.campus.update(datacenter.locationguid)
-    
-    #racktivityui.uigenerator.deletePage(datacenterguid)
+
 
     #Delete the policy linked to this datacenter
     q.logger.log('Deleting policies linked to this datacenter', 3)
@@ -37,6 +32,13 @@ def main(q, i, p, params, tags):
     for policyguid in  policyguids:
         p.api.model.racktivity.policy.delete(policyguid)
 
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (datacenterguid, type))
+
+    q.actions.actor.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

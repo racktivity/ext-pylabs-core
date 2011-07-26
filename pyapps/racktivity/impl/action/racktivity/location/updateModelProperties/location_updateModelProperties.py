@@ -25,16 +25,7 @@ def main(q, i, p, params, tags):
         #logger.log_tasklet(__tags__, params, fields)
         p.api.model.racktivity.location.save(location)
     
-    #import racktivityui.uigenerator.campus
-    #import racktivityui.uigenerator.enterprise
-    #racktivityui.uigenerator.campus.update(location.guid)
-    #racktivityui.uigenerator.enterprise.update()
 
-    from rootobjectaction_lib import rootobjectaction_find
-    #import racktivityui.uigenerator.datacenter
-    #for dcguid in rootobjectaction_find.datacenter_find(locationguid=location.guid):
-        #racktivityui.uigenerator.datacenter.update(dcguid)
-    
     params['result'] = {'returncode': True,
                         'locationguid': location.guid}
 

@@ -7,10 +7,8 @@ def main(q, i, p, params, tags):
     pod = p.api.model.racktivity.pod.get(podguid)
     pod.racks.remove(params['rackguid'])
     p.api.model.racktivity.pod.save(pod)
-    
-    #import racktivityui.uigenerator.pod
-    #racktivityui.uigenerator.pod.update(podguid)
-    
+
+
     params['result'] = {'returncode': True}
 
 def match(q, i, params, tags):

@@ -14,8 +14,7 @@ def main(q, i, p, params, tags):
     row.racks.append(rackguid)
     p.api.model.racktivity.row.save(row)
     p.api.action.racktivity.rack.uiCreatePageUnderParent(rackguid, rowguid)
-    #import racktivityui.uigenerator.row
-    #racktivityui.uigenerator.row.update(rowguid)
+
     params['result'] = {'returncode': True}
 
 def match(q, i, params, tags):

@@ -34,12 +34,15 @@ def main(q, i, p, params, tags):
                                        request = params["request"]
                                        )
 
-    #Generate UI page
-    #import racktivityui.uigenerator.floor
-    #import racktivityui.uigenerator.room
+    roomguid = room.guid
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (roomguid, type))
 
-    #racktivityui.uigenerator.room.create(room.guid, room.floor)
-    #racktivityui.uigenerator.floor.update(room.floor)
+    q.actions.actor.graphdatabase.createStores(stores)
+
 
     params['result'] = {'returncode': True,
                         'roomguid': room.guid}

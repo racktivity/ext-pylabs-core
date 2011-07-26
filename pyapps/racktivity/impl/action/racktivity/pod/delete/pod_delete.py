@@ -23,11 +23,13 @@ def main(q, i, p, params, tags):
     for policyguid in  policyguids:
         p.api.model.racktivity.policy.delete(policyguid)
 
-    #import racktivityui.uigenerator
-    #racktivityui.uigenerator.deletePage(podguid)
+    mtypes = ('current', 'voltage', 'frequency',  'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (podguid, type))
     
-    #import racktivityui.uigenerator.room
-    #racktivityui.uigenerator.room.update(pod.room)
+    q.actions.actor.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

@@ -29,20 +29,7 @@ def main(q, i, p, params, tags):
         for podguid in rootobjectaction_find.pod_find(rack=rackguid):
             parentFound = True
             p.api.action.racktivity.pod.removeRack(podguid, rackguid, request = params["request"])
-    
-    if not parentFound and rack.roomguid:
-        #update room page.
-        parentFound = True
-        #import racktivityui.uigenerator.room
-        #racktivityui.uigenerator.room.update(rack.roomguid)
-    
-    if not parentFound and rack.floor:
-        parentFound = True
-        #import racktivityui.uigenerator.floor
-        #racktivityui.uigenerator.floor.update(rack.floor)
-        
-    #import racktivityui.uigenerator
-    #racktivityui.uigenerator.deletePage(rackguid)
+
 
     #Delete the policy linked to this rack
     q.logger.log('Deleting policies linked to this rack', 3)
@@ -50,6 +37,14 @@ def main(q, i, p, params, tags):
     if policyguids:
         policyguid = policyguids[0]
         p.api.model.racktivity.policy.delete(policyguid)
+
+    mtypes = ('current', 'voltage', 'frequency',  'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (rackguid, type))
+
+    q.actions.actor.graphdatabase.destroyStores(databasenames)
 
 def match(q, i, params, tags):
     return True

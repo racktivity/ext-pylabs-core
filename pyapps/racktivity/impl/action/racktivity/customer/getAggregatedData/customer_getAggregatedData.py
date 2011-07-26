@@ -40,14 +40,8 @@ def main(q, i, p, params, tags):
         
     if not meteringtypes:
         raise RuntimeError("Empty list of meteringtypes")
-    
-    appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
-    if not appserverguids:
-        raise RuntimeError("Application 'appserverrpc' not found/configured")
-    
-    appserver = p.api.model.racktivity.application.get(appserverguids[0])
-    url = appserver.networkservices[0].name
-    
+
+
     resourcesguids = rootobjectaction_find.resourcegroup_find(customerguid=customerguid)
     
     result = {'Current':0, 'Power':0, 'PowerFactor':0, 'ActiveEnergy':0, 'ApparentEnergy':0, 'Temperature':0, 'Humidity':0, 'Airflow':0}
@@ -106,7 +100,7 @@ def main(q, i, p, params, tags):
                                                             'resolution': resolution}
                 sensorseq += 1
         
-    res = q.actions.actor.graphdatabase.getLatestValues(url, databases)['result']['values']
+    res = q.actions.actor.graphdatabase.getLatestValues(databases)['result']['values']
     
     for valuekey, value in res.iteritems():
         kt = valuekey.split("-")[0]
