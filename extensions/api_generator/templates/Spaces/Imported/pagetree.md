@@ -1,173 +1,140 @@
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
-<script language="javascript" src="/static/lfw/js/filetree.js"/>
+<!-- <script language="javascript" src="/static/lfw/js/filetree.js"/> -->
 
-<div id="treediv"></div>
+<div id="tree">
+</div>
 
-<script language="javascript">
-x = null
-//jsTree node clicked
-function nodeSelected(event, data) {
-    path = data.inst._get_node().attr("id");
-    data.inst.open_node()
+<script>
+
+$(document).ready(function() {
+    METHODS = {getnode: "getNode",
+               getfile: "getFile",
+               setfile: "setFile"};
+               
+    var remotecall = function(method, options) {
+        var options = $.extend({success: $.noop,
+                                error: $.alerterror,
+                                data: {}}, options);
+                                
+        $.ajax({url: 'appserver/rest/ui/ide/' + method,
+                type: 'POST',
+                dataType: 'json',
+                data: options.data,
+                success: options.success,
+                error: options.error});
+    };
     
-    //update the file view
-    $.ajax({
-      url: "appserver/rest/ui/editor/listFilesInDir",
-      type: "POST",
-      data: "appname=" + getCurrentApp() + "&id=" + path,
-      success: refreshFileView,
-      error: error
-    });
-}
-
-function refreshFileView(data)
-{
-    var ROW_NUM = 3
-    var c = 0;
-    var html = "<table border=1>"
-    files = data["files"];
-    path = data["path"];
-    //remove the first part of the path until the word Imported
-    idx = path.indexOf("Imported/") + 9
-    path = path.substr(idx,path.length)
-    //encode the slashes /
-    path = path.replace(/\//g, "%2f");
-
-    for (var i=0; i < files.length; i++)
-    {
-        c++;
-        if (c == 1)
-            html += "<tr>";
-        filename = files[i][0]
-        fileext = files[i][1]
-        if (fileext)
-            pagelink="<a href='/../" + getCurrentApp() + "/#/Imported/" + path + "%2f" + filename + "' target='_blank'>" +filename + "</a>";
-        else
-            pagelink="<b>" + filename + "</b>";
-        html += "<td>" + pagelink + "</td>"
-        if (c == ROW_NUM)
-        {
-            html += "</tr>\n";
-            c = 0;
+    var openedfiles = {};
+    var generateid = function() {
+        return Math.floor(Math.random() * 100000000);
+    };
+    
+    $("#tree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui'],
+                        ui: {
+                            select_limit: 1,
+                        },
+                        types: {
+                            types: { project: {icon: {image: '/static/lfw/img/editor/project.png'}},
+                                     file: {icon: {image: '/static/lfw/img/editor/file.png'}},
+                                     default: {}}
+                        },
+                        json_data: {
+                                ajax: { url: 'appserver/rest/ui/ide/getNode',
+                                        data: function(n) {
+                                            return {id: n.attr ? n.attr("id") : "."};
+                                        }},
+                            progressive_render : true
+                            },
+                        themes: {theme : "classic"},
+                    });
+    
+    $(".jstree-leaf").live("dblclick", function(e){
+        if ($(this).attr("rel") !== "file")
+            return;
+        
+        var fileid = $(this).attr("id");
+        if (fileid in openedfiles){
+            //give focus to file.
+            var id = openedfiles[fileid];
+            $("#editortabs").tabs("select", "#" + id);
+        } else {
+            var id = generateid();
+            var m = /([^\/]+)$/.exec(fileid);
+            if (!m) {
+                console.log("Can't extract the file name");
+                return;
+            }
+            var filename = m[1];
+            openedfiles[fileid] = id;
+            $("#editortabs").tabs("add", "#" + id, filename);
+            $("#editortabs").tabs("select", "#" + id);
+            
+            remotecall(METHODS.getfile, {data: {id: fileid},
+                        success: function(data){
+                            var editor = $("#editortabs").find("#" + id).data("original", data).editor({editorbar:false});
+                            editor.editor("filetype", "py");
+                            editor.editor("content", data);
+                        }});
         }
-    }
-    html += "</table>";
-    document.getElementById("filediv").innerHTML = html;
-}
-
-//Select "appname" value changed
-function appChanged()
-{
-    $("#dirname").val("");
-    //Reload tree
-    loadTree(getCurrentApp());
-    return true;
-}
-
-//return currently selected application
-function getCurrentApp() {
-    if (LFW_CONFIG["development"])
-        return $("#appname").val()
-    else
-        return LFW_CONFIG["appname"]
-}
-
-function getContextMenu(node)
-{
-    root = this._get_parent(node) == -1;
-    text = this.get_text(node);
-    result = null;
-    if (root)
-    {
-        result = {
-            "export": {
-                "label"				: "Export project '"  + text + "'",
-                "action"			: exportProject },
-            "delete" : {
-                "label"				: "Delete project '"  + text + "'",
-                "action"			: deleteProject }
+        
+    });
+    
+    $("#editortabs span.ui-icon-close" ).live( "click", function() {
+        var tab = $(this).parent("li");
+        var hashid = tab.find("a").attr("href");
+        var id = hashid.replace("#", "");
+        var editor = $(hashid);
+        
+        var _close = function(){
+            console.log("Closing");
+            $.each(openedfiles, function(k, v){
+                if (v == id){
+                    delete openedfiles[k];
+                }
+            });
+            
+            var index = $("li", $("#editortabs")).index(tab);
+            $("#editortabs").tabs("remove", index );
+        };
+        
+        if (editor.data("original") != editor.editor("content")) {
+            $.confirm("Close without saving?",
+                {title: "Confirm Close",
+                ok: function() {
+                    _close();
+                }});
+        } else {
+            _close();
         }
-    }
-    return result;
-}
-
-function deleteProject(node)
-{
-    text = this.get_text(node);
-    
-    //update the file view
-    $.ajax({
-      url: "appserver/rest/ui/editor/deleteProject",
-      type: "POST",
-      data: "appname=" + getCurrentApp() + "&projectname=" + text,
-      success: function () {
-          alert("Project " + text + " has been deleted"); 
-          loadTree(getCurrentApp());
-        },
-      error: error
     });
-}
-
-function exportProject(node)
-{
-    text = this.get_text(node);
     
-    //update the file view
-    $.ajax({
-      url: "appserver/rest/ui/editor/exportProject",
-      type: "POST",
-      data: "appname=" + getCurrentApp() + "&projectname=" + text,
-      success:  function () {
-          alert("Project " + text + " has been exported"); 
-        },
-      error: error
-    });
-
-}
-
-//Load specific app's tree
-function loadTree(appname){
-    //Clear the file view
-    $("#filediv").empty();
-
-    if (LFW_CONFIG["development"])
-        $("#appname").val(appname)
-    tree = loadFileTree("#treediv", appname, "portal/spaces/Imported", getContextMenu);
-    tree.bind("select_node.jstree", nodeSelected);
-};
-
-function error(data)
-{
-    data = $.parseJSON(data.responseText);
-    alert("Fail: " + data["exception"]);
-}
-
-function init()
-{
-    //Hide the toolbox
-     $("#toolbar").css("visibility", "hidden")
-    //Initalize appname combobox
-    select = $('#appname');
-    if (LFW_CONFIG["development"]) {
-        var applist = $.ajax({
-            url: "appserver/rest/ui/editor/listPyApps",
-            async: false}).responseText;
-        applist = $.parseJSON(applist)
-
-        $.each(applist, function(index, app) { 
-          select.append($("<option></option>").text(app));
+    $("#editortabs span.ui-icon-note" ).live( "click", function() {
+        var tab = $(this).parent("li");
+        var hashid = tab.find("a").attr("href");
+        var id = hashid.replace("#", "");
+        var editor = $(hashid);
+        var fileid = null;
+        $.each(openedfiles, function(k, v){
+            if (v == id) {
+                fileid = k;
+            }
         });
-        select.change(appChanged);
-        select.show();
-    }
-    else {
-        select.remove();
-    }
-    //Initalize tree
-    appChanged();
-}
-
-$(document).ready(init);
+        
+        if (!fileid){
+            $.alert("Can't get the file id back, it sounds like a serious issue!", {title: "Save Error"});
+            return;
+        }
+        
+        remotecall(METHODS.setfile,
+            {data: {id: fileid,
+                    content: editor.editor("content")},
+            success: function(){
+                editor.data('original', editor.editor("content"));
+            }
+            });
+    });
+    
+});
 </script>
