@@ -1,5 +1,5 @@
 import pymodel as model
-from acl import acl
+
 
 # @doc
 class autodiscoverysnmpmap(model.RootObjectModel):

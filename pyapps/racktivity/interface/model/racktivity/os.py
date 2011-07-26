@@ -19,7 +19,7 @@ class osbitversiontype(BaseEnumeration):
         cls.registerItem('BIT64')
         cls.finishItemRegistration()
 
-from acl import acl
+
 
 # @doc operating system
 class os(model.RootObjectModel):

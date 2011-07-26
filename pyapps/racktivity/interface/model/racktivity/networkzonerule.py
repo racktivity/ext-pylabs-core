@@ -22,7 +22,7 @@ class ipzonerule(model.Model):
     #@doc None
     custom = model.String(thrift_id=6)
 
-from acl import acl
+
 
 # @doc None
 class networkzonerule(model.RootObjectModel):

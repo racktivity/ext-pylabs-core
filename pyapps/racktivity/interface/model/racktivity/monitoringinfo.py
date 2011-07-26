@@ -115,7 +115,7 @@ class sensorportmonitoringinfo(model.Model):
     #@doc timestamp 
     timestamp = model.DateTime(thrift_id=12)
   
-from acl import acl
+
 # @doc Monitoring info object
 class monitoringinfo(model.RootObjectModel):
     

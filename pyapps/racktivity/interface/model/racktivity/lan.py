@@ -9,7 +9,7 @@ class dns(model.Model):
     #@doc order of the dns server
     order = model.Integer(thrift_id=2)
 
-from acl import acl
+
 
 # @doc None
 class lan(model.RootObjectModel):

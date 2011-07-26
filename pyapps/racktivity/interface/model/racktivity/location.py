@@ -5,7 +5,7 @@ class coordinates(model.Model):
     latitude = model.Float(thrift_id=1)
     longitude = model.Float(thrift_id=2)
 
-from acl import acl
+
 
 # @doc class which provides the properties of a location of a data center
 class location(model.RootObjectModel):

@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 
 # @doc physical disk  (nothing todo with the logical disk)
 class pdisk(model.Model):
@@ -99,7 +99,7 @@ class powerport(model.Model):
     #@doc cable to which the powerport is connected
     cableguid = model.GUID(thrift_id=4)
 
-from acl import acl
+
 class device(model.RootObjectModel):
 
     #@doc name of the object

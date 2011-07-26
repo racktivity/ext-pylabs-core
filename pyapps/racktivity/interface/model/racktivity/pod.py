@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 # @doc pod
 class pod(model.RootObjectModel):
     

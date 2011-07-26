@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 
 # @doc a space in the cloud, used to group cloudservices
 class cloudspace(model.RootObjectModel):

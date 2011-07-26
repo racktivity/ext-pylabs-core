@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 
 # @doc rack in the datacenter
 class rack(model.RootObjectModel):

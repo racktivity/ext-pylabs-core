@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 
 # @doc details of an meteringdeviceevent  occured on meteringdevice
 class meteringdeviceevent(model.RootObjectModel):

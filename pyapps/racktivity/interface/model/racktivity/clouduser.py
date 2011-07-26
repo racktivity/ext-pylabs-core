@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 
 # @doc a clouduser is someone who can access the datacenter infrastructure, security is given on this level, a clouduser can be a customer, the term customer is no longer used
 class clouduser(model.RootObjectModel):

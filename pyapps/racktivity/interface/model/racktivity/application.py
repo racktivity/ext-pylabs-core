@@ -187,7 +187,7 @@ class configuration(model.Model):
     #@doc limit installation of multiple instances
     installlimitation = model.Enumeration(applicationinstalllimitationtype,thrift_id=2)
 
-from acl import acl
+
 
 class application(model.RootObjectModel):
 

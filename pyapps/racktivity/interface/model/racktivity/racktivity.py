@@ -1,6 +1,6 @@
 from enumerations import *
 import pymodel as model
-from acl import acl
+
 
 # @doc class which provides the properties of a threshold
 class racktivity(model.RootObjectModel):

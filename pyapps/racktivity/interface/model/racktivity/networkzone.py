@@ -10,7 +10,7 @@ class networkzonerange(model.Model):
     #@doc None
     toip = model.String(thrift_id=2)
 
-from acl import acl
+
 
 # @doc None
 class networkzone(model.RootObjectModel):

@@ -1,7 +1,7 @@
 from enumerations import *
 import pymodel as model
 
-from acl import acl
+
 
 # @doc None
 class backplane(model.RootObjectModel):

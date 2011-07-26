@@ -22,7 +22,7 @@ class thresholdimpacttype(BaseEnumeration):
         cls.registerItem('SWITCHOFF')  
         cls.finishItemRegistration()     
 
-from acl import acl
+
 
 # @doc class which provides the properties of a threshold
 class threshold(model.RootObjectModel):
