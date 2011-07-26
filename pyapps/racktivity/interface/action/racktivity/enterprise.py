@@ -4,7 +4,7 @@ class Enterprise():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name="", description="",  campuses = [],  tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name=None, description=None,  campuses = [],  tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a Enterprise with a group of campuses name and description
         
@@ -30,7 +30,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
         
-    def delete(self, enterpriseguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, enterpriseguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the enterprise
         
@@ -47,7 +47,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
         
-    def updateModelProperties(self, enterpriseguid, name="", description="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, enterpriseguid, name=None, description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties for a enterprise with guid(enterpriseguid)
         
@@ -74,7 +74,7 @@ class Enterprise():
         """
         
     
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -95,7 +95,7 @@ class Enterprise():
         @warning:                Only usable using the python client.
         """
         
-    def find(self, name="",  campus="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None,  campus=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         
         @execution_method = sync
@@ -119,7 +119,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
         
-    def list(self, name="", campus="", tags="",  request="", jobguid="", executionparams=dict()):
+    def list(self, name=None, campus=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         List found enterprises with information
         
@@ -144,7 +144,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
 
-    def addCampus(self, enterpriseguid, campus,  request="", jobguid="", executionparams=dict()):
+    def addCampus(self, enterpriseguid, campus,  request=None, jobguid=None, executionparams=dict()):
         """
         Add a new campus/location to the enterprise
         
@@ -164,7 +164,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
         
-    def removeCampus(self, enterpriseguid, campus,  request="", jobguid="", executionparams=dict()):
+    def removeCampus(self, enterpriseguid, campus,  request=None, jobguid=None, executionparams=dict()):
         """
         Add a new campus/location to the enterprise
         
@@ -184,7 +184,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
     
-    def getTree(enterpriseguid, depth=2, jobguid="", executionparams=dict()):
+    def getTree(enterpriseguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
         
@@ -204,7 +204,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -228,7 +228,7 @@ class Enterprise():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -259,7 +259,7 @@ class Enterprise():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -290,7 +290,7 @@ class Enterprise():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

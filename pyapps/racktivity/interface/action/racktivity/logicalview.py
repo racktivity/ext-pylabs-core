@@ -4,7 +4,7 @@ class logicalview():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name,  viewstring, description="",  clouduserguid="", share=False,  tags="",  request="", jobguid="", executionparams=dict()):
+    def create(self, name,  viewstring, description=None,  clouduserguid=None, share=False,  tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a new logical view
 
@@ -20,7 +20,7 @@ class logicalview():
         @params: clouduserguid which created this view
         @type clouduserguid: guid
 
-        @params share: if shared, it appears in all logical vies
+        @params share: if shared, it appears in all logical views
         @type share: boolean
 
         @param tags: string of tags
@@ -36,7 +36,7 @@ class logicalview():
         @rtype:                   dictionary
         """
 
-    def delete(self, logicalviewguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, logicalviewguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes a pod
 
@@ -53,7 +53,7 @@ class logicalview():
         @rtype:                   dictionary
         """
 
-    def updateModelProperties(self, logicalviewguid, name="",  viewstring="", description="",  clouduserguid="", share=False,  tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, logicalviewguid, name=None,  viewstring=None, description=None,  clouduserguid=None, share=False,  tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties for a logical view with guid(logicalviewguid)
 
@@ -89,7 +89,7 @@ class logicalview():
         """
 
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -110,7 +110,7 @@ class logicalview():
         @warning:                Only usable using the python client.
         """
 
-    def find(self, name="", clouduserguid="", share="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, clouduserguid=None, share=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         @param name: name of the logical view to find
         @type name: string
@@ -134,7 +134,7 @@ class logicalview():
         @rtype:                   dictionary
         """
 
-    def list(self, name="", clouduserguid="", share="", tags="",  request="", jobguid="", executionparams=dict()):
+    def list(self, name=None, clouduserguid=None, share=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         List found logical views and return logical view information
 
@@ -162,7 +162,7 @@ class logicalview():
         @rtype:                   dictionary
         """
 
-    def getViewResult (self, logicalviewguid, request="", jobguid="", executionparams=dict()):
+    def getViewResult (self, logicalviewguid, request=None, jobguid=None, executionparams=dict()):
         """
         Get the result of a specific view
 
@@ -178,7 +178,7 @@ class logicalview():
         @rtype:                   dictionary
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -202,7 +202,7 @@ class logicalview():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -233,7 +233,7 @@ class logicalview():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -264,7 +264,7 @@ class logicalview():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -292,7 +292,7 @@ class logicalview():
         """
 
 
-    def getPduHealthStatus(self, guid, timing = [3600, 86400], request="", jobguid="", executionparams=dict()):
+    def getPduHealthStatus(self, guid, timing = [3600, 86400], request=None, jobguid=None, executionparams=dict()):
         """
         getHealtStatus, returns a list of 3 values, the first list contains the amount of pdus  which monitoring data is more recent then currenttime-timing[0], the second the  # of pdus  which are last monitored between currenttime - timing[0] and currenttime - timing[1] and the last list contains the amount of pdus which are monitored later then currenttime - timing[1]
         

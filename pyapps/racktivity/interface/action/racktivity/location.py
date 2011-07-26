@@ -5,7 +5,7 @@ class location():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, description="", alias="", address="", city="", country="", public=False, coordinatesinfo=None, tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name, description=None, alias=None, address=None, city=None, country=None, public=False, coordinatesinfo=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new location.
         
@@ -46,7 +46,7 @@ class location():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, locationguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, locationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a location.
         
@@ -66,7 +66,7 @@ class location():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, locationguid, name="", description="", alias="", address="", city="", country="", coordinatesinfo=None, tags="", public=False, timezonename="", timezonedelta="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, locationguid, name=None, description=None, alias=None, address=None, city=None, country=None, coordinatesinfo=None, tags=None, public=False, timezonename=None, timezonedelta=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
         
@@ -116,7 +116,7 @@ class location():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", description="", alias="", address="", city="", country="", public=False, tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, description=None, alias=None, address=None, city=None, country=None, public=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of location guids which met the find criteria.
 
@@ -163,7 +163,7 @@ class location():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, locationguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, locationguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all locations.
 
@@ -203,7 +203,7 @@ class location():
         @note:                                      'public': False}]}}
         """
 
-    def listDatacenters(self, locationguid, request="", jobguid="", executionparams=dict()):
+    def listDatacenters(self, locationguid, request=None, jobguid=None, executionparams=dict()):
         """
         List all datacenters of the location.
         
@@ -225,7 +225,7 @@ class location():
         """
        
     
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -240,7 +240,7 @@ class location():
         @warning:                     Only usable using the python client.
         """
         
-    def getAggregatedData(self, locationguid,  meteringtypes, request="", jobguid="", executionparams=dict()):
+    def getAggregatedData(self, locationguid,  meteringtypes, request=None, jobguid=None, executionparams=dict()):
         """
         Get aggregated data from all meteringdevices in the location
         Supported types are: Current, Power, Energy.
@@ -263,7 +263,7 @@ class location():
         @raise e:                      In case an error occurred, exception is raised
         
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -287,7 +287,7 @@ class location():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -318,7 +318,7 @@ class location():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -349,7 +349,7 @@ class location():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -376,7 +376,7 @@ class location():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def getPduHealthStatus(self, guid, timing = [3600, 86400], request="", jobguid="", executionparams=dict()):
+    def getPduHealthStatus(self, guid, timing = [3600, 86400], request=None, jobguid=None, executionparams=dict()):
         """
         getPduHealtStatus, returns a list of 3 values, the first list contains the amount of pdus  which monitoring data is more recent then currenttime-timing[0], the second the  # of pdus  which are last monitored between currenttime - timing[0] and currenttime - timing[1] and the last list contains the amount of pdus which are monitored later then currenttime - timing[1]
         

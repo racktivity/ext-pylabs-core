@@ -53,7 +53,7 @@ def searchRow(q, guid):
     return mds
 
 def searchRack(q, guid):
-    return rootobjectaction_find.meteringdevice_find(rackguid=guid)
+    return rootobjectaction_find.find("meteringdevice",rackguid=guid)
 
 def searchMeteringDevice(q, guid):
     return [guid]

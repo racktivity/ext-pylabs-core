@@ -1,6 +1,6 @@
-class Racktivity_Application():
+class Application():
 
-    def create(self, name, deviceguid="", meteringdeviceguid="", parentapplicactionguid="",description="", customsettings="", template=False, tags="",  request="", jobguid="", executionparams=dict()):
+    def create(self, name, deviceguid=None, meteringdeviceguid=None, parentapplicactionguid=None,description=None, customsettings=None, template=False, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new application, does not provision application yet
         Application does not have to be linked to a machine.
@@ -43,7 +43,7 @@ class Racktivity_Application():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def createFromTemplate(self, deviceguid, meteringdeviceguid, applicationtemplateguid, name, description="", customsettings="", tags="",  request="", jobguid="", executionparams=dict()):
+    def createFromTemplate(self, deviceguid, meteringdeviceguid, applicationtemplateguid, name, description=None, customsettings=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new application, does not provision application yet
 
@@ -81,7 +81,7 @@ class Racktivity_Application():
       
         """
         
-    def delete(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the application specified.
 
@@ -100,7 +100,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, applicationguid, name="", description="", status="", customsettings="", template="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, applicationguid, name=None, description=None, status=None, customsettings=None, template=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update properties, every parameter which is not passed or passed as empty string is not updated.
         @SECURITY administrator only
@@ -139,7 +139,7 @@ class Racktivity_Application():
         """
   
 
-    def start(self, applicationguid, failifnotenoughresource=False, request="", jobguid="", executionparams=dict()):
+    def start(self, applicationguid, failifnotenoughresource=False, request=None, jobguid=None, executionparams=dict()):
         """
         Starts the application specified.
 
@@ -161,7 +161,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def stop(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def stop(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Stops the application specified.
 
@@ -180,7 +180,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def restart(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def restart(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Restart the application specified.
 
@@ -199,7 +199,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def disable(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def disable(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Disables the application specified.
 
@@ -218,7 +218,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def initialize(self,applicationguid, request="", jobguid="", executionparams=dict()):
+    def initialize(self,applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Performs initialization actions on the application specified. As a result the application will be ready to be used.
         @security administrators
@@ -238,7 +238,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -254,7 +254,7 @@ class Racktivity_Application():
         """
         
         
-    def list(self, deviceguid="", meteringdeviceguid="",  applicationguid="", name="",status="", request="", jobguid="", executionparams=dict()):
+    def list(self, deviceguid=None, meteringdeviceguid=None,  applicationguid=None, name=None,status=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of applications.
         @SECURITY administrator only
@@ -291,7 +291,7 @@ class Racktivity_Application():
         @raise e:                 In case an error occurred, exception is raised
         """
 
-    def listStatuses(self, request="", jobguid="", executionparams=dict()):
+    def listStatuses(self, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of possible application statuses.
 
@@ -310,7 +310,7 @@ class Racktivity_Application():
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def listAccountTypes(self, request="", jobguid="", executionparams=dict()):
+    def listAccountTypes(self, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of possible application account types.
 
@@ -331,7 +331,7 @@ class Racktivity_Application():
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self,  deviceguid="", meteringdeviceguid="",  status="", name="", istemplate=False, tags="", request="", jobguid="", executionparams=dict()):
+    def find(self,  deviceguid=None, meteringdeviceguid=None,  status=None, name=None, istemplate=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of application guids which met the find criteria.
 
@@ -371,7 +371,7 @@ class Racktivity_Application():
         """
 
     
-    def addAccount(self, applicationguid, login, password, accounttype, request="", jobguid="", executionparams=dict()):
+    def addAccount(self, applicationguid, login, password, accounttype, request=None, jobguid=None, executionparams=dict()):
         """
         Adds an account for the application specified.
 
@@ -399,7 +399,7 @@ class Racktivity_Application():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def removeAccount(self, applicationguid, login, accounttype, request="", jobguid="", executionparams=dict()):
+    def removeAccount(self, applicationguid, login, accounttype, request=None, jobguid=None, executionparams=dict()):
         """
         Removes an account for the application specified.
 
@@ -425,7 +425,7 @@ class Racktivity_Application():
         """
 
     
-    def addService(self, applicationguid, name, description="", request="", jobguid="", executionparams=dict()):
+    def addService(self, applicationguid, name, description=None, request=None, jobguid=None, executionparams=dict()):
         """
         Adds a new service for the application specified.
 
@@ -450,7 +450,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def removeService(self, applicationguid, servicename, request="", jobguid="", executionparams=dict()):
+    def removeService(self, applicationguid, servicename, request=None, jobguid=None, executionparams=dict()):
         """
         Removes a service for the application specified.
 
@@ -472,7 +472,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def offerServiceToDevice(self, applicationguid, servicename, deviceguid, remark="", request="", jobguid="", executionparams=dict()):
+    def offerServiceToDevice(self, applicationguid, servicename, deviceguid, remark=None, request=None, jobguid=None, executionparams=dict()):
         """
         Offers a service for the device specified.
 
@@ -499,7 +499,7 @@ class Racktivity_Application():
 
         @raise e:                    In case an error occurred, exception is raised
         """
-    def revokeServiceToDevice(self, applicationguid, servicename, deviceguid, request="", jobguid="", executionparams=dict()):
+    def revokeServiceToDevice(self, applicationguid, servicename, deviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Revokes a service for the device specified.
 
@@ -524,7 +524,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def offerServiceToApplication(self, applicationguid, servicename, destinationapplicationguid, remark="", request="", jobguid="", executionparams=dict()):
+    def offerServiceToApplication(self, applicationguid, servicename, destinationapplicationguid, remark=None, request=None, jobguid=None, executionparams=dict()):
         """
         Offers a service for the application specified.
 
@@ -551,7 +551,7 @@ class Racktivity_Application():
 
         @raise e:                          In case an error occurred, exception is raised
         """
-    def revokeServiceToApplication(self, applicationguid, servicename, destinationapplicationguid, request="", jobguid="", executionparams=dict()):
+    def revokeServiceToApplication(self, applicationguid, servicename, destinationapplicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Revokes a service for the application specified.
 
@@ -576,7 +576,7 @@ class Racktivity_Application():
         @raise e:                          In case an error occurred, exception is raised
         """
 
-    def offerServiceToLan(self, applicationguid, servicename, languid, remark="", request="", jobguid="", executionparams=dict()):
+    def offerServiceToLan(self, applicationguid, servicename, languid, remark=None, request=None, jobguid=None, executionparams=dict()):
         """
         Offers a service for the lan specified.
 
@@ -603,7 +603,7 @@ class Racktivity_Application():
 
         @raise e:                    In case an error occurred, exception is raised
         """
-    def revokeServiceToLan(self, applicationguid, servicename, languid, request="", jobguid="", executionparams=dict()):
+    def revokeServiceToLan(self, applicationguid, servicename, languid, request=None, jobguid=None, executionparams=dict()):
         """
         Revokes a service for the lan specified.
 
@@ -629,7 +629,7 @@ class Racktivity_Application():
         """
 
 
-    def offerServiceToCloudUser(self, applicationguid, servicename, clouduserguid, remark="", request="", jobguid="", executionparams=dict()):
+    def offerServiceToCloudUser(self, applicationguid, servicename, clouduserguid, remark=None, request=None, jobguid=None, executionparams=dict()):
         """
         Offers a service for the cloud user specified.
 
@@ -657,7 +657,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def revokeServiceToCloudUser(self, applicationguid, servicename, clouduserguid, request="", jobguid="", executionparams=dict()):
+    def revokeServiceToCloudUser(self, applicationguid, servicename, clouduserguid, request=None, jobguid=None, executionparams=dict()):
         """
         Revokes a service for the cloud user specified.
 
@@ -682,7 +682,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def getChildApplications(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def getChildApplications(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Retrieve application template used to create the given application
         
@@ -704,7 +704,7 @@ class Racktivity_Application():
         """
 
     
-    def addNetworkService(self, applicationguid, name, description="", enabled=True, monitored=True, ipaddressguids=[], request="", jobguid="", executionparams=dict()):
+    def addNetworkService(self, applicationguid, name, description=None, enabled=True, monitored=True, ipaddressguids=[], request=None, jobguid=None, executionparams=dict()):
         """
         Adds a new service for the application specified.
 
@@ -740,7 +740,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def removeNetworkService(self, applicationguid, servicename, request="", jobguid="", executionparams=dict()):
+    def removeNetworkService(self, applicationguid, servicename, request=None, jobguid=None, executionparams=dict()):
         """
         Removes a network service for the application specified.
 
@@ -764,7 +764,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def addNetworkServicePort(self, applicationguid, servicename, portnr, protocoltype="", ipaddress="",  monitor=True, request="", jobguid="", executionparams=dict()):
+    def addNetworkServicePort(self, applicationguid, servicename, portnr, protocoltype=None, ipaddress=None,  monitor=True, request=None, jobguid=None, executionparams=dict()):
         """
         Adds a network service port for the application specified.
 
@@ -800,7 +800,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def removeNetworkServicePort(self, applicationguid, servicename, portnr, request="", jobguid="", executionparams=dict()):
+    def removeNetworkServicePort(self, applicationguid, servicename, portnr, request=None, jobguid=None, executionparams=dict()):
         """
         Removes a network service port from the application specified.
 
@@ -827,7 +827,7 @@ class Racktivity_Application():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def listNetworkServices(self,applicationguid, request="", jobguid="", executionparams=dict()):
+    def listNetworkServices(self,applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of network services for an application.
 
@@ -861,7 +861,7 @@ class Racktivity_Application():
         """
 
 
-    def getNetworkServicePorts(self, applicationguid, networkservicename, request="", jobguid="", executionparams=dict() ):
+    def getNetworkServicePorts(self, applicationguid, networkservicename, request=None, jobguid=None, executionparams=dict() ):
         """
         Retrieve information about the networkserviceports for the given application
         
@@ -885,7 +885,7 @@ class Racktivity_Application():
         @raise e:                     In case an error occurred, exception is raised
         """
         
-    def reload(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def reload(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Reloads the specified application 
 
@@ -902,7 +902,7 @@ class Racktivity_Application():
         @rtype:                  dictionary
         """
     
-    def getStatus(self, applicationguid, request="", jobguid="", executionparams=dict()):
+    def getStatus(self, applicationguid, request=None, jobguid=None, executionparams=dict()):
         """
         Retrieve status of the given application
         
@@ -918,7 +918,7 @@ class Racktivity_Application():
         @return:                 dictionary with True as and status as result and jobguid: {'result': {'returncode':True, 'status':, 'jobguid': guid}
         @rtype:                  dictionary
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -942,7 +942,7 @@ class Racktivity_Application():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -973,7 +973,7 @@ class Racktivity_Application():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -1004,7 +1004,7 @@ class Racktivity_Application():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

@@ -5,7 +5,7 @@ class customer:
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, description="", address="", city="", country="", tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name, description=None, address=None, city=None, country=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new customer
         @execution_method = sync
@@ -40,7 +40,7 @@ class customer:
         @raise e:                   In case an error occurred, exception is raised
         """
         
-    def delete(self, customerguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, customerguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the customer specified.
 
@@ -61,7 +61,7 @@ class customer:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -77,7 +77,7 @@ class customer:
         """
 
 
-    def updateModelProperties(self, customerguid, name="",description="", address="", city="", country="", tags="", request="", jobguid="",  executionparams=dict()):
+    def updateModelProperties(self, customerguid, name=None,description=None, address=None, city=None, country=None, tags=None, request=None, jobguid=None,  executionparams=dict()):
         """
         Update properties, every parameter which is not passed or passed as empty string is not updated.
         @SECURITY administrator only
@@ -118,7 +118,7 @@ class customer:
         """
 
 
-    def setStatus(self, customerguid, status, request="", jobguid="", executionparams=dict()):
+    def setStatus(self, customerguid, status, request=None, jobguid=None, executionparams=dict()):
         """
         Updates the status of the customer specified.
 
@@ -142,7 +142,7 @@ class customer:
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def addCloudUserGroup(self, customerguid, cloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def addCloudUserGroup(self, customerguid, cloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Adds a cloud user group to the customer specified.
 
@@ -166,7 +166,7 @@ class customer:
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def removeCloudUserGroup(self, customerguid, cloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def removeCloudUserGroup(self, customerguid, cloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Removes a cloud user group for the customer specified.
 
@@ -192,7 +192,7 @@ class customer:
 
    
 
-    def list(self, customerguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, customerguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of customers.
         @SECURITY administrator only
@@ -218,7 +218,7 @@ class customer:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def listStatuses(self, request="", jobguid="", executionparams=dict()):
+    def listStatuses(self, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of possible customer statuses.
 
@@ -239,7 +239,7 @@ class customer:
         @raise e:                In case an error occurred, exception is raised
         """
     
-    def listGroups(self, customerguid, request="", jobguid="", executionparams=dict()):
+    def listGroups(self, customerguid, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of cloud user groups for a given customer.
         
@@ -269,7 +269,7 @@ class customer:
         @raise e:                In case an error occurred, exception is raised
         """
 
-    def find(self, name="", status="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, status=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of customer guids which meet the search criteria.
 
@@ -299,7 +299,7 @@ class customer:
         @raise e:                       In case an error occurred, exception is raised
         """
         
-    def getAggregatedData(self, customerguid,  meteringtypes, request="", jobguid="", executionparams=dict()):
+    def getAggregatedData(self, customerguid,  meteringtypes, request=None, jobguid=None, executionparams=dict()):
         """
         Get aggregated data from all meteringdevices owned by this customer
         Supported types are: Current, Power, Energy.
@@ -322,7 +322,7 @@ class customer:
         @raise e:                      In case an error occurred, exception is raised
         
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -346,7 +346,7 @@ class customer:
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -377,7 +377,7 @@ class customer:
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -408,7 +408,7 @@ class customer:
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

@@ -1,6 +1,6 @@
 class Lan():
 
-    def create(self, backplaneguid, name, lantype, network, netmask, parentlanguid="", fromip="", toip="", gateway="", dns=[], description="", tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, backplaneguid, name, lantype, network, netmask, parentlanguid=None, fromip=None, toip=None, gateway=None, dns=[], description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new lan
 
@@ -56,7 +56,7 @@ class Lan():
 #        ...
 #        q.actions.rootobject.
 #        ...
-    def delete(self, languid, request="", jobguid="", executionparams=dict()):
+    def delete(self, languid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes s lan.
 
@@ -75,7 +75,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setVlanTag(self, languid, vlantag, request="", jobguid="", executionparams=dict()):
+    def setVlanTag(self, languid, vlantag, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the VLAN tag for the specified LAN.
 
@@ -97,7 +97,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setLanType(self, languid, lantype, request="", jobguid="", executionparams=dict()):
+    def setLanType(self, languid, lantype, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the LAN type for the specified LAN.
 
@@ -119,7 +119,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setFlags(self, languid, publicflag=False, managementflag=False, storageflag=False, request="", jobguid="", executionparams=dict()):
+    def setFlags(self, languid, publicflag=False, managementflag=False, storageflag=False, request=None, jobguid=None, executionparams=dict()):
         """
         Sets the role flags for the specified LAN.
 
@@ -150,7 +150,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setNetworkNetmask(self, languid, network, netmask, request="", jobguid="", executionparams=dict()):
+    def setNetworkNetmask(self, languid, network, netmask, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the network for the specified LAN.
 
@@ -175,7 +175,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setFromIpToIp(self, languid, fromip, toip, request="", jobguid="", executionparams=dict()):
+    def setFromIpToIp(self, languid, fromip, toip, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the network for the specified LAN.
 
@@ -200,7 +200,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setStatus(self, languid, status, request="", jobguid="", executionparams=dict()):
+    def setStatus(self, languid, status, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the status for the specified LAN.
 
@@ -222,7 +222,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setDefaultGateway(self, languid, gateway, request="", jobguid="", executionparams=dict()):
+    def setDefaultGateway(self, languid, gateway, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the default gateway for the specified LAN.
 
@@ -244,7 +244,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setDNS(self, languid, dns, request="", jobguid="", executionparams=dict()):
+    def setDNS(self, languid, dns, request=None, jobguid=None, executionparams=dict()):
         """
         Configures the domain name server for the specified LAN.
 
@@ -266,7 +266,7 @@ class Lan():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def moveToBackplane(self, languid, backplaneguid, request="", jobguid="", executionparams=dict()):
+    def moveToBackplane(self, languid, backplaneguid, request=None, jobguid=None, executionparams=dict()):
         """
         Moves the specified LAN to the another backplane.
 
@@ -292,7 +292,7 @@ class Lan():
 
     
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -308,7 +308,7 @@ class Lan():
         """
 
    
-    def updateModelProperties(self, languid, name="", description="", gateway="", network="", netmask="", startip="", endip="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, languid, name=None, description=None, gateway=None, network=None, netmask=None, startip=None, endip=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties
 
@@ -348,8 +348,8 @@ class Lan():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def find(self, backplaneguid="", name="", dns="", status="", startip="", endip="", gateway="", managementflag="", publicflag="", storageflag="", \
-             network="", netmask="", parentlanguid="", vlantag="", lantype="", dhcpflag="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, backplaneguid=None, name=None, dns=None, status=None, startip=None, endip=None, gateway=None, managementflag=None, publicflag=None, storageflag=None, \
+             network=None, netmask=None, parentlanguid=None, vlantag=None, lantype=None, dhcpflag=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of LAN guids which met the find criteria.
 
@@ -419,7 +419,7 @@ class Lan():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def list(self, backplaneguid="", languid="", request="", jobguid="", executionparams=dict()):
+    def list(self, backplaneguid=None, languid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all lans.
 
@@ -467,7 +467,7 @@ class Lan():
         @raise e:                          In case an error occurred, exception is raised
         """
 
-    def listIPAddresses(self, languid, request="", jobguid="", executionparams=dict()):
+    def listIPAddresses(self, languid, request=None, jobguid=None, executionparams=dict()):
         """
         List all IP addresses for a lan.
 
@@ -498,7 +498,7 @@ class Lan():
         """
 
     
-    def getNextMacRange(self, request="", jobguid="",executionparams=dict()):
+    def getNextMacRange(self, request=None, jobguid=None,executionparams=dict()):
         """
         Get the next mac range for a qlan
 
@@ -516,7 +516,7 @@ class Lan():
         @raise e:                          In case an error occurred, exception is raised
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -540,7 +540,7 @@ class Lan():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -571,7 +571,7 @@ class Lan():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -602,7 +602,7 @@ class Lan():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

@@ -5,7 +5,7 @@ class ipaddress():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, address, description="", netmask = "",block = False,iptype="", ipversion = "", languid = "" ,virtual = False, tags="", request = "", jobguid = "", executionparams=dict()):
+    def create(self, name, address, description=None, netmask = "",block = False,iptype=None, ipversion = "", languid = "" ,virtual = False, tags=None, request = "", jobguid = "", executionparams=dict()):
     
         """
         Create a new ipaddress.
@@ -53,7 +53,7 @@ class ipaddress():
         @raise e:                 In case an error occurred, exception is raised
         """
 
-    def delete(self, ipaddressguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, ipaddressguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a ipaddress.
 
@@ -74,7 +74,7 @@ class ipaddress():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, ipaddressguid, name="",description="",address="",netmask="",block = False,iptype="",ipversion="", virtual=None, languid="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, ipaddressguid, name=None,description=None,address=None,netmask=None,block = False,iptype=None,ipversion=None, virtual=None, languid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -125,7 +125,7 @@ class ipaddress():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", description="", address="", netmask="",block = False, iptype="", ipversion="", languid="", cloudspaceguid="", virtual=None, tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, description=None, address=None, netmask=None, block=None, iptype=None, ipversion=None, languid=None, cloudspaceguid=None, virtual=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of ipaddress guids which met the find criteria.
 
@@ -182,7 +182,7 @@ class ipaddress():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def list(self, ipaddressguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, ipaddressguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all ipaddresss.
 
@@ -215,7 +215,7 @@ class ipaddress():
         @note:                                      'languid': '77544B07-4129-47B1-8690-B92C0DB2143'}]}}
         """
         
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -232,7 +232,7 @@ class ipaddress():
 
   
 
-    def setState(self, ipaddressguid, status, request="", jobguid="", executionparams=dict()):
+    def setState(self, ipaddressguid, status, request=None, jobguid=None, executionparams=dict()):
         """
         Sets the state of the ip address
         
@@ -255,7 +255,7 @@ class ipaddress():
         
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -279,7 +279,7 @@ class ipaddress():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -310,7 +310,7 @@ class ipaddress():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -341,7 +341,7 @@ class ipaddress():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

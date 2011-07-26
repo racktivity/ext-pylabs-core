@@ -109,7 +109,7 @@ def main(q, i, p, params, tags):
     
     appserver = p.api.model.racktivity.application.get(appserverguids[0])
     url = appserver.networkservices[0].name
-    mdguids = rootobjectaction_find.meteringdevice_find(rackguid=rackguid)
+    mdguids = rootobjectaction_find.find("meteringdevice", rackguid=rackguid)
     
     result = {'Current': 0.0,
               'Voltage': 0.0,

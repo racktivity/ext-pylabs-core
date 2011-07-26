@@ -3,8 +3,8 @@ class errorcondition:
     errorcondition class
     """
 
-    def create(self, errorconditiontype="", timestamp="", level="", agent="", errormessagepublic="", errormessageprivate="",
-               application="", backtrace="", logs="", transactioninfo="", tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, errorconditiontype=None, timestamp=None, level=None, agent=None, errormessagepublic=None, errormessageprivate=None,
+               application=None, backtrace=None, logs=None, transactioninfo=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new errorcondition
 
@@ -58,7 +58,7 @@ class errorcondition:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def find(self, errorconditiontype="", timestamp="", level="", agent="", tags=[], application="", request="", jobguid="",executionparams=dict()):
+    def find(self, errorconditiontype=None, timestamp=None, level=None, agent=None, tags=None, application=None, request=None, jobguid=None,executionparams=dict()):
         """
         @execution_method = sync
 
@@ -92,7 +92,7 @@ class errorcondition:
         
         """
 
-    def getObject(self, errorconditionguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, errorconditionguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -114,7 +114,7 @@ class errorcondition:
         """
 
 
-    def delete(self, errorconditionguid, request="", jobguid="",executionparams=dict()):
+    def delete(self, errorconditionguid, request=None, jobguid=None,executionparams=dict()):
         """
         Delete the specified errorcondition
 
@@ -137,7 +137,7 @@ class errorcondition:
         @raise e:                         dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
         """
 
-    def list(self, errorconditionguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, errorconditionguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all errorconditions or only specified errorcondition
 
@@ -159,7 +159,7 @@ class errorcondition:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def raiseErrorCondition(self, level="", typeid="", errormessagepublic="", errormessageprivate="", tags="", request="", jobguid="", executionparams=dict()):
+    def raiseErrorCondition(self, level=None, typeid=None, errormessagepublic=None, errormessageprivate=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new errorcondition and escalate it
 
@@ -191,7 +191,7 @@ class errorcondition:
 
         @raise e:                        In case an error occurred, exception is raised
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -215,7 +215,7 @@ class errorcondition:
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -246,7 +246,7 @@ class errorcondition:
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -277,7 +277,7 @@ class errorcondition:
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

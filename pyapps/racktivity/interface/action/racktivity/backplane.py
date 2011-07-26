@@ -5,7 +5,7 @@ class backplane():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, backplanetype, description="", publicflag=False, managementflag=False, storageflag=False, tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name, backplanetype, description=None, publicflag=False, managementflag=False, storageflag=False, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new backplane.
 
@@ -42,7 +42,7 @@ class backplane():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, backplaneguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, backplaneguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a backplane.
 
@@ -61,7 +61,7 @@ class backplane():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, backplaneguid,  name="",  backplanetype="", description="", tags=[], request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, backplaneguid,  name=None,  backplanetype=None, description=None, tags=[], request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -92,7 +92,7 @@ class backplane():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def setFlags(self, backplaneguid, publicflag=False, managementflag=False, storageflag=False, request="", jobguid="", executionparams=dict()):
+    def setFlags(self, backplaneguid, publicflag=False, managementflag=False, storageflag=False, request=None, jobguid=None, executionparams=dict()):
         """
         Sets the role flags for the specified backplane.
 
@@ -120,7 +120,7 @@ class backplane():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", managementflag="", publicflag="", storageflag="", backplanetype="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, managementflag=None, publicflag=None, storageflag=None, backplanetype=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of backplane guids which met the find criteria.
         
@@ -159,7 +159,7 @@ class backplane():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def list(self, backplaneguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, backplaneguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all backplanes.
 
@@ -193,7 +193,7 @@ class backplane():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -208,7 +208,7 @@ class backplane():
         @warning:                 Only usable using the python client.
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -232,7 +232,7 @@ class backplane():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -263,7 +263,7 @@ class backplane():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -294,7 +294,7 @@ class backplane():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

@@ -4,7 +4,7 @@ class Floor():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name, floor, datacenterguid, alias="", description="", tags="",  request="", jobguid="", executionparams=dict()):
+    def create(self, name, floor, datacenterguid, alias=None, description=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a floor in a datacenter with a list of racks
         
@@ -36,7 +36,7 @@ class Floor():
         @rtype:                   dictionary
         """
         
-    def delete(self, floorguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, floorguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes a floor
         
@@ -53,7 +53,7 @@ class Floor():
         @rtype:                   dictionary
         """
         
-    def updateModelProperties(self, floorguid, name="", floor=None, datacenterguid="", alias="", description="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, floorguid, name=None, floor=None, datacenterguid=None, alias=None, description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties for a floor with guid(floorguid)
 
@@ -90,7 +90,7 @@ class Floor():
         @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
         @rtype:                   dictionary
         """
-    def getAggregatedData(self, floorguid, meteringtypes,  request="", jobguid='', executionparams={}):
+    def getAggregatedData(self, floorguid, meteringtypes,  request=None, jobguid='', executionparams={}):
         """
         Get aggregated data from all rooms in the floor
         Supported types are: Current, Power, Energy.
@@ -141,7 +141,7 @@ class Floor():
         
         @return: [{viewdatatype:, viewdatavalue:, viewdataunit:},]
         """
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -162,7 +162,7 @@ class Floor():
         @warning:                Only usable using the python client.
         """
         
-    def find(self, name="",datacenterguid="", floor=None, alias="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None,datacenterguid=None, floor=None, alias=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         @execution_method = sync
         
@@ -191,7 +191,7 @@ class Floor():
         @rtype:                   dictionary
         """
         
-    def list(self, floorguid="",  request="", jobguid="", executionparams=dict()):
+    def list(self, floorguid=None,  request=None, jobguid=None, executionparams=dict()):
         """
         @execution_method = sync
         
@@ -212,7 +212,7 @@ class Floor():
         @rtype:                   dictionary
         """
     
-    def getTree(floorguid, depth=2, jobguid="", executionparams=dict()):
+    def getTree(floorguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
         
@@ -232,7 +232,7 @@ class Floor():
         @rtype:                   dictionary
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -256,7 +256,7 @@ class Floor():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -287,7 +287,7 @@ class Floor():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -318,7 +318,7 @@ class Floor():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -346,7 +346,7 @@ class Floor():
         """
 
 
-    def getPduHealthStatus(self, guid, timing = [3600, 86400], request="", jobguid="", executionparams=dict()):
+    def getPduHealthStatus(self, guid, timing = [3600, 86400], request=None, jobguid=None, executionparams=dict()):
         """
         getPduHealtStatus, returns a list of 3 values, the first list contains the amount of pdus  which monitoring data is more recent then currenttime-timing[0], the second the  # of pdus  which are last monitored between currenttime - timing[0] and currenttime - timing[1] and the last list contains the amount of pdus which are monitored later then currenttime - timing[1]
         

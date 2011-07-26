@@ -54,7 +54,7 @@ def searchRow(q, guid, request):
     return mds
 
 def searchRack(q, guid, request):
-    return rootobjectaction_find.meteringdevice_find(rackguid=guid)
+    return rootobjectaction_find.find("meteringdevice", rackguid=guid)
 
 def searchMeteringDevice(q, guid, request):
     return [guid]
@@ -130,7 +130,7 @@ def getPortsAndSensors(q, md):
         sensors.append({'sequence': sn.sequence,
                         'type': sn.type,
                         'label': sn.label})
-    for mdguid in rootobjectaction_find.meteringdevice_find(parentmeteringdeviceguid=md.guid):
+    for mdguid in rootobjectaction_find.find("meteringdevice", parentmeteringdeviceguid=md.guid):
         submd = p.api.model.racktivity.meteringdevice.get(mdguid)
         subports, subsensors = getPortsAndSensors(q, submd)
         ports += subports

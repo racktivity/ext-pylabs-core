@@ -5,7 +5,7 @@ class ACL():
     """
 
 
-    def create(self, rootobjecttype, rootobjectguid="", cloudusergroupguidsread=[], cloudusergroupguidswrite=[], cloudusergroupguidsdelete=[], tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, rootobjecttype, rootobjectguid=None, cloudusergroupguidsread=[], cloudusergroupguidswrite=[], cloudusergroupguidsdelete=[], tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create an ACL.
        
@@ -41,7 +41,7 @@ class ACL():
         @raise e:                           In case an error occurred, exception is raised
         """
 
-    def delete(self, aclguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, aclguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete an ACL.
       
@@ -62,7 +62,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, rootobjecttype, rootobjectguid="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, rootobjecttype, rootobjectguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of acl guids which met the find criteria.
         
@@ -93,7 +93,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, request="", jobguid="", executionparams=dict()):
+    def list(self, request=None, jobguid=None, executionparams=dict()):
         """
         List all acls.
 
@@ -122,7 +122,7 @@ class ACL():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, aclguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, aclguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
        
@@ -137,7 +137,7 @@ class ACL():
 
     
 
-    def grantPermission(self, aclguid, permissiontype, cloudusergroupguids=[], request="", jobguid="", executionparams=dict()):
+    def grantPermission(self, aclguid, permissiontype, cloudusergroupguids=[], request=None, jobguid=None, executionparams=dict()):
         """
         Grant permission for a list of cloud user group guids.
       
@@ -164,7 +164,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def revokePermission(self, aclguid, permissiontype, cloudusergroupguids=[], request="", jobguid="", executionparams=dict()):
+    def revokePermission(self, aclguid, permissiontype, cloudusergroupguids=[], request=None, jobguid=None, executionparams=dict()):
         """
         Revoke permission for a list of cloud user group guids.
       
@@ -191,7 +191,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def addAction(self, aclguid, name, cloudusergroupguids=[], request="", jobguid="", executionparams=dict()):
+    def addAction(self, aclguid, name, cloudusergroupguids=[], request=None, jobguid=None, executionparams=dict()):
         """
         Add an action.(e.g switch on/off port ...)
       
@@ -218,7 +218,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def removeAction(self, aclguid, name, request="", jobguid="", executionparams=dict()):
+    def removeAction(self, aclguid, name, request=None, jobguid=None, executionparams=dict()):
         """
         Remove an action.
       
@@ -242,7 +242,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def grantActionPermission(self, aclguid, name, cloudusergroupguids=[], request="", jobguid="", executionparams=dict()):
+    def grantActionPermission(self, aclguid, name, cloudusergroupguids=[], request=None, jobguid=None, executionparams=dict()):
         """
         Grant permission for a list of cloud user group guids to execute the action specified.
       
@@ -269,7 +269,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def revokeActionPermission(self, aclguid, name, cloudusergroupguids=[], request="", jobguid="", executionparams=dict()):
+    def revokeActionPermission(self, aclguid, name, cloudusergroupguids=[], request=None, jobguid=None, executionparams=dict()):
         """
         Revoke permission for a list of cloud user group guids to execute the action specified
       
@@ -296,7 +296,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def listUserACL(self, clouduserguid, request="", jobguid="", executionparams=dict()):
+    def listUserACL(self, clouduserguid, request=None, jobguid=None, executionparams=dict()):
         """
         List all ACL's which apply to the user specified
       
@@ -325,7 +325,7 @@ class ACL():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def isOperationAllowed(self, rootobjecttype, permissiontype, clouduserguid, rootobjectguid="", request="", jobguid="", executionparams=dict()):
+    def isOperationAllowed(self, rootobjecttype, permissiontype, clouduserguid, rootobjectguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         Check if the user specified is authorized for the operation specified
       
@@ -355,7 +355,7 @@ class ACL():
         @raise e:                      In case an error occurred, exception is raised
         """
         
-    def isActionAllowed(self, rootobjecttype, name, clouduserguid, rootobjectguid="", request="", jobguid="", executionparams=dict()):
+    def isActionAllowed(self, rootobjecttype, name, clouduserguid, rootobjectguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         Check if the user specified is authorized for the operation specified
       

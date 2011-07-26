@@ -5,7 +5,7 @@ class rack():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, racktype, roomguid="", description="",  floor="", corridor="", position="", height=42, tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name, racktype, roomguid=None, description=None,  floor=None, corridor=None, position=None, height=42, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new rack.
 
@@ -50,7 +50,7 @@ class rack():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, rackguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, rackguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a rack.
 
@@ -71,7 +71,7 @@ class rack():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, rackguid,name="", racktype="", description="", roomguid="", floor="", corridor="", position="", height=42, tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, rackguid,name=None, racktype=None, description=None, roomguid=None, floor=None, corridor=None, position=None, height=42, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -119,7 +119,7 @@ class rack():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", racktype="", description="", roomguid="", floor="", corridor="", position="", height="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, racktype=None, description=None, roomguid=None, floor=None, corridor=None, position=None, height=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of rack guids which met the find criteria.
 
@@ -170,7 +170,7 @@ class rack():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, rackguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, rackguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all racks.
 
@@ -201,7 +201,7 @@ class rack():
                                                     
         @raise e:                       In case an error occurred, exception is raised
         """
-    def getAggregatedData(self, rackguid,  meteringtypes, request="", jobguid="", executionparams=dict()):
+    def getAggregatedData(self, rackguid,  meteringtypes, request=None, jobguid=None, executionparams=dict()):
         """
         Get aggregated data from all meteringdevices in the rack
         Supported types are: Current, Power, Energy.
@@ -228,7 +228,7 @@ class rack():
         
     
     
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -243,7 +243,7 @@ class rack():
         @warning:                   Only usable using the python client.
         """
     
-    def getMeteringdevicesCount(self, rackguid, request="", jobguid="",executionparams=dict()):
+    def getMeteringdevicesCount(self, rackguid, request=None, jobguid=None,executionparams=dict()):
         """
         Get number of meteringdevices in this rack
         
@@ -256,14 +256,14 @@ class rack():
         @return:                       result as a dictionary of the form {'returncode': True, 'count':{'configured':x, 'userd':x, 'identified':x}}
         """
     
-    def getViewData(self, rootobjectguid, request="", jobguid="", executionparams=dict()):
+    def getViewData(self, rootobjectguid, request=None, jobguid=None, executionparams=dict()):
         """
         Returns view data as a list for this rootobject.
         
         @return: [{viewdatatype:, viewdatavalue:, viewdataunit:},]
         """
     
-    def uiCreatePageUnderParent(self, rackguid, parentguid, request="", jobguid="", executionparams=dict()):
+    def uiCreatePageUnderParent(self, rackguid, parentguid, request=None, jobguid=None, executionparams=dict()):
         """
         This method is used to create/move the rack page on confluence
         to the correct parent
@@ -284,7 +284,7 @@ class rack():
         @return:                       result as a dictionary of the form {'returncode': True}
         """
     
-    def getTree(rackguid, depth=2, jobguid="", executionparams=dict()):
+    def getTree(rackguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
         
@@ -303,7 +303,7 @@ class rack():
         @return:                  dictionary with returncode(True) as result and 'result': {'name','type',children = []}
         @rtype:                   dictionary
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -327,7 +327,7 @@ class rack():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -358,7 +358,7 @@ class rack():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -389,7 +389,7 @@ class rack():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -417,7 +417,7 @@ class rack():
         """
 
 
-    def getPduHealthStatus(self, guid, timing = [3600, 86400], request="", jobguid="", executionparams=dict()):
+    def getPduHealthStatus(self, guid, timing = [3600, 86400], request=None, jobguid=None, executionparams=dict()):
         """
         getPduHealtStatus, returns a list of 3 values, the first list contains the amount of pdus  which monitoring data is more recent then currenttime-timing[0], the second the  # of pdus  which are last monitored between currenttime - timing[0] and currenttime - timing[1] and the last list contains the amount of pdus which are monitored later then currenttime - timing[1]
         
@@ -435,7 +435,7 @@ class rack():
         @type: dict
         """
 
-    def discover(self, rackguid, ipaddresslist=[], password = "public", port = 161, updateExisting = False, request="", jobguid="", executionparams=dict()):
+    def discover(self, rackguid, ipaddresslist=[], password = "public", port = 161, updateExisting = False, request=None, jobguid=None, executionparams=dict()):
         """
         Asynchronous function which discovers pdus in the ipaddresslist and adds them to the selected Rack.
         

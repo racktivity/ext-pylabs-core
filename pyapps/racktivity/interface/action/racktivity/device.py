@@ -5,8 +5,8 @@ class device():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name,devicetype,description="",template=False,rackguid="",datacenterguid="",racku = 0,racky = 0,rackz = 0,modelnr="",serialnr="",firmware="",\
-               lastcheck="",status="",parentdeviceguid="",components=list(),pdisks=list(),nicports=list(),powerports=list(),lastrealitycheck="", accounts="", tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name,devicetype,description=None,template=False,rackguid=None,datacenterguid=None,racku = 0,racky = 0,rackz = 0,modelnr=None,serialnr=None,firmware=None,\
+               lastcheck=None,status=None,parentdeviceguid=None,components=list(),pdisks=list(),nicports=list(),powerports=list(),lastrealitycheck=None, accounts=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new device.
 
@@ -91,7 +91,7 @@ class device():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, deviceguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, deviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a device.
 
@@ -113,8 +113,8 @@ class device():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, deviceguid,name="",devicetype="",description="",template=False,rackguid="",datacenterguid="",racku = 1,racky = 0,rackz = 0,modelnr="",serialnr="",firmware="",\
-                              lastcheck="",status="",parentdeviceguid="",components=list(),pdisks=list(),nicports=list(),powerports=list(),lastrealitycheck="",accounts="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, deviceguid,name=None,devicetype=None,description=None,template=False,rackguid=None,datacenterguid=None,racku = 1,racky = 0,rackz = 0,modelnr=None,serialnr=None,firmware=None,\
+                              lastcheck=None,status=None,parentdeviceguid=None,components=list(),pdisks=list(),nicports=list(),powerports=list(),lastrealitycheck=None,accounts=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -202,8 +202,8 @@ class device():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def find(self, name="", macaddress="", status="", devicetype="", description="", template="", modelnr="",serialnr="",firmware="", \
-             rackguid="",datacenterguid="", parentdeviceguid="",cableguid="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, macaddress=None, status=None, devicetype=None, description=None, template=None, modelnr=None,serialnr=None,firmware=None, \
+             rackguid=None,datacenterguid=None, parentdeviceguid=None,cableguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of device guids which met the find criteria.
 
@@ -269,7 +269,7 @@ class device():
         @raise e:                         In case an error occurred, exception is raised
         """
 
-    def list(self, deviceguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, deviceguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all devices.
 
@@ -295,7 +295,7 @@ class device():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -311,7 +311,7 @@ class device():
         """
 
        
-    def listPowerPorts(self, deviceguid, request="", jobguid="", executionparams=dict()):
+    def listPowerPorts(self, deviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Lists information about power ports of the device  
         
@@ -326,7 +326,7 @@ class device():
         @raise e:                   In case an error occurred, exception is raised
         """
         
-    def connectPowerPort(self, deviceguid, portname, cableguid, request="", jobguid="", executionparams=dict()):
+    def connectPowerPort(self, deviceguid, portname, cableguid, request=None, jobguid=None, executionparams=dict()):
         """
         Connect a cable to the powerport of the device 
         
@@ -343,7 +343,7 @@ class device():
         @rtype:                       dictionary
         """  
         
-    def disconnectPowerPort(self, deviceguid, portname="", cableguid="",request="", jobguid="", executionparams=dict()):
+    def disconnectPowerPort(self, deviceguid, portname=None, cableguid=None,request=None, jobguid=None, executionparams=dict()):
         """
         Disonnect a cable from the device  
         
@@ -360,7 +360,7 @@ class device():
         @rtype:                       dictionary
         """
     
-    def getTree(deviceguid, depth=2, jobguid="", executionparams=dict()):
+    def getTree(deviceguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
         
@@ -380,7 +380,7 @@ class device():
         @rtype:                   dictionary
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -404,7 +404,7 @@ class device():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -435,7 +435,7 @@ class device():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -466,7 +466,7 @@ class device():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

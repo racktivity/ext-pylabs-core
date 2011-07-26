@@ -1,5 +1,5 @@
 class feed():
-    def create(self, name, feedproductiontype, datacenterguid="", co2emission=None, feedconnectors=list(), description="",tags="" ,request="", jobguid="", executionparams=dict()):
+    def create(self, name, feedproductiontype, datacenterguid=None, co2emission=None, feedconnectors=list(), description=None,tags=None ,request=None, jobguid=None, executionparams=dict()):
         """
         Create a new feed.
 
@@ -36,7 +36,7 @@ class feed():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, feedguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, feedguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a feed.
         
@@ -56,7 +56,7 @@ class feed():
 
         @raise e:                     In case an error occurred, exception is raised
         """
-    def addConnector(self, feedguid, name, sequence, status, request="", jobguid="", executionparams=dict()):
+    def addConnector(self, feedguid, name, sequence, status, request=None, jobguid=None, executionparams=dict()):
         """
         Add a feed connector to the feed
         
@@ -81,7 +81,7 @@ class feed():
         @raise e:                     In case an error occurred, exception is raised
         """
     
-    def deleteConnector(self, feedguid, name, request="", jobguid="", executionparams=dict()):
+    def deleteConnector(self, feedguid, name, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a feed connector from the feed
         
@@ -101,7 +101,7 @@ class feed():
         @raise e:                     In case an error occurred, exception is raised
         """
     
-    def connectConnector(self, feedguid, name, cableguid, request="", jobguid="", executionparams=dict()):
+    def connectConnector(self, feedguid, name, cableguid, request=None, jobguid=None, executionparams=dict()):
         """
         Connect a feed connector to a cable
         
@@ -124,7 +124,7 @@ class feed():
         @raise e:                     In case an error occurred, exception is raised
         """
     
-    def updateModelProperties(self, feedguid, name="", datacenterguid="", co2emission=None, feedproductiontype="", description="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, feedguid, name=None, datacenterguid=None, co2emission=None, feedproductiontype=None, description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -165,7 +165,7 @@ class feed():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", datacenterguid="", feedproductiontype="", cableguid="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, datacenterguid=None, feedproductiontype=None, cableguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of feed guids which met the find criteria.
 
@@ -203,7 +203,7 @@ class feed():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, feedguid="", datacenterguid="", feedproductiontype="", tags="", request="", jobguid="", executionparams=dict()):
+    def list(self, feedguid=None, datacenterguid=None, feedproductiontype=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all feeds.
 
@@ -242,7 +242,7 @@ class feed():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -256,7 +256,7 @@ class feed():
 
         @warning:                   Only usable using the python client.
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -280,7 +280,7 @@ class feed():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -311,7 +311,7 @@ class feed():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -342,7 +342,7 @@ class feed():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
     for key in data:
         if key in meteringUnits:
             params['result']["data"].append({"viewdatatype":key,"viewdatavalue":data[key], "viewdataunit":meteringUnits[key]})
-    params['result']['meteringdevices'] = len(rootobjectaction_find.meteringdevice_find(rackguid=params['rootobjectguid']))
+    params['result']['meteringdevices'] = len(rootobjectaction_find.find("meteringdevice", rackguid=params['rootobjectguid']))
     params['result']['returncode'] = True
 
 def match(q, i, params, tags):
