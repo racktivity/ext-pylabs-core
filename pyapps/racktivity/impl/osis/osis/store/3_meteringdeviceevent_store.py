@@ -11,7 +11,7 @@ def main(q, i, p, params, tags):
                                                                                          'portsequence': root.portsequence,
                                                                                          'sensorsequence': root.sensorsequence,
                                                                                          'thresholdguid': root.thresholdguid,
-                                                                                         'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()),
+                                                                                         'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()),
                                                                                          'tags': root.tags,
                                                                                          'errormessagepublic':root.errormessagepublic})
 

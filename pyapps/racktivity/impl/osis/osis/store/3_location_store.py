@@ -18,7 +18,7 @@ def main(q, i, p, params, tags):
                    'timezonedelta':root.timezonedelta,
                    'latitude': root.coordinates.latitude,
                    'longitude': root.coordinates.longitude,
-                   'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()),
+                   'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()),
                    'tags':root.tags})
 
     q.logger.log('saved', 3)

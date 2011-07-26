@@ -9,7 +9,7 @@ def main(q, i, p, params, tags):
               'description': root.description,
               'floor': root.floor,
               'alias': root.alias,
-              'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()),
+              'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()),
               'tags':root.tags}
     
     osis.viewSave(params['domain'], 'floor', viewname, root.guid, root.version, fields)

@@ -8,7 +8,7 @@ def main(q, i, p, params, tags):
     fields = dict()
     for column in columns:
         fields[column] = getattr(root, column)
-    fields['cloudusergroupactions'] = ','.join(root.acl.cloudusergroupactions.keys()),
+    fields['cloudusergroupactions'] = ','.join(root.cloudusergroupactions.keys()),
     osis.viewSave(params['domain'], 'threshold', viewname, root.guid, root.version, fields)
     q.logger.log('threshold rootobject saved', 3)
 

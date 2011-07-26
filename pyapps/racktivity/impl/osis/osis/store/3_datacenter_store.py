@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
                                                                                   'clouduserguid':root.clouduserguid,
                                                                                   'latitude': root.coordinates.latitude,
                                                                                   'longitude': root.coordinates.longitude,
-                                                                                  'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()),
+                                                                                  'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()),
                                                                                   'tags':root.tags})
 
     q.logger.log('Datacenter saved to view_datacenter_list', 3)

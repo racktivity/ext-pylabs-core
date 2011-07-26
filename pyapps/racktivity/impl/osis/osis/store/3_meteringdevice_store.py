@@ -11,7 +11,7 @@ def main(q, i, p, params, tags):
     for col in columns:
         values[col] = getattr(rootobject, col)
     values["ipaddress"] = rootobject.network.ipaddress
-    values['cloudusergroupactions'] = ','.join(rootobject.acl.cloudusergroupactions.keys())
+    values['cloudusergroupactions'] = ','.join(rootobject.cloudusergroupactions.keys())
     osis.viewSave(params['domain'], 'meteringdevice', viewname, rootobject.guid, rootobject.version, values)
 
     q.logger.log('metering device rootobject saved', 3)
