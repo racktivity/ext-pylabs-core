@@ -4,7 +4,7 @@ class Racktivity():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, sw_version="", smtp="", smtplogin="", smtppassword="", configured=False, tags="",  request="", jobguid="", executionparams=dict()):
+    def create(self, sw_version=None, smtp=None, smtplogin=None, smtppassword=None, configured=False, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a racktivity object, if there is already a existing one, this action will fail
         This object keeps some configuration settings.
@@ -37,7 +37,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
         
-    def delete(self, racktivityguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, racktivityguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the racktivity object
         
@@ -54,7 +54,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
         
-    def updateModelProperties(self, racktivityguid="", sw_version="", smtp="",smtplogin="", smtppassword="", configured="",  tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, racktivityguid=None, sw_version=None, smtp=None,smtplogin=None, smtppassword=None, configured=None,  tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties, if racktivityguid is "", we search for the racktivityguid.
 
@@ -89,7 +89,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
         
-    def findObject(self, request="", jobguid="", executionparams=dict()):
+    def findObject(self, request=None, jobguid=None, executionparams=dict()):
         """
         Find and return guid of the racktivity config object
         
@@ -103,7 +103,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
     
-    def search(self, rootobjecttype='', tag='', request="", jobguid="", executionparams=dict()):
+    def search(self, rootobjecttype='', tag='', request=None, jobguid=None, executionparams=dict()):
         """
         Find any rootobject that match the search critieria
         
@@ -122,7 +122,7 @@ class Racktivity():
         @return:                  dictionary with the results as {'returncode': True, 'objects': [<object>, <object>, ...]} where an <object> is in the form of {'name': name, 'type': rootobjecttype, 'guid': guid}
         """
         
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -143,7 +143,7 @@ class Racktivity():
         @warning:                Only usable using the python client.
         """
     
-    def listObject(self, request="", jobguid="", executionparams=dict()):
+    def listObject(self, request=None, jobguid=None, executionparams=dict()):
                 """
         List the racktivity config object
         
@@ -157,7 +157,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
         
-    def sendMail(self, subject, body="", sender ="", to ="", request="", jobguid="", executionparams=dict() ):
+    def sendMail(self, subject, body=None, sender =None, to =None, request=None, jobguid=None, executionparams=dict() ):
         """
         Send a mail using smtp
         
@@ -183,7 +183,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
     
-    def exportForConsole(self, rootobjectguid, returnformat="raw", request="",  jobguid="", executionparams=dict()):
+    def exportForConsole(self, rootobjectguid, returnformat="raw", request=None,  jobguid=None, executionparams=dict()):
         """
         This function returns a xml document with the latest device data specified as in the racktivity_export_console.xsd file.
         The extra rootobject parameter can limit the size to devices in a datacenter, rack, room, pod, ... and also a logical view.
@@ -205,7 +205,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
 
-    def backup(self, destinationdir = "", request="", jobguid="", executionparams=dict()):
+    def backup(self, destinationdir = "", request=None, jobguid=None, executionparams=dict()):
         """
         This function will backup all your qshell configurations to the provided destination dir
         If destination dir was not provided, backup is done in the configured destination dir
@@ -215,7 +215,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
 
-    def exportForHypervisor(self, rootobjectguid, returnformat="raw", request="", jobguid="", executionparams=dict()):
+    def exportForHypervisor(self, rootobjectguid, returnformat="raw", request=None, jobguid=None, executionparams=dict()):
         """
         This function returns a xml document with the latest device data specified as in the racktivity_export_hypervisor.xsd file.
         The extra rootobject parameter can limit the size to devices in a datacenter, rack, room, pod, ... and also a logical view.
@@ -237,7 +237,7 @@ class Racktivity():
         @rtype:                   dictionary
         """
 
-    def findObjects (self, searchstring, maxresults=10, index=0, request="", jobguid="", executionparams=dict()):
+    def findObjects (self, searchstring, maxresults=10, index=0, request=None, jobguid=None, executionparams=dict()):
         """
         Find a list of objects based on a logicalview search string.
         By default the max amount of results is 10, setting this to 0 will return the full result of the search.
@@ -265,7 +265,7 @@ class Racktivity():
         @return: dictionary with returncode(True) and searchresult as result and jobguid: {'result': {'returncode':True,'searchresult:[]}, 'jobguid': guid}
         @rtype: dictionary
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -289,7 +289,7 @@ class Racktivity():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -320,7 +320,7 @@ class Racktivity():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -351,7 +351,7 @@ class Racktivity():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

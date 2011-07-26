@@ -19,7 +19,7 @@ def expanddevices(guids):
     devices = list()
     for guid in guids:
         devices.append(guid)
-        children = rootobjectaction_find.meteringdevice_find(parentmeteringdeviceguid=guid)
+        children = rootobjectaction_find.find("meteringdevice", parentmeteringdeviceguid=guid)
         for child in children:
             devices.append(child)
     

@@ -33,7 +33,7 @@ class autodiscoverysnmpmap():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, autodiscoverysnmpmapguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, autodiscoverysnmpmapguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a autodiscoverysnmpmap
         
@@ -53,7 +53,7 @@ class autodiscoverysnmpmap():
         @raise e:                     In case an error occurred, exception is raised
         """
         
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 

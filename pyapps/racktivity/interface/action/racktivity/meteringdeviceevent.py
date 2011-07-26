@@ -4,7 +4,7 @@ class Meteringdeviceevent():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, eventtype="", timestamp="", level="", meteringdeviceguid="", portsequence="", sensorsequence="", thresholdguid="", tags="", errmessagepublic="", errmessageprivate="",logs="", request="", jobguid="", executionparams=dict()):
+    def create(self, eventtype=None, timestamp=None, level=None, meteringdeviceguid=None, portsequence=None, sensorsequence=None, thresholdguid=None, tags=None, errmessagepublic=None, errmessageprivate=None,logs=None, request=None, jobguid=None, executionparams=dict()):
         """
         @param eventtype: custom type of the event
         @type eventtype: string
@@ -46,7 +46,7 @@ class Meteringdeviceevent():
         @rtype:                   dictionary
         """
         
-    def delete(self, meteringdeviceeventguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, meteringdeviceeventguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes a racktivity meteringdeviceevent
         
@@ -63,7 +63,7 @@ class Meteringdeviceevent():
         @rtype:                   dictionary
         """
     
-    def find(self, meteringdeviceguid="", portsequence="", sensorsequence="", eventtype="", level="", thresholdguid="", latest="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, meteringdeviceguid=None, portsequence=None, sensorsequence=None, eventtype=None, level=None, thresholdguid=None, latest=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Find and return a list of found meteringdeviceevent guids based on search parameters
         
@@ -101,7 +101,7 @@ class Meteringdeviceevent():
         @rtype:                   dictionary
         """
         
-    def list(self, meteringdeviceguid="", portsequence="", sensorsequence="", eventtype="", level="", thresholdguid="", latest="",  request="", jobguid="", executionparams=dict()):
+    def list(self, meteringdeviceguid=None, portsequence=None, sensorsequence=None, eventtype=None, level=None, thresholdguid=None, latest=None,  request=None, jobguid=None, executionparams=dict()):
         """
         List found meteringdeviceevent information based on search parameters
         
@@ -138,7 +138,7 @@ class Meteringdeviceevent():
         @rtype:                   dictionary
         """
     
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -159,7 +159,7 @@ class Meteringdeviceevent():
         @warning:                Only usable using the python client.
         """
         
-    def listLatest(self, limit=10, datacenterguid="", floorguid="", roomguid="", podguid="", rowguid="", rackguid="", meteringdeviceguid="", portsequence="", sensorsequence="", eventtype="", level="", thresholdguid="", latest="",  request="", jobguid="", executionparams=dict()):
+    def listLatest(self, limit=10, datacenterguid=None, floorguid=None, roomguid=None, podguid=None, rowguid=None, rackguid=None, meteringdeviceguid=None, portsequence=None, sensorsequence=None, eventtype=None, level=None, thresholdguid=None, latest=None,  request=None, jobguid=None, executionparams=dict()):
        """
         List found latest specific number of meteringdeviceevent (in order) information based on search parameters
 
@@ -211,7 +211,7 @@ class Meteringdeviceevent():
         a meteringdeviceevent informatin contains the following info: {meteringdeviceevenguid:{eventype:, level:, meteringdeviceguid:, portsequence, sensorsequence:, thresholdguid:,}}
         @rtype:                   dictionary
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -235,7 +235,7 @@ class Meteringdeviceevent():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -266,7 +266,7 @@ class Meteringdeviceevent():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -297,7 +297,7 @@ class Meteringdeviceevent():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

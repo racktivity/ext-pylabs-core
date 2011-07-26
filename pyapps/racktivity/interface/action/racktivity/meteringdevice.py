@@ -171,8 +171,8 @@ class MeteringDevice():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name=None, id=None, meteringdevicetype=None, template=False, rackguid=None, parentmeteringdeviceguid=None, clouduserguid=None, \
-             height=0, positionx=0, positiony=0, positionz=0, ipaddress=None,  cableguid=None, tags=None, \
+    def find(self, name=None, id=None, meteringdevicetype=None, template=None, rackguid=None, parentmeteringdeviceguid=None, clouduserguid=None, \
+             height=None, positionx=None, positiony=None, positionz=None, ipaddress=None,  cableguid=None, tags=None, \
              meteringdeviceconfigstatus=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of meteringdevice guids which are matching the find criteria.

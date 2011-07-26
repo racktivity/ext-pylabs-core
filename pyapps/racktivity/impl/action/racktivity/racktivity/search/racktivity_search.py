@@ -2,12 +2,6 @@ __author__ = 'racktivity'
 
 from rootobjectaction_lib import rootobjectaction_find
 
-rootobjectmap = {'datacenter': rootobjectaction_find.datacenter_find,
-                 'room': rootobjectaction_find.room_find,
-                 'rack': rootobjectaction_find.rack_find,
-                 'meteringdevice': rootobjectaction_find.find,
-                 'device': rootobjectaction_find.device_find}
-
 def getData(q, rootobjecttype, guids):
     objtype = getattr(p.api.model.racktivity, rootobjecttype)
     
@@ -21,17 +15,13 @@ def getData(q, rootobjecttype, guids):
 
 def search(q, rootobjecttype, **searchkeys):
     if rootobjecttype:
-        if rootobjecttype in rootobjectmap:
-            guids = rootobjectmap[rootobjecttype](**searchkeys)
-            for obj in getData(q, rootobjecttype, guids):
-                yield obj
-        else:
-            raise ValueError("Invalid rootobject type on (%s) are supported" % rootobjectmap.keys())
+        guids = rootobjectaction_find.find(rootobjecttype, **searchkeys)
+        for obj in getData(q, rootobjecttype, guids):
+            yield obj
     else:
         #search all
-        
-        for rootobjecttype, find in rootobjectmap.iteritems():
-            guids = find(**searchkeys)
+        for rootobjecttype in ('datacenter', 'room', 'rack', 'meteringdevice', 'device'):
+            guids = rootobjectaction_find.find(rootobjecttype, **searchkeys)
             for obj in getData(q, rootobjecttype, guids):
                 yield obj
             

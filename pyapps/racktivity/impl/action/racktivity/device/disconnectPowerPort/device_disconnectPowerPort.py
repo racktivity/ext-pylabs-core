@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
             port.status = q.enumerators.powerportstatustype.NOTCONNECTED
             p.api.model.racktivity.device.save(device) 
             from rootobjectaction_lib import rootobjectaction_find
-            meteringdeviceguids = rootobjectaction_find.meteringdevice_find(cableguid=cableguid)
+            meteringdeviceguids = rootobjectaction_find.find("meteringdevice", cableguid=cableguid)
             for meteringdeviceguid in meteringdeviceguids:
                 p.api.action.racktivity.meteringdevice.disconnectPowerOutputPort(meteringdeviceguid, cableguid=cableguid, request = params["request"])
             #check if the cable still exists

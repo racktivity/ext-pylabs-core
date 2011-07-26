@@ -4,7 +4,7 @@ class Pod():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name="",  alias="", description="",  room="", racks = [], tags="",  request="", jobguid="", executionparams=dict()):
+    def create(self, name,  alias=None, description=None, room=None, racks = [], tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a pod in a room with a list of racks
         
@@ -36,7 +36,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def delete(self, podguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, podguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes a pod
         
@@ -53,7 +53,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def updateModelProperties(self, podguid, name="", alias="", description="", room="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, podguid, name=None, alias=None, description=None, room=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties for a pod with guid(podguid)
 
@@ -86,7 +86,7 @@ class Pod():
         """
         
     
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -107,7 +107,7 @@ class Pod():
         @warning:                Only usable using the python client.
         """
         
-    def find(self, name="",  alias="", room="", rack="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None,  alias=None, room=None, rack=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         
         @execution_method = sync
@@ -134,7 +134,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def list(self, podguid="", name="",  alias="", room="", tags="",  request="", jobguid="", executionparams=dict()):
+    def list(self, podguid=None, name=None,  alias=None, room=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         List found pods and return pod information
         
@@ -167,7 +167,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def getAggregatedData(self, podguid, meteringtypes, request="", jobguid='', executionparams={}):
+    def getAggregatedData(self, podguid, meteringtypes, request=None, jobguid='', executionparams={}):
         """
         Get aggregated data from all racks in the pod
         Supported types are: Current, Power, Energy.
@@ -206,7 +206,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def addRack(self, podguid, rackguid,  request="", jobguid="", executionparams=dict()):
+    def addRack(self, podguid, rackguid,  request=None, jobguid=None, executionparams=dict()):
         """
         Add a rack to the pod
     
@@ -226,7 +226,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def removeRack(self, podguid, rackguid,  request="", jobguid="", executionparams=dict()):
+    def removeRack(self, podguid, rackguid,  request=None, jobguid=None, executionparams=dict()):
         """
         Remove a rack to the pod
     
@@ -246,7 +246,7 @@ class Pod():
         @rtype:                   dictionary
         """
     
-    def getTree(podguid, depth=2, jobguid="", executionparams=dict()):
+    def getTree(podguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
         
@@ -265,7 +265,7 @@ class Pod():
         @return:                  dictionary with returncode(True) as result and 'result': {'name','type',children = []}
         @rtype:                   dictionary
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -289,7 +289,7 @@ class Pod():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -320,7 +320,7 @@ class Pod():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -351,7 +351,7 @@ class Pod():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -379,7 +379,7 @@ class Pod():
         """
 
 
-    def getPduHealthStatus(self, guid, timing = [3600, 86400], request="", jobguid="", executionparams=dict()):
+    def getPduHealthStatus(self, guid, timing = [3600, 86400], request=None, jobguid=None, executionparams=dict()):
         """
         getPduHealtStatus, returns a list of 3 values, the first list contains the amount of pdus  which monitoring data is more recent then currenttime-timing[0], the second the  # of pdus  which are last monitored between currenttime - timing[0] and currenttime - timing[1] and the last list contains the amount of pdus which are monitored later then currenttime - timing[1]
         

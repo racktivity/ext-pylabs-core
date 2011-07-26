@@ -5,7 +5,7 @@ class cloudusergroup():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name="", description="", tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name=None, description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new cloud user group
         
@@ -32,7 +32,7 @@ class cloudusergroup():
         @raise e:                   In case an error occurred, exception is raised
         """
         
-    def delete(self, cloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, cloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the cloud user group specified.
 
@@ -53,7 +53,7 @@ class cloudusergroup():
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -68,7 +68,7 @@ class cloudusergroup():
         @warning:                 Only usable using the python client.
         """
 
-    def updateModelProperties(self, cloudusergroupguid, name="",description="", tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, cloudusergroupguid, name=None,description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties, every parameter which is not passed or passed as empty string is not updated.
 
@@ -98,7 +98,7 @@ class cloudusergroup():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def addUser(self, cloudusergroupguid, clouduserguid, request="", jobguid="", executionparams=dict()):
+    def addUser(self, cloudusergroupguid, clouduserguid, request=None, jobguid=None, executionparams=dict()):
         """
         Add an existing cloud user to the cloud user group specified.
 
@@ -122,7 +122,7 @@ class cloudusergroup():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def removeUser(self, cloudusergroupguid, clouduserguid, request="", jobguid="", executionparams=dict()):
+    def removeUser(self, cloudusergroupguid, clouduserguid, request=None, jobguid=None, executionparams=dict()):
         """
         Remove an existing cloud user from the cloud user group specified.
 
@@ -146,7 +146,7 @@ class cloudusergroup():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def addGroup(self, cloudusergroupguid, membercloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, cloudusergroupguid, membercloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Add an existing cloud user group to the cloud user group specified.
 
@@ -170,7 +170,7 @@ class cloudusergroup():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def removeGroup(self, cloudusergroupguid, membercloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def removeGroup(self, cloudusergroupguid, membercloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Remove an existing cloud user group from the cloud user group specified.
 
@@ -194,7 +194,7 @@ class cloudusergroup():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def list(self, customerguid="", cloudusergroupguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, customerguid=None, cloudusergroupguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of cloud user groups which are related to the customer specified.
 
@@ -227,7 +227,7 @@ class cloudusergroup():
         @raise e:                    In case an error occurred, exception is raised
         """
 
-    def find(self, name="", request="", jobguid="", tags="", executionparams=dict()):
+    def find(self, name=None, request=None, jobguid=None, tags=None, executionparams=dict()):
         """
         Returns a list of cloud user groups guids which met the find criteria.
 
@@ -254,7 +254,7 @@ class cloudusergroup():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def listUsers(self, cloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def listUsers(self, cloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of cloud users which are member of the given cloud user group.
 
@@ -276,7 +276,7 @@ class cloudusergroup():
         @raise e:                   In case an error occurred, exception is raised
         """
         
-    def listGroups(self, cloudusergroupguid, request="", jobguid="", executionparams=dict()):
+    def listGroups(self, cloudusergroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of cloud user groups which are member of the given cloud user group.
 
@@ -297,7 +297,7 @@ class cloudusergroup():
 
         @raise e:                  In case an error occurred, exception is raised
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -321,7 +321,7 @@ class cloudusergroup():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -352,7 +352,7 @@ class cloudusergroup():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -383,7 +383,7 @@ class cloudusergroup():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

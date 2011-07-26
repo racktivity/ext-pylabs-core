@@ -6,7 +6,7 @@ class cable():
     """
 
 
-    def create(self, name, cabletype, description="",label="" ,tag="" ,request="", jobguid="", executionparams=dict()):
+    def create(self, name, cabletype, description=None,label=None ,tag=None ,request=None, jobguid=None, executionparams=dict()):
         """
         Create a new cable.
 
@@ -40,7 +40,7 @@ class cable():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def delete(self, cableguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, cableguid, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a cable.
 
@@ -63,7 +63,7 @@ class cable():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, cableguid, name="", cabletype="", description="",label="" ,tags="",  request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, cableguid, name=None, cabletype=None, description=None,label=None ,tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -100,7 +100,7 @@ class cable():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name="", cabletype="", description="", label="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, cabletype=None, description=None, label=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of cable guids which met the find criteria.
 
@@ -138,7 +138,7 @@ class cable():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, cableguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, cableguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all cables.
 
@@ -166,7 +166,7 @@ class cable():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -181,7 +181,7 @@ class cable():
         @warning:                   Only usable using the python client.
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -205,7 +205,7 @@ class cable():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -236,7 +236,7 @@ class cable():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -267,7 +267,7 @@ class cable():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

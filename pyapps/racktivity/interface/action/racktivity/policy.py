@@ -1,6 +1,6 @@
 class policy:
     
-    def create(self, name, rootobjecttype, rootobjectaction, rootobjectguid, interval, runbetween=None, runnotbetween=None, policyparams=None,  description="", tags="", request="", jobguid="", executionparams=dict()):
+    def create(self, name, rootobjecttype, rootobjectaction, rootobjectguid, interval, runbetween=None, runnotbetween=None, policyparams=None,  description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new policy.
 
@@ -48,7 +48,7 @@ class policy:
         @raise e:                        In case an error occurred, exception is raised
         """
 
-    def delete(self, policyguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, policyguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the given policy.
 
@@ -70,7 +70,7 @@ class policy:
         """
         # make sure all ip addresses are disconnected from the required hosts before the lan can be disconnec
     
-    def list(self, policyguid="",name="", rootobjectaction="", rootobjecttype="", request="", jobguid="", executionparams=dict()):
+    def list(self, policyguid=None,name=None, rootobjectaction=None, rootobjecttype=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of all policies depending on passed filters.
 
@@ -111,7 +111,7 @@ class policy:
         @raise e:                            In case an error occurred, exception is raised
         """
         
-    def listToRun(self, request="", jobguid="", executionparams=dict()):
+    def listToRun(self, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of all policies that needs to be exectued
 
@@ -140,7 +140,7 @@ class policy:
         @raise e:                            In case an error occurred, exception is raised
         """
     
-    def find(self, name="", description="", rootobjecttype="", rootobjectaction="", rootobjectguid="", interval="", tags="", request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, description=None, rootobjecttype=None, rootobjectaction=None, rootobjectguid=None, interval=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of policy guids which met the find criteria.
 
@@ -179,7 +179,7 @@ class policy:
         @raise e:                  In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, policyguid, name=None,description=None, lastrun=None, policyparams=None, interval=None, runbetween=None, runnotbetween=None, tags="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, policyguid, name=None,description=None, lastrun=None, policyparams=None, interval=None, runbetween=None, runnotbetween=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of policy guids which met the find criteria.
 
@@ -222,7 +222,7 @@ class policy:
         """
         
         
-    def getObject(self, rootobjectguid, request="", jobguid="",executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -240,7 +240,7 @@ class policy:
         @warning:                  Only usable using the python client.
         """
 
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -264,7 +264,7 @@ class policy:
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -295,7 +295,7 @@ class policy:
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -326,7 +326,7 @@ class policy:
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        

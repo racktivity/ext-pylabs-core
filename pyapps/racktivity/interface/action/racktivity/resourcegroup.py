@@ -5,7 +5,7 @@ class resourcegroup():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, description="", request="", jobguid="", executionparams=dict()):
+    def create(self, name, description=None, request=None, jobguid=None, executionparams=dict()):
         """
         Creates a new resource group
 
@@ -29,7 +29,7 @@ class resourcegroup():
         @raise e:                   In case an error occurred, exception is raised
         """
         
-    def delete(self, resourcegroupguid, request="", jobguid="", executionparams=dict()):
+    def delete(self, resourcegroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Deletes the resource group specified.
 
@@ -50,7 +50,7 @@ class resourcegroup():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, rootobjectguid, request="", jobguid="", executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None, executionparams=dict()):
         """
         Gets the rootobject.
 
@@ -73,7 +73,7 @@ class resourcegroup():
 
     
 
-    def updateModelProperties(self, resourcegroupguid, name="",description="", request="", jobguid="", executionparams=dict()):
+    def updateModelProperties(self, resourcegroupguid, name=None,description=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties, every parameter which is not passed or passed as empty string is not updated.
 
@@ -101,7 +101,7 @@ class resourcegroup():
         """
 
 
-    def addDevice(self, resourcegroupguid, deviceguid, request="", jobguid="", executionparams=dict()):
+    def addDevice(self, resourcegroupguid, deviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Adds an existing device to the resource group specified.
 
@@ -125,7 +125,7 @@ class resourcegroup():
         @raise e:                           In case an error occurred, exception is raised
         """
 
-    def removeDevice(self, resourcegroupguid, deviceguid, request="", jobguid="", executionparams=dict()):
+    def removeDevice(self, resourcegroupguid, deviceguid, request=None, jobguid=None, executionparams=dict()):
         """
         Removes an existing device from the resource group specified.
 
@@ -149,7 +149,7 @@ class resourcegroup():
         @raise e:                           In case an error occurred, exception is raised
         """
 
-    def list(self, resourcegroupguid="",  customerguid="", deviceguid="", request="", jobguid="", executionparams=dict()):
+    def list(self, resourcegroupguid=None,  customerguid=None, deviceguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of resource groups which are related to the customer and or specified.
 
@@ -180,7 +180,7 @@ class resourcegroup():
         @raise e:                   In case an error occurred, exception is raised
         """
 
-    def listDevices(self, resourcegroupguid, request="", jobguid="", executionparams=dict()):
+    def listDevices(self, resourcegroupguid, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of devices which are related to the resourcegroup specified.
 
@@ -206,7 +206,7 @@ class resourcegroup():
          """
 
    
-    def find(self, name="", customerguid="", description="", deviceguid="",request="", jobguid="", executionparams=dict()):
+    def find(self, name=None, customerguid=None, description=None, deviceguid=None,request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of resource groups guids which met the find criteria.
 
@@ -238,7 +238,7 @@ class resourcegroup():
 
         @raise e:                       In case an error occurred, exception is raised
         """
-    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request="", jobguid="", executionparams=dict()):
+    def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.
        
@@ -262,7 +262,7 @@ class resourcegroup():
         @raise e:                            In case an error occurred, exception is raised
         """
 
-    def addGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def addGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
@@ -293,7 +293,7 @@ class resourcegroup():
         """
 
 
-    def deleteGroup(self, rootobjectguid, group, action="", recursive=False, request="", jobguid="", executionparams=dict()):
+    def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """
         Delete a group in the acl for a specific action
        
@@ -324,7 +324,7 @@ class resourcegroup():
         """
 
 
-    def hasAccess(self, rootobjectguid, groups, action, request="", jobguid="", executionparams=dict()):
+    def hasAccess(self, rootobjectguid, groups, action, request=None, jobguid=None, executionparams=dict()):
         """
         Add a group to the acl for a specific action
        
