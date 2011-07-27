@@ -15,6 +15,8 @@ def main(q, i, params, tags):
         view.setCol('name',q.enumerators.OsisType.STRING,True)
         view.setCol('datacenterguid',q.enumerators.OsisType.UUID,True)
         view.setCol('roomguid', q.enumerators.OsisType.UUID, True)
+        view.setCol('podguid', q.enumerators.OsisType.UUID, True)
+        view.setCol('rowguid', q.enumerators.OsisType.UUID, True)
         view.setCol('racktype',q.enumerators.OsisType.STRING,False)
         view.setCol('floor',q.enumerators.OsisType.STRING,True)
         view.setCol('position',q.enumerators.OsisType.STRING,True)
