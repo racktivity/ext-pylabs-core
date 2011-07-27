@@ -6,7 +6,9 @@ def main(q, i, p, params, tags):
     rootobject = params['rootobject']
     values = dict()
 #for $field in $fields
+    #if $field["type"]!= "Dict" and $field["type"] != "List"
     values['$field["name"]'] = rootobject.$field["name"]
+    #end if
 #end for
     
     osis.viewSave(params['domain'], params['rootobjecttype'],viewname, rootobject.guid, rootobject.version, values)
