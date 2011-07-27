@@ -5,7 +5,7 @@ def setup():
     racktivity_test_library.cleanenv()
     global data
     data = dict()
-    data["ca"] = i.config.cloudApiConnection.find("main")
+    data["ca"] = p.api.action.racktivity
 
 def teardown():
     pass

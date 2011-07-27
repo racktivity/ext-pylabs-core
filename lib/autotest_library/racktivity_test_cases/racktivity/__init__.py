@@ -3,7 +3,7 @@ import racktivity_test_library
 
 def setup():
     racktivity_test_library.cleanenv()
-    cloudapi = i.config.cloudApiConnection.find("main")
+    cloudapi = p.api.action.racktivity
     for guid in cloudapi.enterprise.find()['result']['guidlist']:
         try:
             cloudapi.enterprise.delete(guid)
@@ -13,6 +13,6 @@ def setup():
     cloudapi.enterprise.create("enterprise")
     
 def teardown():
-    cloudapi = i.config.cloudApiConnection.find("main")
+    cloudapi = p.api.action.racktivity
     for guid in cloudapi.enterprise.find()['result']['guidlist']:
         cloudapi.enterprise.delete(guid)

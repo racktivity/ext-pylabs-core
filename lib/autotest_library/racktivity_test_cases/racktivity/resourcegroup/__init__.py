@@ -16,7 +16,7 @@ def setup():
 
     global data
     data = dict()
-    data["ca"] = i.config.cloudApiConnection.find("main")
+    data["ca"] = p.api.action.racktivity
     data["devGuid1"] = racktivity_test_library.device.create("test_device1", rackguid)
     data["devGuid2"] = racktivity_test_library.device.create("test_device2", rackguid)
 

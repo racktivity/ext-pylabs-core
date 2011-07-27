@@ -8,7 +8,7 @@ DEVICE_NAME = 'test-meteringdevice'
 EMPTY_GUID = '00000000-0000-0000-0000-000000000000'
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def testDelete_1():
     """

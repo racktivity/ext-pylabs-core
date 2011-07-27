@@ -5,7 +5,7 @@ def setup():
     racktivity_test_library.cleanenv()
     global data
     data = dict()
-    data["ca"] = i.config.cloudApiConnection.find("main")
+    data["ca"] = p.api.action.racktivity
     data["backplaneguid1"] = racktivity_test_library.backplane.create('backplane_test1')
     data["backplaneguid2"] = racktivity_test_library.backplane.create('backplane_test2')
 

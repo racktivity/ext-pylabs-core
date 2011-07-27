@@ -5,7 +5,7 @@ import racktivity_test_library
 
 def setup():
     global cloudapi, guid
-    cloudapi = i.config.cloudApiConnection.find("main")
+    cloudapi = p.api.action.racktivity
     
 def teardown():
     pass

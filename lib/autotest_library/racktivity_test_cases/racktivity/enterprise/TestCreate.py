@@ -5,7 +5,7 @@ from pylabs import i,q,p
 
 def setup():
     global cloudapi
-    cloudapi = i.config.cloudApiConnection.find("main")
+    cloudapi = p.api.action.racktivity
     
 def teardown():
     pass

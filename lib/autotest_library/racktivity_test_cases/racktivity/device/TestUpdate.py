@@ -10,7 +10,7 @@ DEVICE_NAME = 'test-device'
 deviceguid = None
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def getDeviceGuid():
     global deviceguid

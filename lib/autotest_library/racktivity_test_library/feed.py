@@ -1,7 +1,7 @@
 from pylabs import i,q,p
 
 def create(name, datacenterguid):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     guid = cloudapi.feed.create(name, "COAL", datacenterguid)['result']['feedguid']
     feed = cloudapi.feed.getObject(guid)
     if feed.name != name:
@@ -9,7 +9,7 @@ def create(name, datacenterguid):
     return guid
 
 def delete(guid):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     cloudapi.feed.delete(guid)
     feeds = cloudapi.feed.list(feedguid=guid)['result']['feedinfo']
     if feeds:

@@ -11,7 +11,7 @@ PORT_LABEL_TWO = 'port-label-2'
 mdguid = None
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def getMeteringdeviceGuid():
     global mdguid

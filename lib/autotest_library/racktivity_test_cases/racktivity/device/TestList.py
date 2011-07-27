@@ -8,7 +8,7 @@ RACK_NAME = 'rack-test-device'
 DEVICE_NAME = 'test-device'
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def testList_1():
     """

@@ -5,7 +5,7 @@ from pylabs import i,q,p
 
 def setup():
     global cloudapi, guid
-    cloudapi = i.config.cloudApiConnection.find("main")
+    cloudapi = p.api.action.racktivity
     guid = racktivity_test_library.enterprise.create('test_enterprise1')
 
 def teardown():

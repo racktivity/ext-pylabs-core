@@ -1,7 +1,7 @@
 from pylabs import i,q,p
 
 def create(name = "test_ipaddress", address='127.0.0.1', netmask='255.0.0.0', iptype='STATIC', ipversion='IPV4'):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     guid = cloudapi.ipaddress.create(name, address=address, netmask=netmask, iptype=iptype, ipversion=ipversion)['result']['ipaddressguid']
     ipaddress = cloudapi.ipaddress.getObject(guid)
     if ipaddress.address != address:
@@ -9,7 +9,7 @@ def create(name = "test_ipaddress", address='127.0.0.1', netmask='255.0.0.0', ip
     return guid
 
 def delete(guid):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     cloudapi.ipaddress.delete(guid)
     ips = cloudapi.ipaddress.list(ipaddressguid=guid)['result']['ipaddressinfo']
     if ips:

@@ -13,7 +13,7 @@ def create(name, id, rackguid,
            sensorsnumber=0,
            tags = None):
     
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     
     inputs = list()
     for index in range(powerinputsnumber):
@@ -59,7 +59,7 @@ def createRacktivity(name, rackguid, login='root', password='rooter', ipaddressg
     return masterguid, powermoduleguid
 
 def delete(guid):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     cloudapi.meteringdevice.delete(guid)
     try:
         devices = cloudapi.meteringdevice.getObject(guid)

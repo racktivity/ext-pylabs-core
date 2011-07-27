@@ -1,7 +1,7 @@
 from pylabs import i,q,p
 
 def create(name, datacenterguid, floorguid, tags = None):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     guid = cloudapi.room.create(name, datacenterguid=datacenterguid, floor=floorguid, tags = tags)['result']['roomguid']
     room = cloudapi.room.getObject(guid)
     if room.name != name:
@@ -9,7 +9,7 @@ def create(name, datacenterguid, floorguid, tags = None):
     return guid
 
 def delete(guid):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     cloudapi.room.delete(guid)
     rooms = cloudapi.room.list(roomguid=guid)['result']['roominfo']
     if rooms:

@@ -5,7 +5,7 @@ import racktivity_test_library
 def setup():
     global data
     data = dict()
-    data["ca"] = i.config.cloudApiConnection.find("main")
+    data["ca"] = p.api.action.racktivity
     data["loc"] = racktivity_test_library.location.create("MainLoc", tags="Cairo Egypt company:Info")
     data["dc1"] = racktivity_test_library.datacenter.create("DC1", data["loc"], tags="first datacenter location:Giza")
     data["dc2"] = racktivity_test_library.datacenter.create("DC2", data["loc"], tags="second datacenter location:Cairo")

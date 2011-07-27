@@ -10,7 +10,7 @@ IPADDRESS_NAME = 'test-localip'
 mdguid = None
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def getMeteringdeviceGuid():
     global pmguid

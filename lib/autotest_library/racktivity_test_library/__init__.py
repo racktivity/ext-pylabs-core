@@ -21,7 +21,7 @@ import policy
 
 def cleanenv():
     from pylabs import i,q,p
-    cloudapi = i.config.cloudApiConnection.find("main")
+    cloudapi = p.api.action.racktivity
     
     for location in cloudapi.location.find()['result']['guidlist']:
         try:

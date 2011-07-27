@@ -7,7 +7,7 @@ from . import getRackGuid
 DEVICE_NAME = 'test-meteringdevice'
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def testList_1():
     """

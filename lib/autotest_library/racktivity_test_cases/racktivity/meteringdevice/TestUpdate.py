@@ -9,7 +9,7 @@ DEVICE_NAME = 'test-meteringdevice'
 meteringdeviceguid = None
 
 def getCloudapi():
-    return i.config.cloudApiConnection.find('main')
+    return p.api.action.racktivity
 
 def getMeteringDeviceGuid(name=DEVICE_NAME):
     global meteringdeviceguid

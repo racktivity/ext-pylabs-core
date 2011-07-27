@@ -5,7 +5,7 @@ def setup():
     global data
     racktivity_test_library.cleanenv()
     data = dict()
-    data["ca"] = i.config.cloudApiConnection.find("main")
+    data["ca"] = p.api.action.racktivity
     data["dcguid"] = racktivity_test_library.datacenter.create()
     data['floorguid'] = racktivity_test_library.floor.create("floor-test-room1", data["dcguid"])
 

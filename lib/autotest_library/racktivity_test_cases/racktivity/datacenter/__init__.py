@@ -5,7 +5,7 @@ def setup():
     racktivity_test_library.cleanenv()
     global data
     data = dict()
-    data["ca"] = i.config.cloudApiConnection.find("main")
+    data["ca"] = p.api.action.racktivity
     data["locGuid1"] = racktivity_test_library.location.create("test_location1")
     data["locGuid2"] = racktivity_test_library.location.create("test_location2")
     data["usrGuid1"] = racktivity_test_library.clouduser.create('test_user1')
