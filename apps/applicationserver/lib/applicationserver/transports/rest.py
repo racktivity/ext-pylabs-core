@@ -46,7 +46,7 @@ from zope.interface import implements
 
 from applicationserver.itransport import ITransportFactory, IServerTransport
 from applicationserver.itransport import ServerTransportInfo, SiteTransport
-from applicationserver.dispatcher import AuthenticationError, NoSuchService
+from applicationserver.dispatcher import AuthenticationError, AuthorizationError, NoSuchService
 from applicationserver.dispatcher import NoSuchMethod
 
 FAILURE_CODE = 8002
@@ -213,6 +213,11 @@ class RESTMethod(Resource):
         try:
             d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
         except AuthenticationError, e:
+            if request.code == http.OK:
+                request.setResponseCode(http.UNAUTHORIZED)
+            request.setHeader('Content-Type', contenttype)
+            return JSONException(e.MESSAGE, e).dumps()
+        except AuthorizationError, e:
             if request.code == http.OK:
                 request.setResponseCode(http.UNAUTHORIZED)
             request.setHeader('Content-Type', contenttype)
