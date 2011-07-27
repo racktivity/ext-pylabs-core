@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(podguid, name="test_row1", description="row 1 description", racks = []):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     pod = ca.pod.getObject(podguid)
     guid = ca.row.create(name, description = description, pod = pod.guid, room = pod.room, racks = racks)['result']['rowguid']
     row = ca.row.getObject(guid)
@@ -10,7 +10,7 @@ def create(podguid, name="test_row1", description="row 1 description", racks = [
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     ca.row.delete(guid)
     #Is it really gone?
     res = ca.row.list(guid)['result']['rowinfo']

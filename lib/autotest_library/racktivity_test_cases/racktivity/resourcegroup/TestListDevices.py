@@ -1,12 +1,12 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, resgGuid, dvGuids
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     resgGuid = racktivity_test_library.resourcegroup.create()
     dvGuids = list()
     data = getData()
@@ -40,4 +40,4 @@ def testListDevices_2():
     @expected_result: function should fail because resourcegroup doesn't exist
     """
     q.logger.log("        Listing devices of an invalid resourcegroup guid")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.resourcegroup.listDevices, '00000000-0000-0000-0000-000000000000')
+    assert_raises(xmlrpclib.Fault, ca.resourcegroup.listDevices, '00000000-0000-0000-0000-000000000000')

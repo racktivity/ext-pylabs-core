@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 RACK_NAME = 'rack-test-device'
@@ -53,7 +53,7 @@ def testUpdate_2():
     @expected_result: Function should fail
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.device.updateModelProperties, getDeviceGuid(), name=10)
+    assert_raises(Fault, cloudapi.device.updateModelProperties, getDeviceGuid(), name=10)
 
 def testUpdate_3():
     """
@@ -65,5 +65,5 @@ def testUpdate_3():
     @expected_result: Function should fail
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.device.updateModelProperties, getDeviceGuid(), devicetype='ROBOT')
+    assert_raises(Fault, cloudapi.device.updateModelProperties, getDeviceGuid(), devicetype='ROBOT')
     

@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, rackGuid1, rackGuid2, pod1Guid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     rackGuid1 = data["rackguid1"]
     rackGuid2 = data["rackguid2"]
     roomGuid1=data["room1"]
@@ -54,6 +54,6 @@ def testUpdate_3():
     @expected_result: update operation should fail with an exception
     """
     q.logger.log("         Updating pod description")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.updateModelProperties, '00000000-0000-0000-0000-000000000000', description = "test_pod_rename")
+    assert_raises(xmlrpclib.Fault, ca.pod.updateModelProperties, '00000000-0000-0000-0000-000000000000', description = "test_pod_rename")
 
 

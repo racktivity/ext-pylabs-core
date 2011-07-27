@@ -1,12 +1,12 @@
 from nose.tools import *
-from pylabs import i,q
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, lvguid, dcGuids
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     lvguid = racktivity_test_library.logicalview.create("test_logicalview1")
     dcGuids = [data["dc1"],data["dc2"]]
 

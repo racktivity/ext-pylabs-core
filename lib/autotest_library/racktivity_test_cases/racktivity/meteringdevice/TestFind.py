@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'

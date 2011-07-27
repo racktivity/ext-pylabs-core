@@ -1,12 +1,12 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 import time
 
 def setup():
     global ca, policyGuid
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     policyGuid = racktivity_test_library.policy.create("test_policy")
 
 def teardown():
@@ -23,7 +23,7 @@ def testListToRun_1():
     @expected_result: function should succeed
     """
     q.logger.log("calling list for each policy to make sure it is listed")
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     #set the time to now
     ca.policy.updateModelProperties(policyGuid, lastrun=str(int(time.time())))
     result = ca.policy.listToRun()['result']['policyinfo']

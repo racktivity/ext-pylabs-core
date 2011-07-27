@@ -1,7 +1,7 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 
 def setup():
     global cloudusergroupguid
@@ -9,7 +9,7 @@ def setup():
     global locationguid
     locationguid = racktivity_test_library.location.create(name='test_location1')
     global ca
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.cloudusergroup.delete(cloudusergroupguid)

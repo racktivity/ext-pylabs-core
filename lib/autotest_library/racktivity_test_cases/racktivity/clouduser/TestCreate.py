@@ -1,12 +1,12 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.clouduser.delete(usr1Guid)
@@ -45,7 +45,7 @@ def testCreate_2():
     q.logger.log("         Checking if clouduser exists")
     usr2 = ca.clouduser.getObject(usr2Guid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0050203] Creating Clouduser by calling create function and passing a number as name instead of string
@@ -58,7 +58,7 @@ def testCreate_3():
     q.logger.log("         Creating clouduser with Integer as name")
     ca.clouduser.create(7, "pass")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0050204] Creating clouduser with a name that already exists

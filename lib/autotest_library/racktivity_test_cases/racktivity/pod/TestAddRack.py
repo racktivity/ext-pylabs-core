@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, pod1Guid, rackGuid1, rackGuid2
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     rackGuid1 = data["rackguid1"]
     rackGuid2 = data["rackguid2"]
     
@@ -28,7 +28,7 @@ def testAddrack_1():
     @expected_result: function should fail because there is no pod with that GUID
     """
     q.logger.log("         Adding rack to non existing pod")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.addRack, '00000000-0000-0000-0000-000000000000', rackGuid1)
+    assert_raises(xmlrpclib.Fault, ca.pod.addRack, '00000000-0000-0000-0000-000000000000', rackGuid1)
 
 def testAddrack_2():
     """
@@ -40,7 +40,7 @@ def testAddrack_2():
     @expected_result: function should fail because there is no rack with that GUID
     """
     q.logger.log("         Adding non existing rack to the pod")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.addRack, pod1Guid, '00000000-0000-0000-0000-000000000000')
+    assert_raises(xmlrpclib.Fault, ca.pod.addRack, pod1Guid, '00000000-0000-0000-0000-000000000000')
 
 def testAddrack_3():
     """
@@ -82,6 +82,6 @@ def testAddrack_5():
     @expected_result: function should fail because rackguid already exists in the racks list
     """
     q.logger.log("         adding an already existing rack to the racks list")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.addRack, pod1Guid, rackGuid1)
+    assert_raises(xmlrpclib.Fault, ca.pod.addRack, pod1Guid, rackGuid1)
 
 

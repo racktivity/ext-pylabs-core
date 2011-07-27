@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, podGuid, roomGuid1
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     roomGuid1=data["room1"]
     podGuid = racktivity_test_library.pod.create(roomGuid1, 'test_pod1')
 
@@ -25,7 +25,7 @@ def testDelete_1():
     """
     q.logger.log("    Deleting Previously created pod")
     ca.pod.delete(podGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.getObject, podGuid)
+    assert_raises(xmlrpclib.Fault, ca.pod.getObject, podGuid)
 
 def testDelete_2():
     """
@@ -37,6 +37,6 @@ def testDelete_2():
     @expected_result: call should fail because the pod doesn't exist
     """
     q.logger.log("    Deleting non existing pod")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.delete, '00000000-0000-0000-0000-000000000000')
+    assert_raises(xmlrpclib.Fault, ca.pod.delete, '00000000-0000-0000-0000-000000000000')
 
 

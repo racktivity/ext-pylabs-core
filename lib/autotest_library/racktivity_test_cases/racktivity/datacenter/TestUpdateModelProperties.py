@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, locGuid1, locGuid2, usrGuid1, usrGuid2, dc1Guid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     locGuid1 = data["locGuid1"]
     locGuid2 = data["locGuid2"]
     usrGuid1 = data["usrGuid1"]
@@ -68,7 +68,7 @@ def testUpdate_4():
     q.logger.log("         Updating datacenter clouduserguid")
     ca.datacenter.updateModelProperties(dc1Guid, clouduserguid = usrGuid2)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testUpdate_5():
     """
     @description: [0081705] Updating datacenter with nonexisting locationguid
@@ -83,7 +83,7 @@ def testUpdate_5():
     #If that worked, I shouldn't leave it like that
     ca.datacenter.updateModelProperties(dc1Guid, locationguid = locGuid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testUpdate_6():
     """
     @description: [0081706] Updating datacenter with nonexisting clouduserguid

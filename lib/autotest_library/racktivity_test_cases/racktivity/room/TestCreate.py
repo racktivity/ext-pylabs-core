@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, dcguid, floorguid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dcguid = data["dcguid"]
     floorguid = data['floorguid']
 
@@ -58,7 +58,7 @@ def testCreate_2():
     racktivity_test_library.ui.doUITest(room1.datacenterguid, "CREATE", value=room1.name)
     ok_(racktivity_test_library.ui.getResult(room1.name))
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0210203] Creating Room by calling create function and passing a number as name instead of string
@@ -71,7 +71,7 @@ def testCreate_3():
     q.logger.log("         Creating room with Integer as name")
     ca.room.create(7, dcguid, floor=floorguid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0210204] calling create function with an invalid datacenter guid as a parameter
@@ -84,7 +84,7 @@ def testCreate_4():
     q.logger.log("         Creating room with invalid datacenter guid")
     ca.room.create("test_room_negative", '00000000-0000-0000-0000-000000000000', floor=floorguid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0210205] Creating room with a name that already exists

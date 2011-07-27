@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 EMPTY_GUID = '00000000-0000-0000-0000-000000000000'
@@ -63,7 +63,7 @@ def testConnectDisconnectInputPort_1():
     assert_equal(inputport.cableguid, None, "Failed to disconnect port, (cable guid wasn't set correctly)")
     
     #the cable should be deleted afterwards.
-    assert_raises(CloudApiException, cloudapi.cable.getObject, cableguid)
+    assert_raises(Fault, cloudapi.cable.getObject, cableguid)
     
 def testDisconnectInputPort_2():
     """
@@ -99,7 +99,7 @@ def testDisconnectInputPort_2():
     assert_true(inputport, "Failed to find power input")
     assert_equal(inputport.cableguid, None, "Failed to disconnect port, (cable guid wasn't set correctly)")
     
-    assert_raises(CloudApiException, cloudapi.cable.getObject, cableguid)
+    assert_raises(Fault, cloudapi.cable.getObject, cableguid)
 
 def testConnectInputPort_3():
     """
@@ -111,5 +111,5 @@ def testConnectInputPort_3():
     @expected_result: the test should fail because the cable does not exist
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.meteringdevice.connectPowerInputPort, getMeteringdeviceGuid(), 'input-1234', EMPTY_GUID)
+    assert_raises(Fault, cloudapi.meteringdevice.connectPowerInputPort, getMeteringdeviceGuid(), 'input-1234', EMPTY_GUID)
     

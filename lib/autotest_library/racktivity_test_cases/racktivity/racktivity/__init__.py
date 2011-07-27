@@ -1,5 +1,5 @@
 from nose.tools import *
-from pymonkey import q, i
+from pylabs import q, i
 import racktivity_test_library
 
 DATACENTER_NAME = 'dc-test-export'

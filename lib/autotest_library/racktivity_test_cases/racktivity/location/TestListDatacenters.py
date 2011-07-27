@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, locGuid, dcGuids
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     locGuid = racktivity_test_library.location.create()
     dcGuids = list()
     for c in xrange(0,3):
@@ -28,7 +28,7 @@ def testListDatacenters_1():
     result = ca.location.listDatacenters(locGuid)['result']['guidlist']
     assert_equal(result.sort(), dcGuids.sort(), "the guids returned by listDatacenters() function are not correct")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testListDatacenters_2():
     """
     @description: [0151002] Listing datacenters of a location that doesn't exist

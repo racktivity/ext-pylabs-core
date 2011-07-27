@@ -1,5 +1,5 @@
 from nose.tools import *
-from pymonkey import q, i
+from pylabs import q, i
 import racktivity_test_library
 
 def setup():
@@ -11,7 +11,7 @@ def setup():
     data["dc2"] = racktivity_test_library.datacenter.create("DC2", data["loc"], tags="second datacenter location:Cairo")
 
 def teardown():
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     ca.location.delete(data["loc"])
 
 def testFindObjects_1():
@@ -24,7 +24,7 @@ def testFindObjects_1():
     @expected_result: should return the first datacenter.
     """
     
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     result = ca.racktivity.findObjects("name: {DC*}, tags_labels: {first && datacenter}")["result"]
     assert_equals(len(result), 1)
     result = result[0]
@@ -41,7 +41,7 @@ def testFindObjects_2():
     @expected_result: Should return the second datacenter (DC2).
     """
     
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     result = ca.racktivity.findObjects("types:{datacenter}, tags_labels: {datacenter}", maxresults=1, index=1)["result"]
     assert_equals(len(result), 1)
     result = result[0]

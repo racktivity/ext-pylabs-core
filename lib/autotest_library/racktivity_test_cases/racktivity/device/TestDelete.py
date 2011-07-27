@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import q, i
+from pylabs import q, i
 from . import getRackGuid
 
 RACK_NAME = 'rack-test-device'
@@ -36,4 +36,4 @@ def testDelete_2():
     @expected_result: Function should fail trying to delete a non existing device
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.device.delete, EMPTY_GUID)
+    assert_raises(Fault, cloudapi.device.delete, EMPTY_GUID)

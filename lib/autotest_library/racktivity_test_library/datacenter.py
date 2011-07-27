@@ -1,8 +1,8 @@
-from pylabs import i,q
+from pylabs import i,q,p
 import uuid
 
 def create(name="Datacenter1", locationguid=None, description="Datacenter 1 description", clouduserguid=None, tags=None):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     if locationguid is None:
         locationguid = ca.location.create(str(uuid.uuid4()))['result']['locationguid']
     guid = ca.datacenter.create(name, locationguid, description, clouduserguid, tags = tags)['result']['datacenterguid']
@@ -18,7 +18,7 @@ def delete(guid, delLocation = False, delCloudUser = False):
     @param delLocation:    set to True to delete the location attached to this data center
     @param delCloudUser:    set to True to delete the clouduser attached to this data center (has no effect if no user attached)
     """
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     dc = ca.datacenter.getObject(guid)
     locGuid = dc.locationguid
     usrGuid = dc.clouduserguid

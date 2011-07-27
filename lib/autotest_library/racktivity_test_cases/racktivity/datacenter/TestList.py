@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, dcGuids
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     locGuid1 = data["locGuid1"]
     dc1Guid = racktivity_test_library.datacenter.create('test_DataCenter1', locGuid1)
     dc2Guid = racktivity_test_library.datacenter.create('test_DataCenter2', locGuid1)

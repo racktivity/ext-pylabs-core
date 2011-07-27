@@ -1,8 +1,8 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(name="test_logicalview1", view_search_string = "types:{energyswitch,datacenter}, parenttree:{datacenter: 'LOCHRISTI'}, name:{DCMU* || TESTENVIRONMENT* && Mina*}, tags_labels:{DCLOC && usage:storage}",
             description="Logicalview 1 description"):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     guid = ca.logicalview.create(name, description)['result']['logicalviewguid']
     lv = ca.logicalview.getObject(guid)
     if lv.name != name:
@@ -10,7 +10,7 @@ def create(name="test_logicalview1", view_search_string = "types:{energyswitch,d
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     lv = ca.logicalview.getObject(guid)
     ca.logicalview.delete(guid)
     #Is it really gone?

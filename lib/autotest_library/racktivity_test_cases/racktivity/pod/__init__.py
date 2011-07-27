@@ -1,4 +1,4 @@
-from pymonkey import i
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
@@ -13,7 +13,7 @@ def setup():
     data["rackguid2"] = racktivity_test_library.rack.create("test_rack2", data["room1"])
 
 def teardown():
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dc1 = ca.datacenter.getObject(data["dc1"])
     racktivity_test_library.location.delete(dc1.locationguid)
 

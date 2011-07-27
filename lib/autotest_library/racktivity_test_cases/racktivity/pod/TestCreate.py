@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, rackGuid1, roomGuid1
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     rackGuid1 = data["rackguid1"]
     roomGuid1=data["room1"]
 
@@ -58,7 +58,7 @@ def testCreate_3():
     @expected_result: function should fail because integers are not allowed as name
     """
     q.logger.log("         Creating pod with Integer as name")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.create,name= 7)
+    assert_raises(xmlrpclib.Fault, ca.pod.create,name= 7)
 
 def testCreate_4():
     """
@@ -70,7 +70,7 @@ def testCreate_4():
     @expected_result: function should fail because locationguid is invalid/doesn't exists
     """
     q.logger.log("         Creating pod with Non existing rackguid")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.create, racks=['00000000-0000-0000-0000-000000000000'])
+    assert_raises(xmlrpclib.Fault, ca.pod.create, racks=['00000000-0000-0000-0000-000000000000'])
 
 def testCreate_5():
     """
@@ -82,6 +82,6 @@ def testCreate_5():
     @expected_result: function should fail because pod name must be unique
     """
     q.logger.log("         Creating pod with the same name by calling testCreate_Positive() again")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, testCreate_2)
+    assert_raises(xmlrpclib.Fault, testCreate_2)
 
 

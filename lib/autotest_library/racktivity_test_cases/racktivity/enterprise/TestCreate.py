@@ -1,7 +1,7 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 
 def setup():
     global cloudapi
@@ -53,7 +53,7 @@ def testCreate_3():
     @expected_result: function should fail because integers are not allowed as name
     """
     q.logger.log("         Creating enterprise with Integer as name")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, cloudapi.enterprise.create, name= 7)
+    assert_raises(xmlrpclib.Fault, cloudapi.enterprise.create, name= 7)
 
 def testCreate_4():
     """
@@ -66,7 +66,7 @@ def testCreate_4():
     """
     q.logger.log("         Creating enterprise with the same name by calling testCreate_Positive() again")
     guid = cloudapi.enterprise.create("enterprise1")['result']['enterpriseguid']
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, cloudapi.enterprise.create, "enterprise2")
+    assert_raises(xmlrpclib.Fault, cloudapi.enterprise.create, "enterprise2")
     racktivity_test_library.enterprise.delete(guid)
 
 

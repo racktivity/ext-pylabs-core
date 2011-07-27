@@ -1,5 +1,5 @@
 from nose.tools import *
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getCloudApi
 
 def testDelete_1():
@@ -11,6 +11,6 @@ def testDelete_1():
     @params:  ca.meteringdeviceevent.delete(mdeguid)
     @expected_result: A meteringdeviceevent is created and deleted successfully 
     """
-    ca = getCloudApi()
+    ca = p.api.action.racktivity
     mdeguid = ca.meteringdeviceevent.create(None)["result"]["guid"]
     ca.meteringdeviceevent.delete(mdeguid)

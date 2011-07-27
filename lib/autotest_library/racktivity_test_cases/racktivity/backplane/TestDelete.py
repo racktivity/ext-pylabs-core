@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, backplaneGuid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     backplaneGuid = racktivity_test_library.backplane.create()
 
 def teardown():
@@ -24,9 +24,9 @@ def testDelete_1():
     """
     q.logger.log("    Deleting Previously created backplane")
     ca.backplane.delete(backplaneGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.backplane.getObject, backplaneGuid)
+    assert_raises(xmlrpclib.Fault, ca.backplane.getObject, backplaneGuid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0020302] Deleting a non existing backplane

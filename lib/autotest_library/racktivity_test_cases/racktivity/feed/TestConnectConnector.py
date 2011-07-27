@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, dcguid, feedGuid, cableGuid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dcguid = data["dcguid"]
     feedGuid = racktivity_test_library.feed.create("test_feed1", dcguid)
     ca.feed.addConnector(feedGuid, "MyConn", 0, "BROKEN")
@@ -28,7 +28,7 @@ def testConnectConnector_1():
     """
     ok_(ca.feed.connectConnector(feedGuid, "MyConn", cableGuid)['result']['returncode'])
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testConnectConnector_2():
     """
     @description: [0232402] Connecting non existing connector to cable

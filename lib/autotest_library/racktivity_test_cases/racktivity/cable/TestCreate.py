@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.cable.delete(cable1Guid)
@@ -51,7 +51,7 @@ def testCreate_2():
     assert_equal(cable2.description,'test_cable2_description')
     assert_equal(cable2.label,'test_cable2_label')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0030203] Creating Cable by calling create function and passing a number as name instead of string
@@ -64,7 +64,7 @@ def testCreate_3():
     q.logger.log("         Creating cable with Integer as name")
     ca.cable.create(7, 'USBCABLE')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0030204] Creating cable with a name that already exists

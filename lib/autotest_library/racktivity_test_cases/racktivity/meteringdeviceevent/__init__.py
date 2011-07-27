@@ -1,4 +1,4 @@
-from pymonkey import q, i
+from pylabs import q, i
 
 def getCloudApi():
     global ca
@@ -6,4 +6,4 @@ def getCloudApi():
 
 def setup():
     global ca
-    ca =  i.config.cloudApiConnection.find('main')
+    ca = p.api.action.racktivity

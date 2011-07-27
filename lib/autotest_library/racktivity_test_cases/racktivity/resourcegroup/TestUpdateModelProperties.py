@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, resgGuid1
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     resgGuid1 = racktivity_test_library.resourcegroup.create("test_resourcegroup1")
 
 def teardown():
@@ -37,4 +37,4 @@ def testUpdate_2():
     @expected_result: update operation should fail with an exception
     """
     q.logger.log("         Updating resourcegroup description")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.resourcegroup.updateModelProperties, '00000000-0000-0000-0000-000000000000', description = "test_Resourcegroup_rename")
+    assert_raises(xmlrpclib.Fault, ca.resourcegroup.updateModelProperties, '00000000-0000-0000-0000-000000000000', description = "test_Resourcegroup_rename")

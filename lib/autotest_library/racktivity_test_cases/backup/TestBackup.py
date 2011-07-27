@@ -5,7 +5,7 @@ from pylabs import i,q
 
 def setup():
     global ca
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     ca.ipaddress.create("Backup_original_IP", "192.168.20.5")
 
 def TestBackup():

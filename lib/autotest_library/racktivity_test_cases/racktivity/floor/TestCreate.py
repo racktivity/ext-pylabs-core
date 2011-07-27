@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, dcguid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dcguid = data["dcguid"]
 
 def teardown():
@@ -53,7 +53,7 @@ def testCreate_2():
     assert_equal(floor1.floor, 0)
     assert_equal(floor1.alias,'test_floor2_alias')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0.36.02.03] Creating Floor by calling create function and passing a number as name instead of string
@@ -66,7 +66,7 @@ def testCreate_3():
     q.logger.log("         Creating floor with Integer as name")
     ca.floor.create(7, 0, dcguid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0.36.02.04] calling create function with an invalid datacenter guid as a parameter
@@ -79,7 +79,7 @@ def testCreate_4():
     q.logger.log("         Creating floor with invalid datacenter guid")
     ca.floor.create("test_floor_negative", 0, '00000000-0000-0000-0000-000000000000')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0.36.02.05] Creating floor with a name that already exists

@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.backplane.delete(backplane1Guid)
@@ -53,7 +53,7 @@ def testCreate_2():
     assert_equal(backplane2.managementflag, True)
     assert_equal(backplane2.storageflag, True)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0020203] Creating backplane by calling create function and passing a number as name instead of string
@@ -66,7 +66,7 @@ def testCreate_3():
     q.logger.log("         Creating backplane with Integer as name")
     ca.backplane.create(7, 'ETHERNET')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0020204] Creating backplane by calling create function and passing an invalid backplane type
@@ -79,7 +79,7 @@ def testCreate_4():
     q.logger.log("         Creating backplane with invalid backplane type")
     ca.backplane.create('test_backplane3', 'INVALID')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0020205] Creating backplane with a name that already exists

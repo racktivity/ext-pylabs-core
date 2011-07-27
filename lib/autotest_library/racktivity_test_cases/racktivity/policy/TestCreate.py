@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, languid1
     data = getData()
-    ca = data['ca']
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.policy.delete(policy1Guid)
@@ -57,7 +57,7 @@ def testCreate_2():
     assert_equal(policy2.policyparams, "{}")
     assert_equal(policy2.description, "TheyPolicy")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0190203] Creating Policy by calling create function and passing an invalid guid as rootobject guid

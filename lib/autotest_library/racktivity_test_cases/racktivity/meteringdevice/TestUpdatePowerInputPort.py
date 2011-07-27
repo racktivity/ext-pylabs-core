@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'
@@ -67,7 +67,7 @@ def testUpdatePowerInputLabel_2():
     cloudapi = getCloudapi()
     portlabel = 'input-1'
     newportlabel = 'input-2'
-    assert_raises(CloudApiException, cloudapi.meteringdevice.updatePowerInputPort, getMeteringdeviceGuid(), portlabel, newportlabel)
+    assert_raises(Fault, cloudapi.meteringdevice.updatePowerInputPort, getMeteringdeviceGuid(), portlabel, newportlabel)
 
 def testUpdatePowerInputSequence_3():
     """
@@ -114,4 +114,4 @@ def testUpdatePowerInputSequence_4():
     """
     cloudapi = getCloudapi()
     portlabel = 'input-1'
-    assert_raises(CloudApiException, cloudapi.meteringdevice.updatePowerInputPort, getMeteringdeviceGuid(), portlabel, sequence=2)
+    assert_raises(Fault, cloudapi.meteringdevice.updatePowerInputPort, getMeteringdeviceGuid(), portlabel, sequence=2)

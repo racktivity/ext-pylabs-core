@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, dcGuid, locGuid1
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     locGuid1 = data["locGuid1"]
     dcGuid = racktivity_test_library.datacenter.create('test_DataCenter1', locGuid1)
 
@@ -26,11 +26,11 @@ def testDelete_1():
     q.logger.log("    Deleting Previously created datacenter")
     dc1 = ca.datacenter.getObject(dcGuid)
     ca.datacenter.delete(dcGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.datacenter.getObject, dcGuid)
+    assert_raises(xmlrpclib.Fault, ca.datacenter.getObject, dcGuid)
     racktivity_test_library.ui.doUITest("Real+time+data", "DELETE", value=dc1.name)
     ok_(racktivity_test_library.ui.getResult(dc1.name))
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0080302] Deleting non existing datacenter

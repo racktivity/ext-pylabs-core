@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import q, i
+from pylabs import q, i
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'
@@ -24,7 +24,7 @@ def testDelete_1():
     md = cloudapi.meteringdevice.getObject(guid)
     assert_true(md, "Create meteringdeivce failed")
     cloudapi.meteringdevice.delete(guid)
-    assert_raises(CloudApiException, cloudapi.meteringdevice.getObject, guid)
+    assert_raises(Fault, cloudapi.meteringdevice.getObject, guid)
     racktivity_test_library.ui.doUITest(md.rackguid, "DELETE", value=md.name)
     ok_(racktivity_test_library.ui.getResult(md.name))
 
@@ -38,4 +38,4 @@ def testDelete_2():
     @expected_result: Nothing happens to the metering device model
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.meteringdevice.delete, EMPTY_GUID)
+    assert_raises(Fault, cloudapi.meteringdevice.delete, EMPTY_GUID)

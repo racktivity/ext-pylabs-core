@@ -1,12 +1,12 @@
 from nose.tools import *
-from pylabs import i,q
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, lvguid, dcGuids, data
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     lvguid = racktivity_test_library.logicalview.create("test_logicalview1")
     dcGuids = [data["dc1"],data["dc2"]]
 
@@ -25,15 +25,15 @@ def TestGetPduHealthStatus_1():
     import time
     currenttime = int(time.time())
     
-    md1 = q.drp.meteringdevice.get(data["mdguid1"])
+    md1 = p.api.model.racktivity.meteringdevice.get(data["mdguid1"])
     md1.lastaccessed = currenttime
-    q.drp.meteringdevice.save(md1)
-    md2 = q.drp.meteringdevice.get(data["mdguid2"])
+    p.api.model.racktivity.meteringdevice.save(md1)
+    md2 = p.api.model.racktivity.meteringdevice.get(data["mdguid2"])
     md2.lastaccessed = currenttime - 100
-    q.drp.meteringdevice.save(md2)
-    md3 = q.drp.meteringdevice.get(data["mdguid3"])
+    p.api.model.racktivity.meteringdevice.save(md2)
+    md3 = p.api.model.racktivity.meteringdevice.get(data["mdguid3"])
     md3.lastaccessed = currenttime - 1000
-    q.drp.meteringdevice.save(md3)
+    p.api.model.racktivity.meteringdevice.save(md3)
     
     ca.logicalview.updateModelProperties(lvguid, viewstring="parenttree:{datacenter:DC1}")
     result = ca.logicalview.getPduHealthStatus(lvguid, [60,600])['result']['healthstatus']
