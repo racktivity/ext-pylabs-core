@@ -1,20 +1,20 @@
 __author__ = 'racktivity'
 __priority__= 3
 from logger import logger
+from rootobjectaction_lib import rootobjectaction_find
 
 def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params)
     from rootobjectaction_lib import rootobjectaction_find
     params['result'] = {'returncode':False}
     podguid = params["podguid"]
-    pod = p.api.model.racktivity.pod.get(podguid)
     
-    for rackguid in pod.racks:
+    for rackguid in rootobjectaction_find.find("rack", podguid = podguid):
         p.api.action.racktivity.rack.delete(rackguid, request = params["request"])
     
-    for rowguid in rootobjectaction_find.row_find(pod=podguid):
+    for rowguid in rootobjectaction_find.find("row", podguid = podguid):
         p.api.action.racktivity.row.delete(rowguid, request = params["request"])
-        
+    
     params['result'] = {'returncode': p.api.model.racktivity.pod.delete(podguid)}
 
     #Delete the policy linked to this pod

@@ -5,7 +5,7 @@ class room():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, datacenterguid, floor, description=None, alias=None,  tags=None,  request=None, jobguid=None, executionparams=dict()):
+    def create(self, name, datacenterguid, floorguid, description=None, alias=None,  tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a new room.
 
@@ -15,10 +15,10 @@ class room():
         @type name:                    string
         
         @param datacenterguid:       datacenter to which the room belongs
-        @type datacenterguid:          guid
+        @type datacenterguid:        guid
 
-        @param floor:                 floor guid where the room in located
-        @type floor:                   string(100)
+        @param floorguid:            floor guid where the room in located
+        @type floorguid:             guid
 
         @param description:          Description of the room
         @type description:             string
@@ -62,7 +62,7 @@ class room():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, roomguid,name=None, description=None, datacenterguid=None, floor=None, alias=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def updateModelProperties(self, roomguid,name=None, description=None, datacenterguid=None, floorguid=None, alias=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -80,8 +80,8 @@ class room():
         @param datacenterguid:         datacenter to which the room belongs
         @type datacenterguid:          guid
 
-        @param  floor:                 floor location of the room in the datacenter
-        @type floor:                   string(100)
+        @param  floorguid:             floor location of the room in the datacenter
+        @type floorguid:               guid
 
         @param alias:               alias of the room in the datacenter
         @type alias:                 string
@@ -101,7 +101,7 @@ class room():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name=None,  description=None, datacenterguid=None, floor=None, alias=None,  tags=None, request=None, jobguid=None, executionparams=dict()):
+    def find(self, name=None,  description=None, datacenterguid=None, floorguid=None, alias=None,  tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of room guids which met the find criteria.
 
@@ -118,14 +118,14 @@ class room():
         @param datacenterguid:         datacenter to which the roombelongs
         @type datacenterguid:          guid
 
-        @param  floor:                 floor location of the room in the datacenter
-        @type floor:                   string(100)
+        @param  floorguid:             floor location of the room in the datacenter
+        @type floorguid:               guid
         
-        @param alias:                 alias of the room in the datacenter
-        @type alias:                  string
+        @param alias:                  alias of the room in the datacenter
+        @type alias:                   string
         
-        @param tags:                  string of tags
-        @type tags:                   string
+        @param tags:                   string of tags
+        @type tags:                    string
 
         @param jobguid:                Guid of the job if avalailable else empty string
         @type jobguid:                 guid
@@ -166,7 +166,7 @@ class room():
         @note:                          'result: {returncode:True,roominfo:[{ 'roomguid': '22544B07-4129-47B1-8690-B92C0DB21434',
         @note:                                      'name': 'room001',
         @note:                                      'description': 'room 0001',,
-        @note:                                      'floor':"1e floor",
+        @note:                                      'floorguid':"D151F09F-A65A-AF65-A96B-AC4A6F46C033",
         @note:                                      'datacenterguid': '3351FF9F-D65A-4F65-A96B-AC4A6246C033',
                                                     'alias': 'vivaldi'}]}
                                                     

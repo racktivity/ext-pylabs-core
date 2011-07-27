@@ -9,13 +9,15 @@ def main(q, i, p, params, tags):
     roomguid = params['roomguid']
     q.logger.log('Deleting room %s' % roomguid, 3)
     
-    for podguid in rootobjectaction_find.pod_find(room=roomguid):
+    for podguid in rootobjectaction_find.find("pod", roomguid=roomguid):
         p.api.action.racktivity.pod.delete(podguid, request = params["request"])
+
+    for rowguid in rootobjectaction_find.find("row", roomguid=roomguid):
+        p.api.action.racktivity.row.delete(rowguid, request = params["request"])
     
-    for rackguid in rootobjectaction_find.rack_find(roomguid=roomguid):
+    for rackguid in rootobjectaction_find.find("rack", roomguid=roomguid):
         p.api.action.racktivity.rack.delete(rackguid, request = params["request"])
     
-    floorguid = p.api.model.racktivity.room.get(roomguid).floor
     params['result'] = {'returncode': p.api.model.racktivity.room.delete(roomguid)}
 
     #import racktivityui.uigenerator.floor

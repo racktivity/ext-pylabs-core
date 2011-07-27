@@ -5,7 +5,7 @@ class rack():
     these actions do not call workflows which execute scripts in the reality on the agents
     """
 
-    def create(self, name, racktype, roomguid=None, description=None,  floor=None, corridor=None, position=None, height=42, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def create(self, name, racktype, roomguid=None, description=None, floorguid=None, podguid=None, rowguid=None, corridor=None, position=None, height=42, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Create a new rack.
 
@@ -23,8 +23,14 @@ class rack():
         @param description:            Description for the rack.
         @type description:             string
 
-        @param  floor:                 floor guid of the rack in the datacenter
-        @type floor:                   guid
+        @param  floorguid:             floor guid of the rack in the datacenter
+        @type floorguid:               guid
+        
+        @param  podguid:               pod guid of the rack in the datacenter
+        @type podguid:                 guid
+        
+        @param  rowguid:               row guid of the rack in the datacenter
+        @type rowguid:                 guid
 
         @param  corridor:              corridor location of the rack on the floor
         @type corridor:                string(100)
@@ -71,7 +77,7 @@ class rack():
         @raise e:                     In case an error occurred, exception is raised
         """
 
-    def updateModelProperties(self, rackguid,name=None, racktype=None, description=None, roomguid=None, floor=None, corridor=None, position=None, height=42, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def updateModelProperties(self, rackguid,name=None, racktype=None, description=None, roomguid=None, floorguid=None, podguid=None, rowguid=None, corridor=None, position=None, height=42, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update basic properties (every parameter which is not passed or passed as empty string is not updated)
 
@@ -92,9 +98,15 @@ class rack():
         @param roomguid:         room to which the rack belongs
         @type roomguid:          guid
 
-        @param  floor:                 floor location of the rack in the datacenter
-        @type floor:                   string(100)
-
+        @param  floorguid:             floor guid of the rack in the datacenter
+        @type floorguid:               guid
+        
+        @param  podguid:               pod guid of the rack in the datacenter
+        @type podguid:                 guid
+        
+        @param  rowguid:               row guid of the rack in the datacenter
+        @type rowguid:                 guid
+        
         @param  corridor:              corridor location of the rack on the floor
         @type corridor:                string(100)
 
@@ -224,9 +236,6 @@ class rack():
         @raise e:                      In case an error occurred, exception is raised
         
         """
-        
-        
-    
     
     def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
@@ -262,28 +271,7 @@ class rack():
         
         @return: [{viewdatatype:, viewdatavalue:, viewdataunit:},]
         """
-    
-    def uiCreatePageUnderParent(self, rackguid, parentguid, request=None, jobguid=None, executionparams=dict()):
-        """
-        This method is used to create/move the rack page on confluence
-        to the correct parent
-        This is because rack can be moved between floor, room, pod, row
         
-        @param rackguid:          the rack to move its page.
-        @type rackguid:           guid
-        
-        @param parentguid:          the rack parent's page
-        @type parentguid:           guid
-        
-        @param jobguid:                Guid of the job if avalailable else empty string
-        @type jobguid:                 guid
-
-        @param executionparams:        dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:         dictionary
-        
-        @return:                       result as a dictionary of the form {'returncode': True}
-        """
-    
     def getTree(rackguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
@@ -303,6 +291,7 @@ class rack():
         @return:                  dictionary with returncode(True) as result and 'result': {'name','type',children = []}
         @rtype:                   dictionary
         """
+    
     def updateACL(self, rootobjectguid, cloudusergroupnames={}, request=None, jobguid=None, executionparams=dict()):
         """
         Update ACL in a rootobject.

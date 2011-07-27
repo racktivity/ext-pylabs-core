@@ -1,12 +1,7 @@
 __author__ = 'roomtivity'
 __priority__= 3
 
-import collections
-
-def exists(view, obj, key, value):
-    filterObject = obj.getFilterObject()
-    filterObject.add(view, key, value, exactMatch=True)
-    return len(obj.find(filterObject)) > 0
+from rootobjectaction_lib import rootobjectaction_find
 
 def avg(v1, v2):
     if v1 == 0:
@@ -17,8 +12,7 @@ def avg(v1, v2):
 def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     rowguid = params['rowguid']
-    row = p.api.model.racktivity.row.get(rowguid)
-    rackguids = row.racks;
+    rackguids = rootobjectaction_find.find("rack", rowguid = rowguid)
     from rootobjectaction_lib import rootobject_authorization
     rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
     

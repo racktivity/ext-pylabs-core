@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     room = p.api.model.racktivity.room.get(params['roomguid'])
     q.logger.log('Updating model properties of room %s' % params['roomguid'], 3)
-    fields = ('name', 'description', 'datacenterguid', 'floor', 'alias', 'tags')
+    fields = ('name', 'description', 'datacenterguid', 'floorguid', 'alias', 'tags')
     changed = False
 
     for key, value in params.iteritems():

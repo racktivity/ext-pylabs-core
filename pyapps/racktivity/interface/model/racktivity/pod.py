@@ -10,14 +10,11 @@ class pod(model.RootObjectModel):
     alias = model.String(thrift_id=2)
 
     #@doc Room where the pod is located
-    room = model.GUID(thrift_id=3)
+    roomguid = model.GUID(thrift_id=3)
     
     #@doc Position of the corners of the pod, relative to the subobject left under corner
     position = model.List(model.List(model.Integer()), thrift_id=4)
-    
-    #@doc List of racks in the pod
-    racks = model.List(model.GUID(), thrift_id=5)
-    
+        
     #@doc additional remarks on the pod
     description = model.String(thrift_id=6)
     

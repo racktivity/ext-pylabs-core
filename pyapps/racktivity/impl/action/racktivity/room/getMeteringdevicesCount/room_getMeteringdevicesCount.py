@@ -12,7 +12,7 @@ def main(q, i, p, params, tags):
     used = 0
     identified = 0
     
-    for rackguid in rootobjectaction_find.rack_find(roomguid=roomguid):
+    for rackguid in rootobjectaction_find.find("rack", roomguid=roomguid):
         for md in rootobjectaction_list.meteringdevice_list(rackguid=rackguid):
             if md['parentmeteringdeviceguid']:
                 continue

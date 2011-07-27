@@ -15,7 +15,7 @@ class rack(model.RootObjectModel):
     datacenterguid = model.GUID(thrift_id=3)
 
     #@doc floor location of the rack in the datacenter
-    floor = model.String(thrift_id=4)
+    floorguid = model.GUID(thrift_id=4)
 
     #@doc corridor location of the rack on the floor
     corridor = model.String(thrift_id=5)
@@ -37,6 +37,12 @@ class rack(model.RootObjectModel):
     
     #@doc room to which the rack belongs
     roomguid = model.GUID(thrift_id=11)
+    
+    #@doc pod to which the rack belongs
+    podguid = model.GUID(thrift_id=12)
+    
+    #@doc row to which the rack belongs
+    rowguid = model.GUID(thrift_id=13)
 
     # A dictionary in the form {'group1_action1':None, 'group2_action1':None, 'group1_action2': None}
-    cloudusergroupactions = model.Dict(model.String(),thrift_id=12)
+    cloudusergroupactions = model.Dict(model.String(),thrift_id=14)

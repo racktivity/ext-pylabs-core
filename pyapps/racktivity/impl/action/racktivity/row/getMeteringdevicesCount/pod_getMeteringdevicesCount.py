@@ -12,8 +12,7 @@ def main(q, i, p, params, tags):
     used = 0
     identified = 0
     
-    row = p.api.model.racktivity.row.get(rowguid)
-    for rackguid in row.racks:
+    for rackguid in rootobjectaction_find.find("rack", rowguid = rowguid):
         for md in rootobjectaction_list.meteringdevice_list(rackguid=rackguid):
             if md['parentmeteringdeviceguid']:
                 continue

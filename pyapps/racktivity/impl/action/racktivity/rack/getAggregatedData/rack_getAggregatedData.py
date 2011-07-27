@@ -4,12 +4,6 @@ __priority__= 3
 import collections
 from rootobjectaction_lib import rootobjectaction_find
 
-ALL = 'all'
-def exists(view, obj, key, value):
-    filterObject = obj.getFilterObject()
-    filterObject.add(view, key, value, exactMatch=True)
-    return len(obj.find(filterObject)) > 0
-
 def avg(v1, v2):
     if v1 == 0:
         return v2
@@ -93,7 +87,7 @@ class KeyGen(object):
 def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     rackguid = params['rackguid']
-    if not exists('racktivity_view_rack_list', p.api.model.racktivity.rack, "guid", rackguid):
+    if not rootobjectaction_find.find('rack', guid = rackguid):
         raise ValueError("No rack with this guid (%s) exists"%rackguid)
     
     meteringtypes = params['meteringtypes']

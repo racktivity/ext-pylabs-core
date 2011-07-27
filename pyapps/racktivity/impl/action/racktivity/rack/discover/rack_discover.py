@@ -100,20 +100,18 @@ class snmpModule(object):
 
 
 def configureMD(q, address, data, replace, request):
-    ipguids = p.api.action.racktivity.ipaddress.find(address=address)['result']['guidlist']
-    if ipguids:
+    mdguids = p.api.action.racktivity.meteringdevice.find(ipaddress = address)["result"]["guidlist"]
+    if mdguids:
         if replace:
-            mdguids = p.api.action.racktivity.meteringdevice.find(ipaddressguid = ipguids[0])["result"]["guidlist"]
             for guid in mdguids:
                 p.api.action.racktivity.meteringdevice.delete(guid, request = request)
         else:
-            q.logger.log("autodiscovery: IP address already used, skipping ..")
+            q.logger.log("autodiscovery: IP address already assigned to another meteringdevice, skipping ..")
             return
     
     productName = data["product"]
     rackguid = data["rackguid"]
     port = data["port"]
-    ipaddressguid = p.api.action.racktivity.ipaddress.create(name=address, address=address, request = request)['result']['ipaddressguid']
 
     #model master module.
     masterguid = p.api.action.racktivity.meteringdevice.create(name="%s-%s" % (productName, address),
@@ -122,8 +120,7 @@ def configureMD(q, address, data, replace, request):
                                    template=False,
                                    rackguid=rackguid,
                                    attributes = {'deviceapiportnr': str(port)},
-                                   nicinfo = [{'ipaddressguids':[ipaddressguid], 'status':str(q.enumerators.nicstatustype.ACTIVE),
-                                               'nictype':str(q.enumerators.nictype.ETHERNET_GB), 'order':0}],
+                                   netowrkinfo = {"ipaddress":address, "port":port, "protocol":"http"},
                                    meteringdeviceconfigstatus=str(q.enumerators.meteringdeviceconfigstatus.IDENTIFIED),
                                    request = request,
                                    )['result']['meteringdeviceguid']

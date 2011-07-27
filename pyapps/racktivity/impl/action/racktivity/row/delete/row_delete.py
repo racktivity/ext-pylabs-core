@@ -1,14 +1,14 @@
 __author__ = 'racktivity'
 __priority__= 3
 from logger import logger
+from rootobjectaction_lib import rootobjectaction_find
 
 def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params)
-    params['result'] = {'returncode':False}
     rowguid = params["rowguid"]
     row = p.api.model.racktivity.row.get(rowguid)
     
-    for rackguid in row.racks:
+    for rackguid in rootobjectaction_find.find("rack", rowguid=rowguid):
         p.api.action.racktivity.rack.delete(rackguid, request = params["request"])
         
     params['result'] = {'returncode': p.api.model.racktivity.row.delete(rowguid)}

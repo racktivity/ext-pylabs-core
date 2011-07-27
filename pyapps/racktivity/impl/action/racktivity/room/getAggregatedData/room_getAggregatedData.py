@@ -1,12 +1,7 @@
 __author__ = 'racktivity'
 __priority__= 3
 
-import collections
-
-def exists(view, obj, key, value):
-    filterObject = obj.getFilterObject()
-    filterObject.add(view, key, value, exactMatch=True)
-    return len(obj.find(filterObject)) > 0
+from rootobjectaction_lib import rootobjectaction_find
 
 def avg(v1, v2):
     if v1 == 0:
@@ -17,7 +12,7 @@ def avg(v1, v2):
 def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     roomguid = params['roomguid']
-    if not exists('racktivity_view_room_list', p.api.model.racktivity.room, "guid", roomguid):
+    if not rootobjectaction_find.find('room', guid = roomguid):
         raise ValueError("No room with this guid (%s) exists"%roomguid)
     
     meteringtypes = params['meteringtypes']

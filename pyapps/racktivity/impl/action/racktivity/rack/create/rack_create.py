@@ -1,11 +1,7 @@
 __author__ = 'racktivity'
 __priority__= 3
 from logger import logger
-
-def exists(view, obj, key, value):
-    filterObject = obj.getFilterObject()
-    filterObject.add(view, key, value, exactMatch=True)
-    return len(obj.find(filterObject)) > 0
+from rootobjectaction_lib import rootobjectaction_find
 
 def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params)
@@ -13,11 +9,11 @@ def main(q, i, p, params, tags):
     fields = ('name', 'racktype', 'description', 'roomguid', 'floor', 'corridor', 
               'position', 'height', 'tags')
     #Do some checks
-    if exists('racktivity_view_rack_list', p.api.model.racktivity.rack, "name", params['name']):
+    if rootobjectaction_find.find('rack', name = params['name']):
         raise ValueError("Rack with name %s already exists"%params['name'])
     
-    roomguid = params.get('roomguid', '')
-    floorguid = params.get('floor', '')
+    roomguid = params['roomguid']
+    floorguid = params['floorguid']
     if not roomguid and not floorguid:
         raise ValueError("Can't create a rack with no roomguid or floorguid, at least one is required")
     

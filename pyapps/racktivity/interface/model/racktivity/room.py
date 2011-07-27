@@ -14,8 +14,8 @@ class room(model.RootObjectModel):
     #@doc datacenter to which the room belongs
     datacenterguid = model.GUID(thrift_id=3)
 
-    #@doc floor location of the rack in the datacenter
-    floor = model.String(thrift_id=4)
+    #@doc floor to which the room belongs
+    floorguid = model.GUID(thrift_id=4)
 
     #@doc alias for the room
     alias = model.String(thrift_id=5)

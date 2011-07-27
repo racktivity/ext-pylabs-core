@@ -12,23 +12,11 @@ def main(q, i, p, params, tags):
     used = 0
     identified = 0
     
-    for rowguid in rootobjectaction_find.row_find(pod=podguid):
-        row = p.api.model.racktivity.row.get(rowguid)
-        for rackguid in row.racks:
-            for md in rootobjectaction_list.meteringdevice_list(rackguid=rackguid):
-                if md['parentmeteringdeviceguid']:
-                    continue
-                
-                status = md['meteringdeviceconfigstatus']
-                if status == 'CONFIGURED':
-                    configured += 1
-                elif status == 'USED':
-                    used += 1
-                elif status == 'IDENTIFIED':
-                    identified += 1
-                    
-    pod = p.api.model.racktivity.pod.get(podguid)
-    for rackguid in pod.racks:
+    racks = rootobjectaction_find.find("rack", podguid=podguid)
+    for rowguid in rootobjectaction_find.find("row", podguid=podguid):
+        racks += rootobjectaction_find.find("rack", rowguid=rowguid)
+    
+    for rackguid in racks:
         for md in rootobjectaction_list.meteringdevice_list(rackguid=rackguid):
             if md['parentmeteringdeviceguid']:
                 continue

@@ -4,7 +4,7 @@ class Pod():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name,  alias=None, description=None, room=None, racks = [], tags=None,  request=None, jobguid=None, executionparams=dict()):
+    def create(self, name,  alias=None, description=None, roomguid=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a pod in a room with a list of racks
         
@@ -17,11 +17,8 @@ class Pod():
         @params: description of the pod
         @type description: string
         
-        @params: room in which the pod is located
-        @type room: guid
-        
-        @params racks: list of rack guids in the pod
-        @type racks: list
+        @params: roomguid in which the pod is located
+        @type roomguid: guid
         
         @param tags: string of tags
         @type tags: string
@@ -53,7 +50,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def updateModelProperties(self, podguid, name=None, alias=None, description=None, room=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def updateModelProperties(self, podguid, name=None, alias=None, description=None, roomguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties for a pod with guid(podguid)
 
@@ -69,8 +66,8 @@ class Pod():
         @params description: description of the pod
         @type description: string
         
-        @params room: room guid in which the pod is located
-        @type: room: string
+        @params roomguid: room guid in which the pod is located
+        @type: roomguid: string
         
         @param tags: string of tags
         @type tags: string
@@ -107,7 +104,7 @@ class Pod():
         @warning:                Only usable using the python client.
         """
         
-    def find(self, name=None,  alias=None, room=None, rack=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def find(self, name=None,  alias=None, roomguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         
         @execution_method = sync
@@ -118,8 +115,8 @@ class Pod():
         @param alias: alias name of the pod to find
         @type alias: string
         
-        @param room: list pods located in the room
-        @type room: guid
+        @param roomguid: list pods located in the room
+        @type roomguid: guid
         
         @param tags:             string of tags
         @type tags:              string
@@ -134,7 +131,7 @@ class Pod():
         @rtype:                   dictionary
         """
         
-    def list(self, podguid=None, name=None,  alias=None, room=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
+    def list(self, podguid=None, name=None,  alias=None, roomguid=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         List found pods and return pod information
         
@@ -149,8 +146,8 @@ class Pod():
         @param alias: alias name of the pod to find
         @type alias: string
         
-        @param room: list pods located in the room
-        @type room: guid
+        @param roomguid: list pods located in the roomguid
+        @type roomguid: guid
         
         @param tags:             string of tags
         @type tags:              string
@@ -163,7 +160,7 @@ class Pod():
 
         @return:                  dictionary with returncode(True) and pod information  as result and jobguid: {'result': {'returncode':True,'podinformation:{}}, 'jobguid': guid}
         a pod informatin contains the following info:
-        {podguid:{name:, alias, description:, room: ,racks:, tags:,,}}
+        {podguid:{name:, alias, description:, roomguid: ,racks:, tags:,,}}
         @rtype:                   dictionary
         """
         
@@ -188,7 +185,7 @@ class Pod():
         @return:                  result is a dictionary with returncode True and requested values.e.g values:{current:, power:, energy:} and jobguid: {'result': {returncode:True, values:{current:,power:,energy:}, 'jobguid': guid}
         @rtype: dictionay
         """
-    
+     
     def getMeteringdevicesCount(self, podguid, jobguid='', executionparams={}):
         """
         Get number of meteringdevices in this pod
@@ -203,46 +200,6 @@ class Pod():
         @type executionparams:    dictionary
         
         @return:                  result as a dictionary of the form {'returncode': True, 'count':{'configured':x, 'userd':x, 'identified':x}}
-        @rtype:                   dictionary
-        """
-        
-    def addRack(self, podguid, rackguid,  request=None, jobguid=None, executionparams=dict()):
-        """
-        Add a rack to the pod
-    
-        @params podguid:          guid of the pod
-        @type podguid:            guid
-                
-        @params rackguid:           guid for the rack to add
-        @type rackguid:           guid
-     
-        @param jobguid:           Guid of the job if avalailable else empty string
-        @type jobguid:            guid
-
-        @param executionparams:   Dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:    dictionary
-
-        @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                   dictionary
-        """
-        
-    def removeRack(self, podguid, rackguid,  request=None, jobguid=None, executionparams=dict()):
-        """
-        Remove a rack to the pod
-    
-        @params podguid:          guid of the pod
-        @type podguid:            guid
-                
-        @params rackguid:           guid for the rack to add
-        @type rackguid:           guid
-     
-        @param jobguid:           Guid of the job if avalailable else empty string
-        @type jobguid:            guid
-
-        @param executionparams:   Dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:    dictionary
-
-        @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
         @rtype:                   dictionary
         """
     
@@ -318,7 +275,6 @@ class Pod():
 
         @raise e:                            In case an error occurred, exception is raised
         """
-
 
     def deleteGroup(self, rootobjectguid, group, action=None, recursive=False, request=None, jobguid=None, executionparams=dict()):
         """

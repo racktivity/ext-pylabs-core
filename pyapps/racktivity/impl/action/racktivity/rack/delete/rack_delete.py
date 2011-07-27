@@ -17,29 +17,6 @@ def main(q, i, p, params, tags):
         if not meteringdevice["parentmeteringdeviceguid"]:
             p.api.action.racktivity.meteringdevice.delete(meteringdevice["guid"], request = params["request"])
     params['result'] = {'returncode': p.api.model.racktivity.rack.delete(params['rackguid'])}
-    
-    parentFound = False
-    #remove from any potential row.
-    for rowguid in rootobjectaction_find.row_find(rack=rackguid):
-        parentFound = True
-        p.api.action.racktivity.row.removeRack(rowguid, rackguid, request = params["request"])
-    
-    if not parentFound:
-        #remove from any potential pod
-        for podguid in rootobjectaction_find.pod_find(rack=rackguid):
-            parentFound = True
-            p.api.action.racktivity.pod.removeRack(podguid, rackguid, request = params["request"])
-    
-    if not parentFound and rack.roomguid:
-        #update room page.
-        parentFound = True
-        #import racktivityui.uigenerator.room
-        #racktivityui.uigenerator.room.update(rack.roomguid)
-    
-    if not parentFound and rack.floor:
-        parentFound = True
-        #import racktivityui.uigenerator.floor
-        #racktivityui.uigenerator.floor.update(rack.floor)
         
     #import racktivityui.uigenerator
     #racktivityui.uigenerator.deletePage(rackguid)

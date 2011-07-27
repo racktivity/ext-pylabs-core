@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating row properties in the model', 3)
     row = p.api.model.racktivity.row.get(params['rowguid'])
-    fields = ('name', 'alias', 'description', 'room', 'pod', 'tags')
+    fields = ('name', 'alias', 'description', 'roomguid', 'podguid', 'tags')
     changed = False
 
     for key, value in params.iteritems():

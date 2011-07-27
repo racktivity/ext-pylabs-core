@@ -3,11 +3,6 @@ __priority__= 3
 
 import collections
 
-def exists(view, obj, key, value):
-    filterObject = obj.getFilterObject()
-    filterObject.add(view, key, value, exactMatch=True)
-    return len(obj.find(filterObject)) > 0
-
 def avg(v1, v2):
     if v1 == 0:
         return v2
@@ -21,7 +16,7 @@ def main(q, i, p, params, tags):
     
     meteringtypes = params['meteringtypes']
     from rootobjectaction_lib import rootobjectaction_find
-    rowguids = rootobjectaction_find.row_find(pod=podguid)
+    rowguids = rootobjectaction_find.find("row", podguid=podguid)
     from rootobjectaction_lib import rootobject_authorization
     rowguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rowguids, p.api.model.racktivity.row , "getAggregatedData")
 
@@ -60,7 +55,7 @@ def main(q, i, p, params, tags):
                 else:
                     averages[meteringtype][i] += float(value)
                     
-    for rackguid in pod.racks:
+    for rackguid in rootobjectaction_find.find("rack", podguid=podguid):
         rackresult = p.api.action.racktivity.rack.getAggregatedData(rackguid, meteringtypes, request = params["request"])['result']
         for meteringtype, value in rackresult['value'].iteritems():
             if meteringtype in ('Voltage', 'Frequency'):

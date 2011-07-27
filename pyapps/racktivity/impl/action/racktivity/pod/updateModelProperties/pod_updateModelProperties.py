@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Updating pod properties in the model', 3)
     pod = p.api.model.racktivity.pod.get(params['podguid'])
-    fields = ('name', 'alias', 'description', 'room', 'tags')
+    fields = ('name', 'alias', 'description', 'roomguid', 'tags')
     changed = False
 
     for key, value in params.iteritems():

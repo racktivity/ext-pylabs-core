@@ -28,10 +28,17 @@ def find(rootobjectName, **params):
     for param in params.iterkeys():
         if params[param] is None:
             continue
+        value = params[param]
+        #For strings we support exact or partial match
+        exactMatch = True
+        if isinstance(value, str) and (value.startswith("*") or value.endswith("*")):
+            value = value.strip("*")
+            exactMatch = False
+        #Some attributes are stored in special views
         if specialViews and param in specialViews:
-            filterObject.add(specialViews[param], param , params[param])
+            filterObject.add(specialViews[param], param , value, exactMatch=exactMatch)
         else:
-            filterObject.add(defaultView, param , params[param])
+            filterObject.add(defaultView, param , value, exactMatch=exactMatch)
     result = model.find(filterObject)
     return result
 

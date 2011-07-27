@@ -4,7 +4,7 @@ class Row():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name=None,  alias=None, description=None,  room=None, pod=None, racks = [],  tags=None,  request=None, jobguid=None, executionparams=dict()):
+    def create(self, name,  alias=None, description=None,  roomguid=None, podguid=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         Create a row in a row or a room with a list of racks
         
@@ -17,11 +17,11 @@ class Row():
         @param: description of the row
         @type description: string
         
-        @param: room in which the row is located
-        @type room: guid
+        @param: roomguid in which the row is located
+        @type roomguid: guid
         
-        @param: pod in which the row is located
-        @type pod: guid
+        @param: podguid in which the row is located
+        @type podguid: guid
         
         @param racks: list of rack guids in the row
         @type racks: list
@@ -56,7 +56,7 @@ class Row():
         @rtype:                   dictionary
         """
         
-    def updateModelProperties(self, rowguid, name=None, alias=None, description=None, room=None, pod=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def updateModelProperties(self, rowguid, name=None, alias=None, description=None, roomguid=None, podguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Update model properties for a row with guid(rowguid)
 
@@ -72,11 +72,11 @@ class Row():
         @param description: description of the row
         @type description: string
         
-        @param room: room guid in which the row is located
-        @type: room: string
+        @param roomguid: room guid in which the row is located
+        @type: roomguid: guid
         
-        @param pod: pod guid in which the row is located
-        @type pod: string
+        @param podguid: pod guid in which the row is located
+        @type podguid: guid
         
         @param tags: string of tags
         @type tags: string
@@ -113,7 +113,7 @@ class Row():
         @warning:                Only usable using the python client.
         """
         
-    def find(self, name=None,  alias=None, room=None, pod=None, rack=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def find(self, name=None,  alias=None, roomguid=None, podguid=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         @execution_method = sync
         
@@ -123,11 +123,11 @@ class Row():
         @param alias: alias name of the row to find
         @type alias: string
         
-        @param room: list rows located in the room
-        @type room: guid
+        @param roomguid: list rows located in the room
+        @type roomguid: guid
         
-        @param pod: list of rows located in this pod
-        @type pod: guid
+        @param podguid: list of rows located in this pod
+        @type podguid: guid
         
         @param tags:             string of tags
         @type tags:              string
@@ -142,7 +142,7 @@ class Row():
         @rtype:                   dictionary
         """
         
-    def list(self, rowguid=None, name=None,  alias=None, room=None, pod=None,tags=None,  request=None, jobguid=None, executionparams=dict()):
+    def list(self, rowguid=None, name=None,  alias=None, roomguid=None, podguid=None,tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         List found rows and return row information
         
@@ -158,10 +158,10 @@ class Row():
         @type alias: string
         
         @param room: list rows located in the room
-        @type room: guid
+        @type roomguid: guid
         
-        @param pod: list rows located in the pod
-        @type pod: guid
+        @param podguid: list rows located in the pod
+        @type podguid: guid
         
         @param tags:             string of tags
         @type tags:              string
@@ -215,47 +215,7 @@ class Row():
         
         @return:                  result as a dictionary of the form {'returncode': True, 'count':{'configured':x, 'userd':x, 'identified':x}}
         @rtype:                   dictionary
-        """
-        
-    def addRack(self, rowguid, rackguid,  request=None, jobguid=None, executionparams=dict()):
-        """
-        Add a rack to the pod
-    
-        @params rowguid:          guid of the row
-        @type rowguid:            guid
-                
-        @params rackguid:           guid for the rack to add
-        @type rackguid:           guid
-     
-        @param jobguid:           Guid of the job if avalailable else empty string
-        @type jobguid:            guid
-
-        @param executionparams:   Dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:    dictionary
-
-        @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                   dictionary
-        """
-        
-    def removeRack(self, rowguid, rackguid,  request=None, jobguid=None, executionparams=dict()):
-        """
-        Remove a rack to the pod
-    
-        @params rowguid:          guid of the row
-        @type rowguid:            guid
-                
-        @params rackguid:           guid for the rack to add
-        @type rackguid:           guid
-     
-        @param jobguid:           Guid of the job if avalailable else empty string
-        @type jobguid:            guid
-
-        @param executionparams:   Dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:    dictionary
-
-        @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                   dictionary
-        """
+        """        
     
     def getTree(rowguid, depth=2, jobguid=None, executionparams=dict()):
         """

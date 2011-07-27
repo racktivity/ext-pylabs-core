@@ -1,35 +1,24 @@
 __author__ = 'racktivity'
 __priority__= 3
 from logger import logger
-
-def exists(view, obj, key, value):
-    filterObject = obj.getFilterObject()
-    filterObject.add(view, key, value, exactMatch=True)
-    return len(obj.find(filterObject)) > 0
+from rootobjectaction_lib import rootobjectaction_find
 
 def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
     #pod name already exists?
-    if exists('racktivity_view_pod_list', p.api.model.racktivity.pod, "name", params['name']):
+    if rootobjectaction_find.find("pod", name = params['name']):
         raise ValueError("pod with name %s already exists"%params['name'])
     #room exists?
-    if not exists('racktivity_view_room_list', p.api.model.racktivity.room, "guid", params['room']):
+    if not rootobjectaction_find.find('room', guid = params['room']):
         raise ValueError("room with guid %s doesn't exists"%params['room'])
-    #racks?
-    for rackguid in params['racks']:
-        if not exists('racktivity_view_rack_list', p.api.model.racktivity.rack, "guid", rackguid):
-            raise ValueError("rack with guid %s doesn't exists"%rackguid)
         
-    fields = ('name', 'alias', 'description', 'room', 'tags')
+    fields = ('name', 'alias', 'description', 'roomguid', 'tags')
     pod = p.api.model.racktivity.pod.new()
     for key, value in params.iteritems():
         if key in fields and value:
             setattr(pod, key, value)
     
-    for rackguid in params['racks']:
-        pod.racks.append(rackguid)
-
     p.api.model.racktivity.pod.save(pod)
 
     #from rootobjectaction_lib import rootobject_grant
