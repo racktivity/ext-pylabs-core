@@ -1,4 +1,4 @@
-from pymonkey import q, i
+from pylabs import i,q,p
 
 def create(name = "test_ipaddress", address='127.0.0.1', netmask='255.0.0.0', iptype='STATIC', ipversion='IPV4'):
     cloudapi = i.config.cloudApiConnection.find('main')

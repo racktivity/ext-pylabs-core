@@ -1,4 +1,3 @@
-import ui
 import enterprise
 import location
 import clouduser
@@ -21,7 +20,7 @@ import row
 import policy
 
 def cleanenv():
-    from pymonkey import i, q
+    from pylabs import i,q,p
     cloudapi = i.config.cloudApiConnection.find("main")
     
     for location in cloudapi.location.find()['result']['guidlist']:

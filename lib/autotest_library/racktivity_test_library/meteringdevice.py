@@ -1,5 +1,5 @@
-from pymonkey import q, i
-from cloud_api_client.Exceptions import CloudApiException
+from pylabs import i,q,p
+from xmlrpclib import Fault
 
 def create(name, id, rackguid,
            parentmeteringdeviceguid=None,
@@ -64,6 +64,6 @@ def delete(guid):
     try:
         devices = cloudapi.meteringdevice.getObject(guid)
         raise RuntimeError("Meteringdevice '%s' didn't delete probably" % guid)
-    except CloudApiException:
+    except Fault:
         pass #success
         

@@ -1,4 +1,4 @@
-from pymonkey import q, i
+from pylabs import i,q,p
 import backplane
 
 def create(name, backplaneguid, lantype = 'STATIC', network="192.168.20.0", netmask="255.255.255.0", gateway="192.168.20.1"):

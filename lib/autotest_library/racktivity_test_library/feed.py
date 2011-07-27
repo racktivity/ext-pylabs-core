@@ -1,4 +1,4 @@
-from pymonkey import q, i
+from pylabs import i,q,p
 
 def create(name, datacenterguid):
     cloudapi = i.config.cloudApiConnection.find('main')
