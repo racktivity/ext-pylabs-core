@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, locGuid
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     locGuid = racktivity_test_library.location.create()
 
 def teardown():
@@ -22,10 +22,10 @@ def testDelete_1():
     """
     q.logger.log("    Deleting Previously created location")
     ca.location.delete(locGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.location.getObject, locGuid)
+    assert_raises(xmlrpclib.Fault, ca.location.getObject, locGuid)
 
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0150302] Deleting non existing location

@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, rackGuid1, pod1Guid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     rackGuid1 = data["rackguid1"]
     pod1Guid = racktivity_test_library.pod.create(data["room1"], 'test_pod1')
     ca.pod.addRack(pod1Guid, rackGuid1)
@@ -25,7 +25,7 @@ def testRemoverack_1():
     @expected_result: function should fail because there is no pod with that GUID
     """
     q.logger.log("         Removing rack from non existing pod")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.pod.removeRack, '00000000-0000-0000-0000-000000000000', rackGuid1)
+    assert_raises(xmlrpclib.Fault, ca.pod.removeRack, '00000000-0000-0000-0000-000000000000', rackGuid1)
 
 def testRemoverack_2():
     """

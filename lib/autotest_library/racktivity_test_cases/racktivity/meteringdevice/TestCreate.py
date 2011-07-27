@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'
@@ -38,7 +38,7 @@ def testCreate_2():
     """
     cloudapi = getCloudapi()
     rackguid = getRackGuid()
-    assert_raises(CloudApiException, cloudapi.meteringdevice.create, name=1, id='M1', meteringdevicetype='PM0816', template=False, rackguid=rackguid)
+    assert_raises(Fault, cloudapi.meteringdevice.create, name=1, id='M1', meteringdevicetype='PM0816', template=False, rackguid=rackguid)
 
 def testCreate_3():
     """
@@ -51,4 +51,4 @@ def testCreate_3():
     """
     cloudapi = getCloudapi()
     rackguid = getRackGuid()
-    assert_raises(CloudApiException, cloudapi.meteringdevice.create, name=1, id='M1', meteringdevicetype='DELL_E5500', template=False, rackguid=rackguid)
+    assert_raises(Fault, cloudapi.meteringdevice.create, name=1, id='M1', meteringdevicetype='DELL_E5500', template=False, rackguid=rackguid)

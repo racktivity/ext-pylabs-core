@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, rackGuid1, rackGuid2, row1Guid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     rackGuid1 = data["rackguid1"]
     rackGuid2 = data["rackguid2"]
     pod1Guid = data["pod1"]
@@ -27,7 +27,7 @@ def testRemoverack_1():
     @expected_result: function should fail because there is no row with that GUID
     """
     q.logger.log("         Removing rack from non existing row")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.row.removeRack, '00000000-0000-0000-0000-000000000000', rackGuid1)
+    assert_raises(xmlrpclib.Fault, ca.row.removeRack, '00000000-0000-0000-0000-000000000000', rackGuid1)
 
 def testRemoverack_2():
     """

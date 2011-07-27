@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(roomguid, name="test_pod1", description="pod 1 description", racks = []):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     guid = ca.pod.create(name=name, description=description, room=roomguid, racks = racks)['result']['podguid']
     pod = ca.pod.getObject(guid)
     if pod.name != name:
@@ -9,7 +9,7 @@ def create(roomguid, name="test_pod1", description="pod 1 description", racks = 
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     ca.pod.delete(guid)
     #Is it really gone?
     res = ca.pod.list(guid)['result']['podinfo']

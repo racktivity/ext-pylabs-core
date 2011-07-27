@@ -1,4 +1,4 @@
-from pymonkey import i
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
@@ -17,7 +17,7 @@ def setup():
     data["mdguid3"] = racktivity_test_library.meteringdevice.create("MD3", 'M1', data["rackguid"])
     
 def teardown():
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     ca.location.delete(data["loc"])
 
 def getData():

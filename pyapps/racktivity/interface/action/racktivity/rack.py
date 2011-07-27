@@ -131,7 +131,7 @@ class rack():
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def find(self, name=None, racktype=None, description=None, roomguid=None, floor=None, corridor=None, position=None, height=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def find(self, name=None, racktype=None, description=None, roomguid=None, floorguid=None, podguid=None, rowguid=None, corridor=None, position=None, height=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         Returns a list of rack guids which met the find criteria.
 

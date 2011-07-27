@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(name, datacengerguid, floor=0):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     floorguid = ca.floor.create(name, floor, datacengerguid)['result']['floorguid']
     floorobj = ca.floor.getObject(floorguid)
     if floorobj.name != name:
@@ -15,7 +15,7 @@ def delete(guid):
     @param delLocation:    set to True to delete the location attached to this data center
     @param delCloudUser:    set to True to delete the clouduser attached to this data center (has no effect if no user attached)
     """
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     ca.floor.delete(guid)
     #Is it really gone?
     res = ca.floor.list(guid)['result']['floorinfo']

@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import pg
 
 def setup():
     global ca, conn
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     POSTGRESS_IP = q.config.getConfig("cloudapiconnection")["main"]["server"]
     conn = pg.connect("audit", POSTGRESS_IP, 5432,None, user="qbase", passwd="qbase")
 

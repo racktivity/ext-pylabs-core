@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, rackGuid,roomguid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     roomguid = data["roomguid"]
     rackGuid = racktivity_test_library.rack.create("test_rack1", roomguid)
 
@@ -26,11 +26,11 @@ def testDelete_1():
     q.logger.log("    Deleting Previously created rack")
     rack1 = ca.rack.getObject(rackGuid)
     ca.rack.delete(rackGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.rack.getObject, rackGuid)
+    assert_raises(xmlrpclib.Fault, ca.rack.getObject, rackGuid)
     racktivity_test_library.ui.doUITest(rack1.roomguid, "DELETE", value=rack1.name)
     ok_(racktivity_test_library.ui.getResult(rack1.name))
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0190302] Deleting non existing rack

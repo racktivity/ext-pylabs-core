@@ -1,4 +1,4 @@
-from pymonkey import i
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():

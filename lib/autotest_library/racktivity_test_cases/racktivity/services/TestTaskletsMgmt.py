@@ -1,5 +1,5 @@
 from nose.tools import *
-from pymonkey import q, i
+from pylabs import q, i
 import xmlrpclib
 import oauth2 as oauth
 
@@ -34,7 +34,7 @@ def setup():
     cfg = q.config.getConfig("cloudapiconnection")['main']
     proxy = xmlrpclib.ServerProxy("http://%(login)s:%(passwd)s@%(server)s:8888/xmlrpc" % cfg)
     #a dummy cloud api connection
-    ca = i.config.cloudApiConnection.find('main')
+    ca = p.api.action.racktivity
     proxy._ServerProxy__transport = OAuthTransport()
 
 def testGetDirStructures_1():

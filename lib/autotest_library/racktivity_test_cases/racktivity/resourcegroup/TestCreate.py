@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 
 def setup():
     global ca
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.resourcegroup.delete(resg1Guid)
@@ -28,7 +28,7 @@ def testCreate_1():
     ok_(resg1.name == 'test_Resourcegroup1', "Name of resource group is different than the name given to it during creation")
     ok_(resg1.description == 'Resourcegroup1_desc', "Description of resource group is different than the description given to it during creation")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_2():
     """
     @description: [240202] Creating Resourcegroup by calling create function and passing a number as name instead of string
@@ -41,7 +41,7 @@ def testCreate_2():
     q.logger.log("         Creating resourcegroup with Integer as name")
     ca.resourcegroup.create(7)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [240203] Creating resourcegroup with the same name by

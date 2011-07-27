@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, locGuid1, usrGuid1
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     locGuid1 = data["locGuid1"]
     usrGuid1 = data["usrGuid1"]
 
@@ -52,7 +52,7 @@ def testCreate_2():
     racktivity_test_library.ui.doUITest("Real+time+data", "CREATE", value=dc2.name)
     ok_(racktivity_test_library.ui.getResult(dc2.name))
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0080203] Creating Datacenter by calling create function and passing a number as name instead of string
@@ -65,7 +65,7 @@ def testCreate_3():
     q.logger.log("         Creating datacenter with Integer as name")
     ca.datacenter.create(7, locGuid1)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0080204] Creating datacenter with Non existing locationguid
@@ -78,7 +78,7 @@ def testCreate_4():
     q.logger.log("         Creating datacenter with Non existing locationguid")
     ca.datacenter.create('test_DataCenter_err' , '00000000-0000-0000-0000-000000000000')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0080205] Creating datacenter with Non existing clouduserguid
@@ -91,7 +91,7 @@ def testCreate_5():
     q.logger.log("         Creating datacenter with Non existing datacenterguid")
     ca.datacenter.create('test_DataCenter_err2' , locGuid1, clouduserguid = '00000000-0000-0000-0000-000000000000')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_6():
     """
     @description: [0080206] Creating datacenter with a name that already exists

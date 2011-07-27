@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, rackGuid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     roomguid = data["roomguid"]
     rackGuid = racktivity_test_library.rack.create("test_rack1", roomguid)
      
@@ -26,7 +26,7 @@ def testgetAggregatedData_1():
     q.logger.log("        getting Aggregated data of a valid rack guid")
     ca.rack.getAggregatedData(rackGuid ,'all')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testgetAggregatedData_2():
     """
     @description: [0190502] getting Aggregated data of an invalid rack guid

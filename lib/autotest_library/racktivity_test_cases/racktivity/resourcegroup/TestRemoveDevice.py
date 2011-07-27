@@ -1,12 +1,12 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, resgGuid, dvGuids
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     resgGuid = racktivity_test_library.resourcegroup.create()
     dvGuids = list()
     data = getData()
@@ -44,5 +44,5 @@ def testRemoveDevice_2():
     """
     
     q.logger.log("        Adding invalid device guid to invalid resource group")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.resourcegroup.removeDevice, '00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000')
+    assert_raises(xmlrpclib.Fault, ca.resourcegroup.removeDevice, '00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000')
 

@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, feedGuid,dcguid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dcguid = data["dcguid"]
     feedGuid = racktivity_test_library.feed.create("test_feed1", dcguid)
 
@@ -26,9 +26,9 @@ def testDelete_1():
     q.logger.log("    Deleting Previously created feed")
     feed1 = ca.feed.getObject(feedGuid)
     ca.feed.delete(feedGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.feed.getObject, feedGuid)
+    assert_raises(xmlrpclib.Fault, ca.feed.getObject, feedGuid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0230302] Deleting non existing feed

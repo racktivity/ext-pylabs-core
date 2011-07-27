@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid, getEmulatorConfig
 
 EMPTY_GUID = '00000000-0000-0000-0000-000000000000'
@@ -73,8 +73,8 @@ def testPowerOnOffPowerPort_2():
               
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.meteringdevice.powerOnPowerPort, getPowerModuleGuid(), 'output-111')
-    assert_raises(CloudApiException, cloudapi.meteringdevice.powerOffPowerPort, getPowerModuleGuid(), 'output-111')
+    assert_raises(Fault, cloudapi.meteringdevice.powerOnPowerPort, getPowerModuleGuid(), 'output-111')
+    assert_raises(Fault, cloudapi.meteringdevice.powerOffPowerPort, getPowerModuleGuid(), 'output-111')
     
 
 

@@ -1,5 +1,5 @@
 from nose.tools import *
-from pymonkey import q, i
+from pylabs import q, i
 import racktivity_test_library
 from . import getCloudapi, getDatacenterGuid, getRoomGuid, getRackGuid, getMeteringDeviceGuid, getLogicalViewGuid, getRequest
 

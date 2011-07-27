@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(name="test_resourcegroup1", description="Resourcegroup 1 description"):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     guid = ca.resourcegroup.create(name, description)['result']['resourcegroupguid']
     resg = ca.resourcegroup.getObject(guid)
     if resg.name != name:
@@ -9,7 +9,7 @@ def create(name="test_resourcegroup1", description="Resourcegroup 1 description"
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     resg = ca.resourcegroup.getObject(guid)
     ca.resourcegroup.delete(guid)
     #Is it really gone?

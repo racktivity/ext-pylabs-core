@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 
 def setup():
     global ca
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.location.delete(loc1Guid)
@@ -47,7 +47,7 @@ def testCreate_2():
     q.logger.log("         Checking if location exists")
     loc2 = ca.location.getObject(loc2Guid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0150203] Creating Location by calling create function and passing a number as name instead of string
@@ -60,7 +60,7 @@ def testCreate_3():
     q.logger.log("         Creating location with Integer as name")
     ca.location.create(7)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0150204] Creating location with the same name by

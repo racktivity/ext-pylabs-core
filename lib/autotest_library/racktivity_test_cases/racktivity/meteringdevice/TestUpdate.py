@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'
@@ -52,4 +52,4 @@ def testUpdate_2():
     @expected_result: Function should fail
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.meteringdevice.updateModelProperties, getMeteringDeviceGuid(), name=10)
+    assert_raises(Fault, cloudapi.meteringdevice.updateModelProperties, getMeteringDeviceGuid(), name=10)

@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(name = "test_cable1", cabletype = 'POWERCABLE', description='test_cable1_description', label='cable1label'):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     guid = ca.cable.create(name, cabletype, description, label)['result']['cableguid']
     cable = ca.cable.getObject(guid)
     if cable.name != name:
@@ -9,7 +9,7 @@ def create(name = "test_cable1", cabletype = 'POWERCABLE', description='test_cab
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     #Delete the cable first
     ca.cable.delete(guid)
     #Is it really gone?

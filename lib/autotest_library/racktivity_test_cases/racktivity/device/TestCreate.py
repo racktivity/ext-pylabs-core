@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 RACK_NAME = 'rack-test-device'
@@ -36,7 +36,7 @@ def testCreate_2():
     @expected_result: Function should fail with no device created
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.device.create, 1, 'COMPUTER')
+    assert_raises(Fault, cloudapi.device.create, 1, 'COMPUTER')
 
 def testCreate_3():
     """
@@ -48,4 +48,4 @@ def testCreate_3():
     @expected_result: Function should fail with no device created
     """
     cloudapi = getCloudapi()
-    assert_raises(CloudApiException, cloudapi.device.create, DEVICE_NAME, 'ROBOT')
+    assert_raises(Fault, cloudapi.device.create, DEVICE_NAME, 'ROBOT')

@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
                                                                                 'podguid': root.podguid, \
                                                                                 'rowguid': root.rowguid, \
                                                                                 'racktype': root.racktype, \
-                                                                                'floor':root.floor, \
+                                                                                'floorguid':root.floorguid, \
                                                                                 'position':root.position, \
                                                                                 'height':root.height, \
                                                                                 'corridor':root.corridor, \

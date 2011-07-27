@@ -6,8 +6,8 @@ from rootobjectaction_lib import rootobjectaction_find
 def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params)
     params['result'] = {'returncode':False}
-    fields = ('name', 'racktype', 'description', 'roomguid', 'floor', 'corridor', 
-              'position', 'height', 'tags')
+    fields = ('name', 'racktype', 'description', 'roomguid', 'floorguid', 
+              'podguid', 'rowguid', 'corridor', 'position', 'height', 'tags')
     #Do some checks
     if rootobjectaction_find.find('rack', name = params['name']):
         raise ValueError("Rack with name %s already exists"%params['name'])

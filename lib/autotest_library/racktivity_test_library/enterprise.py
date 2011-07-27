@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(name="Enterprise1", description="enterprise 1 description", tags=None):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
    
     guid = ca.enterprise.create(name=name, description=description, tags=tags)['result']['enterpriseguid']
     enterprise = ca.enterprise.getObject(guid)
@@ -13,7 +13,7 @@ def delete(guid):
     """
     @param guid:    enterprise guid
     """
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     #Delete the enterprise
     ca.enterprise.delete(guid)
     #Is it really gone?

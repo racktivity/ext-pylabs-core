@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, dcguid, feedGuids
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dcguid = data["dcguid"]
     feed1Guid = racktivity_test_library.feed.create('test_Feed1', dcguid)
     feed2Guid = racktivity_test_library.feed.create('test_Feed2', dcguid)

@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(name = "test_backplane1", backplanetype = 'INFINIBAND', description='test_backplane1_description'):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     guid = ca.backplane.create(name, backplanetype, description)['result']['backplaneguid']
     backplane = ca.backplane.getObject(guid)
     if backplane.name != name:
@@ -9,7 +9,7 @@ def create(name = "test_backplane1", backplanetype = 'INFINIBAND', description='
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     #Delete the backplane first
     ca.backplane.delete(guid)
     #Is it really gone?

@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, backplaneguid1
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     backplaneguid1 = data["backplaneguid1"]
 
 def teardown():
@@ -61,7 +61,7 @@ def testCreate_2():
     assert_equal(lan2.dns[0].ip , '4.2.2.2')
     assert_equal(lan2.description, 'lan desc')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0140203] Creating Lan by calling create function and passing a number as name instead of string
@@ -74,7 +74,7 @@ def testCreate_3():
     q.logger.log("         Creating lan with Integer as name")
     ca.lan.create(backplaneguid1, 7, 'DYNAMIC', network="10.0.0.0", netmask="255.255.255.0")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0140204] Creating lan with invalid/non existing backplane guid
@@ -87,7 +87,7 @@ def testCreate_4():
     q.logger.log("         Creating lan with Integer as name")
     ca.lan.create('00000000-0000-0000-0000-000000000000', 'test_lan_failure', 'STATIC', network="10.0.0.0", netmask="255.255.255.0")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0140205] Creating lan with invalid lan type
@@ -100,7 +100,7 @@ def testCreate_5():
     q.logger.log("         Creating lan with invalid lan type")
     ca.lan.create(backplaneguid1, "test_lan_badtype", 'INVALID',  network="10.0.0.0", netmask="255.255.255.0")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_6():
     """
     @description: [0140206] Creating lan with invalid/malformed IPs
@@ -113,7 +113,7 @@ def testCreate_6():
     q.logger.log("         Creating lan with invalid IPs")
     ca.lan.create(backplaneguid1, "test_lan_invalid1", 'STATIC', network="10.0.0.0", netmask="255.255.255.0", fromip=':)', toip=':s')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_7():
     """
     @description: [0140207] Creating lan with start IP bigger than end IP
@@ -126,7 +126,7 @@ def testCreate_7():
     q.logger.log("         Creating lan with invalid IPs")
     ca.lan.create(backplaneguid1, "test_lan__invalid2", 'STATIC', network="10.0.0.0", netmask="255.255.255.0", fromip='10.0.0.30', toip='10.0.0.10')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_8():
     """
     @description: [0140208] Creating lan with a valid network/netmask but a start/end ip outside the network range
@@ -139,7 +139,7 @@ def testCreate_8():
     q.logger.log("         Creating lan with invalid IPs")
     ca.lan.create(backplaneguid1, "test_lan__invalid2", 'STATIC', fromip='10.0.0.1', toip='10.0.0.10', network="192.168.20.1", netmask='255.255.255.0')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_9():
     """
     @description: [0140209] Creating ipaddress with the same name by

@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, resgGuid
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     resgGuid = racktivity_test_library.resourcegroup.create()
 
 def teardown():
@@ -22,7 +22,7 @@ def testDelete_1():
     """
     q.logger.log("    Deleting Previously created resourcegroup")
     ca.resourcegroup.delete(resgGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.resourcegroup.getObject, resgGuid)
+    assert_raises(xmlrpclib.Fault, ca.resourcegroup.getObject, resgGuid)
 
 def testDelete_2():
     """
@@ -34,4 +34,4 @@ def testDelete_2():
     @expected_result: delete operation fails because the guid is invalid
     """
     q.logger.log("    Deleting non existing resourcegroup")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.resourcegroup.delete, '00000000-0000-0000-0000-000000000000')
+    assert_raises(xmlrpclib.Fault, ca.resourcegroup.delete, '00000000-0000-0000-0000-000000000000')

@@ -1,7 +1,7 @@
-from pylabs import i,q
+from pylabs import i,q,p
 
 def create(login="test_clouduser1",password="123", description="clouduser 1 description", groupguid = None):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     guid = ca.clouduser.create(login, password, description=description)['result']['clouduserguid']
     if groupguid:
         ca.cloudusergroup.addUser(guid, groupguid)
@@ -11,7 +11,7 @@ def create(login="test_clouduser1",password="123", description="clouduser 1 desc
     return guid
 
 def delete(guid):
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     usr = ca.clouduser.getObject(guid)
     ca.clouduser.delete(guid)
     #Is it really gone?

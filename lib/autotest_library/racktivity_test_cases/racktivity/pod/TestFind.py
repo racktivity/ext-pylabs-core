@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, podGuids
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     roomGuid1=data["room1"]
     pod1Guid = racktivity_test_library.pod.create(roomGuid1, 'test_pod1')
     pod2Guid = racktivity_test_library.pod.create(roomGuid1, 'test_pod2')

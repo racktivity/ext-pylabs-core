@@ -1,14 +1,14 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, languid1
     data = getData()
     languid1 = data["lanGuid1"]
-    ca = data['ca']
+    ca = p.api.action.racktivity
 
 def teardown():
     racktivity_test_library.ipaddress.delete(ip1Guid)
@@ -57,7 +57,7 @@ def testCreate_2():
     assert_equal(ip2.languid, languid1)
     assert_equal(ip2.virtual, True)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0120203] Creating Ipaddress by calling create function and passing a number as name instead of string
@@ -70,7 +70,7 @@ def testCreate_3():
     q.logger.log("         Creating ipaddress with Integer as name")
     ca.ipaddress.create(7, "10.1.0.1")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0120204] Creating Ipaddress by calling create function and passing a number as name instead of string
@@ -83,7 +83,7 @@ def testCreate_4():
     q.logger.log("         Creating ipaddress with Integer as an ip")
     ca.ipaddress.create("test_ipaddress_invalid_1", 100)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0120205] Creating ipaddress with Integer as an ip
@@ -96,7 +96,7 @@ def testCreate_5():
     q.logger.log("         Creating ipaddress with Integer as an ip")
     ca.ipaddress.create("test_ipaddress_invalid_2", "265.255.0.2")
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_6():
     """
     @description: [0120206] Creating ipaddress with a name that already exists

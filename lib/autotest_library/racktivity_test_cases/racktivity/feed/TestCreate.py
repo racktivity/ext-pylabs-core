@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, dcguid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     dcguid = data["dcguid"]
 
 def teardown():
@@ -53,7 +53,7 @@ def testCreate_2():
     assert_equal(feed1.productiontype,q.enumerators.feedProductionType.GAS)
     assert_equal(feed1.description,'test_feed2_description')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0230203] Creating Feed by calling create function and passing a number as name instead of string
@@ -66,7 +66,7 @@ def testCreate_3():
     q.logger.log("         Creating feed with Integer as name")
     ca.feed.create(7, "GAS", dcguid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0230204] calling create function with an invalid datacenter guid as a parameter
@@ -79,7 +79,7 @@ def testCreate_4():
     q.logger.log("         Creating feed with invalid datacenter guid")
     ca.feed.create("test_feed_negative", "GAS", '00000000-0000-0000-0000-000000000000')
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_5():
     """
     @description: [0230205] Creating feed with a name that already exists

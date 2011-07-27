@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 from . import getData
 
 def setup():
     global ca, cableGuid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     cableGuid = racktivity_test_library.cable.create()
 
 def teardown():
@@ -24,9 +24,9 @@ def testDelete_1():
     """
     q.logger.log("    Deleting Previously created cable")
     ca.cable.delete(cableGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.cable.getObject, cableGuid)
+    assert_raises(xmlrpclib.Fault, ca.cable.getObject, cableGuid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0030302]Deleting non existing cable

@@ -1,13 +1,13 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 from . import getData
 
 def setup():
     global ca, roomguid
     data = getData()
-    ca = data["ca"]
+    ca = p.api.action.racktivity
     roomguid = data["roomguid"]
 
 def teardown():
@@ -62,7 +62,7 @@ def testCreate_2():
     racktivity_test_library.ui.doUITest(rack2.roomguid, "CREATE", value=rack2.name)
     ok_(racktivity_test_library.ui.getResult(rack2.name))
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_3():
     """
     @description: [0190203] Creating Rack by calling create function and passing a number as name instead of string
@@ -75,7 +75,7 @@ def testCreate_3():
     q.logger.log("         Creating rack with Integer as name")
     ca.rack.create(7, 'OPEN', roomguid)
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testCreate_4():
     """
     @description: [0190205] Creating rack with a name that already exists

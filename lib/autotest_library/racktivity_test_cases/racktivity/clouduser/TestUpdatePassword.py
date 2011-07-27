@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, usrGuid1
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     usrGuid1 = racktivity_test_library.clouduser.create(password="123")
 
 def teardown():
@@ -28,7 +28,7 @@ def testUpdatePassword_1():
     ca.clouduser.updatePassword(usrGuid1, "abc", "123")
 
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testUpdatePassword_2():
     """
     @description: [0051802] changing user password with invalid 'current password' parameter

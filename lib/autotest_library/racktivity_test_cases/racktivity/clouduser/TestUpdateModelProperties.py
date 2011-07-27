@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, usrGuid1
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     usrGuid1 = racktivity_test_library.clouduser.create("test_clouduser1")
 
 def teardown():

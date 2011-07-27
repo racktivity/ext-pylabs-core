@@ -1,7 +1,7 @@
 from nose.tools import *
-from cloud_api_client.Exceptions import CloudApiException
+from xmlrpclib import Fault
 import racktivity_test_library
-from pymonkey import i, q
+from pylabs import i,q,p
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'
@@ -69,7 +69,7 @@ def testAddPort_2():
     """
     cloudapi = getCloudapi()
     sequence = -2
-    assert_raises(CloudApiException, cloudapi.meteringdevice.addPort, getMeteringdeviceGuid(), PORT_LABEL_ONE, 'SERIAL', sequence)
+    assert_raises(Fault, cloudapi.meteringdevice.addPort, getMeteringdeviceGuid(), PORT_LABEL_ONE, 'SERIAL', sequence)
 
 def testAddPort_3():
     """
@@ -82,7 +82,7 @@ def testAddPort_3():
     """
     cloudapi = getCloudapi()
     sequence = -2
-    assert_raises(CloudApiException, cloudapi.meteringdevice.addPort, getMeteringdeviceGuid(), PORT_LABEL_ONE, 'PARALLEL', sequence)
+    assert_raises(Fault, cloudapi.meteringdevice.addPort, getMeteringdeviceGuid(), PORT_LABEL_ONE, 'PARALLEL', sequence)
     
 def testAddPort_4():
     """
@@ -96,7 +96,7 @@ def testAddPort_4():
     cloudapi = getCloudapi()
     sequence = 1
     cloudapi.meteringdevice.addPort(getMeteringdeviceGuid(), PORT_LABEL_ONE, 'SERIAL', sequence)
-    assert_raises(CloudApiException, cloudapi.meteringdevice.addPort, getMeteringdeviceGuid(), PORT_LABEL_TWO, 'SERIAL', sequence)
+    assert_raises(Fault, cloudapi.meteringdevice.addPort, getMeteringdeviceGuid(), PORT_LABEL_TWO, 'SERIAL', sequence)
     cloudapi.meteringdevice.deletePort(getMeteringdeviceGuid(), PORT_LABEL_ONE)
     
 def testAddPort_5():

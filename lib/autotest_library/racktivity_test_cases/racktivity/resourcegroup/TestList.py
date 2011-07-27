@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, resgGuids
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     resgGuid1 = racktivity_test_library.resourcegroup.create("test_resourcegroup1")
     resgGuid2 = racktivity_test_library.resourcegroup.create("test_resourcegroup2")
     resgGuids = [resgGuid1,resgGuid2] 

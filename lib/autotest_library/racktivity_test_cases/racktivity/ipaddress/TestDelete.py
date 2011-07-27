@@ -1,11 +1,11 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
-from pylabs import i,q
+import xmlrpclib
+from pylabs import i,q,p
 import racktivity_test_library
 
 def setup():
     global ca, ipGuid
-    ca = i.config.cloudApiConnection.find("main")
+    ca = p.api.action.racktivity
     ipGuid = racktivity_test_library.ipaddress.create()
 
 def teardown():
@@ -22,10 +22,10 @@ def testDelete_1():
     """
     q.logger.log("    Deleting Previously created ipaddress")
     ca.ipaddress.delete(ipGuid)
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, ca.ipaddress.getObject, ipGuid)
+    assert_raises(xmlrpclib.Fault, ca.ipaddress.getObject, ipGuid)
 
 
-@raises(cloud_api_client.Exceptions.CloudApiException)
+@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0120302] Deleting non existing ipaddress

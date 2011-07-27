@@ -1,7 +1,7 @@
 from nose.tools import *
-import cloud_api_client.Exceptions
+import xmlrpclib
 import racktivity_test_library
-from pylabs import i,q
+from pylabs import i,q,p
 
 def setup():
     global cloudapi, guid
@@ -21,5 +21,5 @@ def testRemovecampus_1():
     @expected_result: function should fail because there is no enterprise with that GUID
     """
     q.logger.log("         Removing campus from non existing enterprise")
-    assert_raises(cloud_api_client.Exceptions.CloudApiException, cloudapi.enterprise.removeCampus, '00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000')
+    assert_raises(xmlrpclib.Fault, cloudapi.enterprise.removeCampus, '00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000')
 
