@@ -280,7 +280,7 @@ class MeteringDevice():
         @raise e:                       In case an error occurred, exception is raised
         """
 
-    def getObject(self, meteringdeviceguid, request=None, jobguid=None,executionparams=dict()):
+    def getObject(self, rootobjectguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
         

@@ -1,7 +1,7 @@
 __author__ = 'racktivity'
 
 def main(q, i, p, params, tags):
-    params['result'] = p.api.model.racktivity.racktivity.get(params['racktivityguid'])
+    params['result'] = p.api.model.racktivity.racktivity.get(params['rootobjectguid'])
 
 def match(q, i, params, tags):
     return True
