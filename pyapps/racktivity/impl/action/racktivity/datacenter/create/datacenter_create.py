@@ -50,8 +50,15 @@ def main(q, i, p, params, tags):
     p.api.action.racktivity.policy.create('datacenter_monitor_%s' % datacenter.name, rootobjecttype='datacenter', rootobjectaction='monitor',
                                        rootobjectguid=datacenter.guid, interval=3.0, runbetween='[("00:00", "24:00")]', runnotbetween='[]',
                                        request = params["request"])
-    
-    
+
+    datacenterguid = datacenter.guid
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (datacenterguid, type))
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
+
 def match(q, i, params, tags):
     return True
 

@@ -19,7 +19,7 @@ def main(q, i, p, params, tags):
     if portid == None:
         events.raiseError("Could not find powerport with label %s" % label, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0053', tags='', escalate=False)
     
-    q.actions.actor.meteringdevice.powerOffPowerPort(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)
+    p.api.actor.meteringdevice.powerOffPowerPort(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)
     params['result'] = {'returncode':True}
 
 def match(q, i, params, tags):

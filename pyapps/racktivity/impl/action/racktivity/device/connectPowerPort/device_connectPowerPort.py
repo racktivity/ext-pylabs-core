@@ -15,9 +15,8 @@ def main(q, i, p, params, tags):
     
     params['result'] = {'returncode': True,
                         'deviceguid': device.guid}
-    
-    #import racktivityui.uigenerator.device
-    #racktivityui.uigenerator.device.update(device.guid)
+
+
 
 def match(q, i, params, tags):
     return True

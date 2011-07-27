@@ -21,15 +21,6 @@ def main(q, i, p, params, tags):
     
     p.api.model.racktivity.pod.save(pod)
 
-    #from rootobjectaction_lib import rootobject_grant
-    #rootobject_grant.grantUser(pod.guid, 'pod', params['request']['username'])
-
-    #UI generation
-    #import racktivityui.uigenerator.pod
-    #racktivityui.uigenerator.pod.create(pod.guid, pod.room)
-    #import racktivityui.uigenerator.room
-    #racktivityui.uigenerator.room.update(pod.room)
-    
     params['result'] = {'returncode': True, 'podguid': pod.guid}
 
     q.logger.log('Creating a policy for pod %s' % pod.name, 3)
@@ -37,6 +28,15 @@ def main(q, i, p, params, tags):
     p.api.action.racktivity.policy.create('pod_monitor_%s' % pod.name, rootobjecttype='pod', rootobjectaction='monitor',
                                        rootobjectguid=pod.guid, interval=3.0, runbetween='[("00:00", "24:00")]', runnotbetween='[]',
                                        request = params["request"])
+
+    podguid = pod.guid
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency',  'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (podguid, type))
+    
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
 
 def match(q, i, params, tags):
     return True

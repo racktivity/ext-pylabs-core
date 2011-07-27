@@ -39,7 +39,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':True}
     
     if oldname != requiredpoweroutput.label:
-        success = q.actions.actor.meteringdevice.setPortData(params['meteringdeviceguid'], master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, requiredpoweroutput.sequence,
+        success = p.api.actor.meteringdevice.setPortData(params['meteringdeviceguid'], master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, requiredpoweroutput.sequence,
                                                            'PortName', requiredpoweroutput.label, master.accounts[0].login, master.accounts[0].password)['result']['returncode']
 
 def match(q, i, params, tags):

@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     root = params['rootobject']
     
     fields = {'name': root.name, 'clouduserguid': root.clouduserguid,
-              'share': root.share, 'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()), 'tags': root.tags}
+              'share': root.share, 'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()), 'tags': root.tags}
     
     osis.viewSave(params['domain'], 'logicalview', viewname, root.guid, root.version, fields)
     q.logger.log('Racktivity logicalview saved', 3)

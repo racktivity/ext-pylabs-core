@@ -18,7 +18,7 @@ def _getAgentGuid():
     return _agentguid
 
 def raiseCritical(message, messageprivate='', typeid='', tags='', escalate=False):
-    q.actions.actor.events.raiseCritical(_getAgentGuid(),
+    p.api.actor.events.raiseCritical(_getAgentGuid(),
                                          message=message,
                                          messageprivate=messageprivate,
                                          typeid=typeid,
@@ -26,7 +26,7 @@ def raiseCritical(message, messageprivate='', typeid='', tags='', escalate=False
                                          escalate=escalate)
 
 def raiseError(message, messageprivate='', typeid='', tags='', escalate=False):
-    q.actions.actor.events.raiseError(_getAgentGuid(),
+    p.api.actor.events.raiseError(_getAgentGuid(),
                                          message=message,
                                          messageprivate=messageprivate,
                                          typeid=typeid,
@@ -34,7 +34,7 @@ def raiseError(message, messageprivate='', typeid='', tags='', escalate=False):
                                          escalate=escalate)
 
 def raiseUrgent(message, messageprivate='', typeid='', tags='', escalate=False):
-    q.actions.actor.events.raiseUrgent(_getAgentGuid(),
+    p.api.actor.events.raiseUrgent(_getAgentGuid(),
                                          message=message,
                                          messageprivate=messageprivate,
                                          typeid=typeid,
@@ -42,7 +42,7 @@ def raiseUrgent(message, messageprivate='', typeid='', tags='', escalate=False):
                                          escalate=escalate)
     
 def raiseInfo(message, messageprivate='', typeid='', tags='', escalate=False):
-    q.actions.actor.events.raiseInfo(_getAgentGuid(),
+    p.api.actor.events.raiseInfo(_getAgentGuid(),
                                          message=message,
                                          messageprivate=messageprivate,
                                          typeid=typeid,
@@ -50,7 +50,7 @@ def raiseInfo(message, messageprivate='', typeid='', tags='', escalate=False):
                                          escalate=escalate)
     
 def raiseWarning(message, messageprivate='', typeid='', tags='', escalate=False):
-    q.actions.actor.events.raiseCritical(_getAgentGuid(),
+    p.api.actor.events.raiseCritical(_getAgentGuid(),
                                          message=message,
                                          messageprivate=messageprivate,
                                          typeid=typeid,

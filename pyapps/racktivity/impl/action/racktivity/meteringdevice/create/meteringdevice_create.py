@@ -40,9 +40,8 @@ def main(q, i, p, params, tags):
         meteringdevice.network.ipaddress = params["networkinfo"]["ipaddress"]
         meteringdevice.network.port = params["networkinfo"]["port"]
         meteringdevice.network.protocol = params["networkinfo"]["protocol"]
-    
-    acl = meteringdevice.acl.new()
-    meteringdevice.acl = acl
+
+
     p.api.model.racktivity.meteringdevice.save(meteringdevice)
 
     #from rootobjectaction_lib import rootobject_grant
@@ -58,42 +57,35 @@ def main(q, i, p, params, tags):
                                                request = params["request"])
 
     #Create data stores
-    #from rootobjectaction_lib import rootobjectaction_find
-    #appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
-    #if not appserverguids:
-        #raise RuntimeError("Application 'appserverrpc' not found/configured")
-    
-    #appserver = p.api.model.racktivity.application.get(appserverguids[0])
-    #url = appserver.networkservices[0].name
 
-    #meteringdeviceguid = meteringdevice.guid
-    
-    #stores = list()
-    #for sensor in meteringdevice.sensors:
-        ##Create a database for the sensor humidity (meteringdeviceguid_sensorid_humidity)
-        #sensorid = sensor.sequence
-        #storename = str(sensor.sensortype).replace("SENSOR", "").lower()
-        #stores.append('%s_%s_%s' % (meteringdeviceguid, sensorid, storename))
+    meteringdeviceguid = meteringdevice.guid
 
-    #portsmtypes = ('current', 'powerfactor', 'activeenergy',
-                   #'apparentenergy')
-    
-    #for poweroutput in meteringdevice.poweroutputs:
-        #portindex = poweroutput.sequence
-        #for type in portsmtypes:
-            #storename = '%s_%s_%s' % (meteringdeviceguid, portindex, type)
-            #stores.append(storename)
+    stores = list()
+    for sensor in meteringdevice.sensors:
+        #Create a database for the sensor humidity (meteringdeviceguid_sensorid_humidity)
+        sensorid = sensor.sequence
+        storename = str(sensor.sensortype).replace("SENSOR", "").lower()
+        stores.append('%s_%s_%s' % (meteringdeviceguid, sensorid, storename))
 
-    #if meteringdevice.poweroutputs or meteringdevice.powerinputs:
-        #mtypes = ('current', 'voltage', 'frequency',
-                  #'activeenergy', 'apparentenergy',
-                  #'powerfactor', 'temperature', 'humidity')
-        #for type in mtypes:
-            ##Add frequency database (meteringdeviceguid_current)
-            #storename = '%s_%s' % (meteringdeviceguid, type)
-            #stores.append(storename)
-        
-    #q.actions.actor.graphdatabase.createStores(url, stores)
+    portsmtypes = ('current', 'powerfactor', 'activeenergy',
+                   'apparentenergy')
+    
+    for poweroutput in meteringdevice.poweroutputs:
+        portindex = poweroutput.sequence
+        for type in portsmtypes:
+            storename = '%s_%s_%s' % (meteringdeviceguid, portindex, type)
+            stores.append(storename)
+
+    if meteringdevice.poweroutputs or meteringdevice.powerinputs:
+        mtypes = ('current', 'voltage', 'frequency',
+                  'activeenergy', 'apparentenergy',
+                  'powerfactor', 'temperature', 'humidity')
+        for type in mtypes:
+            #Add frequency database (meteringdeviceguid_current)
+            storename = '%s_%s' % (meteringdeviceguid, type)
+            stores.append(storename)
+
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
     
     params['result'] = {'returncode': True, 'meteringdeviceguid': meteringdevice.guid}
 

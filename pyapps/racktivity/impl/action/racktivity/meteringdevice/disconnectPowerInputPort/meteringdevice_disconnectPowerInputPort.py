@@ -29,9 +29,8 @@ def main(q, i, p, params, tags):
         p.api.action.racktivity.cable.delete(cableguid, request = params["request"])
             
     params['result'] = {'returncode':True}
-    
-    #import racktivityui.uigenerator.meteringdevice
-    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
+
+
 
 def match(q, i, params, tags):
     return True

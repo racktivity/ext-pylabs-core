@@ -7,9 +7,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     feedguid = params['feedguid']
     p.api.model.racktivity.feed.delete(feedguid)
-    #from racktivityui.uigenerator import deletePage
-    deletePage(feedguid)
-    
+
     params['result'] = {'returncode':True}
     
 def match(q, i, params, tags):

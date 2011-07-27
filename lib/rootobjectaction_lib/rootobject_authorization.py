@@ -8,14 +8,12 @@ def isAuthorized(login, drpobj, method):
     userguid = userguid[0]
     groups = p.api.action.racktivity.clouduser.listGroups(userguid)["result"]["groupinfo"][0]["groups"]
     #get the object's acl and do the validation
-    if "acl" in dir(drpobj) and drpobj.acl.cloudusergroupactions:
-        acl = drpobj.acl
+    if "cloudusergroupactions" in dir(drpobj):
         for group in groups:
             groupguid =  group["cloudusergroupguid"]
-            if groupguid + "_" + method in acl.cloudusergroupactions:
+            if groupguid + "_" + method in drpobj.cloudusergroupactions:
                 return True
         return False
-    #if no acl attribute or acl is None, return True
     return True
 
 def getAuthorizedGuids(login, guidlist, drpclass, method):

@@ -16,11 +16,8 @@ def main(q, i, p, params, tags):
     if changed:
         #logger.log_tasklet(__tags__, params, fields)
         p.api.model.racktivity.enterprise.save(enterprise)
-    
-    #import racktivityui.uigenerator.enterprise
-    #racktivityui.uigenerator.enterprise.update()
-    
-    
+
+
     params['result'] = {'returncode': True,
                         'enterpriseguid': enterprise.guid}
 

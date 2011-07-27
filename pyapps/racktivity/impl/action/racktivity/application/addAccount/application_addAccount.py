@@ -12,7 +12,7 @@ def main(q, i, p, params, tags):
     application.accounts.append(account)
     p.api.model.racktivity.application.save(application)
     q.logger.log('Calling actor action to provision application account', 3)
-    q.actions.actor.application.addAccount(application.guid, account.guid)
+    p.api.actor.racktivity.application.addAccount(application.guid, account.guid)
     params['result'] = {'returncode':True}
 
 def match(q, i, params, tags):

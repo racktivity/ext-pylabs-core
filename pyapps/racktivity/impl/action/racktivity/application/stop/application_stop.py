@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
     try:
         application.status = q.enumerators.applicationstatustype.STOPPING
         p.api.model.racktivity.application.save(application)
-        q.actions.actor.application.stop(params['applicationguid'])
+        p.api.actor.racktivity.application.stop(params['applicationguid'])
     except Exception, e:
         q.eventhandler.raiseError('Unable to stop application %s. Error: %s'%(application.name, str(e)))
     

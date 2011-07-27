@@ -13,9 +13,9 @@ def main(q, i, p, params, tags):
     login = params['login']
     password = params['password']
     usertype = params['usertype']
-    #result = q.actions.actor.meteringdevice.setConfigurationParameter(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id,
+    #result = p.api.actor.meteringdevice.setConfigurationParameter(meteringdeviceguid, master.meteringdevicetype, masteripaddress, deviceapiport, meteringdevice.id,
     #                                                                  "AdminLoginAndPassword", login, master.accounts[0].login, master.accounts[0].password)
-    result = q.actions.actor.meteringdevice.setAccount(master.meteringdevicetype, master.network.ipaddress, master.network.port,
+    result = p.api.actor.meteringdevice.setAccount(master.meteringdevicetype, master.network.ipaddress, master.network.port,
                                                        master.accounts[0].login, master.accounts[0].password,
                                                        login, password, usertype)
 

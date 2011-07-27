@@ -28,13 +28,7 @@ def main(q, i, p, params, tags):
     #rootobject_grant.grantUser(device.guid, 'device', params['request']['username'])
 
     params['result'] = {'returncode': True, 'deviceguid': device.guid}
-    
-    #if params['rackguid']:
-        #import racktivityui.uigenerator.device
-        #racktivityui.uigenerator.device.create(device.guid, params['rackguid'])
-        
-        #import racktivityui.uigenerator.rack
-        #racktivityui.uigenerator.rack.update(params['rackguid'])
+
 
 def match(q, i, params, tags):
     return True

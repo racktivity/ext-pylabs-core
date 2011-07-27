@@ -17,7 +17,7 @@ def main(q, i, p, params, tags):
                                                                                     'customsettings'        :root.customsettings, \
                                                                                     'meteringdeviceguid'    :root.meteringdeviceguid, \
                                                                                     'parentapplicationguids':parentstr,
-                                                                                    'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()),
+                                                                                    'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()),
                                                                                     'tags'                   :root.tags})
     
 def match(q, i, params, tags):

@@ -18,9 +18,7 @@ def main(q, i, p, params, tags):
         #logger.log_tasklet(__tags__, params, fields)
         p.api.model.racktivity.rack.save(rack)
     
-    #import racktivityui.uigenerator.rack
-    #racktivityui.uigenerator.rack.update(rack.guid)
-        
+
     params['result'] = {'returncode': True,
                         'rackguid': rack.guid}
 

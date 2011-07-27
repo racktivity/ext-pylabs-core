@@ -16,7 +16,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     
     agentguid = getAgentGuid()
-    result = q.actions.actor.meteringdevice.discover(agentguid, params['ipaddress'], params['port'], params['communitystring'])
+    result = p.api.actor.meteringdevice.discover(agentguid, params['ipaddress'], params['port'], params['communitystring'])
     
     params['result'] = result['result']
   

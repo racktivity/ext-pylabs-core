@@ -41,15 +41,20 @@ def main(q, i, p, params, tags):
     enterprise.campuses.append(location.guid)
     p.api.model.racktivity.enterprise.save(enterprise)
 
-    #import racktivityui.uigenerator.campus
-    #import racktivityui.uigenerator.enterprise
-    #racktivityui.uigenerator.campus.create(location.guid)
-    #racktivityui.uigenerator.enterprise.update()
-    
+
     q.logger.log('Creating a policy for location %s' % location.name, 3)
     p.api.action.racktivity.policy.create('location_%s' % location.name, rootobjecttype='location', rootobjectaction='monitor',
                                        rootobjectguid=location.guid, interval=3.0, runbetween='[("00:00", "24:00")]', runnotbetween='[]',
                                        request = params["request"])
+
+    locationguid = location.guid
+    stores = list()
+    mtypes = ('current', 'voltage', 'frequency', 'activeenergy',
+              'apparentenergy', 'powerfactor')
+    for type in mtypes:
+        stores.append('%s_%s' % (locationguid, type))
+    
+    p.api.actor.racktivity.graphdatabase.createStores(stores)
 
     params['result'] = {'returncode': True,
                         'locationguid': location.guid}

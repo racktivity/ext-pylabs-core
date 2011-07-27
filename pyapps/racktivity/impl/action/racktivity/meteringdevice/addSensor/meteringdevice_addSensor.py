@@ -33,26 +33,16 @@ def main(q, i, p, params, tags):
     
     p.api.model.racktivity.meteringdevice.save(meteringdevice)
 
-    from rootobjectaction_lib import rootobjectaction_find
-    appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
-    if not appserverguids:
-        raise RuntimeError("Application 'appserverrpc' not found/configured")
-    
-    appserver = p.api.model.racktivity.application.get(appserverguids[0])
-    url = appserver.networkservices[0].name
-
 
     #Create a database for the sensor temperature (meteringdeviceguid_sensorid_temperature)
     sensorsequence = sensor.sequence
     
     sensordbname = str(sensor.sensortype).replace("SENSOR", "").lower()
     storename = '%s_%s_%s' % (meteringdeviceguid, sensorsequence, sensordbname)
-    q.actions.actor.graphdatabase.createStore(url, storename)
+    p.api.actor.racktivity.graphdatabase.createStore(storename)
 
     params['result'] = {'returncode':True}
-    
-    #import racktivityui.uigenerator.meteringdevice
-    #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid if meteringdevice.parentmeteringdeviceguid else meteringdevice.guid)
+
 
 def match(q, i, params, tags):
     return True

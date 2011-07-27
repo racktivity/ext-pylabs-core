@@ -5,7 +5,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     q.logger.log('Calling actor actions to reload the application specified', 3)
 
-    ret = q.actions.actor.application.reload(applicationguid = params['applicationguid'],
+    ret = p.api.actor.racktivity.application.reload(applicationguid = params['applicationguid'],
                                              executionparams = {'description' : 'Reloading the application'})['result']
     params['result'] = {'returncode': ret}
 

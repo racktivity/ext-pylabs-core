@@ -28,5 +28,13 @@ def main(q, i, p, params, tags):
         policyguid = policyguids[0]
         p.api.model.racktivity.policy.delete(policyguid)
 
+    mtypes = ('current', 'voltage', 'frequency',  'activeenergy',
+              'apparentenergy', 'powerfactor')
+    databasenames = []
+    for type in mtypes:
+        databasenames.append('%s_%s' % (rackguid, type))
+
+    p.api.actor.racktivity.graphdatabase.destroyStores(databasenames)
+
 def match(q, i, params, tags):
     return True

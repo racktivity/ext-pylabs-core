@@ -6,7 +6,7 @@ def main(q, i, p, params, tags):
     root = params['rootobject']
     
     fields = {'name': root.name, 'alias': root.alias, 'room': root.room, 'description': root.description,
-              'system': root.system, 'cloudusergroupactions': ','.join(root.acl.cloudusergroupactions.keys()), 'tags': root.tags}
+              'system': root.system, 'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()), 'tags': root.tags}
     
     osis.viewSave(params['domain'], 'pod', viewname, root.guid, root.version, fields)
     q.logger.log('pod saved', 3)

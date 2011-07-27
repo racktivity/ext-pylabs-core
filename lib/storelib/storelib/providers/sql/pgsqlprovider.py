@@ -26,7 +26,8 @@ class SQLProvider(IMonitorHistoryProvider):
         
     def __initialize(self):
         #initialize DB if needed
-        con = pg.connect(self.dbname, self.hostname, self.port, user=self.username, passwd=self.password)
+        #connect to the default database to get the list of available databases
+        con = pg.connect("postgres", self.hostname, self.port, user=self.username, passwd=self.password)
         try:
             exists = False
             res = con.query(""" SELECT count(datname) as "exists" FROM pg_database where datname = '%s'; """ % self.dbname)

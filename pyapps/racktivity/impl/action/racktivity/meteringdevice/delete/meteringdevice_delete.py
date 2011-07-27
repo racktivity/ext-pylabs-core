@@ -33,48 +33,31 @@ def main(q, i, p, params, tags):
     for policyguid in  policyguids:
         p.api.model.racktivity.policy.delete(policyguid)
 
-    #q.logger.log('Deleting stores', 3)
-    #appserverguids = rootobjectaction_find.application_find(name='appserverrpc')
-    #if not appserverguids:
-        #raise RuntimeError("Application 'appserverrpc' not found/configured")
+    q.logger.log('Deleting stores', 3)
+
+
+    stores = []
+    portsmtypes = ('current', 'powerfactor', 'activeenergy',
+                   'apparentenergy')
+    for poweroutput in meteringdevice.poweroutputs:
+        portindex = poweroutput.sequence
+        for type in portsmtypes:
+            stores.append('%s_%s_%s' % (meteringdeviceguid, portindex, type))
     
-    #appserver = p.api.model.racktivity.application.get(appserverguids[0])
-    #url = appserver.networkservices[0].name
+    for sensor in meteringdevice.sensors:
+        dbname = str(sensor.sensortype).replace("SENSOR", "").lower()
+        stores.append('%s_%s_%s' % (meteringdeviceguid, sensor.sequence, dbname))
         
-    #stores = []
-    #portsmtypes = ('current', 'powerfactor', 'activeenergy',
-                   #'apparentenergy')
-    #for poweroutput in meteringdevice.poweroutputs:
-        #portindex = poweroutput.sequence
-        #for type in portsmtypes:
-            #stores.append('%s_%s_%s' % (meteringdeviceguid, portindex, type))
-    
-    #for sensor in meteringdevice.sensors:
-        #dbname = str(sensor.sensortype).replace("SENSOR", "").lower()
-        #stores.append('%s_%s_%s' % (meteringdeviceguid, sensor.sequence, dbname))
-        
-    #if meteringdevice.poweroutputs or meteringdevice.powerinputs:
-        #mtypes = ('current', 'voltage', 'frequency',
-                  #'activeenergy', 'apparentenergy', 
-                  #'powerfactor', 'temperature', 'humidity')
-        #for type in mtypes:
-            #stores.append('%s_%s' % (meteringdeviceguid, type))
-        
-    #q.actions.actor.graphdatabase.destroyStores(url, stores)
+    if meteringdevice.poweroutputs or meteringdevice.powerinputs:
+        mtypes = ('current', 'voltage', 'frequency',
+                  'activeenergy', 'apparentenergy', 
+                  'powerfactor', 'temperature', 'humidity')
+        for type in mtypes:
+            stores.append('%s_%s' % (meteringdeviceguid, type))
+
+    p.api.actor.racktivity.graphdatabase.destroyStores(stores)
 
     params['result'] = {'returncode': p.api.model.racktivity.meteringdevice.delete(meteringdeviceguid)}
-
-    #Delete the meteringdevice page and update the rack page
-    if meteringdevice.meteringdeviceconfigstatus in (q.enumerators.meteringdeviceconfigstatus.CONFIGURED, q.enumerators.meteringdeviceconfigstatus.USED):
-        q.logger.log('Deleting the meteringdevice page and updating the rack page with new information', 3)
-        #import racktivityui.uigenerator
-        #racktivityui.uigenerator.deletePage(meteringdeviceguid)
-        #if meteringdevice.parentmeteringdeviceguid:
-            #import racktivityui.uigenerator.meteringdevice
-            #racktivityui.uigenerator.meteringdevice.update(meteringdevice.parentmeteringdeviceguid)
-        #else:
-            #import racktivityui.uigenerator.rack
-            #racktivityui.uigenerator.rack.update(meteringdevice.rackguid)
 
 def match(q, i, params, tags):
     return True
