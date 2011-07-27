@@ -104,6 +104,7 @@ $(document).ready(function() {
                                                 $.alert("Failed to update node ID");
                                             }
                                             item.attr("id", m[1] + "/" + name);
+                                            tree.refresh(item);
                                         }});
                                 }});
     };

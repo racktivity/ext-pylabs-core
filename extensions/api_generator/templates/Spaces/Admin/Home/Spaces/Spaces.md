@@ -111,7 +111,7 @@ $(document).ready(function(){
                                 console.log("listspaces succeeded, rendering list...");
                                 tbody.empty();
                                 $.each(data, function(i, space){
-                                    if ((space == "Admin") || (space == "Imported")) return;
+                                    if ((space == "Admin") || (space == "IDE")) return;
                                     
                                     tbody.append($('<tr class="ui-state-default">').append('<td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>')
                                                           .append($("<td class='td_spacename'>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
