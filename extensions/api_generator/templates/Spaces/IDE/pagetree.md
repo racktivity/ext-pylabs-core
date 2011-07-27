@@ -9,7 +9,7 @@
 <script>
 
 $(document).ready(function() {
-    METHODS = {getnode: "getNode",
+    var METHODS = {getnode: "getNode",
                getfile: "getFile",
                setfile: "setFile",
                newfile: "newFile",
@@ -155,7 +155,7 @@ $(document).ready(function() {
                         themes: {theme : "classic"},
                     });
     
-    $(".jstree-leaf").live("dblclick", function(e){
+    $(".jstree-leaf").die("dblclick").live("dblclick", function(e){
         if ($(this).attr("rel") !== "file")
             return;
         

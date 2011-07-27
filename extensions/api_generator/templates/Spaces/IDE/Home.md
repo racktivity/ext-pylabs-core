@@ -1,12 +1,13 @@
-##Projects
+[[widget:title=IDE]]
+##Integrated Development Environment
 
-You can browse your imported projects, to edit files. Edited files are synchronized back automatically to
-it's original location on *Save*.
- 
-- To import projects, go to the "Import" page in the *Admin* space and follow instructions.
-- To export/delete a project, just right click the project name in the projects tree.
+Here you can edit your projects, first you need to create a project from the *IDE* page in the *Admin* space.
 
-----------------------------
+- Double click file to open it in the editor space.
+- Right Click a file, or a directory for more options.
+
+[[/widget]]
+
 
 
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
@@ -19,15 +20,7 @@ it's original location on *Save*.
 </div>
 
 <script language='javascript'>
-    $("#editortabs").tabs({tabTemplate: "<li><a href='#{href}'>#{label}</a> <span title='Save' style='cursor: pointer' class='ui-icon ui-icon-note'>Save</span> <span title='Close' style='cursor: pointer' class='ui-icon ui-icon-close'>Close</span></li>",
-                           panelTemplate: "<div style='height: 600px'></div>",
-                            add: function(e, ui) {
-                                /*
-                                console.log("In add event");
-                                console.log(e);
-                                console.log(ui);
-                                $(ui.panel).append($("<p>").text("This is my new tab"));
-                                */
-                            }});
+    $("#editortabs").tabs({tabTemplate: "<li><a href='#{href}'>#{label}</a> <span title='Save' style='cursor: pointer; display: inline-block' class='ui-icon ui-icon-note'>Save</span> <span title='Close' style='cursor: pointer; display: inline-block' class='ui-icon ui-icon-close'>Close</span></li>",
+                           panelTemplate: "<div style='height: 600px'></div>"});
     
 </script>
