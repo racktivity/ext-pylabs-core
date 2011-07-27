@@ -183,7 +183,9 @@ $(document).ready(function() {
         
         remotecall(METHODS.getfile, {data: {id: fileid},
                     success: function(data){
-                        var editor = $("#editortabs").find("#" + id).data("original", data).editor({editorbar:false});
+                        var tab = $("#editortabs").find("#" + id).data("original", data);
+                        $("#fileid", tab).text(fileid);
+                        var editor = $("#editorspace", tab).editor({editorbar:false});
                         editor.editor("filetype", "py");
                         editor.editor("content", data);
                     }});
@@ -208,7 +210,7 @@ $(document).ready(function() {
         var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
         var hashid = m[0];
         var id = m[1];
-        var editor = $(hashid);
+        var editor = $(hashid + " #editorspace");
         
         var _close = function(){
             console.log("Closing");
@@ -238,7 +240,7 @@ $(document).ready(function() {
         var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
         var hashid = m[0];
         var id = m[1];
-        var editor = $(hashid);
+        var editor = $(hashid + " #editorspace");
         var fileid = null;
         $.each(openedfiles, function(k, v){
             if (v == id) {

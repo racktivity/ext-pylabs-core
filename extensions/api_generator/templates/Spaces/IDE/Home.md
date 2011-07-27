@@ -22,7 +22,10 @@ Here you can edit your projects, first you need to create a project from the *ID
 <script language='javascript'>
 $(document).ready(function(){
     $("#editortabs").tabs({tabTemplate: "<li><a href='#{href}'>#{label}</a> <span title='Save' style='cursor: pointer; display: inline-block' class='ui-icon ui-icon-note'>Save</span> <span title='Close' style='cursor: pointer; display: inline-block' class='ui-icon ui-icon-close'>Close</span></li>",
-                           panelTemplate: "<div style='height: 600px'></div>"});
+                           panelTemplate: "<div>" + 
+                                            "<div id='fileid' class='ide-fileid'></div>" +
+                                            "<div id='editorspace' style='height: 600px'></div>" +
+                                          "</div>"});
     
     $(document).lock("ide.ready");
 });
