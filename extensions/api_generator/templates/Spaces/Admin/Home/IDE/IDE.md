@@ -11,7 +11,7 @@
 </div>
 
 
-###Available Project
+###Available Projects
 
 <table id='projects'>
     <thead>
