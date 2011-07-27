@@ -1,105 +1,122 @@
+##IDE Projects
+
+[[widget:title=Help]]
+###To Create a new project:
+
+- You can create a new project by right clicking any part of the tree and then press *Create Project Here*
+- Enter the *unique* project name, and press Ok
+[[/widget]]
+
+<div id="idetree" style='margin-top: 10px; margin-bottom: 10px; border: 1px solid lightgray'>
+</div>
+
+
+###Available Project
+
+<table id='projects'>
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>Path</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
-<script language="javascript" src="/static/lfw/js/filetree.js"/>
 
-<table>
-    <tr>
-        <td colspan=2>
-            <select id="appname" name="appname" style="display: none;"></select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div id="treediv" class="demo"></div></td>
-        <td>
-            Directory to import <input type="text" name="dirname" id="dirname" /><br/>
-            <!-- Destination space <select id="cbospace" name="space"/> <a href="#/Admin/Spaces" target="_blank">New space</a><br/> -->
-            Project name <input type="text" name="projectname" id="projectname" /><br/>
-            <button onclick="btnImportClicked();">Import</button>
-            <div id="msg"></div>
-        </td>
-    </tr>
-</table>
-<h4><a href="./#/Imported/Home">Imported projects</a></h4>
+<script>
+$(document).ready(function() {
+    var METHODS = {createproject: "createProject",
+                   deleteproject: "deleteProject",
+                   getprojects: "getProjects"};
+               
+    var remotecall = function(method, options) {
+        var options = $.extend({success: $.noop,
+                                error: $.alerterror,
+                                data: {}}, options);
+                                
+        $.ajax({url: 'appserver/rest/ui/ide/' + method,
+                type: 'POST',
+                dataType: 'json',
+                data: options.data,
+                success: options.success,
+                error: options.error});
+    };
+    
+    var createProject = function(item) {
+        var id = item.attr("id");
+        var tree = this;
+        $.prompt("Project Name?", {title: "Create Project Name",
+                                   pattern: /.+/,
+                                   error: "Project name can't be empty",
+                                   value: tree.get_text(item),
+                                   ok: function(name) {
+                                       remotecall(METHODS.createproject, {data:{name: name,
+                                                                                path: id},
+                                                                          success: function(){
+                                                                              listprojects();
+                                                                          }});
+                                    }});
+    };
+    
+    $("#idetree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui', 'contextmenu', 'crrm'],
+                        ui: {
+                            select_limit: 1,
+                        },
+                        types: {
+                            types: { project: {icon: {image: '/static/lfw/img/editor/project.png'}},
+                                     file: {icon: {image: '/static/lfw/img/editor/file.png'}},
+                                     default: {}}
+                        },
+                        contextmenu: {
+                            items: [{label: "Create Project Here",
+                                     action: createProject}],
+                        },
+                        json_data: {
+                                ajax: { url: 'appserver/rest/ui/ide/getProjectNode',
+                                        data: function(n) {
+                                            return {id: n.attr ? n.attr("id") : "."};
+                                        }},
+                            progressive_render : true
+                            },
+                        themes: {theme : "classic"},
+                    });
+    
+    var listprojects = function(){
+        remotecall(METHODS.getprojects, {success: function(projects){
+            var body = $("#projects > tbody").empty();
+            $.each(projects, function(){
+                var project = this;
+                var row = $("#project-row").tmpl(project);
+                $("#delete", row).click(function(e){
+                    e.preventDefault();
+                    $.confirm("Are you sure you want to delete project '" + project.name + "' ?",
+                                {title: "Delete Project",
+                                ok: function(){
+                                    remotecall(METHODS.deleteproject, {data: {name: project.name},
+                                                                       success: function() {
+                                                                           row.remove();
+                                                                        }});
+                                }});
+                });
+                body.append(row);
+            });
+        }});
+    };
+    
+    listprojects();
+});
 
-<script language="javascript">
-
-function nodeSelected(event, data) {
-    path = data.inst._get_node().attr("id");
-    data.inst.open_node()
-    $("#dirname").val(path);
-}
-
-//Select "appname" value changed
-function appChanged()
-{
-    $("#dirname").val("");
-    //Reload tree
-    loadTree(getCurrentApp());
-    return true;
-}
-
-//return currently selected application
-function getCurrentApp() {
-    if (LFW_CONFIG["development"])
-        return $("#appname").val()
-    else
-        return LFW_CONFIG["appname"]
-}
-
-//Load specific app's tree
-function loadTree(appname){
-    if (LFW_CONFIG["development"])
-        $("#appname").val(appname)
-    tree = loadFileTree("#treediv", appname, ".")
-    tree.bind("select_node.jstree", nodeSelected);
-};
-
-function btnImportClicked()
-{
-    $.ajax({
-      url: "appserver/rest/ui/editor/importProject",
-      type: "POST",
-      data: "appname=" + getCurrentApp() + "&source=" + $("#dirname").val() + "&projectname=" + $("#projectname").val(),
-      success: importSuccess,
-      error: importFail
-    });
-}
-
-function importSuccess(data)
-{
-    $.alert("Porject has been imported successfully\nPlease click on 'Imported projects' link below to see your project", {title: 'Info'});
-}
-
-function importFail(data)
-{
-    data = $.parseJSON(data.responseText);
-    $.alert("Fail: " + data["exception"], {title: 'Failed'});
-}
-
-function init()
-{
-    //Initalize appname combobox
-    select = $('#appname');
-    if (LFW_CONFIG["development"]) {
-        var applist = $.ajax({
-            url: "appserver/rest/ui/editor/listPyApps",
-            async: false}).responseText;
-        applist = $.parseJSON(applist)
-
-        $.each(applist, function(index, app) { 
-          select.append($("<option></option>").text(app));
-        });
-        select.change(appChanged);
-        select.show()
-    }
-    else {
-        select.remove();
-    }
-    //Initalize tree
-    appChanged();
-}
-
-$(document).ready(init);
+</script>
+<script id="project-row" type="text/x-jquery-tmpl">
+  <tr>
+    <td>${name}</td>
+    <td>${path}</td>
+    <td><a id='delete' href='#'>delete</a></td>
+  </tr>
 </script>
