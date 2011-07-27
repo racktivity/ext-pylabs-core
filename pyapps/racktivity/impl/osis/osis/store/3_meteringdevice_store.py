@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
     values = dict()
     for col in columns:
         values[col] = getattr(rootobject, col)
-    values["ipaddress"] = rootobject.network.ipaddress
+    values["ipaddress"] = rootobject.network.ipaddress if rootobject.network else None
     values['cloudusergroupactions'] = ','.join(rootobject.cloudusergroupactions.keys())
     osis.viewSave(params['domain'], 'meteringdevice', viewname, rootobject.guid, rootobject.version, values)
 

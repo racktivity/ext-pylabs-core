@@ -1,11 +1,8 @@
 __author__ = 'racktivity'
-__priority__= 3
 
 def main(q, i, p, params, tags):
-    from pymodel.serializers import ThriftSerializer
-    import base64
-    errorcondition  = p.api.model.racktivity.errorcondition.get(params['errorconditionguid'])
-    params['result'] = base64.encodestring(ThriftSerializer.serialize(errorcondition))
+    params['result'] = p.api.model.racktivity.errorcondition.get(params['errorconditionguid'])
 
 def match(q, i, params, tags):
     return True
+

@@ -1,12 +1,8 @@
 __author__ = 'racktivity'
 
 def main(q, i, p, params, tags):
-    from pymodel.serializers import ThriftSerializer
-    import base64
-    cloudusergroup  = p.api.model.racktivity.cloudusergroup.get(params['rootobjectguid'])
-    params['result'] = base64.encodestring(ThriftSerializer.serialize(cloudusergroup))
+    params['result'] = p.api.model.racktivity.cloudusergroup.get(params['cloudusergroupguid'])
 
 def match(q, i, params, tags):
     return True
-
 

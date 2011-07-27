@@ -283,6 +283,8 @@ class MeteringDevice():
     def getObject(self, meteringdeviceguid, request=None, jobguid=None,executionparams=dict()):
         """
         Gets the rootobject.
+        
+        @execution_method = sync
        
         @param meteringdeviceguid:  Guid of the meteringdevice rootobject
         @type meteringdeviceguid:   guid

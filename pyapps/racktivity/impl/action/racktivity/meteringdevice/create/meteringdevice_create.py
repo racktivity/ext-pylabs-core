@@ -35,8 +35,9 @@ def main(q, i, p, params, tags):
                 for key, value in infodict.iteritems():
                     setattr(newobj, key, value)
                 objlist.append(newobj)
+    
+    meteringdevice.network = meteringdevice.network.new()
     if params["networkinfo"]:
-        meteringdevice.network = meteringdevice.network.new()
         meteringdevice.network.ipaddress = params["networkinfo"]["ipaddress"]
         meteringdevice.network.port = params["networkinfo"]["port"]
         meteringdevice.network.protocol = params["networkinfo"]["protocol"]

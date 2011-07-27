@@ -1,11 +1,8 @@
 __author__ = 'racktivity'
-__priority__= 3
 
 def main(q, i, p, params, tags):
-    from pymodel.serializers import ThriftSerializer
-    import base64
-    backplane  = p.api.model.racktivity.backplane.get(params['rootobjectguid'])
-    params['result'] = base64.encodestring(ThriftSerializer.serialize(backplane))
+    params['result'] = p.api.model.racktivity.backplane.get(params['backplaneguid'])
 
 def match(q, i, params, tags):
     return True
+
