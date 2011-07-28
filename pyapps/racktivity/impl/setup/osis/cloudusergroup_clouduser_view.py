@@ -8,7 +8,7 @@ def main(q, i, params, tags):
     rootobject = 'cloudusergroup'
     domain = "racktivity"
     appname = params['appname']
-    view_name = '%s_view_%s_list' % (domain, rootobject)
+    view_name = '%s_view_%s_clouduser' % (domain, rootobject)
     connection = OsisDB().getConnection(appname)
     if not connection.viewExists(domain, rootobject, view_name):
         view = connection.viewCreate(domain, rootobject, view_name)
