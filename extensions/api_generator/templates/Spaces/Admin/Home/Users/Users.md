@@ -1,33 +1,160 @@
 
 <script language='javascript'>
 $(document).ready(function(){
-
-    $("#confirmdelete").dialog({autoOpen: false,
-                                width: 550,
-                                modal: true});
+    
+    /**
+    Note To Klaas:
+    I am thinking of using jquery accordion as data grid for our entities as following
+    
+    Users:
+    =========================================
+    |Azmy                                   |
+     ---------------------------------------
+    | [Edit] [Delete]                       |
+    | Groups:                               |
+    |  -----------------------------------  |
+    | | Group 1 |     unassing            | | 
+    | | Group 2 |     unassing            | |
+    |  -----------------------------------  |
+    | [Assign group]                        |
+    =========================================
+    |Klaas                                  |
+    =========================================
+    ...
+    
+    - Also for rules
+    
+    Rules:
+    =========================================
+    |Admin                                  |
+     ---------------------------------------
+    | [Edit] [Delete]                       |
+    | [function ... ]   <change>            |
+    | [context  ... ]   <change>            |
+    |                                       |
+    | Groups:                               |
+    |  -----------------------------------  |
+    | | Group 1 |     <remove>            | | 
+    | | Group 2 |     <remove>            | |
+    |  -----------------------------------  |
+    | [Add group]                           |
+    =========================================
+    |Rule2                                  |
+    =========================================
+    ...
+    
+    - Groups can be a normal table where group can only have name.
+    
+    - So I starting by creating an Accordion class where you can dynamically
+    add/delete panels from it (I have tested this).
+    
+    - I started working on a UserPanel class (but I had to go home before I do much with it :P ... good luck ;) )
+    - Also a RulePanel needs to be created
+    
+    - The idea is when you first load the page you use the lfw service to get the needed data which is enough to build
+    - your views. and handle acctions to 
+    
+    
+    When you load this page you will get a demo of what I think it should look like.
+    
+    Feel free to drop this entirly if you think it's not good enough or if you have a better idea.
+    
+    START OF DEMO
+    */
+    var Accordion = function(parent){
+        
+        var body = $("<div>").accordion();
+        
+        var tmpl = "<h3 class='accordion-header' id='${name}'><a href='#'>${name}</a></h3>" +
+                    "<div class='accordion-panel'></div>";
+        
+        this.exists = function(name){
+            return body.find("#" + name).length > 0;
+        };
+        
+        this.add = function(name, panel) {
+            if (!this.exists(name)){
+                var item = $.tmpl(tmpl, {name: name});
+                item.filter(".accordion-panel")
+                    .append(panel);
+                    
+                body.accordion("destroy")
+                    .append(item)
+                    .accordion();
+                
+            }
+        };
+        
+        this.delete = function(name) {
+            var item = body.accordion("destroy")
+                .find("#" + name);
+            
+            if (item.length > 0){
+                item.next().remove();
+                item.remove();
+            }
+            
+            body.accordion();
+        };
+        
+        this.getDom = function(){
+            return body;
+        };
+        
+        if (parent){
+            this.appendTo(parent);
+        }
+    };
+    
+    var UserPanel = function(userid) {
+        
+        var body = $("#user-panel").tmpl();
+        body.find("button").button();
+        
+        var that = this;
+        
+        body.find(".user-edit").click(function(e){
+            alert("Edit user: " + that.userid());
+        });
+        
+        body.find(".user-delete").click(function(e){
+            alert("Edit Delete: " + that.userid());
+        });
+        
+        body.find(".user-assign").click(function(e){
+            alert("Assign group: " + that.userid());
+        });
+        
+        this.userid = function(id){
+            if (id === undefined){
+                return body.data("userid");
+            } else {
+                body.data("userid", id);
+            }
+        };
+        
+        this.getDom = function(){
+            return body;
+        };
+        
+        if(userid){
+            this.userid(userid);
+        }
+    };
+    
+    var acc = new Accordion();
+    $("#test").append(acc.getDom());
+    acc.add("Azmy", new UserPanel("Azmy").getDom());
+    acc.add("Klaas", new UserPanel("Klaas").getDom());
+    
+    /**
+    END OF DEMO.
+    */
+    
 
     $("#userform").dialog({autoOpen: false,
             width: 550,
             modal: true});
-
-    var confirmdelete = function(options){
-        var options = $.extend({user: 'this',
-                                ok: $.noop,
-                                cancel: $.noop}, options);
-        $("#confirmdelete > #user").text(options.user);
-        $("#confirmdelete").dialog("option", "buttons", {'Ok': function(){
-                                                                options.ok();
-                                                                $(this).dialog("close");
-                                                                },
-                                                         'Cancel': function() {
-                                                             options.cancel();
-                                                             $(this).dialog("close");
-                                                             }
-                                                         });
-        $("#confirmdelete").dialog("open");
-    };
-
-
 
     var remotecall = function(options) {
         var options = $.extend({success: $.noop,
@@ -120,12 +247,12 @@ $(document).ready(function(){
                                                               })))
                                                           .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('delete').click(function(){
                                                                 var user = $(this).data('user');
-                                                                confirmdelete({user: user,
-                                                                         ok: function(){
-                                                                             deleteuser(user, {success: function(){
+                                                                $.confirm("Are you sure you want to delete user '" + user + "'?", {title: "Delete User",
+                                                                            ok: function(){
+                                                                                deleteuser(user, {success: function(){
                                                                                     render();
                                                                                  }});
-                                                                         }});
+                                                                            }});
                                                               }))));
                                 });
                             }});
@@ -185,8 +312,7 @@ $(document).ready(function(){
 
 </script>
 
-<div id='confirmdelete' title='Delete User'>
-    Are you sure you want to delete user <b id='user'></b>?
+<div id='test'>
 </div>
 
 <div id="userform" title="Create new user">
@@ -223,3 +349,21 @@ $(document).ready(function(){
 </table>
 
 <button id='createuser'>Create New User</button>
+
+<script id='user-panel' type='text/x-jquery-tmpl'>
+    <div>
+        <button class='user-edit'>Edit</button>
+        <button class='user-delete'>Delete</button>
+        <table style='margin-top: 5px; margin-buttom: 5px;'>
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Unassign</th>
+                </tr>
+            </thead>
+            <tbody class='user-groups'>
+            </tbody>
+        </table>
+        <button class='user-assign'>Assign Group</button>
+    </div>
+</script>
