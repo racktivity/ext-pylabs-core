@@ -75,7 +75,7 @@ def clouduser_list(clouduserguid=""):
     removekeys = ('viewguid','version')
     results = list()
     groupquery = """
-    select distinct groups.guid, groups.name from cloudusergroup.racktivity_view_cloudusergroup_clouduser as groups
+    select distinct groups.guid, groups.name from racktivity_cloudusergroup.racktivity_view_cloudusergroup_clouduser as groups
     where clouduserguid = '%s'
     """
     
