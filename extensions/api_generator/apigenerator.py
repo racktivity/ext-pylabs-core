@@ -151,9 +151,8 @@ class Method:
         #      >>> method.properties['execution_method']
         #      >>> 'async'
 
-        RE_KEY_VALUES = "(?:@+)(?P<key>\w+)\s*=+\s*(?P<value>\w+)\s*"
-        regex = re.compile(RE_KEY_VALUES)
-        self.properties = dict(regex.findall(self.docs))
+        RE_KEY_VALUES = "^\s*(?:@+)(?P<key>\w+)\s*=+[\t\f\v ]*(?P<value>.*)[\t\f\v ]*$"
+        self.properties = dict(re.findall(RE_KEY_VALUES, self.docs, re.M))
 
 
 

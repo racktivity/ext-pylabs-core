@@ -10,7 +10,7 @@ class ${className}(ActionService):
     @q.manage.applicationserver.expose
 #end if
 #if 'authorize' in $method.properties
-    @q.manage.applicationserver.expose_authorized('$method.properties['authorize']')
+    @q.manage.applicationserver.expose_authorized($method.properties['authorize'])
 #end if
     def $method.name (self, $method.args):
         """
