@@ -5,7 +5,7 @@ def main(q, i, p, params, tags):
     viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
     fields = {'name': root.name, 'datacenterguid': root.datacenterguid, 'description': root.description, \
-              'floor': root.floor, 'alias': root.alias, 'tags':root.tags}
+              'floorguid': root.floorguid, 'alias': root.alias, 'tags':root.tags}
 
     osis.viewSave(params['domain'], 'room', viewname, root.guid, root.version, fields)
     q.logger.log('room saved', 3)

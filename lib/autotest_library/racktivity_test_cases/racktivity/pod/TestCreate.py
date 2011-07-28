@@ -5,14 +5,12 @@ from pylabs import i,q,p
 from . import getData
 
 def setup():
-    global ca, rackGuid1, roomGuid1
+    global ca, roomGuid1
     data = getData()
     ca = p.api.action.racktivity
-    rackGuid1 = data["rackguid1"]
     roomGuid1=data["room1"]
 
 def teardown():
-    ca.pod.removeRack(pod2Guid, rackGuid1)
     racktivity_test_library.pod.delete(pod1Guid)
     racktivity_test_library.pod.delete(pod2Guid)
 
@@ -37,12 +35,12 @@ def testCreate_2():
     @id: 0.34.02.02
     @timestamp: 1298796257
     @signature: halimm
-    @params:ca.pod.create(name='test_pod_optional', description='Test Description', alias='Test Alias', room=roomGuid1, racks=[rackGuid1])['result']['podguid']
+    @params:ca.pod.create(name='test_pod_optional', description='Test Description', alias='Test Alias', room=roomGuid1)['result']['podguid']
     @expected_result: function should create pod and store it in the drp
     """
     global pod2Guid
     q.logger.log("         Creating pod with optional params")
-    pod2Guid = ca.pod.create(name='test_pod_optional', description='Test Description', alias='Test Alias', room=roomGuid1, racks=[rackGuid1])['result']['podguid']
+    pod2Guid = ca.pod.create(name='test_pod_optional', description='Test Description', alias='Test Alias', room=roomGuid1)['result']['podguid']
     ok_(pod2Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if pod exists")
     pod2 = ca.pod.getObject(pod2Guid)
@@ -62,19 +60,7 @@ def testCreate_3():
 
 def testCreate_4():
     """
-    @description: [0.34.02.04] Creating pod with Non existing rackguid
-    @id: 0.34.02.04
-    @timestamp: 1298796257
-    @signature: halimm
-    @params: ca.pod.create('test_pod_err' , racks=['00000000-0000-0000-0000-000000000000'])
-    @expected_result: function should fail because locationguid is invalid/doesn't exists
-    """
-    q.logger.log("         Creating pod with Non existing rackguid")
-    assert_raises(xmlrpclib.Fault, ca.pod.create, racks=['00000000-0000-0000-0000-000000000000'])
-
-def testCreate_5():
-    """
-    @description: [0.34.02.05] Creating pod with a name that already exists
+    @description: [0.34.02.04] Creating pod with a name that already exists
     @id: 0.34.02.05
     @timestamp: 1298796257
     @signature: halimm
