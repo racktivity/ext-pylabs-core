@@ -3,13 +3,26 @@
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
 <!-- <script language="javascript" src="/static/lfw/js/filetree.js"/> -->
 
-<div id="tree">
+<div id="idetree">
 </div>
 
 <script>
 
 $(document).ready(function() {
-    METHODS = {getnode: "getNode",
+    var getUrlVars = function() {
+        var vars = {};
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    };
+    
+    
+    
+    var METHODS = {getnode: "getNode",
                getfile: "getFile",
                setfile: "setFile",
                newfile: "newFile",
@@ -97,13 +110,13 @@ $(document).ready(function() {
                                  ok: function(name) {
                                     remotecall(METHODS.rename, {data: {id: id, name: name},
                                         success: function() {
-                                            console.log(item);
                                             tree.rename_node(item, name);
                                             var m = /(.+)\/[^\/]+$/.exec(id);
                                             if (!m){
                                                 $.alert("Failed to update node ID");
                                             }
                                             item.attr("id", m[1] + "/" + name);
+                                            tree.refresh(item);
                                         }});
                                 }});
     };
@@ -132,7 +145,7 @@ $(document).ready(function() {
         return actions;
     };
     
-    $("#tree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui', 'contextmenu', 'crrm'],
+    $("#idetree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui', 'contextmenu', 'crrm'],
                         ui: {
                             select_limit: 1,
                         },
@@ -154,7 +167,34 @@ $(document).ready(function() {
                         themes: {theme : "classic"},
                     });
     
-    $(".jstree-leaf").live("dblclick", function(e){
+    var openfile = function(fileid) {
+        var id = generateid();
+        var m = /([^\/]+)$/.exec(fileid);
+        if (!m) {
+            console.log("Can't extract the file name");
+            return;
+        }
+        var filename = m[1];
+        openedfiles[fileid] = id;
+        $("#editortabs").tabs("add", "#" + id, filename);
+        $("#editortabs").tabs("select", "#" + id);
+        
+        remotecall(METHODS.getfile, {data: {id: fileid},
+                    success: function(data){
+                        var tab = $("#editortabs").find("#" + id)
+                        $("#fileid", tab).text(fileid);
+                        var editor = $("#editorspace", tab)
+                                        .data("original", data)
+                                        .editor({editorbar:false,
+                                                 onchange: function() {
+                                                    $('a[href$="#' + id + '"]').addClass("ide-modified");
+                                                 }});
+                        editor.editor("filetype", "py");
+                        editor.editor("content", data);
+                    }});
+    };
+    
+    $(".jstree-leaf").die("dblclick").live("dblclick", function(e){
         if ($(this).attr("rel") !== "file")
             return;
         
@@ -164,35 +204,18 @@ $(document).ready(function() {
             var id = openedfiles[fileid];
             $("#editortabs").tabs("select", "#" + id);
         } else {
-            var id = generateid();
-            var m = /([^\/]+)$/.exec(fileid);
-            if (!m) {
-                console.log("Can't extract the file name");
-                return;
-            }
-            var filename = m[1];
-            openedfiles[fileid] = id;
-            $("#editortabs").tabs("add", "#" + id, filename);
-            $("#editortabs").tabs("select", "#" + id);
-            
-            remotecall(METHODS.getfile, {data: {id: fileid},
-                        success: function(data){
-                            var editor = $("#editortabs").find("#" + id).data("original", data).editor({editorbar:false});
-                            editor.editor("filetype", "py");
-                            editor.editor("content", data);
-                        }});
+            openfile(fileid);
         }
-        
     });
     
-    $("#editortabs span.ui-icon-close" ).live( "click", function() {
+    $("#editortabs span.ui-icon-close" ).die("click").live( "click", function() {
         var tab = $(this).parent("li");
-        var hashid = tab.find("a").attr("href");
-        var id = hashid.replace("#", "");
-        var editor = $(hashid);
+        var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
+        var hashid = m[0];
+        var id = m[1];
+        var editor = $(hashid).find("#editorspace");
         
         var _close = function(){
-            console.log("Closing");
             $.each(openedfiles, function(k, v){
                 if (v == id){
                     delete openedfiles[k];
@@ -214,11 +237,12 @@ $(document).ready(function() {
         }
     });
     
-    $("#editortabs span.ui-icon-note" ).live( "click", function() {
+    $("#editortabs span.ui-icon-note" ).die("click").live( "click", function() {
         var tab = $(this).parent("li");
-        var hashid = tab.find("a").attr("href");
-        var id = hashid.replace("#", "");
-        var editor = $(hashid);
+        var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
+        var hashid = m[0];
+        var id = m[1];
+        var editor = $(hashid).find("#editorspace");
         var fileid = null;
         $.each(openedfiles, function(k, v){
             if (v == id) {
@@ -226,7 +250,7 @@ $(document).ready(function() {
             }
         });
         
-        if (!fileid){
+        if (!fileid) {
             $.alert("Can't get the file id back, it sounds like a serious issue!", {title: "Save Error"});
             return;
         }
@@ -235,10 +259,22 @@ $(document).ready(function() {
             {data: {id: fileid,
                     content: editor.editor("content")},
             success: function(){
+                tab.find("a").removeClass("ide-modified");
                 editor.data('original', editor.editor("content"));
             }
             });
     });
     
+    $(document).lock("ide.ready", function() {
+        openedfiles = {};
+        while ($("#editortabs").tabs("length") > 0) {
+            $("#editortabs").remove(0);
+        }
+        
+        var params = getUrlVars();
+        if (params.id){
+            openfile(params.id);
+        }
+    });
 });
 </script>
