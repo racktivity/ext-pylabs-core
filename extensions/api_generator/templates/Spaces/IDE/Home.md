@@ -1,7 +1,7 @@
 [[widget:title=IDE]]
 ##Integrated Development Environment
 
-Here you can edit your projects, first you need to create a project from the *IDE* page in the *Admin* space.
+Here you can edit your projects, first you need to create a project from the *Projects* page in the *Admin* space.
 
 - Double click file to open it in the editor space.
 - Right Click a file, or a directory for more options.
