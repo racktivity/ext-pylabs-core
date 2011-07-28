@@ -1,14 +1,12 @@
 __author__ = 'racktivity'
 __priority__= 3
 from logger import logger
-
+from rootobjectaction_lib import rootobjectaction_find
 def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params, nameKey = "login")
     params['result'] = {'returncode':False}
-    cloudusers = p.api.model.racktivity.clouduser.findAsView(q.drp.clouduser.getFilterObject(),'racktivity_view_clouduser_list')
-    if [cu for cu in cloudusers if cu['login'] == params['login']]:
+    if rootobjectaction_find.clouduser_find(login=params['login']):
         q.eventhandler.raiseError("Clouduser with login '%s' already exists"%params['login'])
-        return
     
     keys = ('login', 'password', 'email', 'firstname', 'lastname', 'name', 'description', 'tags')
     
@@ -16,8 +14,8 @@ def main(q, i, p, params, tags):
     for key, value in params.iteritems():
         if key in keys:
             setattr(clouduser, key, value)
-    
-    clouduser.status = q.enumerators.clouduserstatustype.CREATED
+    import enumerations
+    clouduser.status = enumerations.clouduserstatustype.CREATED
 
     p.api.model.racktivity.clouduser.save(clouduser)
 
