@@ -441,14 +441,12 @@ def feed_list(feedguid="", datacenterguid="", feedproductiontype="", tags=""):
         results.append(result)
     return results
 
-def enterprise_list(name="", campus="", tags=""):
-    defaultview =  'racktivity_view_enterprise_list'
-    data = {"name":name, 'campus': campus, "tags":tags}
-    viewmap = {'campus': 'racktivity_view_enterprise_campus'}
+def enterprise_list(name="", tags=""):
+    view =  'racktivity_view_enterprise_list'
+    data = {"name":name, "tags":tags}
     filterObj = p.api.model.racktivity.enterprise.getFilterObject()
     for key, value in data.iteritems():
         if value:
-            view = viewmap.get(key, defaultview)
             filterObj.add(view, key, data[key])
     
     enterprises = p.api.model.racktivity.enterprise.findAsView(filterObj, defaultview)

@@ -13,13 +13,6 @@ def main(q, i, p, params, tags):
         p.api.action.racktivity.datacenter.delete(datacenterguid, request = params["request"])
     params['result'] = {'returncode': p.api.model.racktivity.location.delete(locationguid)}
     
-    enterpriseguid = rootobjectaction_find.enterprise_find()[0]
-    enterprise = p.api.model.racktivity.enterprise.get(enterpriseguid)
-    if location.guid in enterprise.campuses:
-        enterprise.campuses.remove(location.guid)
-        p.api.model.racktivity.enterprise.save(enterprise)
-
-
     q.logger.log('Deleting policies linked to this location', 3)
     policyguids = rootobjectaction_find.policy_find(rootobjectguid=locationguid)
     if policyguids:

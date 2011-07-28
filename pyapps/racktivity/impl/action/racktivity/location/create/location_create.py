@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
     else:
         raise ValueError("You must have an Enterprise before creating new locations")
     #location name already exists?
-    if rootobjectaction_find.exists('racktivity_view_location_list', p.api.model.racktivity.location, "name", params['name']):
+    if rootobjectaction_find.find('location', name = params['name']):
         raise ValueError("Location with name %s already exists"%params['name'])
 
     fields = ('name', 'description', 'address', 'alias', 'city', 'country', 'public', 'tags')
@@ -34,13 +34,6 @@ def main(q, i, p, params, tags):
     p.api.model.racktivity.location.save(location)
     #from rootobjectaction_lib import rootobject_grant
     #rootobject_grant.grantUser(location.guid, 'location', params['request']['username'])
-    #add the newly created campus/location to the only enterprise in the system
-    enterprise = p.api.model.racktivity.enterprise.get(enterpriseguid)
-    if location.guid in enterprise.campuses:
-        raise ValueError("The campus already exists in enterprise %s"%enterprise.name)
-    enterprise.campuses.append(location.guid)
-    p.api.model.racktivity.enterprise.save(enterprise)
-
 
     q.logger.log('Creating a policy for location %s' % location.name, 3)
     p.api.action.racktivity.policy.create('location_%s' % location.name, rootobjecttype='location', rootobjectaction='monitor',

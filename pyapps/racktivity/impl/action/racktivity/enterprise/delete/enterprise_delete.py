@@ -7,11 +7,10 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     enterpriseguid = params["enterpriseguid"]
     enterprise = p.api.model.racktivity.enterprise.get(enterpriseguid)
-    from rootobjectaction_lib import rootobjectaction_list
-    
-    for location in enterprise.campuses:
-        if rootobjectaction_list.location_list(location):
-            p.api.action.racktivity.location.delete(location, request = params["request"])
+    from rootobjectaction_lib import rootobjectaction_find
+    #Since there is only one enterprise, when deleted delete all locations
+    for locationguid in rootobjectaction_find.find("location"):
+        p.api.action.racktivity.location.delete(locationguid, request = params["request"])
         
     params['result'] = {'returncode': p.api.model.racktivity.enterprise.delete(enterpriseguid)}
 
