@@ -110,7 +110,6 @@ $(document).ready(function() {
                                  ok: function(name) {
                                     remotecall(METHODS.rename, {data: {id: id, name: name},
                                         success: function() {
-                                            console.log(item);
                                             tree.rename_node(item, name);
                                             var m = /(.+)\/[^\/]+$/.exec(id);
                                             if (!m){
@@ -177,7 +176,6 @@ $(document).ready(function() {
         }
         var filename = m[1];
         openedfiles[fileid] = id;
-        console.log("Adding tab ID: " + id);
         $("#editortabs").tabs("add", "#" + id, filename);
         $("#editortabs").tabs("select", "#" + id);
         
@@ -189,7 +187,7 @@ $(document).ready(function() {
                                         .data("original", data)
                                         .editor({editorbar:false,
                                                  onchange: function() {
-                                                    console.log($('a[href$="#' + id + '"]').addClass("ide-modified"));
+                                                    $('a[href$="#' + id + '"]').addClass("ide-modified");
                                                  }});
                         editor.editor("filetype", "py");
                         editor.editor("content", data);
@@ -216,9 +214,8 @@ $(document).ready(function() {
         var hashid = m[0];
         var id = m[1];
         var editor = $(hashid).find("#editorspace");
-        console.log(editor);
+        
         var _close = function(){
-            console.log("Closing");
             $.each(openedfiles, function(k, v){
                 if (v == id){
                     delete openedfiles[k];
@@ -270,7 +267,7 @@ $(document).ready(function() {
     
     $(document).lock("ide.ready", function() {
         openedfiles = {};
-        while ($("#editortabs").tabs("length")){
+        while ($("#editortabs").tabs("length") > 0) {
             $("#editortabs").remove(0);
         }
         
