@@ -5,6 +5,7 @@ def main(q, i, params, tags):
     """
     Delete tree entry in parenttree table
     """
+    return
     osis = p.application.getOsisConnection(p.api.appname)
     osis.viewDelete(params['domain'], 'public', 'parenttree', params['rootobjectguid'])
 

@@ -1,7 +1,8 @@
-from pylabs import q, i
+from pylabs.InitBase import q, i, p
 import racktivity_test_library
 
 def setup():
+    p.api = p.application.getAPI('racktivity')
     racktivity_test_library.cleanenv()
     cloudapi = p.api.action.racktivity
     for guid in cloudapi.enterprise.find()['result']['guidlist']:

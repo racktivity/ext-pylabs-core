@@ -5,9 +5,6 @@ SPECIAL_VIEWS = {
     "meteringdevice": {"cableguid": "racktivity_view_meteringdevice_poweroutput"},
     "resourcegroup":  {"device": "racktivity_view_resourcegroup_device"},
     "feed": {"cableguid": "racktivity_view_feed_feedconnectors"},
-    "enterprise" : {'campus': 'racktivity_view_enterprise_campus'},
-    "pod" : {'rack': 'racktivity_view_pod_rack'},
-    "row" : {'rack': 'racktivity_view_row_rack'}
 }
 
 def exists(view, obj, key, value):

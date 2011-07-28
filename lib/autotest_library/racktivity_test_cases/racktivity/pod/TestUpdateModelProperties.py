@@ -11,7 +11,8 @@ def setup():
     rackGuid1 = data["rackguid1"]
     rackGuid2 = data["rackguid2"]
     roomGuid1=data["room1"]
-    pod1Guid = racktivity_test_library.pod.create(roomGuid1, 'test_pod1', 'test_pod1_description', racks = [rackGuid1])
+    pod1Guid = racktivity_test_library.pod.create(roomGuid1, 'test_pod1', 'test_pod1_description')
+    racktivity_test_library.rack.create("test_rack1", podguid = pod1Guid)
 
 def teardown():
     racktivity_test_library.pod.delete(pod1Guid)
@@ -55,5 +56,3 @@ def testUpdate_3():
     """
     q.logger.log("         Updating pod description")
     assert_raises(xmlrpclib.Fault, ca.pod.updateModelProperties, '00000000-0000-0000-0000-000000000000', description = "test_pod_rename")
-
-

@@ -43,7 +43,8 @@ class location(model.RootObjectModel):
     #@doc series of tags format
     tags = model.String(thrift_id=11)
     
+    #@doc coordinates of this location
     coordinates = model.Object(coordinates, thrift_id=12)
-
+        
     # A dictionary in the form {'group1_action1':None, 'group2_action1':None, 'group1_action2': None}
     cloudusergroupactions = model.Dict(model.String(),thrift_id=13)

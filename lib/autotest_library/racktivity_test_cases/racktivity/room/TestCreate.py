@@ -26,14 +26,12 @@ def testCreate_1():
     """
     global room1Guid
     q.logger.log("         Creating Room")
-    room1Guid = ca.room.create('test_room1', dcguid, floor=floorguid)['result']['roomguid']
+    room1Guid = ca.room.create('test_room1', dcguid, floorguid=floorguid)['result']['roomguid']
     ok_(room1Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if room exists")
     room1 = ca.room.getObject(room1Guid)
     assert_equal(room1.name,'test_room1')
     assert_equal(room1.datacenterguid,dcguid)
-    racktivity_test_library.ui.doUITest(room1.datacenterguid , "CREATE", value=room1.name)
-    ok_(racktivity_test_library.ui.getResult(room1.name))
 
 def testCreate_2():
     """
@@ -46,17 +44,15 @@ def testCreate_2():
     """
     global room2Guid, floorguid
     q.logger.log("         Creating Room with optional params")
-    room2Guid = ca.room.create('test_room2', dcguid, description='test_room2_description', floor=floorguid, alias="test_room2_alias")['result']['roomguid']
+    room2Guid = ca.room.create('test_room2', dcguid, description='test_room2_description', floorguid=floorguid, alias="test_room2_alias")['result']['roomguid']
     ok_(room2Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if room exists")
     room1 = ca.room.getObject(room2Guid)
     assert_equal(room1.name,'test_room2')
     assert_equal(room1.datacenterguid,dcguid)
     assert_equal(room1.description,'test_room2_description')
-    assert_equal(room1.floor, floorguid)
+    assert_equal(room1.floorguid, floorguid)
     assert_equal(room1.alias,'test_room2_alias')
-    racktivity_test_library.ui.doUITest(room1.datacenterguid, "CREATE", value=room1.name)
-    ok_(racktivity_test_library.ui.getResult(room1.name))
 
 @raises(xmlrpclib.Fault)
 def testCreate_3():
@@ -69,7 +65,7 @@ def testCreate_3():
     @expected_result: function should fail because integers are not allowed as name
     """
     q.logger.log("         Creating room with Integer as name")
-    ca.room.create(7, dcguid, floor=floorguid)
+    ca.room.create(7, dcguid, floorguid=floorguid)
 
 @raises(xmlrpclib.Fault)
 def testCreate_4():

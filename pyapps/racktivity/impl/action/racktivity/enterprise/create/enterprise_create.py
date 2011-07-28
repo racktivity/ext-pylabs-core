@@ -16,12 +16,6 @@ def main(q, i, p, params, tags):
         if key in fields and value:
             setattr(enterprise, key, value)
     
-    from rootobjectaction_lib import rootobjectaction_list
-    for campus in params['campuses']:
-        if not rootobjectaction_list.location_list(campus):
-            raise ValueError("Campus with guid %s is not found in the system" % campus)
-        enterprise.campuses.append(campus)
-
     p.api.model.racktivity.enterprise.save(enterprise)
 
     #from rootobjectaction_lib import rootobject_grant

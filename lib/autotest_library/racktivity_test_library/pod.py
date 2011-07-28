@@ -1,8 +1,8 @@
 from pylabs import i,q,p
 
-def create(roomguid, name="test_pod1", description="pod 1 description", racks = []):
+def create(roomguid, name="test_pod1", description="pod 1 description"):
     ca = p.api.action.racktivity
-    guid = ca.pod.create(name=name, description=description, room=roomguid, racks = racks)['result']['podguid']
+    guid = ca.pod.create(name=name, description=description, roomguid=roomguid)['result']['podguid']
     pod = ca.pod.getObject(guid)
     if pod.name != name:
         raise Exception('pod %s was not created properly'%guid)

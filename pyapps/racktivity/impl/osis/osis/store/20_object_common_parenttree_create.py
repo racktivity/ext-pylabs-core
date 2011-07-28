@@ -6,8 +6,6 @@ from rootobjectaction_lib import rootobjectaction_find
 def getEnterprise(obj):
     global osis
     #Update child locations
-    for guid in obj.campuses:
-        osis.runQuery("UPDATE public.parenttree SET parentguid = '%s' WHERE guid = '%s'"%(obj.guid, guid))
     return {"parentguid":"00000000-0000-0000-0000-000000000000", "parenttype":""}
 
 def getLocation(obj):
@@ -73,6 +71,7 @@ def main(q, i, p, params, tags):
     """
     Create tree entry in parenttree table
     """
+    return
     global osis
     osis = p.application.getOsisConnection(p.api.appname)
     objtype = params['rootobjecttype']

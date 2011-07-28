@@ -4,18 +4,15 @@ class Enterprise():
     these actions do modify the DRP and call the actor actions to do the work in the reality
     these actions do not call workflows which execute scripts in the reality on the agents
     """
-    def create(self, name=None, description=None,  campuses = [],  tags=None, request=None, jobguid=None, executionparams=dict()):
+    def create(self, name=None, description=None, tags=None, request=None, jobguid=None, executionparams=dict()):
         """
-        Create a Enterprise with a group of campuses name and description
+        Create an Enterprise
         
         @params name: name of the enterprise
         @type name: string
         
         @params description: Description of the enterprise
         @type description: string
-        
-        @params campuses: list of campus guids for the enterprise
-        @type campuses: list
         
         @param tags: string of tags
         @type tags: string
@@ -95,16 +92,13 @@ class Enterprise():
         @warning:                Only usable using the python client.
         """
         
-    def find(self, name=None,  campus=None, tags=None, request=None, jobguid=None, executionparams=dict()):
+    def find(self, name=None,  tags=None, request=None, jobguid=None, executionparams=dict()):
         """
         
         @execution_method = sync
         
         @param name: name of the enterprise to find
         @type name: string
-        
-        @param campuse: guid of campus
-        @type campuse: guid
         
         @param tags:             string of tags
         @type tags:              string
@@ -119,7 +113,7 @@ class Enterprise():
         @rtype:                   dictionary
         """
         
-    def list(self, name=None, campus=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
+    def list(self, name=None, tags=None,  request=None, jobguid=None, executionparams=dict()):
         """
         List found enterprises with information
         
@@ -127,10 +121,6 @@ class Enterprise():
         
         @param tags:             string of tags
         @type tags:              string
-        
-        @param campuse: guid of campus
-        @type campuse: guid
-        
         
         @param jobguid:           Guid of the job if avalailable else empty string
         @type jobguid:            guid
@@ -140,50 +130,10 @@ class Enterprise():
 
         @return:                  dictionary with returncode(True) and enterprise information  as result and jobguid: {'result': {'returncode':True,'enterpriseinformation:{}}, 'jobguid': guid}
         a entreprise informatin contains the following info:
-        {enterpriceguid:{name:, description:, campuses:, tags:,,}}
+        {enterpriceguid:{name:, description:, tags:,,}}
         @rtype:                   dictionary
         """
 
-    def addCampus(self, enterpriseguid, campus,  request=None, jobguid=None, executionparams=dict()):
-        """
-        Add a new campus/location to the enterprise
-        
-        @params enterpriseguid:   guid of the configured enterprise
-        @type version:            guid
-                
-        @params campus:           guid for the campus/location to add
-        @type campuses:           guid
-     
-        @param jobguid:           Guid of the job if avalailable else empty string
-        @type jobguid:            guid
-
-        @param executionparams:   Dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:    dictionary
-
-        @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                   dictionary
-        """
-        
-    def removeCampus(self, enterpriseguid, campus,  request=None, jobguid=None, executionparams=dict()):
-        """
-        Add a new campus/location to the enterprise
-        
-        @params enterpriseguid:   guid of the configured enterprise
-        @type version:            guid
-                
-        @params campus:           guid for the campus/location to add
-        @type campuses:           guid
-     
-        @param jobguid:           Guid of the job if avalailable else empty string
-        @type jobguid:            guid
-
-        @param executionparams:   Dictionary of job specific params e.g. userErrormsg, maxduration ...
-        @type executionparams:    dictionary
-
-        @return:                  dictionary with returncode(True) as result and jobguid: {'result': {'returncode':True}, 'jobguid': guid}
-        @rtype:                   dictionary
-        """
-    
     def getTree(enterpriseguid, depth=2, jobguid=None, executionparams=dict()):
         """
         Returns a json dict with a tree structure.
