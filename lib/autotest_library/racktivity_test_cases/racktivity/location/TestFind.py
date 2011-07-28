@@ -24,7 +24,7 @@ def testFind_1():
     @expected_result: function should succeed and return the guid of the location that starts with the name specified
     """
     q.logger.log("        Using find function to search by name")
-    result = ca.location.find(name="test_Location")['result']['guidlist']
+    result = ca.location.find(name="test_Location*")['result']['guidlist']
     assert_equal(len(result), 2, "Find was expected to return two items %d item(s) were returned instead"%len(result))
     for guid in locGuids:
         ok_(guid in result, "Guid %s was not returned by find()"%guid)
