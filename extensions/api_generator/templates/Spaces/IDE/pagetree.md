@@ -208,7 +208,7 @@ $(document).ready(function() {
         }
     });
     
-    $("#editortabs span.ui-icon-close" ).live( "click", function() {
+    $("#editortabs span.ui-icon-close" ).die("click").live( "click", function() {
         var tab = $(this).parent("li");
         var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
         var hashid = m[0];
@@ -237,7 +237,7 @@ $(document).ready(function() {
         }
     });
     
-    $("#editortabs span.ui-icon-note" ).live( "click", function() {
+    $("#editortabs span.ui-icon-note" ).die("click").live( "click", function() {
         var tab = $(this).parent("li");
         var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
         var hashid = m[0];
