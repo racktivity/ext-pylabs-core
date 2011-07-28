@@ -239,7 +239,7 @@ def logicalview_list(name="", clouduserguid="", share="", tags=""):
     data = {"name":name, "clouduserguid":clouduserguid,"share":share, "tags":tags}
     filterObj = p.api.model.racktivity.logicalview.getFilterObject()
     for key in data:
-        if data[key] != "":
+        if data[key] is not None:
             filterObj.add(view, key, data[key])
     logicalviews = p.api.model.racktivity.logicalview.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
@@ -449,7 +449,7 @@ def enterprise_list(name="", tags=""):
         if value:
             filterObj.add(view, key, data[key])
     
-    enterprises = p.api.model.racktivity.enterprise.findAsView(filterObj, defaultview)
+    enterprises = p.api.model.racktivity.enterprise.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for enterprise in enterprises:
@@ -460,12 +460,12 @@ def enterprise_list(name="", tags=""):
         results.append(result)
     return results
 
-def pod_list(podguid="", name="", alias="", room="", tags=""):
+def pod_list(podguid="", name="", alias="", roomguid="", tags=""):
     view =  'racktivity_view_pod_list'
-    data = {"guid": podguid, "name":name, "alias":alias, "room":room, "tags":tags}
+    data = {"guid": podguid, "name":name, "alias":alias, "roomguid":roomguid, "tags":tags}
     filterObj = p.api.model.racktivity.pod.getFilterObject()
     for key in data:
-        if data[key] != "":
+        if data[key] is not None:
             filterObj.add(view, key, data[key])
     pods = p.api.model.racktivity.pod.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
@@ -478,12 +478,12 @@ def pod_list(podguid="", name="", alias="", room="", tags=""):
         results.append(result)
     return results
 
-def row_list(rowguid="", name="", alias="", room="", pod="", tags=""):
+def row_list(rowguid="", name="", alias="", roomguid="", podguid="", tags=""):
     view =  'racktivity_view_row_list'
-    data = {"guid": rowguid, "name":name, "alias":alias, "room":room, "pod":pod, "tags":tags}
+    data = {"guid": rowguid, "name":name, "alias":alias, "roomguid":roomguid, "podguid":podguid, "tags":tags}
     filterObj = p.api.model.racktivity.row.getFilterObject()
     for key in data:
-        if data[key] != "":
+        if data[key] is not None:
             filterObj.add(view, key, data[key])
     rows = p.api.model.racktivity.row.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')

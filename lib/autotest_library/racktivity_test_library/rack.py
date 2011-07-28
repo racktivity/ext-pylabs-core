@@ -1,8 +1,8 @@
 from pylabs import i,q,p
 
-def create(name, roomguid, racktype='OPEN', tags = None):
+def create(name, roomguid=None, racktype='OPEN', podguid=None, rowguid=None, tags = None):
     cloudapi = p.api.action.racktivity
-    guid = cloudapi.rack.create(name, racktype=racktype, roomguid=roomguid, tags = tags)['result']['rackguid']
+    guid = cloudapi.rack.create(name, racktype=racktype, roomguid=roomguid,podguid=podguid,rowguid=rowguid, tags = tags)['result']['rackguid']
     rack = cloudapi.rack.getObject(guid)
     if rack.name != name:
         raise RuntimeError("Rack wasn't created probably '%s'" % guid)

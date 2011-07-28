@@ -16,7 +16,6 @@ def main(q, i, p, params, tags):
     
     #Delete the policy linked to this roe
     q.logger.log('Deleting policies linked to this row', 3)
-    from rootobjectaction_lib import rootobjectaction_find
     policyguids = rootobjectaction_find.policy_find(rootobjectguid=rowguid)
     for policyguid in  policyguids:
         p.api.model.racktivity.policy.delete(policyguid)

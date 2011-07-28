@@ -5,11 +5,9 @@ import racktivity_test_library
 from . import getData
 
 def setup():
-    global ca, rackGuid1, rackGuid2, pod1Guid
+    global ca, pod1Guid
     data = getData()
     ca = p.api.action.racktivity
-    rackGuid1 = data["rackguid1"]
-    rackGuid2 = data["rackguid2"]
     roomGuid1=data["room1"]
     pod1Guid = racktivity_test_library.pod.create(roomGuid1, 'test_pod1', 'test_pod1_description')
     racktivity_test_library.rack.create("test_rack1", podguid = pod1Guid)

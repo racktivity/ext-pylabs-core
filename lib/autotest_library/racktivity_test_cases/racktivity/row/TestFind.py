@@ -27,7 +27,7 @@ def testFind_1():
     @expected_result: function should return a valid row guid 
     """
     q.logger.log("        Using find function to search by name")
-    result = ca.row.find(name="test_row")['result']['guidlist']
+    result = ca.row.find(name="test_row*")['result']['guidlist']
     assert_equal(len(result), 2, "Find was expected to return two items %d item(s) were returned instead"%len(result))
     for guid in rowGuids:
         ok_(guid in result, "Guid %s was not returned by find()"%guid)
