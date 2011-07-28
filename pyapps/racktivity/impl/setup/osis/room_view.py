@@ -15,12 +15,12 @@ def main(q, i, params, tags):
         view.setCol('name', q.enumerators.OsisType.STRING, True)
         view.setCol('description', q.enumerators.OsisType.STRING, True)
         view.setCol('datacenterguid', q.enumerators.OsisType.UUID, False)
-        view.setCol('floor', q.enumerators.OsisType.STRING, True)
+        view.setCol('floorguid', q.enumerators.OsisType.STRING, True)
         view.setCol('alias', q.enumerators.OsisType.STRING, True)
         view.setCol('tags', q.enumerators.OsisType.STRING,True)
         view.setCol('cloudusergroupactions',q.enumerators.OsisType.TEXT,True)
         connection.viewAdd(view)
-        indexes = ['name', 'floor',  'datacenterguid', 'description', 'alias', 'tags']
+        indexes = ['name', 'floorguid',  'datacenterguid', 'description', 'alias', 'tags']
 
         for field in indexes:
             context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}

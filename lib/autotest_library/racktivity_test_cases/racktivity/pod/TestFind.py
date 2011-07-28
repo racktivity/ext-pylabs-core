@@ -27,7 +27,7 @@ def testFind_1():
     @expected_result: function should return a valid pod guid 
     """
     q.logger.log("        Using find function to search by name")
-    result = ca.pod.find(name="test_pod")['result']['guidlist']
+    result = ca.pod.find(name="test_pod*")['result']['guidlist']
     assert_equal(len(result), 2, "Find was expected to return two items %d item(s) were returned instead"%len(result))
     for guid in podGuids:
         ok_(guid in result, "Guid %s was not returned by find()"%guid)

@@ -9,8 +9,6 @@ def setup():
     data["dc1"] = racktivity_test_library.datacenter.create()
     data['floorguid'] = racktivity_test_library.floor.create('test_floor1', data["dc1"])
     data["room1"] = racktivity_test_library.room.create("test_room1", data["dc1"], data['floorguid'])
-    data["rackguid1"] = racktivity_test_library.rack.create("test_rack1", data["room1"])
-    data["rackguid2"] = racktivity_test_library.rack.create("test_rack2", data["room1"])
 
 def teardown():
     ca = p.api.action.racktivity
