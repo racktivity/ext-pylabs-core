@@ -4,13 +4,13 @@ from actionservice import ActionService
 class ${className}(ActionService):
 
 #for $method in $methods:
-#if 'authenticate' in $method.properties
+#if $method.properties.get('authenticate', 'False').upper() == 'TRUE'
     @q.manage.applicationserver.expose_authenticated
 #else
     @q.manage.applicationserver.expose
 #end if
 #if 'authorize' in $method.properties
-    @q.manage.applicationserver.expose_authorized($method.properties['authorize'])
+    @q.manage.applicationserver.expose_authorized('$method.properties['authorize']')
 #end if
     def $method.name (self, $method.args):
         """
