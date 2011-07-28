@@ -449,7 +449,7 @@ def enterprise_list(name="", tags=""):
         if value:
             filterObj.add(view, key, data[key])
     
-    enterprises = p.api.model.racktivity.enterprise.findAsView(filterObj, defaultview)
+    enterprises = p.api.model.racktivity.enterprise.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
     for enterprise in enterprises:
