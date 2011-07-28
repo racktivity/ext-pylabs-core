@@ -4,20 +4,12 @@ from pylabs import q, p
 
 from alkira.lfw import *
 
+basedir = os.path.join(q.dirs.pyAppsDir, p.api.appname)
+
 class portal(LFWService):
-    def __init__(self):
-        LFWService.__init__(self)
 
-        basedir = os.path.join(q.dirs.pyAppsDir, p.api.appname)
-        self.authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))
-        self.authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
-
-        self.authcfg = q.tools.inifile.open(q.system.fs.joinPaths(q.dirs.pyAppsDir, p.api.appname, "cfg", \
-            "auth.cfg")).getFileAsDict()
-
-        config = q.tools.inifile.open(q.system.fs.joinPaths(q.dirs.pyAppsDir, p.api.appname, "cfg", \
-            "applicationserver.cfg")).getFileAsDict()
-        self.appserverurl = "http://%s:%d/RPC2" % (config["main"]["xmlrpc_ip"], int(config["main"]["xmlrpc_port"]))
+    _authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))
+    _authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
 
     def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
         q.logger.log("HEADERS from portal.checkAuthentication %s" % str(request._request.requestHeaders))
@@ -30,9 +22,7 @@ class portal(LFWService):
         params['args'] = args
         params['kwargs'] = kwargs
         params['result'] = True
-        params['authcfg'] = self.authcfg
-        params['appserverurl'] = self.appserverurl
-        self.authenticate.execute(params, tags=tags)
+        _authenticate.execute(params, tags=tags)
         return params.get('result', False)
 
     def checkAuthorization(self, criteria, request, domain, service, methodname, args, kwargs):
@@ -46,7 +36,5 @@ class portal(LFWService):
         params['args'] = args
         params['kwargs'] = kwargs
         params['result'] = True
-        params['authcfg'] = self.authcfg
-        params['appserverurl'] = self.appserverurl
-        self.authorize.execute(params, tags=tags)
+        _authorize.execute(params, tags=tags)
         return params.get('result', False)
