@@ -9,7 +9,7 @@ def main(q, i, p, params, tags):
         fields = {'name':root.name, 'clouduserguid':clouduser}
         records.append(fields)
 
-    osis.viewSave(params['domain'], 'row', viewname, root.guid, root.version, records)
+    osis.viewSave(params['domain'], 'cloudusergroup', viewname, root.guid, root.version, records)
     q.logger.log('cloudusergroup_clouduser entry(s) saved', 3)
 
 def match(q, i, params, tags):
