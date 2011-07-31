@@ -10,10 +10,10 @@ def main(q, i, p, params, tags):
     q.logger.log('Deleting floor %s' % floorguid, 3)
     filterObject = p.api.model.racktivity.rack.getFilterObject()
     filterObject.add('racktivity_view_rack_list', 'floorguid', floorguid)
-    for roomguid in rootobjectaction_find.room_find(floor=floorguid):
+    for roomguid in rootobjectaction_find.find("room", floorguid=floorguid):
         p.api.action.racktivity.room.delete(roomguid, request = params["request"])
     
-    for rackguid in rootobjectaction_find.rack_find(floor=floorguid):
+    for rackguid in rootobjectaction_find.find("rack", floorguid=floorguid):
         p.api.action.racktivity.rack.delete(rackguid, request = params["request"])
         
     datacenterguid = p.api.model.racktivity.floor.get(floorguid).datacenterguid

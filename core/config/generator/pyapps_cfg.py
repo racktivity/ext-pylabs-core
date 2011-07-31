@@ -6,7 +6,6 @@ from arakoon_cfg import ArakoonPyApps
 from osis_cfg import OsisPyApps
 from agent_cfg import AgentPyApps
 from applicationserver_cfg import AppServerPyApps
-import uuid
 
 POSTGRESUSER = "postgres"
 join = q.system.fs.joinPaths
@@ -17,8 +16,6 @@ def min_range(pyappsCfg):
         return 20000
     minRange = list()
     for section in sections:
-        if section == "admin":
-            continue
         portrange = pyappsCfg.getValue(section, 'port_range')
         minRange.append(int(portrange.split(':')[1]))
     return max(minRange)
@@ -31,20 +28,10 @@ class PyAppsConfigGen:
         self.config = None
         self.components = None
         self._load_config()
-        self._get_authentication_serviceurl()
 
     def _load_config(self):
         self.config = q.config.getConfig('pyapps').get(self.appName)
         self.components = self.list_needed_components()
-
-    def _get_authentication_serviceurl(self):
-        oauthservice_cfg = q.config.getConfig('dist_auth')
-        if oauthservice_cfg:
-            url = "http://[HOST]:%s%s" % (oauthservice_cfg['main']['port'], oauthservice_cfg['main']['access_path'])
-        else:
-            url = "http://[HOST]:6543/ACCESS_TOKEN"
-
-        self.oauthservice_url = url
 
     def pyapps_configuration(self):
         pyappsCfg = q.config.getInifile('pyapps')
@@ -58,15 +45,6 @@ class PyAppsConfigGen:
             params = self.get_needed_params(min_)
             for key, value in params.iteritems():
                 pyappsCfg.addParam(self.appName, key, value)
-
-            #Create/update the admin account section whenever a pyapp application is created
-            exists = pyappsCfg.checkSection("admin")
-            if not exists:
-                pyappsCfg.addSection("admin")
-                pyappsCfg.addParam("admin", "username", "admin")
-                pyappsCfg.addParam("admin", "password", str(uuid.uuid4()))
-            else:
-                pyappsCfg.setParam("admin", "password", str(uuid.uuid4()));
 
             pyappsCfg.write()
             self._load_config()
@@ -129,6 +107,7 @@ class PyAppsConfigGen:
                 q.manage.ejabberd.applyConfig()
 
         self._configurePortal()
+        self._configureAuth()
 
         taskletpath = join(q.dirs.pyAppsDir, self.appName, 'impl', 'setup')
         if q.system.fs.exists(taskletpath):
@@ -264,7 +243,7 @@ class PyAppsConfigGen:
             site = vhost.addSite(self.appName, '/%s' % self.appName)
             site.addOption('root', root)
             site.addOption('try_files', '$uri $uri/ @lfw')
-            site.addOption('rewrite', '^/%s$ /%s/ permanent' % \
+            site.addOption('rewrite', '^/%s$ http://$host/%s/ permanent' % \
                 (self.appName, self.appName))
             site.addOption('rewrite', '^/%s/$ /index.html break' % \
                 self.appName)
@@ -313,18 +292,16 @@ LFW_CONFIG = {
         'space': '/%(appname)s/appserver/rest/ui/portal/getSpace',
         'macros': '/%(appname)s/js/macros/',
         'macroConfig': '/%(appname)s/appserver/rest/ui/portal/macroConfig',
-        'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig'
+        'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig',
+        'oauthservice': '/%(appname)s/appserver/rest/ui/oauth/getToken'
     },
     'appname' : '%(appname)s',
-    'development'  : true,
-    'oauthservice': '%(oauthservice_url)s'
+    'development'  : true
 };
 '''
 
         config = config_template % {
-            'appname': self.appName,
-            'oauthservice_url' : self.oauthservice_url
-        }
+            'appname': self.appName}
 
         config_dir = os.path.join(root, 'js')
         config_file = os.path.join(config_dir, 'config.js')
@@ -339,4 +316,42 @@ LFW_CONFIG = {
             finally:
                 fd.close()
 
+    def _configureAuth(self):
+        def createConfig(name, template):
+            configdir = os.path.join(q.dirs.pyAppsDir, self.appName, "cfg")
 
+            if not os.path.isdir(configdir):
+                os.makedirs(configdir, 0755)
+
+            fn = os.path.join(configdir, name)
+
+            if not os.path.exists(fn):
+                fd = open(fn, "w")
+                try:
+                    fd.write(template)
+                finally:
+                    fd.close()
+
+
+        auth_template = """[auth]
+backend=local
+
+[oauth]
+hoursvalid=1
+tokencleanup=10
+"""
+
+        authlocal_template = """[admin]
+password=21232f297a57a5a743894a0e4a801fc3
+"""
+
+        authldap_template = """[LDAP]
+hostname=172.19.8.158
+port=389
+people_rdn=ou=people
+base_dn=dc=example,dc=com
+"""
+
+        createConfig("auth.cfg", auth_template)
+        createConfig("auth_local.cfg", authlocal_template)
+        createConfig("auth_ldap.cfg", authldap_template)

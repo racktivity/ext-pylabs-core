@@ -10,8 +10,8 @@ def main(q, i, p, params, tags):
     if rootobjectaction_find.find("pod", name = params['name']):
         raise ValueError("pod with name %s already exists"%params['name'])
     #room exists?
-    if not rootobjectaction_find.find('room', guid = params['room']):
-        raise ValueError("room with guid %s doesn't exists"%params['room'])
+    if not rootobjectaction_find.find('room', guid = params['roomguid']):
+        raise ValueError("room with guid %s doesn't exists"%params['roomguid'])
         
     fields = ('name', 'alias', 'description', 'roomguid', 'tags')
     pod = p.api.model.racktivity.pod.new()

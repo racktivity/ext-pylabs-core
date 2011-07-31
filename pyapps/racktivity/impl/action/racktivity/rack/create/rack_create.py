@@ -14,8 +14,10 @@ def main(q, i, p, params, tags):
     
     roomguid = params['roomguid']
     floorguid = params['floorguid']
-    if not roomguid and not floorguid:
-        raise ValueError("Can't create a rack with no roomguid or floorguid, at least one is required")
+    podguid = params['podguid']
+    rowguid = params['rowguid']
+    if roomguid == floorguid == podguid == rowguid == None:
+        raise ValueError("you must specify at least one these arguments roomguid, floorguid, podguid, rowguid")
     
     rack = p.api.model.racktivity.rack.new()
     for key, value in params.iteritems():

@@ -5,7 +5,7 @@ def main(q, i, p, params, tags):
     viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
     
-    fields = {'name': root.name, 'alias': root.alias, 'room': root.room, 'description': root.description,
+    fields = {'name': root.name, 'alias': root.alias, 'roomguid': root.roomguid, 'description': root.description,
               'system': root.system, 'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()), 'tags': root.tags}
     
     osis.viewSave(params['domain'], 'pod', viewname, root.guid, root.version, fields)

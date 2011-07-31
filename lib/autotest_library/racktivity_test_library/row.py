@@ -3,7 +3,7 @@ from pylabs import i,q,p
 def create(podguid, name="test_row1", description="row 1 description"):
     ca = p.api.action.racktivity
     pod = ca.pod.getObject(podguid)
-    guid = ca.row.create(name, description = description, podguid = pod.guid, roomguid = pod.room)['result']['rowguid']
+    guid = ca.row.create(name, description = description, podguid = pod.guid, roomguid = pod.roomguid)['result']['rowguid']
     row = ca.row.getObject(guid)
     if row.name != name:
         raise Exception('row %s was not created properly'%guid)

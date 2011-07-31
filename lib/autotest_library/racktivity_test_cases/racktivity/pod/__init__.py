@@ -5,7 +5,6 @@ def setup():
     global data
     racktivity_test_library.cleanenv()
     data = dict()
-    data["ca"] = p.api.action.racktivity
     data["dc1"] = racktivity_test_library.datacenter.create()
     data['floorguid'] = racktivity_test_library.floor.create('test_floor1', data["dc1"])
     data["room1"] = racktivity_test_library.room.create("test_room1", data["dc1"], data['floorguid'])

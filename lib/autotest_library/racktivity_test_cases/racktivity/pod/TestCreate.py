@@ -5,7 +5,7 @@ from pylabs import i,q,p
 from . import getData
 
 def setup():
-    global ca, roomGuid1
+    global roomGuid1, ca
     data = getData()
     ca = p.api.action.racktivity
     roomGuid1=data["room1"]
@@ -25,7 +25,7 @@ def testCreate_1():
     """
     global pod1Guid
     q.logger.log("         Creating pod")
-    pod1Guid = ca.pod.create(name='test_pod', room=roomGuid1)['result']['podguid']
+    pod1Guid = ca.pod.create(name='test_pod', roomguid=roomGuid1)['result']['podguid']
     q.logger.log("         Checking if pod exists")
     ok_(pod1Guid, "Empty guid returned from create function")
     
@@ -40,7 +40,7 @@ def testCreate_2():
     """
     global pod2Guid
     q.logger.log("         Creating pod with optional params")
-    pod2Guid = ca.pod.create(name='test_pod_optional', description='Test Description', alias='Test Alias', room=roomGuid1)['result']['podguid']
+    pod2Guid = ca.pod.create(name='test_pod_optional', description='Test Description', alias='Test Alias', roomguid=roomGuid1)['result']['podguid']
     ok_(pod2Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if pod exists")
     pod2 = ca.pod.getObject(pod2Guid)

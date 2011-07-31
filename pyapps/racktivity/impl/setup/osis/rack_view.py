@@ -18,14 +18,14 @@ def main(q, i, params, tags):
         view.setCol('podguid', q.enumerators.OsisType.UUID, True)
         view.setCol('rowguid', q.enumerators.OsisType.UUID, True)
         view.setCol('racktype',q.enumerators.OsisType.STRING,False)
-        view.setCol('floor',q.enumerators.OsisType.STRING,True)
+        view.setCol('floorguid',q.enumerators.OsisType.STRING,True)
         view.setCol('position',q.enumerators.OsisType.STRING,True)
         view.setCol('height',q.enumerators.OsisType.INTEGER,True)
         view.setCol('corridor',q.enumerators.OsisType.STRING,True)
         view.setCol('description',q.enumerators.OsisType.STRING,True)
         view.setCol('tags', q.enumerators.OsisType.STRING,True)
         connection.viewAdd(view)
-        indexes = ['name', 'floor', 'height', 'corridor', 'position', 'racktype', 'datacenterguid', 'roomguid', 'description', 'tags']
+        indexes = ['name', 'floorguid', 'height', 'corridor', 'position', 'racktype', 'datacenterguid', 'roomguid', 'description', 'tags']
 
         for field in indexes:
             context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
