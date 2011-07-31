@@ -4,7 +4,7 @@ def main(q, i, p, params, tags):
     osis = p.application.getOsisConnection(p.api.appname)
     viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
     root = params['rootobject']
-    fields = {'name':root.name, 'description':root.description, 'cabletype': root.cabletype, 'label':root.label, \
+    fields = {'name':root.name, 'description':root.description, 'cabletype': str(root.cabletype), 'label':root.label, \
               'cloudusergroupactions': ','.join(root.cloudusergroupactions.keys()), 'tags':root.tags}
 
     osis.viewSave(params['domain'], 'cable', viewname, root.guid, root.version, fields)

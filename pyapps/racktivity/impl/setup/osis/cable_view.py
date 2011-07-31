@@ -12,7 +12,7 @@ def main(q, i, params, tags):
     connection = OsisDB().getConnection(appname)
     if not connection.viewExists(domain, rootobject, view_name):
         view = connection.viewCreate(domain, rootobject, view_name)
-        view.setCol('name',q.enumerators.OsisType.STRING,True)
+        view.setCol('name',q.enumerators.OsisType.STRING,False)
         view.setCol('description',q.enumerators.OsisType.STRING,True)
         view.setCol('cabletype',q.enumerators.OsisType.STRING,False)
         view.setCol('label',q.enumerators.OsisType.STRING,True)
