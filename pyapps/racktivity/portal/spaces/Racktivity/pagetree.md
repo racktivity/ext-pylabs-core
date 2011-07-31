@@ -1,4 +1,13 @@
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
+
+
+
+
+<script type='text/javascript' src='/static/jswizards/ext/jquery.ui.datetimepicker.js'></script>
+<script type='text/javascript' src='/static/jswizards/ext/jquery.floatbox.1.0.8.js'></script>
+<script type='text/javascript' src='/static/jswizards/js/jswizards.js'></script>
+<!-- END js wizard stuff -->
+
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.jstree.js"/>
 <!-- <script language="javascript" src="/static/lfw/js/filetree.js"/> -->
@@ -10,9 +19,16 @@
 $(document).ready(function(){
     var contextmenu = function(item) {
         var type = item.attr("rel");
+        var service = "appserver/rest/ui/wizard";
+        var domain = "racktivity";
         var actions = [];
         if (type === "enterprise") {
-            
+            actions.push({label: "Update",
+                          action: function(item){
+                              var guid = item.attr("id");
+                              JSWizards.launch(service, domain, "enterprise_update", {});
+                          }});
+                          
         }else if (type === "location"){
             
         }else if (type === "datacenter"){
