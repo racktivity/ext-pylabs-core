@@ -6,7 +6,8 @@ def main(q, i, p, params, tags):
     #logger.log_tasklet(__tags__, params, nameKey = "login")
     params['result'] = {'returncode':False}
     clouduserguid = params['clouduserguid'] 
-    cloudusergroupguids = p.api.model.racktivity.cloudusergroup.find(q.drp.cloudusergroup.getFilterObject())
+    from rootobjectaction_lib import rootobjectaction_find
+    cloudusergroupguids = rootobjectaction_find('cloudusergroup')
 
     for cugg in cloudusergroupguids:
         cloudusergroup = p.api.model.racktivity.cloudusergroup.get(cugg)
