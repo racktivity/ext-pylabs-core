@@ -14,7 +14,7 @@ OLD_LOGIN = "root"
 OLD_PASSWORD = "rooter"
 SUPPORTED_DEVICES = ["racktivity"]
 
-mdguid = ipaddressguid = None
+mdguid = ipaddress = None
 
 def getCloudapi():
     return p.api.action.racktivity
@@ -23,17 +23,16 @@ def getMeteringdeviceGuid():
     global mdguid
     return mdguid
 
-def getIPAddressGuid():
-    global ipaddressguid
-    return ipaddressguid
+def getIPAddress():
+    global ipaddress
+    return ipaddress
 
 def setup():
-    global mdguid, ipaddressguid
-    ip,port,type = getEmulatorConfig()
+    global mdguid, ipaddress
+    ipaddress,port,type = getEmulatorConfig()
     if type not in SUPPORTED_DEVICES:
         raise nose.plugins.skip.SkipTest("Type %s doesn't support setAccount function"%type)
-    ipaddressguid = racktivity_test_library.ipaddress.create(IPADDRESS_NAME, ip)
-    mdguid = racktivity_test_library.meteringdevice.create(DEVICE_NAME, 'M1', getRackGuid(), ipaddressguid=ipaddressguid, port=port, meteringdevicetype=type)
+    mdguid = racktivity_test_library.meteringdevice.create(DEVICE_NAME, 'M1', getRackGuid(), ipaddress=ipaddress, port=port, meteringdevicetype=type)
 
 def teardown():
     #reset the username and password to the original values.

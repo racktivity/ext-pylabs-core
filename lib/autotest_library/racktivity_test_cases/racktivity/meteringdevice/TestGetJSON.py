@@ -7,7 +7,7 @@ from . import getRackGuid, getEmulatorConfig
 EMPTY_GUID = '00000000-0000-0000-0000-000000000000'
 METERINGDEVICE_NAME = 'test-racktivitydevice'
 IPADDRESS_NAME = 'test-localip'
-mdguid = pmguid = ipaddressguid = None
+mdguid = pmguid = ipaddress = None
 
 
 def getCloudapi():
@@ -21,16 +21,15 @@ def getPowerModuleGuid():
     global pmguid
     return pmguid
 
-def getIPAddressGuid():
-    global ipaddressguid
-    return ipaddressguid
+def getIPAddress():
+    global ipaddress
+    return ipaddress
 
 def setup():
-    global mdguid, pmguid, ipaddressguid
-    ip,port,type = getEmulatorConfig()
-    ipaddressguid = racktivity_test_library.ipaddress.create(IPADDRESS_NAME, ip)
+    global mdguid, pmguid, ipaddress
+    ipaddress,port,type = getEmulatorConfig()
     mdguid, pmguid = racktivity_test_library.meteringdevice.createRacktivity(METERINGDEVICE_NAME, getRackGuid(),
-                                                                   ipaddressguid=ipaddressguid,
+                                                                   ipaddress=ipaddress,
                                                                    meteringdevicetype=type,
                                                                    port=port)
     

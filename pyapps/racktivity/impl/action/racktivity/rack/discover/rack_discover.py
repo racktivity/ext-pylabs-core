@@ -1,11 +1,9 @@
 __author__ = 'aserver'
 __priority__= 3
 
-#from pylabs.pmtypes import IPv4Range, IPv4Address
-#from pysnmp.entity.rfc3413.oneliner import cmdgen
-#from racktivity_mibs import racktivity_mib
-#import pysnmp.proto
-
+from pylabs.pmtypes import IPv4Range, IPv4Address
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+from pylabs import q,p
 
 class snmpModule(object):
     SYS_OBJECTID = (1,3,6,1,2,1,1,2,0)
@@ -163,6 +161,7 @@ def main(q, i, p, params, tags):
             ipsinfo.update(snmpobj.discoverIpRange(startip, endip))
         else:
             devid = snmpobj.discoverIp(ip)
+            q.logger.log("#x# IP,devid = %s"%str((ip, devid)))
             if devid:
                 ipsinfo[ip] = devid
     

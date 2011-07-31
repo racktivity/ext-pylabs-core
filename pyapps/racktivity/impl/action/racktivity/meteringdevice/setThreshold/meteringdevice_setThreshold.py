@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
     else:
         master = p.api.model.racktivity.meteringdevice.get(meteringdevice.parentmeteringdeviceguid)
     
-    errorcode = p.api.actor.meteringdevice.setConfigurationParameter(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id,
+    errorcode = p.api.actor.racktivity.meteringdevice.setConfigurationParameter(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id,
                                                            params['thresholdtype'], params['thresholdvalue'], master.accounts[0].login, master.accounts[0].password)['result']
     params['result'] = {'returncode':True}
 

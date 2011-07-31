@@ -30,7 +30,7 @@ def main(q, i, p, params, tags):
                 portseq = port.sequence
                 break
             if portseq < 0:
-                events.raiseError("Port label was not found" , messageprivate='', typeid='', tags='', escalate=False)
+                raise ValueError("Port label was not found")
 
         port = getPort(devData["Ports"], portseq)
         port["Voltage"] = devData["Voltage"]

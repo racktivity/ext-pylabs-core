@@ -9,7 +9,6 @@ def main(q, i, p, params, tags):
     for field in fields:
         info[field] = getattr(meteringdevice, field, None)
     info['meteringdevicetype'] =  str(meteringdevice.meteringdevicetype)
-    info['attributes'] = meteringdevice.attributes._dict if meteringdevice.attributes._dict else None 
     info['meteringdeviceconfigstatus'] = str(meteringdevice.meteringdeviceconfigstatus)
     powerinputs = []
     poweroutputs = []

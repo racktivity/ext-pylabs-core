@@ -6,7 +6,7 @@ def create(name, id, rackguid,
            login='root',
            password='rooter',
            meteringdevicetype='racktivity',
-           ipaddressguid=None,
+           ipaddress=None,
            port=0,
            powerinputsnumber=0,
            poweroutputsnumber=0,
@@ -33,28 +33,25 @@ def create(name, id, rackguid,
         sensors.append({'sequence': seq,
                         'label': 'sensor-%s' % seq})
     
-    nics = list()
-    if ipaddressguid:
-        nics.append({'ipaddressguids':[ipaddressguid], 'status': str(q.enumerators.nicstatustype.ACTIVE),
-                     'nictype': str(q.enumerators.nictype.ETHERNET_GB), 'order':0})
+    networkinfo = None
+    if ipaddress:
+        networkinfo = {"ipaddress":ipaddress, "port":port, "protocol":"http"}
         
-    attributes = {'deviceapiportnr': str(port)} if port else {}
     guid = cloudapi.meteringdevice.create(name=name, id=id, meteringdevicetype=meteringdevicetype, template=False, rackguid=rackguid,
                                           parentmeteringdeviceguid=parentmeteringdeviceguid,
                                           powerinputinfo=inputs,
                                           poweroutputinfo=ports,
                                           sensorinfo=sensors,
-                                          nicinfo=nics,
+                                          networkinfo=networkinfo,
                                           accounts=[{'login': login, 'password': password}],
-                                          attributes=attributes,
                                           tags = tags)['result']['meteringdeviceguid']
     device = cloudapi.meteringdevice.getObject(guid)
     if device.name != name:
         raise RuntimeError("Device wasn't created probably '%s'" % guid)
     return guid
 
-def createRacktivity(name, rackguid, login='root', password='rooter', ipaddressguid=None, port=6543, meteringdevicetype='racktivity'):
-    masterguid = create(name, 'M1', rackguid, login=login, password=password, ipaddressguid=ipaddressguid, port=port, meteringdevicetype=meteringdevicetype)
+def createRacktivity(name, rackguid, login='root', password='rooter', ipaddress=None, port=6543, meteringdevicetype='racktivity'):
+    masterguid = create(name, 'M1', rackguid, login=login, password=password, ipaddress=ipaddress, port=port, meteringdevicetype=meteringdevicetype)
     powermoduleguid = create("%s-power" % name, 'P1', rackguid, parentmeteringdeviceguid=masterguid, poweroutputsnumber=8,meteringdevicetype=meteringdevicetype)
     return masterguid, powermoduleguid
 

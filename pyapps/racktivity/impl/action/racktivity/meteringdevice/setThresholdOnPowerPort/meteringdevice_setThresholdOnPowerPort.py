@@ -17,9 +17,9 @@ def main(q, i, p, params, tags):
             portid = port.sequence
             break
     if portid == None:
-        events.raiseError("Could not find powerport with label %s" % label, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0053', tags='', escalate=False)
+        raise ValueError("Could not find powerport with label %s" % label)
 
-    errorcode = p.api.actor.meteringdevice.setThresholdOnPowerPort(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id,
+    errorcode = p.api.actor.racktivity.meteringdevice.setThresholdOnPowerPort(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id,
                                                            portid, params['thresholdtype'], params['thresholdvalue'], master.accounts[0].login, master.accounts[0].password)['result']
     params['result'] = {'returncode':True}
 

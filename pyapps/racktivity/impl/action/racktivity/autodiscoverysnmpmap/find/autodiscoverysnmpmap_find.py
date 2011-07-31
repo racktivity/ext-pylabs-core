@@ -6,12 +6,13 @@ def main(q, i, p, params, tags):
     from rootobjectaction_lib import rootobjectaction_find
     params['result'] = {
                         'returncode':True,
-                        'guidlist': rootobjectaction_find.autodiscoverysnmpmap_find(
-                                                                                    sysobjectid =  params['sysobjectid'],
-                                                                                    manufacturer=params['manufacturer'],
-                                                                                    tags=params['tags'])
+                        'guidlist': rootobjectaction_find.find( "autodiscoverysnmpmap",
+                                                                sysobjectid =  params['sysobjectid'],
+                                                                manufacturer=params['manufacturer'],
+                                                                tags=params['tags'])
                         }
 
 
 def match(q, i, params, tags):
     return True
+

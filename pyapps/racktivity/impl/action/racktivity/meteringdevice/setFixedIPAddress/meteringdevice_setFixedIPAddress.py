@@ -14,9 +14,9 @@ def main(q, i, p, params, tags):
     oldipaddress = master.network.ipaddress
     master.network.ipaddress = params['ipaddress']
     p.api.model.racktivity.meteringdevice.save(master)
-    p.api.actor.meteringdevice.setConfigurationParameter(master.guid, master.meteringdevicetype, oldipaddress, master.network.port, meteringdevice.id, 'IPAddress', params['ipaddress'])
-    p.api.actor.meteringdevice.setConfigurationParameter(master.guid, master.meteringdevicetype, oldipaddress, master.network.port, meteringdevice.id, 'SubNetMask', params['subnetmask'])
-    p.api.actor.meteringdevice.setConfigurationParameter(master.guid, master.meteringdevicetype, oldipaddress, master.network.port, meteringdevice.id, 'StdGateWay', params['defaultgateway'])
+    p.api.actor.racktivity.meteringdevice.setConfigurationParameter(master.guid, master.meteringdevicetype, oldipaddress, master.network.port, meteringdevice.id, 'IPAddress', params['ipaddress'])
+    p.api.actor.racktivity.meteringdevice.setConfigurationParameter(master.guid, master.meteringdevicetype, oldipaddress, master.network.port, meteringdevice.id, 'SubNetMask', params['subnetmask'])
+    p.api.actor.racktivity.meteringdevice.setConfigurationParameter(master.guid, master.meteringdevicetype, oldipaddress, master.network.port, meteringdevice.id, 'StdGateWay', params['defaultgateway'])
     params['result'] = {'returncode':True}
 
 def match(q, i, params, tags):

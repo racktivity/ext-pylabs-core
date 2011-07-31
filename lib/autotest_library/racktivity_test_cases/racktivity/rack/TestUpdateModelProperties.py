@@ -28,8 +28,6 @@ def testUpdate_1():
     rack = ca.rack.getObject(rackGuid1)
     assert_equal(rack.name, "test_Rack_rename", "Name attribute was not properly updated")
     rack1 = ca.rack.getObject(rackGuid1)
-    racktivity_test_library.ui.doUITest(rack1.roomguid, "UPDATE", value=rack1.name)
-    ok_(racktivity_test_library.ui.getResult(rack1.name))
 
 def testUpdate_2():
     """

@@ -18,9 +18,9 @@ def getFeed(powerinputs):
         feedguids = feedguids.union(rootobjectaction_find.feed_find(cableguid=input.cableguid))
     
     if len(feedguids) > 1:
-        events.raiseError("Metering device has multiple feeds (sources)", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0048', tags='', escalate=False)
+        raise ValueError("Metering device has multiple feeds (sources)")
     elif len(feedguids) == 0:
-        events.raiseError("Metering device is not connected to any feed", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0049', tags='', escalate=False)
+        raise ValueError("Metering device is not connected to any feed")
 
     return feedguids.pop()
 

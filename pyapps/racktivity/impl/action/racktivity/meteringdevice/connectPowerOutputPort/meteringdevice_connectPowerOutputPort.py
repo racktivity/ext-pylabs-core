@@ -12,7 +12,7 @@ def main(q, i, p, params, tags):
             break
     
     if not output:
-        events.raiseError("Can't find output port with label '%s'" % params['portlabel'], messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0050', tags='', escalate=False)
+        raise ValueError("Can't find output port with label '%s'" % params['portlabel'])
     
     output.cableguid = params['cableguid']
     p.api.model.racktivity.meteringdevice.save(meteringdevice)

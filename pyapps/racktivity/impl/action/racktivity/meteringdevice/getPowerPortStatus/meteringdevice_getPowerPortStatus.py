@@ -18,9 +18,9 @@ def main(q, i, p, params, tags):
             break
     
     if portid == None:
-        events.raiseError("Can't find port sequence for a port with label '%s'" % params['portlabel'], messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0052', tags='', escalate=False)
+        raise ValueError("Can't find port sequence for a port with label '%s'" % params['portlabel'])
 
-    actorresult = p.api.actor.meteringdevice.getPowerPortStatus(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)['result']
+    actorresult = p.api.actor.racktivity.meteringdevice.getPowerPortStatus(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid, master.accounts[0].login, master.accounts[0].password)['result']
     actorresult['text'] = "On" if actorresult['status'] else "Off"
     params['result'] = actorresult
 

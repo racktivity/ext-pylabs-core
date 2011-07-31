@@ -18,10 +18,9 @@ def getMeteringdeviceGuid():
 
 def setup():
     global pmguid, mdguid
-    ip,port,type = getEmulatorConfig()
-    ipaddressguid = racktivity_test_library.ipaddress.create(IPADDRESS_NAME, ip)
+    ipaddress,port,type = getEmulatorConfig()
     mdguid, pmguid = racktivity_test_library.meteringdevice.createRacktivity(DEVICE_NAME, getRackGuid(),
-                                                                   ipaddressguid=ipaddressguid,
+                                                                   ipaddress=ipaddress,
                                                                    meteringdevicetype=type,
                                                                    port=port)
     

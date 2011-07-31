@@ -18,9 +18,9 @@ def main(q, i, p, params, tags):
             break
     
     if portid == None:
-        events.raiseError("Can't find port sequence for a port with label '%s'" % params['portlabel'], messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0079', tags='', escalate=False)
+        raise ValueError("Can't find port sequence for a port with label '%s'" % params['portlabel'])
 
-    result = p.api.actor.meteringdevice.getPortData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid, params['meteringtype'], master.accounts[0].login, master.accounts[0].password)
+    result = p.api.actor.racktivity.meteringdevice.getPortData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, portid, params['meteringtype'], master.accounts[0].login, master.accounts[0].password)
     params['result'] = result['result']
   
 

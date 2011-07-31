@@ -13,7 +13,7 @@ def main(q, i, p, params, tags):
             break
     
     if not port:
-        events.raiseError("No port found with name '%s'" % params['label'], messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0041', tags='', escalate=False)
+        raise ValueError("No port found with name '%s'" % params['label'])
 
     portsmtypes = ('current', 'powerfactor', 'activeenergy',
                    'apparentenergy')

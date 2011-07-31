@@ -14,7 +14,7 @@ def main(q, i, p, params, tags):
             break
     
     if not input:
-        events.raiseError("No port found", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0031', tags='', escalate=False)
+        raise ValueError("No port found")
 
     cableguid = input.cableguid
     input.cableguid = None

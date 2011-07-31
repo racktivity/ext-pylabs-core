@@ -7,7 +7,7 @@ def main(q, i, p, params, tags):
     powerinputs = meteringdevice.powerinputs
     for powerinput in powerinputs:
         if powerinput.label == params['label']:
-            events.raiseError("Input power port label must be unique within the module", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0064', tags='', escalate=False)
+            raise ValueError("Input power port label must be unique within the module")
 
     fields = ('label', 'sequence')
     powerinput = meteringdevice.powerinputs.new()
@@ -22,12 +22,12 @@ def main(q, i, p, params, tags):
         powerinput.sequence = maxsequence + 1
     
     if powerinput.sequence <= 0:
-        events.raiseError("Sequence must be 1 or more", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0065', tags='', escalate=False)
+        raise ValueError("Sequence must be 1 or more")
     
     #validate the sequence and the label
     for input in meteringdevice.powerinputs:
         if powerinput.sequence == input.sequence:
-            events.raiseError("Sequence '%s' is already taken by another port" % powerinput.sequence, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0066', tags='', escalate=False)
+            raise ValueError("Sequence '%s' is already taken by another port" % powerinput.sequence)
             
     meteringdevice.powerinputs.append(powerinput)
     p.api.model.racktivity.meteringdevice.save(meteringdevice)

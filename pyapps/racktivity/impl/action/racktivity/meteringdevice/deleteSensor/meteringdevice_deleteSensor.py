@@ -11,7 +11,7 @@ def main(q, i, p, params, tags):
             sensor = s
             break
     if not sensor:
-        events.raiseError("No sensor found with label '%s'" % params['label'], messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0069', tags='', escalate=False)
+        raise ValueError("No sensor found with label '%s'" % params['label'])
 
 
     sensordbname = str(sensor.sensortype).replace("SENSOR", "").lower()
