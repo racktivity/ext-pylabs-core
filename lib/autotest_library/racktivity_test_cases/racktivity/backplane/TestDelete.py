@@ -26,7 +26,7 @@ def testDelete_1():
     ca.backplane.delete(backplaneGuid)
     assert_raises(xmlrpclib.Fault, ca.backplane.getObject, backplaneGuid)
 
-@raises(xmlrpclib.Fault)
+
 def testDelete_2():
     """
     @description: [0020302] Deleting a non existing backplane
@@ -37,5 +37,5 @@ def testDelete_2():
     @expected_result: call should fail because the backplane doesn't exist
     """
     q.logger.log("    Deleting non existing backplane")
-    ca.backplane.delete('00000000-0000-0000-0000-000000000000')
+    ok_(ca.backplane.delete('00000000-0000-0000-0000-000000000000'), "Deleting a non existing backplane returns True")
 
