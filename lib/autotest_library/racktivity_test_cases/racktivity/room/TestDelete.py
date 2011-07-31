@@ -27,8 +27,6 @@ def testDelete_1():
     room1 = ca.room.getObject(roomGuid)
     ca.room.delete(roomGuid)
     assert_raises(xmlrpclib.Fault, ca.room.getObject, roomGuid)
-    racktivity_test_library.ui.doUITest(room1.datacenterguid, "DELETE", value=room1.name)
-    ok_(racktivity_test_library.ui.getResult(room1.name))
 
 @raises(xmlrpclib.Fault)
 def testDelete_2():
