@@ -2,6 +2,7 @@ __author__ = 'Incubaid'
 __tags__ = 'setup'
 __priority__= 3
 
+import uuid
 from osis.store.OsisDB import OsisDB
 
 def main(q, i, params, tags):
@@ -19,5 +20,9 @@ def main(q, i, params, tags):
         indexes = ['name']
 
         for field in indexes:
-            context = {'schema': "%s_%s" % (domain, rootobject), 'view': view_name, 'field': field}
-            connection.runQuery("CREATE INDEX %(field)s_%(schema)s_%(view)s ON %(schema)s.%(view)s (%(field)s)" % context)
+            context = {'index': str(uuid.uuid4()),
+                       'schema': "%s_%s" % (domain, rootobject),
+                       'view': view_name,
+                       'field': field}
+            
+            connection.runQuery("""CREATE INDEX "%(index)s" ON %(schema)s.%(view)s (%(field)s)""" % context)

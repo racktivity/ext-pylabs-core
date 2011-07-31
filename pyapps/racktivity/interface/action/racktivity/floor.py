@@ -191,7 +191,7 @@ class Floor():
         @rtype:                   dictionary
         """
         
-    def list(self, floorguid=None,  request=None, jobguid=None, executionparams=dict()):
+    def list(self, floorguid=None, datacenterguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         @execution_method = sync
         

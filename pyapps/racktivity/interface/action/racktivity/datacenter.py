@@ -134,7 +134,7 @@ G
         @raise e:                      In case an error occurred, exception is raised
         """
 
-    def list(self, datacenterguid=None, request=None, jobguid=None, executionparams=dict()):
+    def list(self, datacenterguid=None, locationguid=None, request=None, jobguid=None, executionparams=dict()):
         """
         List all datacenters.
 
@@ -142,6 +142,9 @@ G
         
         @param datacenterguid:          Guid of the datacenter specified
         @type datacenterguid:           guid
+        
+        @param locationguid:          Guid of the location
+        @type locationguid:           guid
 
         @security administrators
         @param jobguid:                 Guid of the job if avalailable else empty string
