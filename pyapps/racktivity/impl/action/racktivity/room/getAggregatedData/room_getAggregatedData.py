@@ -1,7 +1,7 @@
 __author__ = 'racktivity'
 __priority__= 3
 
-from rootobjectaction_lib import rootobjectaction_find
+
 
 def avg(v1, v2):
     if v1 == 0:
@@ -12,11 +12,11 @@ def avg(v1, v2):
 def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     roomguid = params['roomguid']
+    from rootobjectaction_lib import rootobjectaction_find
     if not rootobjectaction_find.find('room', guid = roomguid):
         raise ValueError("No room with this guid (%s) exists"%roomguid)
     
     meteringtypes = params['meteringtypes']
-    from rootobjectaction_lib import rootobjectaction_find
     rackguids = rootobjectaction_find.rack_find(roomguid=roomguid, height=None)
     from rootobjectaction_lib import rootobject_authorization
     rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
