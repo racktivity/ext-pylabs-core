@@ -21,7 +21,7 @@ def testCreate_1():
     @id: 0210201
     @timestamp: 1293360198
     @signature: mmagdy
-    @params: ca.room.create('test_room1', dcguid, floor=floorguid)['result']['roomguid']
+    @params: ca.room.create('test_room1', dcguid, floorguid=floorguid)['result']['roomguid']
     @expected_result: function should create Room and store it in the drp
     """
     global room1Guid
@@ -78,7 +78,7 @@ def testCreate_4():
     @expected_result: function should fail because the datacenter guid is not valid
     """
     q.logger.log("         Creating room with invalid datacenter guid")
-    ca.room.create("test_room_negative", '00000000-0000-0000-0000-000000000000', floor=floorguid)
+    ca.room.create("test_room_negative", '00000000-0000-0000-0000-000000000000', floorguid=floorguid)
 
 @raises(xmlrpclib.Fault)
 def testCreate_5():
