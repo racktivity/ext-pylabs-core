@@ -26,7 +26,6 @@ def testDelete_1():
     ca.cable.delete(cableGuid)
     assert_raises(xmlrpclib.Fault, ca.cable.getObject, cableGuid)
 
-@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0030302]Deleting non existing cable
@@ -37,5 +36,5 @@ def testDelete_2():
     @expected_result: call should fail because the cable doesn't exist
     """
     q.logger.log("    Deleting non existing cable")
-    ca.cable.delete('00000000-0000-0000-0000-000000000000')
+    ok_ (ca.cable.delete('00000000-0000-0000-0000-000000000000'), "Deleting non existing cable returns True")
 
