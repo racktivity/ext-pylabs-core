@@ -7,7 +7,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     clouduserguid = params['clouduserguid'] 
     from rootobjectaction_lib import rootobjectaction_find
-    cloudusergroupguids = rootobjectaction_find('cloudusergroup')
+    cloudusergroupguids = rootobjectaction_find.find('cloudusergroup')
 
     for cugg in cloudusergroupguids:
         cloudusergroup = p.api.model.racktivity.cloudusergroup.get(cugg)
