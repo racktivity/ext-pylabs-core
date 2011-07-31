@@ -28,9 +28,6 @@ def testUpdate_1():
     """
     q.logger.log("         Updating datacenter name")
     ca.datacenter.updateModelProperties(dc1Guid, name = "test_DataCenter_rename")
-    dc1 = ca.datacenter.getObject(dc1Guid)
-    racktivity_test_library.ui.doUITest("Real+time+data", "UPDATE", value=dc1.name)
-    ok_(racktivity_test_library.ui.getResult( dc1.name))
 
 def testUpdate_2():
     """
