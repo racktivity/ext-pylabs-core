@@ -18,9 +18,11 @@ def main(q, i, p, params, tags):
     
     meteringtypes = params['meteringtypes']
     rackguids = rootobjectaction_find.rack_find(roomguid=roomguid, height=None)
-    from rootobjectaction_lib import rootobject_authorization
-    rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
-    
+
+    if hasattr(params["request"], "username"):
+        from rootobjectaction_lib import rootobject_authorization
+        rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
+
     result = {'Current': 0.0,
               'Voltage': 0.0,
               'Frequency': 0.0,
