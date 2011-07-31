@@ -22,9 +22,10 @@ def main(q, i, p, params, tags):
     
     meteringtypes = params['meteringtypes']
     from rootobjectaction_lib import rootobjectaction_find
-    rackguids = rootobjectaction_find.rack_find(floor=floorguid)
-    from rootobjectaction_lib import rootobject_authorization
-    rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
+    rackguids = rootobjectaction_find.rack_find(floorguid=floorguid)
+    if hasattr(params["request"], "name"):
+        from rootobjectaction_lib import rootobject_authorization
+        rackguids = rootobject_authorization.getAuthorizedGuids(params["request"]["username"], rackguids, p.api.model.racktivity.rack , "getAggregatedData")
     
     result = {'Current': 0.0,
               'Voltage': 0.0,
