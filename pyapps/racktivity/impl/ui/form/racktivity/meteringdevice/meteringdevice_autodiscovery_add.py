@@ -5,7 +5,7 @@ IP_REGEX = "^((\d{1,2}|[0-1]\d{2}|2([0-4]\d|5[0-5]))\.){3}(\d{1,2}|[0-1]\d{2}|2(
 DEFAULT_PASSWORD = "private"
 DEFAULT_PORT = 161
 
-from pymonkey.pmtypes import IPv4Range
+from pylabs.pmtypes import IPv4Range
 
 def getOrCreateLan(q, cloudapi, network, netmask):
     lans = cloudapi.lan.find(network=network, netmask=netmask)['result']['guidlist']

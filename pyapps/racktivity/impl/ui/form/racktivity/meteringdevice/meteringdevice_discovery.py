@@ -1,7 +1,7 @@
 __author__ = 'racktivity'
 __tags__ = 'wizard', 'meteringdevice_discovery'
 
-from pymonkey.pmtypes import IPv4Range, IPv4Address
+from pylabs.pmtypes import IPv4Range, IPv4Address
 import json
 
 AUTODISCOVERY_POLICY = 'racktivity_autodiscovery'
