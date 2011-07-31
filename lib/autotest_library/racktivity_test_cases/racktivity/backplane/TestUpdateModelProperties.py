@@ -50,12 +50,11 @@ def testUpdate_3():
     @params: ca.backplane.updateModelProperties(backplaneGuid1, backplanetype = "ETHERNET")
     @expected_result: backplane type will change
     """
-    q.logger.log("         Updating backplane type")
-    p.api = p.application.getAPI('racktivity', context= q.enumerators.AppContext.WFE) 
+    q.logger.log("         Updating backplane type") 
     ca.backplane.updateModelProperties(backplaneGuid1, backplanetype = "ETHERNET")
     backplane = ca.backplane.getObject(backplaneGuid1)
-    assert_equal(backplane.backplanetype, p.api.model.enumerators.backplanetype.ETHERNET, "Type attribute was not properly updated")
+    assert_equal(backplane.backplanetype, "ETHERNET", "Type attribute was not properly updated")
     ca.backplane.updateModelProperties(backplaneGuid1, backplanetype = "INFINIBAND")
     backplane = ca.backplane.getObject(backplaneGuid1)
-    assert_equal(backplane.backplanetype, p.api.model.enumerators.backplanetype.INFINIBAND , "Type attribute was not properly updated")
+    assert_equal(backplane.backplanetype, "INFINIBAND" , "Type attribute was not properly updated")
 
