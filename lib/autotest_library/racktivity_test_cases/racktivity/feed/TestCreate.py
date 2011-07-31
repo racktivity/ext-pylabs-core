@@ -31,7 +31,7 @@ def testCreate_1():
     feed1 = ca.feed.getObject(feed1Guid)
     assert_equal(feed1.name,'test_feed1')
     assert_equal(feed1.datacenterguid,dcguid)
-    assert_equal(feed1.productiontype,q.enumerators.feedProductionType.COAL)
+    assert_equal(str(feed1.productiontype), "COAL")
 
 def testCreate_2():
     """
@@ -50,7 +50,7 @@ def testCreate_2():
     feed1 = ca.feed.getObject(feed2Guid)
     assert_equal(feed1.name,'test_feed2')
     assert_equal(feed1.datacenterguid,dcguid)
-    assert_equal(feed1.productiontype,q.enumerators.feedProductionType.GAS)
+    assert_equal(str(feed1.productiontype), "GAS")
     assert_equal(feed1.description,'test_feed2_description')
 
 @raises(xmlrpclib.Fault)
