@@ -31,8 +31,7 @@ def testCreate_1():
     ok_(dc1Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if datacenter exists")
     dc1 = ca.datacenter.getObject(dc1Guid)
-    racktivity_test_library.ui.doUITest("Real+time+data", "CREATE", value=dc1.name)
-    ok_(racktivity_test_library.ui.getResult( dc1.name))
+
 
 def testCreate_2():
     """
@@ -49,8 +48,7 @@ def testCreate_2():
     ok_(dc2Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if datacenter exists")
     dc2 = ca.datacenter.getObject(dc2Guid)
-    racktivity_test_library.ui.doUITest("Real+time+data", "CREATE", value=dc2.name)
-    ok_(racktivity_test_library.ui.getResult(dc2.name))
+
 
 @raises(xmlrpclib.Fault)
 def testCreate_3():

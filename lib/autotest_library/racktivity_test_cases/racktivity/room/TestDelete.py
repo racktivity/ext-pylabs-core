@@ -27,10 +27,8 @@ def testDelete_1():
     room1 = ca.room.getObject(roomGuid)
     ca.room.delete(roomGuid)
     assert_raises(xmlrpclib.Fault, ca.room.getObject, roomGuid)
-    racktivity_test_library.ui.doUITest(room1.datacenterguid, "DELETE", value=room1.name)
-    ok_(racktivity_test_library.ui.getResult(room1.name))
 
-@raises(xmlrpclib.Fault)
+#@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0210302] Deleting non existing room
@@ -41,5 +39,5 @@ def testDelete_2():
     @expected_result:the room should be deleted
     """
     q.logger.log("    Deleting non existing room")
-    ca.room.delete('00000000-0000-0000-0000-000000000000')
+    ok_(ca.room.delete('00000000-0000-0000-0000-000000000000'), "Deleting a non-existing room returns True")
 

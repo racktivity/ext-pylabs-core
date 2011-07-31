@@ -123,11 +123,14 @@ def customer_list(customerguid=""):
         results.append(result)
     return results
 
-def datacenter_list(datacenterguid=""):
+def datacenter_list(datacenterguid="", locationguid=""):
     view =  'racktivity_view_datacenter_list'
     filterObj = p.api.model.racktivity.datacenter.getFilterObject()
     if datacenterguid:
         filterObj.add(view, 'guid', datacenterguid)
+    if locationguid:
+        filterObj.add(view, 'locationguid', locationguid)
+        
     datacenters = p.api.model.racktivity.datacenter.findAsView(filterObj, view)
     removekeys = ('viewguid', 'version')
     results = list()
@@ -388,11 +391,15 @@ def room_list(roomguid=""):
         results.append(result)
     return results
 
-def floor_list(floorguid=""):
+def floor_list(floorguid="", datacenterguid=""):
     view = 'racktivity_view_floor_list'
     filterobj = p.api.model.racktivity.floor.getFilterObject()
     if floorguid:
         filterobj.add(view, 'guid', floorguid)
+    
+    if datacenterguid:
+        filterobj.add(view, 'datacenterguid', datacenterguid)
+        
     floors = p.api.model.racktivity.floor.findAsView(filterobj, view)
     removekeys = ('viewguid', 'version')
     results = list()

@@ -29,7 +29,7 @@ def testCreate_1():
     q.logger.log("         Checking if backplane exists")
     backplane1 = ca.backplane.getObject(backplane1Guid)
     assert_equal(backplane1.name,'test_backplane1')
-    assert_equal(backplane1.backplanetype,q.enumerators.backplanetype.ETHERNET)
+    assert_equal(str(backplane1.backplanetype),"ETHERNET")
 
 def testCreate_2():
     """
@@ -47,7 +47,7 @@ def testCreate_2():
     q.logger.log("         Checking if backplane exists")
     backplane2 = ca.backplane.getObject(backplane2Guid)
     assert_equal(backplane2.name,'test_backplane2')
-    assert_equal(backplane2.backplanetype,q.enumerators.backplanetype.INFINIBAND)
+    assert_equal(str(backplane2.backplanetype),"INFINIBAND")
     assert_equal(backplane2.description,'test_backplane2_description')
     assert_equal(backplane2.publicflag, True)
     assert_equal(backplane2.managementflag, True)

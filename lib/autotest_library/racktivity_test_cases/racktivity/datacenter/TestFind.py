@@ -27,7 +27,7 @@ def testFind_1():
     @expected_result: function should return a valid datacenter guid 
     """
     q.logger.log("        Using find function to search by name")
-    result = ca.datacenter.find(name="test_DataCenter")['result']['guidlist']
+    result = ca.datacenter.find(name="test_DataCenter*")['result']['guidlist']
     assert_equal(len(result), 2, "Find was expected to return two items %d item(s) were returned instead"%len(result))
     for guid in dcGuids:
         ok_(guid in result, "Guid %s was not returned by find()"%guid)

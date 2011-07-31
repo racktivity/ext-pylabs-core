@@ -27,8 +27,6 @@ def testDelete_1():
     dc1 = ca.datacenter.getObject(dcGuid)
     ca.datacenter.delete(dcGuid)
     assert_raises(xmlrpclib.Fault, ca.datacenter.getObject, dcGuid)
-    racktivity_test_library.ui.doUITest("Real+time+data", "DELETE", value=dc1.name)
-    ok_(racktivity_test_library.ui.getResult(dc1.name))
 
 @raises(xmlrpclib.Fault)
 def testDelete_2():

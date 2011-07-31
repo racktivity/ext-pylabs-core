@@ -29,7 +29,7 @@ def testCreate_1():
     q.logger.log("         Checking if cable exists")
     cable1 = ca.cable.getObject(cable1Guid)
     assert_equal(cable1.name,'test_cable1')
-    assert_equal(cable1.cabletype,q.enumerators.cabletype.USBCABLE)
+    assert_equal(str(cable1.cabletype), "USBCABLE")
 
 def testCreate_2():
     """
@@ -47,7 +47,7 @@ def testCreate_2():
     q.logger.log("         Checking if cable exists")
     cable2 = ca.cable.getObject(cable2Guid)
     assert_equal(cable2.name,'test_cable2')
-    assert_equal(cable2.cabletype,q.enumerators.cabletype.USBCABLE)
+    assert_equal(str(cable2.cabletype), "USBCABLE")
     assert_equal(cable2.description,'test_cable2_description')
     assert_equal(cable2.label,'test_cable2_label')
 

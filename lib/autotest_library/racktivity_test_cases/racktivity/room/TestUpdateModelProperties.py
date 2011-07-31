@@ -27,8 +27,7 @@ def testUpdate_1():
     ca.room.updateModelProperties(roomGuid1, name = "test_Room_rename")
     room = ca.room.getObject(roomGuid1)
     assert_equal(room.name, "test_Room_rename", "Name attribute was not properly updated")
-    racktivity_test_library.ui.doUITest(room.datacenterguid, "UPDATE", value=room.name)
-    ok_(racktivity_test_library.ui.getResult(room.name))
+
 
 def testUpdate_2():
     """
