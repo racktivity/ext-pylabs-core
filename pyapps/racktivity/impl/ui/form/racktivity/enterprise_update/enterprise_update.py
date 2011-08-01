@@ -45,10 +45,10 @@ def main(q, i, p, params, tags):
     enterprisetab = form.tabs['enterprise']
     tagstring = getTagString(q, enterprisetab)
 
-    cloudapi.enterprise.create(name=enterprisetab.elements['name'].value,
-                               description=enterprisetab.elements['description'].value,
-                               campuses=enterprise.campuses,
-                               tags=tagstring)
+    cloudapi.enterprise.updateModelProperties(enterpriseguid,
+                                                name=enterprisetab.elements['name'].value,
+                                                description=enterprisetab.elements['description'].value,
+                                                tags=tagstring)
 
     q.gui.dialog.showMessageBox('enterprise "%s" is being updated' % enterprisetab.elements['name'].value, "Update enterprise")
 
