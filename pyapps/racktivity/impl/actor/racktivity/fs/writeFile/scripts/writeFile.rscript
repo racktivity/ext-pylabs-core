@@ -1,7 +1,0 @@
-
-
-q.system.fs.writeFile(params['filename'],
-                      params['contents'],
-                      params['append'])
-
-params['result'] = {'returncode': True}

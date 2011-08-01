@@ -1,9 +1,0 @@
-
-try:
-    q.racktivity.eventhandler.raiseCritical(message=params['message'],
-                                            messageprivate=params['messageprivate'],
-                                            typeid=params['typeid'],
-                                            tags=params['tags'],
-                                            escalate=params['escalate'])
-except Exception, e:
-    params['result'] = e
