@@ -1,11 +1,9 @@
 <link rel=StyleSheet href="/static/lfw/js/libs/jstree/themes/classic/style.css" type="text/css" />
 
-
-
-
+<link rel='stylesheet' href='/static/jswizards/style/screen.css' type='text/css' />
 <script type='text/javascript' src='/static/jswizards/ext/jquery.ui.datetimepicker.js'></script>
 <script type='text/javascript' src='/static/jswizards/ext/jquery.floatbox.1.0.8.js'></script>
-<script type='text/javascript' src='/static/jswizards/js/jswizards.js'></script>
+
 <!-- END js wizard stuff -->
 
 <script language="javascript" src="/static/lfw/js/libs/jstree/jquery.hotkeys.js"/>
@@ -17,16 +15,37 @@
 
 <script>
 $(document).ready(function(){
+    
+    var wizard = function(name, options){
+        var options = $.extend({service: "appserver/rest/ui/wizard",
+                                domain: "racktivity",
+                                params: null,
+                                done: $.noop,
+                                cancel: $.noop}, options);
+                                
+        
+        JSWizards.launch(options.service, options.domain, name,
+                        options.params !== null ? JSON.stringify(options.params) : "",
+                        options.done, options.cancel);
+                                                
+    };
+    
     var contextmenu = function(item) {
         var type = item.attr("rel");
-        var service = "appserver/rest/ui/wizard";
-        var domain = "racktivity";
+        
         var actions = [];
         if (type === "enterprise") {
             actions.push({label: "Update",
                           action: function(item){
                               var guid = item.attr("id");
-                              JSWizards.launch(service, domain, "enterprise_update", {});
+                              wizard("enterprise_update", {params: {enterpriseguid: guid},
+                                                           done: function(x){
+                                                               alert("Done: " + x);
+                                                            },
+                                                            cancel: function(){
+                                                                alert("Cancel");
+                                                            }});
+                              
                           }});
                           
         }else if (type === "location"){
