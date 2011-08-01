@@ -11,7 +11,7 @@ def callback_feedType_change(q, i, params, tags):
     return form
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     form = q.gui.form.createForm()
 
     feedguid = params['extra']['rootobjectguid']

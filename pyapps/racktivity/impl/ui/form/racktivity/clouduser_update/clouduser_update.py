@@ -19,7 +19,7 @@ def inGroup(cloudapi, login, *groups):
 
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     
     clouduserguid = params['extra']['rootobjectguid']
     clouduser = cloudapi.clouduser.getObject(clouduserguid) 

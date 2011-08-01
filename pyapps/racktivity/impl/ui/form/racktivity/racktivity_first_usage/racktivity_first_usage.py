@@ -20,7 +20,7 @@ def getTagString(q, tab):
 
 def main(q, i, p, params, tags):
     import json
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     form = q.gui.form.createForm()
     
     tab = form.addTab("main", "First Usage")

@@ -18,7 +18,7 @@ def fill_ports(form, params):
     tab.elements['meteringdeviceport'].values = dict((x,x) for x in portsdata.iterkeys())
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
 
     deviceguid = params['extra']['deviceguid']
     form = q.gui.form.createForm()

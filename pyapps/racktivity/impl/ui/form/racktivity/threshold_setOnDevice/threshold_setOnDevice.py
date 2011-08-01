@@ -2,7 +2,7 @@ __author__ = 'racktivity'
 __tags__ = 'wizard', 'threshold_setOnDevice'
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     meteringdeviceguid = params['extra']['meteringdeviceguid']
     
     form = q.gui.form.createForm()

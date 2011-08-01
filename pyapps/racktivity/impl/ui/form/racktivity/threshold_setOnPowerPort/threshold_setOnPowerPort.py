@@ -2,7 +2,7 @@ __author__ = 'racktivity'
 __tags__ = 'wizard', 'threshold_setOnPowerPort'
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     portlabel = params['extra']['portlabel']
     meteringdeviceguid = params['extra']['meteringdeviceguid']
 

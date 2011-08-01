@@ -9,7 +9,7 @@ DEVICE_RACKZ = "rackZ"
 
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     
     device = cloudApi.device.getObject(params['extra']['rootobjectguid'])
     

@@ -60,7 +60,7 @@ def buildPortsTab(q, tab, numberOfPorts=1):
             tab.elements[name].value = cache[name]
 
 def callback_type_change(q,i,params,tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
 
     form = q.gui.form.createForm()
     form.loadForm(params['formData'])
@@ -90,7 +90,7 @@ def checkDeviceNameUnique(cloudApi, name):
     return not bool(cloudApi.device.find(name=name)['result']['guidlist'])
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     form = q.gui.form.createForm()
 
     tab = form.addTab("main", "Add Device")

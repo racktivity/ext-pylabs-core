@@ -3,7 +3,7 @@ __tags__ = 'wizard', 'datacenter_update_polling'
 from rootobjectaction_lib import rootobjectaction_find
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     
     datacenters = cloudapi.datacenter.list()['result']['datacenterinfo']
     datacenterDict = dict([(datacenter['guid'], datacenter['name']) for datacenter in datacenters])

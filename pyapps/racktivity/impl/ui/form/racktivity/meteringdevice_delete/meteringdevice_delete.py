@@ -2,7 +2,7 @@ __tags__ = "wizard", "meteringdevice_delete"
 __author__ = "racktivity"
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     meteringdeviceguid = params['extra']['meteringdeviceguid']
     meteringdevice = cloudApi.meteringdevice.getObject(meteringdeviceguid=meteringdeviceguid)
     children = cloudApi.meteringdevice.find(parentmeteringdeviceguid=meteringdevice.guid)['result']['guidlist']

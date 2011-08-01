@@ -2,7 +2,7 @@ __tags__ = "wizard", "room_delete"
 __author__ = "racktivity"
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     roomguid = params['extra']['roomguid']
     racks = cloudApi.rack.find(roomguid=roomguid)['result']['guidlist']
     if racks:

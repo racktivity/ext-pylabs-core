@@ -18,7 +18,7 @@ def getTagString(q, tab):
     return q.base.tags.getTagString(labels, tags)
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     form = q.gui.form.createForm()
     rowguid = params['extra']['rowguid']
     row = cloudApi.row.getObject(rowguid)

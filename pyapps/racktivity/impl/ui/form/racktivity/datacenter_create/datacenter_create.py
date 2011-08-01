@@ -234,7 +234,7 @@ def getTagString(q, tab):
     return q.base.tags.getTagString(labels, tags)
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     locationguid = params['extra']['locationguid']
     feeds = cloudapi.feed.list()['result']['feedinfo']
     feedDict = dict([(feed['guid'], feed['name']) for feed in feeds if not feed['datacenterguid']])

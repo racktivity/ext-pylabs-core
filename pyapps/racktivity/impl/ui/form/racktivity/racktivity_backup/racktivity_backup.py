@@ -5,7 +5,7 @@ BACKUP_POLICY = 'racktivity_backup'
 
 def main(q, i, p, params, tags):
     import json
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     form = q.gui.form.createForm()
     #Set default values
     dest = "/opt/racktivity_backups/"

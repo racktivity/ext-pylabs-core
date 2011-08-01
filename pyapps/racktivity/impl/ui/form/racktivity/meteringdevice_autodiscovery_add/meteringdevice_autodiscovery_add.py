@@ -75,7 +75,7 @@ def modelScannedDevice(q, cloudapi, device, netmask, name, rackguid):
                                    sensorinfo=device['sensors'] if 'sensors' in device else [])['result']['meteringdeviceguid']
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     identified = cloudapi.meteringdevice.find(meteringdeviceconfigstatus=str(q.enumerators.meteringdeviceconfigstatus.IDENTIFIED))['result']['guidlist']
     
     devices = dict()

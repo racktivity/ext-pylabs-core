@@ -18,7 +18,7 @@ def inGroup(cloudapi, login, *groups):
     return True
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     currentlogin = params['extra']['login']
     if not inGroup(cloudapi, currentlogin, "administrators"):
         q.gui.dialog.showMessageBox("You don't have permissin to do this action",

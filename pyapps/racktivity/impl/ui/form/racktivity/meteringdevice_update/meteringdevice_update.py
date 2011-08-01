@@ -6,7 +6,7 @@ from pylabs.pmtypes import IPv4Range, IPv4Address
 REGEX_IP4ADDRESS_VALIDATOR = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 
 def callback_updateAccount(q, i, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     meteringdeviceguid = params['SESSIONSTATE']['meteringdeviceguid']
     meteringdevice = cloudapi.meteringdevice.getObject(meteringdeviceguid)
 
@@ -67,7 +67,7 @@ def getTagString(q, tab):
     return q.base.tags.getTagString(labels, tags)
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     meteringdeviceguid = params['extra']['meteringdeviceguid']
     meteringdevice = cloudapi.meteringdevice.getObject(meteringdeviceguid)
     policyguids = cloudapi.policy.find(rootobjectguid=meteringdeviceguid, rootobjectaction="monitor")['result']['guidlist']

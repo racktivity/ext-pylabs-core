@@ -221,7 +221,7 @@ COUNTRIES = ['Afghanistan',
              'land Islands']
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     form = q.gui.form.createForm()
     
     tab = form.addTab("main", "Create Customer")

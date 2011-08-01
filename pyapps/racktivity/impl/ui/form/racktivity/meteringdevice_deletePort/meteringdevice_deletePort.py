@@ -3,7 +3,7 @@ __tags__ = 'wizard', 'meteringdevice_deletePort'
 
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     meteringdeviceguid = params['extra']['meteringdeviceguid']
     meteringdevice = cloudapi.meteringdevice.getObject(meteringdeviceguid)
 

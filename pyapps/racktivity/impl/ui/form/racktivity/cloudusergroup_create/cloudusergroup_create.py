@@ -29,7 +29,7 @@ def inGroup(cloudapi, login, *groups):
 
 def main(q, i, p, params, tags):
 
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     
     currentlogin = params['extra']['login']
     if not inGroup(cloudapi, currentlogin, "administrators"):

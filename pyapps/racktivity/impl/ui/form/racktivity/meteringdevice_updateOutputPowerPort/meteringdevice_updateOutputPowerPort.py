@@ -3,7 +3,7 @@ __tags__ = 'wizard', 'meteringdevice_updateOutputPowerPort'
 
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     meteringdeviceguid = params['extra']['meteringdeviceguid']
     portlabel = params['extra']['portlabel']
     meteringdevice = cloudapi.meteringdevice.getObject(meteringdeviceguid)

@@ -54,7 +54,7 @@ def callback_type_selected(q, i, params, tags):
 
 def main(q, i, p, params, tags):
 
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     
     form = q.gui.form.createForm()
     login = params['extra']['login']

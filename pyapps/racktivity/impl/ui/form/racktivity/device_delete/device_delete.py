@@ -19,7 +19,7 @@ Are you sure you want to delete this device?''' % num,\
     return True
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
     deviceguid = params['extra']['deviceguid']
     device = cloudApi.device.getObject(deviceguid)
     if deleteDevice(q, deviceguid, cloudApi):

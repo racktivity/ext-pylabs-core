@@ -2,7 +2,7 @@ __tags__ = "wizard", "rack_delete"
 __author__ = "racktivity"
 
 def main(q, i, p, params, tags):
-    cloudApi = i.config.cloudApiConnection.find('main')
+    cloudApi = p.api.action.racktivity
 
     rackguid = params['extra']['rackguid']
     

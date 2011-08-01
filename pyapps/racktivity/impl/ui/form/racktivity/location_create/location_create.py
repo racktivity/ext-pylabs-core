@@ -234,7 +234,7 @@ def getTagString(q, tab):
     return q.base.tags.getTagString(labels, tags)
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
 
     locationform = q.gui.form.createForm()
     locationtab = locationform.addTab('location', 'Create Campus')

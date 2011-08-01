@@ -8,7 +8,7 @@ AUTODISCOVERY_POLICY = 'racktivity_autodiscovery'
 TITLE = 'Create/Update Auto-discovery Policy'
 
 def main(q, i, p, params, tags):
-    cloudapi = i.config.cloudApiConnection.find('main')
+    cloudapi = p.api.action.racktivity
     autodiscoverypolicyguids = cloudapi.policy.find(AUTODISCOVERY_POLICY)['result']['guidlist']
     autodiscoverypolicy = None
     interval = 15.0
