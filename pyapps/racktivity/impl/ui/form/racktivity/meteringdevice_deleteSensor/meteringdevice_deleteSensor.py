@@ -18,5 +18,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Sensor "%s" is being deleted from the energy switch %s' % (sensors[tab.elements['sensor'].value], meteringdevice.name), "Delete Sensor")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

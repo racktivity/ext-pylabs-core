@@ -22,5 +22,5 @@ are you sure you want to delete this feed?''' % (datacenter.name, numoffeeds),
     cloudApi.feed.delete(feedguid=feedguid)
     q.gui.dialog.showMessageBox("Feed '%s' is being deleted" % feed.name, "Delete Feed")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

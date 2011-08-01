@@ -57,5 +57,5 @@ def main(q, i, p, params, tags):
     
     q.gui.dialog.showMessageBox("Cloud user group '%s' is being created" % name, "Create Cloud user group")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

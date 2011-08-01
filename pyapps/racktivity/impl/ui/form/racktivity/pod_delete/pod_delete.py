@@ -21,5 +21,6 @@ def main(q, i, p, params, tags):
     
     cloudApi.pod.delete(podguid)
     q.gui.dialog.showMessageBox("Pod '%s' is being deleted" % pod.name, "Delete pod")
-def main(q, i, p, params, tags):
+
+def match(q, i, p, params, tags):
     return True

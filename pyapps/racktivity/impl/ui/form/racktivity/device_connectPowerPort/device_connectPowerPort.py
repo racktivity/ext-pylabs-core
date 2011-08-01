@@ -55,5 +55,5 @@ def main(q, i, p, params, tags):
     cloudApi.device.connectPowerPort(deviceguid, devport.name, cableguid)
     q.gui.dialog.showMessageBox("Powerport %s has been connected to meteringdevice %s on powerport %s" % (devport.name, meteringdevice.name, meteringdeviceport.label), "Connect PowerOutpurtPort")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

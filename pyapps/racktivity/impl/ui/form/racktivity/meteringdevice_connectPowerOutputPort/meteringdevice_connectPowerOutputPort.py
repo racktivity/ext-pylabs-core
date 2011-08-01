@@ -75,5 +75,5 @@ def main(q, i, p, params, tags):
     cloudApi.meteringdevice.updateModelProperties(meteringdeviceguid, meteringdeviceconfigstatus=str(q.enumerators.meteringdeviceconfigstatus.USED))
     q.gui.dialog.showMessageBox("Poweroutputport %s has been connected to device %s on powerport %s" % (poweroutputport['label'], device.name, powerport.name), "Connect PowerOutpurtPort")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

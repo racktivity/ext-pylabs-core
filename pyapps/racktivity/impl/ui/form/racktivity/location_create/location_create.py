@@ -269,5 +269,5 @@ def main(q, i, p, params, tags):
     
     q.gui.dialog.showMessageBox('Location "%s" is being created' % locationtab.elements['name'].value, "Create Campus")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

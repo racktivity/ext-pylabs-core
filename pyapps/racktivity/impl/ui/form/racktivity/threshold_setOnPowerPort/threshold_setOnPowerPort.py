@@ -25,5 +25,5 @@ def main(q, i, p, params, tags):
     cloudapi.meteringdevice.setThresholdOnPowerPort(meteringdeviceguid, portlabel, thresholdtype, thresholdvalue)
     q.gui.dialog.showMessageBox('Threshold is being set on the device', "Create Threshold")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

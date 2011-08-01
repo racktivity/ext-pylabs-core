@@ -41,5 +41,5 @@ def main(q, i, p, params, tags):
     cloudapi.cloudusergroup.delete(cloudusergroupguid)
     q.gui.dialog.showMessageBox("Cloud user group '%s' is being deleted" % cloudusergroup.name, "Delete Cloud user group")
     
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

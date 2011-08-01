@@ -52,5 +52,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Floor "%s" is being created' % tab.elements['name'].value, "Create Floor")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

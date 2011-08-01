@@ -15,5 +15,6 @@ def main(q, i, p, params, tags):
     
     cloudApi.logicalview.delete(logicalviewguid)
     q.gui.dialog.showMessageBox("Logical view '%s' is being deleted" % logicalview.name, "Delete logical view")
-def main(q, i, p, params, tags):
+
+def match(q, i, p, params, tags):
     return True

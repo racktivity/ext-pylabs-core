@@ -19,5 +19,5 @@ def main(q, i, p, params, tags):
         else:
             cloudApi.meteringdevice.powerOnPowerPort(mcguid, label)
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

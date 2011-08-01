@@ -17,5 +17,5 @@ def main(q, i, p, params, tags):
     cloudapi.meteringdevice.setPowerPortStartupDelay(meteringdeviceguid, portlabel, delayvalue)
     q.gui.dialog.showMessageBox('Startup delay has been set to %s on the device'%delayvalue, "Set startup delay")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -52,5 +52,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox("Row '%s' is being updated" % tab.elements['name'].value, "Update Row")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

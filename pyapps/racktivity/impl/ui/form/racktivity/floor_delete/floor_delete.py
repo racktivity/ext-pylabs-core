@@ -21,5 +21,6 @@ def main(q, i, p, params, tags):
     
     cloudApi.floor.delete(floorguid)
     q.gui.dialog.showMessageBox("Floor '%s' is being deleted" % floor.name, "Delete floor")
-def main(q, i, p, params, tags):
+
+def match(q, i, p, params, tags):
     return True

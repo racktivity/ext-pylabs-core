@@ -17,5 +17,5 @@ are you sure you want to delete this room with all its rack(s)?''' % num,
     cloudApi.room.delete(roomguid=roomguid)
     q.gui.dialog.showMessageBox("room '%s' is being deleted" % room.name, "Delete room")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -116,5 +116,5 @@ def main(q, i, p, params, tags):
     
     q.gui.dialog.showMessageBox('Cloud user "%s" has been updated' % clouduser.login, "Update Cloud user")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -28,5 +28,5 @@ Are you sure you want to delete this Energy Switch ?''' % (numactivepowerinputs,
     cloudApi.meteringdevice.delete(meteringdevice.guid)
     q.gui.dialog.showMessageBox("Energy Switch '%s' is being deleted" % meteringdevice.name, "Delete Energy Switch")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -48,5 +48,5 @@ def main(q, i, p, params, tags):
     
     q.gui.dialog.showMessageBox("cloud user '%s' has been deleted" % clouduser.login, "Delete cloud user")
     
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

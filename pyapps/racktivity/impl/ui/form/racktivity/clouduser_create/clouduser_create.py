@@ -105,5 +105,5 @@ def main(q, i, p, params, tags):
         
     q.gui.dialog.showMessageBox('Cloud user "%s" is being created' % tab.elements['login'].value, "Create Cloud user")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -90,5 +90,5 @@ def main(q, i, p, params, tags):
         
     q.gui.dialog.showMessageBox("Rack '%s' has been created" % tab.elements['rackName'].value, "Create Rack")
     
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

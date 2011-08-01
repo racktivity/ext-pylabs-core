@@ -414,5 +414,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox("Energy Switch '%s' is being added" % tab.elements['name'].value, "Add Energy Switch")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

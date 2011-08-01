@@ -52,5 +52,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('enterprise "%s" is being updated' % enterprisetab.elements['name'].value, "Update enterprise")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

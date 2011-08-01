@@ -296,5 +296,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('enterprise "%s" is being created' % enterprisetab.elements['name'].value, "Create enterprise")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

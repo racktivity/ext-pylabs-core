@@ -111,5 +111,5 @@ def main(q, i, p, params, tags):
     
     q.gui.dialog.showMessageBox("Feed '%s' is being created" % tab.elements['feedName'].value, "Create Feed")
     
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

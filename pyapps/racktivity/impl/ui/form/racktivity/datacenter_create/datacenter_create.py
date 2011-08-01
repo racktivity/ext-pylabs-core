@@ -295,5 +295,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Datacenter "%s" is being created' % tab.elements['name'].value, "Create Datacenter")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -56,5 +56,5 @@ def main(q, i, p, params, tags):
     
     q.gui.dialog.showMessageBox('Pod "%s" is being created' % tab.elements['name'].value, "Create Pod")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

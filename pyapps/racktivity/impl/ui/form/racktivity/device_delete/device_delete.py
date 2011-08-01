@@ -25,5 +25,5 @@ def main(q, i, p, params, tags):
     if deleteDevice(q, deviceguid, cloudApi):
         q.gui.dialog.showMessageBox("device '%s' is being deleted" % device.name, "Delete device")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

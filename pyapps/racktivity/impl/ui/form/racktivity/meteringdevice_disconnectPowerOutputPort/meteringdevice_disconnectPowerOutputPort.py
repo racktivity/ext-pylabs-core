@@ -37,5 +37,5 @@ def main(q, i, p, params, tags):
     cloudApi.meteringdevice.disconnectPowerOutputPort(powerport['mdguid'], powerport['label'])
     q.gui.dialog.showMessageBox("Poweroutputport %s has been disconnected" % (powerport['label']), "Disconnect PowerOutpurtPort")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

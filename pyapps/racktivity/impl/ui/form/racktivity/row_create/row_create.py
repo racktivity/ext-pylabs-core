@@ -60,5 +60,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Row "%s" is being created' % tab.elements['name'].value, "Create Row")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -55,5 +55,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox("Room '%s' is being updated" % tab.elements['ractivity_roomname'].value, "Create Room")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

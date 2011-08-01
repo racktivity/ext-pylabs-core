@@ -22,5 +22,5 @@ all the connected device(s)?''' % num,
     cloudApi.rack.delete(rackguid=rackguid)
     q.gui.dialog.showMessageBox("Rack '%s' is being deleted" % rack.name, "Delete rack")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

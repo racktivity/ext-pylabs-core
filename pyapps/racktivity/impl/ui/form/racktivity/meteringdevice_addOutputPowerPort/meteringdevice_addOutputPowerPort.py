@@ -18,5 +18,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Output Power Port "%s" is being added to the energy switch %s' % (tab.elements['label'].value, meteringdevice.name), "Add Output Power Port")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

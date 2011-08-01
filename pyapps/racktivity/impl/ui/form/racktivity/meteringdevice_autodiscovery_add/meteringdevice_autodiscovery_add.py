@@ -196,5 +196,5 @@ address you want to discover""")
         
     q.gui.dialog.showMessageBox("Energy Switch '%s' has been added" % conftab.elements['name'].value, "Add Energy Switch")
     
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

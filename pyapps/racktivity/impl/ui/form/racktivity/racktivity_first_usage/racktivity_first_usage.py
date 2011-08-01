@@ -99,5 +99,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox("New user has been created successfull please relogin using this user", "Information")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

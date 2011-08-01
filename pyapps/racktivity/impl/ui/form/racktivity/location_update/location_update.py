@@ -273,5 +273,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Campus "%s" is being updated' % locationtab.elements['name'].value, "Update Campus")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

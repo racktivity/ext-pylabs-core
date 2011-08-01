@@ -65,5 +65,5 @@ def main(q, i, p, params, tags):
                                           policyparams=policyparamsStr, interval=float(tab.elements['interval'].value))
     q.gui.dialog.showMessageBox('Auto-discovery policy is being updated' , TITLE)
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

@@ -18,5 +18,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Port "%s" is being deleted from the energy switch %s' % (ports[tab.elements['port'].value], meteringdevice.name), "Delete Port")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

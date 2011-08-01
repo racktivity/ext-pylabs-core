@@ -21,5 +21,5 @@ def main(q, i, p, params, tags):
     
     cloudApi.datacenter.delete(datacenterguid)
     q.gui.dialog.showMessageBox("datacenter '%s' is being deleted" % datacenter.name, "Delete datacenter")
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

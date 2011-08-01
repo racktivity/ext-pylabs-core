@@ -19,5 +19,5 @@ are you sure you want to delete this location with all its datacenter(s)?''' % n
     cloudApi.location.delete(locationguid=locationguid)
     q.gui.dialog.showMessageBox("location '%s' is being deleted" % location.name, "Delete location")
     
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

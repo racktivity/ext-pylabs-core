@@ -21,5 +21,6 @@ def main(q, i, p, params, tags):
     
     cloudApi.row.delete(rowguid)
     q.gui.dialog.showMessageBox("Row '%s' is being deleted" % row.name, "Delete row")
-def main(q, i, p, params, tags):
+
+def match(q, i, p, params, tags):
     return True

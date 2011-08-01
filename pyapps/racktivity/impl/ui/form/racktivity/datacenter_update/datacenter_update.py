@@ -303,5 +303,5 @@ def main(q, i, p, params, tags):
 
     q.gui.dialog.showMessageBox('Datacenter "%s" is being updated' % tab.elements['name'].value, "Update Datacenter")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True

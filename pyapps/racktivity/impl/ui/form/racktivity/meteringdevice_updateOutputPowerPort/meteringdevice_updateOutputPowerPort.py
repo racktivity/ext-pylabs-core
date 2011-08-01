@@ -18,5 +18,5 @@ def main(q, i, p, params, tags):
         cloudapi.meteringdevice.updatePowerOutputPort(meteringdeviceguid, portlabel, newportlabel=newportlabel)
         q.gui.dialog.showMessageBox('Output Power Port name is being updated to "%s"' % tab.elements['label'].value, "Update Output Power Port")
 
-def main(q, i, p, params, tags):
+def match(q, i, p, params, tags):
     return True
