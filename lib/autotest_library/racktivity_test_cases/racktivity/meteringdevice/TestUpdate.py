@@ -37,8 +37,6 @@ def testUpdate_1():
     cloudapi.meteringdevice.updateModelProperties(guid, name=newname)
     device = cloudapi.meteringdevice.getObject(guid)
     assert_equal(device.name, newname, "Name didn't change")
-    racktivity_test_library.ui.doUITest(device.rackguid, "UPDATE", value=device.name)
-    ok_(racktivity_test_library.ui.getResult(device.name))
     #restore device name
     cloudapi.meteringdevice.updateModelProperties(guid, name=DEVICE_NAME)
 

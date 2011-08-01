@@ -7,7 +7,7 @@ def main(q, i, p, params, tags):
     meteringdevice = p.api.model.racktivity.meteringdevice.get(meteringdeviceguid)
     for sensor in meteringdevice.sensors:
         if sensor.label == params['label']:
-            events.raiseError('Sensor label must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0060', tags='', escalate=False)
+            raise ValueError('Sensor label must be unique within the module')
 
     fields = ('label', 'sensortype', 'sequence')
     sensor = meteringdevice.sensors.new()
@@ -22,12 +22,12 @@ def main(q, i, p, params, tags):
         sensor.sequence = maxsequence + 1
     
     if sensor.sequence <= 0:
-        events.raiseError("Sequence must be 1 or more", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0061', tags='', escalate=False)
+        raise ValueError("Sequence must be 1 or more")
     
     #validate the sequence and the label
     for s in meteringdevice.sensors:
         if sensor.sequence == s.sequence:
-            events.raiseError("Sequence '%s' is already taken by another sensor" % sensor.sequence, messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0062', tags='', escalate=False)
+            raise ValueError("Sequence '%s' is already taken by another sensor" % sensor.sequence)
         
     meteringdevice.sensors.append(sensor)
     

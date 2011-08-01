@@ -20,7 +20,7 @@ def main(q, i, p, params, tags):
         
     datatype = params['meteringtype'] #can be either signal_current or signal_voltage
     
-    result = p.api.actor.meteringdevice.getPortData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port,  meteringdevice.id, portid, datatype)
+    result = p.api.actor.racktivity.meteringdevice.getPortData(meteringdeviceguid, master.meteringdevicetype, master.network.ipaddress, master.network.port,  meteringdevice.id, portid, datatype)
               
     params['result'] = result['value'] 
     

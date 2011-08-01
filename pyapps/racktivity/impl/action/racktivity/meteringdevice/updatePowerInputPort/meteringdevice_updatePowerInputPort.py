@@ -11,12 +11,12 @@ def main(q, i, p, params, tags):
         if powerinput.label == params['portlabel']:
             requiredpowerinput = powerinput
         elif powerinput.label == params['newportlabel']:
-            events.raiseError('Label must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0056', tags='', escalate=False)
+            raise ValueError('Label must be unique within the module')
         elif powerinput.sequence == params['sequence']:
             raise ValueError('Sequence must be unique whithin the module')
     
     if not requiredpowerinput:
-        events.raiseError('Could not find a power output port with label "%s" in module "%s"' % (params['portlabel'], meteringdevice.name), messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0029', tags='', escalate=False)
+        raise ValueError('Could not find a power output port with label "%s" in module "%s"' % (params['portlabel'], meteringdevice.name))
 
     fields = {'label': 'newportlabel', 'sequence': 'sequence', 'attributes': 'attributes'}
     for fieldkey, fieldvalue in fields.iteritems():

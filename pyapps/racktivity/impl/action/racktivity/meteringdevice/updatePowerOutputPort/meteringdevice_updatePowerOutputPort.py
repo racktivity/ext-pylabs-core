@@ -17,12 +17,12 @@ def main(q, i, p, params, tags):
         if poweroutput.label == params['portlabel']:
             requiredpoweroutput = poweroutput
         elif poweroutput.label == params['newportlabel']:
-            events.raiseError('Label must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0071', tags='', escalate=False)
+            raise ValueError('Label must be unique within the module')
         elif poweroutput.sequence == params['sequence']:
-            events.raiseError('Sequence must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0072', tags='', escalate=False)
+            raise ValueError('Sequence must be unique within the module')
 
     if not requiredpoweroutput:
-        events.raiseError('Could not find a power output port with label "%s" in module "%s"' % (params['portlabel'], meteringdevice.name), messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0058', tags='', escalate=False)
+        raise ValueError('Could not find a power output port with label "%s" in module "%s"' % (params['portlabel'], meteringdevice.name))
 
     oldname = requiredpoweroutput.label
     
@@ -39,7 +39,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':True}
     
     if oldname != requiredpoweroutput.label:
-        success = p.api.actor.meteringdevice.setPortData(params['meteringdeviceguid'], master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, requiredpoweroutput.sequence,
+        success = p.api.actor.racktivity.meteringdevice.setPortData(params['meteringdeviceguid'], master.meteringdevicetype, master.network.ipaddress, master.network.port, meteringdevice.id, requiredpoweroutput.sequence,
                                                            'PortName', requiredpoweroutput.label, master.accounts[0].login, master.accounts[0].password)['result']['returncode']
 
 def match(q, i, params, tags):

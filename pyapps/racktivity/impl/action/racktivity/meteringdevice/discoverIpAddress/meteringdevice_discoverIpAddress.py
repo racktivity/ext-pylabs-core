@@ -8,7 +8,7 @@ def getAgentGuid():
     """
     matches = rootobjectaction_find.application_find(name='racktivity_agent', istemplate=None)
     if not matches:
-        events.raiseError("No agent found", messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0007', tags='', escalate=False)
+        raise ValueError("No agent found")
 
     return matches[0]
 
@@ -16,7 +16,7 @@ def main(q, i, p, params, tags):
     params['result'] = {'returncode':False}
     
     agentguid = getAgentGuid()
-    result = p.api.actor.meteringdevice.discover(agentguid, params['ipaddress'], params['port'], params['communitystring'])
+    result = p.api.actor.racktivity.meteringdevice.discover(agentguid, params['ipaddress'], params['port'], params['communitystring'])
     
     params['result'] = result['result']
   

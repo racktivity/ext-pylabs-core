@@ -32,8 +32,6 @@ def testCreate_1():
     assert_equal(rack1.name,'test_rack1')
     assert_equal(rack1.racktype,q.enumerators.racktype.OPEN)
     assert_equal(rack1.roomguid,roomguid)
-    racktivity_test_library.ui.doUITest(rack1.roomguid, "CREATE", value=rack1.name)
-    ok_(racktivity_test_library.ui.getResult(rack1.name))
 
 def testCreate_2():
     """
@@ -46,8 +44,8 @@ def testCreate_2():
     """
     global rack2Guid
     q.logger.log("         Creating Rack with optional params")
-    rack2Guid = ca.rack.create('test_rack2', 'OPEN', roomguid, 'test_rack2_description', "test_rack2_floor", "test_rack2_corridor",
-                              "test_rack2_position", 13)['result']['rackguid']
+    rack2Guid = ca.rack.create('test_rack2', 'OPEN', roomguid, 'test_rack2_description', floorguid="test_rack2_floor", corridor="test_rack2_corridor",
+                              position="test_rack2_position", height=13)['result']['rackguid']
     ok_(rack2Guid, "Empty guid returned from create function")
     q.logger.log("         Checking if rack exists")
     rack2 = ca.rack.getObject(rack2Guid)
@@ -55,12 +53,10 @@ def testCreate_2():
     assert_equal(rack2.racktype,q.enumerators.racktype.OPEN)
     assert_equal(rack2.roomguid,roomguid)
     assert_equal(rack2.description,'test_rack2_description')
-    assert_equal(rack2.floor,'test_rack2_floor')
+    assert_equal(rack2.floorguid,'test_rack2_floor')
     assert_equal(rack2.corridor,'test_rack2_corridor')
     assert_equal(rack2.position,'test_rack2_position')
     assert_equal(rack2.height,13)
-    racktivity_test_library.ui.doUITest(rack2.roomguid, "CREATE", value=rack2.name)
-    ok_(racktivity_test_library.ui.getResult(rack2.name))
 
 @raises(xmlrpclib.Fault)
 def testCreate_3():

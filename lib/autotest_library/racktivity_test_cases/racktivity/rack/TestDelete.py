@@ -27,8 +27,6 @@ def testDelete_1():
     rack1 = ca.rack.getObject(rackGuid)
     ca.rack.delete(rackGuid)
     assert_raises(xmlrpclib.Fault, ca.rack.getObject, rackGuid)
-    racktivity_test_library.ui.doUITest(rack1.roomguid, "DELETE", value=rack1.name)
-    ok_(racktivity_test_library.ui.getResult(rack1.name))
 
 @raises(xmlrpclib.Fault)
 def testDelete_2():

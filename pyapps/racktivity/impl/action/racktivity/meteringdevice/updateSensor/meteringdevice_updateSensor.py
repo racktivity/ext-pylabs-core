@@ -11,13 +11,13 @@ def main(q, i, p, params, tags):
         if sensor.label == params['sensorlabel']:
             requiredsensor = sensor
         elif sensor.label == params['newsensorlabel']:
-            events.raiseError('Label must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0071', tags='', escalate=False)
+            raise ValueError('Label must be unique within the module')
         elif sensor.sequence == params['sequence']:
-            events.raiseError('Sequence must be unique within the module', messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0072', tags='', escalate=False)
+            raise ValueError('Sequence must be unique within the module')
         
 
     if not requiredsensor:
-        events.raiseError('Could not find sensor with label "%s" in module "%s"' % (params['sensorlabel'], meteringdevice.name), messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0073', tags='', escalate=False)
+        raise ValueError('Could not find sensor with label "%s" in module "%s"' % (params['sensorlabel'], meteringdevice.name))
 
     fields = {'label': 'newsensorlabel', 'sequence': 'sequence', 'sensortype': 'sensortype', 'thresholdguids': 'thresholds', 'attributes': 'attributes'}
     for fieldkey, fieldvalue in fields.iteritems():

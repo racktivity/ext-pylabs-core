@@ -10,7 +10,7 @@ def main(q, i, p, params, tags):
             port = powerinput
             break
     if not port:
-        events.raiseError("No input port found with label '%s'" % params['label'], messageprivate='', typeid='RACTKVITIY-MON-GENERIC-0074', tags='', escalate=False)
+        raise ValueError("No input port found with label '%s'" % params['label'])
 
     meteringdevice.powerinputs.remove(powerinput)
     p.api.model.racktivity.meteringdevice.save(meteringdevice)

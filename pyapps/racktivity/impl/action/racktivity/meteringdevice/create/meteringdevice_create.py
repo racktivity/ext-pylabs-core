@@ -16,11 +16,11 @@ def main(q, i, p, params, tags):
     objectfields = {'powerinputinfo': 'powerinputs', 'poweroutputinfo': 'poweroutputs', 'portsinfo': 'ports', 
                     'sensorinfo': 'sensors', 'accounts': 'accounts'}
     if exists('racktivity_view_meteringdevice_list', p.api.model.racktivity.meteringdevice , "name", params['name']):
-        events.raiseError("Meteringdevice with the same name already exists", messageprivate='', typeid='', tags='', escalate=False)
+        raise ValueError("Meteringdevice with the same name already exists")
     
     if params["meteringdeviceconfigstatus"] != "IDENTIFIED":
         if not exists('racktivity_view_rack_list', p.api.model.racktivity.rack , "guid", params['rackguid']):
-            events.raiseError("Invalid rack guid, rack doesn't exists", messageprivate='', typeid='', tags='', escalate=False)
+            raise ValueError("Invalid rack guid, rack doesn't exists")
         
     meteringdevice = p.api.model.racktivity.meteringdevice.new()
     for key, value in params.iteritems():

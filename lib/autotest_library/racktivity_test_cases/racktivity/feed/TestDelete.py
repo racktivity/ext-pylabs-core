@@ -28,7 +28,6 @@ def testDelete_1():
     ca.feed.delete(feedGuid)
     assert_raises(xmlrpclib.Fault, ca.feed.getObject, feedGuid)
 
-@raises(xmlrpclib.Fault)
 def testDelete_2():
     """
     @description: [0230302] Deleting non existing feed
@@ -39,5 +38,5 @@ def testDelete_2():
     @expected_result:the feed should be deleted
     """
     q.logger.log("    Deleting non existing feed")
-    ca.feed.delete('00000000-0000-0000-0000-000000000000')
+    ok_(ca.feed.delete('00000000-0000-0000-0000-000000000000'), "Deleting a non existing feed returns True")
 

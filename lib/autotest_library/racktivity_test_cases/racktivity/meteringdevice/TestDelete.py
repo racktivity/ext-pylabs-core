@@ -1,7 +1,7 @@
 from nose.tools import *
 from xmlrpclib import Fault
 import racktivity_test_library
-from pylabs import q, i
+from pylabs import q, i, p
 from . import getRackGuid
 
 DEVICE_NAME = 'test-meteringdevice'
@@ -25,8 +25,6 @@ def testDelete_1():
     assert_true(md, "Create meteringdeivce failed")
     cloudapi.meteringdevice.delete(guid)
     assert_raises(Fault, cloudapi.meteringdevice.getObject, guid)
-    racktivity_test_library.ui.doUITest(md.rackguid, "DELETE", value=md.name)
-    ok_(racktivity_test_library.ui.getResult(md.name))
 
 def testDelete_2():
     """
