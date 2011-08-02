@@ -36,15 +36,5 @@ class portal(LFWService):
         params['args'] = args
         params['kwargs'] = kwargs
         params['result'] = True
-
-        #
-        # Normally this part isn't needed because we have the Auth service but because we cannot call the service
-        # from inside the authorize tasklet (because this is implemented in the main thread of the appserver).
-        # So we just do the same as the Auth service is doing and then use the backend directly.
-        #
-        tags += ('authbackend', )
-        params['authbackend'] = self.authBackend
-
-
         self._authorize.execute(params, tags=tags)
         return params.get('result', False)
