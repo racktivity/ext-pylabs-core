@@ -8,7 +8,6 @@ class ActionService:
     _authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
     
     def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
-        if not request.username or not request.password: return False
         tags = ('authenticate',)
         params = dict()
         params['request'] = request
