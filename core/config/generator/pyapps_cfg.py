@@ -277,10 +277,20 @@ LFW_CONFIG = {
         'createPage': '/%(appname)s/appserver/rest/ui/portal/createPage',
         'updatePage': '/%(appname)s/appserver/rest/ui/portal/updatePage',
         'deletePage': '/%(appname)s/appserver/rest/ui/portal/deletePage',
-        'users': '/%(appname)s/appserver/rest/ui/portal/listUsers',
+        'users': '/%(appname)s/appserver/rest/ui/portal/listUsersInfo',
+        'groups': '/%(appname)s/appserver/rest/ui/portal/listGroupsInfo',
+        'rules': '/%(appname)s/appserver/rest/ui/portal/listRulesInfo',
         'createUser': '/%(appname)s/appserver/rest/ui/portal/createUser',
         'updateUser': '/%(appname)s/appserver/rest/ui/portal/updateUser',
         'deleteUser': '/%(appname)s/appserver/rest/ui/portal/deleteUser',
+        'addUserToGroup': '/%(appname)s/appserver/rest/ui/portal/addUserToGroup',
+        'removeUserFromGroup': '/%(appname)s/appserver/rest/ui/portal/removeUserFromGroup',
+        'createGroup': '/%(appname)s/appserver/rest/ui/portal/createGroup',
+        'updateGroup': '/%(appname)s/appserver/rest/ui/portal/updateGroup',
+        'deleteGroup': '/%(appname)s/appserver/rest/ui/portal/deleteGroup',
+        'assignRule': '/%(appname)s/appserver/rest/ui/portal/assignRule',
+        'revokeRule': '/%(appname)s/appserver/rest/ui/portal/revokeRule',
+        'listPossibleRules': '/%(appname)s/appserver/rest/ui/portal/listPossibleRules',
         'createSpace': '/%(appname)s/appserver/rest/ui/portal/createSpace',
         'deleteSpace': '/%(appname)s/appserver/rest/ui/portal/deleteSpace',
         'updateSpace': '/%(appname)s/appserver/rest/ui/portal/updateSpace',
@@ -335,15 +345,14 @@ LFW_CONFIG = {
 
         auth_template = """[auth]
 backend=local
+insecure=1
 
 [oauth]
 hoursvalid=1
 tokencleanup=10
 """
 
-        authlocal_template = """[admin]
-password=21232f297a57a5a743894a0e4a801fc3
-"""
+        authlocal_template = ""
 
         authldap_template = """[LDAP]
 hostname=172.19.8.158

@@ -1,369 +1,729 @@
 
-<script language='javascript'>
-$(document).ready(function(){
-    
-    /**
-    Note To Klaas:
-    I am thinking of using jquery accordion as data grid for our entities as following
-    
-    Users:
-    =========================================
-    |Azmy                                   |
-     ---------------------------------------
-    | [Edit] [Delete]                       |
-    | Groups:                               |
-    |  -----------------------------------  |
-    | | Group 1 |     unassing            | | 
-    | | Group 2 |     unassing            | |
-    |  -----------------------------------  |
-    | [Assign group]                        |
-    =========================================
-    |Klaas                                  |
-    =========================================
-    ...
-    
-    - Also for rules
-    
-    Rules:
-    =========================================
-    |Admin                                  |
-     ---------------------------------------
-    | [Edit] [Delete]                       |
-    | [function ... ]   <change>            |
-    | [context  ... ]   <change>            |
-    |                                       |
-    | Groups:                               |
-    |  -----------------------------------  |
-    | | Group 1 |     <remove>            | | 
-    | | Group 2 |     <remove>            | |
-    |  -----------------------------------  |
-    | [Add group]                           |
-    =========================================
-    |Rule2                                  |
-    =========================================
-    ...
-    
-    - Groups can be a normal table where group can only have name.
-    
-    - So I starting by creating an Accordion class where you can dynamically
-    add/delete panels from it (I have tested this).
-    
-    - I started working on a UserPanel class (but I had to go home before I do much with it :P ... good luck ;) )
-    - Also a RulePanel needs to be created
-    
-    - The idea is when you first load the page you use the lfw service to get the needed data which is enough to build
-    - your views. and handle acctions to 
-    
-    
-    When you load this page you will get a demo of what I think it should look like.
-    
-    Feel free to drop this entirly if you think it's not good enough or if you have a better idea.
-    
-    START OF DEMO
-    */
-    var Accordion = function(parent){
-        
-        var body = $("<div>").accordion();
-        
-        var tmpl = "<h3 class='accordion-header' id='${name}'><a href='#'>${name}</a></h3>" +
-                    "<div class='accordion-panel'></div>";
-        
-        this.exists = function(name){
-            return body.find("#" + name).length > 0;
-        };
-        
-        this.add = function(name, panel) {
-            if (!this.exists(name)){
-                var item = $.tmpl(tmpl, {name: name});
-                item.filter(".accordion-panel")
-                    .append(panel);
-                    
-                body.accordion("destroy")
-                    .append(item)
-                    .accordion();
-                
-            }
-        };
-        
-        this.delete = function(name) {
-            var item = body.accordion("destroy")
-                .find("#" + name);
-            
-            if (item.length > 0){
-                item.next().remove();
-                item.remove();
-            }
-            
-            body.accordion();
-        };
-        
-        this.getDom = function(){
-            return body;
-        };
-        
-        if (parent){
-            this.appendTo(parent);
+<script language="javascript">
+$(document).ready(function() {
+    var getRuleName = function(rule, toText) {
+        var contextName = "ALL";
+        if (rule.context.hasOwnProperty("name")) {
+            contextName = rule.context.name;
         }
+        return rule["function"] + (toText ? " ON " : " <b>ON</b> ") + contextName;
     };
-    
-    var UserPanel = function(userid) {
-        
-        var body = $("#user-panel").tmpl();
-        body.find("button").button();
-        
-        var that = this;
-        
-        body.find(".user-edit").click(function(e){
-            alert("Edit user: " + that.userid());
-        });
-        
-        body.find(".user-delete").click(function(e){
-            alert("Edit Delete: " + that.userid());
-        });
-        
-        body.find(".user-assign").click(function(e){
-            alert("Assign group: " + that.userid());
-        });
-        
-        this.userid = function(id){
-            if (id === undefined){
-                return body.data("userid");
-            } else {
-                body.data("userid", id);
+
+    var UserPanel = function(user) {
+        var body = $("#user-panel").tmpl(user),
+            that = this;
+
+        //add groups
+        this.refreshGroups = function() {
+            var userGroups = $(".user-groups", body);
+            userGroups.empty();
+            var i;
+            for (i = 0; i < user.groups.length; ++i) {
+                var groupguid = user.groups[i];
+                if (groupsInfo.hasOwnProperty(groupguid)) {
+                    var group = groupsInfo[groupguid];
+                    userGroups.append("<tr><td>" + group.name + "</td>" +
+                        "<td><a href='' id='" + user.guid + group.guid + "' class='user-remove-from-group'>Remove</a></td></tr>");
+                }
             }
-        };
-        
-        this.getDom = function(){
-            return body;
-        };
-        
-        if(userid){
-            this.userid(userid);
-        }
-    };
-    
-    var acc = new Accordion();
-    $("#test").append(acc.getDom());
-    acc.add("Azmy", new UserPanel("Azmy").getDom());
-    acc.add("Klaas", new UserPanel("Klaas").getDom());
-    
-    /**
-    END OF DEMO.
-    */
-    
 
-    $("#userform").dialog({autoOpen: false,
-            width: 550,
-            modal: true});
-
-    var remotecall = function(options) {
-        var options = $.extend({success: $.noop,
-                                error: $.alerterror,
-                                data: {}}, options);
-
-
-        $.ajax({url: options.uri,
-                dataType: 'json',
-                data: options.data,
-                success: options.success,
-                error: options.error});
-    };
-
-    var listusers = function(options) {
-        var options = $.extend(options, {uri: LFW_CONFIG['uris']['users']});
-        remotecall(options);
-    };
-
-    var deleteuser = function(username, options){
-        var options = $.extend(options, {uri: LFW_CONFIG['uris']['deleteUser'],
-                                        data: {name: username}});
-        remotecall(options);
-    };
-
-    var createuser = function(username, passwd, options){
-        var options = $.extend(options, {uri: LFW_CONFIG['uris']['createUser'],
-                                        data: {name: username,
-                                               password: passwd}});
-        remotecall(options);
-    };
-
-    var edituser = function(username, passwd, options){
-        var options = $.extend(options, {uri: LFW_CONFIG['uris']['updateUser'],
-                                        data: {name: username,
-                                               password: passwd}});
-        remotecall(options);
-    };
-
-    var render = function(){
-        listusers({success: function(data){
-                                var tbody = $("#userslist > tbody");
-                                console.log("listusers succeeded, rendering list...");
-                                tbody.empty();
-                                console.log(data);
-                                $.each(data, function(i, user){
-                                    tbody.append($("<tr>").append($("<td>").text(user))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('change password').click(function() {
-
-                                                                var user = $(this).data('user');
-                                                                $("#userform input").removeClass("ui-state-error").val('');
-                                                                $("#userform").find("#name").attr("disabled", true).val(user);
-                                                                var $dialog = $("#userform").dialog("option", "title", "Edit User");
-                                                                $("#userform").dialog("option", "buttons", {"Change Password": function(){
-                                                                                                            $input = $dialog.find("input").removeClass("ui-state-error");
-                                                                                                            var passwd = $.trim($dialog.find("#password").val());
-                                                                                                            var cpasswd = $.trim($dialog.find("#cpassword").val());
-
-                                                                                                            if (!passwd) {
-                                                                                                                $dialog.find("#password").addClass("ui-state-error");
-                                                                                                                $.alert("Password is required", {title: "Validation Error"});
-                                                                                                                return;
-                                                                                                            }
-
-                                                                                                            if (passwd != cpasswd) {
-                                                                                                                $dialog.find("#cpassword").addClass("ui-state-error");
-                                                                                                                $.alert("Passwords don't match", {title: "Validation Error"});
-                                                                                                                return;
-                                                                                                            }
-
-                                                                                                            edituser(user, passwd, {success: function() {
-                                                                                                                $.alert("Password updated successfully", {title: 'Password Changed'});
-                                                                                                                $dialog.dialog("close");
-                                                                                                            }, error: $.alerterror});
-
-                                                                                                        },
-
-                                                                                                      "Cancel": function(){
-                                                                                                          $(this).dialog("close");
-                                                                                                        }});
-
-                                                                $("#userform").dialog("open");
-                                                                $("#userform").keydown(function(e) {
-                                                                    if (e.keyCode == 13) {
-                                                                        var buttons = $( "#userform" ).dialog( "option", "buttons" );
-                                                                        var button = buttons["Change Password"];
-                                                                        button();
-                                                                    }
-                                                                });
-                                                              })))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('user', user).text('delete').click(function(){
-                                                                var user = $(this).data('user');
-                                                                $.confirm("Are you sure you want to delete user '" + user + "'?", {title: "Delete User",
-                                                                            ok: function(){
-                                                                                deleteuser(user, {success: function(){
-                                                                                    render();
-                                                                                 }});
-                                                                            }});
-                                                              }))));
+            $(".user-remove-from-group", body).click(function(e) {
+                e.preventDefault();
+                var groupguid = $(this).attr("id").replace(user.guid, ""),
+                    userAndGroup = $.extend({}, user, { group: groupsInfo[groupguid].name });
+                    removeDialog = $("#user-remove-from-group-dialog").tmpl(userAndGroup);
+                $(document).append(removeDialog);
+                removeDialog.dialog({
+                    resizable: false,
+                    modal: true,
+                    height: "auto",
+                    width: "auto",
+                    buttons: {
+                        "Remove": function() {
+                            $.get(LFW_CONFIG.uris.removeUserFromGroup, { userguid: user.guid, groupguid: groupguid },
+                                function() {
+                                    var i;
+                                    for (i = 0; i < user.groups.length; ++i) {
+                                        if (user.groups[i] === groupguid) {
+                                            user.groups.splice(i, 1);
+                                            break;
+                                        }
+                                    }
+                                    that.refreshGroups();
                                 });
-                            }});
+                            $(this).dialog("close");
+                            removeDialog.remove();
+                        },
+                        "Cancel": function() {
+                            $(this).dialog("close");
+                            removeDialog.remove();
+                        }
+                    }
+                });
+            });
+        };
+
+        $("button", body).button();
+
+        $(".user-edit", body).click(function(e) {
+            e.preventDefault();
+            $(this).parents("tr").nextAll(".user-edit-panel:first").toggle();
+        });
+
+        $(".user-changepass", body).click(function(e) {
+            e.preventDefault();
+            var changepassDialog = $("#user-changepass-dialog").tmpl(user);
+            $(document).append(changepassDialog);
+            changepassDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Change": function() {
+                        var password = $(".user-pass", changepassDialog).val();
+                        $.post(LFW_CONFIG.uris.updateUser, { userguid: user.guid, password: password });
+                        $(this).dialog("close");
+                        changepassDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        changepassDialog.remove();
+                    }
+                }
+            });
+        });
+
+        $(".user-remove", body).click(function(e) {
+            e.preventDefault();
+            var removeDialog = $("#user-remove-dialog").tmpl(user);
+            $(document).append(removeDialog);
+            removeDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Remove": function() {
+                        $.get(LFW_CONFIG.uris.deleteUser, { userguid: user.guid }, function() {
+                            var i;
+                            for (i = 0; i < users.length; ++i) {
+                                if (users[i] === user) {
+                                    users.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            updateUsers();
+                        });
+                        $(this).dialog("close");
+                        removeDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        removeDialog.remove();
+                    }
+                }
+            });
+        });
+
+        $(".user-rename", body).click(function(e) {
+            var renameDialog = $("#user-rename-dialog").tmpl(user);
+            $(document).append(renameDialog);
+            renameDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Rename": function() {
+                        var newName = $(".user-name", renameDialog).val();
+                        $.post(LFW_CONFIG.uris.updateUser, { userguid: user.guid, name: newName }, function() {
+                            user.name = newName;
+                            updateUsers();
+                        });
+                        $(this).dialog("close");
+                        renameDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        renameDialog.remove();
+                    }
+                }
+            });
+        });
+
+        $(".user-add-to-group", body).click(function(e) {
+            var userAndGroups = $.extend({}, user, { groups: groups }),
+                addgroupDialog = $("#user-add-to-group-dialog").tmpl(userAndGroups);
+            $(document).append(addgroupDialog);
+            addgroupDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Add": function() {
+                        var groupguid = $(".user-group", addgroupDialog).val();
+                        $.post(LFW_CONFIG.uris.addUserToGroup,
+                            { userguid: user.guid, groupguid: groupguid },
+                            function() {
+                                user.groups.push(groupguid);
+                                that.refreshGroups();
+                            });
+                        $(this).dialog("close");
+                        addgroupDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        addgroupDialog.remove();
+                    }
+                }
+            });
+        });
+
+        this.getDom = function() {
+            return body;
+        };
+
+        this.refreshGroups();
     };
 
-    $("#createuser").button().click(function() {
-        var $dialog = $("#userform").dialog("option", "title", "Create User");
-        $("#userform").find("#name").attr("disabled", false);
-        $("#userform  input").removeClass("ui-state-error").val("");
-        $("#userform").dialog("option", "buttons", {"Create User": function(){
-                                                    $dialog.find("input").removeClass("ui-state-error");
-                                                    var username = $.trim($dialog.find("#name").val());
-                                                    var passwd = $.trim($dialog.find("#password").val());
-                                                    var cpasswd = $.trim($dialog.find("#cpassword").val());
+    var GroupItem = function(group) {
+        var body = $("#group-panel").tmpl(group),
+            that = this;
 
-                                                    if (username == "") {
-                                                        $dialog.find("#name").addClass("ui-state-error");
-                                                        $.alert("Name is required", {title: "Validation Error"});
-                                                        return;
-                                                    }
+        $("button", body).button();
 
-                                                    if (!passwd) {
-                                                        $dialog.find("#password").addClass("ui-state-error");
-                                                        $.alert("Password is required", {title: "Validation Error"});
-                                                        return;
-                                                    }
+        //add rules
+        this.refreshRules = function() {
+            var groupRules = $(".group-rules", body);
+            groupRules.empty();
+            var i;
+            if (!group.hasOwnProperty("rules")) {
+                return;
+            }
+            for (i = 0; i < group.rules.length; ++i) {
+                var rule = group.rules[i];
+                groupRules.append("<tr><td>" + getRuleName(rule) + "</td>" +
+                    "<td><a href='' id='" + group.guid + rule.guid + "' class='group-remove-rule'>Revoke</a></td></tr>");
+            }
 
-                                                    if (passwd != cpasswd) {
-                                                        $dialog.find("#cpassword").addClass("ui-state-error");
-                                                        $.alert("Passwords don't match", {title: "Validation Error"});
-                                                        return;
-                                                    }
+            $(".group-remove-rule", body).click(function(e) {
+                e.preventDefault();
+                var ruleguid = $(this).attr("id").replace(group.guid, ""),
+                    rulename = $(this).parents("tr:first").find("td:first").text(),
+                    groupAndRule = { "group": group.name, "rule": rulename },
+                    removeDialog = $("#group-remove-rule-dialog").tmpl(groupAndRule);
 
-                                                    createuser(username, passwd, {success: function() {
-                                                        render();
-                                                        $dialog.dialog("close");
-                                                    }, error: $.alerterror});
-                                                },
-                                              "Cancel": function() {
-                                                  $(this).dialog("close");
-                                                }});
+                var i,
+                    rule;
+                for (i = 0; i < group.rules.length; ++i) {
+                    if (group.rules[i].guid === ruleguid) {
+                        rule = group.rules[i];
+                        break;
+                    }
+                }
 
-        $("#userform").dialog("open");
+                $(document).append(removeDialog);
+                removeDialog.dialog({
+                    resizable: false,
+                    modal: true,
+                    height: "auto",
+                    width: "auto",
+                    buttons: {
+                        "Revoke": function() {
+                            $.get(LFW_CONFIG.uris.revokeRule, { groupguids: group.guid,
+                                "function": rule["function"], context: $.toJSON(rule.context) },
+                                function() {
+                                    var i;
+                                    for (i = 0; i < group.rules.length; ++i) {
+                                        if (group.rules[i] === rule) {
+                                            group.rules.splice(i, 1);
+                                            break;
+                                        }
+                                    }
+                                    that.refreshRules();
+                                });
+                            $(this).dialog("close");
+                            removeDialog.remove();
+                        },
+                        "Cancel": function() {
+                            $(this).dialog("close");
+                            removeDialog.remove();
+                        }
+                    }
+                });
+            });
+        };
 
-        $("#userform").keydown(function(e) {
-            if (e.keyCode == 13) {
-                var buttons = $( "#userform" ).dialog( "option", "buttons" );
-                var button = buttons["Create User"];
-                button();
+        $(".group-edit", body).click(function(e) {
+            e.preventDefault();
+            $(this).parents("tr").nextAll(".group-edit-panel:first").toggle();
+        });
+
+        $(".group-remove", body).click(function(e) {
+            e.preventDefault();
+            var removeDialog = $("#group-remove-dialog").tmpl(group);
+            $(document).append(removeDialog);
+            removeDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Remove": function() {
+                        $.get(LFW_CONFIG.uris.deleteGroup, { groupguid: group.guid }, function() {
+                            var i;
+                            for (i = 0; i < groups.length; ++i) {
+                                if (groups[i] === groups) {
+                                    groups.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            delete groupsInfo[group.guid];
+                            updateUsers();
+                            updateGroups();
+                        });
+                        $(this).dialog("close");
+                        removeDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        removeDialog.remove();
+                    }
+                }
+            });
+        });
+
+        $(".group-rename", body).click(function(e) {
+            var renameDialog = $("#group-rename-dialog").tmpl(group);
+            $(document).append(renameDialog);
+            renameDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Rename": function() {
+                        var newName = $(".group-name", renameDialog).val();
+                        $.post(LFW_CONFIG.uris.updateGroup, { groupguid: group.guid, name: newName }, function() {
+                            group.name = newName;
+                            updateGroups();
+                        });
+                        $(this).dialog("close");
+                        renameDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        renameDialog.remove();
+                    }
+                }
+            });
+        });
+
+        $(".group-add-rule", body).click(function(e) {
+            var groupAndRules = $.extend({}, group, { rules: possibleRules }),
+                addruleDialog = $("#group-add-rule-dialog").tmpl(groupAndRules);
+            $(document).append(addruleDialog);
+            addruleDialog.dialog({
+                resizable: false,
+                modal: true,
+                height: "auto",
+                width: "auto",
+                buttons: {
+                    "Add": function() {
+                        var rulenr = parseInt($(".group-rule", addruleDialog).val(), 10),
+                            rule = possibleRules[rulenr];
+                        $.post(LFW_CONFIG.uris.assignRule,
+                            { groupguids: group.guid, "function": rule["function"], context: $.toJSON(rule.context) },
+                            function() {
+                                getRules(function() {
+                                    updateRules();
+                                    that.refreshRules();
+                                });
+                            });
+                        $(this).dialog("close");
+                        addruleDialog.remove();
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                        addruleDialog.remove();
+                    }
+                }
+            });
+        });
+
+
+        this.getDom = function() {
+            return body;
+        };
+
+        this.refreshRules();
+    };
+
+    // Apply ui to all buttons
+    $("button", document).button();
+
+    // Make add buttons work
+    $("#user-add").click(function() {
+        var addDialog = $("#user-add-dialog").tmpl();
+        $(document).append(addDialog);
+        addDialog.dialog({
+            resizable: false,
+            modal: true,
+            height: "auto",
+            width: "auto",
+            buttons: {
+                "Add": function() {
+                    var login = $(".user-login", addDialog).val(),
+                        password = $(".user-pass", addDialog).val(),
+                        name = $(".user-name", addDialog).val();
+                    $.post(LFW_CONFIG.uris.createUser, { login: login, password: password, name: name },
+                        function() {
+                            getUsers(updateUsers);
+                        });
+                    $(this).dialog("close");
+                    addDialog.remove();
+                },
+                "Cancel": function() {
+                    $(this).dialog("close");
+                    addDialog.remove();
+                }
             }
         });
     });
 
+    $("#group-add").click(function() {
+        var addDialog = $("#group-add-dialog").tmpl();
+        $(document).append(addDialog);
+        addDialog.dialog({
+            resizable: false,
+            modal: true,
+            height: "auto",
+            width: "auto",
+            buttons: {
+                "Add": function() {
+                    var name = $(".group-name", addDialog).val();
+                    $.post(LFW_CONFIG.uris.createGroup, { name: name },
+                        function() {
+                            getGroups(updateGroups);
+                        });
+                    $(this).dialog("close");
+                    addDialog.remove();
+                },
+                "Cancel": function() {
+                    $(this).dialog("close");
+                    addDialog.remove();
+                }
+            }
+        });
+    });
 
-    render();
+    var groupsInfo = {},
+        groups = [],
+        users = [],
+        rules = [],
+        possibleRules = [];
+
+    // users
+    var getUsers = function(callback) {
+        $.ajax({
+            url: LFW_CONFIG.uris.users,
+            dataType: "json",
+            success: function(data) {
+                users = data;
+                callback.call(this);
+            }
+        });
+    };
+
+    var updateUsers = function() {
+        var usersTable = $("#users");
+        usersTable.empty();
+        var i;
+        for (i = 0; i < users.length; ++i) {
+            usersTable.append(new UserPanel(users[i]).getDom());
+        }
+    };
+
+    // groups
+    var getGroups = function(callback) {
+        $.ajax({
+            url: LFW_CONFIG.uris.groups,
+            dataType: "json",
+            success: function(data) {
+                groups = data;
+                var i;
+                for (i = 0; i < groups.length; ++i) {
+                    var group = groups[i];
+                    groupsInfo[group.guid] = group;
+                }
+                callback.call(this);
+            }
+        });
+    };
+
+    var updateGroups = function() {
+        var groupsTable = $("#groups");
+        groupsTable.empty();
+        var i;
+        for (i = 0; i < groups.length; ++i) {
+            groupsTable.append(new GroupItem(groups[i]).getDom());
+        }
+    };
+
+    // rules
+    var getRules = function(callback) {
+        $.ajax({
+            url: LFW_CONFIG.uris.rules,
+            dataType: "json",
+            success: function(data) {
+                rules = data;
+                callback.call(this);
+            }
+        });
+    };
+
+    var updateRules = function() {
+        var i,
+            j;
+        for (i = 0; i < groups.length; ++i) {
+            delete groups[i].rules;
+        }
+        for (i = 0; i < rules.length; ++i) {
+            var rule = rules[i];
+            rule.context = $.parseJSON(rule.context);
+
+            for (j = 0; j < rule.groups.length; ++j) {
+                var group = groupsInfo[rule.groups[j]];
+                if (!group.hasOwnProperty("rules")) {
+                    group.rules = [];
+                }
+                group.rules.push(rule);
+            }
+        }
+    };
+
+    var getPossibleRules = function(callback) {
+        $.ajax({
+            url: LFW_CONFIG.uris.listPossibleRules,
+            dataType: "json",
+            success: function(data) {
+                possibleRules = data;
+                var i;
+                for (i = 0; i < possibleRules.length; ++i) {
+                    var rule = possibleRules[i];
+                    rule.name = getRuleName(rule, true);
+                }
+                //sort rules
+                possibleRules.sort(function(a, b) {
+                    if (a.name < b.name) {
+                        return -1;
+                    } else if (a.name > b.name) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                callback.call(this);
+            }
+        });
+    };
+
+    var updateAll = function() {
+        updateRules();
+        updateUsers();
+        updateGroups();
+    };
+
+    var todo = 4;
+    var ajaxDone = function() {
+        --todo;
+        if (!todo) {
+            updateAll();
+        }
+    };
+    getGroups(ajaxDone);
+    getUsers(ajaxDone);
+    getRules(ajaxDone);
+    getPossibleRules(ajaxDone);
 });
 
 </script>
 
-<div id='test'>
-</div>
-
-<div id="userform" title="Create new user">
-    <form>
-    <fieldset>
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" class="text ui-widget-content ui-corner-all " />
-        </div>
-        <div>
-            <label for="password" >Password</label>
-            <input type="password" id="password" class="text ui-widget-content ui-corner-all " />
-        </div>
-        <div>
-            <label for="cpassword">Confirm Password</label>
-            <input type="password" id="cpassword" class="text ui-widget-content ui-corner-all " />
-        </div>
-    </fieldset>
-    </form>
-</div>
-
 ## Users
+<button id="user-add">Add User</button>
 
-<table id='userslist' style='width: 80%;'>
-<thead>
-    <tr>
-        <th style='width: 50%;'>User</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-</thead>
-<tbody>
-</tbody>
+<table>
+    <thead>
+        <tr><th>Name</th><th>Change Password</th><th>Remove</th></tr>
+    </thead>
+    <tbody id='users'>
+    </tbody>
 </table>
 
-<button id='createuser'>Create New User</button>
+<div id="users" />
 
-<script id='user-panel' type='text/x-jquery-tmpl'>
-    <div>
-        <button class='user-edit'>Edit</button>
-        <button class='user-delete'>Delete</button>
-        <table style='margin-top: 5px; margin-buttom: 5px;'>
-            <thead>
-                <tr>
-                    <th>Group Name</th>
-                    <th>Unassign</th>
-                </tr>
-            </thead>
-            <tbody class='user-groups'>
-            </tbody>
+## Groups
+<button id="group-add">Add Group</button>
+
+<table>
+    <thead>
+        <tr><th>Name</th><th>Remove</th></tr>
+    </thead>
+    <tbody id='groups'>
+    </tbody>
+</table>
+
+<script id="user-panel" type="text/x-jquery-tmpl">
+    <tr>
+        <td><a href="" class="user-edit">${name}</a></td>
+        <td><a href="" class="user-changepass">Change Password</a></td>
+        <td><a href="" class="user-remove">Remove</a></td>
+    </tr>
+    //Added to get the color alternating right
+    <tr style="display: none;"><td colspan="3" /></tr>
+
+    <tr class="user-edit-panel" style="display: none">
+        <td colspan="3" style="border-bottom: 1px solid;">
+            <div style="margin-left: 10px;">
+                <button class="user-rename">Rename</button>
+                <table style='margin-top: 5px; margin-buttom: 5px;'>
+                    <thead>
+                        <tr>
+                            <th>Group Name</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class='user-groups'>
+                    </tbody>
+                </table>
+                <button class='user-add-to-group'>Add to group</button>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script id="group-panel" type="text/x-jquery-tmpl">
+    <tr>
+        <td><a href="" class="group-edit">${name}</a></td>
+        <td><a href="" class="group-remove">Remove</a></td>
+    </tr>
+    //Added to get the color alternating right
+    <tr style="display: none;"><td colspan="3" /></tr>
+
+    <tr class="group-edit-panel" style="display: none">
+        <td colspan="2" style="border-bottom: 1px solid;">
+            <div style="margin-left: 10px;">
+                <button class="group-rename">Rename</button>
+                <table style='margin-top: 5px; margin-buttom: 5px;'>
+                    <thead>
+                        <tr>
+                            <th>Rule Name</th>
+                            <th>Revoke</th>
+                        </tr>
+                    </thead>
+                    <tbody class='group-rules'>
+                    </tbody>
+                </table>
+                <button class='group-add-rule'>Assign rule</button>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script id="user-remove-dialog" type="text/x-jquery-tmpl">
+    <div title="Remove ${name}" style="display: none;">
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;" />
+        Are you sure you want to remove user "${name}"?
+    </div>
+</script>
+
+<script id="user-rename-dialog" type="text/x-jquery-tmpl">
+    <div title="Rename ${name}" style="display: none;">
+        <table>
+            <tr><td style="vertical-align: middle;">Name:</td><td><input type="text" style="width: 100%;" class="user-name" value="${name}" /></td></tr>
         </table>
-        <button class='user-assign'>Assign Group</button>
+    </div>
+</script>
+
+<script id="user-changepass-dialog" type="text/x-jquery-tmpl">
+    <div title="Change password of ${name}" style="display: none;">
+        <table>
+            <tr><td style="vertical-align: middle;">Password:</td><td><input type="password" style="width: 100%;" class="user-pass" /></td></tr>
+        </table>
+    </div>
+</script>
+
+<script id="user-add-to-group-dialog" type="text/x-jquery-tmpl">
+    <div title="Add user ${name} to a group" style="display: none;">
+        <select class="user-group" style="width: 90%;">
+            {{each(i, group) $data.groups}}
+                <option value="${group.guid}">${group.name}</option>
+            {{/each}}
+        </select>
+    </div>
+</script>
+
+<script id="user-remove-from-group-dialog" type="text/x-jquery-tmpl">
+    <div title="Remove ${name} from "${group}" style="display: none;">
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;" />
+        Are you sure you want to remove user "${name}" from group "${group}"?
+    </div>
+</script>
+
+<script id="user-add-dialog" type="text/x-jquery-tmpl">
+    <div title="Add user" style="display: none;">
+        <table>
+            <tr><td style="vertical-align: middle;">Login:</td><td><input type="text" style="width: 100%;" class="user-login" /></td></tr>
+            <tr><td style="vertical-align: middle;">Password:</td><td><input type="password" style="width: 100%;" class="user-pass" /></td></tr>
+            <tr><td style="vertical-align: middle;">Name:</td><td><input type="text" style="width: 100%;" class="user-name" /></td></tr>
+        </table>
+    </div>
+</script>
+
+<script id="group-add-dialog" type="text/x-jquery-tmpl">
+    <div title="Add group" style="display: none;">
+        <table>
+            <tr><td style="vertical-align: middle;">Name:</td><td><input type="text" style="width: 100%;" class="group-name" /></td></tr>
+        </table>
+    </div>
+</script>
+
+<script id="group-remove-dialog" type="text/x-jquery-tmpl">
+    <div title="Remove ${name}" style="display: none;">
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;" />
+        Are you sure you want to remove group "${name}"?
+    </div>
+</script>
+
+<script id="group-rename-dialog" type="text/x-jquery-tmpl">
+    <div title="Rename ${name}" style="display: none;">
+        <table>
+            <tr><td style="vertical-align: middle;">Name:</td><td><input type="text" style="width: 100%;" class="group-name" value="${name}" /></td></tr>
+        </table>
+    </div>
+</script>
+
+<script id="group-remove-rule-dialog" type="text/x-jquery-tmpl">
+    <div title="Revoke ${rule} from ${group}" style="display: none;">
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;" />
+        Are you sure you want to revoke rule "${rule}" from group "${group}"?
+    </div>
+</script>
+
+<script id="group-add-rule-dialog" type="text/x-jquery-tmpl">
+    <div title="Assign rule" style="display: none;">
+        <table>
+            <tr>
+                <td style="vertical-align: middle;">
+                    <select class="group-rule">
+                        {{each(i, rule) $data.rules}}
+                            <option value="${i}">${rule.name}</option>
+                        {{/each}}
+                    </select>
+                </td>
+            </tr>
+        </table>
     </div>
 </script>
