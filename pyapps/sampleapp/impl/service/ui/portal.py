@@ -26,7 +26,6 @@ class portal(LFWService, ActionService):
         params['kwargs'] = kwargs
         _authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))       
         _authenticate.execute(params, tags=tags)
-        params['result'] = True
         return params.get('result', False)
 
     def checkAuthorization(self, criteria, request, domain, service, methodname, args, kwargs):
