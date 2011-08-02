@@ -70,6 +70,8 @@ import pylabs
 from pylabs.inifile import IniFile
 import shutil
 
+#from pylabs.Shell import *
+
 class WindowsSystem:
 
     mythreads = []
@@ -937,3 +939,19 @@ class WindowsSystem:
                     shutil.rmtree(dirPath)
             else:
                 raise ValueError("Specified path: %s is not a Directory in System.removeDirTree"% dirPath)
+            
+    def checkProgramExists(self,programName):
+        """
+        this is a not too well implemented check to see if a program is installed, it just checks if it can be executed without an error message
+        @return when 0 then ok, when 1 not found, when 2 an error but don't know what
+        """
+        try:
+            returncode,output=pylabs.q.system.process.execute(programName)
+        except Exception as inst:
+            if inst.args[1].lower().find("cannot find the file specified")<>-1:
+                return 1
+            else:
+                return 2
+        return 0
+             
+            

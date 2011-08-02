@@ -3,6 +3,7 @@
 @metadata tagstring=pyapp toc applications
 
 [intro]: /#/PyLabsApps/Introduction
+[practical]: /#/PyLabsApps/Practical
 [modeling]: /#/PyLabsApps/Modeling
 [action]: /#/PyLabsApps/Action
 [osisview]: /#/PyLabsApps/OsisViews
@@ -29,6 +30,7 @@ This chapter gives you a walk-through in the creation process of a PyLabs Applic
 ##Table of Contents
 
 1. [Introducing PyLabs Applications][intro]
+2. [PyApps Practical Information][practical]
 2. [Modeling Root Objects][modeling]
 3. [Defining Actions Interface on Root Objects][action]
 4. [OSIS Views][osisview]

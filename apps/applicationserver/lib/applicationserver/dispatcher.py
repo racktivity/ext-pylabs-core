@@ -162,6 +162,33 @@ class Dispatcher:
         @raise NoSuchService: Service unknown
         @raise NoSuchMethod: Method unknown
         '''
+      
+        def callServiceMethodinThread(func, request, domain, service, method, *args, **kwargs):
+                #Check authentication
+            if exposed_authenticated(func):
+                #log.msg('[DISPATCHER] Checking authentication')
+                if not self.checkAuthentication(domain, service, request, method, 
+                                                args, kwargs):
+                    raise AuthenticationError('Authentication failed')
+                request.user_authenticated = True
+            else:
+                pass
+    
+            #Check authorization
+            if exposed_authorized(func):
+                #log.msg('[DISPATCHER] Checking authorization')
+                if hasattr(func,'auth_categories'):
+                    auth_categories = getattr(func,'auth_categories')
+                else:
+                    auth_categories = {}
+    
+                if not self.checkAuthorization(auth_categories, domain,
+                                            service, request, method, args, kwargs):
+                    raise AuthorizationError('Authorization failed')
+            else:
+                pass
+            return func( *args, **kwargs)
+
         #log.msg('[DISPATCHER] Calling method %s on service %s' % \
         #        (method, service_name))
         
@@ -171,30 +198,7 @@ class Dispatcher:
         #Fetch the actual service and method callable
         service, func = self.getServiceMethod(domain, service_name, method)
 
-        #Check authentication
-        if exposed_authenticated(func):
-            #log.msg('[DISPATCHER] Checking authentication')
-            if not self.checkAuthentication(domain, service, request, method, 
-                                            args, kwargs):
-                raise AuthenticationError('Authentication failed')
-            request.user_authenticated = True
-        else:
-            pass
-
-        #Check authorization
-        if exposed_authorized(func):
-            #log.msg('[DISPATCHER] Checking authorization')
-            if hasattr(func,'auth_categories'):
-                auth_categories = getattr(func,'auth_categories')
-            else:
-                auth_categories = {}
-
-            if not self.checkAuthorization(auth_categories, domain,
-                                        service, request, method, args, kwargs):
-                raise AuthorizationError('Authorization failed')
-        else:
-            pass
-
+        
         #Provide the original request as a parameter, if requested
         if want_request(func):
             kwargs[APPLICATIONSERVER_REQUEST_ARG] = request
@@ -213,14 +217,13 @@ class Dispatcher:
         if not want_not_threaded(func):
             #log.msg('[DISPATCHER] Running service method %s:%s in thread' % \
             #        (service_name, method))
-            
-            defer = threads.deferToThread(func, *args, **kwargs)
+            defer = threads.deferToThread(callServiceMethodinThread, func, request, domain, service, method, *args, **kwargs)
         else:
             # The service should not run in a thread
             #log.msg('[DISPATCHER] Running service method %s:%s in reactor' % \
             #        (service_name, method))
             
-            defer = maybeDeferred(func, *args, **kwargs)
+            defer = maybeDeferred(callServiceMethodinThread,func, request, domain, service, method, *args, **kwargs)
 
         def errback(failure):
             dispatchkwargs = {
@@ -302,8 +305,6 @@ class Dispatcher:
 
         @raise RuntimeError: Service got no L{CHECK_AUTHENTICATION_METHOD}
         '''
-        if request.username is None or request.password is None:
-            return False
         checker = getattr(service, CHECK_AUTHENTICATION_METHOD, None)
         if not checker:
             raise RuntimeError('Service %s got no %s method' % \
@@ -325,7 +326,6 @@ class Dispatcher:
         else:
             raise TypeError('checkAuthentication is neither a function '
                             'or a method')
-
         if len(checker_args) == 2:
             return checker(request.username, request.password)
         elif len(checker_args) == 6:

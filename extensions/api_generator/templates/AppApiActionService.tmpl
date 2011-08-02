@@ -4,7 +4,14 @@ from actionservice import ActionService
 class ${className}(ActionService):
 
 #for $method in $methods:
+#if $method.properties.get('authenticate', 'False').upper() == 'TRUE'
     @q.manage.applicationserver.expose_authenticated
+#else
+    @q.manage.applicationserver.expose
+#end if
+#if 'authorize' in $method.properties
+    @q.manage.applicationserver.expose_authorized($method.properties['authorize'])
+#end if
     def $method.name (self, $method.args):
         """
         $method.docs
@@ -16,10 +23,13 @@ class ${className}(ActionService):
         o = result
         result = {}
         import base64
-        from pymodel.serializers import ThriftSerializer
-        serialized_result = o.serialize(ThriftSerializer)
-        encoded_result = base64.encodestring(serialized_result)
-        result['result'] = encoded_result
+        import pymodel
+        if issubclass(o.__class__, pymodel.Model):
+            serialized_result = o.serialize(pymodel.serializers.ThriftSerializer)
+            encoded_result = base64.encodestring(serialized_result)
+            result['result'] = encoded_result
+        else:
+            result['result'] = o
         return result
 #else
         return result

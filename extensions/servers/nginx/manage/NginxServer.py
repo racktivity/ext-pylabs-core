@@ -85,7 +85,7 @@ class NginxServer(CMDBServerObject):
     events = q.basetype.dictionary(doc='Nginx events', default=dict())
     options = q.basetype.dictionary(doc="Nginx special specific options", default=dict())
 
-    def addVirtualHost(self, name, ipaddress='0.0.0.0', port=80):
+    def addVirtualHost(self, name, ipaddress='_', port=80):
         """
         Create a VirtualHost
 

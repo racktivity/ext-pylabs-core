@@ -26,6 +26,9 @@ class VirtualHostTemplate(Template):
 server {
         listen $port;
         server_name $ipaddress;
+#if $ipaddress == "_"
+        server_name_in_redirect off;
+#end if
         
         #if $rootDir
         root $rootDir;
@@ -62,7 +65,7 @@ server {
 class VirtualHost(CMDBSubObject):
     name = q.basetype.string(doc="name of this virtual host")
     port = q.basetype.integer(doc="Port to listen for this VirtualHost", allow_none=True)
-    ipaddress = q.basetype.ipaddress(doc="ipaddress or DNS to which the virtual host serves pages")
+    ipaddress = q.basetype.string(doc="ipaddress or DNS to which the virtual host serves pages")
     sites = q.basetype.dictionary(doc="dictionary of sites exposed by this virtual host")
     configFileDir = q.basetype.dirpath(doc="The directory for virtual host configuration files", 
                                        default=q.system.fs.joinPaths(os.sep, 'etc', 'nginx', 'sites-available'),

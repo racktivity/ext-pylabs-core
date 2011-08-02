@@ -23,3 +23,4 @@ a.link {     background: url("../img/download.png") no-repeat scroll left bottom
 #sidebar { margin-right:50px !important;}
 #sidebar li a  { color: #5e911d !important  ;  font-weight: bold  !important ;}
 #sidebar li li a  { color: #5e911d ; font-weight: normal  !important;}
+#hideme { color: #FFFFFF;}

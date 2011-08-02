@@ -22,7 +22,7 @@ def main(q, i, p, params, tags):
             continue
 
         value = params[field]
-        if value is None:
+        if value is None or value=='' :
             q.logger.log("Field %s is None: not searching for field %s" % (field, field), 7)
             continue
 

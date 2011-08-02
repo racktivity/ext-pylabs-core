@@ -35,11 +35,11 @@ class YourCustomEnum(BaseEnumeration):
         cls.finishItemRegistration()
 [[/code]]
 
-In the Q-Shell this new enumerator will look like:
+Suppose that you have created the file `YourCustomEnum.py` in `/opt/qbase5`, this new enumerator will look in the Q-Shell like:
+
 
 [[code]]
-#we suppose that you are in the directory where you have stored YourYourCustomEnum.py
-In [1]: from YourYourCustomEnum import YourCustomEnum
+In [1]: from YourCustomEnum import YourCustomEnum
  
  
 #Use Tab-completion
@@ -101,3 +101,10 @@ Out[17]: 3
 In [18]: type(animalCode)
 Out[18]: <type 'int'>
 [[/code]]
+
+
+##Use Custom Enumerators
+When you create a PyLabs extension which needs a custom enumerator, the easiest way is to create the enumerator inside the extension itself and use it from that file.
+
+An alternative is to create a specific enumeration file and import it in an extension. The advantage of this alternative is that you can reuse the enumerator in more than one file of your extension.
+

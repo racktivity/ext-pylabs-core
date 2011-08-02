@@ -1626,8 +1626,11 @@ class SystemFS:
             pylabs.q.system.fs.createDir(destinationdir)
 
         # The tar of python does not create empty directories.. this causes manny problem while installing so we choose to use the linux tar here
-        # tar = tarfile.open(sourceFile)
-        # tar.extractall(destinationdir)
-        # tar.close()
-        cmd = "tar xzf '%s' -C '%s'" % (sourceFile, destinationdir)
-        pylabs.q.system.process.execute(cmd)
+        if  pylabs.q.platform.isWindows():
+            tar = tarfile.open(sourceFile)
+            tar.extractall(destinationdir)
+            tar.close()
+            #todo find better alternative for windows
+        else:
+            cmd = "tar xzf '%s' -C '%s'" % (sourceFile, destinationdir)
+            pylabs.q.system.process.execute(cmd)

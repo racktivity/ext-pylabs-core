@@ -36,23 +36,23 @@ def getLeads(api):
         leads[x['guid']] = x['name']
     return leads
 
-def getType(q):
+def getType(api):
     type_list= list()
-    for k, v in p.api.model.enumerators.activitytype._pm_enumeration_items.iteritems():
+    for k, v in api.model.enumerators.activitytype._pm_enumeration_items.iteritems():
         type_list.append((k, str(v)))
     type = dict(type_list)
     return type
 
-def getStatus(q):
+def getStatus(api):
     status_list= list()
-    for k, v in p.api.model.enumerators.activitytype._pm_enumeration_items.iteritems():
+    for k, v in api.model.enumerators.activitystatus._pm_enumeration_items.iteritems():
         status_list.append((k, str(v)))
     status = dict(status_list)
     return status
 
-def getPriority(q):
+def getPriority(api):
     priority_list= list()
-    for k, v in p.api.model.enumerators.activitytype._pm_enumeration_items.iteritems():
+    for k, v in api.model.enumerators.activitypriority._pm_enumeration_items.iteritems():
         priority_list.append((k, str(v)))
     priority = dict(priority_list)
     return priority
@@ -60,9 +60,9 @@ def getPriority(q):
 
 def main(q, i, p, params, tags):
     q.logger.log("Creating activity wizard  for lead "+params['leadguid'],level=10)
-    type = getType(q)
-    status= getStatus(q)
-    priority = getPriority(q)
+    type = getType(p.api)
+    status= getStatus(p.api)
+    priority = getPriority(p.api)
     customers = getCustomers(p.api)
     leads = getLeads(p.api)
     
@@ -104,7 +104,7 @@ def main(q, i, p, params, tags):
     
     tab_general.addText(name = 'lead',
                         text = TAB_GENERAL_LEAD,
-                        value=params['leadguid'])
+                        value = params['leadguid'])
     
     
     tab_general.addDateTime(name = 'starttime',

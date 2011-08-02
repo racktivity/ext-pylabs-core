@@ -4,7 +4,7 @@ class ${rootobject}:
     """
 #set $create = ''
 #for $field in $fields
-    #if $field["type"] == "Integer"
+    #if $field["type"] != "String"
         #set $create = $create + $field["name"] + "=None, "
     #else
         #set $create = $create + $field["name"] + "='', "
@@ -15,7 +15,6 @@ class ${rootobject}:
     def create(self, $create jobguid="", executionparams=None):
         """
         Create a new rootobject
-
         """
 
     def find(self, $create jobguid="",executionparams=None):

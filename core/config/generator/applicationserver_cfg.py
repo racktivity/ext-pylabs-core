@@ -54,6 +54,9 @@ class AppServerPyApps:
                 if port:
                     url = "http://127.0.0.1:%s" % port
                     location = "/%s/appserver/%s" % (self.appName, name)
+                    if name == "amf":
+                        url += "/"
+                        location += "/"
                     vhost.addReverseProxy(reverseproxyname, url, location)
         q.manage.nginx.cmdb.save()
         q.manage.nginx.applyConfig()
