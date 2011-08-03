@@ -212,16 +212,6 @@ class RESTMethod(Resource):
             contenttype = SCRIPT_MIME
         try:
             d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
-        except AuthenticationError, e:
-            if request.code == http.OK:
-                request.setResponseCode(http.UNAUTHORIZED)
-            request.setHeader('Content-Type', contenttype)
-            return JSONException(e.MESSAGE, e).dumps()
-        except AuthorizationError, e:
-            if request.code == http.OK:
-                request.setResponseCode(http.UNAUTHORIZED)
-            request.setHeader('Content-Type', contenttype)
-            return JSONException(e.MESSAGE, e).dumps()
         except (NoSuchService, NoSuchMethod), e:
             request.setResponseCode(http.NOT_FOUND)
             request.setHeader('Content-Type', contenttype)
@@ -249,12 +239,15 @@ class RESTMethod(Resource):
 
             request.finish()
 
-        def error_render(data):
-            log.msg("An error occurred in the service method: %s" % data)
-            request.setResponseCode(http.INTERNAL_SERVER_ERROR)
+        def error_render(failure):
+            if failure.check(AuthenticationError, AuthorizationError):
+                if request.code == http.OK:
+                    request.setResponseCode(http.UNAUTHORIZED)
+            else:
+                log.msg("An error occurred in the service method: %s" % failure)
+                request.setResponseCode(http.INTERNAL_SERVER_ERROR)
             request.setHeader('Content-Type', contenttype)
-            write(JSONException('Internal server error',
-                getattr(data, 'value', None)).dumps())
+            write(JSONException('Internal server error', getattr(failure, 'value', None)).dumps())
             request.finish()
 
         d.addCallback(finish_render)
