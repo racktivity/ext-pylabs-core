@@ -12,10 +12,8 @@ class portal(LFWService, ActionService):
     @q.manage.applicationserver.expose_authorized()
     def page(self, space, name):
         return super(portal, self).page(space, name)
-
     def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
         #if not request.username or not request.password: return False
-        q.logger.log("OAUTH HEADERS from portal.checkAuthentication %s" % str(request._request.requestHeaders))
         tags = ('authenticate',)
         params = dict()
         params['request'] = request
@@ -24,7 +22,8 @@ class portal(LFWService, ActionService):
         params['methodname'] = methodname
         params['args'] = args
         params['kwargs'] = kwargs
-        _authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))       
+        _authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))
+        
         _authenticate.execute(params, tags=tags)
         return params.get('result', False)
 
