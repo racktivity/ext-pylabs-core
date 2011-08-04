@@ -1,6 +1,6 @@
 
 def main(q, i, p, params, tags):
-    rootobjecttype = params['rootobjecttype']
-    rootobjectguid = params['rootobjectguid']
+    root = params['rootobject']
+    type = params['rootobjecttype']
     domain = params['domain'] 
-    p.events.publish('pylabs.event.sampleapp.osis.delete.%s.%s' % (domain, rootobjecttype), rootobjectguid)
+    p.events.publish('pylabs.event.%s.osis.delete.%s.%s' % (p.api.appname, domain, type), root.guid)
