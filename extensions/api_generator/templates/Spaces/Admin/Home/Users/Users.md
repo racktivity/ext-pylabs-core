@@ -3,8 +3,8 @@
 $(document).ready(function() {
     var getRuleName = function(rule, toText) {
         var contextName = "ALL";
-        if (rule.context.hasOwnProperty("name")) {
-            contextName = rule.context.name;
+        if (rule.context.hasOwnProperty("space")) {
+            contextName = rule.context.space;
         }
         return rule["function"] + (toText ? " ON " : " <b>ON</b> ") + contextName;
     };
