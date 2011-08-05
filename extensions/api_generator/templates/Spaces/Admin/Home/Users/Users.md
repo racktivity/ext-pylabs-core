@@ -275,7 +275,7 @@ $(document).ready(function() {
                         $.get(LFW_CONFIG.uris.deleteGroup, { groupguid: group.guid }, function() {
                             var i;
                             for (i = 0; i < groups.length; ++i) {
-                                if (groups[i] === groups) {
+                                if (groups[i] === group) {
                                     groups.splice(i, 1);
                                     break;
                                 }
