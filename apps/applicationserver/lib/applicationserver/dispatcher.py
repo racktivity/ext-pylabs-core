@@ -473,20 +473,10 @@ exposed_authenticated = attrchecker(EXPOSE_AUTHENTICATED_ATTRIBUTE)
 EXPOSE_AUTHORIZED_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE_AUTHORIZED'
 class expose_authorized:
     '''Decorator to mark a method as exposed with authorization'''
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         self.kwargs = kwargs
-    def __call__(self,func):
-        # We can't use the functools.partial since it for reasons further down in the function
-        # we really must return a function here. A mere (whatever) callable would 've been nice
-        def fake_partial(f, keywords):
-            def newfunc(*fargs, **fkeywords):
-                return f(*fargs, **fkeywords)
-            newfunc.__dict__.update(f.__dict__)
-            newfunc.func = func
-            newfunc.auth_categories = keywords
 
-            return newfunc
-
+    def __call__(self, func):
         if not 'force_authentication' in self.kwargs:
             fa = True
         else:
@@ -498,15 +488,14 @@ class expose_authorized:
         if 'force_authentication' in self.kwargs:
             del(self.kwargs['force_authentication'])
 
-        nf = fake_partial(func,self.kwargs)
-        nf = expose(nf)
+        func.auth_categories = self.kwargs
+        nf = expose(func)
         nf = tag_expose_authorized(nf)
 
         if fa and not exposed_authenticated(nf):
             nf = expose_authenticated(nf)
 
         return nf
-
 
 #Function to check whether a method is exposed with authorization
 exposed_authorized = attrchecker(EXPOSE_AUTHORIZED_ATTRIBUTE)
