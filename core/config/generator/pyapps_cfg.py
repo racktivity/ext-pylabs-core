@@ -303,7 +303,9 @@ LFW_CONFIG = {
         'macros': '/%(appname)s/js/macros/',
         'macroConfig': '/%(appname)s/appserver/rest/ui/portal/macroConfig',
         'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig',
-        'oauthservice': '/%(appname)s/appserver/rest/ui/oauth/getToken'
+        'oauthservice': '/%(appname)s/appserver/rest/ui/oauth/getToken',
+        'checkAuthorization': '/%(appname)s/appserver/rest/ui/auth/isAuthorised',
+        'myGroups': '/%(appname)s/appserver/rest/ui/portal/getMyGroups'
     },
     'appname' : '%(appname)s',
     'development'  : true
