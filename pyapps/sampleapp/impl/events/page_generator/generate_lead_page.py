@@ -17,8 +17,8 @@ def main(q, i, p, params, tags):
 * __Amount:__ %(amount)s 
 * __Probability:__ %(probability)s
 
-[[wizard:title=Add Activity, name=activity_create , extra=%(params)s ]][[/wizard]]
-[[wizard:title=Edit, name=lead_edit , extra=%(params)s ]][[/wizard]]
+[[wizard:title=Add Activity,domain=crm, name=activity_create , extra=%(params)s ]][[/wizard]]
+[[wizard:title=Edit,domain=crm, name=lead_edit , extra=%(params)s ]][[/wizard]]
 <br />
 [[sqlgrid]]
    {

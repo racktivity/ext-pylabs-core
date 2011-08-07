@@ -22,4 +22,4 @@
     "hidden":["guid"]
 }
 [[/sqlgrid]]
-[[wizard:title=Create Customer,name=customer_create]][[/wizard]]
+[[wizard:title=Create Customer,domain=crm,name=customer_create]][[/wizard]]

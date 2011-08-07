@@ -16,10 +16,10 @@ def main(q, i, p, params, tags):
 * __Status:__ %(status)s
 <br />
 <br />
-[[wizard:title=Edit, name=customer_edit, extra=%(params)s]][[/wizard]]
-[[wizard:title=Delete, name=customer_delete, extra=%(params)s]][[/wizard]]
-[[wizard:title=Create New Lead, name=lead_create, extra=%(params)s]][[/wizard]]
-[[wizard:title=Reset Password, name=customer_resetpassword, extra=%(params)s]][[/wizard]]
+[[wizard:title=Edit,domain=crm, name=customer_edit, extra=%(params)s]][[/wizard]]
+[[wizard:title=Delete, domain=crm,name=customer_delete, extra=%(params)s]][[/wizard]]
+[[wizard:title=Create New Lead,domain=crm, name=lead_create, extra=%(params)s]][[/wizard]]
+[[wizard:title=Reset Password,domain=crm, name=customer_resetpassword, extra=%(params)s]][[/wizard]]
 <br />
 [[sqlgrid]]
     {

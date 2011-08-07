@@ -8,8 +8,8 @@ def main(q, i, p, params, tags):
 * __Password:__ %(password)s
 * __Name:__ %(name)s
 * __Groups:__ %(groups)s
-[[wizard:title=Edit, name=user_edit, extra=%(wizard_params)s]][[/wizard]]
-[[wizard:title=Delete, name=user_delete, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Edit,domain=crm, name=user_edit, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Delete,domain=crm, name=user_delete, extra=%(wizard_params)s]][[/wizard]]
 
     """
     try:

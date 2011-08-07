@@ -29,4 +29,4 @@
 }
 </div>
 
-[[wizard:title=Add, name=permission_create]][[/wizard]]
+[[wizard:title=Add,domain=crm,name=permission_create]][[/wizard]]

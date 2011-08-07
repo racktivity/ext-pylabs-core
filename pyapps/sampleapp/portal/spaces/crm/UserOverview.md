@@ -31,4 +31,4 @@
 }
 </div>
 
-[[wizard:title=Add, name=user_create]][[/wizard]]
+[[wizard:title=Add,domain=drm,name=user_create]][[/wizard]]
