@@ -19,9 +19,9 @@ $(document).ready(function() {
         }
         return vars;
     };
-    
-    
-    
+
+
+
     var METHODS = {getnode: "getNode",
                getfile: "getFile",
                setfile: "setFile",
@@ -29,12 +29,12 @@ $(document).ready(function() {
                newdir:  "newDir",
                del: "delete",
                rename: "rename"};
-               
+
     var remotecall = function(method, options) {
         var options = $.extend({success: $.noop,
                                 error: $.alerterror,
                                 data: {}}, options);
-                                
+
         $.ajax({url: 'appserver/rest/ui/ide/' + method,
                 type: 'POST',
                 dataType: 'json',
@@ -42,12 +42,12 @@ $(document).ready(function() {
                 success: options.success,
                 error: options.error});
     };
-    
+
     var openedfiles = {};
     var generateid = function() {
         return Math.floor(Math.random() * 100000000);
     };
-    
+
     var createNewFile = function(item) {
         var id = item.attr("id");
         var tree = this;
@@ -66,7 +66,7 @@ $(document).ready(function() {
                                             }});
                                     }});
     };
-    
+
     var createNewDir = function(item) {
         var id = item.attr("id");
         var tree = this;
@@ -85,7 +85,7 @@ $(document).ready(function() {
                                             }});
                                     }});
     };
-    
+
     var deleteItem = function(item){
         var id = item.attr("id");
         var type = item.attr("rel") == "file" ? "file" : "folder";
@@ -98,11 +98,11 @@ $(document).ready(function() {
                                             }});
                                     }});
     };
-    
+
     var rename = function(item){
         var id = item.attr("id");
         var tree = this;
-        
+
         $.prompt("New Name ?", {title: "Rename",
                                  value: tree.get_text(item),
                                  pattern: /.+/,
@@ -123,9 +123,9 @@ $(document).ready(function() {
     var contextmenu = function(item) {
         var type = item.attr("rel");
         if (type === undefined) type = "folder";
-        
+
         var actions = [];
-        
+
         if (type === "folder" || type === "project") {
             actions.push({label: "Create New File",
                           action: createNewFile});
@@ -133,7 +133,7 @@ $(document).ready(function() {
                           action: createNewDir,
                           separator_after: true});
         }
-        
+
         if (type === "file" || type === "folder") {
             actions.push({label: "Rename",
                         action: rename,
@@ -141,10 +141,10 @@ $(document).ready(function() {
             actions.push({label: "Delete",
                           action: deleteItem});
         }
-        
+
         return actions;
     };
-    
+
     $("#idetree").jstree({ plugins: ['themes', 'json_data', 'types', 'ui', 'contextmenu', 'crrm'],
                         ui: {
                             select_limit: 1,
@@ -166,7 +166,7 @@ $(document).ready(function() {
                             },
                         themes: {theme : "classic"},
                     });
-    
+
     var openfile = function(fileid) {
         var id = generateid();
         var m = /([^\/]+)$/.exec(fileid);
@@ -178,7 +178,7 @@ $(document).ready(function() {
         openedfiles[fileid] = id;
         $("#editortabs").tabs("add", "#" + id, filename);
         $("#editortabs").tabs("select", "#" + id);
-        
+
         remotecall(METHODS.getfile, {data: {id: fileid},
                     success: function(data){
                         var tab = $("#editortabs").find("#" + id)
@@ -188,16 +188,36 @@ $(document).ready(function() {
                                         .editor({editorbar:false,
                                                  onchange: function() {
                                                     $('a[href$="#' + id + '"]').addClass("ide-modified");
-                                                 }});
+                                                 }})
+                                        .addClass("small");
                         editor.editor("filetype", "py");
                         editor.editor("content", data);
                     }});
     };
-    
+
+    $(".ui-tabs-nav").append("<span class=\"ui-icon ui-icon-arrow-4-diag\" style=\"float:right; cursor:pointer;\"></span>");
+    $(".ui-tabs-nav").find(".ui-icon-arrow-4-diag").click(function() {
+        var icon = $(this);
+        icon.hide();
+        $("body").append("<div id=\"editortabs_popup\" />");
+        $("#editortabs_popup").append($("#editortabs"));
+        $("#editortabs_popup").dialog({
+            resizable: false,
+            modal: true,
+            width:'100%',
+            height:$(window).height() - 7,
+            close: function(event, ui) {
+                icon.show();
+                $("#editortabs_container").append($("#editortabs"));
+            }
+        });
+    });
+
+
     $(".jstree-leaf").die("dblclick").live("dblclick", function(e){
         if ($(this).attr("rel") !== "file")
             return;
-        
+
         var fileid = $(this).attr("id");
         if (fileid in openedfiles){
             //give focus to file.
@@ -207,25 +227,25 @@ $(document).ready(function() {
             openfile(fileid);
         }
     });
-    
+
     $("#editortabs span.ui-icon-close" ).die("click").live( "click", function() {
         var tab = $(this).parent("li");
         var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
         var hashid = m[0];
         var id = m[1];
         var editor = $(hashid).find("#editorspace");
-        
+
         var _close = function(){
             $.each(openedfiles, function(k, v){
                 if (v == id){
                     delete openedfiles[k];
                 }
             });
-            
+
             var index = $("li", $("#editortabs")).index(tab);
             $("#editortabs").tabs("remove", index );
         };
-        
+
         if (editor.data("original") != editor.editor("content")) {
             $.confirm("Close without saving?",
                 {title: "Confirm Close",
@@ -236,7 +256,7 @@ $(document).ready(function() {
             _close();
         }
     });
-    
+
     $("#editortabs span.ui-icon-note" ).die("click").live( "click", function() {
         var tab = $(this).parent("li");
         var m = /#(\d+)$/.exec(tab.find("a").attr("href"));
@@ -249,12 +269,12 @@ $(document).ready(function() {
                 fileid = k;
             }
         });
-        
+
         if (!fileid) {
             $.alert("Can't get the file id back, it sounds like a serious issue!", {title: "Save Error"});
             return;
         }
-        
+
         remotecall(METHODS.setfile,
             {data: {id: fileid,
                     content: editor.editor("content")},
@@ -264,13 +284,13 @@ $(document).ready(function() {
             }
             });
     });
-    
+
     $(document).lock("ide.ready", function() {
         openedfiles = {};
         while ($("#editortabs").tabs("length") > 0) {
             $("#editortabs").remove(0);
         }
-        
+
         var params = getUrlVars();
         if (params.id){
             openfile(params.id);
