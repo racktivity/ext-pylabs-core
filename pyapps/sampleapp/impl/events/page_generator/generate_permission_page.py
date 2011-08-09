@@ -7,8 +7,8 @@ def main(q, i, p, params, tags):
 # Permission details
 * __Name:__ %(name)s
 * __Uri:__ %(uri)s
-[[wizard:title=Edit, name=permission_edit, extra=%(wizard_params)s]][[/wizard]]
-[[wizard:title=Delete, name=permission_delete, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Edit,domain=crm, name=permission_edit, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Delete,domain=crm, name=permission_delete, extra=%(wizard_params)s]][[/wizard]]
 
     """
     try:

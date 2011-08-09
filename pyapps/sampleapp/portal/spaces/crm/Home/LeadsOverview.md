@@ -25,4 +25,4 @@
 }
 [[/sqlgrid]]
 
-[[wizard:title=Add, name=lead_create]][[/wizard]]
+[[wizard:title=Add,domain=crm,name=lead_create]][[/wizard]]

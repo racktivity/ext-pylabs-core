@@ -7,8 +7,8 @@ def main(q, i, p, params, tags):
 # Group details
 * __Name:__ %(name)s
 * __Permissions:__ %(permissions)s
-[[wizard:title=Edit, name=group_edit, extra=%(wizard_params)s]][[/wizard]]
-[[wizard:title=Delete, name=group_delete, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Edit,domain=crm, name=group_edit, extra=%(wizard_params)s]][[/wizard]]
+[[wizard:title=Delete,domain=crm, name=group_delete, extra=%(wizard_params)s]][[/wizard]]
 
     """
     try:

@@ -387,8 +387,8 @@ class CloudApiGenerator:
             roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'rest_%s'%name)
             roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'xmlrpc_%s'%name)
         elif self._documentationFormat == 'alkira':
-            roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest', 'rest_%s'%name)
-            roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'Home', 'xmlrpc', 'xmlrpc_%s'%name)
+            roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest')
+            roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'Home', 'xmlrpc')
 
         if not q.system.fs.exists(roDirRestClass): q.system.fs.createDir(roDirRestClass)
         if not q.system.fs.exists(roDirXmlrpcClass): q.system.fs.createDir(roDirXmlrpcClass)
@@ -399,9 +399,9 @@ class CloudApiGenerator:
         elif self._documentationFormat == 'alkira':
             self._generateCode(self.restAlkiraDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirRestClass, 'rest_%s.md'%name ))
             self._generateCode(self.xmlrpcAlkiraDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.md'%name))
-            self._generateCode(self.apiAlkiraHomeTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'Home.md'))
-            self._generateCode(self.apiXmlrpcTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'xmlrpc', 'xmlrpc.md'))
-            self._generateCode(self.apiRestTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest', 'rest.md'))
+            self._generateCode(self.apiAlkiraHomeTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home.md'))
+            self._generateCode(self.apiXmlrpcTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'xmlrpc.md'))
+            self._generateCode(self.apiRestTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest.md'))
 
         return name
 

@@ -15,8 +15,8 @@ def main(q, i, p, params, tags):
 * __Status:__ %(status)s
 <br />
 <br />
-[[wizard:title=Edit, name=activity_edit, extra=%(params)s]][[/wizard]]
-[[wizard:title=Delete, name=activity_delete, extra=%(params)s]][[/wizard]]
+[[wizard:title=Edit,domain=crm, name=activity_edit, extra=%(params)s]][[/wizard]]
+[[wizard:title=Delete,domain=crm, name=activity_delete, extra=%(params)s]][[/wizard]]
     """
     activity = p.api.action.crm.activity.getObject(guid)
     searchresult = p.api.action.ui.page.find(name="activity_detail_%s"%guid)['result']
