@@ -40,6 +40,8 @@ Here you can edit your projects, first you need to create a project from the *Pr
 - Double click file to open it in the editor space.
 - Right Click a file, or a directory for more options.
 
+To work fullscreen, Click the expand-button on the top-right of the tab bar
+
 <div class="small">
     <form>
         <span>Font size:</span>

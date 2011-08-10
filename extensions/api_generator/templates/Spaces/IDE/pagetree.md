@@ -195,7 +195,7 @@ $(document).ready(function() {
                     }});
     };
 
-    $(".ui-tabs-nav").append("<span class=\"ui-icon ui-icon-arrow-4-diag\" style=\"float:right; cursor:pointer;\"></span>");
+    $(".ui-tabs-nav").append("<span class=\"ui-icon ui-icon-arrow-4-diag\" style=\"float:right; cursor:pointer;\" title=\"Expand\"></span>");
     $(".ui-tabs-nav").find(".ui-icon-arrow-4-diag").click(function() {
         var icon = $(this);
         icon.hide();
