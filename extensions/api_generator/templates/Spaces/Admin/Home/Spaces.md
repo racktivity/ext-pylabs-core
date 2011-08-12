@@ -111,15 +111,22 @@ $(document).ready(function(){
                                 console.log("listspaces succeeded, rendering list...");
                                 tbody.empty();
                                 $.each(data, function(i, space){
-                                    var renameText = "rename";
-                                    var deleteText = "delete";
+                                    var renameText;
+                                    var deleteText;
+                                    var tdSpaceNameContent;
+                                    var spaceElem;
                                     if ((space == "Admin") || (space == "IDE")) {
                                         renameText = "-";
                                         deleteText = "-";
+                                        spaceElem = $("<span>").text(space);
+                                    } else {
+                                        renameText = "rename";
+                                        deleteText = "delete";
+                                        spaceElem = $("<a>", {href: "#/Admin/" + space}).text(space);
                                     }
                                     
                                     tbody.append($('<tr class="ui-state-default">').append('<td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>')
-                                                          .append($("<td class='td_spacename'>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
+                                                          .append($("<td class='td_spacename'>").append(spaceElem))
                                                           .append($("<td>", {style: 'text-align: center'}).append($('<a>', {style: 'cursor: pointer'}).data('space', space).text(renameText).click(function() {
                                                                 var space = $(this).data('space');
                                                                 if ((space == 'IDE') || (space == 'Admin')){
