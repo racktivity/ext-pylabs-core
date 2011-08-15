@@ -88,6 +88,8 @@
 
 <body>
 
+  <div id='loginInfo' name='loginInfo' style='position:absolute; top: 0.3em; right:1em;' align='right'></div>
+
   <div id="container">
   <a class="logo"></a>
   <a class="link" href="/pylabsdoc/#/Installation/Home"></a>
@@ -169,14 +171,23 @@
   
   <script src="/static/lfw/js/libs/jquery-1.5.1.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="/static/lfw/js/libs/jquery-1.5.1.js"%3E%3C/script%3E'))</script>
-  
-  
+
+
   <script src='/static/lfw/js/libs/jquery-ui.js'></script>
+  <script src='/static/lfw/js/libs/oauth.js'></script>
+  <script src='/static/lfw/js/libs/sha1.js'></script>
   <script>!window.jQuery.ui && document.write(unescape('%3Cscript src="/static/lfw/js/libs/jquery-ui-1.8.7.js"%3E%3C/script%3E'))</script>
   <script src='/static/lfw/js/libs/jquery.tmpl.js'></script>
   <script src='/static/lfw/js/libs/jquery.json-2.2.js'></script>
   <script src='/static/lfw/js/libs/dominoes-1.0-rc2.min.js'></script>
-  
+  <script src="/static/lfw/js/dialogs.js"></script>
+  <script src="/static/lfw/js/libs/codemirror/codemirror.js"></script>
+  <script src="/static/lfw/js/libs/codemirror/python.js"></script>
+  <script src="/static/lfw/js/editor.js"></script>
+  <script src="/static/lfw/js/lock.js"></script>
+  <script src="/static/lfw/js/autocomp.js"></script>
+
+
   <!-- scripts concatenated and minified via ant build script-->
   <script src='/static/lfw/js/mylibs/sammy-0.6.2.min.js'></script>
   <script src='/static/lfw/js/mylibs/sammy.mustache-0.6.2.min.js'></script>
@@ -184,6 +195,7 @@
   <script src='/static/lfw/js/mylibs/showdown-0.9.min.js'></script>
   <script src="/static/lfw/js/plugins.js"></script>
   <script src='js/config.js'></script>
+  <script src="/static/lfw/js/oauth.js"></script>
   <script src="/static/lfw/js/script.js"></script>
   <!-- end concatenated and minified scripts-->  
   
