@@ -283,11 +283,11 @@ class CloudApiGenerator:
     documentationDest = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'doc')
     restDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'restDocumentationTemplate.tmpl')
     xmlrpcDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcDocumentationTemplate.tmpl')
-    restAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'restAlkiraDocumentationTemplate.tmpl')
-    xmlrpcAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcAlkiraDocumentationTemplate.tmpl')
+    serviceAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'serviceAlkiraDocumentationTemplate.tmpl')
     apiAlkiraHomeTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiAlkiraHome.tmpl')
     apiXmlrpcTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiXmlrpcTemplate.tmpl')
     apiRestTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiRestTemplate.tmpl')
+    apiDomainTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiDomainTemplate.tmpl')
     roDirRest = q.system.fs.joinPaths(documentationDest,'REST')
     roDirXmlrpc = q.system.fs.joinPaths(documentationDest, 'XMLRPC')
     _documentationFormat = 'alkira'
@@ -370,8 +370,7 @@ class CloudApiGenerator:
 
         return generatedFiles
 
-    def _generateClientCode(self, specFile, serviceName, templatePath, destPath, className =""):
-
+    def _generateClientCode(self, specFile, serviceName, templatePath, destPath, className ="", domain=""):
         claZ = getClass(specFile, className)
         methods = getClassMethods(specFile, className)
         typedArgs = getMethodTypedArgument(specFile)
@@ -381,28 +380,28 @@ class CloudApiGenerator:
                     arg.argtype = typedArgs[method.name][arg.name]
 
         name = getClassName(claZ)
+        methodsinfo = [(method.name, method) for method in methods]
+
         self._generateCode(templatePath, {'className': name, 'methods':methods, 'serviceName':serviceName}, destPath)
 
         if self._documentationFormat == 'confluence':
             roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'rest_%s'%name)
             roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'xmlrpc_%s'%name)
-        elif self._documentationFormat == 'alkira':
-            roDirRestClass = q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest')
-            roDirXmlrpcClass = q.system.fs.joinPaths(self.roDirXmlrpc, 'Home', 'xmlrpc')
-
-        if not q.system.fs.exists(roDirRestClass): q.system.fs.createDir(roDirRestClass)
-        if not q.system.fs.exists(roDirXmlrpcClass): q.system.fs.createDir(roDirXmlrpcClass)
+            if not q.system.fs.exists(roDirRestClass): q.system.fs.createDir(roDirRestClass)
+            if not q.system.fs.exists(roDirXmlrpcClass): q.system.fs.createDir(roDirXmlrpcClass)
 
         if self._documentationFormat == 'confluence':
             self._generateCode(self.restDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirRestClass, 'rest_%s.txt'%name ))
             self._generateCode(self.xmlrpcDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.txt'%name))
         elif self._documentationFormat == 'alkira':
-            self._generateCode(self.restAlkiraDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirRestClass, 'rest_%s.md'%name ))
-            self._generateCode(self.xmlrpcAlkiraDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.md'%name))
-            self._generateCode(self.apiAlkiraHomeTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home.md'))
-            self._generateCode(self.apiXmlrpcTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'xmlrpc.md'))
-            self._generateCode(self.apiRestTemplate, {}, q.system.fs.joinPaths(self.roDirRest, 'Home', 'rest.md'))
-
+            self._generateCode(self.apiAlkiraHomeTemplate, {}, q.system.fs.joinPaths(self.documentationDest, 'Home.md'))
+            if not q.system.fs.exists(q.system.fs.joinPaths(self.documentationDest, 'Home', '%s.md' % domain)):
+                self._generateCode(self.apiDomainTemplate, {'root': domain, 'name':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', '%s.md' % domain))
+            if not q.system.fs.exists(q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s.md' % (domain, name))):
+                self._generateCode(self.apiDomainTemplate, {'root':'%s_%s'%(domain,name), 'name':name}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s.md' % (domain, name)))
+            for methodname, method in methodsinfo:
+                self._generateCode(self.serviceAlkiraDocumentationTemplate, {'className': name, 'method':method, 'domain':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s' % (domain, name), '%s_%s_%s.md' % (domain, name, methodname)))
+    
         return name
 
     def _generateServerCode(self, specFile, templatePath, destPath, serverExtensionTemplate="", serverExtensionDest="",rootobjectslibDest="", rootobjectlibTemplate="", className="", wizards=True, params=None):
@@ -479,11 +478,6 @@ class CloudApiGenerator:
             domain = domain_spec.split(os.sep)[-1]
             domains.append({'modulename': domain, 'classname': domain})
 
-            #domain_path = q.system.fs.joinPaths(self.actorOutputDir, domain)
-            #q.system.fs.createDir(domain_path)
-            #if not q.system.fs.exists(q.system.fs.joinPaths(domain_path, '__init__.py')):
-            #    q.system.fs.createEmptyFile(q.system.fs.joinPaths(domain_path, '__init__.py'))
-
             actions = list()
 
             for spec in q.system.fs.listFilesInDir(domain_spec, filter='*.py'):
@@ -492,7 +486,7 @@ class CloudApiGenerator:
                     continue
                 #rootObject = fileName.split('.')[0].split('ro_')[-1]
                 rootObject = fileName.split('.')[0]
-                self._generateClientCode(spec, rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, domain, 'client_%s.py' % rootObject))
+                self._generateClientCode(spec, rootObject,self.rootobject_clientTemplate, q.system.fs.joinPaths(self.rootobject_clientOutputDir, domain, 'client_%s.py' % rootObject), domain=domain)
                 #services[rootObject] = '%s.%s.%s' % (rootObject, domain, className)
                 # Check whether this specification belongs to a configuration model specification or not
                 isconfig = q.system.fs.exists(spec.replace('action', 'config'))
@@ -688,42 +682,27 @@ class CloudApiGenerator:
         @param hostname: The IP that the Alkira Client will use to get a connection and add the pages.
         """
         alkira_client = q.clients.alkira.getClient(hostname)
-        main_content = '# %s' %main_page
+        main_content = '# %s' % main_page
 
         if parent_name:
             alkira_client.createPage(space, main_page, content=main_content, parent=parent_name)
         else:
             alkira_client.createPage(space, main_page, content=main_content)
-
-        rest_page = 'REST Documentation'
-        rest_content = '# %s' %rest_page
-        alkira_client.createPage(space, rest_page, content=rest_content, parent=main_page)
-
-        main_content += '\n* [%s](/#/%s/%s)' %(rest_page, space, rest_page)
-        alkira_client.updatePage(space, main_page, content=main_content)
-
-        for path in q.system.fs.listDirsInDir(self.roDirRest):
-            ro_name = q.system.fs.getBaseName(path)
-            q.logger.log('Publishing: %s REST Documentation' %ro_name, level=2)
-            ro_content = q.system.fs.fileGetContents(q.system.fs.joinPaths(path, "%s.md"%ro_name))
-            alkira_client.createPage(space, ro_name, ro_content, parent=rest_page)
-            rest_content += "\n* [%s](/#/%s/%s)" %(ro_name, space, ro_name)
-            alkira_client.updatePage(space, rest_page, content=rest_content)
-
-        xmlrpc_page = 'XMLRPC Documentation'
-        xmlrpc_content = '# %s' %xmlrpc_page
-        alkira_client.createPage(space, xmlrpc_page, content=xmlrpc_content, parent=main_page)
-
-        main_content += '\n* [%s](/#/%s/%s)' %(xmlrpc_page, space, xmlrpc_page)
-        alkira_client.updatePage(space, main_page, content=main_content)
-
-        for path in q.system.fs.listDirsInDir(self.roDirXmlrpc):
-            ro_name = q.system.fs.getBaseName(path)
-            q.logger.log('Publishing: %s XMLRPC Documentation' %ro_name, level=2)
-            ro_content = q.system.fs.fileGetContents(q.system.fs.joinPaths(path, "%s.md"%ro_name))
-            alkira_client.createPage(space, ro_name, ro_content, parent=xmlrpc_page)
-            xmlrpc_content += "\n* [%s](/#/%s/%s)" %(ro_name, space, ro_name)
-            alkira_client.updatePage(space, xmlrpc_page, content=xmlrpc_content)
+        
+        for path in q.system.fs.listDirsInDir(self.documentationDest):
+            domainname = q.system.fs.getBaseName(path)
+            q.logger.log('Publishing %s domain page' % domainname, 2)
+            domaincontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(path, '%s.md' % domainname))
+            alkira_client.createPage(space, domainname, domaincontent, parent=main_page)
+            for rootobjectpath in q.system.fs.listDirsInDir(path):
+                rootobjectname = q.system.fs.getBaseName(rootobjectpath).split('_')[1].split('.')[0]
+                q.logger.log('Publishing %s rootobject page' % rootobjectname, 2)
+                rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(rootobjectpath, '%s_%s.md' % (domain, rootobjectname)))
+                alkira_client.createPage(space, rootobjectname, rootobjectcontent, parent=domainname)
+                for methodpath in q.system.fs.listFilesInDir(rootobjectpath):
+                    methodname = q.system.fs.getBaseName(methodpath).split('_')[2].split('.')[0]
+                    methodcontent = q.system.fs.fileGetContents(methodpath)
+                    alkira_client.createPage(space, '%s_%s_%s' % (domain, rootobjectname, methodname), methodcontent, parent=rootobjectname)
 
 class AppAPIGenerator(object):
 
@@ -855,6 +834,7 @@ class AppAPIGenerator(object):
 
         self._generator.roDirRest = docdir
         self._generator.roDirXmlrpc = docdir
+        self._generator.documentationDest = docdir
 
         #self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'extension')
         self._generator.generatePythonRoot()
