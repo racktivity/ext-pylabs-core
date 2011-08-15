@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import unittest
+import urllib2
 from pylabs import q, p
 TESTAPP = 'sampleapp'
 
@@ -57,7 +58,6 @@ class TestPyapps(unittest.TestCase):
 
     def test_proxy(self):
         "Testing NGinx"
-        import urllib2
         site = urllib2.urlopen("http://localhost/%s/" % TESTAPP)
 
     def test_actions(self):
