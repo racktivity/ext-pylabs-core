@@ -39,10 +39,10 @@ class TestPyapps(unittest.TestCase):
         print "Try to retrieve the object from the db"
         cc = p.api.model.crm.customer.get(c.guid)
         self.assertEqual(c, cc)
-        f = appserver_api.model.crm.customer.getFilterObject()
+        f = p.api.model.crm.customer.getFilterObject()
         f.add("crm_view_customer_list", "name", "Joske Vermeulen")
         print "Try to find the object"
-        guids = appserver_api.model.crm.customer.find(f)
+        guids = p.api.model.crm.customer.find(f)
         self.assertEqual(len(guids),  1)
         self.assertTrue(c.guid in guids)
 
@@ -95,19 +95,19 @@ class TestPyapps(unittest.TestCase):
         assert test_lead.amount == 0.5
         assert test_lead.probability == 42
 
-        lead_list_dict = api.action.crm.lead.list()
+        lead_list_dict = p.api.action.crm.lead.list()
         lead_list = lead_list_dict['result']
         print "Lead list:"
         print lead_list
         assert len(lead_list) == 1
         assert lead_list[0]['name'] == "Super Test Lead"
         assert lead_list[0]['guid'] == test_lead_guid
-        result_dict = api.action.crm.lead.delete(test_lead_guid)
+        result_dict = p.api.action.crm.lead.delete(test_lead_guid)
         assert 'result' in result_dict
         assert result_dict['result'] is True
         print "Check if Jefke's page exists"
         page_name = "customer_detail_" + jefke_guid
-        page_guids_dict = api.action.ui.page.find(name=page_name)
+        page_guids_dict = p.api.action.ui.page.find(name=page_name)
         page_guids = page_guids_dict['result']
         assert len(page_guids) == 1, "Expected to find 1 page guid, but found %d" % len(page_guids)
 
