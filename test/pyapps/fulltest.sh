@@ -33,7 +33,7 @@ cd /opt/qbase5/mytests/
 nosetests --with-xunit -v
 EOF
 sudo cp /tmp/mytest.sh "${FULL_CHROOT_PATH}/mytest.sh"
-chmod +x "${FULL_CHROOT_PATH}/mytest.sh"
+sudo chmod +x "${FULL_CHROOT_PATH}/mytest.sh"
 sudo chroot "${FULL_CHROOT_PATH}" apt-get install -y python-nose
 sudo chroot "${FULL_CHROOT_PATH}" /mytest.sh || true
 sudo cp -a "${FULL_CHROOT_PATH}/opt/qbase5/mytests/"*.xml ${WORKSPACE}/testresults/
