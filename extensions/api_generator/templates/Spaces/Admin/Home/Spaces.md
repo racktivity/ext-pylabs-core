@@ -122,7 +122,8 @@ $(document).ready(function(){
                                     } else {
                                         renameText = "rename";
                                         deleteText = "delete";
-                                        spaceElem = $("<a>", {href: "#/Admin/" + space}).text(space);
+                                        spaceElem = $("<a>", {href: "#/Admin/s_" + space}).text(space);
+                                        
                                     }
                                     
                                     tbody.append($('<tr class="ui-state-default">').append('<td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>')
