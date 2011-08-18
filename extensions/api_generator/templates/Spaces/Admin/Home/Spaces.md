@@ -111,12 +111,28 @@ $(document).ready(function(){
                                 console.log("listspaces succeeded, rendering list...");
                                 tbody.empty();
                                 $.each(data, function(i, space){
-                                    if ((space == "Admin") || (space == "IDE")) return;
+                                    var renameText;
+                                    var deleteText;
+                                    var tdSpaceNameContent;
+                                    var spaceElem;
+                                    if ((space == "Admin") || (space == "IDE")) {
+                                        renameText = "-";
+                                        deleteText = "-";
+                                        spaceElem = $("<span>").text(space);
+                                    } else {
+                                        renameText = "rename";
+                                        deleteText = "delete";
+                                        spaceElem = $("<a>", {href: "#/Admin/s_" + space}).text(space);
+                                        
+                                    }
                                     
                                     tbody.append($('<tr class="ui-state-default">').append('<td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></td>')
-                                                          .append($("<td class='td_spacename'>").append($("<a>", {href: "#/Admin/" + space}).text(space)))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('rename').click(function() {
+                                                          .append($("<td class='td_spacename'>").append(spaceElem))
+                                                          .append($("<td>", {style: 'text-align: center'}).append($('<a>', {style: 'cursor: pointer'}).data('space', space).text(renameText).click(function() {
                                                                 var space = $(this).data('space');
+                                                                if ((space == 'IDE') || (space == 'Admin')){
+                                                                    return;
+                                                                }
                                                                 $("#spaceform input").removeClass("ui-state-error").val(space);
                                                                 var $dialog = $("#spaceform").dialog("option", "title", "Edit Space");
                                                                 $("#spaceform").dialog("option", "buttons", {"Rename Space": function(){
@@ -155,8 +171,11 @@ $(document).ready(function(){
                                                                                 
                                                                 $("#spaceform").dialog("open");
                                                               })))
-                                                          .append($("<td>").append($('<a>', {style: 'cursor: pointer'}).data('space', space).text('delete').click(function(){
+                                                          .append($("<td>", {style: 'text-align: center'}).append($('<a>', {style: 'cursor: pointer'}).data('space', space).text(deleteText).click(function(){
                                                                 var space = $(this).data('space');
+                                                                if ((space == 'IDE') || (space == 'Admin')){
+                                                                     return;
+                                                                }
                                                                 confirmdelete({space: space,
                                                                          ok: function(){
                                                                              deletespace(space, {success: function(){
@@ -258,8 +277,8 @@ $(document).ready(function(){
     <tr>
         <th></th>
         <th style='width: 50%;'>Space</th>
-        <th>Rename</th>
-        <th>Delete</th>
+        <th style='text-align:center;'>Rename</th>
+        <th style='text-align:center;'>Delete</th>
     </tr>
 </thead>
 <tbody>
