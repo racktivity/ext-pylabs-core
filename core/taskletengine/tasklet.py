@@ -97,7 +97,7 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
             tags = tags_from_path(self._path, self._tasklet_root)
             tags = self._parseTags(tags)
 
-        self._tags = set(tags)
+        self._tags = set(tuple(sorted(ts)) for ts in tags)
 
         self._priority = self._loadPriority(module)
         self._realizes = self._loadRealizes(module)

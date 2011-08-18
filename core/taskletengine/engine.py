@@ -363,10 +363,15 @@ class TaskletEngine(object):
 
         def tagFilter(tasklets):
             '''Filter tasklets based on tags'''
-            if tags is not None:
-                _tags = set(tags or tuple())
+            if tags is None:
+                for tasklet in tasklets:
+                    yield tasklet
+
+            _tags = set(tags or tuple())
+            _sorted_tags = tuple(sorted(_tags))
+
             for tasklet in tasklets:
-                if tags is None or _tags in (set(t) for t in tasklet.tags):
+                if _sorted_tags in tasklet.tags:
                     yield tasklet
 
         def priorityFilter(tasklets):
