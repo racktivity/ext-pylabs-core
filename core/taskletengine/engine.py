@@ -55,6 +55,81 @@ from tasklet import Tasklet
 
 Tasklet.MATCH_FAILED = MATCH_FAILED
 
+try:
+    WeakSet = weakref.WeakSet
+except AttributeError:
+    # Minimal implementation of WeakSet, as found in Python 2.7
+    class _IterationGuard(object):
+        def __init__(self, weakcontainer):
+            self.weakcontainer = weakref.ref(weakcontainer)
+
+        def enter(self):
+            w = self.weakcontainer()
+
+            if w is not None:
+                w._iterating.add(self)
+
+        def exit(self):
+            w = self.weakcontainer()
+
+            if w is not None:
+                s = w._iterating
+
+                s.remove(self)
+
+                if not s:
+                    w._commit_removals()
+
+    class WeakSet(object):
+        def __init__(self):
+            self.data = set()
+
+            def _remove(item, selfref=weakref.ref(self)):
+                self_ = selfref()
+
+                if self_ is not None:
+                    if self_._iterating:
+                        self_._pending_removals.append(item)
+                    else:
+                        self_.data.discard(item)
+
+            self._remove = _remove
+
+            self._pending_removals = []
+            self._iterating = set()
+
+        def add(self, item):
+            if self._pending_removals:
+                self._commit_removals()
+            self.data.add(weakref.ref(item, self._remove))
+
+        def remove(self, item):
+            if self._pending_removals:
+                self._commit_removals()
+            self.data.remove(weakref.ref(item))
+
+        def __len__(self):
+            return sum(1 if x() is not None else 0 for x in self.data)
+
+        def __iter__(self):
+            guard = _IterationGuard(self)
+            guard.enter()
+
+            try:
+                for itemref in self.data:
+                    item = itemref()
+                    if item is not None:
+                        yield item
+            finally:
+                guard.exit()
+
+        def _commit_removals(self):
+            l = self._pending_removals
+            discard = self.data.discard
+
+            while l:
+                discard(l.pop())
+
 # Exception type used for control flow (kill execution chain of tasklets)
 # Used by q.tasklet.stop()
 try:
@@ -177,7 +252,7 @@ class TaskletEngine(object):
         if self._cluster_fun:
             for key in self._cluster_fun(tasklet):
                 if key not in self._clusters:
-                    self._clusters[key] = weakref.WeakSet()
+                    self._clusters[key] = WeakSet()
 
                 self._clusters[key].add(tasklet)
 
@@ -327,7 +402,7 @@ class TaskletEngine(object):
                 clusters = (clusters, )
 
             def iter_clusters():
-                seen = weakref.WeakSet()
+                seen = WeakSet()
 
                 for cluster in clusters:
                     if cluster in self._clusters:
