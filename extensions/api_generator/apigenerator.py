@@ -13,7 +13,10 @@ import pymodel as model
 import os
 import re
 import imp
-import pydot
+try:
+    import pydot
+except ImportError:
+    pydot = None
 import inspect
 import itertools
 
@@ -264,7 +267,7 @@ class DotGenerator:
 
         self.graph = pydot.Dot()
 
-        self.api = p.application.getAPI('sampleapp', context=q.enumerators.AppContext.WFE)
+        self.api = p.application.getAPI(appname, context=q.enumerators.AppContext.WFE)
 
         self.nodes = []
         self.links = {}
@@ -328,13 +331,10 @@ class DotGenerator:
         self.write_file(dest)
 
     def create_graph(self):
-        print 'Building image'
         for node in self.nodes:
             self.graph.add_node(node)
 
         nodenames = map(lambda x: x.get_name(), self.nodes)
-
-        print 'Making links'
 
         for source, destitems in self.links.items():
             for destitem in destitems:
@@ -349,11 +349,9 @@ class DotGenerator:
                     self.graph.add_edge(pydot.Edge(src=source, dst=dest, style=style))
 
     def write_file(self, path):
-        print 'Writing to jpeg'
         self.graph.write_jpeg(path)
 
     def process_model(self):
-        print 'Processing model'
         for domain in itertools.ifilter(lambda x: x not in self.ignore_domains and not x.startswith('__'), dir(self.api.model)):
             for classname in itertools.ifilter(lambda x: not x.startswith('_'), dir(getattr(self.api.model, domain))):
                 modelinfo = getattr(getattr(self.api.model, domain), classname)._ROOTOBJECTTYPE.PYMODEL_MODEL_INFO
@@ -836,9 +834,6 @@ class AppAPIGenerator(object):
         elif appname and domain and modelSpec:
             return self._generateCRUDImplForModel(appname, domain, modelSpec )
 
-        dg = DotGenerator(appname)
-        dg.generate_modelspec()
-
 
     def _generateCRUDImplForDomain(self, appname, domain ):
         print "    _generateCRUDImplForDomain( %s, %s )"%(appname, domain)
@@ -970,6 +965,10 @@ class AppAPIGenerator(object):
         self._generator.actorOutputDir = q.system.fs.joinPaths(app_path, 'client', 'actor')
         self._generator.generatePythonActor()
         q.action.stop()
+
+        if pydot:
+            dg = DotGenerator(appname)
+            dg.generate_modelspec()
 
         q.action.stop()
 
