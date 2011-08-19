@@ -2,8 +2,8 @@
 @metadata order=40
 @metadata tagstring=extension practical example pymodel
 
-[qpinstall]: /#/Q-Packages/QPInstall
-[modeling]: /#/PyLabsApps/Modeling
+[qpinstall]: #/Q-Packages/QPInstall
+[modeling]: #/PyLabsApps/Modeling
 
 
 # Pymodel

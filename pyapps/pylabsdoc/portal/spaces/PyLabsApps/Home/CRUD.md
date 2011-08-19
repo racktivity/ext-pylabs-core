@@ -2,9 +2,9 @@
 @metadata order=80
 @metadata tagstring=generate methods create read update delete root object
 
-[model]: /#/PyLabsApps/Modeling
-[action]: /#/PyLabsApps/Action
-[dirs]: /#/PyLabsApps/Introduction
+[model]: #/PyLabsApps/Modeling
+[action]: #/PyLabsApps/Action
+[dirs]: #/PyLabsApps/Introduction
 
 
 #CRUD Generation 

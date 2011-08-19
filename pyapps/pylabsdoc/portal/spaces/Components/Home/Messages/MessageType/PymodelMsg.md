@@ -1,7 +1,7 @@
 @metadata title=PyModel Message
 @metadata tagstring=pymodel message model
 
-[basemsg]: /#/Components/BaseMsg
+[basemsg]: #/Components/BaseMsg
 
 
 # PyModel Message

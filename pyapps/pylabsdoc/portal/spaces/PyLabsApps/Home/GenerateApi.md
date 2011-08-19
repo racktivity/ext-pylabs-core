@@ -2,8 +2,8 @@
 @metadata order=120
 @metadata tagstring=generate pyapp api
 
-[appserver]: /#/Components/AppServer
-[wfe]: /#/Components/WFE
+[appserver]: #/Components/AppServer
+[wfe]: #/Components/WFE
 
 # Generating the PyApp API
 

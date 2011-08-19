@@ -2,9 +2,9 @@
 @metadata order=45
 @metadata tagstring=osis operation delete get store
 
-[tasklet]: /#/Overview/Tasklets
-[pyappdir]: /#/PyLabsApps/Introduction
-[model]: /#/PyLabsApps/Modeling
+[tasklet]: #/Overview/Tasklets
+[pyappdir]: #/PyLabsApps/Introduction
+[model]: #/PyLabsApps/Modeling
 
 
 #OSIS Operations

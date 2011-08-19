@@ -1,7 +1,7 @@
 @metadata title=Samba
 @metadata tagstring=samba manage
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 # Samba
 

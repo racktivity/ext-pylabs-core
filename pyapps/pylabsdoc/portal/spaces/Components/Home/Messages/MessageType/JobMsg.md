@@ -1,7 +1,7 @@
 @metadata title=Job Message
 @metadata tagstring=job message
 
-[basemsg]: /#/Components/BaseMsg
+[basemsg]: #/Components/BaseMsg
 
 # jobmessage
 

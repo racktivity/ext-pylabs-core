@@ -2,8 +2,8 @@
 @metadata order=25
 @metadata tagstring=practical create pyapp
 
-[introduction]: /#/PyLabsApps/Introduction
-[model]: /#/PyLabsApps/Modeling
+[introduction]: #/PyLabsApps/Introduction
+[model]: #/PyLabsApps/Modeling
 
 
 #PyApps Practical Information

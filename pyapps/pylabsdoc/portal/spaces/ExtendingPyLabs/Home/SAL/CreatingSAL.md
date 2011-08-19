@@ -2,7 +2,7 @@
 @metadata order=10
 @metadata tagstring=create sal extension
 
-[extensiontutorial]: /#/ExtendingPyLabs/CreateExtension
+[extensiontutorial]: #/ExtendingPyLabs/CreateExtension
 
 
 #Creating SAL's

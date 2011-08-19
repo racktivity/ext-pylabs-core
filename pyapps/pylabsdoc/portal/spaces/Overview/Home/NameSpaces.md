@@ -2,7 +2,7 @@
 @metadata order=90
 @metadata tagstring=name spaces q i p libraries
 
-[pyapps]: /#/PyLabsApps/Home
+[pyapps]: #/PyLabsApps/Home
 
 
 #Name Spaces

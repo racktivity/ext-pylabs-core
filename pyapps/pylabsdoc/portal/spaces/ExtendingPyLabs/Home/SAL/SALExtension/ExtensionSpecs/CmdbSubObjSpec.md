@@ -2,10 +2,10 @@
 @metadata order=40
 @metadata tagstring=cmdb subobject property
 
-[importpylabs]: /#/HowTo/ImportPyLabs
-[importextension]: /#/HowTo/ImportExtensionClass
-[baseclass]: /#/ExtendingPyLabs/BaseClasses
-[contribute]: /#/PyLabs50/Contributing
+[importpylabs]: #/HowTo/ImportPyLabs
+[importextension]: #/HowTo/ImportExtensionClass
+[baseclass]: #/ExtendingPyLabs/BaseClasses
+[contribute]: #/PyLabs50/Contributing
 
 
 # CMDB Sub Object Specifications

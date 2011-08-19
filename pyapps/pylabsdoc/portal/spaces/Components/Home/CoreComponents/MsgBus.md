@@ -1,7 +1,7 @@
 @metadata title=Message Bus
 @metadata tagstring=message bus rabbitmq
 
-[Messages]: /#/Components/Messages
+[Messages]: #/Components/Messages
 
 
 ## PyLabs Bus System

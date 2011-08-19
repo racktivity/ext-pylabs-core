@@ -2,7 +2,7 @@
 @metadata tagstring=dhcpd manage
 
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 
 # Dynamic Host Configuration Protocol Daemon

@@ -2,11 +2,11 @@
 @metadata order=20
 @metadata tagstring=cmdb application
 
-[importpylabs]: /#/HowTo/ImportPyLabs
-[importextension]: /#/HowTo/ImportExtensionClass
-[baseclass]: /#/ExtendingPyLabs/BaseClasses
-[contribute]: /#/PyLabs50/Contributing
-[testdata]: /#/ExtendingPyLabs/CmdbTestData
+[importpylabs]: #/HowTo/ImportPyLabs
+[importextension]: #/HowTo/ImportExtensionClass
+[baseclass]: #/ExtendingPyLabs/BaseClasses
+[contribute]: #/PyLabs50/Contributing
+[testdata]: #/ExtendingPyLabs/CmdbTestData
 
 
 # CMDB Application Specifications

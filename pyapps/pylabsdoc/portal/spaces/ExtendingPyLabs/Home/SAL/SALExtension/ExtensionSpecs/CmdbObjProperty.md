@@ -2,8 +2,8 @@
 @metadata order=30
 @metadata tagstring=cmdb object property
 
-[baseclass]: /#/ExtendingPyLabs/BaseClasses
-[createenum]: /#/ExtendingPyLabs/CreateEnumerators
+[baseclass]: #/ExtendingPyLabs/BaseClasses
+[createenum]: #/ExtendingPyLabs/CreateEnumerators
 
 
 # Properties of PyLabs CMDB Objects

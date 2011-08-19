@@ -2,7 +2,7 @@
 @metadata tagstring=dns manage
 
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 
 # Domain Name System Server

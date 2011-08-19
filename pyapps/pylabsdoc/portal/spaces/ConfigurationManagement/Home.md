@@ -2,11 +2,11 @@
 @metadata title=Configuration Management
 @metadata tagstring=configuration management
 
-[components]: /#/Components/Home
-[install]: /#/Installation/Home
-[general]: /#/ConfigurationManagement/GeneralConfigFunctions
-[simple]: /#/ConfigurationManagement/SimpleConfig
-[cmdb]: /#/ConfigurationManagement/CMDBConfig
+[components]: #/Components/Home
+[install]: #/Installation/Home
+[general]: #/ConfigurationManagement/GeneralConfigFunctions
+[simple]: #/ConfigurationManagement/SimpleConfig
+[cmdb]: #/ConfigurationManagement/CMDBConfig
 [nginx]: http://wiki.nginx.org
 
 

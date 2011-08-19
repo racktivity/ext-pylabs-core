@@ -2,11 +2,11 @@
 @metadata order=40
 @metadata tagstring=osis view create connection index
 
-[architecture]: /#/Overview/Architecture
+[architecture]: #/Overview/Architecture
 [arakoon]: http://www.arakoon.org
-[tasklet]: /#/Overview/Tasklets
-[pyappdir]: /#/PyLabsApps/Introduction
-[model]: /#/PyLabsApps/Modeling
+[tasklet]: #/Overview/Tasklets
+[pyappdir]: #/PyLabsApps/Introduction
+[model]: #/PyLabsApps/Modeling
 
 
 #OSIS Views
