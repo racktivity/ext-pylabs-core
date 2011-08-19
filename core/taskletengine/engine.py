@@ -349,42 +349,30 @@ class TaskletEngine(object):
         #find all matching tasklets given the search criteria.
         #Using a generator pipeline simplifies adding new filter criteria and
         #makes the code somewhat more readable (not to mention more efficient)
-        def authorFilter(tasklets):
-            '''Filter tasklets based on author'''
-            for tasklet in tasklets:
-                if author == '*' or  tasklet.author == author:
-                    yield tasklet
 
-        def nameFilter(tasklets):
-            '''Filter tasklets based on name'''
-            for tasklet in tasklets:
-                if name == '*' or tasklet.name == name:
-                    yield tasklet
+        predicate_filter = lambda p: lambda ts: (t for t in ts if p(t))
+        attribute_filter = lambda a, v: lambda ts: \
+            (t for t in ts if getattr(t, a) == v)
+        no_filter = lambda ts: ts
 
-        def tagFilter(tasklets):
+        authorFilter = no_filter if author == '*' \
+            else attribute_filter('author', author)
+        nameFilter = no_filter if name == '*' \
+            else attribute_filter('name', name)
+
+        def _tagFilter(tasklets):
             '''Filter tasklets based on tags'''
-            if tags is None:
-                for tasklet in tasklets:
-                    yield tasklet
 
-            _tags = set(tags or tuple())
-            _sorted_tags = tuple(sorted(_tags))
+            _sorted_tags = tuple(sorted(set(tags)))
 
-            for tasklet in tasklets:
-                if _sorted_tags in tasklet.tags:
-                    yield tasklet
+            return (t for t in tasklets if _sorted_tags in t.tags)
 
-        def priorityFilter(tasklets):
-            '''Filter tasklets based on priority'''
-            for tasklet in tasklets:
-                if priority < 0 or tasklet.priority == priority:
-                    yield tasklet
+        tagFilter = no_filter if tags is None else _tagFilter
 
-        def pathFilter(tasklets):
-            '''Filter tasklets based on path'''
-            for tasklet in tasklets:
-                if path == '*' or tasklet.path.startswith(path):
-                    yield tasklet
+        priorityFilter = no_filter if priority < 0 \
+            else attribute_filter('priority', priority)
+        pathFilter = no_filter if path == '*' \
+            else predicate_filter(lambda t: t.path.startswith(path))
 
         #Master filter
         def filterTasklets(tasklets):
@@ -395,8 +383,7 @@ class TaskletEngine(object):
             priority_matches = priorityFilter(tag_matches)
             path_matches = pathFilter(priority_matches)
 
-            for tasklet in path_matches:
-                yield tasklet
+            return path_matches
 
         if not clusters:
             #Apply all filters on all known tasklets
