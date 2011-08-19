@@ -3,13 +3,13 @@
 @metadata tagstring=reality rscript actor agent
 
 [imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
-[model]: /#/PyLabsApps/Modeling
-[actions]: /#/PyLabsApps/Action
-[osisview]: /#/PyLabsApps/OsisViews
-[osisoperations]: /#/PyLabsApps/OsisOperations
-[actiontasklet]: /#/PyLabsApps/ActionTasklet
-[pyappdir]: /#/PyLabsApps/Introduction
-[SAL]: /#/Overview/Architecture
+[model]: #/PyLabsApps/Modeling
+[actions]: #/PyLabsApps/Action
+[osisview]: #/PyLabsApps/OsisViews
+[osisoperations]: #/PyLabsApps/OsisOperations
+[actiontasklet]: #/PyLabsApps/ActionTasklet
+[pyappdir]: #/PyLabsApps/Introduction
+[SAL]: #/Overview/Architecture
 
 
 
@@ -98,7 +98,7 @@ def sendMail(self, sender, replyto, to, subject, message, cc="", bcc="", jobguid
 
 
 ##Implementation of an Actor Action
-The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure](/sampleapp/#/pyappsdoc/sampleapp) for more information about the location of the files. The file name of an action tasklet has always the following structure:
+The implementation of the actor action is creating a tasklet. The tasklet is located in `<pyapp name>/impl/actor/<domain>/<actor name>/<action name>`. See the [PyApps Directory Structure][pyappdir] for more information about the location of the files. The file name of an action tasklet has always the following structure:
 
 `<priority>_<rootobject>_<action>.py`
 

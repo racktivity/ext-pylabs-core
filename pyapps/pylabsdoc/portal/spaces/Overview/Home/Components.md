@@ -9,17 +9,17 @@
 [ejabberdlink]: http://www.process-one.net/en/ejabberd/
 [XMPP]: http://xmpp.org/
 [Arakoon]: http://www.arakoon.org/
-[agent]: /#/Components/Agent
-[appserver]: /#/Components/AppServer
-[monitoring]: /#/Components/MonitoringAgent
-[PostgreSQL]: /#/Components/PostgreSQL
-[Tasklets]: /#/Overview/Tasklets
-[wfe]: /#/Components/WFE
-[DHCPD]: /#/Components/DHCPD
-[dns]: /#/Components/DNS
-[Samba]: /#/Components/Samba
-[TFTPD]: /#/Components/TFTPD
-[component]: /#/Components/Home
+[agent]: #/Components/Agent
+[appserver]: #/Components/AppServer
+[monitoring]: #/Components/MonitoringAgent
+[PostgreSQL]: #/Components/PostgreSQL
+[Tasklets]: #/Overview/Tasklets
+[wfe]: #/Components/WFE
+[DHCPD]: #/Components/DHCPD
+[dns]: #/Components/DNS
+[Samba]: #/Components/Samba
+[TFTPD]: #/Components/TFTPD
+[component]: #/Components/Home
 
 
 # PyLabs Components

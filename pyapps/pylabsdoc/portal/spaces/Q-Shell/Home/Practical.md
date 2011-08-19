@@ -2,7 +2,7 @@
 @metadata order=20
 @metadata tagstring=practical usage qshell script file system directories network
 
-[fswalker]: /#/Scripting/UsingPyLabs
+[fswalker]: #/Scripting/UsingPyLabs
 
 #Using the Q-Shell
 In the previous sections you have learned how to work with the Q-Shell and what the principles are.

@@ -3,8 +3,8 @@
 @metadata tagstring=event actions event-driven
 
 [rabbit]: http://www.rabbitmq.com/
-[pyappdir]: /#/PyLabsApps/Introduction
-[events]: /#/Overview/Events
+[pyappdir]: #/PyLabsApps/Introduction
+[events]: #/Overview/Events
 
 #Event-Driven Actions
 In the previous sections you have learned how to create actions. These actions are all triggered by manual intervention, for example creating an object.

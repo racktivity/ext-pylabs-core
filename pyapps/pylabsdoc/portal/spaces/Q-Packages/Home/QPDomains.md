@@ -2,7 +2,7 @@
 @metadata order=70
 @metadata tagstring=qpackage domain
 
-[qparchitecture]: /#/Q-Packages/QPackageArchitecture
+[qparchitecture]: #/Q-Packages/QPackageArchitecture
 
 
 # Q-Package Domains

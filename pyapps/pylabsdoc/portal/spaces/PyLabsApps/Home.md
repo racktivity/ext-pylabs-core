@@ -2,24 +2,24 @@
 @metadata title=PyLabs Applications
 @metadata tagstring=pyapp toc applications
 
-[intro]: /#/PyLabsApps/Introduction
-[practical]: /#/PyLabsApps/Practical
-[modeling]: /#/PyLabsApps/Modeling
-[action]: /#/PyLabsApps/Action
-[osisview]: /#/PyLabsApps/OsisViews
-[osisoperation]: /#/PyLabsApps/OsisOperations
-[actiontasklet]: /#/PyLabsApps/ActionTasklet
-[formwizard]: /#/PyLabsApps/FormWizardPractical
-[convention]: /#/PyLabsApps/FormWizardConventions
-[formapi]: /#/PyLabsApps/FormApi
-[wizardapi]: /#/PyLabsApps/WizardApi
-[reality]: /#/PyLabsApps/Reality
-[crud]: /#/PyLabsApps/CRUD
-[eventdrivenaction]: /#/PyLabsApps/EventDrivenActions
-[scheduling]: /#/PyLabsApps/Scheduling
-[debug]: /#/PyLabsApps/PyappDebug
-[apidoc]: /#/PyLabsApps/GenerateApi
-[testapi]: /#/PyLabsApps/TestingApi
+[intro]: #/PyLabsApps/Introduction
+[practical]: #/PyLabsApps/Practical
+[modeling]: #/PyLabsApps/Modeling
+[action]: #/PyLabsApps/Action
+[osisview]: #/PyLabsApps/OsisViews
+[osisoperation]: #/PyLabsApps/OsisOperations
+[actiontasklet]: #/PyLabsApps/ActionTasklet
+[formwizard]: #/PyLabsApps/FormWizardPractical
+[convention]: #/PyLabsApps/FormWizardConventions
+[formapi]: #/PyLabsApps/FormApi
+[wizardapi]: #/PyLabsApps/WizardApi
+[reality]: #/PyLabsApps/Reality
+[crud]: #/PyLabsApps/CRUD
+[eventdrivenaction]: #/PyLabsApps/EventDrivenActions
+[scheduling]: #/PyLabsApps/Scheduling
+[debug]: #/PyLabsApps/PyappDebug
+[apidoc]: #/PyLabsApps/GenerateApi
+[testapi]: #/PyLabsApps/TestingApi
 
 
 #PyLabs Applications

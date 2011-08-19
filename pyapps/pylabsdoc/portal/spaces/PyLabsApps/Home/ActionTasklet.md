@@ -2,13 +2,13 @@
 @metadata order=50
 @metadata tagstring=action tasklet create object property
 
-[tasklet]: /#/Overview/Tasklets
-[pyappdir]: /#/PyLabsApps/Introduction
-[formwizard]: /#/PyLabsApps/FormWizardParctical
-[modeling]: /#/PyLabsApps/Modeling
-[action]: /#/PyLabsApps/Action
-[osisview]: /#/PyLabsApps/OsisViews
-[wfe]: /#/Components/WFE
+[tasklet]: #/Overview/Tasklets
+[pyappdir]: #/PyLabsApps/Introduction
+[formwizard]: #/PyLabsApps/FormWizardParctical
+[modeling]: #/PyLabsApps/Modeling
+[action]: #/PyLabsApps/Action
+[osisview]: #/PyLabsApps/OsisViews
+[wfe]: #/Components/WFE
 
 
 #Implementing Action Tasklets

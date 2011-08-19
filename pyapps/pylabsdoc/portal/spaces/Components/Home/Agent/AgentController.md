@@ -2,7 +2,7 @@
 @metadata tagstring=agent controller agentcontroller
 
 
-[command]: /#/Components/AgentCommands
+[command]: #/Components/AgentCommands
 
 
 # Agent Controller

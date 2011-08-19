@@ -2,8 +2,8 @@
 @metadata order=40
 @metadata tagstring=create tasklet package
 
-[qptasklets]: /#/Q-Packages/QPTasklets
-[qpcreatebinary]: /#/Q-Packages/QPCreatebinary
+[qptasklets]: #/Q-Packages/QPTasklets
+[qpcreatebinary]: #/Q-Packages/QPCreatebinary
 
 
 # Creating a Q-Package

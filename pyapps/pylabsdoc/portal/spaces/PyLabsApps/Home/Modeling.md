@@ -2,12 +2,12 @@
 @metadata order=20
 @metadata tagstring=model root object ro
 
-[pyappdir]: /#/PyLabsApps/Introduction
-[drp]: /#/PyLabs50/Architecture
+[pyappdir]: #/PyLabsApps/Introduction
+[drp]: #/PyLabs50/Architecture
 [arakoon]: http://www.arakoon.org
 [decorator]: http://wiki.python.org/moin/PythonDecorators
 [classmethod]: http://docs.python.org/library/functions.html#classmethod
-[enums]: /#/ExtendingPyLabs/CreateEnumerators
+[enums]: #/ExtendingPyLabs/CreateEnumerators
 [thrift]: http://thrift.apache.org/
 
 

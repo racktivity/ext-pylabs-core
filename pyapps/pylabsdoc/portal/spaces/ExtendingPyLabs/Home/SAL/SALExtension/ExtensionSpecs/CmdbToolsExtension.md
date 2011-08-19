@@ -2,11 +2,11 @@
 @metadata order=10
 @metadata tagstring=cmdb tools spec
 
-[importpylabs]: /#/HowTo/ImportPyLabs
-[importextension]: /#/HowTo/ImportExtensionClass
-[baseclass]: /#/ExtendingPyLabs/BaseClasses
-[contribute]: /#/PyLabs50/Contributing
-[namespace]: /#/PyLabs50/NameSpaces
+[importpylabs]: #/HowTo/ImportPyLabs
+[importextension]: #/HowTo/ImportExtensionClass
+[baseclass]: #/ExtendingPyLabs/BaseClasses
+[contribute]: #/PyLabs50/Contributing
+[namespace]: #/PyLabs50/NameSpaces
 
 
 # CMD Tools Extension Specifications

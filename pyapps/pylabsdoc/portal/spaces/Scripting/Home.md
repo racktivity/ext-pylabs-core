@@ -2,10 +2,10 @@
 @metadata title=Scripting with PyLabs
 @metadata tagstring=script scripts
 
-[first]: /#/Scripting/YourFirstScript
-[pylabs]: /#/Scripting/UsingPyLabs
-[config]: /#/Scripting/WorkingWithConfigFiles
-[interactive]: /#/Scripting/InteractiveScripting
+[first]: #/Scripting/YourFirstScript
+[pylabs]: #/Scripting/UsingPyLabs
+[config]: #/Scripting/WorkingWithConfigFiles
+[interactive]: #/Scripting/InteractiveScripting
 
 #PyLabs as Scripting Platform
 

@@ -2,7 +2,7 @@
 @metadata order=45
 @metadata tagstring=binary create qpackage
 
-[qptasklets]: /#/Q-Packages/QPTasklets
+[qptasklets]: #/Q-Packages/QPTasklets
 [Ocaml]: http://caml.inria.fr/ocaml/index.en.html
 
 

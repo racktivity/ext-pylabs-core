@@ -2,7 +2,7 @@
 @metadata order=110
 @metadata tagstring=debug pyapp
 
-[appserver]: /#/Components/Home
+[appserver]: #/Components/Home
 
 
 #PyLabs Debugger Support

@@ -1,7 +1,7 @@
 @metadata title=PostgreSQL
 @metadata tagstring=postgres sql relational database db
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 
 # PostgreSQL

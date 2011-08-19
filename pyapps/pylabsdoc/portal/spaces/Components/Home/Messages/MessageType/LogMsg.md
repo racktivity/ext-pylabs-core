@@ -1,7 +1,7 @@
 @metadata title=Log Message
 @metadata tagstring=log message
 
-[basemsg]: /#/Components/BaseMsg
+[basemsg]: #/Components/BaseMsg
 
 # logmessage
 

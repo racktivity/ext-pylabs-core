@@ -1,7 +1,7 @@
 @metadata title=Ejabberd
 @metadata tagstring=ejabberd erlang message bus
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 
 ##EJabberd

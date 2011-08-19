@@ -2,13 +2,13 @@
 @metadata order=60
 @metadata tagstring=form wizard create structure
 
-[tasklet]: /#/Overview/Tasklets
-[pyappdir]: /#/PyLabsApps/Introduction
-[actiontasklet]: /#/PyLabsApps/ActionTasklet
-[formapi]: /#/PyLabsApps/FormWizard
-[modeling]: /#/PyLabsApps/Modeling
-[api]:  /#/api/Home
-[wizardapi]: /#/PyLabsApps/WizardApi
+[tasklet]: #/Overview/Tasklets
+[pyappdir]: #/PyLabsApps/Introduction
+[actiontasklet]: #/PyLabsApps/ActionTasklet
+[formapi]: #/PyLabsApps/FormWizard
+[modeling]: #/PyLabsApps/Modeling
+[api]:  #/api/Home
+[wizardapi]: #/PyLabsApps/WizardApi
 
 
 #Creating Forms and Wizards

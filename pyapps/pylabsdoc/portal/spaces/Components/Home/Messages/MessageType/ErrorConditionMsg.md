@@ -1,7 +1,7 @@
 @metadata title=Error Condition Message
 @metadata tagstring=error condition 
 
-[basemsg]: /#/Components/BaseMsg
+[basemsg]: #/Components/BaseMsg
 
 
 # logmessage
