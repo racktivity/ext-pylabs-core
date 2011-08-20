@@ -387,7 +387,7 @@ q.application.stop()
         if out.startswith(bad_bytes):
             out = out[len(bad_bytes):]
 
-        self.assertEquals(out.rstrip(), 'Hello tested world')
+        self.assertEquals(out.strip(), 'Hello tested world')
 
     def test_stress(self):
         for run in xrange(100):
@@ -506,7 +506,7 @@ q.application.stop()
             output = output[len('\x1b[?1034h'):]
 
         self.assertEquals(code, 0)
-        self.assertEquals(output.rstrip(), 'Hello old execute')
+        self.assertEquals(output.strip(), 'Hello old execute')
 
 
 class TestUidGid(unittest.TestCase):
