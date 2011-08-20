@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+set -ex
+APPNAME=$1
 . ${WORKSPACE}/scripts/chroot/vars.sh
 pushd ${WORKSPACE}/scripts/chroot
 echo "Prepare chroot"
@@ -28,7 +29,7 @@ echo "Run tests"
 sudo cp -a "${WORKSPACE}/test" ${FULL_CHROOT_PATH}/opt/qbase5/mytests
 cat > "/tmp/mytest.sh" << EOF
 #!/bin/bash
-/opt/qbase5/qshell -c "p.application.install('awingu')"
+/opt/qbase5/qshell -c "p.application.install('${APPNAME}')"
 cd /opt/qbase5/mytests/
 nosetests --with-xunit -v
 EOF
