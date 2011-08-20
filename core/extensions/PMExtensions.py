@@ -211,7 +211,6 @@ class PyExtensionInfoFinder(ExtensionInfoFinder):
             path = pylabs.q.system.fs.getDirName(configfilePath)
             hooks = self._getHookInformation(inifile, path, factory)
             extension_hooks.extend(hooks)
-
         return extension_hooks
 
 class EggExtensionInfoFinder(ExtensionInfoFinder):
