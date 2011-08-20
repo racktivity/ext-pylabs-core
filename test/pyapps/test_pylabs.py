@@ -6,7 +6,7 @@ from pylabs import q, p
 TESTAPP = 'sampleapp'
 
 def setUp():
-    from pylabs import q
+    from pylabs import q, p
     if not q._init_called:
         from pylabs.InitBase import q, p, i
         p.api = p.application.getAPI(TESTAPP)
