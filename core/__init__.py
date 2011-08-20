@@ -257,4 +257,4 @@ class PylabsNS():
         
 p = PylabsNS()
 
-#from pylabs.testing import pylabsTestCase
+from pylabs.testing import pylabsTestCase

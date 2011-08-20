@@ -33,56 +33,18 @@
 #
 # </License>
 
-import os
-import os.path
+#Note: this module should *not* perform pmtypes validation tests
+
 import unittest
-import tempfile
-import shutil
 
-class pylabsTestCase(unittest.TestCase):
-    def setUp(self):
-        from pylabs import q
-        if not q._init_called:
-            from pylabs.InitBase import q
+from pylabs.properties import Boolean, Integer, Float, String
 
-from pylabs.enumerators import PlatformType
+class PropertyTest(object):
+    i = Integer(fget=lambda s: s._i, fset=lambda s, v: setattr(s, '_i', v))
 
-class DisabledTestCase(unittest.TestCase):
-    def run(self, *args, **kwargs):
-        print 'Testcase is disabled'
-        return
-
-def PlatformSpecificTestCase(platform, *args, **kwargs):
-    '''Return class_ if platform is current platform, otherwise return object
-
-    This can be used to create TestCase classes which should only be executed
-    on one or more specific platforms, eg:
-
-    >>> class MyTest(PlatformSpecificTestCase(PlatformType.LINUX)):
-    ...     def test_foo(self):
-    ...         self.assert_(True)
-
-    This test will only work on Linux systems.
-
-    @param platform: Platform or list of platforms
-    @type platform: PlatformType
-    @param args: List of extra supported platforms
-    @type args: list<PlatformType>
-    @param kwargs.class_: Type to return if platform matches
-    @type kwargs.class_: type
-
-    @returns: Requested class on platform match, or C{DisabledTestCase}
-    @rtype: type
-    '''
-    class_ = kwargs.get('class_', unittest.TestCase)
-    local_platform = PlatformType.findPlatformType()
-    if isinstance(platform, PlatformType):
-        platforms = (platform, )
-    else:
-        platforms = tuple(platform)
-
-    for platform in platforms:
-        if local_platform.has_parent(platform):
-            return class_
-
-    return DisabledTestCase
+class TestPrimitiveProperties(unittest.TestCase):
+    def test_assignment(self):
+        t = PropertyTest()
+        t.i = 1
+        self.assertRaises(ValueError, setattr, t, 'i', 'foo')
+        self.assertEqual(t.i, 1)

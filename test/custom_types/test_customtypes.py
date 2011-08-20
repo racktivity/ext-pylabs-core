@@ -33,56 +33,40 @@
 #
 # </License>
 
-import os
-import os.path
 import unittest
-import tempfile
-import shutil
 
-class pylabsTestCase(unittest.TestCase):
-    def setUp(self):
-        from pylabs import q
-        if not q._init_called:
-            from pylabs.InitBase import q
+import pylabs
+from pylabs.baseclasses.BaseType import BaseType
+from pylabs.pmtypes.CustomTypes import IPAddress, Duration
 
-from pylabs.enumerators import PlatformType
+class TestCustomType(unittest.TestCase):
+    def test_IPAddress(self):
+        '''Test whether all known platforms are generic'''
+        ip  = IPAddress()
+        self.assertTrue(ip.check('10.100.255.0'))
+        self.assertFalse(ip.check('10.100.256.0'))
+        self.assertFalse(ip.check('10.100'))
+        self.assertFalse(ip.check('10.100.256.12.123'))
 
-class DisabledTestCase(unittest.TestCase):
-    def run(self, *args, **kwargs):
-        print 'Testcase is disabled'
-        return
+    def test_Duration(self):
+        duration = Duration()
+        self.assertTrue(duration.check('1h'))
+        self.assertTrue(duration.check('1m'))
+        self.assertTrue(duration.check('1s'))
+        self.assertTrue(duration.check('42h'))
+        self.assertTrue(duration.check('42m'))
+        self.assertTrue(duration.check('42s'))
+        self.assertTrue(duration.check('10'))
+        self.assertFalse(duration.check('h'))
+        self.assertFalse(duration.check('m'))
+        self.assertFalse(duration.check('s'))
+        self.assertFalse(duration.check(''))
 
-def PlatformSpecificTestCase(platform, *args, **kwargs):
-    '''Return class_ if platform is current platform, otherwise return object
+        class DurationTest(BaseType):
+            d = Duration(doc="Test", default=-1)
 
-    This can be used to create TestCase classes which should only be executed
-    on one or more specific platforms, eg:
-
-    >>> class MyTest(PlatformSpecificTestCase(PlatformType.LINUX)):
-    ...     def test_foo(self):
-    ...         self.assert_(True)
-
-    This test will only work on Linux systems.
-
-    @param platform: Platform or list of platforms
-    @type platform: PlatformType
-    @param args: List of extra supported platforms
-    @type args: list<PlatformType>
-    @param kwargs.class_: Type to return if platform matches
-    @type kwargs.class_: type
-
-    @returns: Requested class on platform match, or C{DisabledTestCase}
-    @rtype: type
-    '''
-    class_ = kwargs.get('class_', unittest.TestCase)
-    local_platform = PlatformType.findPlatformType()
-    if isinstance(platform, PlatformType):
-        platforms = (platform, )
-    else:
-        platforms = tuple(platform)
-
-    for platform in platforms:
-        if local_platform.has_parent(platform):
-            return class_
-
-    return DisabledTestCase
+        duration = DurationTest()
+        duration.d = '1h'
+        self.assertEquals(duration.d, 3600)
+        duration.d = 42
+        self.assertEquals(duration.d, 42)
