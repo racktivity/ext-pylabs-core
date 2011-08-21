@@ -37,9 +37,15 @@ import unittest
 import random
 import math
 
+from pylabs import q
 from pylabs.pmtypes import Integer, List, Float
 from pylabs.baseclasses import BaseType
 
+def tearDown(self):
+    enumname = 'MyEnumeration'
+    if hasattr(q.enumerators, enumname):
+        delattr(q.enumerators, enumname)
+        
 class I(BaseType):
     '''Test class for integer properties
 

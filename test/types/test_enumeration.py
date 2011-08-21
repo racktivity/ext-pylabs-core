@@ -34,6 +34,7 @@
 # </License>
 
 import unittest
+from pylabs import q
 
 try:
     import cPickle as pickle
@@ -41,7 +42,11 @@ except ImportError:
     import pickle
 
 from pylabs.baseclasses import BaseEnumeration, EnumerationWithValue
-
+def tearDown(self):
+    enumname = 'MyEqualEnumeration'
+    if hasattr(q.enumerators, enumname):
+        delattr(q.enumerators, enumname)
+        
 class MyEqualEnumeration(BaseEnumeration): pass
 
 class EnumerationTest(unittest.TestCase):
