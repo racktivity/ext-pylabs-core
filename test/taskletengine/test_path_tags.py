@@ -26,7 +26,7 @@ class PathTagsTest(unittest.TestCase):
         testresults = []
         params = {"testresults": testresults}
         self.engine.execute(params)
-        self.assertEqual(testresults, ["job", "customer"])
+        self.assertEqual(testresults, ["job", "customer", "doubletag"])
 
     def test_execute_with_tags(self):
         testresults = []
@@ -34,6 +34,14 @@ class PathTagsTest(unittest.TestCase):
         tags = ("tag1", "tag2")
         self.engine.execute(params, tags=tags)
         self.assertEqual(testresults, ["job", "customer"])
+
+    def test_execute_with_double_tags(self):
+        testresults = []
+        params = {"testresults": testresults}
+        tags = ("doubletag", "doubletag")
+        self.engine.execute(params, tags=tags)
+        self.assertEqual(testresults, ["doubletag"])
+
 
     def test_execute_first_no_tags(self):
         testresults = []

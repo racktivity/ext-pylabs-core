@@ -362,8 +362,7 @@ class TaskletEngine(object):
 
         def _tagFilter(tasklets):
             '''Filter tasklets based on tags'''
-
-            _sorted_tags = tuple(sorted(set(tags)))
+            _sorted_tags = tuple(sorted(tags))
 
             return (t for t in tasklets if _sorted_tags in t.tags)
 
