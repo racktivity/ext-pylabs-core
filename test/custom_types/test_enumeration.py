@@ -122,8 +122,8 @@ class EnumerationTest(unittest.TestCase):
 
         o = pickle.loads(p)
 
-        self.assertEqual(o, MyEqualEnumeration.FOO)
-        self.assertNotEqual(o, MyEqualEnumeration.BAR)
+        self.assertEqual(o, str(MyEqualEnumeration.FOO))
+        self.assertNotEqual(o, str(MyEqualEnumeration.BAR))
 
     def test_finished_enumeration(self):
         class MyFinishedEnumeration(BaseEnumeration):
