@@ -37,6 +37,7 @@ import os
 import os.path
 import inspect
 import hashlib
+import shutil
 
 from pylabs import pylabsTestCase
 from pylabs import q
@@ -49,7 +50,7 @@ class TestExtract(pylabsTestCase):
         thispath = inspect.getfile(TestExtract)
         zipdir = os.path.dirname(thispath)
         self.zippath = os.path.join(zipdir, 'testzip.zip')
-
+        self.out = os.path.join(q.dirs.tmpDir, 'ziptest')
         #Check md5sum of zipfile. We don't want this test to fail because
         #someone changed the file...
         assert os.path.exists(self.zippath)
@@ -64,6 +65,10 @@ class TestExtract(pylabsTestCase):
         del hash_calc
         del content
 
+    def tearDown(self):
+        if os.path.exists(self.out):
+            shutil.rmtree(self.out)
+
     def test_instanciation(self):
         from pylabs.system.pm_zipfile import ZipFile
         zip = ZipFile(self.zippath)
@@ -72,12 +77,11 @@ class TestExtract(pylabsTestCase):
     def test_extract_single_file(self):
         from pylabs.system.pm_zipfile import ZipFile
         zip = ZipFile(self.zippath)
-        out = os.path.join(q.dirs.tmpDir, 'ziptest')
-        os.mkdir(out)
-        zip.extract(out, ('./testfolder/bar.txt', ))
+        os.mkdir(self.out)
+        zip.extract(self.out, ('./testfolder/bar.txt', ))
         zip.close()
 
-        f = os.path.join(out, 'testfolder', 'bar.txt')
+        f = os.path.join(self.out, 'testfolder', 'bar.txt')
         self.assert_(os.path.exists(f))
         fd = open(f, 'r')
         content = fd.read().strip()
@@ -87,19 +91,18 @@ class TestExtract(pylabsTestCase):
     def test_extract_all(self):
         from pylabs.system.pm_zipfile import ZipFile
         zip = ZipFile(self.zippath)
-        out = os.path.join(q.dirs.tmpDir, 'ziptest')
-        os.mkdir(out)
-        zip.extract(out)
+        os.mkdir(self.out)
+        zip.extract(self.out)
         zip.close()
 
-        f = os.path.join(out, 'testfolder', 'bar.txt')
+        f = os.path.join(self.out, 'testfolder', 'bar.txt')
         self.assert_(os.path.exists(f))
         fd = open(f, 'r')
         content = fd.read().strip()
         fd.close()
         self.assertEqual(content, '0xdeadbeef')
 
-        f = os.path.join(out, 'foo.txt')
+        f = os.path.join(self.out, 'foo.txt')
         self.assert_(os.path.exists(f))
         fd = open(f, 'r')
         content = fd.read().strip()
