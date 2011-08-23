@@ -46,7 +46,22 @@ import time
 from pylabs.cmdb import CMDB, UnknownObjectException
 from pylabs import pylabsTestCase
 
-class TestCMDB(pylabsTestCase):
+class cmdbTestCase(pylabsTestCase):
+    def setUp(self):
+        pylabsTestCase.setUp(self)
+        self.cmdbobject = "testcase"
+
+    def tearDown(self):
+        pylabsTestCase.tearDown(self)
+        from pylabs import q
+        cmdbdir = q.system.fs.joinPaths(q.dirs.cmdbDir, self.cmdbobject)
+        if q.system.fs.exists(cmdbdir):
+            q.system.fs.removeDirTree(cmdbdir)
+       
+
+
+class TestCMDB(cmdbTestCase):
+
     def test_instanciation(self):
         '''Test whether we can create a CMDB instance'''
         p = CMDB()
@@ -55,32 +70,32 @@ class TestCMDB(pylabsTestCase):
     def test_register_type(self):
         '''Test whether we can register a new object type'''
         p = CMDB()
-        p.registerObject('testcase', None)
+        p.registerObject(self.cmdbobject, None)
 
     def test_unregistered_type(self):
         '''Test whether we can't store a not-registered type'''
         p = CMDB()
-        p.saveObject('foo', None)
+        p.saveObject(self.cmdbobject, None)
 
     def test_get_unregistered_type(self):
         '''Test whether getting an object of which no version was saved yet raises an exception'''
         p = CMDB()
-        self.assertRaises(UnknownObjectException, p.getObject, 'foobar')
+        self.assertRaises(UnknownObjectException, p.getObject, self.cmdbobject)
 
     def test_storage(self):
         '''Test whether we can store an object in CMDB'''
         p = CMDB()
-        p.registerObject('testcase', None)
-        p.getObjectWithLock('testcase')
-        p.saveObject('testcase', None)
+        p.registerObject(self.cmdbobject, None)
+        p.getObjectWithLock(self.cmdbobject)
+        p.saveObject(self.cmdbobject, None)
 
     def test_store_retrieve_none(self):
         '''Test register-store-retrieve cycle using None as object'''
         p = CMDB()
-        p.registerObject('testcase-none', None)
-        p.getObjectWithLock('testcase-none')
-        p.saveObject('testcase-none', None)
-        v = p.getObjectWithLock('testcase-none')
+        p.registerObject(self.cmdbobject, None)
+        p.getObjectWithLock(self.cmdbobject)
+        p.saveObject(self.cmdbobject, None)
+        v = p.getObjectWithLock(self.cmdbobject)
         self.assertEqual(v, None)
 
     def test_store_retrieve_dict(self):
@@ -90,10 +105,10 @@ class TestCMDB(pylabsTestCase):
             'baz': ['bat', '123', ],
         }
         p = CMDB()
-        p.registerObject('testcase-dict', None)
-        v = p.getObjectWithLock('testcase-dict')
-        p.saveObject('testcase-dict', d)
-        v = p.getObjectWithLock('testcase-dict')
+        p.registerObject(self.cmdbobject, None)
+        v = p.getObjectWithLock(self.cmdbobject)
+        p.saveObject(self.cmdbobject, d)
+        v = p.getObjectWithLock(self.cmdbobject)
         self.assertEqual(v, d)
 
     def test_generations(self):
@@ -102,19 +117,19 @@ class TestCMDB(pylabsTestCase):
         l1 = [random.randint(0, 100) for i in xrange(l)]
         l2 = [random.randint(0, 100) for i in xrange(l / 2)]
         p = CMDB()
-        p.registerObject('testcase-generations', None)
-        p.getObjectWithLock('testcase-generations')
-        p.saveObject('testcase-generations', l1)
-        v = p.getObjectWithLock('testcase-generations')
+        p.registerObject(self.cmdbobject, None)
+        p.getObjectWithLock(self.cmdbobject)
+        p.saveObject(self.cmdbobject, l1)
+        v = p.getObjectWithLock(self.cmdbobject)
         self.assertEqual(v, l1)
-        p.saveObject('testcase-generations', l2)
-        v = p.getObjectWithLock('testcase-generations')
+        p.saveObject(self.cmdbobject, l2)
+        v = p.getObjectWithLock(self.cmdbobject)
         self.assertEqual(v, l2)
 
 from pylabs.cmdb import DoubleLockException, ObjectNotOwnedException
 
 from pylabs.cmdb.cmdb import lock, unlock
-class TestThreadSafeFileLock(pylabsTestCase):
+class TestThreadSafeFileLock(cmdbTestCase):
     def test_basic(self):
         lock('foo')
         unlock('foo')
@@ -149,43 +164,43 @@ class TestThreadSafeFileLock(pylabsTestCase):
         self.assertEqual(events, range(5))
 
 
-class TestCMDBLocking(pylabsTestCase):
+class TestCMDBLocking(cmdbTestCase):
     def test_reentrant_lock(self):
         '''Test whether retaking a lock fails'''
         p = CMDB()
-        p.saveObject('testcase-reentrant', dict())
-        p.getObjectWithLock('testcase-reentrant')
+        p.saveObject(self.cmdbobject, dict())
+        p.getObjectWithLock(self.cmdbobject)
         self.assertRaises(DoubleLockException, p.getObjectWithLock,
-                'testcase-reentrant')
+                self.cmdbobject)
 
     def test_double_save(self):
         '''Test whether two save calls fails'''
         p = CMDB()
-        p.saveObject('testcase-double-save', 123)
+        p.saveObject(self.cmdbobject, 123)
         self.assertRaises(ObjectNotOwnedException,
-                p.saveObject, 'testcase-double-save', 456)
+                p.saveObject, self.cmdbobject, 456)
 
     def test_multiple_release(self):
         '''Test whether multiple release calls succeeds'''
         p = CMDB()
-        p.saveObject('test-multiple-release', 123)
-        p.getObjectWithLock('test-multiple-release')
-        p.releaseObjectLock('test-multiple-release')
-        p.releaseObjectLock('test-multiple-release')
-        p.releaseObjectLock('test-multiple-release')
+        p.saveObject(self.cmdbobject, 123)
+        p.getObjectWithLock(self.cmdbobject)
+        p.releaseObjectLock(self.cmdbobject)
+        p.releaseObjectLock(self.cmdbobject)
+        p.releaseObjectLock(self.cmdbobject)
 
     def test_context_manager(self):
         p = CMDB()
-        p.saveObject('test-context-manager', 456)
+        p.saveObject(self.cmdbobject, 456)
 
-        with p('test-context-manager') as value:
+        with p(self.cmdbobject) as value:
             self.assertEquals(value, 456)
-            p.saveObject('test-context-manager', 123)
+            p.saveObject(self.cmdbobject, 123)
 
-        self.assert_(not p.pm_isLocked('test-context-manager'))
+        self.assert_(not p.pm_isLocked(self.cmdbobject))
 
         self.assertRaises(ObjectNotOwnedException,
-                p.saveObject, 'test-context-manager', 456)
+                p.saveObject, self.cmdbobject, 456)
 
     def test_release(self):
         p = CMDB()
@@ -194,35 +209,35 @@ class TestCMDBLocking(pylabsTestCase):
 
         def run1():
             try:
-                p.saveObject('test-release', 123)
+                p.saveObject(self.cmdbobject, 123)
             except Exception, e:
                 events.append((1, e, ))
                 return
 
             try:
-                p.getObjectWithLock('test-release')
+                p.getObjectWithLock(self.cmdbobject)
             except Exception, e:
                 events.append((2, e, ))
                 return
 
             try:
-                p.releaseObjectLock('test-release')
+                p.releaseObjectLock(self.cmdbobject)
             except Exception, e:
                 events.append((3, e, ))
                 return
 
         def run2():
-            if p.pm_isLocked('test-release'):
+            if p.pm_isLocked(self.cmdbobject):
                 events.append((4, Exception('Object locked'), ))
 
             try:
-                p.getObjectWithLock('test-release')
+                p.getObjectWithLock(self.cmdbobject)
             except Exception, e:
                 events.append((5, e, ))
                 return
 
             try:
-                p.releaseObjectLock('test-release')
+                p.releaseObjectLock(self.cmdbobject)
             except Exception, e:
                 event.append((6, e, ))
                 return
@@ -241,10 +256,10 @@ class TestCMDBLocking(pylabsTestCase):
     def test_timeout(self):
         p = CMDB()
 
-        p.saveObject('test-timeout', 123)
+        p.saveObject(self.cmdbobject, 123)
 
         def run():
-            p.getObjectWithLock('test-timeout', locktimeout=3)
+            p.getObjectWithLock(self.cmdbobject, locktimeout=3)
             time.sleep(3)
 
         t1 = threading.Thread(target=run)
@@ -252,10 +267,10 @@ class TestCMDBLocking(pylabsTestCase):
         t1.start()
         time.sleep(1)
 
-        self.assert_(p.pm_isLocked('test-timeout'))
+        self.assert_(p.pm_isLocked(self.cmdbobject))
 
         start = time.time()
-        p.getObjectWithLock('test-timeout')
+        p.getObjectWithLock(self.cmdbobject)
         end = time.time()
 
         #end - start must be somewhere close to 3
@@ -264,13 +279,13 @@ class TestCMDBLocking(pylabsTestCase):
 
     def test_getobject(self):
         p = CMDB()
-        p.saveObject('test-getobject', 456)
+        p.saveObject(self.cmdbobject, 456)
 
         def run():
-            p.getObjectWithLock('test-getobject')
+            p.getObjectWithLock(self.cmdbobject)
 
         start = time.time()
-        value = p.getObject('test-getobject')
+        value = p.getObject(self.cmdbobject)
         end = time.time()
 
         self.assertEquals(value, 456)
@@ -298,26 +313,26 @@ class TestCMDBLocking(pylabsTestCase):
         ERROR = i
 
         def run1():
-            p.saveObject('test-multi-threads', 123)
+            p.saveObject(self.cmdbobject, 123)
             events.append(RUN1_SAVE)
 
             helper_lock.release()
             #Give run2 time to getObject
             time.sleep(1)
 
-            o = p.getObjectWithLock('test-multi-threads')
+            o = p.getObjectWithLock(self.cmdbobject)
             events.append(RUN1_GET_WITH_LOCK)
             if o != 123:
                 events.append(ERROR)
                 return
 
             time.sleep(2)
-            p.releaseObjectLock('test-multi-threads')
+            p.releaseObjectLock(self.cmdbobject)
             events.append(RUN1_RELEASE)
 
         def run3():
             start = time.time()
-            p.getObjectWithLock('test-multi-threads')
+            p.getObjectWithLock(self.cmdbobject)
             end = time.time()
             events.append(RUN3_GET_WITH_LOCK)
 
@@ -329,7 +344,7 @@ class TestCMDBLocking(pylabsTestCase):
         def run2():
             helper_lock.acquire()
 
-            o = p.getObject('test-multi-threads')
+            o = p.getObject(self.cmdbobject)
             events.append(RUN2_GET)
 
             if o != 123:
@@ -340,7 +355,7 @@ class TestCMDBLocking(pylabsTestCase):
             time.sleep(2)
 
             start = time.time()
-            p.getObjectWithLock('test-multi-threads', locktimeout=4)
+            p.getObjectWithLock(self.cmdbobject, locktimeout=4)
             t3.start()
             events.append(RUN2_GET_WITH_LOCK)
             end = time.time()
@@ -369,9 +384,9 @@ class TestCMDBLocking(pylabsTestCase):
 
     def test_timeout_but_lock_kept(self):
         p = CMDB()
-        p.saveObject('test-tblk', None)
+        p.saveObject(self.cmdbobject, None)
 
-        o = p.getObjectWithLock('test-tblk', locktimeout=1)
+        o = p.getObjectWithLock(self.cmdbobject, locktimeout=1)
         
         time.sleep(2)
 
@@ -379,40 +394,40 @@ class TestCMDBLocking(pylabsTestCase):
     
     def test_timeout_lock_lost(self):
         p = CMDB()
-        p.saveObject('test-tll', None)
+        p.saveObject(self.cmdbobject, None)
 
         def run():
-            o = p.getObjectWithLock('test-tll')
+            o = p.getObjectWithLock(self.cmdbobject)
         t = threading.Thread(target=run)
 
-        o = p.getObjectWithLock('test-tll', locktimeout=2)
+        o = p.getObjectWithLock(self.cmdbobject, locktimeout=2)
 
         t.start()
         t.join()
         #Object has been owned by another thread by now
 
         self.assertRaises(ObjectNotOwnedException,
-                p.saveObject, 'test-tll', 123)
+                p.saveObject, self.cmdbobject, 123)
 
 
-class TestTrac180(pylabsTestCase):
+class TestTrac180(cmdbTestCase):
     '''Regression test for Trac #180'''
 
     def test_timeout_relock(self):
         p = CMDB()
-        p.saveObject('test-trac180', None)
+        p.saveObject(self.cmdbobject, None)
 
         from pylabs.cmdb.cmdb import DEFAULT_LOCK_TIMEOUT, isLocked, isSafe
 
-        p.getObjectWithLock('test-trac180')
-        self.assert_(isLocked('test-trac180'))
-        self.assert_(isSafe('test-trac180'))
+        p.getObjectWithLock(self.cmdbobject)
+        self.assert_(isLocked(self.cmdbobject))
+        self.assert_(isSafe(self.cmdbobject))
 
         time.sleep(DEFAULT_LOCK_TIMEOUT + 1.0)
 
-        self.assert_(not isLocked('test-trac180'))
-        self.assert_(isSafe('test-trac180'))
+        self.assert_(not isLocked(self.cmdbobject))
+        self.assert_(isSafe(self.cmdbobject))
 
-        p.getObjectWithLock('test-trac180')
-        self.assert_(isLocked('test-trac180'))
-        self.assert_(isSafe('test-trac180'))
+        p.getObjectWithLock(self.cmdbobject)
+        self.assert_(isLocked(self.cmdbobject))
+        self.assert_(isSafe(self.cmdbobject))

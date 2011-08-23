@@ -41,15 +41,18 @@ except ImportError:
 
 import nose
 
+from pylabs import pylabsTestCase
 from pylabs.action import ActionController, StartStopOutputCountException
 
-class TestActions(unittest.TestCase):
+class TestActions(pylabsTestCase):
     def setUp(self):
+        pylabsTestCase.setUp(self)
         self.output = StringIO()
         self.action = ActionController(_output=self.output, _width=40)
 
     def tearDown(self):
         self.output.close()
+        pylabsTestCase.tearDown(self)
 
     def _check(self, expected_result):
         self.assertEqual(expected_result, self.output.getvalue())
@@ -295,9 +298,9 @@ class TestTrac170(pylabsTestCase):
         expected_result = '''
  * Outer                       RUNNING
  *  Inner                      RUNNING
-Hello world
+ Hello world
  *  Inner                      DONE
-Bye world
+ Bye world
  * Outer                       FINISHED
 '''.lstrip('\n')
 
