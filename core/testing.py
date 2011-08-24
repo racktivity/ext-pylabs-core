@@ -41,81 +41,9 @@ import shutil
 
 class pylabsTestCase(unittest.TestCase):
     def setUp(self):
-        import pylabs
-        from pylabs.pylabs import pylabs
-
-        if hasattr(pylabs, 'q'):
-            delattr(pylabs, 'q')
-        pylabs.q = pylabs()
-
         from pylabs import q
-
-        baseDir = tempfile.mkdtemp()
-        print 'Using base directory', baseDir
-
-        #touch qshell 'executable' file
-        #do not actually copy over the file (for now)
-        if pylabs.q.platform.isWindows():
-            qshell = os.path.join(baseDir, 'qshell.bat')
-
-        if pylabs.q.platform.isUnix():
-            qshell = os.path.join(baseDir, 'qshell')
-
-        fd = os.open(qshell, os.O_WRONLY | os.O_CREAT, 0755)
-        os.close(fd)
-
-        q.init()
-
-        q.dirs.baseDir = baseDir + os.sep
-        
-        varDir = os.path.join(baseDir, 'var', '')
-        os.mkdir(varDir, 0700)
-        q.dirs.varDir = varDir
-
-        cfgDir = os.path.join(baseDir, 'cfg', '')
-        os.mkdir(cfgDir, 0700)
-        q.dirs.cfgDir = cfgDir
-
-        tmpDir = os.path.join(q.dirs.varDir, 'tmp', '')
-        os.mkdir(tmpDir, 0700)
-        q.dirs.tmpDir = tmpDir
-
-        pidDir = os.path.join(q.dirs.varDir, 'pid', '')
-        os.mkdir(pidDir, 0700)
-        q.dirs.pidDir = pidDir
-
-        logDir = os.path.join(q.dirs.varDir, 'log', '')
-        os.mkdir(logDir, 0700)
-        q.dirs.logDir = logDir
-
-        cmdbDir = os.path.join(q.dirs.varDir, 'cmdb', '')
-        os.mkdir(cmdbDir, 0700)
-        q.dirs.cmdbDir = cmdbDir
-
-        q.dirs.init()
-
-        d = dict()
-        d['qualitylevel'] = 'unstable'
-        q.cmdb.saveObject('siteconfig', d)
-
-        from sitecustomize import find_qbase_path
-        q.dirs.extensionsDir = os.path.join(find_qbase_path(), \
-                'lib', 'pylabs', 'extensions')
-
-        q.dirs.binDir = os.path.join(find_qbase_path(), 'bin')
-
-        q.init_final()
-
-    def tearDown(self):
-        from pylabs import q
-        from sitecustomize import find_qbase_path
-
-        if q.dirs.baseDir == find_qbase_path():
-            raise RuntimeError('q.dirs.baseDir is your QBase folder. I do not want to remove this, something is wrong in your test setup. Are you importing pylabs.InitBase* somewhere?')
-
-        print 'Removing baseDir', q.dirs.baseDir
-        shutil.rmtree(q.dirs.baseDir)
-
+        if not q._init_called:
+            from pylabs.InitBase import q
 
 from pylabs.enumerators import PlatformType
 

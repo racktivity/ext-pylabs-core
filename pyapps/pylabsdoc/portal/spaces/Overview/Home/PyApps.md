@@ -2,7 +2,7 @@
 @metadata order=30
 @metadata tagstring=application pyapp
 
-[RO]: /#/Glossary/RootObject
+[RO]: #/Glossary/RootObject
 
 
 ## PyLabs Applications

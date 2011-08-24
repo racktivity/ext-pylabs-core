@@ -1,6 +1,6 @@
 @metadata title=Root Object
 
-[drp]: /#/PyLabs50/Architecture
+[drp]: #/PyLabs50/Architecture
 [arakoon]: http://www.arakoon.org
 
 

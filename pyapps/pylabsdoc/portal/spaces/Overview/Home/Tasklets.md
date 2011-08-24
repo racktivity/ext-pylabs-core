@@ -2,7 +2,7 @@
 @metadata order=50
 @metadata tagstring=tasklet engine structure
 
-[ns]: /#/Overview/NameSpaces
+[ns]: #/Overview/NameSpaces
 [dict]: http://docs.python.org/release/2.6.6/library/stdtypes.html#dict
 
 
@@ -16,16 +16,18 @@ Tasklets are used over the full PyLabs framework stack, from displaying wizards 
 
 In PyLabs, it is recommended that the file name of an action tasklet has the following structure:
 
-`<priority>_<rootobject>_<action>.py`
+`<priority>_<object>_<action>.py`
 
 * priority: integer value, indicating the priority of the tasklet, 1 is lowest priority 
-* rootobject: name of the Root Object, all lower-case
+* object: name of the object, all lower-case
 * action: name of the action, as defined in the interface file of the proper Root Object
 
 Tasklets have always the structure as shown below:
 
 [[code]]
+#extra tags
 __author__ = 'incubaid'
+__realizes__ = 'done something'
     
 def main(q, i, p, params, tags):
     code to implement action
@@ -96,3 +98,13 @@ def match(q, i, p, params, tags):
     import time
     return (params['taskletlastexecutiontime']  + 300 <= time.time())
 [[/code]]
+
+
+## Tasklet Extra Tags
+The tasklet tags are provided by the folder structure in which the tasklet resides, see Tasklet Structure above. Inside the tasklet you have the '__author__' tag, which just indicates the author of the tasklet.
+An extra tag can be `__realizes__`.
+
+The `realizes` tag is used for tasklets, having the same tags but for which only one may be executed.
+Assume you have two tasklets that have the same tags but with different priority. Normally both tasklets are executed with the one with the highest priority as first.
+If for some reason the second one may not be executed, you can use the `realizes` tag, required in both tasklets. Whenever the first tasklet is executed, the tasklet engine keeps in mind that the tasklet is "realized".
+When the tasklet engine wants to execute the second tasklet it will be ignored due to the "realized" status in the tasklet engine's memory.

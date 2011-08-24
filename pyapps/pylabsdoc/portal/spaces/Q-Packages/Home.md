@@ -3,19 +3,19 @@
 @metadata tagstring=qpackage q-package package
 
 
-[qpintro]: /#/Q-Packages/QPIntro
-[qparchitecture]: /#/Q-Packages/QPackageArchitecture
-[qpinstall]: /#/Q-Packages/QPInstall
-[qpcreate]: /#/Q-Packages/QPCreate
-[qpcreatebinary]: /#/Q-Packages/QPCreatebinary
-[qptasklets]: /#/Q-Packages/QPTasklets
-[codemgmt]: /#/Q-Packages/CodeManagement
-[compile]: /#/Q-Packages/Compile
-[configure]: /#/Q-Packages/Configure
-[package]: /#/Q-Packages/Package
-[qpupdate]: /#/Q-Packages/QPUpdate
-[qpdomains]: /#/Q-Packages/QPDomains
-[qplist]: /#/Q-Packages/QPList
+[qpintro]: #/Q-Packages/QPIntro
+[qparchitecture]: #/Q-Packages/QPackageArchitecture
+[qpinstall]: #/Q-Packages/QPInstall
+[qpcreate]: #/Q-Packages/QPCreate
+[qpcreatebinary]: #/Q-Packages/QPCreatebinary
+[qptasklets]: #/Q-Packages/QPTasklets
+[codemgmt]: #/Q-Packages/CodeManagement
+[compile]: #/Q-Packages/Compile
+[configure]: #/Q-Packages/Configure
+[package]: #/Q-Packages/Package
+[qpupdate]: #/Q-Packages/QPUpdate
+[qpdomains]: #/Q-Packages/QPDomains
+[qplist]: #/Q-Packages/QPList
 
 
 #Q-Packages

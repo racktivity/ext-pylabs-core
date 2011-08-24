@@ -6,7 +6,7 @@
 [imgDrp]: images/images50/pyapps/PyLabs_DRP.png
 [imgPyApp]: images/images50/pyapps/PyApp.png
 [imgPyAppCreate]: images/images50/pyapps/PyApp_Create.png
-[drp]: /#/PyLabs50/Architecture
+[drp]: #/PyLabs50/Architecture
 [epydoc]: http://epydoc.sourceforge.net/
 
 

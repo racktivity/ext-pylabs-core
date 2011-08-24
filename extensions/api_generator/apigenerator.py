@@ -1,4 +1,4 @@
-from pylabs import q,i
+from pylabs import q,i,p
 from xml.dom.minidom import parse, parseString
 from Cheetah.Template import Template
 
@@ -7,10 +7,18 @@ from epydoc.docparser import parse_docs
 from epydoc.docintrospecter import introspect_docs
 from epydoc.apidoc import ClassDoc, RoutineDoc
 from epydoc.markup import ParsedDocstring
+
+import pymodel as model
+
 import os
 import re
 import imp
+try:
+    import pydot
+except ImportError:
+    pydot = None
 import inspect
+import itertools
 
 def getClass(filePath, className=""):
     module =  imp.load_source(filePath, filePath)
@@ -251,6 +259,104 @@ def getMethodTypedArgument(specFile):
                 methodDetails[rkey] = argType
     return methodDetails
 
+class DotGenerator:
+    def __init__(self, appname):
+        self.appname = appname
+        self.ignore_properties = ['_baseversion']
+        self.ignore_domains = ['enumerators']
+
+        self.graph = pydot.Dot()
+
+        self.api = p.application.getAPI(appname, context=q.enumerators.AppContext.WFE)
+
+        self.nodes = []
+        self.links = {}
+
+    def add_destination(self, source, destination, rootobject=False):
+        if source in self.links.keys():
+            self.links[source].append({'dest': destination, 'rootobject': rootobject})
+        else:
+            self.links[source] = [{'dest': destination, 'rootobject': rootobject}]
+
+    def process_list(self, domain, classname, attr):
+        if hasattr(attr.attribute.type_, 'type_') and hasattr(attr.attribute.type_.type_, 'PYMODEL_MODEL_INFO'):
+            self.nodes.append(self.loop_attributes(domain=domain, classname=classname, model_info=attr.attribute.type_.type_.PYMODEL_MODEL_INFO, nodelabel='{ %s%s |' % (classname, attr.attribute.name)))
+
+    def process_helper(self, domain, classname, attribute, property_name):
+        self.add_destination('%s%s' % (domain, classname), '%s%s%s' % (domain, classname, attribute.name))
+        
+        self.nodes.append(self.create_subnode(domain=domain, classname=classname, attribute=attribute, property_name=property_name, sublabel='{ %s%s |' % (classname, property_name)))
+
+    def create_subnode(self, domain, classname, attribute, property_name, sublabel):
+        if '_pm_enumeration_items' in dir(attribute.type_):
+            for key, value in attribute.type_._pm_enumeration_items.items():
+                sublabel += '%s - %s \\n' % (key, value)
+        elif 'PYMODEL_MODEL_INFO' in dir(attribute.type_):
+            return self.loop_attributes(domain=domain, classname=classname, model_info=attribute.type_.PYMODEL_MODEL_INFO, nodelabel=sublabel)
+        sublabel += '}'
+        self.add_destination('%s%s' % (domain, classname), '%s%s%s' % (domain, classname, property_name))
+        return pydot.Node(name='%s%s%s' % (domain, classname, property_name), label=sublabel, shape='record')
+
+    def loop_attributes(self, domain, classname, model_info, nodelabel):
+        for attr in itertools.ifilter(lambda x: x not in self.ignore_properties, model_info.attributes):
+            nodelabel += '%s \\n' % attr.name
+            if hasattr(attr.attribute, 'type_'):
+                if isinstance(attr.attribute, model.List):
+                    self.process_list(domain=domain, classname=classname, attr=attr)
+                elif isinstance(attr.attribute, model.Object):
+                    self.process_helper(domain=domain, classname=classname, attribute=attr.attribute, property_name=attr.name)
+                    continue
+                else:
+                    self.nodes.append(self.create_subnode(domain=domain, classname=classname, attribute=attr.attribute, property_name=attr.name, sublabel='{ %s%s |' % (classname, attr.name)))
+            elif type(attr.attribute) == model.GUID and attr.name != 'guid':
+                destinationname = attr.name
+                if attr.name.endswith('guid'):
+                    destinationname = destinationname[0:-4]
+                if attr.name.startswith('parent'):
+                    destinationname = destinationname[6:]
+                destinationname = '%s%s' % (domain, destinationname)
+                self.add_destination('%s%s' % (domain, classname), destinationname, rootobject=True)
+            if attr.name.endswith('s'):
+                destinationname = '%s%s' % (domain, attr.name)
+                self.add_destination('%s%s' % (domain, classname), destinationname, rootobject=True)
+
+        nodelabel += '}'
+
+        return pydot.Node(name='%s%s' % (domain, classname), label=nodelabel, shape='record')
+        
+    def generate_modelspec(self):
+        self.process_model()
+        self.create_graph()
+        dest = q.system.fs.joinPaths(q.dirs.pyAppsDir, self.appname, "portal", "static" , "images", "modelspec.jpg")
+        self.write_file(dest)
+
+    def create_graph(self):
+        for node in self.nodes:
+            self.graph.add_node(node)
+
+        nodenames = map(lambda x: x.get_name(), self.nodes)
+
+        for source, destitems in self.links.items():
+            for destitem in destitems:
+                if destitem['rootobject']:
+                    style = 'solid'
+                else:
+                    style = 'dashed'
+                dest = destitem['dest']
+                if dest.endswith('s') and dest not in nodenames:
+                    dest = dest[:-1]
+                if dest in nodenames:
+                    self.graph.add_edge(pydot.Edge(src=source, dst=dest, style=style))
+
+    def write_file(self, path):
+        self.graph.write_jpeg(path)
+
+    def process_model(self):
+        for domain in itertools.ifilter(lambda x: x not in self.ignore_domains and not x.startswith('__'), dir(self.api.model)):
+            for classname in itertools.ifilter(lambda x: not x.startswith('_'), dir(getattr(self.api.model, domain))):
+                modelinfo = getattr(getattr(self.api.model, domain), classname)._ROOTOBJECTTYPE.PYMODEL_MODEL_INFO
+                self.nodes.append(self.loop_attributes(domain=domain, classname=classname, model_info=modelinfo, nodelabel='{ %s |' % classname))
+
 class CloudApiGenerator:
     rootobject_clientTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','template.tmpl')
     rootobject_serverTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator','templates','PylabsApp', 'AppApiActionService.tmpl')
@@ -288,6 +394,7 @@ class CloudApiGenerator:
     apiXmlrpcTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiXmlrpcTemplate.tmpl')
     apiRestTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiRestTemplate.tmpl')
     apiDomainTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiDomainTemplate.tmpl')
+    dotModelTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'dotModelTemplate.tmpl')
     roDirRest = q.system.fs.joinPaths(documentationDest,'REST')
     roDirXmlrpc = q.system.fs.joinPaths(documentationDest, 'XMLRPC')
     _documentationFormat = 'alkira'
@@ -358,7 +465,6 @@ class CloudApiGenerator:
                 self._generateCode(templatePath, params, action[1])
                 generatedFiles.append(action[1])
 
-
         try :
             templatePath = q.system.fs.joinPaths(self._template_path, "consumer.cfg.tmpl")
             dest = q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "events" , "page_generator" , "consumer.cfg")
@@ -395,6 +501,7 @@ class CloudApiGenerator:
             self._generateCode(self.xmlrpcDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.txt'%name))
         elif self._documentationFormat == 'alkira':
             self._generateCode(self.apiAlkiraHomeTemplate, {}, q.system.fs.joinPaths(self.documentationDest, 'Home.md'))
+            self._generateCode(self.dotModelTemplate , {}, q.system.fs.joinPaths(self.documentationDest, 'Home', 'dotModel.md'))
             if not q.system.fs.exists(q.system.fs.joinPaths(self.documentationDest, 'Home', '%s.md' % domain)):
                 self._generateCode(self.apiDomainTemplate, {'root': domain, 'name':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', '%s.md' % domain))
             if not q.system.fs.exists(q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s.md' % (domain, name))):
@@ -704,6 +811,7 @@ class CloudApiGenerator:
                     methodcontent = q.system.fs.fileGetContents(methodpath)
                     alkira_client.createPage(space, '%s_%s_%s' % (domain, rootobjectname, methodname), methodcontent, parent=rootobjectname)
 
+
 class AppAPIGenerator(object):
 
     def __init__(self):
@@ -857,6 +965,10 @@ class AppAPIGenerator(object):
         self._generator.actorOutputDir = q.system.fs.joinPaths(app_path, 'client', 'actor')
         self._generator.generatePythonActor()
         q.action.stop()
+
+        if pydot:
+            dg = DotGenerator(appname)
+            dg.generate_modelspec()
 
         q.action.stop()
 

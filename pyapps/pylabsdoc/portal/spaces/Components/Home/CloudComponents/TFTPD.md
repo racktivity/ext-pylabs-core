@@ -1,7 +1,7 @@
 @metadata title=TFTP Daemon
 @metadata tagstring=tftpd tftp daemon
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 # Trivial File Transfer Protocol Daemon
 

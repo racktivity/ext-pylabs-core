@@ -2,9 +2,9 @@
 @metadata order=130
 @metadata tagstring=test api pyapp
 
-[actions]: /#/PyLabsApps/Action
-[qpinstall]: /#/Q-Packages/QPInstall
-[appserver]: /#/Components/AppServer
+[actions]: #/PyLabsApps/Action
+[qpinstall]: #/Q-Packages/QPInstall
+[appserver]: #/Components/AppServer
 
 
 # Testing your API

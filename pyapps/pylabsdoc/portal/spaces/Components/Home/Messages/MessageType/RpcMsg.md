@@ -1,7 +1,7 @@
 @metadata title=RPC Message
 @metadata tagstring=rpc message
 
-[basemsg]: /#/Components/BaseMsg
+[basemsg]: #/Components/BaseMsg
 
 # RPC Message
 

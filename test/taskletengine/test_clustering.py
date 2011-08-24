@@ -94,9 +94,13 @@ class TestClusters(unittest.TestCase):
                 ('tag1', 'tag2'),
                 ('tag2', 'tag1'),
                 ('1gat', 'tag2'),
+                ('doubletag', 'doubletag'), 
+                ('gatelbuod', 'doubletag'), 
                 'tag2',
-                '3_job.py',
+                'doubletag',
                 '2_customer.py',
+                '3_job.py', 
+                '1_doubletag.py', 
             ),)
         )
 

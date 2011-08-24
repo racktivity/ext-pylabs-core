@@ -3,7 +3,7 @@
 @metadata tagstring=tasklet compile backup codemanagement configure install package start stop
 
 [Mercurial]: http://mercurial.selenic.com/
-[configure]: /#/Q-Packages/Configure
+[configure]: #/Q-Packages/Configure
 
 
 ## Q-Package Tasklets

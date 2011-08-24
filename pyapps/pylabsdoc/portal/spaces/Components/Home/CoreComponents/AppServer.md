@@ -1,7 +1,7 @@
 @metadata title=Application Server
 @metadata tagstring=application server appserver
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 
 

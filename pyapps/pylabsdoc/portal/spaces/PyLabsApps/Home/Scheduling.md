@@ -2,8 +2,8 @@
 @metadata order=100
 @metadata tagstring=schedule action
 
-[reality]: /#/PyLabsApps/Reality
-[pyappdir]: /#/PyLabsApps/Introduction
+[reality]: #/PyLabsApps/Reality
+[pyappdir]: #/PyLabsApps/Introduction
 
 
 #Scheduling Actions

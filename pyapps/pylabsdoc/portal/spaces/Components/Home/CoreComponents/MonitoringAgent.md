@@ -1,7 +1,7 @@
 @metadata title=Monitoring Agent
 @metadata tagstring=monitor agent cloud
 
-[qpinstall]: /#/Q-Packages/QPInstall
+[qpinstall]: #/Q-Packages/QPInstall
 
 
 # Monitoring Agent

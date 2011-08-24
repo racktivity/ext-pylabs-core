@@ -3,7 +3,7 @@
 @metadata tagstring=system abstraction layer sal
 
 [imgPylabsSystemWrapper]: images/images50/extendingpylabs/PylabsSystemWrapper.png
-[cmdbobjproperty]: /#/ExtendingPyLabs/CmdbObjProperty
+[cmdbobjproperty]: #/ExtendingPyLabs/CmdbObjProperty
 
 #System Abstraction Layer
 

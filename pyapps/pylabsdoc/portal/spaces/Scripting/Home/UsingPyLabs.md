@@ -2,7 +2,7 @@
 @metadata order=20
 @metadata tagstring=files directories network archive md5
 
-[qshell]: /#/Q-Shell/Practical
+[qshell]: #/Q-Shell/Practical
 
 
 #Using PyLabs
