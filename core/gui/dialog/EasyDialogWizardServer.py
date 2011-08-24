@@ -619,8 +619,6 @@ class WizardActions(object):
         """
         params = {}
 
-        values = [(value, key) for (key, value) in values.iteritems()]
-
         params = self.addParameter(params, 'control', 'option')
         params = self.addParameter(params, 'text', text)
         params = self.addParameter(params, 'values', values)

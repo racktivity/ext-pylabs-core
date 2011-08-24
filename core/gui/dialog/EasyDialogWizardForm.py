@@ -36,11 +36,11 @@ from EasyDialogWizardServer import WizardActions
 from EasyDialogWizardServer import EasyDialogWizardServer
 
 class EasyDialogWizardForm(object):
-    
+
     def createForm(self):
         """
         Create new wizard form object
-        
+
         @return: WizardForm object
         """
         return WizardForm()
@@ -59,11 +59,11 @@ class WizardForm(object):
     def __init__(self):
         self.tabs = WizardList()
         self.activeTab = ''
-    
+
     def addTab(self, name, text):
         """
         Add new tab to form
-        
+
         @param name: Unique name for this control
         @param text: Text to be displayed in tab label
         @return: WizardTab object
@@ -71,15 +71,15 @@ class WizardForm(object):
         wizardtab = WizardTab(name, text)
         self.tabs._addItem(wizardtab)
         return wizardtab
-    
+
     def removeTab(self, name):
         """
         Remove existing tab from form
-        
+
         @param name: Unique name for this control
         """
         self.tabs._removeItem(name)
-    
+
     def loadForm(self, data):
         self.tabs = WizardList()
         self.activeTab = data['activeTab']
@@ -89,7 +89,7 @@ class WizardForm(object):
             for elementData in tabData['elements']:
                 element = WizardElementBase(elementData)
                 tab.elements._addItem(element)
-    
+
     def convertToWizardAction(self):
         tabpages = []
         for tab in self.tabs:
@@ -100,7 +100,7 @@ class WizardForm(object):
             elements = [element.__dict__ for element in tab.elements]
             tabDict['elements'] = elements
             tabpages.append(tabDict)
-    
+
         params = {}
         params['control'] = 'form'
         params['tabs'] = tabpages
@@ -114,44 +114,44 @@ class WizardList(list):
     """
     def __init__(self):
         self._items = []
-    
+
     def _addItem(self, item):
         if item.name in self:
             raise KeyError, "Item with name '%s' already exists"%item.name
-        
+
         self._items.append(item)
-    
+
     def _getItem(self, key):
         for item in self._items:
             if item.name.lower() == key.lower():
                 return item
         raise KeyError, "No item defined with name '%s'"%key
-    
+
     def _removeItem(self, key):
         for item in self._items:
             if item.name.lower() == key.lower():
                 self._items.remove(item)
                 return
-    
+
     def __contains__(self, key):
         for item in self._items:
             if item.name.lower() == key.lower():
                 return True
         return False
-    
+
     def __delitem__(self, key):
         self._removeItem(key)
-            
+
     def __getitem__(self, key):
         return self._getItem(key)
-    
+
     def __iter__(self):
         for item in self._items:
             yield item
-    
+
     def __repr__(self):
         return self.__str__()
-        
+
     def __str__(self):
         return '[%s]'%','.join([item.name for item in self._items])
 
@@ -164,7 +164,7 @@ class WizardTab(object):
         self.elements = WizardList()
         self.name = name
         self.text = text
-    
+
     def message(self, name, text, bold=False, multiline=False):
         """
         Create a display action containing label.
@@ -176,11 +176,11 @@ class WizardTab(object):
         """
         label = WizardElementBase(self.pm_actions._showLabel(text, bold, multiline, name=name))
         self.elements._addItem(label)
-    
+
     def addText(self, name, text, value=None, multiline=False, validator=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing textbox control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param value:         Text to pre-populate textbox field with
@@ -195,11 +195,11 @@ class WizardTab(object):
         """
         text = WizardElementBase(self.pm_actions._showText(text, value, multiline, validator, False, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(text)
-    
+
     def addMultiline(self, name, text, value=None, validator=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing multiline textbox control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param value:         Text to pre-populate textbox field with
@@ -213,11 +213,11 @@ class WizardTab(object):
         """
         text = WizardElementBase(self.pm_actions._showText(text, value, True, validator, False, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(text)
-    
+
     def addPassword(self, name, text, value=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing password textbox control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param value:         Number to pre-populate textbox field with
@@ -230,11 +230,11 @@ class WizardTab(object):
         """
         password = WizardElementBase(self.pm_actions._showText(text, value, name=name, password=True, message=message, status=status, trigger=trigger, callback=callback, helpText=helpText, optional=optional))
         self.elements._addItem(password)
-    
+
     def addFilepath(self, name, value=None, validator=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing filepath control.
-        
+
         @param name:          Unique name for the control
         @param value:         Number to pre-populate textbox field with
         @param validator:     Define validator to restrict text input
@@ -247,11 +247,11 @@ class WizardTab(object):
         """
         filepath = WizardElementBase(self.pm_actions._showText('Filepath: ', value, False, validator, False, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(filepath)
-    
+
     def addDirPath(self, name, value=None, validator=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing filedir control.
-        
+
         @param name:          Unique name for the control
         @param value:         Number to pre-populate textbox field with
         @param validator:     Define validator to restrict text input
@@ -264,11 +264,11 @@ class WizardTab(object):
         """
         dirpath = WizardElementBase(self.pm_actions._showText('Folderpath: ', value, False, validator, False, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(dirpath)
-    
+
     def addInteger(self, name, text, minValue=None, maxValue=None, value=None, message='', status='', trigger=None, callback=None, helpText='', optional=True, stepSize=1):
         """
         Create a display action containing integer selector control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param minValue:      Minimum value for the number
@@ -284,11 +284,11 @@ class WizardTab(object):
         """
         number = WizardElementBase(self.pm_actions._showNumber(text, str(minValue) if minValue <> None else minValue, maxValue, value, name, message, status, trigger, callback, helpText, optional, stepSize))
         self.elements._addItem(number)
-    
+
     def addIntegers(self, name, question, value=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing integers selector control.
-        
+
         @param name:          Unique name for the control
         @param question:      Question to display in the label
         @param value:         Numbers to pre-populate textbox field with
@@ -301,11 +301,11 @@ class WizardTab(object):
         """
         integers = WizardElementBase(self.pm_actions._showText(question, value, name=name, message=message, status=status, validator='[0-9,]', trigger=trigger, callback=callback, helpText=helpText, optional=optional))
         self.elements._addItem(integers)
-    
+
     def addChoice(self, name, text, values, selectedValue=0, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing item selector control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param values:        Items to select out (dictionary)
@@ -317,25 +317,17 @@ class WizardTab(object):
         @param helpText:      Information about the usage/functionality of the control
         @param optional:      Define the choice field as optional parameter (boolean)
         """
-        if not isinstance(values, dict):
-            # choices is not a dict, convert it to a dict
-            thechoices = dict.fromkeys(values)
-            for k in thechoices.iterkeys():
-                thechoices[k] = k
-        else:
-            # choices is already a dict, nothing to do
-            thechoices = values
 
-        if len(thechoices) > 4:
+        if len(values) > 4:
             options = WizardElementBase(self.pm_actions._showDropDown(text, values, selectedValue, name, message, status, trigger, callback, helpText, optional))
         else:
             options = WizardElementBase(self.pm_actions._showOptions(text, values, selectedValue, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(options)
-    
+
     def addChoiceMultiple(self, name, text, values, selectedValue=0, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing multi items selector control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param values:        Items to select out (dictionary)
@@ -347,23 +339,15 @@ class WizardTab(object):
         @param helpText:      Information about the usage/functionality of the control
         @param optional:      Boolean indicating if selection is required
         """
-        if not isinstance(values, dict):
-            # choices is not a dict, convert it to a dict
-            thechoices = dict.fromkeys(values)
-            for k in thechoices.iterkeys():
-                thechoices[k] = k
-        else:
-            # choices is already a dict, nothing to do
-            thechoices = values
-        
+
         options = WizardElementBase(self.pm_actions._showOptionsMultiple(text, values, selectedValue, name, message, status, trigger, callback, helpText, optional))
-        
+
         self.elements._addItem(options)
-    
+
     def addDropDown(self, name, text, values, selectedValue=0, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing multi items dropdown control.
-        
+
         @param name:          Unique name for the control
         @param text:          Text to display in the label
         @param values:        Items to select out (dictionary)
@@ -375,14 +359,6 @@ class WizardTab(object):
         @param helpText:      Information about the usage/functionality of the control
 
         """
-        if not isinstance(values, dict):
-            # choices is not a dict, convert it to a dict
-            thechoices = dict.fromkeys(values)
-            for k in thechoices.iterkeys():
-                thechoices[k] = k
-        else:
-            # choices is already a dict, nothing to do
-            thechoices = values
 
         options = WizardElementBase(self.pm_actions._showDropDown(text, values, selectedValue, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(options)
@@ -390,7 +366,7 @@ class WizardTab(object):
     def addYesNo(self, name, question, selectedValue=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing yes/no control.
-        
+
         @param name:          Unique name for the control
         @param question:      Question to display in the label
         @param selectedValue: Index of the item to select
@@ -404,11 +380,11 @@ class WizardTab(object):
         values = {True: 'Yes', False: 'No'}
         options = WizardElementBase(self.pm_actions._showOptions(question, values, selectedValue, name=name, message=message, status=status, trigger=trigger, callback=callback, helpText=helpText, optional=optional))
         self.elements._addItem(options)
-    
+
     def addDate(self, name, question, minValue=None, maxValue=None, selectedValue=None, format='YYYY/MM/DD', message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing date control.
-        
+
         @param name:          Unique name for the control
         @param question:      Question to display in the label
         @param minValue:      Minimum value for the date
@@ -424,11 +400,11 @@ class WizardTab(object):
         """
         date = WizardElementBase(self.pm_actions._showDateControl('date', question, minValue, maxValue, selectedValue, format, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(date)
-    
+
     def addDateTime(self, name, question, minValue=None, maxValue=None, selectedValue=None, format='YYYY/MM/DD hh:mm', message='', status='', trigger=None, callback=None, helpText='', optional=True):
         """
         Create a display action containing datetime control.
-        
+
         @param name:          Unique name for the control
         @param question:      Question to display in the label
         @param minValue:      Minimum value for the date
@@ -444,11 +420,11 @@ class WizardTab(object):
         """
         datetime = WizardElementBase(self.pm_actions._showDateControl('datetime', question, minValue, maxValue, selectedValue, format, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(datetime)
-    
+
     def addButton(self, name, label, trigger=None, callback=None, helpText=''):
         """
         Create a display action containing button control.
-        
+
         @param name:          Unique name for the control
         @param label:         Caption displayed in the button
         @param trigger:       Event where the control should trigger on. 'click'
@@ -457,11 +433,11 @@ class WizardTab(object):
         """
         button = WizardElementBase(self.pm_actions._showButtonControl('button', name, label, trigger, callback, helpText))
         self.elements._addItem(button)
-        
+
     def removeElement(self, name):
         """
         Remove existing tab from form
-        
+
         @param name: Unique name for this control
         """
         self.elements._removeItem(name)
