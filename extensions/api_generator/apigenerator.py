@@ -391,6 +391,7 @@ class CloudApiGenerator:
     xmlrpcDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'xmlrpcDocumentationTemplate.tmpl')
     serviceAlkiraDocumentationTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'serviceAlkiraDocumentationTemplate.tmpl')
     apiAlkiraHomeTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiAlkiraHome.tmpl')
+    apiAlkiraPageTree = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiAlkiraPageTree.tmpl')
     apiXmlrpcTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiXmlrpcTemplate.tmpl')
     apiRestTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiRestTemplate.tmpl')
     apiDomainTemplate = q.system.fs.joinPaths(q.dirs.appDir, 'cloud_api_generator', 'templates', 'apiDomainTemplate.tmpl')
@@ -501,6 +502,7 @@ class CloudApiGenerator:
             self._generateCode(self.xmlrpcDocumentationTemplate, {'className': name, 'methods':methods}, q.system.fs.joinPaths(roDirXmlrpcClass, 'xmlrpc_%s.txt'%name))
         elif self._documentationFormat == 'alkira':
             self._generateCode(self.apiAlkiraHomeTemplate, {}, q.system.fs.joinPaths(self.documentationDest, 'Home.md'))
+            self._generateCode(self.apiAlkiraPageTree, {}, q.system.fs.joinPaths(self.documentationDest, 'pagetree.md'))
             self._generateCode(self.dotModelTemplate , {}, q.system.fs.joinPaths(self.documentationDest, 'Home', 'dotModel.md'))
             if not q.system.fs.exists(q.system.fs.joinPaths(self.documentationDest, 'Home', '%s.md' % domain)):
                 self._generateCode(self.apiDomainTemplate, {'root': domain, 'name':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', '%s.md' % domain))
@@ -946,13 +948,6 @@ class AppAPIGenerator(object):
 
         #self._generator.rootobject_serverExtensionDest  = q.system.fs.joinPaths(app_path, 'tmp', 'action', 'extension')
         self._generator.generatePythonRoot()
-        q.action.stop()
-
-        q.action.start("Generating Default Spaces")
-
-        appspacesdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'portal', 'spaces')
-        self._create_folder(appspacesdir)
-        q.system.fs.copyDirTree(q.system.fs.joinPaths(self._template_path, "Spaces"), appspacesdir)
         q.action.stop()
 
         q.action.start('Generating actor API')
