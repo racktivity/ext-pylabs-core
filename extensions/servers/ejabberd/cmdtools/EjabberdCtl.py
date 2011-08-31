@@ -2,6 +2,7 @@ from pylabs import q
 from pylabs.baseclasses.CommandWrapper import CommandWrapper
 from pylabs.enumerators import AppStatusType
 import os
+import signal
 import time
 
 EJABBERDCTL = q.system.fs.joinPaths(os.sep,'usr','sbin', 'ejabberdctl')
@@ -32,11 +33,12 @@ class EjabberdCtl(CommandWrapper):
                 return 1, stdout
 
             times = 10
-            while times > 0 and q.enumerators.AppStatusType.RUNNING != q.manage.ejabberd.getStatus():
+            while times > 0 and q.enumerators.AppStatusType.RUNNING != self.getStatus(nodeName, cfgFile, ctlCfgFile, logsDir, spoolDir, True):
                 time.sleep(1)
                 times = times - 1
 
             if times == 0:
+                self.getStatus(nodeName, cfgFile, ctlCfgFile, logsDir, spoolDir)
                 return 1, "Start executed successfully but server not available"
         except:
             exc = q.eventhandler.getCurrentExceptionString()
@@ -82,7 +84,7 @@ class EjabberdCtl(CommandWrapper):
             q.logger.log("Timed out [%s] seconds, while stopping EJabberd" % timeout, 3)
             return 1, errorMessage
 
-    def getStatus(self, nodeName="", cfgFile="", ctlCfgFile="", logsDir="", spoolDir=""):
+    def getStatus(self, nodeName="", cfgFile="", ctlCfgFile="", logsDir="", spoolDir="", starting=False):
         """
         @param nodeName: a remote node
         @param cfgFile: Config file of ejabberd
@@ -96,6 +98,10 @@ class EjabberdCtl(CommandWrapper):
         if not status:
             return AppStatusType.RUNNING
         else:
+            if not starting:
+                for pid in q.system.process.getProcessPid('ejabberd'):
+                    os.kill(int(pid), signal.SIGTERM)
+
             return AppStatusType.HALTED
 
     def restart(self, nodeName="", cfgFile="", ctlCfgFile="", logsDir="", spoolDir=""):
