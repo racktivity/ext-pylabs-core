@@ -53,7 +53,7 @@ Not yet implemented.
     #end for 
     #set $element = '&'.join($lines)
 
-    http://<name>:<password>@<environment url>:<port number>/appserver/rest/cloud_api_$className/$method.name?$element
+    http://<name>:<password>@<environment>/$appname/appserver/rest/cloud_api_$className/$method.name?$element
 
 List and Dicts are in [JSON](http://en.wikipedia.org/wiki/JSON) format.
 
@@ -182,8 +182,8 @@ Not yet implemented.
 
     import xmlrpclib
 
-    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment url>:<port number>/appserver/xmlrpc)
-    result = xmlrpcProxy.cloud_api_$className.$method.name$str)['result']
+    xmlrpcProxy = xmlrpclib.ServerProxy('http://<name>:<password>@<environment>/$appname/appserver/xmlrpc)
+    result = xmlrpcProxy.$domain.$className.$method.name$str)['result']
 
 \#\#\# Return
 

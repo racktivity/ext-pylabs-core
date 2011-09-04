@@ -509,7 +509,7 @@ class CloudApiGenerator:
             if not q.system.fs.exists(q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s.md' % (domain, name))):
                 self._generateCode(self.apiDomainTemplate, {'root':'%s_%s'%(domain,name), 'name':name}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s.md' % (domain, name)))
             for methodname, method in methodsinfo:
-                self._generateCode(self.serviceAlkiraDocumentationTemplate, {'className': name, 'method':method, 'domain':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s' % (domain, name), '%s_%s_%s.md' % (domain, name, methodname)))
+                self._generateCode(self.serviceAlkiraDocumentationTemplate, {'appname': self._appName,'className': name, 'method':method, 'domain':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s' % (domain, name), '%s_%s_%s.md' % (domain, name, methodname)))
     
         return name
 
