@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-CORE_PACKAGES="ipython python-pkg-resources mercurial python-apt"
-
+CORE_PACKAGES="ipython python-pkg-resources mercurial python-apt curl"
 
 log () {
     if test "x$TERM" == "xunknown"; then
@@ -81,9 +80,14 @@ install_package(){
     apt-get install -qq -y $packages > /dev/null
 }
 
+apt_update(){
+  apt-get update
+}
+
 core_install(){
-    install_qbase
+    apt_update
     install_package "${CORE_PACKAGES}"
+    install_qbase
     customize
     update_metadata
     install_qpackage pylabs
