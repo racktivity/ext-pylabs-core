@@ -241,13 +241,13 @@ class ApplicationAPI(object):
 
         # Default to client context
         context = context or q.enumerators.AppContext.CLIENT
-        app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
+        self._app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._host = host
 
         if q.dirs.pyAppsDir not in sys.path:
             sys.path.append(q.dirs.pyAppsDir)
-        if app_path not in sys.path:
-            sys.path.append(app_path)
+        if self._app_path not in sys.path:
+            sys.path.append(self._app_path)
 
         self.appname = appname
         self.action = self._get_actions(appname, context)
