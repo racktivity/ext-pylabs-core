@@ -27,16 +27,11 @@ class NginxCmd(CommandWrapper):
         @return Running, Halted or Unknown.
         @rtype AppStatusType.
         """
-        try:
-            exitcode, output = q.system.process.execute(self._status_cmd, outputToStdout=False)
-            if exitcode == os.EX_OK and output.find('* nginx is running') != -1:
-                return AppStatusType.RUNNING
-        except:
-            ex_string = q.errorconditionhandler.getCurrentExceptionString()
-            if ex_string.find('* could not access PID file for nginx') != -1:
-                return AppStatusType.HALTED
-
-            raise
+        exitcode, output = q.system.process.execute(self._status_cmd, dieOnNonZeroExitCode=False, outputToStdout=False)
+        if exitcode == os.EX_OK:
+            return AppStatusType.RUNNING
+        else:
+            return AppStatusType.HALTED
 
         return AppStatusType.UNKNOWN
 
