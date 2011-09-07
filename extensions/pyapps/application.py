@@ -241,13 +241,13 @@ class ApplicationAPI(object):
 
         # Default to client context
         context = context or q.enumerators.AppContext.CLIENT
-
         app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
-        self._app_path = app_path
         self._host = host
 
-        api_path = q.system.fs.joinPaths(app_path)
-        sys.path.append(api_path)
+        if q.dirs.pyAppsDir not in sys.path:
+            sys.path.append(q.dirs.pyAppsDir)
+        if app_path not in sys.path:
+            sys.path.append(app_path)
 
         self.appname = appname
         self.action = self._get_actions(appname, context)
@@ -272,8 +272,7 @@ class ApplicationAPI(object):
         proxy = None
         if context == q.enumerators.AppContext.CLIENT:
             proxy = XmlRpcActionProxy('http://%s/%s/appserver/xmlrpc/' % (self._host, appname))
-
-        from client.action import actions
+        actions = __import__("%s.client" % appname, globals(), locals(), ["action"], -1).action.actions
         return actions(proxy=proxy)
 
     def _get_osis_client(self, appname, category):
