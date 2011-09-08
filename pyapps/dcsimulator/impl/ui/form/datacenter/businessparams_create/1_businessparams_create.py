@@ -148,9 +148,9 @@ def main(q, i, p, params, tags):
     cloudAPIArgs['salescollocation'] = float(tab_sales.elements['salescollocation'].value)
     cloudAPIArgs['salescpu'] = float(tab_sales.elements['salescpu'].value)
     cloudAPIArgs['salesstorage'] = float(tab_sales.elements['salesstorage'].value)
-    cloudAPIArgs['salesbandwidth'] = float(tab_sales.elements['salesbandwidth'].value
+    cloudAPIArgs['salesbandwidth'] = float(tab_sales.elements['salesbandwidth'].value)
 
-    result = callCloudAPI(p.api, **cloudAPIArgs)	
+    result = callCloudAPI(p.api, ** cloudAPIArgs)	
     params['result'] = result
     
 def match(q, i, p, params, tags):
