@@ -6,9 +6,9 @@
 [configure]: #/Q-Packages/Configure
 
 
-## Q-Package Tasklets
+# Q-Package Tasklets
 
-#### backup Tasklet
+## backup Tasklet
 The `backup` tasklet is the tasklet tagged with "backup".
 The `backup` tasklet allows one to take a backup of the data stored in the data structure being used.
 The restore tasklet lets you put the saved data back in the data structure.
@@ -19,10 +19,49 @@ Out[1].restore(url='ftp://login:password@10.100.1.1/myroot/')
 [[/code]]
 
 
-#### codemanagement Tasklet
+## codemanagement Tasklet
 The `codemanagement` tasklet is the tasklet tagged with "codemanagement". 
 It is mainly used to get the necessary code from a version control system or from a local repository. It is used to gather the different files and directories into one Q-Package, a so called _recipe_.
 
+
+###Using a Recipe File
+Using the _recipe_ is the easiest way to get the necessary code for your Q-Package. The recipe is stored in the file `recipe.json` and must be created in `/opt/qbase5/var/qpackages4/metadata/<domain>/<qpackage name>/<version>/`.
+The recipe file is a list of dicts. Each dict contains the location, branch, and the required directories from the version control system. One recipe may refer to multiple repositories.  
+
+Below you find an example of a recipe:
+
+	[
+	  { "branch" : "default",
+	    "location" : "https://bitbucket.org/foo/bar/",
+	    "mapping" :
+	      {
+	        "pyapps/newapp" : "generic/pyapps/newapp"
+	      }
+	  },
+	  {
+	    "branch" : "default",
+        "location" : "http://bitbucket.org/another/location",
+	    "mapping" :
+	     {
+	        "docs/somedocs" : "generic/pyapps/newapp/portal/spaces/somedocs",
+	        "docs/moredocs" : "generic/pyapps/newapp/portal/spaces/moredocs"
+	     }
+	  }
+	]
+
+By calling the `checkout()` method on a package, the codemanagement tasklet is executed. 
+These are the steps that are executed when using the recipe file:
+
+1. First a clone is created of the branches defined in the recipe. The destination of the clone is asked for when calling the `checkout()` method. 
+In the above example, there are two repositories (`bar` and `location`).
+The clone is created in for example `/opt/qbase5/var/mercurial/`, where you find the two repositories.
+2. Execute the mapping from the recipe, which copies the directories from `/opt/qbase5/var/mercurial/<repo>/<mapping source>` to `/opt/qbase5/var/src/<qpackage name>/<version>/<mapping destination>`.
+For the given example, `/opt/qbase5/var/mercurial/bar/pyapps/newapp` will be recursively copied to `/opt/qbase5/var/src/newapp/<version>/generic/pyapps/newapp`.
+
+
+
+###Without a Recipe File
+An alternative is to work without the `recipe.json` file, then you have to put everything in the `codemanagement` tasklet.
 PyLabs 5 has a built-in [Mercurial][] client, which allows you to clone a Mercurial repository into PyLabs:
 
 [[code]]
@@ -56,7 +95,7 @@ The `addSource()` method takes three parameters:
 * A string, representing the corresponding path in `/opt/qbase5`
 
 
-#### compile Tasklet
+## compile Tasklet
 The `compile` tasklet is the tasklet tagged with "compile". 
 The tasklet is only necessary if the package needs to be compiled in order to become usable for PyLabs, for example the _ocaml_ Q-Package.
 
@@ -69,7 +108,7 @@ The tasklet should:
 3. Compile the source-files.
 
 
-#### configure Tasklet
+## configure Tasklet
 The `configure` tasklet is the tasklet tagged with "configure". 
 The `configure` tasklet allows you to configure an application after its installation, for example [setting a default configuration of a web server][configure]. 
 The install tasklet of the Q-Package needs a `signalConfigurationNeeded` parameter in order to execute this tasklet.
@@ -82,7 +121,7 @@ qpackage.signalConfigurationNeeded()
 If this line is present, the Q-Shell is restarted after the Q-Package installation then launches this `configure` tasklet. This tasklet saves the necessary data in the required configuration files.
 
 
-#### install Tasklet
+## install Tasklet
 The `install` tasklet is the tasklet tagged with "install".
 
 This tasklet must copy all files from the package-directory to the proper location in the PyLabs framework, and execute all other necessary actions during installation. The package directory can be retrieved from the Q-Package object by calling the function `getPathFiles()`.
@@ -96,16 +135,18 @@ There are two helper functions:
     * The directory (full path) in PyLabs, where the Egg must be installed.
 
 
-#### package Tasklet
+## package Tasklet
 The `package` tasklet is the tasklet tagged with "package".
 
-This tasklet must pick all files from PyLabs Q-Package directories and copy them to the proper place in the PyLabs sandbox. 
+This tasklet must pick all files from the PyLabs sandbox and copy them to the proper place in the PyLabs Q-Package directories `/opt/qbase5/var/qpackages4/files/...`. 
+When you use the recipe file, the source files are located in `/opt/qbase5/var/src...`.
 
 The tasklet must package the files to the form they will be installed. (For example: compiling `.py` files to `.pyc` files, combine multiple JAVA `.class` file to a single `.JAR` archive)
 
 There is a helper function called `q.qpackagetools.convertSourceToPyc()` which takes a path as argument. All `.py` files in that path (and in any sub-directory) will be compiled to `.pyc` files. It is advised to copy all files to their proper directory first, and then compile the `.py` files in place.
 
-#### startstop Tasklet
+
+## startstop Tasklet
 The `startstop` tasklet has two methods, `start` and `stop`, to respectively start and stop the application.
 
 *`start` method*

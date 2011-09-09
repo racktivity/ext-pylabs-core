@@ -42,89 +42,97 @@ Below you can find the subsequent steps to create a Q-Package:
 To create a Q-Package on your local workstation:
 
 1. Create a new Q-Package:
+<br/>
+[[code]]
+In [1]: i.qp.createNewPackage()
+ Please select a domain
+    1: pylabs5
+    2: pylabs5_test
+    3: qpackages5
+    Select Nr (1-3): 2
+Please provide a name: testqp
+Please provide a version [1.0]: 
+Please provide a description: test
+ Please enumerate the supported platforms
+    1: generic
+    2: unix
+    3: linux
+    4: linux32
+    5: linux64
+    6: win
+    7: win32
+    8: win64
+    9: solaris
+    10: solaris32
+    11: solaris64
+    12: esx
+    13: cygwin
+    14: darwin
+    15: other
+    Select Nr, use comma separation if more e.g. "1,4": 1
+lastPackages: [IPackage pylabs5_test testqp 1.0]
+Out[1]: IPackage pylabs5_test testqp 1.0
 
-    In [1]: i.qp.createNewPackage()
-     Please select a domain
-        1: pylabs5
-        2: pylabs5_test
-        3: qpackages5
-        Select Nr (1-3): 2
-    Please provide a name: testqp
-    Please provide a version [1.0]: 
-    Please provide a description: test
-     Please enumerate the supported platforms
-        1: generic
-        2: unix
-        3: linux
-        4: linux32
-        5: linux64
-        6: win
-        7: win32
-        8: win64
-        9: solaris
-        10: solaris32
-        11: solaris64
-        12: esx
-        13: cygwin
-        14: darwin
-        15: other
-        Select Nr, use comma separation if more e.g. "1,4": 1
-    lastPackages: [IPackage pylabs5_test testqp 1.0]
-    Out[1]: IPackage pylabs5_test testqp 1.0
-    
-    In [2]:
+In [2]:
+[[/code]]
+<br/>
 2. Check in your PyLabs directory if the new package is created:
+<br/>
+[[code]]
+/opt/qbase5/var/qpackages4/files/pylabs5_test/testqp/1.0
+/opt/qbase5/var/qpackages4/metadata/pylabs5_test/testqp# tree
+.
+`-- 1.0
+    |-- description.wiki
+    |-- qpackage.cfg
+    `-- tasklets
+        |-- backup.py
+        |-- codemanagement.py
+        |-- configure.py
+        |-- install.py
+        |-- package.py
+        `-- startstop.py
 
-    /opt/qbase5/var/qpackages4/files/pylabs5_test/testqp/1.0
-    /opt/qbase5/var/qpackages4/metadata/pylabs5_test/testqp# tree
-    .
-    `-- 1.0
-        |-- description.wiki
-        |-- qpackage.cfg
-        `-- tasklets
-            |-- backup.py
-            |-- codemanagement.py
-            |-- configure.py
-            |-- install.py
-            |-- package.py
-            `-- startstop.py
-    
-    2 directories, 8 files
+2 directories, 8 files
+[[/code]]
+<br/>
 3. If your application needs other Q-Packages for correct functioning, you can add dependencies. The Q-Packages that you define, will be installed automatically when you install this new Q-Package:
+<br/>
+[[code]]
+In [2]: i.qp.lastPackage.addDependency()
+ Please select a domain
+    1: pylabs5
+    2: pylabs5_test
+    3: qpackages5
+    Select Nr (1-3): 2
+Please provide a name for the dependency: test2
+ Please provide a comma separated list of supported platforms
+    1: generic
+    2: unix
+    3: linux
+    4: linux32
+    5: linux64
+    6: win
+    7: win32
+    8: win64
+    9: solaris
+    10: solaris32
+    11: solaris64
+    12: esx
+    13: cygwin
+    14: darwin
+    15: other
+    Select Nr, use comma separation if more e.g. "1,4": 1
+Please provide a minimum version, eg: 1.2: 1.0
+Please provide a maximum version, eg: 2.5: 3.0
+ Please select a dependencytype
+    1: build
+    2: runtime
+    Select Nr (1-2): 1
 
-    In [2]: i.qp.lastPackage.addDependency()
-     Please select a domain
-        1: pylabs5
-        2: pylabs5_test
-        3: qpackages5
-        Select Nr (1-3): 2
-    Please provide a name for the dependency: test2
-     Please provide a comma separated list of supported platforms
-        1: generic
-        2: unix
-        3: linux
-        4: linux32
-        5: linux64
-        6: win
-        7: win32
-        8: win64
-        9: solaris
-        10: solaris32
-        11: solaris64
-        12: esx
-        13: cygwin
-        14: darwin
-        15: other
-        Select Nr, use comma separation if more e.g. "1,4": 1
-    Please provide a minimum version, eg: 1.2: 1.0
-    Please provide a maximum version, eg: 2.5: 3.0
-     Please select a dependencytype
-        1: build
-        2: runtime
-        Select Nr (1-2): 1
-    
-    In [3]:
-
+In [3]:
+[[/code]]
+<br/>
 
 The last question when adding a dependency sets a dependency type:
 
@@ -133,7 +141,7 @@ The last question when adding a dependency sets a dependency type:
 
 
 ## Create the necessary tasklets
-Default tasklets have been generated when the Q-Package was created. Now is the time to customize the appropriate tasklets.
+Default tasklets are generated when the Q-Package was created. Now is the time to customize the appropriate tasklets.
 For more info see [Q-Package Tasklets][qptasklets].
 
 

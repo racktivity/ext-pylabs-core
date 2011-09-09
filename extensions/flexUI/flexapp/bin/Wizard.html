@@ -26,7 +26,10 @@ Learn more about Flex at http://flex.org
 <!--  END Browser History required section -->
 
 <style>
-body { margin: 0px; overflow:hidden }
+body {
+	margin: 0px;
+	overflow: hidden
+}
 </style>
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -44,7 +47,7 @@ var requiredRevision = 124;
 </head>
 
 <body scroll="no">
-<script language="JavaScript" type="text/javascript">
+	<script language="JavaScript" type="text/javascript">
 <!--
 // Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
 var hasProductInstall = DetectFlashVer(6, 0, 65);
@@ -98,24 +101,21 @@ if ( hasProductInstall && !hasRequestedVersion ) {
   }
 // -->
 </script>
-<noscript>
-  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+	<noscript>
+		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
 			id="Wizard" width="100%" height="100%"
 			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
 			<param name="movie" value="Wizard.swf" />
 			<param name="quality" value="high" />
 			<param name="bgcolor" value="#869ca7" />
 			<param name="allowScriptAccess" value="sameDomain" />
-			<embed src="Wizard.swf" quality="high" bgcolor="#869ca7"
-				width="100%" height="100%" name="Wizard" align="middle"
-				play="true"
-				loop="false"
-				quality="high"
-				allowScriptAccess="sameDomain"
+			<embed src="Wizard.swf" quality="high" bgcolor="#869ca7" width="100%"
+				height="100%" name="Wizard" align="middle" play="true" loop="false"
+				quality="high" allowScriptAccess="sameDomain"
 				type="application/x-shockwave-flash"
 				pluginspage="http://www.adobe.com/go/getflashplayer">
 			</embed>
-	</object>
-</noscript>
+		</object>
+	</noscript>
 </body>
 </html>

@@ -1,5 +1,25 @@
 @metadata title=Package Tasklet
 
+####When using a recipe file:
+[[code]]
+__author__ = 'incubaid'
+__tags__ = 'package',
+
+def main(q, i, params, tags):
+    qpackage = params["qpackage"]
+    filesDir = qpackage.getPathFiles()
+    q.system.fs.removeDirTree(filesDir)
+    q.system.fs.createDir(filesDir)
+    relativePath = q.system.fs.joinPaths("generic", "pyapps", "newapp")
+    q.system.fs.copyDirTree(q.system.fs.joinPaths(qpackage.getPathSourceCode(), relativePath), q.system.fs.joinPaths(filesDir, relativePath))
+[[/code]]
+
+* getPathFiles: function that retrieves the files directory of a package inside the Q-Packages directory of PyLabs, for example `/opt/qbase5/var/qpackages4/files/<domain>/<package>/<version>`.
+* getPathSourceCode: function that retrieves the directory with the source code for the package, for example `/opt/qbase5/var/src/<package>/<version>`
+
+
+####When manually assembling the package
+
 [[code]]
 # -*- coding: utf-8 -*-
 __author__ = 'incubaid'
