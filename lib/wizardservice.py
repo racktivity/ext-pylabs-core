@@ -957,7 +957,7 @@ class ApplicationserverWizardService(object):
             q.logger.log('Callback does not get a sessionid')
             extra['SESSIONSTATE'] = None
 
-        callback_method = self._getWizardMethod(domainName, wizardName, methodName)
+        callback_method = self._getWizardMethod(domainName, wizardName, methodName, extra)
 
         updatedForm = callback_method(q, i, extra, (domainName, ))
         action = updatedForm.convertToWizardAction()
@@ -982,16 +982,23 @@ class ApplicationserverWizardService(object):
 
         return step
 
-    def _getWizardMethod(self, domainName, wizardName, method):
-        wizard_methods = self.taskletengine.find(name='*',
-            tags=(domainName,wizardName))
+    def _getWizardMethod(self, domainName, wizardName, method, params=None):
+        params = params if params else dict()
+        tags = (domainName, wizardName)
+        wizard_methods = self.taskletengine.find(name='*', tags=tags)
 
-        if not wizard_methods:
+        matches = 0
+        mywizard = None
+        for wizard in wizard_methods:
+            if wizard.match(q, i, p, tags=tags, params=params):
+                mywizard = wizard
+                matches += 1
+        if not matches:
             raise RuntimeError('No matching wizard ("%s")found for domain "%s"' % (wizardName, domainName) )
-        if len(wizard_methods) > 1:
+        if matches > 1:
             raise RuntimeError('Multiple matching wizards found')
 
-        wizard_method = wizard_methods[0].methods[method]
+        wizard_method = mywizard.methods[method]
         return wizard_method
 
 # Some testcases testing our function rewriting, static analysis
