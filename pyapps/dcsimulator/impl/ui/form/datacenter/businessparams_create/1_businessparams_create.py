@@ -1,8 +1,10 @@
+TAB_NAME_TITLE = 'Datacenter Name'
 TAB_RACKS_TITLE = 'Datacenter Rack Distribution'
 TAB_INVESTMENTS_TITLE= 'Datacenter Investments'
 TAB_SIZING_TITLE = 'Datacenter Sizing'
 TAB_SALES_TITLE = 'Sales Configuration'
 
+TAB_NAME_NAME = 'Name: '
 TAB_RACKS_COLLOCATION = '% Racks for Collocation: '
 TAB_RACKS_STORAGE = '% Racks for Storage:  '
 TAB_RACKS_CPU = '% Rack for CPU: '
@@ -24,6 +26,7 @@ TAB_SALES_CPU = 'CPU Rack Rental (kEur/month): '
 TAB_SALES_STORAGE = 'Storage Rack Rental (kEur/month): '
 TAB_SALES_BANDWIDTH = 'Cost Bandwidth (Eur/Mbps/month): '
 
+TAB_NAME_NAME_HELPTEXT = 'Name of the datacenter'
 TAB_RACKS_COLLOCATION_HELPTEXT = 'Percentage Collocated Racks in Datacenter'
 TAB_RACKS_STORAGE_HELPTEXT = 'Percentage Storage Racks in Datacenter'
 TAB_RACKS_CPU_HELPTEXT = 'Percentage CPU Racks in Datacenter'
@@ -45,11 +48,11 @@ TAB_SALES_CPU_HELPTEXT = 'Rental price per CPU rack in kEur/month'
 TAB_SALES_STORAGE_HELPTEXT = 'Rental price per Storage rack in kEur/month'
 TAB_SALES_BANDWIDTH_HELPTEXT = 'Cost for bandwidth in Euro per Mbps per month'
 
-MSGBOX_CREATE_CONFIRMATION = "Set this investment scheme?"
-MSGBOX_CREATE_CONFIRMATION_TITLE = "Investment Scheme Creation"
+MSGBOX_CREATE_CONFIRMATION = "Set this datacenter business params scheme?"
+MSGBOX_CREATE_CONFIRMATION_TITLE = "Business Params Scheme Creation"
 
-MSGBOX_INVESTMENT_SCHEME_CREATE_FAILED = "Failed to create this Investment Scheme! Please contact your system administrator!"
-MSGBOX_INVESTMENT_SCHEME_CREATE_FAILED_TITLE = "Investment Scheme Creation Failed"
+MSGBOX_INVESTMENT_SCHEME_CREATE_FAILED = "Failed to create this Business Params Scheme! Please contact your system administrator!"
+MSGBOX_INVESTMENT_SCHEME_CREATE_FAILED_TITLE = "Business Params Scheme Creation Failed"
 
 
 def callCloudAPI(api, ** args):
@@ -60,10 +63,13 @@ def callCloudAPI(api, ** args):
 
 def main(q, i, p, params, tags):
     form = q.gui.form.createForm()
+    tab_name = form.addTab('name', TAB_NAME_TITLE)
     tab_racks  = form.addTab('racks' , TAB_RACKS_TITLE)
     tab_investments  = form.addTab('investments' , TAB_INVESTMENTS_TITLE)
     tab_sizing = form.addTab('sizing' , TAB_SIZING_TITLE)
     tab_sales  = form.addTab('sales' , TAB_SALES_TITLE)
+    
+    tab_name.addText(name='name', text = TAB_NAME_NAME, helpText = TAB_NAME_NAME_HELPTEXT)
     
     #########################
     # Rack distribution tab #
@@ -112,6 +118,7 @@ def main(q, i, p, params, tags):
     #########################
     
     form.loadForm(q.gui.dialog.askForm(form))
+    tab_name = form.tabs['name']
     tab_racks = form.tabs['racks']
     tab_investments = form.tabs['investments']
     tab_sizing = form.tabs['sizing']
@@ -126,6 +133,7 @@ def main(q, i, p, params, tags):
 
     cloudAPIArgs = dict()
 
+    cloudAPIArgs['name'] = tab_name.elements['name'].value
     cloudAPIArgs['collocation'] = tab_racks.elements['collocation'].value
     cloudAPIArgs['storage'] = tab_racks.elements['storage'].value
     cloudAPIArgs['cpu'] = tab_racks.elements['cpu'].value

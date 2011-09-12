@@ -2,6 +2,7 @@ __author__ = 'incubaid'
 
 def main(q, i, p, params, tags):
     businessparams = p.api.model.datacenter.businessparams.new()
+    businessparams.name = params['name']
     businessparams.size = params['size']
     businessparams.racksurface = params['racksurface']
     businessparams.kwhourcost = params['kwhourcost']
@@ -25,6 +26,18 @@ def main(q, i, p, params, tags):
     p.api.model.datacenter.businessparams.save(businessparams)
 
     params['result'] = {'guid' : businessparams.guid,
+                        'name': businessparams.name,
+                        'size': businessparams.size,
+                        'racksurface' : businessparams.racksurface,
+                        'kwhourcost': businessparams.kwhourcost,
+                        'pue': businessparams.pue,
+                        'salescollocation': businessparams.salescollocation,
+                        'salescpu': businessparams.salescpu,
+                        'salesstorage': businessparams.salesstorage,
+                        'salesbandwidth': businessparams.salesbandwidth,
+                        'collocation': businessparams.collocation,
+                        'storage': businessparams.storage,
+                        'cpu': businessparams.cpu,
  			'leasebuilding' : businessparams.leasebuilding,
 			'leaseinfrastructure': businessparams.leaseinfrastructure,
 			'leasehw' : businessparams.leasehw,

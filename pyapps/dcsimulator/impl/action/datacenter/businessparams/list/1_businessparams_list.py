@@ -1,6 +1,7 @@
 __author__ = "Incubaid"
 
 FIELDS = (
+        'name',  
         'collocation',
         'storage',
         'cpu',
