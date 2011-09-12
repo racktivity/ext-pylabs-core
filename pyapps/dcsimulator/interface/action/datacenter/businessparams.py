@@ -3,10 +3,10 @@ class businessparams:
     Business params actions
     """
 
-    def create(self, collocation="", storage="", cpu="", leasebuilding="", leaseinfrastructure="", leasehw="", 
+    def create(self, size, racksurface, kwhourcost, pue, salescollocation, salescpu, salesstorage, salesbandwidth,
+               collocation="", storage="", cpu="", leasebuilding="", leaseinfrastructure="", leasehw="", 
                interestbuilding="", interestdatacenter="", leaseperiodbuilding="20", leaseperioddatacenter="3",
-               technology="", installperiod="12", size, racksurface, kwhourcost, pue, collocation, cpu, storage, bandwidth, 
-               jobguid="", executionparams=None):
+               technology="", installperiod="12", jobguid="", executionparams=None):
         """
         Create a datacenter business params scheme
 
@@ -59,7 +59,7 @@ class businessparams:
         @type pue: float
 
         @param salescollocation: rental per rack in kEur/month
-       @type salescollocation: float
+        @type salescollocation: float
 
         @param salescpu: sales of cpu rack in kEur/month
         @type salescpu: float
