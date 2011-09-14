@@ -10,6 +10,7 @@ def main(q, i, p, params, tags):
     connection = OsisDB().getConnection('dcsimulator')
     if not connection.viewExists(domain, rootobject, view_name):
         view = connection.viewCreate(domain, rootobject, view_name)
+        view.setCol('name', q.enumerators.OsisType.STRING, True)
         view.setCol('collocation', q.enumerators.OsisType.INTEGER, True)
         view.setCol('storage', q.enumerators.OsisType.INTEGER, True)
         view.setCol('cpu', q.enumerators.OsisType.INTEGER, True)

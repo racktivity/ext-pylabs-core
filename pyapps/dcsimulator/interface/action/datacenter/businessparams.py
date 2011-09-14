@@ -3,13 +3,40 @@ class businessparams:
     Business params actions
     """
 
-    def create(self, collocation="", storage="", cpu="", leasebuilding="", leaseinfrastructure="", leasehw="", 
+    def create(self, name, size, racksurface, kwhourcost, pue, salescollocation, salescpu, salesstorage, salesbandwidth,
+               collocation="", storage="", cpu="", leasebuilding="", leaseinfrastructure="", leasehw="", 
                interestbuilding="", interestdatacenter="", leaseperiodbuilding="20", leaseperioddatacenter="3",
-               technology="", installperiod="12", size, racksurface, kwhourcost, pue, collocation, cpu, storage, bandwidth, 
-               jobguid="", executionparams=None):
+               technology="", installperiod="12", jobguid="", executionparams=None):
         """
         Create a datacenter business params scheme
 
+        @param name: name of datacenter
+        @type name: string
+        
+        @param size: datacenter size in square meters
+        @type size: integer
+
+        @param racksurface: required square meters per rack
+        @type racksurface: integer
+
+        @param kwhourcost: cost per kW/h
+        @type kwhourcost: float
+
+        @param pue: power usage effectiveness, ratio effective power needed per theoretical required power
+        @type pue: float
+
+        @param salescollocation: rental per rack in kEur/month
+        @type salescollocation: float
+
+        @param salescpu: sales of cpu rack in kEur/month
+        @type salescpu: float
+
+        @param salesstorage: sales of storage rack in kEur/month
+        @type salesstorage: float
+
+        @param salesbandwidth: sales of bandwidth in Eur per Mbps per month
+        @type salesbandwidth: float
+        
         @param collocation: percentage of racks used for collocation
         @type collocation: integer
 
@@ -46,30 +73,6 @@ class businessparams:
         @param installperiod: period for installing the datacenter, expressed in months, by default 12 months
         @type installperiod: integer
 
-        @param size: datacenter size in square meters
-        @type size: integer
-
-        @param racksurface: required square meters per rack
-        @type racksurface: integer
-
-        @param kwhourcost: cost per kW/h
-        @type kwhourcost: float
-
-        @param pue: power usage effectiveness, ratio effective power needed per theoretical required power
-        @type pue: float
-
-        @param salescollocation: rental per rack in kEur/month
-       @type salescollocation: float
-
-        @param salescpu: sales of cpu rack in kEur/month
-        @type salescpu: float
-
-        @param salesstorage: sales of storage rack in kEur/month
-        @type salesstorage: float
-
-        @param salesbandwidth: sales of bandwidth in Eur per Mbps per month
-        @type salesbandwidth: float
-        
         @param jobguid: guid of the job, if available
         @type jobguid: guid
         
