@@ -21,9 +21,9 @@ class AppManager(object):
     def __init__(self):
         pass
 
-    def getAPI(self, appname, host='127.0.0.1', context=None):
+    def getAPI(self, appname, host='127.0.0.1', context=None, username=None, password=None):
         '''Retrieve api object for an application'''
-        return ApplicationAPI(appname, host, context)
+        return ApplicationAPI(appname, host, context, username, password)
 
 
 
@@ -237,12 +237,14 @@ class AppManager(object):
 
 class ApplicationAPI(object):
 
-    def __init__(self, appname, host=None, context=None):
+    def __init__(self, appname, host=None, context=None, username=None, password=None):
 
         # Default to client context
         context = context or q.enumerators.AppContext.CLIENT
         self._app_path = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', appname)
         self._host = host
+        self._username = username
+        self._password = password
 
         if q.dirs.pyAppsDir not in sys.path:
             sys.path.append(q.dirs.pyAppsDir)
@@ -271,7 +273,10 @@ class ApplicationAPI(object):
 
         proxy = None
         if context == q.enumerators.AppContext.CLIENT:
-            proxy = XmlRpcActionProxy('http://%s/%s/appserver/xmlrpc/' % (self._host, appname))
+            host = self._host
+            if self._username and self._password:
+                host = "%s:%s@%s" % (self._username, self._password, host)
+            proxy = XmlRpcActionProxy('http://%s/%s/appserver/xmlrpc/' % (host, appname))
         actions = __import__("%s.client" % appname, globals(), locals(), ["action"], -1).action.actions
         return actions(proxy=proxy)
 
