@@ -1,15 +1,15 @@
 from pylabs import q, p
 
 class ${className}(object):
-    
+
     def __init__(self, proxy=None):
         self._proxy = proxy or ${className}ActionManagerProxy()
-                
+
 #for $method in $methods:
     def $method.name (self, $method.args):
         """
         $method.docs
-        """        
+        """
         if executionparams is None:
             executionparams = dict()
 #set $line = ','.join($method.argNames)
@@ -18,18 +18,21 @@ class ${className}(object):
         # Deserialize the pymodel object
         o = result['result']
         if isinstance(o, basestring):
-            import base64
+            import base64, pymodel
             from pymodel.serializers import ThriftSerializer
             decoded_o = base64.decodestring(o)
-            # FIXME hack
-            api = p.application.getAPI("${appname}", context=q.enumerators.AppContext.APPSERVER)
+
 #if $isconfig
-            type_class = api.config.${domain}.${className}._ROOTOBJECTTYPE
+            modpath = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', '${appname}', 'interface', 'config', '$domain')
 #else
-            type_class = api.model.${domain}.${className}._ROOTOBJECTTYPE
+            modpath = q.system.fs.joinPaths(q.dirs.baseDir, 'pyapps', '${appname}', 'interface', 'model', '$domain')
 #end if
-            deserialized_o = ThriftSerializer.deserialize(type_class, decoded_o)
-            return deserialized_o
+            models = pymodel.load_models(modpath)
+            for model in models:
+                if model.__name__ == '$className':
+                    deserialized_o = ThriftSerializer.deserialize(model, decoded_o)
+                    return deserialized_o
+            raise RuntimeError('Failed to load the model for %s in %s' % ('$className', modpath))
         else:
             return result['result']
 #else
@@ -38,23 +41,23 @@ class ${className}(object):
 #end for
 
 class ${className}ActionManagerProxy(object):
-    def __call__(self, domainname, classname, methodname, *args):        
+    def __call__(self, domainname, classname, methodname, *args):
         try:
             m = getattr(self,  methodname)
             return m(*args)
         except AttributeError, ae:
-            raise 
+            raise
         except Exception, e:
             raise
-         
-    
+
+
 #for $method in $methods:
     def $method.name (self, $method.args):
         """
         $method.docs
         """
         params = dict()
-        
+
 #for $key, $value in $method.params.iteritems():
         params['$key'] = $value
 #if $key == $className+'guid'
@@ -69,7 +72,7 @@ class ${className}ActionManagerProxy(object):
     #end if
 #end for
 
-        
+
 #if 'execution_method' in $method.properties and $method.properties.execution_method == 'async'
         return q.workflowengine.actionmanager.startRootobjectActionAsynchronous('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 #elif 'execution_method' in $method.properties and $method.properties.execution_method == 'sync'
@@ -78,6 +81,6 @@ class ${className}ActionManagerProxy(object):
         return q.workflowengine.actionmanager.startRootobjectAction('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
 #end if
 
-    
+
 
 #end for
