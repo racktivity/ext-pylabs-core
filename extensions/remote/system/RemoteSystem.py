@@ -38,11 +38,10 @@ import warnings
 warnings.filterwarnings('ignore', r'.*sha.*')
 import paramiko, os, socket
 from pylabs import q
-from pylabs.Shell import *
 import signal
 import SocketServer, select
 import threading
-import re, signal
+import sys
 
 class InvalidIpAddressError(ValueError):
     pass
@@ -176,7 +175,7 @@ class _remoteSystemObject(object):
 class RemoteSystemProcess(_remoteSystemObject):
 
 
-    def _execute_common(self, command, dieOnNonZeroExitCode=True):
+    def _execute_common(self, command, dieOnNonZeroExitCode=True, timeout=10.0):
         """
         only works on all platforms
         return a tuple of (exitcode, stdout, stderr)
@@ -191,15 +190,19 @@ class RemoteSystemProcess(_remoteSystemObject):
         # Code stolen from self._connection.exec_command(command), it identitical
         bufsize = -1
         chan = self._connection.get_transport().open_session()
+        chan.settimeout(timeout)
         chan.exec_command(command)
-        channelFileStdin  = chan.makefile('wb', bufsize)
+        chan.makefile('wb', bufsize)
         channelFileStdOut = chan.makefile('rb', bufsize)
         channelFileStdErr = chan.makefile_stderr('rb', bufsize)
         # return stdin, stdout, stderr
     
         myOut = ""
         myErr = ""
-        while (not channelFileStdOut.channel.eof_received) or (not channelFileStdErr.channel.eof_received):
+        while ((not channelFileStdOut.channel.eof_received) or (not channelFileStdErr.channel.eof_received)):
+            rl, wl, xl = select.select([chan],[chan],[chan], timeout)
+            if not any([rl, wl, xl]):
+                raise socket.timeout("Command %s timedout after %s seconds" % (command, timeout))
             if channelFileStdOut.channel.recv_ready():
                 tmp=(channelFileStdOut.channel.recv(1024))
                 q.logger.log("ssh %s out:%s" % (self._ipaddress,tmp),3)
@@ -248,14 +251,14 @@ class RemoteSystemProcess(_remoteSystemObject):
         @return: represents the exitcode plus the output and error output (if enabled by withError) of the executed command. If exitcode is not zero then the executed command returned with errors
         """
 
-        #@Todo: Timeout, outputToStdout, loglevel not used
+        #@Todo: outputToStdout, loglevel not used
         # are they usefull are simply there for backwards compatibility?
 
         if q.platform.has_parent(q.enumerators.PlatformType.UNIX):
-            exitcode, output, error = self._executeUnix(command, dieOnNonZeroExitCode)
+            exitcode, output, error = self._executeUnix(command, dieOnNonZeroExitCode, timeout)
         else:
             
-            exitcode, output, error = self._execute_common(command, dieOnNonZeroExitCode)
+            exitcode, output, error = self._execute_common(command, dieOnNonZeroExitCode, timeout)
             
         if not withError:
             # Do things the old way
@@ -270,14 +273,14 @@ class RemoteSystemProcess(_remoteSystemObject):
             else:
                 return exitcode, error
 
-    def _executeUnix(self, command,dieOnError=True, timeout=0):
+    def _executeUnix(self, command,dieOnError=True, timeout=10.0):
         """
         only works for unix
         Execute a command on the SSH server.  Wait till output done.
         @raise SSHException: if the server fails to execute the command
         """
         command = command + ' ; echo "***EXITCODE***:$?"'
-        exitcode, output, error = self._execute_common(command, dieOnNonZeroExitCode=False)
+        exitcode, output, error = self._execute_common(command, dieOnNonZeroExitCode=False, timeout=timeout)
 
         
         # Not correct, many command issue warnings on stderr!
