@@ -149,13 +149,13 @@
   YUI Compressor fix */
   </script>
 
-	<script type='text/mustache' id='search-result-template'>
-  /*! YUI Compressor fix
+  <script type='text/mustache' id='search-result-template'>
+ /*! YUI Compressor fix
     <h1>Search results</h1>
     <ul>
       {{#results}}
         <li>
-          <a href="/{{2}}/#/{{0}}/{{1}}">{{1}}</a>
+          <a class='protocol-{{protocol}}' href="{{address}}">{{name}}</a>
         </li>
       {{/results}}
     </ul>
