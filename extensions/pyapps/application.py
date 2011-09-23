@@ -280,7 +280,7 @@ class ApplicationAPI(object):
         actions = __import__("%s.client" % appname, globals(), locals(), ["action"], -1).action.actions
         return actions(proxy=proxy)
 
-    def _get_osis_client(self, appname, category):
+    def _get_osis_client(self, appname, category, context=None):
         import os.path
 
         import pymodel
@@ -303,7 +303,13 @@ class ApplicationAPI(object):
 
         path = os.path.join(self._app_path, 'interface', category)
         transport_uri = 'http://%s/%s/appserver/xmlrpc/' % (self._host, appname)
-        transport = xmlrpc.XMLRPCTransport(transport_uri, 'osissvc')
+        osisservice = 'osissvc'
+        transport = None
+        if context == q.enumerators.AppContext.WFE:
+            from workflowengine.xmlrpc import ConcurrenceOsisXMLRPCTransport
+            transport = ConcurrenceOsisXMLRPCTransport(transport_uri, osisservice)
+        else:
+            transport = xmlrpc.XMLRPCTransport(transport_uri, osisservice)
         serializer = serializers.ThriftSerializer
 
         return load(path, transport, serializer)
