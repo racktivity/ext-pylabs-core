@@ -47,11 +47,10 @@ This action downloads the bundle (`.tgz` file) of the Q-Package to `/opt/qbase5/
 [[code]]
 i.qp.lastPackage.compile()
 [[/code]]
-5. Package the update Q-Package files:
-[[code]]
-i.qp.lastPackage.package()
-[[/code]]
-6. Publish the new Q-Package:
+
+5. Publish the new Q-Package:
 [[code]]
 i.qp.publishDomain('yourdomainname', commitMessage='your commitmessage here')
 [[/code]]
+
+Warning: The changes introduced by a manual update are NOT part of the version repositories.  The next regular package release will inevitably overwrite the changes.  To avoid this, you need to add the changes to the version repository.
