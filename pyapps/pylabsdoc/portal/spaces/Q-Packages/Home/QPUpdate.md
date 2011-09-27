@@ -37,20 +37,31 @@ i.qp.find('your app')
 i.qp.lastPackage.download()
 [[/code]]
 This action downloads the bundle (`.tgz` file) of the Q-Package to `/opt/qbase5/var/qpackages4/bundles/<domain>`.
+<br />
 2. Extract the Q-Package to the Q-Package directory of PyLabs: 
-**Warning** Leave the Q-Shell session open!
+<br>
+[[warning]]
+**Warning** 
+<br>
+Leave the Q-Shell session open!
     cd /opt/qbase5/var/qpackages4/bundles/<domain>
     tar xvf <packagename>.tgz -C /opt/qbase5/var/qpackages4/files/<domain>/<Q-Package>/<version>/<platform>/
-
+[[/warning]]
+<br>
 3. Apply the changes to the files in the Q-Package directories (`/opt/qbase5/var/qpackages4/files/<domain>/<Q-Package>/<version>/<platform>/`).
+<br />
 4. Optionally compile the sources:
 [[code]]
 i.qp.lastPackage.compile()
 [[/code]]
-
+<br>
 5. Publish the new Q-Package:
+<br>
 [[code]]
 i.qp.publishDomain('yourdomainname', commitMessage='your commitmessage here')
 [[/code]]
-
-Warning: The changes introduced by a manual update are NOT part of the version repositories.  The next regular package release will inevitably overwrite the changes.  To avoid this, you need to add the changes to the version repository.
+[[warning]]
+**Warning** 
+<br>
+The changes introduced by a manual update are NOT part of the version repositories.  The next regular package release will inevitably overwrite the changes.  To avoid this, you need to add the changes to the version repository.
+[[/warning]]
