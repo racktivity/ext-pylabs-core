@@ -61,7 +61,7 @@ class DBConnection(object):
             return self._connection.query(sql)
         except:
             self._connection.reset()
-            raise
+            return self._connection.query(sql)
 
     def getDatabaseMetadata(self):
         """
