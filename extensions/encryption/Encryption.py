@@ -1,6 +1,6 @@
 from pylabs import q
 import hashlib
-from Crypto.Cipher import DES3
+from Crypto.Cipher import Blowfish
 import base64
 
 BLOCKSIZE = 8
@@ -13,9 +13,7 @@ class Encryption(object):
         
         nics.sort()
         mac = q.system.net.getMacAddress(nics[0])
-        md5 = hashlib.md5(mac)
-        self.__key = md5.hexdigest()[0:24]
-        self.__des3 = DES3.new(self.__key)
+        self.__bw = Blowfish.new(mac)
         
     def encrypt(self, word):
         """
@@ -27,13 +25,16 @@ class Encryption(object):
             padding = BLOCKSIZE - extra
         
         word = "%d:%s" % (padding, word) + "\0" * padding
-        return base64.b64encode(self.__des3.encrypt(word))
+        return "___%s" % base64.b64encode(self.__bw.encrypt(word))
     
     def decrypt(self, cypher):
         """
         Decrypt the given cypher returned from the encrypt
         """
-        word = self.__des3.decrypt(base64.b64decode(cypher))
+        if not cypher.startswith("___"):
+            raise ValueError("Invalid cypher")
+        cypher = cypher[3:]
+        word = self.__bw.decrypt(base64.b64decode(cypher))
         padding, _, word = word.partition(":")
         padding = int(padding)
         if padding:
