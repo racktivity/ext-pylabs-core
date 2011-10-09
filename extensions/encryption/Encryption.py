@@ -1,6 +1,7 @@
 from pylabs import q
 import hashlib
 from Crypto.Cipher import DES3
+import base64
 
 BLOCKSIZE = 8
 
@@ -26,13 +27,13 @@ class Encryption(object):
             padding = BLOCKSIZE - extra
         
         word = "%d:%s" % (padding, word) + "\0" * padding
-        return self.__des3.encrypt(word)
+        return base64.b64encode(self.__des3.encrypt(word))
     
     def decrypt(self, cypher):
         """
         Decrypt the given cypher returned from the encrypt
         """
-        word = self.__des3.decrypt(cypher)
+        word = self.__des3.decrypt(base64.b64decode(cypher))
         padding, _, word = word.partition(":")
         padding = int(padding)
         if padding:
