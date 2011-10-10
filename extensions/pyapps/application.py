@@ -2,7 +2,7 @@ import sys
 import time
 import xmlrpclib
 
-from pylabs import q, p
+from pylabs import q, p, locale
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
 
@@ -261,7 +261,11 @@ class ApplicationAPI(object):
                 client = self._get_osis_client(appname, category)
                 client.enumerators = pymodelEnumerators.get((appname, category))
                 setattr(self, category, client)
-
+            #load language localizer if found
+            localepath = q.system.fs.joinPaths(self._app_path, "var", "locale")
+            if q.system.fs.isDir(localepath):
+                self.language = locale.getlocalizer(appname, localepath)
+                
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
 
