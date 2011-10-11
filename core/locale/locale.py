@@ -6,14 +6,19 @@ KEYP = re.compile("(\w+(\.\w+)*)\s*=\s*(.*)", re.DOTALL)
 DEFAULTLOCALE='en'
 
 class Domain(dict):
-    def __init__(self):
+    def __init__(self, key):
         self.value = None
+        self.__key = key
+    
+    @property
+    def key(self):
+        return self.__key
     
     def __getattr__(self, attr):
         if attr in self:
             domain = self[attr]
         else:
-            domain = Domain()
+            domain = Domain("%s.%s" % (self.key, attr))
             self[attr] = domain
             
         return domain
@@ -25,7 +30,7 @@ class Domain(dict):
         return str(self)
     
     def __str__(self):
-        return str(self.value)
+        return str(self.value) if self.value != None else self.key
 
 class Localizer(object):
     def __init__(self, tdirs):
@@ -35,7 +40,7 @@ class Localizer(object):
         domains = {}
         for path in q.system.fs.listFilesInDir(tdirs, filter="*.l"):
             locale = os.path.splitext(q.system.fs.getBaseName(path))[0]
-            domain = Domain()
+            domain = Domain(locale)
             with open(path) as f:
                 l = 0
                 for line in f:
