@@ -43,11 +43,22 @@ class Localizer(object):
             domain = Domain(locale)
             with open(path) as f:
                 l = 0
+                append = False
+                lastdomain = domain
                 for line in f:
                     l += 1
                     line = line.strip()
                     if not line or line.startswith("#"):
+                        append=False
                         continue
+                    if append:
+                        lastdomain.value += "\n" + line.rstrip("\\")
+                        if not line.endswith("\\"):
+                            append=False
+                        continue
+                    
+                    append = line.endswith("\\")
+                    line = line.rstrip("\\")
                     m = re.match(KEYP, line)
                     if not m:
                         raise RuntimeException("Invalid line at '%s:%d'" % (path, l))
@@ -58,6 +69,7 @@ class Localizer(object):
                     for kp in k.split("."):
                         d = getattr(d, kp)
                     d.value = v
+                    lastdomain = d
             domains[locale] = domain
         
         return domains
