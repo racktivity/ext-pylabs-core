@@ -13,6 +13,14 @@ This section provides the Release Notes for PyLabs
 
 ##PyLabs 3.2
 
+
+### Build 116
+Resolve issue with confguring postgresql.
+
+######BUGS   
+[PYLABS-218](http://jira.incubaid.com/browse/PYLABS-218) 
+The fix of Pylabs 213 prevents the sso from being installed. Fixed in [this changeset](https://bitbucket.org/despiegk/pylabs-core/changeset/7d2f18f7ad77).
+
 ### Build 115
 Resolve sshkey issue in the CloudFS.
 
