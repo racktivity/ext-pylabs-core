@@ -1,99 +1,19 @@
-@metadata title=Main Functions of a Q-Package
+@metadata title=Details of Main Functions
 @metadata order=60
 @metadata tagstring=update qpackage
 
 
-[imgQPArch2]: images/images50/qpackages/qp5_architecture_2.png
 
 
 
 
 
-#Detailed actions of a Q-Package
+
+#Details of the main functions
 This section explains in detail the main functions of the Q-Package extension that are used in the typical workflows.  In addition, it explains the states that control the workflow.  
 The sections describe:  
-* Overview over files and repositories  
-* States of a Q-Packge    
 * Main functions for working with Q-Packages     
-
-
-##Overview over files and repositories
-The graphs shows a general overview over the flows between the files and repositories.  
-
-![Q-Packages_Architecture][imgQPArch2]
-
-***   
-
-##States of a Q-Package
-The Pylabs framework has various internal states that control the flow of an Q-Package. These states are represented in a number of configuration files:  
-* State Config File  
-* Metadata Config File  
-
-***   
-
-####State Config File
-The State Config File keeps track of the various (workflow-) states of the framework. In particular, it tracks the current command execution and the current build numbers of packages.
-
-The State Config File is  located at:
-`/opt/qbase5/cfg/qpackages4/state/*.cfg`
-
-
-Example  
-The example below shows the various states that are contained in the file.
-
-[[code]]
-[main]
-lastdownloadedbuildnr = 7
-lastexpandedbuildnr = 7
-lastinstalledbuildnr = 7
-
-prepared = 0
-ispendingreconfiguration = 0
-retry = 0
-
-lastaction = checkout
-currentaction = 
-
-lasttag = codemanagement
-currenttag =
-
-lastactiontime = 1317299157
-currentactiontime = 1317299161
-[[/code]]
-
-
-Notes  
-*  Note how the various build numbers are tracked in the state file.  They control the flow of the installation.  
-*  Internally, this is config file is represented in the `class QPackageStateObject()`. 
-
-***   
-
-####Metadata Config File
-The Metadata Config File keeps track of the state a particular package that is installed and used in the qpackage framework.  In particular, it indicates the build number of the package and its bundles.
-
-The metadata config is located in the metadata location of the application:  
-`/opt/qbase5/var/qpackages4/metadata/<domain>/<appname>/<version>/qpackage.cfg`
-
-Example
-The example below shows the various states that are contained in the file.
-
-[[code]]
-[checksum]
-generic = a63e637247fabcde2a52ce400340ef25714fe92da8e168bd5d47d38e55fc6b24
-
-[main]
-supportedplatforms = generic, 
-tags = 
-buildnr = 7
-metanr = 0
-bundlenr = 7
-guid = 739ce4a9-abcde-412a-8b75-224e279f750e
-[[/code]]
-
-Notes:  
-*  Note the build number in this file.  It controls the flow of the installation.    
-*  Internally, this is config file is represented in the `classs QPackageObject4()`. In the shell, it is accible through the command  `i.qp.lastPackage.package()`  
-
+* Related functions
 
 ***   
 
@@ -116,6 +36,10 @@ Install the new version:
 ***  
 
 ####updateMetaDataAll()
+
+######Related Function
+`updateMetaDataForDomain()`
+
 ######Function
 Updates all files in the Metadata directory of the framework with the head revision of the Bitbucket repo.
 `/opt/qpabase/var/qpackages4/metadata/`
@@ -187,25 +111,28 @@ Note: The build number remains unchanged.
 
 ####package()
 ######Function
-Copies files to the qpackage file location.
+Copies files to the qpackage file location by calling the ´package´ tasklet.
 
 ######Input
-* Checks if the parameter in the State Config file is set to "1"  
-`prepared = 1`  
+* Checks if the parameter in the State Config file `prepared = 1`  . Otherwise the function does not execute.
 
 ######Action
-Typically, the tasklet removes the old files in the qpackage file folder (`getPathFiles()`) and copies to this location the new files from the source location (`getPathSourceCode()`).
+Typically, the tasklet is configured to remove the old files in the qpackage file folder (`getPathFiles()`) and copies to this location the new files from the source location (`getPathSourceCode()`).
 
 ######Output
-Files are at the new location.
+Files are at the new qpackage file location.
 
 Note: The build number remains unchanged.
 
 ***  
 
-####publishDomain()
+####publishAll()
+
+######Related Function
+`publishDomain()`
+
 ######Function
-Makes all packages of a domain available for general use by updating the Bitbucket metadata repository and loading the package (bundle) to the ftp server.
+Makes all packages available for general use by updating the Bitbucket metadata repositories and loading the packages (bundle) to the ftp server.
 This command works on all packages of a domain, either on a specified domain or on all domains.
 A domain can be changed in the following ways: a new package is created in it, a package in it is modified, a package in it is deleted.
 
@@ -246,22 +173,89 @@ The install function requires that the metadata have been published (with `publi
 * Update the status in the State Config file (e.g. build numbers).  
 
 ######Prevention of Re-install
-The system prevents repeated execution of an install.  It remembers the buildnumber after each install and checks if the new buildnumber is actually higher than the one that is already installed.  Otherwise, no action is executed.
+The system prevents repeated execution of an install.  It remembers the buildnumber after each install and checks if the new buildnumber is actually higher than the one that is already installed.  Otherwise, no action is performed.
 
 For this purposes it stores the following values in the State Config file.
 [[code]]
 lastdownloadedbuildnr = 7
 lastexpandedbuildnr = 7
 lastinstalledbuildnr = 7
-(lastaction = install)
+lastaction = install
 [[/code]]
-This behavior can be modified in the call of `q.qp.lastpackage.qpackage.install(x1,x2,reinstall=True)`
+
+(See also `reinstall()` below).
 
 ######Notes
 * In the State Config File, the parameter `current actions` needs to be empty. Otherwise the system is in an inconsistent state and the install will not execute.
 * The user can overwrite the standard behaviour by using the following function:  
-`q.qp.lastpackage.qpackage.install( dependencies = True/False,  download = True/False,  reinstall = True/False)`  
+`q.qp.lastpackage.qpackage.install(dependencies = True/False,  download = True/False,  reinstall = True/False)`  
 The parameters may force the loading of dependent packages or block the downloading of already existing bundles.
 
+***   
+
+##Related Functions
+
+####reinstall()
+######Function
+Installs the package even if the build numbers already match.
+This is done by overwriting the standard ´install()´ function with an extra parameter `install(reinstall=True)`.
+
+Note:
+Internally, the qpackage function is called with a modified `reinstall` parameter: `q.qp.lastpackage.qpackage.install(reinstall=True)`
+
+***   
+
+####copyFiles() in qpackage object
+######Function
+Copies the files from the qpackages file directory to the target location in the framework.
+
+This function is aware of the system platform `q.platform` and selects the installed files accordingly.
+
+This function is typically called by the `install()` tasklet.
+
+***   
+
+
+####updateAll()
+######Function
+Downloads and installs the latest versions (i.e. build numbers) of all installed packages.
+
+######Actions
+* execute updateMetaDataAll()   
+* selects all installed packags and versions, based on the qpackages metadata repository
+* performs an install on all packages
+
+* Note: (Re-)Install of already installed build numbers is routinely prevented by the standard `install()` function.  This functions compares the installed build number with the latest build number from the metadata.  If they already match, no actions are performed.
+
+######Notes
+In case multiple versions of the same package are installed, each version is updated to its latest build number.
+
+***   
+
+####quickPackage()
+######Function
+Performs als steps needed to create a new build for an already existing package.  It gets the code files from the Bitbucket repositories and places them in the qpackages files folder.
+
+######Input
+The function uses the metadata information.  For that reason, the command `updateMetaDataAll()` should be used in advance.
+
+######Actions
+`* prepareForUpdatingFiles()`  
+`* checkout()`
+`* compile()`
+`* package()`
+
+######Output
+The code from the repository is located in the qpackages files directory.
+
+#####Note
+After this command, it is necessary to run a `publishDomain()`. Otherwise the metadata is not updated and the subseqent `install()` will not perform any actions.
+
+***   
+
+####printConfig()
+Prints the content of the configuration file _Metadata and Bunle Location Config File_ (see above).
+
+The file is located at `/opt/qbase5/cfg/qpackages4/sources.cfg`.
 
 
