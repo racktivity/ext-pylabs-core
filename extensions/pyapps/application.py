@@ -262,7 +262,7 @@ class ApplicationAPI(object):
                 client.enumerators = pymodelEnumerators.get((appname, category))
                 setattr(self, category, client)
             #load language localizer if found
-            localepath = q.system.fs.joinPaths(self._app_path, "var", "locale")
+            localepath = q.system.fs.joinPaths(self._app_path, "share", "locale")
             if q.system.fs.isDir(localepath):
                 self.language = locale.getlocalizer(appname, localepath)
                 
