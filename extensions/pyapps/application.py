@@ -33,6 +33,7 @@ class AppManager(object):
             raise RuntimeError('Application "%s" does not exist'%appname)
 
         p.core.codemanagement.api.generate(appname)
+        p.core.codemanagement.language.compile(appname)
         gen = PyAppsConfigGen(appname)
         q.action.start("Generating config for %s" % appname)
         gen.generateAll()
