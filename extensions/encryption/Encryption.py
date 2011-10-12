@@ -1,20 +1,26 @@
 from pylabs import q
 import hashlib
-from Crypto.Cipher import Blowfish
 import base64
 
 BLOCKSIZE = 8
 
 class Encryption(object):
     def __init__(self):
-        nics = filter(lambda x: x.startswith("eth") or x.startswith("wlan"), q.system.net.getNics())
-        if not nics:
-            raise Exception("No nics found")
-        
-        nics.sort()
-        mac = q.system.net.getMacAddress(nics[0])
-        self.__bw = Blowfish.new(mac)
-        
+        self.__blowfish = None
+    
+    @property
+    def __bw(self):
+        if not self.__blowfish:
+            from Crypto.Cipher import Blowfish
+            nics = filter(lambda x: x.startswith("eth") or x.startswith("wlan"), q.system.net.getNics())
+            if not nics:
+                raise Exception("No nics found")
+            
+            nics.sort()
+            mac = q.system.net.getMacAddress(nics[0])
+            self.__blowfish = Blowfish.new(mac)
+            
+        return self.__blowfish
     def encrypt(self, word):
         """
         Encrypts the given word so only the decrypt method on the same machine can decrypt it
