@@ -124,17 +124,17 @@ class PyAppsConfigGen:
 
 
     def start(self):
+        if 'postgresql' in self.components:
+            q.manage.postgresql8.start()
+        if 'arakoon' in self.components:
+            cluster = q.manage.arakoon.getCluster(self.appName)
+            cluster.start()
         if 'wfe' in self.components:
             q.manage.ejabberd.start()
             q.manage.workflowengine.start(self.appName)
         if 'appserver' in self.components:
             q.manage.applicationserver.start(self.appName)
             q.manage.nginx.start()
-        if 'postgresql' in self.components:
-            q.manage.postgresql8.start()
-        if 'arakoon' in self.components:
-            cluster = q.manage.arakoon.getCluster(self.appName)
-            cluster.start()
         if 'event_consumers' in self.components:
             p.events.startConsumers(self.appName)
 
