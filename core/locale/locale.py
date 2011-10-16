@@ -5,21 +5,23 @@ KEYP = re.compile("(\w+(\.\w+)*)\s*=\s*(.*)", re.DOTALL)
 
 DEFAULTLOCALE='en'
 
-class Domain(dict):
+class Domain(object):
     def __init__(self, key):
-        self.value = None
+        self._value_ = None
         self.__key = key
+        self.__dict = dict()
     
     @property
-    def key(self):
+    def _key_(self):
         return self.__key
     
     def __getattr__(self, attr):
-        if attr in self:
-            domain = self[attr]
+        d = self.__dict
+        if attr in d:
+            domain = d[attr]
         else:
-            domain = Domain("%s.%s" % (self.key, attr))
-            self[attr] = domain
+            domain = Domain("%s.%s" % (self._key_, attr))
+            d[attr] = domain
             
         return domain
     
@@ -30,7 +32,7 @@ class Domain(dict):
         return str(self)
     
     def __str__(self):
-        return str(self.value) if self.value != None else self.key
+        return str(self._value_) if self._value_ != None else self._key_
 
 class Localizer(object):
     def __init__(self, tdirs):
@@ -68,7 +70,7 @@ class Localizer(object):
                     d = domain
                     for kp in k.split("."):
                         d = getattr(d, kp)
-                    d.value = v
+                    d._value_ = v
                     lastdomain = d
             domains[locale] = domain
         
