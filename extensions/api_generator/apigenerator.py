@@ -1,12 +1,7 @@
-from pylabs import q,i,p
-from xml.dom.minidom import parse, parseString
+from pylabs import q, p
 from Cheetah.Template import Template
 
-from epydoc.docbuilder import build_doc, build_doc_index
-from epydoc.docparser import parse_docs
-from epydoc.docintrospecter import introspect_docs
-from epydoc.apidoc import ClassDoc, RoutineDoc
-from epydoc.markup import ParsedDocstring
+from epydoc.markup import epytext
 
 import pymodel as model
 
@@ -119,15 +114,15 @@ def listFields(claZ):
     return fields
 
 def getTemplateParams(specFile, appname = "", domain = "", params = dict() ):
-        className = specFile.split(os.sep)[-1].split(".")[0]
-        claZ = getClass(specFile,className)
-        fieldsList = listFields(claZ)
-        className = getClassName(claZ)
-        params['rootobject'] = className
-        params['fields'] = fieldsList
-        params['domain'] = domain
-        params['appname'] = appname
-        return params
+    className = specFile.split(os.sep)[-1].split(".")[0]
+    claZ = getClass(specFile,className)
+    fieldsList = listFields(claZ)
+    className = getClassName(claZ)
+    params['rootobject'] = className
+    params['fields'] = fieldsList
+    params['domain'] = domain
+    params['appname'] = appname
+    return params
 
 class Extension:
     def __init__(self, className, moduleName, qlocation):
@@ -184,7 +179,7 @@ def getArguments(args, defaults):
         length = len(defaults)
     argList = args[-length:]
 
-    for index, arg in enumerate(args):
+    for _, arg in enumerate(args):
         if arg == 'self':
             continue
         argument = Argument(arg, defaults[argList.index(arg)]) if defaults and arg in argList else Argument(arg, hasdefault=False)
@@ -193,7 +188,7 @@ def getArguments(args, defaults):
     return arguments
 
 def getMethodProperties(method):
-    args, varargs, varkw, defaults = inspect.getargspec(method)
+    args, _, _, defaults = inspect.getargspec(method)
     arguments = getArguments(args, defaults)
     params = dict()
     for arg in arguments:
@@ -235,30 +230,6 @@ def getClassName(claZ):
     name = pattern.split(claZ.__name__)[-1]
     return name.lower()
 
-
-def getMethodTypedArgument(specFile):
-    val_doc = parse_docs(specFile)
-    doc = build_doc(specFile)
-    moduledoc = introspect_docs(filename=specFile)
-    methodDetails = dict()
-    for ckey in moduledoc.variables.iterkeys():
-        classdoc = moduledoc.variables[ckey].value
-
-        # Skip package info
-        if not isinstance(classdoc, ClassDoc):
-            continue
-
-        for rkey in classdoc.variables.iterkeys():
-            routinedoc = classdoc.variables[rkey].value
-            if isinstance(routinedoc, RoutineDoc):
-                argType=dict()
-                for arg in routinedoc.arg_types.iterkeys():
-                    argument = str(routinedoc.arg_types[arg])
-                    paramType = re.findall('<epytext><para inline=True>(?P<paramtype>.*)</para></epytext>', argument)[0]
-                    argType[arg] = paramType
-                methodDetails[rkey] = argType
-    return methodDetails
-
 class DotGenerator:
     def __init__(self, appname):
         self.appname = appname
@@ -284,7 +255,7 @@ class DotGenerator:
 
     def process_helper(self, domain, classname, attribute, property_name):
         self.add_destination('%s%s' % (domain, classname), '%s%s%s' % (domain, classname, attribute.name))
-        
+
         self.nodes.append(self.create_subnode(domain=domain, classname=classname, attribute=attribute, property_name=property_name, sublabel='{ %s%s |' % (classname, property_name)))
 
     def create_subnode(self, domain, classname, attribute, property_name, sublabel):
@@ -323,7 +294,7 @@ class DotGenerator:
         nodelabel += '}'
 
         return pydot.Node(name='%s%s' % (domain, classname), label=nodelabel, shape='record')
-        
+
     def generate_modelspec(self):
         self.process_model()
         self.create_graph()
@@ -417,7 +388,7 @@ class CloudApiGenerator:
         q.system.fs.writeFile(destPath, contents)
 
 
-    def _generateModelImpl(self, specFile, appname, domain ):
+    def _generateModelImpl(self, specFile, appname, domain):
         params = getTemplateParams(specFile, appname, domain)
 
         params['table'] = "%s_view_%s_list"% (params['domain'], params['rootobject'] )
@@ -455,11 +426,12 @@ class CloudApiGenerator:
         actionsList.append( ['ModelDeleteWizard.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "impl", "ui", "wizard", params["domain"], "%s_delete"% params["rootobject"],   "1_%s_delete.py"% params['rootobject'])])
 
         #generateinterfaceaction
-        if domain <> 'core' and domain <> 'ui':
+        if domain != 'core' and domain != 'ui':
             actionsList.append( ['InterfaceAction.tmpl', q.system.fs.joinPaths(q.dirs.pyAppsDir, params['appname'], "interface", "action", params["domain"], "%s.py"% params["rootobject"])])
 
 
         generatedFiles = []
+        action = None
         for action in actionsList:
             templatePath = q.system.fs.joinPaths(self._template_path, 'CRUD', action[0])
             if  not q.system.fs.exists(action[1]):
@@ -480,11 +452,35 @@ class CloudApiGenerator:
     def _generateClientCode(self, specFile, serviceName, templatePath, destPath, className ="", domain=""):
         claZ = getClass(specFile, className)
         methods = getClassMethods(specFile, className)
-        typedArgs = getMethodTypedArgument(specFile)
         for method in methods:
+            #parse docstring for method
+            errors = list()
+            docInfo = epytext.parse(method.docs, errors)
+            if not docInfo:
+                continue
+
+            #get type for every argument
+            typedArgs = dict()
+            for info in docInfo.children:
+                if info.tag == "fieldlist":
+                    for field in info.children:
+                        name = None
+                        isType = False
+                        _type = None
+                        for param in field.children:
+                            if param.tag == "arg":
+                                name = param.children[0]
+                            elif param.tag == "tag":
+                                isType = param.children[0] == "type"
+                            elif param.tag == "para":
+                                _type = param.children[0]
+
+                        if isType:
+                            typedArgs[name] = _type
+
             for arg in method.argClasses:
-                if typedArgs.has_key(method.name) and typedArgs[method.name].has_key(arg.name):
-                    arg.argtype = typedArgs[method.name][arg.name]
+                if arg.name in typedArgs:
+                    arg.argtype = typedArgs[arg.name]
 
         name = getClassName(claZ)
         methodsinfo = [(method.name, method) for method in methods]
@@ -510,7 +506,7 @@ class CloudApiGenerator:
                 self._generateCode(self.apiDomainTemplate, {'root':'%s_%s'%(domain,name), 'name':name}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s.md' % (domain, name)))
             for methodname, method in methodsinfo:
                 self._generateCode(self.serviceAlkiraDocumentationTemplate, {'appname': self._appName,'className': name, 'method':method, 'domain':domain}, q.system.fs.joinPaths(self.documentationDest, 'Home', domain, '%s_%s' % (domain, name), '%s_%s_%s.md' % (domain, name, methodname)))
-    
+
         return name
 
     def _generateServerCode(self, specFile, templatePath, destPath, serverExtensionTemplate="", serverExtensionDest="",rootobjectslibDest="", rootobjectlibTemplate="", className="", wizards=True, params=None):
@@ -681,7 +677,7 @@ class CloudApiGenerator:
             if  fileName in ('__init__.py', 'ro_DEFAULT.py'):
                 continue
             rootObject = fileName.split('.')[0].split('ro_')[-1]
-            className = self._generateClientCode(spec, 'cloud_api_%s'%rootObject,self.flexClientTemplate, q.system.fs.joinPaths(self.flexClientOutputDir, '%s.as'%rootObject.capitalize()))
+            self._generateClientCode(spec, 'cloud_api_%s'%rootObject,self.flexClientTemplate, q.system.fs.joinPaths(self.flexClientOutputDir, '%s.as'%rootObject.capitalize()))
 
         self._generateCode(self.flexClientservicetemplate, {}, q.system.fs.joinPaths(self.flexClientOutputDir, self.flexServiceFileName))
 
@@ -712,15 +708,15 @@ class CloudApiGenerator:
         pageid = self._checkPageExists(space, pageTitle)
         if pageid:
             q.clients.confluence.removePage(pageid)
-        id = q.clients.confluence.addPage(space, pageTitle, parentid, contents)
-        return id
+        _id = q.clients.confluence.addPage(space, pageTitle, parentid, contents)
+        return _id
 
 
     def _checkPageExists(self, space, pageTitle):
         try:
-           page = q.clients.confluence.findPage(space, pageTitle)
+            page = q.clients.confluence.findPage(space, pageTitle)
         except:
-           return None
+            return None
         return page.id
 
 
@@ -760,18 +756,18 @@ class CloudApiGenerator:
         contents = '{children}'
         restid = self._forceCreatePage(space, mainid, page, contents)
 
-        for dir in q.system.fs.listDirsInDir(self.roDirRest):
-            rootobject = q.system.fs.getBaseName(dir)
-            rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(dir, "%s.txt"%rootobject))
+        for _dir in q.system.fs.listDirsInDir(self.roDirRest):
+            rootobject = q.system.fs.getBaseName(_dir)
+            rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(_dir, "%s.txt"%rootobject))
             self._forceCreatePage(space, restid, rootobject, _encode(rootobjectcontent))
 
         page = 'XMLRPC'
         contents = '{children}'
         xmlrpcid = self._forceCreatePage(space, mainid, page, contents)
 
-        for dir in q.system.fs.listDirsInDir(self.roDirXmlrpc):
-            rootobject = q.system.fs.getBaseName(dir)
-            rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(dir, "%s.txt"%rootobject))
+        for _dir in q.system.fs.listDirsInDir(self.roDirXmlrpc):
+            rootobject = q.system.fs.getBaseName(_dir)
+            rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(_dir, "%s.txt"%rootobject))
             self._forceCreatePage(space, xmlrpcid, rootobject, _encode(rootobjectcontent))
 
     def publishToAlkira(self, space, main_page='Cloud API Documentation', parent_name=None, hostname='127.0.0.1'):
@@ -797,7 +793,7 @@ class CloudApiGenerator:
             alkira_client.createPage(space, main_page, content=main_content, parent=parent_name)
         else:
             alkira_client.createPage(space, main_page, content=main_content)
-        
+
         for path in q.system.fs.listDirsInDir(self.documentationDest):
             domainname = q.system.fs.getBaseName(path)
             q.logger.log('Publishing %s domain page' % domainname, 2)
@@ -806,12 +802,12 @@ class CloudApiGenerator:
             for rootobjectpath in q.system.fs.listDirsInDir(path):
                 rootobjectname = q.system.fs.getBaseName(rootobjectpath).split('_')[1].split('.')[0]
                 q.logger.log('Publishing %s rootobject page' % rootobjectname, 2)
-                rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(rootobjectpath, '%s_%s.md' % (domain, rootobjectname)))
+                rootobjectcontent = q.system.fs.fileGetContents(q.system.fs.joinPaths(rootobjectpath, '%s_%s.md' % (domainname, rootobjectname)))
                 alkira_client.createPage(space, rootobjectname, rootobjectcontent, parent=domainname)
                 for methodpath in q.system.fs.listFilesInDir(rootobjectpath):
                     methodname = q.system.fs.getBaseName(methodpath).split('_')[2].split('.')[0]
                     methodcontent = q.system.fs.fileGetContents(methodpath)
-                    alkira_client.createPage(space, '%s_%s_%s' % (domain, rootobjectname, methodname), methodcontent, parent=rootobjectname)
+                    alkira_client.createPage(space, '%s_%s_%s' % (domainname, rootobjectname, methodname), methodcontent, parent=rootobjectname)
 
 
 class AppAPIGenerator(object):
@@ -841,11 +837,11 @@ class AppAPIGenerator(object):
         print "    _generateCRUDImplForDomain( %s, %s )"%(appname, domain)
         domainSpecDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "interface", "model", domain)
         generatedFiles = dict()
-        for model in q.system.fs.listFilesInDir(domainSpecDir, filter='*.py'):
-            model = model.split(os.sep)[-1]
-            model = model.split(".")[0]
-            files = self._generateCRUDImplForModel(appname, domain, model )
-            generatedFiles[model] = files
+        for _model in q.system.fs.listFilesInDir(domainSpecDir, filter='*.py'):
+            _model = _model.split(os.sep)[-1]
+            _model = _model.split(".")[0]
+            files = self._generateCRUDImplForModel(appname, domain, _model)
+            generatedFiles[_model] = files
         return generatedFiles
 
     def _generateCRUDImplForModel(self, appname, domain, modelSpec ):
@@ -869,17 +865,17 @@ class AppAPIGenerator(object):
         print "Generated Files are :%s"%modelFiles
         return modelFiles
     def _generateBaseDirs(self, appname):
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'actor'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'action'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'model'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'config'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'monitoring'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'authenticate'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'authorize'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'form'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'wizard'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'setup', 'osis'))
-         self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'actor'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'action'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'model'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'config'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'interface', 'monitoring'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'authenticate'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'authorize'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'form'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'ui', 'wizard'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'setup', 'osis'))
+        self._create_folder(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'osis'))
 
     def getSpacePage(self, space):
         """
@@ -973,8 +969,6 @@ class AppAPIGenerator(object):
 
         print 'Generate Default Services'
 
-        service_path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'impl', 'service')
-
         # Generate default services
         params = {'appname': appname}
 
@@ -1005,19 +999,19 @@ class AppAPIGenerator(object):
            {'template':'AgentService.tmpl', 'params':params,
                                'destination':['impl', 'service', 'AgentSVC.py']}]
 
-        for file in files:
-            path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *file['destination'])
+        for _file in files:
+            path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, *_file['destination'])
             if not q.system.fs.exists(path):
-                self._generate_file(file['template'], file['params'], path)
+                self._generate_file(_file['template'], _file['params'], path)
 
         defaults_path = q.system.fs.joinPaths( q.dirs.extensionsDir, 'api_generator', 'defaults')
 
         defaults = q.system.fs.walk(defaults_path, recurse=1)
 
-        for file in defaults:
-           app_file = file.replace(defaults_path, q.system.fs.joinPaths(q.dirs.pyAppsDir, appname))
-           if not q.system.fs.exists(app_file):
-               q.system.fs.copyFile(file, app_file)
+        for _file in defaults:
+            app_file = _file.replace(defaults_path, q.system.fs.joinPaths(q.dirs.pyAppsDir, appname))
+            if not q.system.fs.exists(app_file):
+                q.system.fs.copyFile(_file, app_file)
 
 
     def _generate_str(self, template, params):
