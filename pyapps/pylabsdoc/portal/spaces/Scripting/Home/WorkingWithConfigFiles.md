@@ -5,7 +5,7 @@
 
 #Working with Configuration Files
 
-Sometimes it can be useful to work with configuration files. PyLabs is able to populate or modify such configuration files.
+Sometimes it can be useful to work with configuration files. Pylabs is able to populate or modify such configuration files.
 
 
 ##Configuration File Structure

@@ -2,21 +2,21 @@
 @metadata order=70
 @metadata tagstring=reality rscript actor agent
 
-[imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
-[model]: #/PyLabsApps/Modeling
-[actions]: #/PyLabsApps/Action
-[osisview]: #/PyLabsApps/OsisViews
-[osisoperations]: #/PyLabsApps/OsisOperations
-[actiontasklet]: #/PyLabsApps/ActionTasklet
-[pyappdir]: #/PyLabsApps/Introduction
+[imgPyAppArch]: images/images51/pyapps/PyApp_Architecture.png
+[model]: #/PylabsApps/Modeling
+[actions]: #/PylabsApps/Action
+[osisview]: #/PylabsApps/OsisViews
+[osisoperations]: #/PylabsApps/OsisOperations
+[actiontasklet]: #/PylabsApps/ActionTasklet
+[pyappdir]: #/PylabsApps/Introduction
 [SAL]: #/Overview/Architecture
 
 
 
 #From DRP to Reality
-The PyLabs framework is not limited to creating objects in the DRP, creating views on Root Objects, or creating wizards and forms. PyLabs gives you also the possibility to interact with the reality, for example sending e-mails.
+The Pylabs framework is not limited to creating objects in the DRP, creating views on Root Objects, or creating wizards and forms. Pylabs gives you also the possibility to interact with the reality, for example sending e-mails.
 
-If you take a look at the architecture schema of a PyApp, we have focused so far on the  DRP, Actions, and the UI wizards sections. In this section we will focus on the interaction between the PyLabs framework and the reality. The reality can be of any kind. Besides the given reality example, e-mail, the reality can also be manipulations of servers, configuration of systems, ...
+If you take a look at the architecture schema of a PyApp, we have focused so far on the  DRP, Actions, and the UI wizards sections. In this section we will focus on the interaction between the Pylabs framework and the reality. The reality can be of any kind. Besides the given reality example, e-mail, the reality can also be manipulations of servers, configuration of systems, ...
 
 ![PyApp_Architecture][imgPyAppArch]
 
@@ -104,7 +104,7 @@ The implementation of the actor action is creating a tasklet. The tasklet is loc
 
 See the [Action Tasklets](actiontasklet) section for more information about the file name.
 
-The tasklet does nothing more than providing an actor and RScript the the workflow engine of PyLabs. The proper agent in the framework will pick up the action and execute the RScript. The RScript is the actual execution in the reality.
+The tasklet does nothing more than providing an actor and RScript the the workflow engine of Pylabs. The proper agent in the framework will pick up the action and execute the RScript. The RScript is the actual execution in the reality.
 The RScript must be located in a sub-directory of the actor action tasklet.
 
 
@@ -114,7 +114,7 @@ The following arguments are required for the `executeActorActionScript` command:
 
 * agentguid: guid of the agent who must execute the RScript
 * scriptname: name of the RScript, without extension
-* params: a dictionary of parameters, in this situation this is the `params` dictionary provided by the PyLabs framework
+* params: a dictionary of parameters, in this situation this is the `params` dictionary provided by the Pylabs framework
 * executionparams: extra dictionary with parameters, specific for the execution of the RScript.
 
 For example:
@@ -135,7 +135,7 @@ The file name of an RScript must have the following structure:
 
 The action is the name of the method as defined in the interface file. 
 
-Besides the PyLabs system abstraction layer ([SAL][]), the RScript can also make use of standard Python libraries. If the RScript needs standard Python libraries, you have to import them into the RScript. The PyLabs libraries are all available without importing.
+Besides the Pylabs system abstraction layer ([SAL][]), the RScript can also make use of standard Python libraries. If the RScript needs standard Python libraries, you have to import them into the RScript. The Pylabs libraries are all available without importing.
 
 [[code]]
 import smtplib

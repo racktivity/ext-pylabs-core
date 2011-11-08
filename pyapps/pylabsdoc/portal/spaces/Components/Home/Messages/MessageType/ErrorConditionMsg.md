@@ -149,7 +149,7 @@ this information is gathered from python interpreter
     1/|1266753235/|5/|unknown.somewhere.com/|/|qshell/|/|1 log message
 
 
-## PyLabs
+## Pylabs
 
 Inherits from the base MessageObject
 

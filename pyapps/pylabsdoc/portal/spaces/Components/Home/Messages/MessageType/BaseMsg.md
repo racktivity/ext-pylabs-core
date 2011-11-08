@@ -46,7 +46,7 @@ Example:
     1|754545|9|||performancetester|cpuperf pmachine:dfdf-sdfsdfsdfsddf-sdfsdf|copy file from a to b
 
 
-### In PyLabs
+### In Pylabs
 
 * q.messagehandler.getMessageObject()
 * implemented in pymonkey/core/messages/MessageObject.py

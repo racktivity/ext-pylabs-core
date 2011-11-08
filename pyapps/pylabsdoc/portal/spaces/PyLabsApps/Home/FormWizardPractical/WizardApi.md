@@ -4,7 +4,7 @@
 
 #Wizard API
 
-In this section you can find the API documentation of the methods to create wizards in a PyLabs Application.
+In this section you can find the API documentation of the methods to create wizards in a Pylabs Application.
 The methods to create a wizard are available in the name space `q.gui.dialog.`.
 
 

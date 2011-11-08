@@ -3,8 +3,8 @@
 @metadata tagstring=osis operation delete get store
 
 [tasklet]: #/Overview/Tasklets
-[pyappdir]: #/PyLabsApps/Introduction
-[model]: #/PyLabsApps/Modeling
+[pyappdir]: #/PylabsApps/Introduction
+[model]: #/PylabsApps/Modeling
 
 
 #OSIS Operations
@@ -50,7 +50,7 @@ VIEW_NAME = '%s_view_%s_list' % (DOMAIN, ROOTOBJECT_TYPE)
 
 
 ###Connecting to OSIS
-In the `main` function of the tasklet you have to create a connection to OSIS. The function uses five arguments: `q`, `i`, `p`, `params`, and `tags`. `p` represents the PyApp name space and `params` is a dictionary filled by the PyLabs framework. 
+In the `main` function of the tasklet you have to create a connection to OSIS. The function uses five arguments: `q`, `i`, `p`, `params`, and `tags`. `p` represents the PyApp name space and `params` is a dictionary filled by the Pylabs framework. 
 
 [[code]]
 def main(q, i, p, params, tags):

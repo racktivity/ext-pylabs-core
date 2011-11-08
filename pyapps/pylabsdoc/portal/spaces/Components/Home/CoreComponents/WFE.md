@@ -4,9 +4,9 @@
 [architecture]: #/Overview/Architecture
 [stackless]: http://www.stackless.com/
 [qpinstall]: #/Q-Packages/QPInstall
-[imgWFE]: images/images50/pylabs/WorkflowEngineHighLevel.png
-[imgAC]: images/images50/pylabs/AgentController.png
-[imgWfeTasklet]: images/images50/pylabs/WFETasklets.png
+[imgWFE]: images/images51/pylabs/WorkflowEngineHighLevel.png
+[imgAC]: images/images51/pylabs/AgentController.png
+[imgWfeTasklet]: images/images51/pylabs/WFETasklets.png
 
 
 # Workflow Engine
@@ -24,7 +24,7 @@ One is a _Tasklet Engine_ which is responsible for the launching and monitoring 
 The other component is called the _Agent Controller_. All actor actions that need to interact with a remote agent will do this by contacting the Agent Controller (AC). 
 The Agent Controller is a special kind of agent that is running as part of the workflow engine. It is special in the sense that it is the only agent that is allowed to communicate with all other agents.
 
-If you are not familiar with the concepts of Root Object Actions, Actor Actions and RScripts, be sure to take a look a the [PyLabs Architecture][architecture] page.
+If you are not familiar with the concepts of Root Object Actions, Actor Actions and RScripts, be sure to take a look a the [Pylabs Architecture][architecture] page.
 
 When the remote execution of an RScript is requested, the Agent Controller sends the RScript to correct agent over the XMPP communication channel. After receiving the script the agent executes it. When the script is executed, the agent reports back the status code and the captured output.
 

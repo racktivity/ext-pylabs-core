@@ -2,9 +2,9 @@
 @metadata tagstring=checkout mercurial repository
 
 
-# How to Check Out a Mercurial Repository in PyLabs
+# How to Check Out a Mercurial Repository in Pylabs
 
-To check out a mercurial repository in PyLabs, use this one-liner in the Q-Shell:
+To check out a mercurial repository in Pylabs, use this one-liner in the Q-Shell:
 
     p.clients.mercurial.getClient('checkoutdir', 'repo-location', 'branch')
     

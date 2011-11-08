@@ -2,11 +2,11 @@
 @metadata order=20
 @metadata tagstring=cmdb application
 
-[importpylabs]: #/HowTo/ImportPyLabs
+[importpylabs]: #/HowTo/ImportPylabs
 [importextension]: #/HowTo/ImportExtensionClass
-[baseclass]: #/ExtendingPyLabs/BaseClasses
-[contribute]: #/PyLabs50/Contributing
-[testdata]: #/ExtendingPyLabs/CmdbTestData
+[baseclass]: #/ExtendingPylabs/BaseClasses
+[contribute]: #/Pylabs50/Contributing
+[testdata]: #/ExtendingPylabs/CmdbTestData
 
 
 # CMDB Application Specifications
@@ -15,7 +15,7 @@ The CMDB Application specifications must specify which properties the applicatio
 
 ## Content of the Specification File
 
-* Import the required modules. Check How to Import PyLabs][importpylabs] and [How to Import Classes from Extensions][importextension].
+* Import the required modules. Check How to Import Pylabs][importpylabs] and [How to Import Classes from Extensions][importextension].
 * Add a Class that inherits from the base class [CMDBApplicationObject][baseclass].
 * Add all methods of the class.
 * Add PyDocs for *each* method that gives its full explanation, see the *DocString* section in the [Contributing in Style][contribute] page.

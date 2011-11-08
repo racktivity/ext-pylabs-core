@@ -2,7 +2,7 @@
 @metadata order=50
 @metadata tagstring=magic function
 
-[imgQshell6]: images/images50/qshell/Q-Shell_06.png
+[imgQshell6]: images/images51/qshell/Q-Shell_06.png
 
 
 # Q-Shell's Magic Functions
@@ -15,7 +15,7 @@ To get a list of the magic functions, press '%' and ENTER.
 
 ![Magic Functions][imgQshell6]
 
-Just like the PyLabs functions, you can call the help of a magic function by adding the question mark to the magic function.
+Just like the Pylabs functions, you can call the help of a magic function by adding the question mark to the magic function.
 
 [[code]]
     In [3]: %magic?

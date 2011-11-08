@@ -24,7 +24,7 @@ see [BaseMessage] for more info
 * body : is the log message by itself
 
 
-## PyLabs
+## Pylabs
 
 Inherits from the base MessageObject
 

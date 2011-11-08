@@ -2,19 +2,19 @@
 @metadata order=10
 @metadata tagstring=architecture drp layer osis arakoon postgres
 
-[imgpyappArch]: images/images50/pyapps/PyApp_Architecture.png
-[imgDRP]: images/images50/pylabs/PyLabs_DRP.png
+[imgpyappArch]: images/images51/pyapps/PyApp_Architecture.png
+[imgDRP]: images/images51/pylabs/Pylabs_DRP.png
 
 
-# PyLabs Architecture
-The PyLabs framework is a Python framework, specifically aimed at cloud application development. It provides all required components needed to build a typical cloud application. 
-PyLabs covers a very wide range of functionality, from the basics such as logging services to an advanced workflow engine to oversee distributed program execution.
+# Pylabs Architecture
+The Pylabs framework is a Python framework, specifically aimed at cloud application development. It provides all required components needed to build a typical cloud application. 
+Pylabs covers a very wide range of functionality, from the basics such as logging services to an advanced workflow engine to oversee distributed program execution.
 
-The framework itself is made up out of different logical layers. This page explains the different layers making up the full PyLabs stack and define the responsibilities of each layer. 
+The framework itself is made up out of different logical layers. This page explains the different layers making up the full Pylabs stack and define the responsibilities of each layer. 
 
 ![PyApps_Architecture][imgpyappArch]
 
-![PyLabs_DRP][imgDRP]
+![Pylabs_DRP][imgDRP]
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 
@@ -26,7 +26,7 @@ OSIS: Object Store and Indexing System, this is a layer on top of Arakoon and Po
 * store and update views in PostgreSQL
 
 
-## PyLabs Layers
+## Pylabs Layers
 
 * **Cloud API** and **Wizards**: This layer is the interface to the end-user. It provides the functionality to manage for example a virtualized datacenter.
 

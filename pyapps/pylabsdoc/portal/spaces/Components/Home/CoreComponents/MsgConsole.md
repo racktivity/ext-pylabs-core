@@ -2,14 +2,14 @@
 @metadata tagstring=message console
 
 
-# PyLabs Message Console
+# Pylabs Message Console
 
 * lets call for now messageconsole (NO LONGER logserver)
 * logs to stdout all kind of messages
 
 ## Principles
 
-* output to stdout using print (do not use PyLabs primitives)
+* output to stdout using print (do not use Pylabs primitives)
 * reformat message message to fit nicely on screen (use screenwidth param)
 
     ** messages -> get nicely formatted

@@ -41,7 +41,7 @@ This generates a directory structure in:
 The directory contains two main subdirectories:
 
 * *generatedServer*: Files to create the cloud API server, it contains the classes to create the service and the supported library which uses the workflow engine.
-* *generatedClient:* PyLabs client to call the generated cloud API server.
+* *generatedClient:* Pylabs client to call the generated cloud API server.
 
 
 ##Creating the Cloud API service Package

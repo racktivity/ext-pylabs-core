@@ -15,7 +15,7 @@ These are the four steps to create a custom enumerator:
 3. Register the enumerator items
 4. Finish the enumeration registration
 
-These are the minimum steps for creating an enumerator. Extra functionality can be added, for example to show human readable values instead of some PyLabs internal codes.
+These are the minimum steps for creating an enumerator. Extra functionality can be added, for example to show human readable values instead of some Pylabs internal codes.
 
 
 ##Example
@@ -104,7 +104,7 @@ Out[18]: <type 'int'>
 
 
 ##Use Custom Enumerators
-When you create a PyLabs extension which needs a custom enumerator, the easiest way is to create the enumerator inside the extension itself and use it from that file.
+When you create a Pylabs extension which needs a custom enumerator, the easiest way is to create the enumerator inside the extension itself and use it from that file.
 
 An alternative is to create a specific enumeration file and import it in an extension. The advantage of this alternative is that you can reuse the enumerator in more than one file of your extension.
 

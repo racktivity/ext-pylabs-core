@@ -6,7 +6,7 @@
 
 # PostgreSQL
 
-PostgreSQL is an open source relational database. Typically it is used to store and retrieve data of a data model. In PyLabs, it is used together with OSIS for storing OSIS views.
+PostgreSQL is an open source relational database. Typically it is used to store and retrieve data of a data model. In Pylabs, it is used together with OSIS for storing OSIS views.
 
 ## PostgreSQL Users
 

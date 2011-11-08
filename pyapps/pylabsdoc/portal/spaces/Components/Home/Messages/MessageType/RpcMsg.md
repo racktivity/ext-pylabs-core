@@ -59,14 +59,14 @@ e.g.
     {"machineguid": "aavbb-dfdsfsdfsd-dfff"}
 
 
-## PyLabs
+## Pylabs
 
 Inherits from the base MessageObject
 
 [[code]]
 class RPCMessageObject(MessageObject,BaseType):
     """
-    implements http://PyLabs.org/display/PM/RPC+Message
+    implements http://Pylabs.org/display/PM/RPC+Message
     """
     domain = q.basetype.string(doc="rpc call needs to exist in a domain, is a logical grouping and needs unique name",allow_none=False)
     login = q.basetype.string(doc="login for rpccall to server/robbot",allow_none=True)

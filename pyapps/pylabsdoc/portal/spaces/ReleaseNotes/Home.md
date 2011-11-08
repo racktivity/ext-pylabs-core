@@ -1,5 +1,5 @@
 @metadata spaceorder=100
-@metadata title=Release Notes PyLabs
+@metadata title=Release Notes Pylabs
 @metadata tagstring=ReleaseNotes
 
 [History]: #/ReleaseNotes/History
@@ -7,11 +7,11 @@
 [changeset1]: 
 
 
-#PyLabs Release Notes
+#Pylabs Release Notes
 
-This section provides the Release Notes for PyLabs
+This section provides the Release Notes for Pylabs
 
-##PyLabs 3.2
+##Pylabs 3.2
 
 
 ### Build 116

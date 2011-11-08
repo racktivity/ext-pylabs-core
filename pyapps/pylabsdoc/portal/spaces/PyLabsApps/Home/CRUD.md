@@ -2,18 +2,18 @@
 @metadata order=80
 @metadata tagstring=generate methods create read update delete root object
 
-[model]: #/PyLabsApps/Modeling
-[action]: #/PyLabsApps/Action
-[dirs]: #/PyLabsApps/Introduction
+[model]: #/PylabsApps/Modeling
+[action]: #/PylabsApps/Action
+[dirs]: #/PylabsApps/Introduction
 
 
 #CRUD Generation 
 
 Some steps of creating a PyApp can be automated. Since all root objects of a PyApp always have some common actions, you can generate these actions. Besides these common actions you have of course to develop the other actions on a Root Object.
 
-The common actions, always available for each Root Object, are the CRUD actions (Create, Read (getObject), Update, and Delete). A PyLabs function generates all layers required to have a new Root Object up and running with these four CRUD actions. 
+The common actions, always available for each Root Object, are the CRUD actions (Create, Read (getObject), Update, and Delete). A Pylabs function generates all layers required to have a new Root Object up and running with these four CRUD actions. 
 
-This PyLabs function takes the [model][] and [action][] interfaces. Files should be located in:
+This Pylabs function takes the [model][] and [action][] interfaces. Files should be located in:
  
 * `/opt/qbase5/pyapps/<pyapp name>/interface/model/<pyapp domain>/<rootobject>.py`
 * `/opt/qbase5/pyapps/<pyapp name>/interface/action/<pyapp domain>/<rootobject>.py`

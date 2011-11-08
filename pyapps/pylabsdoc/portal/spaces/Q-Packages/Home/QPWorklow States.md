@@ -2,7 +2,7 @@
 @metadata order=58
 @metadata tagstring=update qpackage
 
-[imgQPArch2]: images/images50/qpackages/qp5_architecture_2.png
+[imgQPArch2]: images/images51/qpackages/qp5_architecture_2.png
 
 #Workflows and States
 This section explains the overall workflow of the qpackages extension and the internal states that control the workflow.

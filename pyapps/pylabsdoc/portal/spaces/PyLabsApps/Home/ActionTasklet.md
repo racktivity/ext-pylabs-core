@@ -3,11 +3,11 @@
 @metadata tagstring=action tasklet create object property
 
 [tasklet]: #/Overview/Tasklets
-[pyappdir]: #/PyLabsApps/Introduction
-[formwizard]: #/PyLabsApps/FormWizardParctical
-[modeling]: #/PyLabsApps/Modeling
-[action]: #/PyLabsApps/Action
-[osisview]: #/PyLabsApps/OsisViews
+[pyappdir]: #/PylabsApps/Introduction
+[formwizard]: #/PylabsApps/FormWizardParctical
+[modeling]: #/PylabsApps/Modeling
+[action]: #/PylabsApps/Action
+[osisview]: #/PylabsApps/OsisViews
 [wfe]: #/Components/WFE
 
 
@@ -39,7 +39,7 @@ def match(q, i, params, tags):
 
 
 ###File Name and Location
-In PyLabs 5, it is recommended that the file name of an action tasklet has the following structure:
+In Pylabs 5, it is recommended that the file name of an action tasklet has the following structure:
 
 `<priority>_<rootobject>_<action>.py`
 
@@ -59,9 +59,9 @@ __Note:__ It is possible to still use the old tasklet file names and use the `__
 
 ###Provided Data
 The execution of the action tasklet mostly requires a lot of data about an object. This data is not to be retrieved in this action tasklet itself, but is gathered in the `params` dictionary. 
-The `params` dictionary lives throughout the whole PyLabs framework. You will see in the [Creating Forms and Wizards][formwizard] section, that the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
+The `params` dictionary lives throughout the whole Pylabs framework. You will see in the [Creating Forms and Wizards][formwizard] section, that the wizards and forms gather the data. This data is passed on to the cloud API call, which on its turn calls this tasklet. 
 
-All of this is part of the PyLabs framework.
+All of this is part of the Pylabs framework.
 
 The next sections will cover the basic principles of implementing the actions.
 

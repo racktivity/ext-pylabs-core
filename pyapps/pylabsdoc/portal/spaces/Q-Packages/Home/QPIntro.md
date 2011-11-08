@@ -12,11 +12,11 @@
 
 Q-Packages is Incubaid's platform independent software and content distribution system. It is similar to conventional package systems ([apt][], [yum][], ...), but without their complexity.
 
-A Q-Package is a package to be installed in PyLabs 5. A software package can be self-created software, as well as open-source packages, for example [nginx][] or [PostgreSQL][]. But a package can not only be software, but also a virtual machine image or documentation. 
+A Q-Package is a package to be installed in Pylabs 5. A software package can be self-created software, as well as open-source packages, for example [nginx][] or [PostgreSQL][]. But a package can not only be software, but also a virtual machine image or documentation. 
 
-The Q-Package framework is part of the PyLabs 5 framework. By using PyLabs it becomes easy to create you own packages. You no longer need to be a developer to create packages. 
+The Q-Package framework is part of the Pylabs 5 framework. By using Pylabs it becomes easy to create you own packages. You no longer need to be a developer to create packages. 
 
-Whatever you need to distribute in PyLabs 5, Q-Package is your friend.
+Whatever you need to distribute in Pylabs 5, Q-Package is your friend.
 
 
 ## Q-Package Features

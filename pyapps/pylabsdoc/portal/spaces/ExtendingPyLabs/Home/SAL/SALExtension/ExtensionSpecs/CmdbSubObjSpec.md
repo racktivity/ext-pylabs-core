@@ -2,10 +2,10 @@
 @metadata order=40
 @metadata tagstring=cmdb subobject property
 
-[importpylabs]: #/HowTo/ImportPyLabs
+[importpylabs]: #/HowTo/ImportPylabs
 [importextension]: #/HowTo/ImportExtensionClass
-[baseclass]: #/ExtendingPyLabs/BaseClasses
-[contribute]: #/PyLabs50/Contributing
+[baseclass]: #/ExtendingPylabs/BaseClasses
+[contribute]: #/Pylabs50/Contributing
 
 
 # CMDB Sub Object Specifications
@@ -14,7 +14,7 @@ A subobject is a complex property of CMDB Object. In the example below you find 
 
 ## Content of the Specification File
 
-* Import the required modules. Check [How to Import PyLabs][importpylabs] and [How to Import Classes from Extensions][importextension].
+* Import the required modules. Check [How to Import Pylabs][importpylabs] and [How to Import Classes from Extensions][importextension].
 * Add a Class that inherits from the base class [CMDBObject][baseclass].
 * Add all methods of the class.
 * Add PyDocs for *each* method that gives its full explanation, see the *DocString* section in the [Contributing in Style page][contribute].

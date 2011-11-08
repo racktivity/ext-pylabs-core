@@ -2,7 +2,7 @@
 @metadata order=20
 @metadata tagstring=sal extension overview
 
-# PyLabs SAL Extensions
+# Pylabs SAL Extensions
 
 The section covers the following topics:
 

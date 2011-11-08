@@ -1,24 +1,24 @@
-@metadata title=Initialize PyLabs Scripts
+@metadata title=Initialize Pylabs Scripts
 @metadata tagstring=initialize script import custom
 
-[imgInit1]: images/images50/howto/GettingStarted017.png
-[imgInit2]: images/images50/howto/GettingStarted018.png
+[imgInit1]: images/images51/howto/GettingStarted017.png
+[imgInit2]: images/images51/howto/GettingStarted018.png
 
 
-# How to Initialize PyLabs Scripts
+# How to Initialize Pylabs Scripts
 
-Q-Shell scripts are scripts using PyLabs code.
+Q-Shell scripts are scripts using Pylabs code.
 
-This doc shows you how you can perform a custom PyLabs initialization.
+This doc shows you how you can perform a custom Pylabs initialization.
 
-## Example Initialization of PyLabs
+## Example Initialization of Pylabs
 
-Applications using the PyLabs framework are themselves responsible for the initialization of the PyLabs framework. 
-There are several initialization methods which be can optionally called before using the PyLabs object called `q`.
+Applications using the Pylabs framework are themselves responsible for the initialization of the Pylabs framework. 
+There are several initialization methods which be can optionally called before using the Pylabs object called `q`.
 In this example we will _not_ perform a custom initialization.
 
 [[code]]
-#in all apps use next line to initialize PyLabs, as a result the q global var will be available.
+#in all apps use next line to initialize Pylabs, as a result the q global var will be available.
 from pylabs.InitBase import *
 
 # at this point your initialization has been done. You still need to set an application name and start the application
@@ -112,6 +112,6 @@ q.application.stop(exitcode)
 
 ##Remark
 
-The PyLabs singleton is exposed in the main PyLabs package, so any module using it (applications, utility modules, libraries,..) should import it using: 
+The Pylabs singleton is exposed in the main Pylabs package, so any module using it (applications, utility modules, libraries,..) should import it using: 
 
     from pylabs import q

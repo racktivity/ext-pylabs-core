@@ -3,22 +3,22 @@
 @metadata tagstring=form wizard create structure
 
 [tasklet]: #/Overview/Tasklets
-[pyappdir]: #/PyLabsApps/Introduction
-[actiontasklet]: #/PyLabsApps/ActionTasklet
-[formapi]: #/PyLabsApps/FormWizard
-[modeling]: #/PyLabsApps/Modeling
+[pyappdir]: #/PylabsApps/Introduction
+[actiontasklet]: #/PylabsApps/ActionTasklet
+[formapi]: #/PylabsApps/FormWizard
+[modeling]: #/PylabsApps/Modeling
 [api]:  #/api/Home
-[wizardapi]: #/PyLabsApps/WizardApi
+[wizardapi]: #/PylabsApps/WizardApi
 
 
 #Creating Forms and Wizards
 
-In the PyLabs 5 framework, wizards are used to execute actions on a certain Root Object. As most of the functionality, wizards can also be defined by writing a simple tasklet.
+In the Pylabs 5 framework, wizards are used to execute actions on a certain Root Object. As most of the functionality, wizards can also be defined by writing a simple tasklet.
 Wizards are the way to make highly interactive windows which result in executing one or more cloudAPI calls.
 
 Wizards should only use the cloudAPI to fetch required information and to execute actions.
 
-The wizard dialect is fully integrated in the PyLabs framework. The main entry point to define wizards is located at `q.gui.form`.
+The wizard dialect is fully integrated in the Pylabs framework. The main entry point to define wizards is located at `q.gui.form`.
 
 
 ##General Structure of a Form/Wizard Tasklet
@@ -121,7 +121,7 @@ answer = q.gui.dialog.showMessageBox(message=MSGBOX_CREATE_CONFIRMATION,
                                      defaultButton='OK')
 [[/code]]                                         
 
-For more details about the `showMessageBox` function, we refer to the [API documentation][API] of PyLabs 5.
+For more details about the `showMessageBox` function, we refer to the [API documentation][API] of Pylabs 5.
 
 To trigger an action with the provided data, you have to call the `callCloudAPI` method:
 
@@ -134,7 +134,7 @@ result = callCloudAPI(p.api,
 params['result'] = result
 [[/code]]
 
-The last line is a PyLabs 5 specific dictionary. This `params` dictionary is used throughout the whole PyLabs 5 framework and is a key element to pass on data from one level to another.
+The last line is a Pylabs 5 specific dictionary. This `params` dictionary is used throughout the whole Pylabs 5 framework and is a key element to pass on data from one level to another.
 
 
 ##Creating Wizards

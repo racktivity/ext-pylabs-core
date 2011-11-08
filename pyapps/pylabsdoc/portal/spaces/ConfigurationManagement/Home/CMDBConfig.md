@@ -3,9 +3,9 @@
 @metadata tagstring=cmdb configuration complex
 
 [nginx]: http://wiki.nginx.org
-[imgNginxNewsite]: images/images50/pylabs/nginx_newsite.png
-[imgNginxFail]: images/images50/pylabs/nginx_fail.png
-[imgNginxNewport]: images/images50/pylabs/nginx_newport.png
+[imgNginxNewsite]: images/images51/pylabs/nginx_newsite.png
+[imgNginxFail]: images/images51/pylabs/nginx_fail.png
+[imgNginxNewport]: images/images51/pylabs/nginx_newport.png
 
 
 #CMDB Configuration
@@ -13,7 +13,7 @@
 When you have an application that requires advanced configuration, it is very likely that a key/value configuration is too complex to configure and/or maintain. 
 For example when you have to configure a web server, it would become too hard to configure an ACL with a key/value system.
 
-Therefore you can use the CMDB (Configuration Management DataBase) of PyLabs. The CMDB is a configuration platform that allows you to set up advanced configurations of PyLabs compatible applications.
+Therefore you can use the CMDB (Configuration Management DataBase) of Pylabs. The CMDB is a configuration platform that allows you to set up advanced configurations of Pylabs compatible applications.
 The configuration of an application with CMDB is available in the `q.manage` name space, for example `q.manage.nginx.cmdb`.
 
 

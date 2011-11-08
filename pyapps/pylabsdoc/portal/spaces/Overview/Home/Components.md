@@ -1,4 +1,4 @@
-@metadata title=PyLabs Components
+@metadata title=Pylabs Components
 @metadata order=20
 @metadata tagstring=components overview description concise
 
@@ -22,9 +22,9 @@
 [component]: #/Components/Home
 
 
-# PyLabs Components
+# Pylabs Components
 
-PyLabs is built with a set of components, each having its specific task. Below you find an overview of these components with a concise description of their functionality.
+Pylabs is built with a set of components, each having its specific task. Below you find an overview of these components with a concise description of their functionality.
 More details about the components can be found in the [Components chapter][component].
 
 ## Agent
@@ -33,7 +33,7 @@ The agent is responsible for tasks such as starting and stopping a machine in a 
 
 
 ## Application Server
-The PyLabs [application server][appserver] is the component responsible for exposing functionality (services) over several transports. The definition and implementation of an Application Server service is 100% separated from the underlying transport.
+The Pylabs [application server][appserver] is the component responsible for exposing functionality (services) over several transports. The definition and implementation of an Application Server service is 100% separated from the underlying transport.
 Out of the box [XML-RPC][xmlrpc], [REST][] and [AMF][] are available as possible transports. The transport mechanism can be extended by writing your own plug-ins.
 
 
@@ -43,7 +43,7 @@ Out of the box [XML-RPC][xmlrpc], [REST][] and [AMF][] are available as possible
 
 ## ejabberd
 **[ejabberd][ejabberdlink]** is an XMPP application server. It is a distributed, fault-tolerant technology that allows the creation of large-scale instant messaging applications. The server can reliably support thousands of simultaneous users on a single node and has been designed to provide exceptional standards of fault tolerance.
-ejabberd is used in PyLabs as communication platform between the PyLabs agents and the agent controller.
+ejabberd is used in Pylabs as communication platform between the Pylabs agents and the agent controller.
 
 
 ## Monitoring Agent
@@ -65,16 +65,16 @@ OSIS is a layer on top of Arakoon and PostgreSQL. It has two functions:
 
 
 ## PostgreSQL
-[PostgreSQL][] is an open source relational database, which is fast and queryable. This database is used to store views on objects in the PyLabs' DRP.
+[PostgreSQL][] is an open source relational database, which is fast and queryable. This database is used to store views on objects in the Pylabs' DRP.
 
 
 ## Tasklets
-The PyLabs [tasklets][] framework provides an easy and modular way to execute small pieces of reusable Python code which are loaded into memory. 
+The Pylabs [tasklets][] framework provides an easy and modular way to execute small pieces of reusable Python code which are loaded into memory. 
 The tasklet engine is the component responsible for loading, categorizing and executing tasklets based on tags and parameters.
 
 
 ## Workflow Engine
-The [Workflow Engine][wfe] is one of the core components in the PyLabs application stack. It is responsible for the dispatching and monitoring of jobs across all the agents in the domain.
+The [Workflow Engine][wfe] is one of the core components in the Pylabs application stack. It is responsible for the dispatching and monitoring of jobs across all the agents in the domain.
 
 
 # Specific Cloud Components

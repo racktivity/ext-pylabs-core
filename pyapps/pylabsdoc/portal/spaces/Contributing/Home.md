@@ -4,16 +4,16 @@
 
 #Contributing in Style
 
-This chapter is a short intermezzo to provide you the coding guidelines of PyLabs. 
-When contributing to PyLabs, contribute in style and follow the rules as described on this page.
+This chapter is a short intermezzo to provide you the coding guidelines of Pylabs. 
+When contributing to Pylabs, contribute in style and follow the rules as described on this page.
 
 
 ## `q` Should Be a Global Var
 
-When you want to use the core PyLabs class `q`, make sure you call it the right way. 
+When you want to use the core Pylabs class `q`, make sure you call it the right way. 
 
 
-## Import All Relevant PyLabs Packages
+## Import All Relevant Pylabs Packages
 
 * e.g. `from event import QEvent`
 
@@ -33,7 +33,7 @@ When you want to use the core PyLabs class `q`, make sure you call it the right 
 
 ## Add Logging 
 
-Use the PyLabs logging system with `q.logger.log(...)`
+Use the Pylabs logging system with `q.logger.log(...)`
 
 * There are 9 log levels.
 ** Use the appropriate level.
@@ -41,7 +41,7 @@ Use the PyLabs logging system with `q.logger.log(...)`
 
 
 ## Throw Events
-Use the PyLabs event management `q.eventhandler`
+Use the Pylabs event management `q.eventhandler`
 
 * There are 4 event levels.
 ** Use the appropriate level.
@@ -51,7 +51,7 @@ Use the PyLabs event management `q.eventhandler`
 
 ## Use the Type Classes in Types Package
 
-Use the PyLabs enumerators, available in `q.enumerators`
+Use the Pylabs enumerators, available in `q.enumerators`
 
 * e.g. `q.enumerators.PlatformType.LINUX64
 
@@ -135,7 +135,7 @@ Here are some basic coding guidelines.
 * Class method and attribute names are camelCase with leading lowercase
 * Function names are camelCase with leading lowercase
 * Constants are all upper case.
-* If the constant will be used outside the module that defines it, it should be declared as a PyLabs enumeration.
+* If the constant will be used outside the module that defines it, it should be declared as a Pylabs enumeration.
 * Global variables should be prefixed with a `g` (e.g. `gCounter`)
 
 * Root object file naming conventions

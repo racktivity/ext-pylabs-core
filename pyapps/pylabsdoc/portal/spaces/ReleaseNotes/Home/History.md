@@ -1,5 +1,5 @@
 @metadata spaceorder=100
-@metadata title=Release Notes PyLabs
+@metadata title=Release Notes Pylabs
 @metadata tagstring=ReleaseNotes History
 
 

@@ -4,11 +4,11 @@
 
 #Creating and Testing an Extension
 
-In this section we show you step by step how you can create a PyLabs extension. A simple Hello World application is used as example.
+In this section we show you step by step how you can create a Pylabs extension. A simple Hello World application is used as example.
 
 
 ##1. Creating the Extension Files
-A first step to create a PyLabs extension is to create the extension files.
+A first step to create a Pylabs extension is to create the extension files.
 
 1. Go to `/opt/qbase5/lib/pylabs/extensions` and create a directory in it, for example `demo`.
 2. Create the file `extension.cfg` and add the following content:

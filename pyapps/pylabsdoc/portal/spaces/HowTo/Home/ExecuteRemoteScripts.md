@@ -1,7 +1,7 @@
 @metadata title=Execute Remote Scripts
 @metadata tagstring=remote script execute
 
-# How to  Execute Scripts on a Remote Server using the PyLabs Framework
+# How to  Execute Scripts on a Remote Server using the Pylabs Framework
 
 [[warning]]
 **Warning**

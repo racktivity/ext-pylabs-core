@@ -5,7 +5,7 @@
 
 #Your First Script
 
-To create a PyLabs compatible script, you have to import PyLabs InitBase. This makes sure that all default and custom (i.e. self-made) PyLabs extensions are loaded into memory.
+To create a Pylabs compatible script, you have to import Pylabs InitBase. This makes sure that all default and custom (i.e. self-made) Pylabs extensions are loaded into memory.
 When done you have the same functionalities as in the Q-Shell.
 
 [[code]]
@@ -25,6 +25,6 @@ Save the above code in a `.py` file and execute it with Q-Shell:
        Hello World!
     $
 
-When you see 'Hello World!' appear, you have successfully created your first PyLabs script.
+When you see 'Hello World!' appear, you have successfully created your first Pylabs script.
 
-Next in this chapter you will learn to use the power of PyLabs in your script and make a PyLabs extension of your script.
+Next in this chapter you will learn to use the power of Pylabs in your script and make a Pylabs extension of your script.

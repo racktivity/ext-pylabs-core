@@ -24,7 +24,7 @@ def stop(self):
 With this management module you can control and configure your VirtualBox application. 
 
 ## Importing the Necessary Modules
-In a first phase you need to import all necessary modules. For all management modules you need to import the PyLabs framework central class, of which the `q` object is an instance, and the ManagementApplication base class.
+In a first phase you need to import all necessary modules. For all management modules you need to import the Pylabs framework central class, of which the `q` object is an instance, and the ManagementApplication base class.
 Import other modules if necessary.
 
 [[code]]

@@ -1,13 +1,13 @@
 @metadata spaceorder=30
-@metadata title=Installing PyLabs
+@metadata title=Installing Pylabs
 @metadata tagstring=installation install prerequisite
 
 [curl]: http://curl.haxx.se/
 
 
-# PyLabs 5 Installation Guide
+# Pylabs 5 Installation Guide
 
-PyLabs 5 has an installation script that automatically downloads and installs the necessary packages. This section covers preparing for installation, running the installation script itself, and the steps to install a PyLabs 5 sample application, called 'sampleapp'. 
+Pylabs 5 has an installation script that automatically downloads and installs the necessary packages. This section covers preparing for installation, running the installation script itself, and the steps to install a Pylabs 5 sample application, called 'sampleapp'. 
 
 
 ## Prerequisites
@@ -18,9 +18,9 @@ PyLabs 5 has an installation script that automatically downloads and installs th
 * [cURL][curl]: `apt-get install curl`
 
 
-## Installing PyLabs 5
+## Installing Pylabs 5
 
-To install PyLabs 5 only, follow the steps as described below:
+To install Pylabs 5 only, follow the steps as described below:
 
 1. Get root privileges: `sudo su`
 2. Launch the installer with the following command:
@@ -103,4 +103,4 @@ To install PyLabs 5 only, follow the steps as described below:
       Cleanup done
               DONE
 
-PyLabs is now installed on your system. In the next section you will see how to install the PyLabs 5 sample application.
+Pylabs is now installed on your system. In the next section you will see how to install the Pylabs 5 sample application.

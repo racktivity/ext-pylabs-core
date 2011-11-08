@@ -4,7 +4,7 @@
 
 [iPython]: http://ipython.scipy.org/moin/
 [qp]: #/Q-Packages/Home
-[pyapp]: #/PyLabsApps/Home
+[pyapp]: #/PylabsApps/Home
 [familiar]: #/Q-Shell/GettingFamiliar
 [practical]: #/Q-Shell/Practical
 [debug]: #/Q-Shell/DebugMode
@@ -12,16 +12,16 @@
 [magic]: #/Q-Shell/MagicFunctions
 
 
-#PyLabs Q-Shell
+#Pylabs Q-Shell
 
-An important component of PyLabs is the Q-Shell. The Q-Shell is an exploratory shell based on [IPython][], and is fully integrated with the PyLabs framework.
+An important component of Pylabs is the Q-Shell. The Q-Shell is an exploratory shell based on [IPython][], and is fully integrated with the Pylabs framework.
 
 The main functions of the Q-Shell are:
 
 * install [Q-Packages][qp]
 * manage Q-Packages: create, update
-* manage [PyLabs Applications][pyapp]
-* manage PyLabs
+* manage [Pylabs Applications][pyapp]
+* manage Pylabs
 
 The main advantages of the Q-Shell are:
 

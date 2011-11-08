@@ -2,8 +2,8 @@
 @metadata order=100
 @metadata tagstring=schedule action
 
-[reality]: #/PyLabsApps/Reality
-[pyappdir]: #/PyLabsApps/Introduction
+[reality]: #/PylabsApps/Reality
+[pyappdir]: #/PylabsApps/Introduction
 
 
 #Scheduling Actions
@@ -39,13 +39,13 @@ The tasklet is located in `<pyapp name>/impl/schedule/`. To keep a clear overvie
 See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
 
-##PyLabs Scheduling
-To make scheduling possible in PyLabs, there is a specific application server service that runs every 60 seconds. This 'scheduling' service requests the tasklet engine to see if there are tasklets to be executed.
+##Pylabs Scheduling
+To make scheduling possible in Pylabs, there is a specific application server service that runs every 60 seconds. This 'scheduling' service requests the tasklet engine to see if there are tasklets to be executed.
 The tasklet engine keeps track of the last execution time of each tasklet. This execution time can be used in the `match` functions to  define the interval between two executions.
 
 
 ##Defining the Interval
-In the `match` function you must import the standard Python `time` library. The `params` dictionary, which is used throughout the complete PyLabs framework, keeps track of the execution time of a tasklet with the key `taskletexecutiontime`. This allows us to set the interval for the tasklet.
+In the `match` function you must import the standard Python `time` library. The `params` dictionary, which is used throughout the complete Pylabs framework, keeps track of the execution time of a tasklet with the key `taskletexecutiontime`. This allows us to set the interval for the tasklet.
 
 [[code]]
 def match(q, i, params, tags):

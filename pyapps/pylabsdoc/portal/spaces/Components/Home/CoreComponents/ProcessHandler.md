@@ -1,7 +1,7 @@
 @metadata title=Process Handler
 @metadata tagstring=process handle tasklet engine
 
-# PyLabs Process Handler
+# Pylabs Process Handler
 
 * run a process per processhandlerdirectory
 * per process run a taskletengine which runs a main loop with params which are always given to each tasklet, the params stay in memory 

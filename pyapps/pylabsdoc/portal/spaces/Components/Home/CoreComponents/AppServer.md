@@ -7,7 +7,7 @@
 
 # Application Server
 
-The PyLabs application server is the component responsible for exposing functionality over several transports. The definition and implementation of an application server service is 100% separated from the underlying transport.
+The Pylabs application server is the component responsible for exposing functionality over several transports. The definition and implementation of an application server service is 100% separated from the underlying transport.
 Out of the box XML-RPC, REST and AMF are available as possible transports. The transport mechanism can be extended by writing your own plug-ins.
 
 Technically the application server is implemented as a Twisted reactor and every application server service is a Twisted service.
@@ -200,7 +200,7 @@ print client.hello_world_service.sayHello()
 
 **Using REST**
 
-The following code snippet shows you how easy it is to call our application server service over REST by using the PyLabs HTTP client extension:
+The following code snippet shows you how easy it is to call our application server service over REST by using the Pylabs HTTP client extension:
 
     client = q.clients.http.getconnection() 
     client.get('http://127.0.0.1:8889/hello_world_service/sayHello')

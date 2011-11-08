@@ -2,13 +2,13 @@
 @metadata order=30
 @metadata tagstring=cmdb object property
 
-[baseclass]: #/ExtendingPyLabs/BaseClasses
-[createenum]: #/ExtendingPyLabs/CreateEnumerators
+[baseclass]: #/ExtendingPylabs/BaseClasses
+[createenum]: #/ExtendingPylabs/CreateEnumerators
 
 
-# Properties of PyLabs CMDB Objects
+# Properties of Pylabs CMDB Objects
 
-Each PyLabs extension that manages an existing application or service will have objects to be managed, such as a machine, a Port Forwarding server, a disk partition, etc. These objects are stored in the CMDB (Configuration Management DataBase) and are *CMDB Objects*. The CMDB only contains the configuration of these objects, it does not contain any logic.
+Each Pylabs extension that manages an existing application or service will have objects to be managed, such as a machine, a Port Forwarding server, a disk partition, etc. These objects are stored in the CMDB (Configuration Management DataBase) and are *CMDB Objects*. The CMDB only contains the configuration of these objects, it does not contain any logic.
 
 There are three types of CMDB Objects:
 
@@ -21,7 +21,7 @@ This is a configuration of a server object, such as a Port Forwarding rule. A CM
 
 [[info]]
 **Information**
-For more information on CMDB Objects, Base CMDB Objects, CMDB Application Objects and CMDB Server Objects, please check the PyLabs [Base Classes][baseclass].
+For more information on CMDB Objects, Base CMDB Objects, CMDB Application Objects and CMDB Server Objects, please check the Pylabs [Base Classes][baseclass].
 [[/info]]
 
 Each of the CMDB objects have in common that their properties mainly consist of:
@@ -32,9 +32,9 @@ Each of the CMDB objects have in common that their properties mainly consist of:
 
 ## Simple Properties
 
-Simple properties are properties that rely on the defined PyLabs types. For example, the name of a Port Forwarding rule, which is a string. Most of the PyLabs types are common for all developing languages, such as 'string', 'integer', 'dictionary', 'boolean', etc. The PyLabs framework however, provides you some more base types, such as 'ipaddress', 'filepath' and 'unixdirpath'.
-If you have a type that you would use in multiple applications, you can [extend the PyLabs base types][createenum] yourself, instead of creating the type for each application.
-A simple property can also be set via an enumerator. PyLabs contains predefined enumerators, such as the status of an application, but you can also [create your own enumerators][createenum].
+Simple properties are properties that rely on the defined Pylabs types. For example, the name of a Port Forwarding rule, which is a string. Most of the Pylabs types are common for all developing languages, such as 'string', 'integer', 'dictionary', 'boolean', etc. The Pylabs framework however, provides you some more base types, such as 'ipaddress', 'filepath' and 'unixdirpath'.
+If you have a type that you would use in multiple applications, you can [extend the Pylabs base types][createenum] yourself, instead of creating the type for each application.
+A simple property can also be set via an enumerator. Pylabs contains predefined enumerators, such as the status of an application, but you can also [create your own enumerators][createenum].
 
 ## Complex Properties
 

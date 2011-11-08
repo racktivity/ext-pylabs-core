@@ -7,9 +7,9 @@
 
 # Q-Package Domains
 
-Q-Packages are gathered per domain to keep their management easy. PyLabs 5 has by default three domains:
+Q-Packages are gathered per domain to keep their management easy. Pylabs 5 has by default three domains:
 
-* **pylabs5**: the core packages of PyLabs 5
+* **pylabs5**: the core packages of Pylabs 5
 * **pylabs5_test**: domain for testing purposes
 * **qpackages5**: domain that contains Q-Packages that are created from open-source packages
 

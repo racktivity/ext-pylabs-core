@@ -1,12 +1,12 @@
-@metadata title=Using PyLabs
+@metadata title=Using Pylabs
 @metadata order=20
 @metadata tagstring=files directories network archive md5
 
 [qshell]: #/Q-Shell/Practical
 
 
-#Using PyLabs
-In the introduction you have seen a first example of a PyLabs script, by means of printing 'Hello World!' on your screen. In this section you find some more practical examples of PyLabs scripts.
+#Using Pylabs
+In the introduction you have seen a first example of a Pylabs script, by means of printing 'Hello World!' on your screen. In this section you find some more practical examples of Pylabs scripts.
 
 [[tip]]
 **Tip**
@@ -139,7 +139,7 @@ q.application.stop()
 
 
 ##Network Functions
-So far we have focused on the PyLabs file system functions. In this paragraph we will show some network functionalities.
+So far we have focused on the Pylabs file system functions. In this paragraph we will show some network functionalities.
 
 ###Download Files
 Download a file from an URI or local file path. The supported protocols are `http`, `https`, `ftp`, and `file`.
@@ -157,7 +157,7 @@ Out[100]: True
 [[/code]]
 
 **Get a MAC Address**
-PyLabs gives you the possibility to easily retrieve the MAC address of a network interface:
+Pylabs gives you the possibility to easily retrieve the MAC address of a network interface:
 
 [[code]]
 In [101]: q.system.net.getMacAddress('eth0')

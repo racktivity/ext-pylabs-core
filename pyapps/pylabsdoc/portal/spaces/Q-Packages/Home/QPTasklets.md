@@ -62,7 +62,7 @@ For the given example, `/opt/qbase5/var/mercurial/bar/pyapps/newapp` will be rec
 
 ###Without a Recipe File
 An alternative is to work without the `recipe.json` file, then you have to put everything in the `codemanagement` tasklet.
-PyLabs 5 has a built-in [Mercurial][] client, which allows you to clone a Mercurial repository into PyLabs:
+Pylabs 5 has a built-in [Mercurial][] client, which allows you to clone a Mercurial repository into Pylabs:
 
 [[code]]
 connection =  i.config.clients.mercurial.findByUrl("link to mercurial repo")
@@ -97,9 +97,9 @@ The `addSource()` method takes three parameters:
 
 ## compile Tasklet
 The `compile` tasklet is the tasklet tagged with "compile". 
-The tasklet is only necessary if the package needs to be compiled in order to become usable for PyLabs, for example the _ocaml_ Q-Package.
+The tasklet is only necessary if the package needs to be compiled in order to become usable for Pylabs, for example the _ocaml_ Q-Package.
 
-This tasklet compiles the source files and put the resulting files in their proper location in PyLabs. The tasklet can assume that the source files are put in PyLabs in advance, for example by the codemanagement tasklet.
+This tasklet compiles the source files and put the resulting files in their proper location in Pylabs. The tasklet can assume that the source files are put in Pylabs in advance, for example by the codemanagement tasklet.
 
 The tasklet should:
 
@@ -124,21 +124,21 @@ If this line is present, the Q-Shell is restarted after the Q-Package installati
 ## install Tasklet
 The `install` tasklet is the tasklet tagged with "install".
 
-This tasklet must copy all files from the package-directory to the proper location in the PyLabs framework, and execute all other necessary actions during installation. The package directory can be retrieved from the Q-Package object by calling the function `getPathFiles()`.
+This tasklet must copy all files from the package-directory to the proper location in the Pylabs framework, and execute all other necessary actions during installation. The package directory can be retrieved from the Q-Package object by calling the function `getPathFiles()`.
 
 There are two helper functions:
 
-* *<qpackage>.copyFiles()*: this function copies all files from the package-directory to the proper directories in PyLabs. It expects that the files are organized by the platform they should be installed on. For example, the files in /files/<domain>/<name>/<version>/windows/ will only be copied if the Q-Package is installed on a windows platform, and files in /files/<domain>/<name>/<version>/generic/ will be copied in any case.
+* *<qpackage>.copyFiles()*: this function copies all files from the package-directory to the proper directories in Pylabs. It expects that the files are organized by the platform they should be installed on. For example, the files in /files/<domain>/<name>/<version>/windows/ will only be copied if the Q-Package is installed on a windows platform, and files in /files/<domain>/<name>/<version>/generic/ will be copied in any case.
 
-* *q.qpackagetools.copyEggToSandbox(sourceEggZipFile, targetEggFile)*: this function is used when installing a Python Egg. It will rename the egg based on the PyLabs conventions for an Egg version. The function takes two parameters:
+* *q.qpackagetools.copyEggToSandbox(sourceEggZipFile, targetEggFile)*: this function is used when installing a Python Egg. It will rename the egg based on the Pylabs conventions for an Egg version. The function takes two parameters:
     * The location (full path) of the source Egg-file in the package-directory.
-    * The directory (full path) in PyLabs, where the Egg must be installed.
+    * The directory (full path) in Pylabs, where the Egg must be installed.
 
 
 ## package Tasklet
 The `package` tasklet is the tasklet tagged with "package".
 
-This tasklet must pick all files from the PyLabs sandbox and copy them to the proper place in the PyLabs Q-Package directories `/opt/qbase5/var/qpackages4/files/...`. 
+This tasklet must pick all files from the Pylabs sandbox and copy them to the proper place in the Pylabs Q-Package directories `/opt/qbase5/var/qpackages4/files/...`. 
 When you use the recipe file, the source files are located in `/opt/qbase5/var/src...`.
 
 The tasklet must package the files to the form they will be installed. (For example: compiling `.py` files to `.pyc` files, combine multiple JAVA `.class` file to a single `.JAR` archive)

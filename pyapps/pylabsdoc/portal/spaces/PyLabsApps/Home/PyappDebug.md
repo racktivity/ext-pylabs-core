@@ -5,9 +5,9 @@
 [appserver]: #/Components/Home
 
 
-#PyLabs Debugger Support
+#Pylabs Debugger Support
 
-When you create a PyApp, it is very likely that not everything works as it should be, and in many cases you have to debug your PyApp. In the PyLabs framework this can be easily done, since it contains number of debugging aids.  
+When you create a PyApp, it is very likely that not everything works as it should be, and in many cases you have to debug your PyApp. In the Pylabs framework this can be easily done, since it contains number of debugging aids.  
 The debugging tools are accessible under `q.debugger`.
 
 There are three procedures available: `shell`, `configure`, and `setbreakpoint`.
@@ -67,7 +67,7 @@ Here is a sample session:
 
 
 ##Debugger Configuration
-PyLabs supports several Python debuggers, including standard PDB, the IPython enhanced PDB, and RPDB2/WinPDB (when available on the system). The debugger to be used can be configured using `q.debugger.configure()`. A specific debugger
+Pylabs supports several Python debuggers, including standard PDB, the IPython enhanced PDB, and RPDB2/WinPDB (when available on the system). The debugger to be used can be configured using `q.debugger.configure()`. A specific debugger
 can also be selected by calling `q.debugger.configure('name')`, where *name* should be one of 'pdb', 'ipython', 'winpdb' or 'disabled' (to disable all breakpoint calls).
 
 
@@ -126,7 +126,7 @@ Here is a demonstration of using the 'IPython' debugger:
 
     ipdb> next
 
-Several calls to 'next' later, once we are outside the PyLabs extension loading mechanism:
+Several calls to 'next' later, once we are outside the Pylabs extension loading mechanism:
 
     ipdb> 
     --Call--
@@ -216,7 +216,7 @@ To end the debug mode, press CTRL+c in your screen session and restart the workf
 
 ## Debugging in the Application Server
 
-Similar to debugging the workflow engine, you can also debug the [PyLabs Application Server][appserver]. Therefore run the application server in debug mode:
+Similar to debugging the workflow engine, you can also debug the [Pylabs Application Server][appserver]. Therefore run the application server in debug mode:
 
     q.manage.applicationserver.start(appname, debug=True)
     

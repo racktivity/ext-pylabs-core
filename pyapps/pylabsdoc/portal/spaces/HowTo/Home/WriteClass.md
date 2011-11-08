@@ -2,7 +2,7 @@
 @metadata tagstring=class write
 
 
-# How to Write a Class in PyLabs
+# How to Write a Class in Pylabs
 
 ## Example Class
 

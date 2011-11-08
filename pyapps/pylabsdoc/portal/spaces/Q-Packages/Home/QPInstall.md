@@ -3,7 +3,7 @@
 @metadata tagstring=install find
 
 # Installing a Q-Package
-The installation of a Q-Package is a simple procedure of two steps, executed in PyLabs' Q-Shell. When you know the exact name of the Q-Package you can even install the Q-Package with one command.
+The installation of a Q-Package is a simple procedure of two steps, executed in Pylabs' Q-Shell. When you know the exact name of the Q-Package you can even install the Q-Package with one command.
 
 The two steps to install a Q-Package:
 1. Finding a Q-Package
@@ -11,7 +11,7 @@ The two steps to install a Q-Package:
 
 
 ## Before Installing a Q-Package
-Prior to the installation of a Q-Package it is recommended to update the Q-Package metadata of your PyLabs framework.
+Prior to the installation of a Q-Package it is recommended to update the Q-Package metadata of your Pylabs framework.
 
 [[code]]
     In [1]: i.qp.updateMetaDataAll()
@@ -23,7 +23,7 @@ Prior to the installation of a Q-Package it is recommended to update the Q-Packa
      * updateqpackage metadata for domain qpackages5             DONE
 [[/code]]
 
-The `updateMetaDataAll` method updates the metadata repositories of all domains in your PyLabs framework. This action assures that you will look up the most up to date Q-Packages.
+The `updateMetaDataAll` method updates the metadata repositories of all domains in your Pylabs framework. This action assures that you will look up the most up to date Q-Packages.
 
 
 ## Finding a Q-Package

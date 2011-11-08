@@ -8,7 +8,7 @@
 
 # Creating a Q-Package
 
-A Q-Package is a package that you install in PyLabs 5.
+A Q-Package is a package that you install in Pylabs 5.
 Each Q-Package is defined by the domain it belongs to, by its name and by its version. A build number further specifies the build of the Q-Package, but no Q-Packages that only differ in the build number can coexist on the same system.
 
 A Q-Package consist of two parts:
@@ -31,7 +31,7 @@ Below you can find the subsequent steps to create a Q-Package:
 3. Get the necessary code, and then compile, package, install, and optionally configure the application
     * Get the code or executables for your Q-Package from BitBucket or any other source and if necessary compile it. This is done by running the codemanagement and compile tasklets
     * Put all the executables in the system repository with the package tasklet
-    * Install the Q-Package files in PyLabs with the install tasklet, optionally configure the application
+    * Install the Q-Package files in Pylabs with the install tasklet, optionally configure the application
 4. Update the metadata and publish the Q-Package on the Q-Package Server specified for your domain
 
     **Important**
@@ -76,7 +76,7 @@ Out[1]: IPackage pylabs5_test testqp 1.0
 In [2]:
 [[/code]]
 <br/>
-2. Check in your PyLabs directory if the new package is created:
+2. Check in your Pylabs directory if the new package is created:
 <br/>
 [[code]]
 /opt/qbase5/var/qpackages4/files/pylabs5_test/testqp/1.0
@@ -174,13 +174,13 @@ or if you have stored your new Q-Package object in a variable:
 
 Instead of calling this `checkout` method, you can also manipulate the Q-Package directories, by creating your own directory-structure and putting your files in the proper directories.
 
-If you need to compile your code against the PyLabs framework, make sure that you have correctly created the [compile][qptasklets] tasklet. The compile tasklet is mainly used for [binary Q-Packages][qpcreatebinary].
+If you need to compile your code against the Pylabs framework, make sure that you have correctly created the [compile][qptasklets] tasklet. The compile tasklet is mainly used for [binary Q-Packages][qpcreatebinary].
 To execute the `compile` tasklet, call the `compile` method on your Q-Package object:
 
 
     i.qp.lastPackage.compile()
 
-In a last step, you have to put all the files from the source directories (via the `checkout`) to the proper location in the PyLabs sandbox. Therefore you have to execute the [package][qptasklets] tasklet by calling the `package` method on the Q-Package object:
+In a last step, you have to put all the files from the source directories (via the `checkout`) to the proper location in the Pylabs sandbox. Therefore you have to execute the [package][qptasklets] tasklet by calling the `package` method on the Q-Package object:
 
     i.qp.lastPackage.package()
 

@@ -91,7 +91,7 @@ e.g.
     {"machineguid": "aavbb-dfdsfsdfsd-dfff"}
 
 
-## PyLabs
+## Pylabs
 
 Inherits from the base MessageObject
 

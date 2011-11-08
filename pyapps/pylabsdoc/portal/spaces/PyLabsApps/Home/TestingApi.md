@@ -2,7 +2,7 @@
 @metadata order=130
 @metadata tagstring=test api pyapp
 
-[actions]: #/PyLabsApps/Action
+[actions]: #/PylabsApps/Action
 [qpinstall]: #/Q-Packages/QPInstall
 [appserver]: #/Components/AppServer
 

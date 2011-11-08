@@ -1,7 +1,7 @@
-@metadata title=Use PyLabs Python on Ubuntu
+@metadata title=Use Pylabs Python on Ubuntu
 @metadata tagstring=python default change replace
 
-# How to Use the PyLabs Python on an Ubuntu System
+# How to Use the Pylabs Python on an Ubuntu System
 
 Edit /usr/lib/pymodules/python2.6/.path
 Add the following lines to end of file

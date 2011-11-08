@@ -14,7 +14,7 @@ def main(q, i, params, tags):
     q.system.fs.copyDirTree(q.system.fs.joinPaths(qpackage.getPathSourceCode(), relativePath), q.system.fs.joinPaths(filesDir, relativePath))
 [[/code]]
 
-* getPathFiles: function that retrieves the files directory of a package inside the Q-Packages directory of PyLabs, for example `/opt/qbase5/var/qpackages4/files/<domain>/<package>/<version>`.
+* getPathFiles: function that retrieves the files directory of a package inside the Q-Packages directory of Pylabs, for example `/opt/qbase5/var/qpackages4/files/<domain>/<package>/<version>`.
 * getPathSourceCode: function that retrieves the directory with the source code for the package, for example `/opt/qbase5/var/src/<package>/<version>`
 
 

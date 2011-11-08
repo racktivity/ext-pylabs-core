@@ -2,13 +2,13 @@
 @metadata order=25
 @metadata tagstring=practical create pyapp
 
-[introduction]: #/PyLabsApps/Introduction
-[model]: #/PyLabsApps/Modeling
+[introduction]: #/PylabsApps/Introduction
+[model]: #/PylabsApps/Modeling
 
 
 #PyApps Practical Information
-In the [introduction][] you have learned the theoretical side of PyLabs Applications, such as the architecture and directory structure. 
-In practice you will notice that the PyLabs framework automates many of the steps in creating a PyApp.
+In the [introduction][] you have learned the theoretical side of Pylabs Applications, such as the architecture and directory structure. 
+In practice you will notice that the Pylabs framework automates many of the steps in creating a PyApp.
 
 This section gives you an overview of the practical steps in creating a PyApp.
 

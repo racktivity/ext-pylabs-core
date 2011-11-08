@@ -3,18 +3,18 @@
 @metadata tagstring=install sampleapp
 
 
-[imgdocSpace]: images/images50/installation/docSpace.png
+[imgdocSpace]: images/images51/installation/docSpace.png
 
 
 # Installing the SampleApp
 
-PyLabs 5 has created a sample PyLabs application (PyApp), called '**sampleapp**'. This is a very basic CRM application, just to show the power of PyLabs.
+Pylabs 5 has created a sample Pylabs application (PyApp), called '**sampleapp**'. This is a very basic CRM application, just to show the power of Pylabs.
 To install this sample application:
 
-1. Go to the PyLabs root directory: `cd /opt/qbase5/` 
+1. Go to the Pylabs root directory: `cd /opt/qbase5/` 
 2. Start the Q-Shell: `./qshell` 
 3. Find and install the sample application: `i.qp.find('sampleapp').install()` 
-4. Make the application available in PyLabs 5: `p.application.install('sampleapp')`
+4. Make the application available in Pylabs 5: `p.application.install('sampleapp')`
 
      * Generating base services                                  DONE
      * Generating API for sampleapp application                  RUNNING
@@ -43,7 +43,7 @@ where '<ip address>' is the IP address of the machine on which you installed the
 
 
 ## About the Sample Application
-The sample application contains documentation about creating your own PyLabs application. To open the documentation, browse to the sample application.
-By default, the '*crm*' space is displayed. Switch the space to '*doc*' to get the PyLabs Application documentation.
+The sample application contains documentation about creating your own Pylabs application. To open the documentation, browse to the sample application.
+By default, the '*crm*' space is displayed. Switch the space to '*doc*' to get the Pylabs Application documentation.
 
 ![docSpace][imgdocSpace]

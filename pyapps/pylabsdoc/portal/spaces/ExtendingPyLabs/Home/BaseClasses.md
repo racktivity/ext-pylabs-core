@@ -5,17 +5,17 @@
 [twisted]: http://twistedmatrix.com/trac/
 
 
-# PyLabs Base Classes
+# Pylabs Base Classes
 
-The PyLabs base classes module contains different classes which are required for the full functionality of PyLabs. The purpose of the `baseclasses` module is twofold:
+The Pylabs base classes module contains different classes which are required for the full functionality of Pylabs. The purpose of the `baseclasses` module is twofold:
 
-* Obtain functionalities and properties for later usage when developing applications, based on the PyLabs framework.
-* Create categories in the different PyLabs functionalities for clarity and easy retrieval of the functions.
+* Obtain functionalities and properties for later usage when developing applications, based on the Pylabs framework.
+* Create categories in the different Pylabs functionalities for clarity and easy retrieval of the functions.
 
 ----
 ## In this Chapter...
 
-Overview of the PyLabs BaseClasses
+Overview of the Pylabs BaseClasses
 
 [[children/]]
 
@@ -72,12 +72,12 @@ The initialization consists of the initialization of the _base properties_, i.e.
 
 Use this class for CMDB objects which are not CMDBApplication or CMDBServer objects and which is not a property of a complex CMDB Object.
 
-It is possible to use the CMDBObject class to directly manipulate in the CMDB via a self-developed application. However, in the PyLabs framework, this class is mainly used by the [#CMDBApplicationObject] class and indirectly by the CMDBServerObject class. 
+It is possible to use the CMDBObject class to directly manipulate in the CMDB via a self-developed application. However, in the Pylabs framework, this class is mainly used by the [#CMDBApplicationObject] class and indirectly by the CMDBServerObject class. 
 
 
 ## CMDBServerObject
 The CMDBServerObject class _always_ inherits everything from CMDBApplicationObject and adds the attributes `autoRestart` and `startAtReboot`.  This class contains the configuration application object for server applications but does _not_ contain any management logic.
-Use the CMDBServerObject class for configuring a server application, e.g. configuring a portforwarder server. The portforwarding class of PyLabs inherits from the CMDBServerObject Class and adds the attributes `forwards` (i.e. a dictionary of portforwarding rules), `managementPort` and, `cmdbtypename` (i.e. location in the CMDB).
+Use the CMDBServerObject class for configuring a server application, e.g. configuring a portforwarder server. The portforwarding class of Pylabs inherits from the CMDBServerObject Class and adds the attributes `forwards` (i.e. a dictionary of portforwarding rules), `managementPort` and, `cmdbtypename` (i.e. location in the CMDB).
 
 
 ## CMDBSubObject
@@ -94,7 +94,7 @@ The methods of this module can then be used in the management module (Management
 
 
 ## ManagementApplication
-The ManagementApplication class is the management base class for one server or one application. This class is one of the core PyLabs classes since it is the bridge between the application's configuration stored in the CMDB and the management and configuration of the application on the system.    
+The ManagementApplication class is the management base class for one server or one application. This class is one of the core Pylabs classes since it is the bridge between the application's configuration stored in the CMDB and the management and configuration of the application on the system.    
 The management class applies the configuration stored in the CMDB to the system and controls the application on the system using the command module (CommandWrapper) of the application.
 
 
@@ -122,5 +122,5 @@ The SystemWrapper class is a class that does nothing more than wrapping function
 
 
 ## Dirty Flagging
-The PyLabs framework has a mechanism that allows you to verify if the real configuration of a CMDB Object is synchronized with the CMDB. A CMDB object is a configuration that has specific properties. It might be possible that a user changes a value of a CMDB object without saving it in the CMDB. As a consequence the CMDB object becomes dirty (i.e. not synchronized with the CMDB) as long as it is not saved.  
+The Pylabs framework has a mechanism that allows you to verify if the real configuration of a CMDB Object is synchronized with the CMDB. A CMDB object is a configuration that has specific properties. It might be possible that a user changes a value of a CMDB object without saving it in the CMDB. As a consequence the CMDB object becomes dirty (i.e. not synchronized with the CMDB) as long as it is not saved.  
 Dirty flagging will be mainly used in the code that defines a CMDB Object. See CMDBSubObject paragraph for the usage of the dirty flag.

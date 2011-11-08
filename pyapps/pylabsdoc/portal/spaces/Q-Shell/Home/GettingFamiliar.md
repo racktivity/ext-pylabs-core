@@ -2,17 +2,17 @@
 @metadata order=10
 @metadata tagstring=getting familiar
 
-[imgQshell1]: images/images50/qshell/Q-Shell_01.png
-[imgQshell2]: images/images50/qshell/Q-Shell_02.png
-[imgQshell3]: images/images50/qshell/Q-Shell_03.png
-[imgQshell4]: images/images50/qshell/Q-Shell_04.png
-[imgQshell5]: images/images50/qshell/Q-Shell_05.png
+[imgQshell1]: images/images51/qshell/Q-Shell_01.png
+[imgQshell2]: images/images51/qshell/Q-Shell_02.png
+[imgQshell3]: images/images51/qshell/Q-Shell_03.png
+[imgQshell4]: images/images51/qshell/Q-Shell_04.png
+[imgQshell5]: images/images51/qshell/Q-Shell_05.png
 
 
 #Getting Familiar with the Q-Shell
 
 ## Starting the Q-Shell
-When you have installed PyLabs, go to the folder `/opt/qbase5`.
+When you have installed Pylabs, go to the folder `/opt/qbase5`.
 
 Enter the following command to launch the Q-Shell: `./qshell`
 
@@ -23,9 +23,9 @@ Enter the following command to launch the Q-Shell: `./qshell`
 
 The Q-Shell has three main name spaces:
 
-* **q.**: the main name space of PyLabs, used for automation scripts, configuring PyLabs extensions, ...
+* **q.**: the main name space of Pylabs, used for automation scripts, configuring Pylabs extensions, ...
 * **i.**: interactive name space, functions in this name space require user input
-* **p.**: the name space to manage PyLabs applications
+* **p.**: the name space to manage Pylabs applications
 
 
 ## Using the Q-Shell

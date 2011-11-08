@@ -2,29 +2,29 @@
 @metadata order=10
 @metadata tagstring=intro pyapp architecture drp create
 
-[imgPyAppArch]: images/images50/pyapps/PyApp_Architecture.png
-[imgDrp]: images/images50/pyapps/PyLabs_DRP.png
-[imgPyApp]: images/images50/pyapps/PyApp.png
-[imgPyAppCreate]: images/images50/pyapps/PyApp_Create.png
-[drp]: #/PyLabs50/Architecture
+[imgPyAppArch]: images/images51/pyapps/PyApp_Architecture.png
+[imgDrp]: images/images51/pyapps/Pylabs_DRP.png
+[imgPyApp]: images/images51/pyapps/PyApp.png
+[imgPyAppCreate]: images/images51/pyapps/PyApp_Create.png
+[drp]: #/Pylabs50/Architecture
 [epydoc]: http://epydoc.sourceforge.net/
 
 
-#PyLabs Applications
+#Pylabs Applications
 
 ##Introducing PyApps
-A PyApp is an application which is created on top of the PyLabs framework.
+A PyApp is an application which is created on top of the Pylabs framework.
 Each PyApp consists of the same components, such as Root Objects, actions, wizards, forms, tasklets, ...
 
 In this section we introduce you to the different components of PyApps and how they interact.
 
 
 ###Architecture
-Below you can find the architecture of how the PyLabs framework is built.
+Below you can find the architecture of how the Pylabs framework is built.
 
 ![PyApps_Architecture][imgPyAppArch]
 
-![PyLabs_DRP][imgDrp]
+![Pylabs_DRP][imgDrp]
 
 Arakoon: key/value store of objects, non-queryable, no relational DB. This database is used to store the actual objects of your application.
 
@@ -37,8 +37,8 @@ OSIS: Object Store and Indexing System, this is a layer on top of Arakoon and Po
 
 
 ###PyModel
-PyModel is a PyLabs extension to define, create, and update complex objects. PyModel is capable of serializing Thrift objects to store them in Arakoon, as well as deserializing these objects for further usage in your application.
-The PyModel extension is represented by `p.api.model in PyLabs`.
+PyModel is a Pylabs extension to define, create, and update complex objects. PyModel is capable of serializing Thrift objects to store them in Arakoon, as well as deserializing these objects for further usage in your application.
+The PyModel extension is represented by `p.api.model in Pylabs`.
 
 
 ###Root Objects
@@ -213,7 +213,7 @@ The `impl`-directory contains all the code that perform an action in your PyApp,
 * domainname: this will mainly be the name of your PyApp, `crm` in case of this sample PyApp.
 * actorname: meaningful name for the actor of your PyApp.
 * methodname: name of the action that the actor will execute. This directory contains tasklets that provide the data of which scripts must be executed by whom. The scripts-directory is a subdirectory of the action-directory.
-* scripts: this directory contains the scripts that are executed by the PyLabs agents. They execute something in reality, for example send out a mail.
+* scripts: this directory contains the scripts that are executed by the Pylabs agents. They execute something in reality, for example send out a mail.
 
 
 ####impl/authenticate
@@ -297,7 +297,7 @@ Below you can find a general overview of the creation process of a PyApp.
 
 From a practical point of view, you have to:
 
-1. Install PyLabs
+1. Install Pylabs
 2. Create the PyApp Directory structure
 3. Create at least one model file
 4. Install the PyApp via the Q-Shell: `p.application.install('yourPyApp')`

@@ -5,8 +5,8 @@
 
 #General Configuration Functions
 
-The configuration of applications may be complex if you have to configure it via the command line. PyLabs gets rid of this complexity and offers you instead an easy to use configuration platform.
-All PyLabs-compatible applications make use of this configuration platform.
+The configuration of applications may be complex if you have to configure it via the command line. Pylabs gets rid of this complexity and offers you instead an easy to use configuration platform.
+All Pylabs-compatible applications make use of this configuration platform.
 
 There are two sections where you can configure an application:
 

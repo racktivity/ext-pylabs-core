@@ -1,13 +1,13 @@
 @metadata spaceorder=20
-@metadata title=PyLabs 5 Overview
+@metadata title=Pylabs 5 Overview
 @metadata tagstring=overview components description
 
 
-# PyLabs 5 Overview
+# Pylabs 5 Overview
 
-In this section you get a high-level overview of what PyLabs is.
+In this section you get a high-level overview of what Pylabs is.
 
-This covers the architecture of PyLabs, a description of the PyLabs core components, ... everything you need to know to get a clear understanding the way PyLabs is built.
+This covers the architecture of Pylabs, a description of the Pylabs core components, ... everything you need to know to get a clear understanding the way Pylabs is built.
 
 ### In this Chapter...
 

@@ -6,7 +6,7 @@
 
 @todo needs to be checked if this code still works and where the extension is, the IrcTarget should be packages as real extension
 
-PyLabs contains a logging framework which supports multiple log handlers. One of these handlers can be used to send all log messages to a channel on an IRC server.
+Pylabs contains a logging framework which supports multiple log handlers. One of these handlers can be used to send all log messages to a channel on an IRC server.
 
 Using it is very simple: you need to create a handler, register it to the logging subsystem, and start logging messages.
 

@@ -8,13 +8,13 @@
 
 # Tasklets
 
-Tasklets are small pieces of code that are executed by a PyLabs Tasklet Engine. The tasklet engine is the component responsible for loading, categorizing, and executing tasklets. Tasklets are executed based on _tags_ and _priority_, but can also be triggered by events or other specific criteria.
-Tasklets are used over the full PyLabs framework stack, from displaying wizards to storing object in a database.
+Tasklets are small pieces of code that are executed by a Pylabs Tasklet Engine. The tasklet engine is the component responsible for loading, categorizing, and executing tasklets. Tasklets are executed based on _tags_ and _priority_, but can also be triggered by events or other specific criteria.
+Tasklets are used over the full Pylabs framework stack, from displaying wizards to storing object in a database.
 
 
 ## Tasklet Structure
 
-In PyLabs, it is recommended that the file name of an action tasklet has the following structure:
+In Pylabs, it is recommended that the file name of an action tasklet has the following structure:
 
 `<priority>_<object>_<action>.py`
 
@@ -42,7 +42,7 @@ The tags of the tasklet are the folder names in which the tasklet resides. Take 
 This file is located in `/opt/qbase5/pyapps/sampleapp/impl/action/crm/customer/create`, where `crm` is a domain inside the 'sampleapp' application. All folder names, including the domain name, are used as tags of the tasklet.
 Thus the tags of the given tasklet example are `crm`, `customer`, and `create`.
 
-In PyLabs 5 you can still use the old style tasklets, where the priority and tags are inside the tasklet. In that case the tags and priority override the folder and file name usage as described above.
+In Pylabs 5 you can still use the old style tasklets, where the priority and tags are inside the tasklet. In that case the tags and priority override the folder and file name usage as described above.
 An oldstyle tasklet then looks like:
 
 
@@ -62,7 +62,7 @@ def match(q, i, p, params, tags):
 
 
 ## The Tasklet Main-Function
-The `main` function of a tasklet contains the code that will be executed when the tasklet is triggered. In this function you can use all PyLabs [name spaces][ns] (i, p, and q).
+The `main` function of a tasklet contains the code that will be executed when the tasklet is triggered. In this function you can use all Pylabs [name spaces][ns] (i, p, and q).
 Besides the three name spaces you get a [dictionary][dict] of parameters and a tuple of tags.
 If you need more libraries in your function, you can import them inside this function.
 
@@ -77,7 +77,7 @@ def main(q, i, p, params, tags):
 
 The `tags` contain the tags used to call the tasklet. The tags tuple is not necessarily required to be exactly the same as the tags build via the folder names or inside the tasklet.
 
-The `params` dictionary can contain a set of key-value pairs. This dictionary is populated throughout the whole PyLabs framework. 
+The `params` dictionary can contain a set of key-value pairs. This dictionary is populated throughout the whole Pylabs framework. 
 As shown in the example above, you add the value `something` to the key `result`. If you call another tasklet with the same `params` dictionary, the dictionary has one more key-value pair, compared to the one used in the shown tasklet.
 
 Beware that a tasklet should execute one and only one task, so don't execute more than one task in the tasklet.
@@ -89,7 +89,7 @@ When the `main` function must be executed without specific filters, which means 
 This could be done in the shown example.
 
 If the `main` function may only be executed in certain cirumstances, you can add the criteria to the `match` function. 
-Similar to the `main` function, you can use all PyLabs [name spaces][ns] (i, p, and q), you have a [dictionary][dict] of parameters and a tuple of tags at your disposal, and you can import extra libraries if required.
+Similar to the `main` function, you can use all Pylabs [name spaces][ns] (i, p, and q), you have a [dictionary][dict] of parameters and a tuple of tags at your disposal, and you can import extra libraries if required.
 
 In the example below, the tasklet is only executed every 300 seconds or five minutes.
 

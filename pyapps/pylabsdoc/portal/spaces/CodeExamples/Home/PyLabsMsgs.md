@@ -2,7 +2,7 @@
 @metadata tagstring=message
 
 
-# PyLabs Messages Test Example
+# Pylabs Messages Test Example
 
 [[code]]
 from pylabs.InitBase import *

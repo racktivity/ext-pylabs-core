@@ -3,7 +3,7 @@
 
 # Using the CMDB Classes
 
-In the previous section, you have seen some basic information about the PyLabs BaseClasses. In this section you will get to know some practical information about using the CMDB classes.
+In the previous section, you have seen some basic information about the Pylabs BaseClasses. In this section you will get to know some practical information about using the CMDB classes.
 
 ## Levels of the CMDB Classes
 The CMDB classes are split into several levels: 

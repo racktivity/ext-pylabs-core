@@ -2,7 +2,7 @@
 @metadata order=50
 @metadata tagstring=cmdb test data
 
-[extspec]: #/ExtendingPyLabs/ExtensionSpecs
+[extspec]: #/ExtendingPylabs/ExtensionSpecs
 [qshelloption]: #/Q-Shell/QShellOptions
 
 

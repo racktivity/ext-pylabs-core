@@ -9,7 +9,7 @@ When you need to apply changes to an application, you have to create a new versi
 There are two ways to create an update of a new Q-Package:
 
 * via the `quickPackage` method on a Q-Package
-* via manual intervention in the PyLabs 5 Q-Package directories
+* via manual intervention in the Pylabs 5 Q-Package directories
 
 
 ## quickPackage to Update Q-Package
@@ -19,7 +19,7 @@ The `quickPackage` method on a Q-Package is by far the easiest way to update a Q
 The `quickPackage` method performs three tasks:
 
 * **checkout**: download the sources from the versioning system of the Q-Package
-* **compile**: compile the sources to make them compatible with PyLabs
+* **compile**: compile the sources to make them compatible with Pylabs
 * **package**: package the sources
 
 See [Creating a Q-Package|Creating a Q-Package#Building the Q-Package] for more information.
@@ -29,7 +29,7 @@ After executing the `quickPackage` method, you have to publish the domain in whi
 
 ## Manual Update of a Q-Package
 In the procedure of the above section, one is considered to have all sources in a versioning system (e.g. Mercurial, Bazaar, ...). This is far out the most recommended way to manage your applications.
-However, an alternative is to manually update the sources in the Q-Package directories of your PyLabs framework. This is then the procedure to follow:
+However, an alternative is to manually update the sources in the Q-Package directories of your Pylabs framework. This is then the procedure to follow:
 
 1. Find and download the Q-Package via the Q-Shell:
 [[code]]
@@ -38,7 +38,7 @@ i.qp.lastPackage.download()
 [[/code]]
 This action downloads the bundle (`.tgz` file) of the Q-Package to `/opt/qbase5/var/qpackages4/bundles/<domain>`.
 <br />
-2. Extract the Q-Package to the Q-Package directory of PyLabs: 
+2. Extract the Q-Package to the Q-Package directory of Pylabs: 
 <br>
 [[warning]]
 **Warning** 

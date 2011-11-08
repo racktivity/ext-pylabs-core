@@ -60,7 +60,7 @@ e.g.
 * is result of : message.getMessageString(multiline=True)  #if printed without multiline True everything will be serialized on 1 line
 
 
-## PyLabs
+## Pylabs
 
 Inherits from the base MessageObject
 

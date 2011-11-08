@@ -2,23 +2,23 @@
 @metadata order=20
 @metadata tagstring=model root object ro
 
-[pyappdir]: #/PyLabsApps/Introduction
-[drp]: #/PyLabs50/Architecture
+[pyappdir]: #/PylabsApps/Introduction
+[drp]: #/Pylabs50/Architecture
 [arakoon]: http://www.arakoon.org
 [decorator]: http://wiki.python.org/moin/PythonDecorators
 [classmethod]: http://docs.python.org/library/functions.html#classmethod
-[enums]: #/ExtendingPyLabs/CreateEnumerators
+[enums]: #/ExtendingPylabs/CreateEnumerators
 [thrift]: http://thrift.apache.org/
 
 
 #Modeling Root Objects
 
-After the process of designing your PyLabs Application (PyApp), it is time that you define the different Root Objects of your PyApp. Each model of a root object is a `.py`-file and stored in its proper directory.
+After the process of designing your Pylabs Application (PyApp), it is time that you define the different Root Objects of your PyApp. Each model of a root object is a `.py`-file and stored in its proper directory.
 
 See the [PyApps Directory Structure][pyappdir] for more information about the location of the files.
 
 ##What is a Root Object
-A Root Object is a logical entity of the PyApp, stored in the PyLabs [DRP][drp] (Datacenter Resource Planning), and more specific in [Arakoon][arakoon]. A Root Object consists of properties, complex properties, and references to other Root Objects.
+A Root Object is a logical entity of the PyApp, stored in the Pylabs [DRP][drp] (Datacenter Resource Planning), and more specific in [Arakoon][arakoon]. A Root Object consists of properties, complex properties, and references to other Root Objects.
 A complex property, also referred to as 'model object', is for example a contact person in a company. The contact on its turn has its own properties.
 For example a customer can have a name and address as properties, contacts as model objects, and references to other customers.
 
@@ -54,7 +54,7 @@ Make sure that each class and each property starts with a documentation line as 
 ##File Details
 
 ###Importing Libraries
-You always need to import at least one library, `pymodel`, which is a key component of the PyLabs framework.
+You always need to import at least one library, `pymodel`, which is a key component of the Pylabs framework.
 If you need custom enumerators, you also need to import the BaseEnumeration library.
 
 [[code]]
@@ -63,7 +63,7 @@ import pymodel as model
 [[/code]]
 
 ###Creating Custom Enumerators
-Besides the default PyLabs enumerators, such as AppStatusType and MessageType, you can create your own enumerator.
+Besides the default Pylabs enumerators, such as AppStatusType and MessageType, you can create your own enumerator.
 Each custom enumerator is a custom class that inherits from the BaseEnumeration base class.
 Always add a short description of the enumerator with `#@doc your doc here`. This documentation is used in the API documentation of the PyApp.
 
@@ -85,7 +85,7 @@ Then you start registering the items, make sure that each item is capitalized.
 
 To finish the enumeration, call the `finishItemRegistration` function.
 
-See also the [Extending PyLabs][enums] chapter for more information about PyLabs Enumerators.
+See also the [Extending Pylabs][enums] chapter for more information about Pylabs Enumerators.
 
 
 ###Modeling the Root Object
@@ -109,9 +109,9 @@ where x is a sequential integer and where `property_type` can be one of the foll
 * Object
 * String
 
-The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. PyLabs uses the [thrift][] framework for serializing and deserializing objects. Where PyLabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.
+The `thrift_id` is a required argument. It is a unique identifier for the object and must remain unique over time. Pylabs uses the [thrift][] framework for serializing and deserializing objects. Where Pylabs itself uses the property_name in the application, the underlying thrift framework uses this `thrift_id`.
 
-In case the property is an Enumeration-type, you have to add the enumerator as argument. The enumerator can be a default PyLabs enumerator, or a custom enumerator.
+In case the property is an Enumeration-type, you have to add the enumerator as argument. The enumerator can be a default Pylabs enumerator, or a custom enumerator.
 
 As last point, do not forget to add documentation to the object and its properties. 
 

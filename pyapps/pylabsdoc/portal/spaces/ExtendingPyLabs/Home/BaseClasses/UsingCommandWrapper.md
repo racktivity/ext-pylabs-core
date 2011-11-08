@@ -15,7 +15,7 @@ This module contains the commands to manage a VirtualBox machine, e.g. start, st
 
 
 ## Importing the Necessary Modules
-In a first phase you need to import all necessary modules. For all command tools modules you need to import the PyLabs framework central class, of which the `q` object is an instance, and the `CommandWrapper` base class.
+In a first phase you need to import all necessary modules. For all command tools modules you need to import the Pylabs framework central class, of which the `q` object is an instance, and the `CommandWrapper` base class.
 Import other modules if necessary.
 
 [[code]]

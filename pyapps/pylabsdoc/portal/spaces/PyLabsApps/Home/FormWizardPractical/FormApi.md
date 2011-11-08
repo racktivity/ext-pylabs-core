@@ -4,7 +4,7 @@
 
 #Form API
 
-In this section you can find the API documentation of the methods to create forms in a PyLabs Application.
+In this section you can find the API documentation of the methods to create forms in a Pylabs Application.
 The methods to create a form are available in the name space `q.gui.form.`.
 
 
@@ -509,8 +509,8 @@ Example:
 
 ##Screenshots
 
-![Example 1](images/images50/pyapps//wizard_sample1.png)
+![Example 1](images/images51/pyapps//wizard_sample1.png)
 
-![Example 2](images/images50/pyapps/wizard_sample2.png)
+![Example 2](images/images51/pyapps/wizard_sample2.png)
 
-![Example 3](images/images50/pyapps/wizard_sample3.png)
+![Example 3](images/images51/pyapps/wizard_sample3.png)

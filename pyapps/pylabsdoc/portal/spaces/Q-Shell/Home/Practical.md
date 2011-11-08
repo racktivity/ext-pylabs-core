@@ -2,13 +2,13 @@
 @metadata order=20
 @metadata tagstring=practical usage qshell script file system directories network
 
-[fswalker]: #/Scripting/UsingPyLabs
+[fswalker]: #/Scripting/UsingPylabs
 
 #Using the Q-Shell
 In the previous sections you have learned how to work with the Q-Shell and what the principles are.
 In this section you will get some more practical examples to use the Q-Shell.
 
-Q-Shell can interact with the OS which hosts PyLabs. For example you can create new directories, copy files, and various other file system commands.
+Q-Shell can interact with the OS which hosts Pylabs. For example you can create new directories, copy files, and various other file system commands.
 All operating system commands are located under `q.system.` in the Q-Shell. 
 * file system commands:`q.system.fs`, for example copy files, create directories, ...
 * OS process commands:`q.system.process`, for example check if process is alive, kill processes, ...
@@ -88,7 +88,7 @@ The content of the `pyapps` directory (`__init.py__` and `sampleapp` directory) 
 
 
 **Working with Directories**
-In the `q.dirs` name space you can get the paths to default PyLabs system directories, for example the `bin` or `pyapps` directory.
+In the `q.dirs` name space you can get the paths to default Pylabs system directories, for example the `bin` or `pyapps` directory.
 
 [[code]]
     In [9]: q.dirs.binDir
@@ -98,7 +98,7 @@ In the `q.dirs` name space you can get the paths to default PyLabs system direct
     Out[10]: '/opt/qbase5/pyapps'
 [[/code]]
 
-With these functions it is easy to create new directories or copy files to PyLabs system directories.
+With these functions it is easy to create new directories or copy files to Pylabs system directories.
 
 To create a new directory names to combine various names, use the `q.system.fs.joinPaths` function:
 

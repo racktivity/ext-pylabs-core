@@ -3,7 +3,7 @@
 @metadata tagstring=event actions event-driven
 
 [rabbit]: http://www.rabbitmq.com/
-[pyappdir]: #/PyLabsApps/Introduction
+[pyappdir]: #/PylabsApps/Introduction
 [events]: #/Overview/Events
 
 #Event-Driven Actions
@@ -12,7 +12,7 @@ In the previous sections you have learned how to create actions. These actions a
 In many cases you want actions to be executed automatically, for example send a mail to a new customer, or update a page when an object is updated.
 
 
-##PyLabs 5 Events
+##Pylabs 5 Events
 Pylabs 5 introduces a new standardized way for publishing and consuming [events][] using tasklets. The event framework uses [RabbitMQ][rabbit] as messaging system. The three important components in this event framework are:
 
 * Producer: publishes event messages in a specific format
@@ -23,7 +23,7 @@ Each application is able to define multiple consumers which are registered for c
 
 
 ##Event Structure
-An event in PyLabs 5 consists of two strings. The first string is the 'event' key, used to categorize the event. The second string can span multiple lines, where each line is a PyLabs tags/label-string. For example:
+An event in Pylabs 5 consists of two strings. The first string is the 'event' key, used to categorize the event. The second string can span multiple lines, where each line is a Pylabs tags/label-string. For example:
 
     customer_pending state:created guid:5a1b2969-7f7f-46b0-a0f8-4060f5f8ca5b
     status:new guid:1fdcd5cd-e9a5-4f3c-a329-f6ed72f790e2
@@ -42,7 +42,7 @@ For example, you can create an event when a mail has arrived in a mailbox:
 
 The routing key is '`pylabs.event.sampleapp.email`'. Each event consumer that has this key in its configuration file will react on this event.
 
-PyLabss 5 has already some built-in producers, located in `/opt/qbase5/pyapps/sampleapp/impl/osis/generic/object_generateevent_<action>.py`. These producers generate events for objects stored/updated in or deleted from OSIS.
+Pylabss 5 has already some built-in producers, located in `/opt/qbase5/pyapps/sampleapp/impl/osis/generic/object_generateevent_<action>.py`. These producers generate events for objects stored/updated in or deleted from OSIS.
 
 [[code]]
 __author__ = 'incubaid'
@@ -57,7 +57,7 @@ def main(q, i, p, params, tags):
     
 
 ##Event Consumer
-A PyLabs event consumer is a client that reacts on a given event. The consumer consists of a configuration file and at least one tasklet.
+A Pylabs event consumer is a client that reacts on a given event. The consumer consists of a configuration file and at least one tasklet.
 
 The configuration file has one section `[main]` with the following entries:
 
@@ -126,7 +126,7 @@ def main(q, i, p, params, tags):
 
 
 ##Conclusion
-The event framework is a simple, but powerful component of the PyLabs framework. Its major feature is the possibility of event-driven actions.
+The event framework is a simple, but powerful component of the Pylabs framework. Its major feature is the possibility of event-driven actions.
 An event-driven action is an action that is executed when a specific event is generated. You have to decide yourself when to generate an event. Do not exaggerate however, it may slow down your application.
 Typically a PyApp has multiple consumers, each reading the events (messages) published on the RabbitMQ queue. A consumer consists of a configuration file and one or more action tasklets. The configuration file filters the events by using the eventKey. The `match` function in the action tasklet then determines which tasklet needs to be executed.
 

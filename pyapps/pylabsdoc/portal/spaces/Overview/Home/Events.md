@@ -5,12 +5,12 @@
 [downloadevent]: http://bitbucket.org/despiegk/sso_openerp/
 [tour]: http://doc.openerp.com/book/1/1_2_Guided_Tour/1_2_Guided_Tour_install_functionality.html
 [SSOEvents]: http://confluence.aserver.com/display/SSODOCINT/SSO+Event+List
-[imgExportEventTypes]: images/images50/pyapps/ExportEventTypes.png
-[imgExport]: images/images50/pyapps/Export.png
-[imgSaveAs]: images/images50/pyapps/SaveAs.png
+[imgExportEventTypes]: images/images51/pyapps/ExportEventTypes.png
+[imgExport]: images/images51/pyapps/Export.png
+[imgSaveAs]: images/images51/pyapps/SaveAs.png
 
 
-# PyLabs Events
+# Pylabs Events
 
 [[warning]]
 **Warning**
@@ -22,7 +22,7 @@ Our apologies for any inconvenience.
 
 ## Introduction
 
-The goal of this document is to describe how the PyLabs event handler works, as well as list the default event processing tasklets.
+The goal of this document is to describe how the Pylabs event handler works, as well as list the default event processing tasklets.
 
 ## Event Types Database
 
@@ -42,7 +42,7 @@ An event type, is a definition of an event with its properties. It has the follo
 
 * Component: a link to the related component.
 * Event type id: unique identifier for an event. Consists of a prefix which is related component.code + an auto-incremental number e.g. SSO-MON-PMACHINE-0001
-* Tags / Labels: PyLabs tags / labels format.
+* Tags / Labels: Pylabs tags / labels format.
 * Description: a description of the event specified.
 * Solution: possible solution when event occurs.
 * Severity overrule: with this value you can overrule the severity specified when the event was raised.
@@ -79,7 +79,7 @@ Step 3: Click on *Save As* and save the file to your local file system.
 
 ### Where to Place Exported Event Types in the Sandbox
 
-Untar the exported event types to the following location inside your PyLabs sandbox:
+Untar the exported event types to the following location inside your Pylabs sandbox:
 
     /opt/qbase5/cfg/evt_type_def/
 
@@ -104,12 +104,12 @@ The tar contains a file for every event type definition. The file name is equal 
 [[/info]]
 
 
-## PyLabs Event Handler
+## Pylabs Event Handler
 
 
 ### How to Raise Events
 
-Wherever you want to raise an event in your PyLabs application, you can use one of the following raise methods, according to the desired severity level:
+Wherever you want to raise an event in your Pylabs application, you can use one of the following raise methods, according to the desired severity level:
 
 * q.errorconditionhandler.raiseCritical(...)
 * q.errorconditionhandler.raiseError(...)

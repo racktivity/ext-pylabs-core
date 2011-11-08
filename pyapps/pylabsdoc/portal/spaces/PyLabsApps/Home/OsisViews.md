@@ -5,8 +5,8 @@
 [architecture]: #/Overview/Architecture
 [arakoon]: http://www.arakoon.org
 [tasklet]: #/Overview/Tasklets
-[pyappdir]: #/PyLabsApps/Introduction
-[model]: #/PyLabsApps/Modeling
+[pyappdir]: #/PylabsApps/Introduction
+[model]: #/PylabsApps/Modeling
 
 
 #OSIS Views

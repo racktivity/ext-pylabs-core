@@ -3,7 +3,7 @@
 @metadata tagstring=extension practical example pymodel
 
 [qpinstall]: #/Q-Packages/QPInstall
-[modeling]: #/PyLabsApps/Modeling
+[modeling]: #/PylabsApps/Modeling
 
 
 # Pymodel
@@ -93,4 +93,4 @@ The XML serializer  does not allow the conversion of an empty object to XML.
 
 ## How to Define a Model
 
-See the [Modeling][modeling] chapter in the PyLabs Applications space.
+See the [Modeling][modeling] chapter in the Pylabs Applications space.

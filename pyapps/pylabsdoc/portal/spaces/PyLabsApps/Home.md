@@ -1,35 +1,35 @@
 @metadata spaceorder=110
-@metadata title=PyLabs Applications
+@metadata title=Pylabs Applications
 @metadata tagstring=pyapp toc applications
 
-[intro]: #/PyLabsApps/Introduction
-[practical]: #/PyLabsApps/Practical
-[modeling]: #/PyLabsApps/Modeling
-[action]: #/PyLabsApps/Action
-[osisview]: #/PyLabsApps/OsisViews
-[osisoperation]: #/PyLabsApps/OsisOperations
-[actiontasklet]: #/PyLabsApps/ActionTasklet
-[formwizard]: #/PyLabsApps/FormWizardPractical
-[convention]: #/PyLabsApps/FormWizardConventions
-[formapi]: #/PyLabsApps/FormApi
-[wizardapi]: #/PyLabsApps/WizardApi
-[reality]: #/PyLabsApps/Reality
-[crud]: #/PyLabsApps/CRUD
-[eventdrivenaction]: #/PyLabsApps/EventDrivenActions
-[scheduling]: #/PyLabsApps/Scheduling
-[debug]: #/PyLabsApps/PyappDebug
-[apidoc]: #/PyLabsApps/GenerateApi
-[testapi]: #/PyLabsApps/TestingApi
+[intro]: #/PylabsApps/Introduction
+[practical]: #/PylabsApps/Practical
+[modeling]: #/PylabsApps/Modeling
+[action]: #/PylabsApps/Action
+[osisview]: #/PylabsApps/OsisViews
+[osisoperation]: #/PylabsApps/OsisOperations
+[actiontasklet]: #/PylabsApps/ActionTasklet
+[formwizard]: #/PylabsApps/FormWizardPractical
+[convention]: #/PylabsApps/FormWizardConventions
+[formapi]: #/PylabsApps/FormApi
+[wizardapi]: #/PylabsApps/WizardApi
+[reality]: #/PylabsApps/Reality
+[crud]: #/PylabsApps/CRUD
+[eventdrivenaction]: #/PylabsApps/EventDrivenActions
+[scheduling]: #/PylabsApps/Scheduling
+[debug]: #/PylabsApps/PyappDebug
+[apidoc]: #/PylabsApps/GenerateApi
+[testapi]: #/PylabsApps/TestingApi
 
 
-#PyLabs Applications
+#Pylabs Applications
 
-This chapter gives you a walk-through in the creation process of a PyLabs Application, or PyApp.
+This chapter gives you a walk-through in the creation process of a Pylabs Application, or PyApp.
 
 
 ##Table of Contents
 
-1. [Introducing PyLabs Applications][intro]
+1. [Introducing Pylabs Applications][intro]
 2. [PyApps Practical Information][practical]
 2. [Modeling Root Objects][modeling]
 3. [Defining Actions Interface on Root Objects][action]

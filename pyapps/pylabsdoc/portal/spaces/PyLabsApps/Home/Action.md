@@ -2,7 +2,7 @@
 @metadata order=30
 @metadata tagstring=action interface ro create
 
-[pyappdir]: #/PyLabsApps/Introduction
+[pyappdir]: #/PylabsApps/Introduction
 
 
 #Defining Actions Interface on Root Objects
@@ -75,7 +75,7 @@ In the method declaration you add the arguments and keyworded arguments. In the 
 
 where the type of the argument are the built-in Python types, such as float, integer, string, dictionary, ...
 
-Every action must have the arguments `jobguid` and `executionparams`. The `jobguid` is required as internal argument for the PyLabs framework. The `executionparams` is used for the workflow engine of the PyLabs framework.
+Every action must have the arguments `jobguid` and `executionparams`. The `jobguid` is required as internal argument for the Pylabs framework. The `executionparams` is used for the workflow engine of the Pylabs framework.
 
 
 ###Return Values
@@ -95,7 +95,7 @@ The way the return value must look like is denoted with the `@note:` keyword, po
 You also have to define what to do in case an action does not succeed, show a warning, or raise an exception. 
 
     @raise e:   throw an exception in case of an error
-    @warning:   only to be used with PyLabs client
+    @warning:   only to be used with Pylabs client
 
 
 ###Example Interface of a Root Object
