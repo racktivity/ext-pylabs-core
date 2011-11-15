@@ -370,7 +370,7 @@ class SystemFS:
         except:
             raise RuntimeError("Failed to create the directory [%s]" % newdir.encode("utf-8"))
 
-    def copyDirTree(self, src, dst, keepsymlinks = False, overwriteDestination = False):
+    def copyDirTree(self, src, dst, keepsymlinks = False, overwriteDestination = False, update=False):
         """Recursively copy an entire directory tree rooted at src.
         The dst directory may already exist; if not,
         it will be created as well as missing parent directories
@@ -378,6 +378,7 @@ class SystemFS:
         @param dst: string (path directory to be copied to...should not already exist)
         @param keepsymlinks: bool (True keeps symlinks instead of copying the content of the file)
         @param overwriteDestination: bool (Set to True if you want to overwrite destination first, be carefull, this can erase directories)
+        @param update: Add new files + update existing files, this option is ignored if overwriteDestination is enabled
         """
         pylabs.q.logger.log('Copy directory tree from %s to %s'% (src, dst),6)
         if ((src is None) or (dst is None)):
@@ -398,7 +399,7 @@ class SystemFS:
                                 self.removeDirTree( dstname )
                             else :
                                 self.unlink( dstname )
-                        else :
+                        elif not update:
                             # Only exception is if the destination and source both are directories
                             if not ( self.isDir( srcname , keepsymlinks) and self.isDir( dstname, False ) ) :
                                 continue
@@ -408,7 +409,7 @@ class SystemFS:
                         linkto = pylabs.q.system.fs.readlink(srcname)
                         pylabs.q.system.fs.symlink(linkto, dstname, overwriteDestination)
                     elif pylabs.q.system.fs.isDir(srcname):
-                        pylabs.q.system.fs.copyDirTree(srcname, dstname, keepsymlinks, overwriteDestination)
+                        pylabs.q.system.fs.copyDirTree(srcname, dstname, keepsymlinks, overwriteDestination, update)
                     else:
                         shutil.copy2(srcname, dstname)
                        
