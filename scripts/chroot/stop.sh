@@ -51,5 +51,5 @@ if [ -d ${FULL_CHROOT_PATH} ]; then
 		sleep 1;
 	done
 	
-	unmount "${FULL_CHROOT_PATH}";
+	unmount "${FULL_CHROOT_PATH}/";
 fi
