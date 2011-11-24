@@ -108,7 +108,7 @@ class CifsFS(object):
             if self.Atype == "copy":
                 if self.is_dir:
                     if self.recursive:
-                        q.system.fs.copyDirTree(uploadPath,self.mntpoint)
+                        q.system.fs.copyDirTree(uploadPath,self.mntpoint, update=True)
                     else:
                     # walk tree and copy
                         for file in q.system.fs.walk(uploadPath, recurse=0):

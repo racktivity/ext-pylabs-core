@@ -48,7 +48,7 @@ class FileFS(object):
                         if self.recursive:
                             q.logger.log("FileFS: (directory) Copying [%s] to path [%s] (recursively)" % (uploadPath,self.path))
                             if q.system.fs.isDir(uploadPath):
-                                q.system.fs.copyDirTree(uploadPath, self.path) # was copyDir !!
+                                q.system.fs.copyDirTree(uploadPath, self.path, update=True) # was copyDir !!
                             else:
                                 q.system.fs.copyFile(uploadPath, self.path) # was copyDir !!
                         else:
