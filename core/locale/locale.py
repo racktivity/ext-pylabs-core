@@ -54,7 +54,7 @@ class Localizer(object):
                         append=False
                         continue
                     if append:
-                        lastdomain.value += "\n" + line.rstrip("\\")
+                        lastdomain._value_ += "\n" + line.rstrip("\\")
                         if not line.endswith("\\"):
                             append=False
                         continue
