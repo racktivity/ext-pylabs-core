@@ -36,6 +36,7 @@
 import time
 import socket
 import re
+import platform
 
 import pylabs
 
@@ -43,7 +44,7 @@ class SystemNet:
 
     def __init__(self):
         self._windowsNetworkInfo = None
-        
+
     def checkListenPort(self, port):
         """
         Check if a certain port is listening on the system.
@@ -162,7 +163,7 @@ class SystemNet:
             if ipTuple: # if empty array skip
                 result.append(ipTuple[0][0])
         return result
-    
+
     def checkIpAddressIsLocal(self,ipaddr):
         if ipaddr.strip() in self.getIpAdresses():
             return True
@@ -189,7 +190,7 @@ class SystemNet:
             proxy_support = urllib2.ProxyHandler()
             opener = urllib2.build_opener(proxy_support)
             urllib2.install_opener(opener)
-    
+
     def getNics(self,up=False):
         """ Get Nics on this machine
         Works only for Linux/Solaris systems
@@ -485,6 +486,11 @@ class SystemNet:
         """
         return socket.gethostname()
 
+    def getShortHostname(self):
+        """Get short hostname of the machine
+        """
+        return platform.uname()[1].split('.', 1)[0]
+
     def isNicConnected(self,interface):
         if pylabs.q.platform.isLinux():
             carrierfile = '/sys/class/net/%s/carrier'%(interface)
@@ -633,7 +639,7 @@ class SystemNet:
             pylabs.q.system.fs.writeFile(hostsfile, filecontents)
         else:
             pylabs.q.logger.log('Ip address %s not found in hosts file' %ip, 1)
-            
+
     def getHostNamesForIP(self, hostsfile, ip):
         """Get hostnames for ip address
         @param hostsfile: File where hosts are defined
@@ -663,7 +669,7 @@ class SystemNet:
         # get content of hostsfile
         filecontents = pylabs.q.system.fs.fileGetContents(hostsfile)
         searchObj = re.search('^%s\s.*\n' %ip, filecontents, re.MULTILINE)
-        
+
         hostnames = ' '.join(hostname)
         if searchObj:
             filecontents = filecontents.replace(searchObj.group(0), '%s %s\n' %(ip, hostnames))
