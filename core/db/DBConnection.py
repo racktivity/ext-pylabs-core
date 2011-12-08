@@ -58,6 +58,8 @@ class DBConnection(object):
 
     def sqlexecute(self,sql):
         try:
+            if isinstance(sql, unicode):
+                sql = sql.encode('utf-8')
             return self._connection.query(sql)
         except:
             self._connection.reset()
