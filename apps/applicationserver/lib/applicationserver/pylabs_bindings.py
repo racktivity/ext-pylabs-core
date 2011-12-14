@@ -777,7 +777,7 @@ class Server:
             pid = q.system.fs.fileGetContents(pidfile)
 
             if pid and pid.isdigit() and q.system.process.isPidAlive(int(pid)):
-                raise 'Pid found in (old) pidfile "%s" is still running.' % pidfile
+                raise ApplicationserverException('Pid found in (old) pidfile "%s" is still running.' % pidfile)
             else:
                 q.system.fs.remove(pidfile)
 
