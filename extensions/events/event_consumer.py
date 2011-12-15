@@ -59,6 +59,6 @@ if __name__ == '__main__':
     q.application.appname = "../%s/eventconsumer/%s" % (appName, dirname)
     q.application.start()
     p.api = p.application.getAPI(appName)
-    p.api.model = p.application.getAPI(appName, context=q.enumerators.AppContext.APPSERVER)
+    p.api.model = p.application.getAPI(appName, context=q.enumerators.AppContext.APPSERVER).model
     cons = EventConsumer(queueName, bindingKey, taskletDir)
     cons.consume()
