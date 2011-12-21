@@ -3,6 +3,8 @@ import string
 # For backward compatibility with unicode strings, we keep the old version
 # around and use it accordingly
 def _old_toolStripNonAsciFromText(text):
+    if isinstance(text, unicode):
+        text = text.encode('utf-8')
     return string.join([char for char in str(text) if ((ord(char)>31 and ord(char)<127) or ord(char)==10)],"")
 
 
