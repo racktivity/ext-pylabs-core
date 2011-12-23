@@ -259,7 +259,7 @@ class ApplicationAPI(object):
         from pylabs.baseclasses.BaseEnumeration  import pymodelEnumerators
         if not context == q.enumerators.AppContext.CLIENT:
             for category in categories:
-                client = self._get_osis_client(appname, category)
+                client = self._get_osis_client(appname, category, context)
                 client.enumerators = pymodelEnumerators.get((appname, category))
                 setattr(self, category, client)
             #load language localizer if found
@@ -291,7 +291,7 @@ class ApplicationAPI(object):
         import pymodel
         from pymodel import serializers
 
-        from osis.client import connection, xmlrpc
+        from osis.client import connection, xmlrpc, local
 
         def list_(path_):
             subdirs = ((entry, os.path.join(path_, entry)) for entry in os.listdir(path_)
@@ -307,10 +307,34 @@ class ApplicationAPI(object):
             return connection.generate_client(list_(path_), transport_, serializer_)
 
         path = os.path.join(self._app_path, 'interface', category)
-        transport_uri = 'http://%s/%s/appserver/xmlrpc/' % (self._host, appname)
+        transport_uri = 'http://%s:80/%s/appserver/xmlrpc/' % (self._host, appname)
         osisservice = 'osissvc'
         transport = None
-        if context == q.enumerators.AppContext.WFE:
+        if self._host in ('localhost', '127.0.0.1'):
+            tasklet_path = os.path.join(self._app_path, 'impl', 'osis')
+            transport = local.LocalTransport(list_(path))
+            transport.tasklet_engine = q.taskletengine.get(tasklet_path)
+            orig_execute = transport.tasklet_engine.execute
+            def execute(**kwargs):
+                params = kwargs.pop('params', None)
+                params = params if params is not None else {}
+    
+                if 'rootobjecttype' in params and len(params['rootobjecttype']) == 3:
+                    category, domain, rootobjecttype = params['rootobjecttype']
+    
+                    params.update({
+                        'category': category,
+                        'domain': domain,
+                        'rootobjecttype': rootobjecttype,
+                    })
+    
+                kwargs['params'] = params
+    
+                return orig_execute(**kwargs)
+            transport.tasklet_engine.execute = execute
+
+
+        elif context == q.enumerators.AppContext.WFE:
             from workflowengine.xmlrpc import ConcurrenceOsisXMLRPCTransport
             transport = ConcurrenceOsisXMLRPCTransport(transport_uri, osisservice)
         else:
