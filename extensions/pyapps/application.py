@@ -23,7 +23,10 @@ class AppManager(object):
 
     def getAPI(self, appname, host='127.0.0.1', context=None, username=None, password=None):
         '''Retrieve api object for an application'''
-        return ApplicationAPI(appname, host, context, username, password)
+        api = ApplicationAPI(appname, host, context, username, password)
+        if not hasattr(p, 'api'):
+            p.api = api
+        return api
 
 
 
@@ -257,7 +260,7 @@ class ApplicationAPI(object):
 
         categories = ('model', 'config', 'monitoring')
         from pylabs.baseclasses.BaseEnumeration  import pymodelEnumerators
-        if not context == q.enumerators.AppContext.CLIENT:
+        if not context == q.enumerators.AppContext.CLIENT or host in ('localhost', '127.0.0.1'):
             for category in categories:
                 client = self._get_osis_client(appname, category, context)
                 client.enumerators = pymodelEnumerators.get((appname, category))
