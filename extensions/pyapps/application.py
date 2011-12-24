@@ -333,7 +333,11 @@ class ApplicationAPI(object):
     
                 kwargs['params'] = params
     
-                return orig_execute(**kwargs)
+                result = orig_execute(**kwargs)
+                if 'result' in params and isinstance(params['result'], tuple):
+                    params['result'] = list(params['result'])
+                return result
+
             transport.tasklet_engine.execute = execute
 
 
