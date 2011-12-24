@@ -330,6 +330,8 @@ class ApplicationAPI(object):
                         'domain': domain,
                         'rootobjecttype': rootobjecttype,
                     })
+                if 'rootobjectguid' in params:
+                    params['rootobjectguid'] = str(params['rootobjectguid'])
     
                 kwargs['params'] = params
     
