@@ -313,7 +313,7 @@ class ApplicationAPI(object):
         transport_uri = 'http://%s:80/%s/appserver/xmlrpc/' % (self._host, appname)
         osisservice = 'osissvc'
         transport = None
-        if self._host in ('localhost', '127.0.0.1'):
+        if self._host in ('localhost', '127.0.0.1') and context != q.enumerators.AppContext.WFE:
             tasklet_path = os.path.join(self._app_path, 'impl', 'osis')
             transport = local.LocalTransport(list_(path))
             transport.tasklet_engine = q.taskletengine.get(tasklet_path)
@@ -365,9 +365,9 @@ class XmlRpcActionProxy(object):
             m = getattr(m, methodname)
 
             return m(*args)
-        except AttributeError, ae:
+        except AttributeError:
             raise
-        except Exception, e:
+        except Exception:
             raise
 
 
