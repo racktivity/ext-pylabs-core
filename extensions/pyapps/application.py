@@ -260,7 +260,7 @@ class ApplicationAPI(object):
 
         categories = ('model', 'config', 'monitoring')
         from pylabs.baseclasses.BaseEnumeration  import pymodelEnumerators
-        if not context == q.enumerators.AppContext.CLIENT or host in ('localhost', '127.0.0.1'):
+        if not context == q.enumerators.AppContext.CLIENT:
             for category in categories:
                 client = self._get_osis_client(appname, category, context)
                 client.enumerators = pymodelEnumerators.get((appname, category))
@@ -313,7 +313,8 @@ class ApplicationAPI(object):
         transport_uri = 'http://%s:80/%s/appserver/xmlrpc/' % (self._host, appname)
         osisservice = 'osissvc'
         transport = None
-        if self._host in ('localhost', '127.0.0.1') and context != q.enumerators.AppContext.WFE:
+        #TODO Fix local transport
+        if False and self._host in ('localhost', '127.0.0.1') and context != q.enumerators.AppContext.WFE:
             tasklet_path = os.path.join(self._app_path, 'impl', 'osis')
             transport = local.LocalTransport(list_(path))
             transport.tasklet_engine = q.taskletengine.get(tasklet_path)
