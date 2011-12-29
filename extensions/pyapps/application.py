@@ -28,8 +28,6 @@ class AppManager(object):
             p.api = api
         return api
 
-
-
     def install (self, appname):
         app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
         if not q.system.fs.exists(app_dir):
@@ -56,6 +54,10 @@ class AppManager(object):
         from osis.store.OsisDB import OsisDB
         osis = OsisDB().getConnection(appname)
         return osis
+
+    def getRabbitMqHost(self, appname):
+        path = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg', 'rabbitmq')
+        return q.config.getConfig(path).get("main", {}).get("host", '127.0.0.1')
 
     def _validate_user_inputs(self, appname, keepchanges):
         if not q.system.fs.isDir(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)):
@@ -239,6 +241,14 @@ class AppManager(object):
         gen.start()
 
 
+class Events(object):
+    def __init__(self, app):
+        self._app = app
+        self._hostname = p.application.getRabbitMqHost(app.appname)
+
+    def publish(self, rootingKey, tagString):
+        p.events.publish(rootingKey, tagString, self._hostname)
+
 class ApplicationAPI(object):
 
     def __init__(self, appname, host=None, context=None, username=None, password=None):
@@ -256,6 +266,7 @@ class ApplicationAPI(object):
             sys.path.append(self._app_path)
 
         self.appname = appname
+        self.events = Events(self)
         self.action = self._get_actions(appname, context)
 
         categories = ('model', 'config', 'monitoring')

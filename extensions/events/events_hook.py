@@ -5,19 +5,16 @@ from events.event_consumer_mgr import EventConsumerMgr
 class Events(object):
 
     def __init__(self):
-        self._connection = None
+        self._connections = dict()
 
-    def _getConnection(self):
+    def getConnection(self, host):
         from events.rabbitmqclient import Connection
-        if not self._connection:
-            self._connection = Connection()
-        return self._connection
+        if host not in self._connections:
+            self._connections[host] = Connection(host)
+        return self._connections[host]
     
-    _con = property(fget=_getConnection)
-
-    
-    def publish(self, rootingKey, tagString):
-        self._con.publish(EXCHG_NAME, rootingKey, tagString)
+    def publish(self, rootingKey, tagString, host='127.0.0.1'):
+        self.getConnection(host).publish(EXCHG_NAME, rootingKey, tagString)
 
     def _getConsumerPath(self, appName):
         appDir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appName)

@@ -19,9 +19,9 @@ class EventConsumer:
     Connects to a Rabbitmq server as a consumer
     """
 
-    def __init__ ( self, queueName, bindingKey, taskletDir ):
+    def __init__ ( self, queueName, bindingKey, taskletDir, host):
         q.logger.log("Creating event consumer on queue %s with binding key %s and tasklet dir %s" % (queueName, bindingKey, taskletDir), 7)
-        self._connection = rmq.Connection()
+        self._connection = rmq.Connection(host)
         self._queueName = queueName
         self._exchangeName = EXCHG_NAME
         self._exchangeType = EXCHG_TYPE
@@ -60,5 +60,6 @@ if __name__ == '__main__':
     q.application.start()
     p.api = p.application.getAPI(appName)
     p.api.model = p.application.getAPI(appName, context=q.enumerators.AppContext.APPSERVER).model
-    cons = EventConsumer(queueName, bindingKey, taskletDir)
+    host = p.application.getRabbitMqHost(appName)
+    cons = EventConsumer(queueName, bindingKey, taskletDir, host)
     cons.consume()
