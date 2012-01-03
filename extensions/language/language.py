@@ -37,7 +37,7 @@ class JSLanguageCompiler(object):
                     line = line.rstrip("\\")
                     m = re.match(KEYP, line)
                     if not m:
-                        raise RuntimeException("Invalid line at '%s:%d'" % (lfile, l))
+                        raise RuntimeError("Invalid line at '%s:%d'" % (lfile, l))
                     k = m.group(1)
                     v = m.group(3)
                     
