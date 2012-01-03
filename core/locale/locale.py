@@ -63,7 +63,7 @@ class Localizer(object):
                     line = line.rstrip("\\")
                     m = re.match(KEYP, line)
                     if not m:
-                        raise RuntimeException("Invalid line at '%s:%d'" % (path, l))
+                        raise RuntimeError("Invalid line at '%s:%d'" % (path, l))
                     k = m.group(1)
                     v = m.group(3)
                     
