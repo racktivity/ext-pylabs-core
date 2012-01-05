@@ -214,7 +214,7 @@ class WizardTab(object):
         text = WizardElementBase(self.pm_actions._showText(text, value, True, validator, False, name, message, status, trigger, callback, helpText, optional))
         self.elements._addItem(text)
 
-    def addPassword(self, name, text, value=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
+    def addPassword(self, name, text, value=None, message='', status='', trigger=None, callback=None, helpText='', optional=True, confirm=False):
         """
         Create a display action containing password textbox control.
 
@@ -228,7 +228,7 @@ class WizardTab(object):
         @param helpText:      Information about the usage/functionality of the control
         @param optional:      Define the password field as optional parameter (boolean)
         """
-        password = WizardElementBase(self.pm_actions._showText(text, value, name=name, password=True, message=message, status=status, trigger=trigger, callback=callback, helpText=helpText, optional=optional))
+        password = WizardElementBase(self.pm_actions._showText(text, value, name=name, password=True, message=message, status=status, trigger=trigger, callback=callback, helpText=helpText, optional=optional, confirm=confirm))
         self.elements._addItem(password)
 
     def addFilepath(self, name, value=None, validator=None, message='', status='', trigger=None, callback=None, helpText='', optional=True):
