@@ -23,14 +23,15 @@ class JSLanguageCompiler(object):
                 lastdomain = domain
                 for line in file:
                     l += 1
-                    line = line.strip()
-                    if not line or line.startswith("#"):
-                        append=False
-                        continue
+                    line = line.rstrip()
                     if append:
                         lastdomain['value'] += "\n" + line.rstrip("\\")
                         if not line.endswith("\\"):
                             append=False
+                        continue
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        append=False
                         continue
                     
                     append = line.endswith("\\")
