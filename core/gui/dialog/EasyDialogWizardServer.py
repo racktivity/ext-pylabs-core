@@ -501,7 +501,7 @@ class WizardActions(object):
         params = self.addParameter(params, 'helpText', helpText)
         return params
 
-    def _showText(self, text, value=None, multiline=False, validator=None, password=False, name='', message='', status='undefined', trigger=None, callback=None, helpText='', optional=True):
+    def _showText(self, text, value=None, multiline=False, validator=None, password=False, name='', message='', status='undefined', trigger=None, callback=None, helpText='', optional=True, confirm=False):
         """
         Create a display action containing a text input field.
 
@@ -533,6 +533,7 @@ class WizardActions(object):
         params = self.addParameter(params, 'trigger', trigger)
         params = self.addParameter(params, 'helpText', helpText)
         params = self.addParameter(params, 'optional', optional)
+        params = self.addParameter(params, 'confirm', confirm)
         return params
 
     def _showNumber(self, text, minValue=None, maxValue=None, value=None, name='', message='', status='undefined', trigger=None, callback=None, helpText='', optional=True, stepSize=1):
