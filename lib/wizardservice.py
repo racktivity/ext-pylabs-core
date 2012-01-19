@@ -543,7 +543,7 @@ class EndOfWizard(Exception):
 
     def __str__(self):
         return '{"action": "endofwizard", "result": %s}' % \
-            json.dumps(self.result) if self.result else ""
+            json.dumps(self.result) if not self.result is None else ""
 
 
 class DialogMessage(object):
