@@ -1,7 +1,6 @@
 import json
 from pylabs import q
 from pylabs.baseclasses import BaseEnumeration
-from pylabs.Shell import *
 import urllib
 
 class BitbucketRESTCall(BaseEnumeration):
@@ -201,7 +200,7 @@ class BitbucketConnection(object):
 
     def _getRepoNamesFromCodeDir(self):#,accountName=""):
         if q.system.fs.exists(self.accountPathLocal):#path):
-            return q.system.fs.listDirsInDir(path,False,True)
+            return q.system.fs.listDirsInDir(self.accountPathLocal,False,True)
         else:
             return []
 
@@ -234,10 +233,6 @@ class BitbucketConnection(object):
         #http.addAuthentication(login,passwd)
         #url="https://api.bitbucket.org/1.0/users/%s/" % self._getBitbucketUsernameFromUrl(url)
         #content=http.get(url)
-        # TODO - KDS: Need a better way than curl, the authentication doesnt seem to work when using the http pylabs extension.
-        q.platform.ubuntu.checkInstall("curl","curl")
-        resultTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
-        headerTmpfile = q.system.fs.joinPaths(q.dirs.tmpDir, q.base.idgenerator.generateGUID())
         accountConfig = self.bitbucket_client.accountGetConfig(self.accountName)
         uriPartsString = '%s/' %'/'.join(uriParts) if uriParts else ''
         parameters = params if params else dict()
@@ -252,23 +247,23 @@ class BitbucketConnection(object):
             else:
                 q.errorconditionhandler.raiseError("Invalid data type '%s', data value is '%s'." %(type(data), data))
 
-        cmd = "curl --dump-header %(headerTmpfile)s --user %(login)s:%(password)s --request %(method)s '%(apiURI)s/%(apiVersion)s/%(call)s/%(uriParts)s?%(parameters)s' --data '%(data)s' > %(resultTmpfile)s" %{'headerTmpfile': headerTmpfile,
-              'login': accountConfig['login'], 'password': accountConfig['passwd'], 'call': call, 'resultTmpfile': resultTmpfile, 'apiURI': self.bitbucket_client.apiURI,
-              'apiVersion': self.bitbucket_client.apiVersion, 'method': method, 'data': dataString, 'uriParts': uriPartsString, 'parameters': urllib.urlencode(parameters)}
-
-        resultcode, content = q.system.process.execute(cmd, False, True)
-        if resultcode > 0:
-            q.errorconditionhandler.raiseError("Cannot get reponames from repo. Cannot execute %s" %cmd)
-
-        # TODO - MNour: Add error checking and handling.
-        content = q.system.fs.fileGetContents(resultTmpfile )
-        q.system.fs.removeFile(resultTmpfile)
-        q.system.fs.removeFile(headerTmpfile)
+        import urllib2
+        auth = urllib2.base64.standard_b64encode("%s:%s" % (accountConfig['login'], accountConfig['passwd']))
+        headers = {'Authorization': 'Basic %s' % auth }
+        url = "%(apiURI)s/%(apiVersion)s/%(call)s/%(uriParts)s?%(parameters)s" % {
+                      'call': call, 
+                      'apiURI': self.bitbucket_client.apiURI,
+                      'apiVersion': self.bitbucket_client.apiVersion, 
+                      'uriParts': uriPartsString, 
+                      'parameters': urllib.urlencode(parameters)}
+        req = urllib2.Request(url, headers=headers, data=dataString)
+        req.get_method = lambda : str(method)
+        content = urllib2.urlopen(req).read()
 
         try:
             object = json.loads(content) if content else dict()
         except:
-            q.errorconditionhandler.raiseError("Cannot call rest api of bitbucket, call was %s" %cmd)
+            q.errorconditionhandler.raiseError("Cannot call rest api of bitbucket, call was %s" %url)
 
         # TODO - MNour: Do we need to construct Bitbucket resources classes out of json deserialized object ?
         return object
