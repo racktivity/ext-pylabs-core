@@ -4,6 +4,9 @@ from actionservice import ActionService
 class ${className}(ActionService):
 
 #for $method in $methods:
+#if $method.properties.get('execution_method', 'async').upper() != 'SYNC' and $wfe_amqp
+    @q.manage.applicationserver.not_threaded
+#end if
 #if $method.properties.get('authenticate', 'False').upper() == 'TRUE'
     @q.manage.applicationserver.expose_authenticated
 #else

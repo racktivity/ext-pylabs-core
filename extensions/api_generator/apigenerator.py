@@ -15,6 +15,14 @@ except ImportError:
 import inspect
 import itertools
 
+wfe_amqp = False
+
+try:
+    from workflowengine import amqp
+    wfe_amqp = True
+except:
+    pass
+
 def getClass(filePath, className=""):
     module =  imp.load_source(filePath, filePath)
     if className:
@@ -515,7 +523,7 @@ class CloudApiGenerator:
         name = getClassName(claZ)
 
         params = params or {}
-        params.update({'className': name, 'methods': methods, 'appname': self._appName})
+        params.update({'className': name, 'methods': methods, 'appname': self._appName, 'wfe_amqp': wfe_amqp})
 
         self._generateCode(templatePath,  params, destPath)
 
