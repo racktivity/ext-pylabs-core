@@ -1,4 +1,4 @@
-hg import os
+import os
 import os.path
 from pylabs import q, p
 from wfe_cfg import WfePyApps
