@@ -1,4 +1,4 @@
-import os
+hg import os
 import os.path
 from pylabs import q, p
 from wfe_cfg import WfePyApps
@@ -268,6 +268,12 @@ class PyAppsConfigGen:
             site.addOption('root', jsmacros)
             site.addOption('try_files', '$uri $uri/ @lfw_macros')
             site.addOption('rewrite', '^/%s/js/macros/(.*) /$1 break' % self.appName)
+            
+        sitename = "%s_jswizards" % self.appName
+        if not sitename in vhost.sites:
+            site = vhost.addSite(sitename, '/%s/jswizards' % self.appName)
+            site.addOption('root', '/opt/qbase5/www/jswizards/')
+            site.addOption('rewrite', '^/%s/jswizards/(.*) /$1 break' % self.appName)
 
 
         nginx.cmdb.save()
