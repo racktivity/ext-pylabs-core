@@ -1,6 +1,6 @@
 from pylabs.InitBase import q, p
 import rabbitmqclient as rmq
-from events import EXCHG_NAME, EXCHG_TYPE
+from events import EXCHG_NAME, EXCHG_TYPE, MULTICONSUME_NAME
 from functools import wraps
 import traceback
 
@@ -31,13 +31,17 @@ class EventConsumer:
 
     def consume( self ) :
         self._connection.declareExchange( self._exchangeName, self._exchangeType )
-        self._connection.declareQueue( self._queueName )
+        if self._queueName != MULTICONSUME_NAME:
+            self._connection.declareQueue( self._queueName )
+        else:
+            #we want multiple consumers to each parse the events so we let the server create a unique queue name
+            self._queueName, _, _ = self._connection.declareQueue("", exclusive=True)
         self._connection.declareBinding( self._exchangeName, self._queueName, self._bindingKey )
 
         @safe
         def handle_one_event( event ) :
             q.logger.log("Event consumer %s: handling event %s" % (self, event), 7)
-            params = dict() 
+            params = dict()
             params['eventKey'] = event.routing_key
             params['eventBody'] = event.body
             self._taskletEngine.execute( params )
@@ -46,8 +50,8 @@ class EventConsumer:
 
     def __str__(self):
         return "Event Consumer <%s>" % self._queueName
-        
-          
+
+
 if __name__ == '__main__':
     import sys
     cmdArgs = sys.argv
