@@ -7,6 +7,9 @@ class ArakoonPyApps:
         self.appName = appName
     
     def generate_cfg(self, baseport):
+        config = q.clients.arakoon.getClientConfig(self.appName)
+        if config.getNodes():
+            return
         baseport = int(baseport)
         s = q.manage.arakoon.getCluster(self.appName)
         if not s.listNodes():
@@ -14,4 +17,3 @@ class ArakoonPyApps:
         config = q.clients.arakoon.getClientConfig(self.appName)
         if not config.getNodes():
             config.generateFromServerConfig()
-        

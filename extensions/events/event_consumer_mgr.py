@@ -1,4 +1,5 @@
 from pylabs import q
+from events import MULTICONSUME_NAME
 
 import sys
 import os
@@ -35,8 +36,10 @@ class EventConsumerMgr:
             cfgFilePath = q.system.fs.joinPaths(workerPool, "consumer")
             cfgFile = q.config.getInifile( cfgFilePath )
             workers = cfgFile.getIntValue('main', 'workers')
-            bindingKey = cfgFile.getValue('main','eventKey')
+            bindingKey = cfgFile.getValue('main', 'eventKey')
             queueName = q.tools.hash.md5_string(workerPool)
+            if cfgFile.checkParam('main', 'multiconsume') and cfgFile.getBooleanValue('main', 'multiconsume'):
+                queueName = MULTICONSUME_NAME #make it MULTICONSUME_NAME so multiple consumers can each process the events
             cmd = buildCmd(bindingKey, workerPool, queueName, self._appName)
             for i in xrange(workers):
                 pid = q.system.process.runDaemon(" ".join(cmd))
@@ -63,5 +66,5 @@ if __name__ == '__main__' :
     if len(cmdArgs) != 2:
         raise RuntimeError("Usage: event_consumer_mgr.py pylabs_workers_base_dir")
 
-    mgr = EventConsumerMgr( cmdArgs[1] ) 
+    mgr = EventConsumerMgr( cmdArgs[1] )
     mgr.start()

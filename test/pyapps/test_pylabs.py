@@ -10,7 +10,7 @@ def setUp():
     if not q._init_called:
         from pylabs.InitBase import q, p, i
     p.api = p.application.getAPI(TESTAPP)
-    api2 = p.application.getAPI(TESTAPP, context=q.enumerators.AppContext.WFE)
+    api2 = p.application.getAPI(TESTAPP, context=q.enumerators.AppContext.APPSERVER)
     p.api.model = api2.model
     q.qp.findNewest(TESTAPP).install()
     p.application.install(TESTAPP)
