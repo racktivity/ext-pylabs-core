@@ -42,7 +42,10 @@ class Localizer(object):
         domains = {}
         for path in q.system.fs.listFilesInDir(tdirs, filter="*.l"):
             locale = os.path.splitext(q.system.fs.getBaseName(path))[0]
-            domain = Domain(locale)
+            locale = locale.partition("-")[0] #remove any packaging suffix
+            if locale not in domains:
+                domains[locale] = Domain(locale)
+            domain = domains[locale]
             with open(path) as f:
                 l = 0
                 append = False
@@ -74,7 +77,6 @@ class Localizer(object):
                         d = getattr(d, kp)
                     d._value_ = v
                     lastdomain = d
-            domains[locale] = domain
         
         return domains
     
