@@ -39,7 +39,7 @@ class Connection(object):
         try:
             self._connection = amqp.Connection(host='%s:%d'%(server, port), userid = user, password = password, virtual_host = virtualhost, insist = False)
         except Exception:
-                raise RuntimeError('Could not connect to RabbitMQ server using host: %s, port: %d, userid: %s, password: %s, virtualhost: %s . Is the server up and running on this port?'%(server, port, user, password, virtualhost))
+            raise RuntimeError('Could not connect to RabbitMQ server using host: %s, port: %d, userid: %s, password: %s, virtualhost: %s . Is the server up and running on this port?'%(server, port, user, password, virtualhost))
         self._channel = self._connection.channel()
         self._connected = True
         #@tdo: dont open the three channels that early probably you will have multiple instances of this class one for reading and other for writing
@@ -54,7 +54,7 @@ class Connection(object):
         self._virtualhost = virtualhost
 
 
-    def publish(self, exchangeName, routingKey, message, deliveryMode=2, messageProperties=None, closeConnection=False):
+    def publish(self, exchangeName, routingKey, message, deliveryMode=2, messageProperties=None, closeConnection=False, retry=3):
         """
         Publish the message to an exchange using a specific routingkey
 
@@ -98,6 +98,10 @@ class Connection(object):
         except socket.error, ex:
             self._connected = False
             q.logger.log('Failed to add item to the queue with routing key  %s. Make sure the server is up and running on host: %s and port: %s then call connect'%(routingKey, self._host, self._port), 5)
+            if retry > 0:
+                retry -= 1
+                q.console.echo("Connection got closed retrying")
+                return self.publish(exchangeName, routingKey, message, deliveryMode, messageProperties, closeConnection, retry)
             raise RuntimeError('Failed to add item to the queue with routing key %s. Make sure the server is up and running on host: %s and port: %s then call connect'%(routingKey, self._host, self._port))
 
 
