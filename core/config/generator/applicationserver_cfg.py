@@ -35,6 +35,8 @@ class AppServerPyApps:
             appServerCfg.addParam('main', 'amf_ip', '127.0.0.1')
         appServerCfg.addParam('main', 'allow_none', 'True')
         appServerCfg.addParam('main', 'mail_incoming_server', '')
+        if not appServerCfg.checkParam('main', 'id'):
+            appServerCfg.addParam('main', 'id', q.base.idgenerator.generateGUID())
         appServerCfg.write()
         self.generate_services()
         self.configure_reversieproxy(xmlrpc=xmlrpc_port,
