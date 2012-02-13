@@ -53,6 +53,8 @@ def _hash_funcs(alg):
         @returns: %(alg)s hash hex digest of the input value
         @rtype: string
         '''
+        if isinstance(s, unicode):
+            s = s.encode('utf-8')
         impl = hashlib.new(alg, s)
         return impl.hexdigest()
 
