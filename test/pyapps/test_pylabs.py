@@ -2,6 +2,7 @@
 
 import unittest
 import urllib2
+import time
 from pylabs import q, p
 TESTAPP = 'sampleapp'
 
@@ -107,6 +108,7 @@ class TestPyapps(unittest.TestCase):
         assert result_dict['result'] is True
         print "Check if Jefke's page exists"
         page_name = "customer_detail_" + jefke_guid
+        time.sleep(2)
         page_guids_dict = p.api.action.ui.page.find(name=page_name)
         page_guids = page_guids_dict['result']
         assert len(page_guids) == 1, "Expected to find 1 page guid, but found %d" % len(page_guids)
