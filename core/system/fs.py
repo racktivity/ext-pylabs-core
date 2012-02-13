@@ -523,6 +523,7 @@ class SystemFS:
         @rtype: Concatenation of path1, and optionally path2, etc...,
         with exactly one directory separator (os.sep) inserted between components, unless path2 is empty.
         """
+        args = [ toStr(x) for x in args ]
         pylabs.q.logger.log('Join paths %s'%(str(args)),9)
         if args is None:
             raise TypeError('Not enough parameters %s'%(str(args)))
