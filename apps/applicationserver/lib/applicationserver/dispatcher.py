@@ -214,7 +214,9 @@ class Dispatcher:
         #Decorate the original func so log stuff can be set up correctly
         func = service_method_caller(service_name, func)
 
-        if not want_not_threaded(func):
+        hasauth = exposed_authenticated(func) or exposed_authorized(func)
+
+        if not want_not_threaded(func) or hasauth:
             #log.msg('[DISPATCHER] Running service method %s:%s in thread' % \
             #        (service_name, method))
             defer = threads.deferToThread(callServiceMethodinThread, func, request, domain, service, method, *args, **kwargs)
