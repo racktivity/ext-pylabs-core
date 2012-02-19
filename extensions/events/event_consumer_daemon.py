@@ -49,7 +49,7 @@ def main(appname):
         for pid in pids:
             os.kill(pid, sig)
     
-    for sig in (signal.SIGTERM, signal.SIGQUIT):
+    for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
         signal.signal(sig, shutdown)
     
     #wait for children
