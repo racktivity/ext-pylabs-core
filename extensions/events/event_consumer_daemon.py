@@ -23,24 +23,50 @@ def main(appname):
     pids = {}
     workersPool = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "events")
     
-    def spawn(args):
-        pid = os.fork()
-        if pid == 0:
-            #child
-            #restore default handler for child process so it doesn't try to do shutdown.
-            for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
-                signal.signal(sig, signal.SIG_DFL)
-            consumer = event_consumer.EventConsumer(*args)
-            q.application.appname = "../%s/eventconsumer/%s" % (appname, workerName)
-            q.application.start()
-            try:
-                consumer.consume()
-            except Exception, e:
-                q.logger.log("Consumer process died: %s" % e)
+    class Spawn:
+        NOTRUNNING = 5
+        MAXWAIT = 60
+        WAITTIME = 3
+
+        def __init__(self, args):
+            self.args = args
+            self.pid = None
+            self.starttime = None
+            self.retry = 0
+    
+        def sleep(self):
+            now = time.time()
+            if not self.starttime:
+                return
+            if now - self.starttime < self.NOTRUNNING:
+                self.retry += 1
+                sleeptime = self.retry * self.WAITTIME
+                sleeptime = sleeptime if sleeptime < self.MAXWAIT else self.MAXWAIT
+                time.sleep(sleeptime)
+            else:
+                self.retry = 0
+ 
+        def start(self):
+            self.sleep()
+            self.starttime = time.time()
+            pid = os.fork()
+            if pid == 0:
+                #child
+                #restore default handler for child process so it doesn't try to do shutdown.
+                for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
+                    signal.signal(sig, signal.SIG_DFL)
+                consumer = event_consumer.EventConsumer(*args)
+                q.application.appname = "../%s/eventconsumer/%s" % (appname, workerName)
+                q.application.start()
+                try:
+                    consumer.consume()
+                except Exception, e:
+                    q.logger.log("Consumer process died: %s" % e)
+                    
+                q.application.stop(0)
+                os.exit(0)
                 
-            q.application.stop(0)
-            
-        return pid
+            self.pid = pid
     
     for workerPool in q.system.fs.listDirsInDir(workersPool):
         workerName = q.system.fs.getBaseName(workerPool)
@@ -59,8 +85,9 @@ def main(appname):
         
         for i in xrange(workers):
             args = (queueName, bindingKey, workerPool, host, multiconsumer)
-            pid = spawn(args)
-            pids[pid] = args
+            worker = Spawn(args)
+            worker.start()
+            pids[worker.pid] = worker
     
     def shutdown(sig, sf):
         global respawn
@@ -76,16 +103,16 @@ def main(appname):
         try:
             pid, sigstatus = os.wait()
             if pid in pids:
-                q.logger.log("Consumer of PID: %d has been killed" % pid)
-                args = pids.pop(pid)
+                msg = "Consumer of PID: %d has been killed" % pid
+                q.logger.log(msg)
+                worker = pids.pop(pid)
                 if respawn:
-                    q.logger.log("Respawning consumer in 3 seconds")
-                    time.sleep(3) #sleep before respawn
-                    pid = spawn(args)
-                    pids[pid] = args
+                    worker.start()
+                    pids[worker.pid] = worker
                     
         except Exception, e:
-            q.logger.log("Event consumer for app '%s' died for an unknown reason: %s" % (appname, e))
+            msg = "Event consumer for app '%s' died for an unknown reason: %s" % (appname, e)
+            q.logger.log(msg)
             shutdown(signal.SIGTERM, None)
             
 if __name__ == "__main__":
