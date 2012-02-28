@@ -17,7 +17,7 @@ class EjabberdCmdb(CMDBServerObject):
     cmdbtypename = 'ejabberd'
     users = q.basetype.dictionary(doc='dictionary of registered users', default=dict(), allow_none=True, flag_dirty=True)
     ejabberdUser = q.basetype.string(default='ejabberd', allow_none=True, fset=setRestartRequired, flag_dirty=True)
-    nodeName = q.basetype.string(doc='fully qualified dns name of the node', default=socket.getfqdn(), allow_none=False, fset=setRestartRequired, flag_dirty=True)
+    nodeName = q.basetype.string(doc='fully qualified dns name of the node', default=socket.gethostbyaddr(socket.gethostname())[0], allow_none=False, fset=setRestartRequired, flag_dirty=True)
 
     configFile = q.basetype.filepath(doc='Config file of ejabberd', default=q.system.fs.joinPaths(os.sep, 'etc','ejabberd','ejabberd.cfg'), flag_dirty=True, fset=setRestartRequired,)
     ctlCfgFile = q.basetype.filepath(doc='Config file of ejabberdctl', default=q.system.fs.joinPaths(os.sep, 'etc','ejabberd','ejabberdctl.cfg'), flag_dirty=True, fset=setRestartRequired,)
