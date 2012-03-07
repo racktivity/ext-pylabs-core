@@ -28,7 +28,9 @@ def main(appname):
         MAXWAIT = 60
         WAITTIME = 3
 
-        def __init__(self, args):
+        def __init__(self, appname, workername, args):
+            self.appname = appname
+            self.workername = workername
             self.args = args
             self.pid = None
             self.starttime = None
@@ -55,15 +57,15 @@ def main(appname):
                 #restore default handler for child process so it doesn't try to do shutdown.
                 for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
                     signal.signal(sig, signal.SIG_DFL)
-                consumer = event_consumer.EventConsumer(*args)
-                q.application.appname = "../%s/eventconsumer/%s" % (appname, workerName)
+                consumer = event_consumer.EventConsumer(*self.args)
+                q.application.appname = "../%s/eventconsumer/%s" % (self.appname, self.workername)
                 q.application.start()
                 try:
                     consumer.consume()
                 except Exception, e:
                     q.logger.log("Consumer process died: %s" % e)
-                    
-                q.application.stop(0)
+                finally:
+                    q.application.stop(0)
                 os.exit(0)
                 
             self.pid = pid
@@ -85,7 +87,7 @@ def main(appname):
         
         for i in xrange(workers):
             args = (queueName, bindingKey, workerPool, host, multiconsumer)
-            worker = Spawn(args)
+            worker = Spawn(appname, workerName, args)
             worker.start()
             pids[worker.pid] = worker
     
