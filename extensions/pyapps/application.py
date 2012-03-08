@@ -85,7 +85,36 @@ class AppManager(object):
             return q.gui.dialog.askYesNo("Note: Due to design of qshell, qshell must be restarted after the call of reinstall. \nDo you want to keep change? WARRNING: USE THIS OPTION AT YOUR RISK")
         return keepchanges
 
+    def uninstall(self, appname):
+        """
+        uninstalls applicationn apname
+        """
+        try:
+            p.application.stop(appname)
+        except:
+            error="Error stopping application, this error probably due to running reinstall twice without restarting qshell,  please restart qshell and try agin"
+            q.logger.log(error, 1)
 
+        q.logger.log("Removing postgres database", 1)
+        if q.manage.postgresql8.cmdb.databases.has_key(appname):
+            try:
+                q.manage.postgresql8.startChanges()
+                q.manage.postgresql8.cmdb.removeDatabase(appname)
+                q.manage.postgresql8.cmdb.save()
+                q.manage.postgresql8.applyConfig()
+            except:
+                q.manage.postgresql8.cmdb.save()
+                q.manage.postgresql8.applyConfig()
+
+        q.logger.log("Removing arakoon db", 1)
+
+        arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var','db', appname)
+        arakoon_cfg_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'arakoon', appname) 
+        q.system.fs.removeDirTree(arakoon_db_path, True)
+        q.system.fs.removeDirTree(arakoon_cfg_path, True)
+        
+        appdir=q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+        q.system.fs.removeDirTree(appdir, True)
 
     def reinstall(self, appname, keepchanges=None):
         """
