@@ -15,13 +15,9 @@ except ImportError:
 import inspect
 import itertools
 
-wfe_amqp = False
+amqpath = q.system.fs.joinPaths(q.dirs.cfgDir, 'amqp', 'amqp0-8.xml')
+wfe_amqp = q.system.fs.exists(amqpath)
 
-try:
-    from workflowengine import amqp
-    wfe_amqp = True
-except:
-    pass
 
 def getClass(filePath, className=""):
     module =  imp.load_source(filePath, filePath)

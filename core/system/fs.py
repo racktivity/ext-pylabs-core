@@ -46,7 +46,6 @@ import tempfile
 import codecs
 import cPickle as pickle
 from stat import ST_MTIME
-import unicodedata
 
 
 # We import only pylabs as the q.system.fs is used before pylabs is initialized. Thus the q cannot be imported yet
@@ -64,6 +63,7 @@ if not sys.platform.startswith('win'):
         pass
 
 _LOCKDICTIONARY = dict()
+toStr = pylabs.q.tools.text.toStr
 
 class LockException(Exception):
     def __init__(self, message='Failed to get lock', innerException=None):
@@ -349,12 +349,12 @@ class SystemFS:
         if newdir was only given as a directory name, the new directory will be created on the default path,
         if newdir was given as a complete path with the directory name, the new directory will be created in the specified path
         """
-        pylabs.q.logger.log('Creating directory if not exists %s' % newdir.encode("utf-8"),8)
+        pylabs.q.logger.log('Creating directory if not exists %s' % toStr(newdir),8)
         if newdir == '' or newdir == None:
             raise TypeError('The newdir-parameter of system.fs.createDir() is None or an empty string.')
         try:
             if pylabs.q.system.fs.isDir(newdir):
-                pylabs.q.logger.log('Directory trying to create: [%s] already exists'%newdir.encode("utf-8"),8)
+                pylabs.q.logger.log('Directory trying to create: [%s] already exists'% toStr(newdir),8)
                 pass
             else:
                 head, tail = os.path.split(newdir)
@@ -366,9 +366,9 @@ class SystemFS:
                     except OSError, e:
                         if e.errno != os.errno.EEXIST: #File exists
                             raise
-                pylabs.q.logger.log('Created the directory [%s]' % newdir.encode("utf-8"),8)
+                pylabs.q.logger.log('Created the directory [%s]' % toStr(newdir),8)
         except:
-            raise RuntimeError("Failed to create the directory [%s]" % newdir.encode("utf-8"))
+            raise RuntimeError("Failed to create the directory [%s]" % toStr(newdir))
 
     def copyDirTree(self, src, dst, keepsymlinks = False, overwriteDestination = False, update=False):
         """Recursively copy an entire directory tree rooted at src.
@@ -523,6 +523,7 @@ class SystemFS:
         @rtype: Concatenation of path1, and optionally path2, etc...,
         with exactly one directory separator (os.sep) inserted between components, unless path2 is empty.
         """
+        args = [ toStr(x) for x in args ]
         pylabs.q.logger.log('Join paths %s'%(str(args)),9)
         if args is None:
             raise TypeError('Not enough parameters %s'%(str(args)))
@@ -961,7 +962,7 @@ class SystemFS:
         
         if(os.path.isdir(path)):
             return True
-        pylabs.q.logger.log('path [%s] is not a directory' % path.encode("utf-8"),8)
+        pylabs.q.logger.log('path [%s] is not a directory' % toStr(path),8)
         return False
 
     def isEmptyDir(self, path):

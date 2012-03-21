@@ -133,22 +133,36 @@ class PyAppsConfigGen:
 
 
     def start(self):
+        params = {'appname': self.appName}
+        te = None
+        startpath = q.system.fs.joinPaths(q.dirs.pyAppsDir, self.appName, 'impl', 'start')
+        if q.system.fs.exists(startpath):
+            te = q.taskletengine.get(startpath)
+            te.execute(params, tags=('pre',))
         if 'postgresql' in self.components:
             q.manage.postgresql8.start()
         if 'arakoon' in self.components:
             cluster = q.manage.arakoon.getCluster(self.appName)
             cluster.start()
-        if 'wfe' in self.components:
-            q.manage.ejabberd.start()
-            q.manage.workflowengine.start(self.appName)
         if 'appserver' in self.components:
             q.manage.applicationserver.start(self.appName)
             q.manage.nginx.start()
+        if 'wfe' in self.components:
+            q.manage.ejabberd.start()
+            q.manage.workflowengine.start(self.appName)
         if 'event_consumers' in self.components:
             p.events.startConsumers(self.appName)
+        if te:
+            te.execute(params, tags=('post',))
 
 
     def stop(self):
+        params = {'appname': self.appName}
+        te = None
+        stop = q.system.fs.joinPaths(q.dirs.pyAppsDir, self.appName, 'impl', 'stop')
+        if q.system.fs.exists(stop):
+            te = q.taskletengine.get(stop)
+            te.execute(params, tags=('pre',))
         if 'appserver' in self.components:
             q.manage.applicationserver.stop(self.appName)
         if 'wfe' in self.components:
@@ -158,6 +172,8 @@ class PyAppsConfigGen:
             cluster.stop()
         if 'event_consumers' in self.components:
             p.events.stopConsumers(self.appName)
+        if te:
+            te.execute(params, tags=('post',))
 
     def generateAll(self):
         self.pyapps_configuration()

@@ -15,12 +15,30 @@ AppContext.registerItem('wfe')
 AppContext.registerItem('client')
 AppContext.finishItemRegistration()
 
+def check_application(function):
+
+    def _check_application(self, appname, *args, **kwargs):
+        app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+        if not q.system.fs.exists(app_dir):
+            raise RuntimeError('Application "%s" does not exist'%appname)
+
+        if function.func_name not in ('install', 'getAPI'):
+            app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
+            if not q.system.fs.exists(app_cfg_dir):
+                raise RuntimeError('Application "%s" configuration does not exist ... Please install application first'%appname)
+
+        return function(self, appname, *args, **kwargs)
+
+    return _check_application
+
+
 
 class AppManager(object):
 
     def __init__(self):
         pass
 
+    @check_application
     def getAPI(self, appname, host='127.0.0.1', context=None, username=None, password=None):
         '''Retrieve api object for an application'''
         api = ApplicationAPI(appname, host, context, username, password)
@@ -28,7 +46,8 @@ class AppManager(object):
             p.api = api
         return api
 
-    def install (self, appname):
+    @check_application
+    def install(self, appname):
         app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
         if not q.system.fs.exists(app_dir):
             raise RuntimeError('Application "%s" does not exist'%appname)
@@ -66,7 +85,36 @@ class AppManager(object):
             return q.gui.dialog.askYesNo("Note: Due to design of qshell, qshell must be restarted after the call of reinstall. \nDo you want to keep change? WARRNING: USE THIS OPTION AT YOUR RISK")
         return keepchanges
 
+    def uninstall(self, appname):
+        """
+        uninstalls applicationn apname
+        """
+        try:
+            p.application.stop(appname)
+        except:
+            error="Error stopping application, this error probably due to running reinstall twice without restarting qshell,  please restart qshell and try agin"
+            q.logger.log(error, 1)
 
+        q.logger.log("Removing postgres database", 1)
+        if q.manage.postgresql8.cmdb.databases.has_key(appname):
+            try:
+                q.manage.postgresql8.startChanges()
+                q.manage.postgresql8.cmdb.removeDatabase(appname)
+                q.manage.postgresql8.cmdb.save()
+                q.manage.postgresql8.applyConfig()
+            except:
+                q.manage.postgresql8.cmdb.save()
+                q.manage.postgresql8.applyConfig()
+
+        q.logger.log("Removing arakoon db", 1)
+
+        arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var','db', appname)
+        arakoon_cfg_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'arakoon', appname) 
+        q.system.fs.removeDirTree(arakoon_db_path, True)
+        q.system.fs.removeDirTree(arakoon_cfg_path, True)
+        
+        appdir=q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+        q.system.fs.removeDirTree(appdir, True)
 
     def reinstall(self, appname, keepchanges=None):
         """
@@ -208,21 +256,6 @@ class AppManager(object):
         from alkira.sync_md_to_lfw import sync_to_alkira
         sync_to_alkira(appname, sync_space=space, sync_page=page, clean_up=clean_up)
 
-
-    def check_application(function):
-
-        def _check_application(self, appname):
-            app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
-            if not q.system.fs.exists(app_dir):
-                raise RuntimeError('Application "%s" does not exist'%appname)
-
-            app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
-            if not q.system.fs.exists(app_cfg_dir):
-                raise RuntimeError('Application "%s" configuration does not exist ... Please install application first'%appname)
-
-            return function(self, appname)
-
-        return _check_application
 
     @check_application
     def start(self, appname):

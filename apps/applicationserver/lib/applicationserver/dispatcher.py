@@ -165,6 +165,7 @@ class Dispatcher:
       
         def callServiceMethodinThread(func, request, domain, service, method, *args, **kwargs):
                 #Check authentication
+            args = list(args)
             if exposed_authenticated(func):
                 #log.msg('[DISPATCHER] Checking authentication')
                 if not self.checkAuthentication(domain, service, request, method, 
