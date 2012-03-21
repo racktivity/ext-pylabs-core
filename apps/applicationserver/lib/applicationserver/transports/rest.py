@@ -211,6 +211,7 @@ class RESTMethod(Resource):
             callback = args.pop('jsonp_callback')
             contenttype = SCRIPT_MIME
         try:
+            originalContentType = str(request.responseHeaders.getRawHeaders("Content-Type"))
             d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
         except (NoSuchService, NoSuchMethod), e:
             request.setResponseCode(http.NOT_FOUND)
@@ -224,7 +225,13 @@ class RESTMethod(Resource):
 
         def finish_render(data):
             try:
-                jsondata = json.dumps(data, indent=2)
+                newContentType = str(request.responseHeaders.getRawHeaders("Content-Type"))
+                # we JSONify the data only if the content-type was not changed inside the call or
+                # if it was set to application/json
+                if newContentType == originalContentType or newContentType == JSON_MIME:
+                    jsondata = json.dumps(data, indent=2)
+                else:
+                    jsondata = data
             except Exception, e:
                 #Auch, unable to serialize data
                 log.msg("Unable to serialize data to JSON: %s" % e)
