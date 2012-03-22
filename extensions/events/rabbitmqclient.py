@@ -21,6 +21,9 @@
 from pylabs import q
 from amqplib import client_0_8 as amqp
 import socket
+import threading
+import functools
+
 
 class Connection(object):
 
@@ -33,6 +36,7 @@ class Connection(object):
         self._connected = False
         self._connection = None
         self._connectioninfo = (server, port, user, password, virtualhost)
+        self._lock = threading.RLock()
         self.connect(*self._connectioninfo)
 
     def connect(self, server, port, user, password, virtualhost) :
@@ -54,6 +58,15 @@ class Connection(object):
         self._virtualhost = virtualhost
 
 
+    def _threadsafe(func):
+        @functools.wraps(func)
+        def wrapper(self, *args, **kwargs):
+            with self._lock:
+                return func(self, *args, **kwargs)
+        return wrapper
+
+
+    @_threadsafe
     def publish(self, exchangeName, routingKey, message, deliveryMode=2, messageProperties=None, closeConnection=False, retry=3):
         """
         Publish the message to an exchange using a specific routingkey
@@ -105,6 +118,7 @@ class Connection(object):
             raise RuntimeError('Failed to add item to the queue with routing key %s. Make sure the server is up and running on host: %s and port: %s then call connect'%(routingKey, self._host, self._port))
 
 
+    @_threadsafe
     def consume(self, queueName, callback, noAck=True):
         """
         Register a consumer for specific queue
@@ -134,6 +148,7 @@ class Connection(object):
         finally:
             self._consumerChannel.basic_cancel(queueName)
 
+    @_threadsafe
     def consumeOneMessage(self, queueName):
         """
         Register a consumer for specific queue and consume 1 message.
@@ -169,6 +184,7 @@ class Connection(object):
 
 
 
+    @_threadsafe
     def publishAndConsume(self, exchangeName, routingKey, message, returnExchangeName, returnRoutingKey, deliveryMode=2, message_properties=None, returnQueue=None):
         """
         Publish the message to an exchange using a specific routingkey and wait for a return message on the specified
@@ -202,6 +218,7 @@ class Connection(object):
 
 
 
+    @_threadsafe
     def get(self, queueName):
         """
         Gets a message from a certain queue in rabbitMQ server
@@ -233,6 +250,7 @@ class Connection(object):
             raise ex
         return msg
 
+    @_threadsafe
     def disconnect(self):
         """
         Disconnect from the rabbitmq server
@@ -247,9 +265,10 @@ class Connection(object):
 
 
     def isConnected(self):
-        return self._connected
+        return self._connected and self._connection.connection
 
 
+    @_threadsafe
     def declareExchange(self, exchangeName, exchangeType = 'direct', durable = True, auto_delete = False):
         """
         Declare a new exchange with a given name if not exist, if the exchange exists but with different configuration an exception will be raised
@@ -275,6 +294,7 @@ class Connection(object):
             raise RuntimeError('Failed to connect to the server using configuration host: %s, port: %s, userid: %s, password: %s, virtualhost: %s. Try to reinitialize your connection using connect mehtod'%(self._host, self._port, self._userid, self._password, self._virtualhost))
 
 
+    @_threadsafe
     def declareQueue(self, queueName, exclusive = False, durable = True, auto_delete = False):
         """
         Declare a new queue with given name if not exist, if the queue exists but with different configuration an exception will be raised
@@ -303,6 +323,7 @@ class Connection(object):
             raise RuntimeError('Failed to connect to the server using configuration host: %s, port: %s, userid: %s, password: %s, virtualhost: %s. Try to reinitialize your connection using connect mehtod'%(self._host, self._port, self._userid, self._password, self._virtualhost))
 
 
+    @_threadsafe
     def declareBinding(self, exchangeName, queueName, routingKey = None):
         """
         Declare a new binding, if the binding already exists the new one is agnored and no error is raised
