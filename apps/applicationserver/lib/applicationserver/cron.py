@@ -32,11 +32,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
- 
+
 '''Implementation of the applicationserver cron job manager/scheduler'''
 
 import threading
 import functools
+import time
 
 from pydispatch import dispatcher as pydispatcher
 
@@ -65,6 +66,7 @@ class Job:
         @type timeout: number
         '''
         self.timeout = timeout
+        self.calibrate_time = None
         # Simple threadlock used to make sure the cronjob won't be started
         # more than once concurrently
         self.lock = threading.Lock()
@@ -156,9 +158,15 @@ class Job:
 
     def register(self, name, object_):
         '''Register the job on the system, schedule it for execution'''
+
+        now = time.time()
+        if not self.calibrate_time:
+            self.calibrate_time = now
+            timeout = self.timeout
+        else:
+            timeout = self.timeout - ((now - self.calibrate_time) % self.timeout)
         self.service_name = name
-        self.delayed_call = reactor.callLater(self.timeout,
-                self.run, object_)
+        self.delayed_call = reactor.callLater(timeout, self.run, object_)
 
     def disable(self):
         '''Disable/cancel the job'''
@@ -204,7 +212,7 @@ class Crond:
 
     def addService(self, name, service):
         '''Add a service class to the cron daemon
-        
+
         @param name: Service name
         @type name: string
         @param service: Service instance to add
