@@ -180,6 +180,23 @@ class Connection(object):
             self._consumerChannel.basic_cancel(queueName)
 
         return msg
+    
+    @_threadsafe
+    def receiveOneMessage(self, exchangeName, routingKey):
+        """
+        Declares anonymous queue bind to exchange/routingKey
+        And consumes one message
+
+        @param exchangeName: name of the exchange to publish the message to
+        @param routingKey: the routingKey that will be used to forward the message to the appropriate queue
+        """
+        queueName = self.declareQueue(queueName="")[0]
+        try:
+            self.declareBinding(exchangeName=exchangeName, queueName=queueName, routingKey=routingKey)
+            msg = self.consumeOneMessage(queueName)
+        finally:
+            self._channel.queue_delete(queueName)
+        return msg
 
 
 
@@ -212,7 +229,7 @@ class Connection(object):
         self.publish(exchangeName, routingKey, message, deliveryMode, message_properties)
 
         # Get response msg
-        msg = self.consumeOneMessage(returnQueue)
+        msg = self.consumeOneMessage(queueName=returnQueue)
 
         return msg
 
