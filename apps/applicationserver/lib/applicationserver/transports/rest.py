@@ -212,6 +212,7 @@ class RESTMethod(Resource):
             contenttype = SCRIPT_MIME
         try:
             originalContentType = str(request.responseHeaders.getRawHeaders("Content-Type"))
+            request.setHeader('Content-Type', contenttype)
             d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
         except (NoSuchService, NoSuchMethod), e:
             request.setResponseCode(http.NOT_FOUND)
@@ -228,7 +229,7 @@ class RESTMethod(Resource):
                 newContentType = str(request.responseHeaders.getRawHeaders("Content-Type"))
                 # we JSONify the data only if the content-type was not changed inside the call or
                 # if it was set to application/json
-                if newContentType == originalContentType or newContentType == JSON_MIME:
+                if newContentType == originalContentType or JSON_MIME in newContentType:
                     jsondata = json.dumps(data, indent=2)
                 else:
                     jsondata = data
@@ -241,7 +242,6 @@ class RESTMethod(Resource):
                     'The server was unable to serialize the method result',
                     e).dumps())
             else:
-                request.setHeader('Content-Type', contenttype)
                 write(jsondata)
 
             request.finish()
