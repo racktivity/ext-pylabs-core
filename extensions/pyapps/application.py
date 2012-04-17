@@ -3,6 +3,7 @@ import time
 import xmlrpclib
 
 from pylabs import q, p, locale
+from functools import wraps
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
 
@@ -17,6 +18,7 @@ AppContext.finishItemRegistration()
 
 def check_application(function):
 
+    @wraps(function)
     def _check_application(self, appname, *args, **kwargs):
         app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
         if not q.system.fs.exists(app_dir):
@@ -313,7 +315,9 @@ class ApplicationAPI(object):
             localepath = q.system.fs.joinPaths(self._app_path, "share", "locale")
             if q.system.fs.isDir(localepath):
                 self.language = locale.getlocalizer(appname, localepath)
-                
+            #load arakoondb
+            self.db = q.clients.arakoon.getPoolClient(appname)
+
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
 

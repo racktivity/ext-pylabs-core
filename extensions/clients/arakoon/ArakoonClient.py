@@ -25,6 +25,8 @@ try:
 except ImportError:
     from pylabs import q
 
+from arakoonpool import ArakoonPoolClient
+
 class ArakoonClientExtConfig:
     """
     Configuration of Arakoon nodes
@@ -203,6 +205,9 @@ class ArakoonClient:
                 node_dict.update({node: ip_port})
             config = ArakoonClientConfig(clusterId, node_dict)
             return Arakoon.ArakoonClient(config)
+
+    def getPoolClient(self, clusterId, configName=None):
+        return ArakoonPoolClient(clusterId, configName)
 
     def listClients(self):
         """
