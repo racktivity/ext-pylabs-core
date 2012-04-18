@@ -103,11 +103,15 @@ class IniConfigReader:
                 'options': {'allow_none':True if qconfig['allow_none']=='True' else False},
             }
         if qconfig['rest_port']:
+            noerrors_value = qconfig.get('noerrors','False')
+            noerrors = False
+            if noerrors_value.lower() == 'true' :
+                noerrors = True
             config["transport_rest"] = {
                 'transport': 'tcp:%d:interface=%s' % (int(qconfig['rest_port'] if qconfig['rest_port'] else 0),
                                                       qconfig['rest_ip']),
                 'protocol': 'rest',
-                'options': None,
+                'options': {'noerrors':noerrors } 
             }
         if qconfig['amf_port']:
             config['transport_amf']={

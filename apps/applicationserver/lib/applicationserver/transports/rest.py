@@ -100,30 +100,32 @@ class RESTTransport(Resource):
 
     This handles requests to '/'.
     '''
-    def __init__(self, dispatcher):
+    def __init__(self, dispatcher, noerrors=False):
         Resource.__init__(self)
         self.dispatcher = dispatcher
+        self.noerrors = noerrors
 
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
         if len(request.postpath) > 1:
-            return RESTDomain(self.dispatcher, name)
-        return RESTService(self.dispatcher, None, name)
+            return RESTDomain(self.dispatcher, name, self.noerrors )
+        return RESTService(self.dispatcher, None, name, self.noerrors)
 
 
 class RESTDomain(Resource):
-    def __init__(self, dispatcher, domain):
+    def __init__(self, dispatcher, domain, noerrors=False):
         Resource.__init__(self)
         self.dispatcher = dispatcher
         self.domain = domain
+        self.noerrors = noerrors
 
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
         if not self.isServiceName( str(request.URLPath())  ):
-            return RESTDomain( self.dispatcher, name )
-        return RESTService(self.dispatcher, self.domain, name)
+            return RESTDomain( self.dispatcher, name , self.noerrors)
+        return RESTService(self.dispatcher, self.domain, name, self.noerrors)
 
     def isServiceName(self, url):
         # URL is http://url[:port]/appname/appserver/rest/domain/servicename/method
@@ -137,16 +139,17 @@ class RESTService(Resource):
 
     This handles requests to '/myservice/'.
     '''
-    def __init__(self, dispatcher, domain, service):
+    def __init__(self, dispatcher, domain, service, noerrors=False):
         Resource.__init__(self)
         self.dispatcher = dispatcher
         self.service = service
         self.domain = domain
+        self.noerrors = noerrors
 
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
-        return RESTMethod(self.dispatcher, self.domain, self.service, name)
+        return RESTMethod(self.dispatcher, self.domain, self.service, name, self.noerrors)
 
     def render_GET(self, request):
         if request.uri == "/crossdomain.xml":
@@ -162,18 +165,19 @@ class RESTMethod(Resource):
 
     This handles requests to '/myservice/mymethod/'.
     '''
-    def __init__(self, dispatcher, domain, service, method):
+    def __init__(self, dispatcher, domain, service, method, noerrors=False):
         Resource.__init__(self)
         self.dispatcher = dispatcher
         self.domain = domain
         self.service = service
         self.method = method
+        self.noerrors = noerrors
 
     def getChild(self, name, request):
         if not name:
             return self
         #TODO Check whether next line is actually what we want
-        return RESTMethod(self.dispatcher, self.domain, self.service, name)
+        return RESTMethod(self.dispatcher, self.domain, self.service, name, self.noerrors)
 
     def render_GET(self, request):
         #TODO Defer this
@@ -254,7 +258,11 @@ class RESTMethod(Resource):
                 log.msg("An error occurred in the service method: %s" % failure)
                 request.setResponseCode(http.INTERNAL_SERVER_ERROR)
             request.setHeader('Content-Type', contenttype)
-            write(JSONException('Internal server error', getattr(failure, 'value', None)).dumps())
+            if self.noerrors :
+                write(JSONException('Internal server error', 'Please, contact administrator.' ).dumps())
+            else:
+                write(JSONException('Internal server error', getattr(failure, 'value', None)).dumps())
+      
             request.finish()
 
         d.addCallback(finish_render)
