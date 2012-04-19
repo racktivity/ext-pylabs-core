@@ -153,7 +153,7 @@ class ApplicationserverAMFGateway(TwistedGateway):
                                  method)
 
    def getAuthenticator(self, service_request):
-      def checkAuth(username, password):
+      def checkAuth(http_request, username, password):
          service, func = self.dispatcher.getServiceMethod(
             service_request.service.domain,
             service_request.service.servicename,
@@ -162,14 +162,13 @@ class ApplicationserverAMFGateway(TwistedGateway):
          if not exposed_authenticated(func):
             return True
 
-         request = AuthenticationAMFRequest(service_request.request, username, password)
+         request = AuthenticationAMFRequest(http_request, username, password)
 
-         if not self.dispatcher.checkAuthentication(service, request,
-                                                    service_request.method,
-                                                    None, None):
+         if not self.dispatcher.checkAuthentication(service_request.service.domain, service, request, service_request.method, None, None):
             return False
 
          return True
+      checkAuth._pyamf_expose_request = True
 
       return checkAuth
 
