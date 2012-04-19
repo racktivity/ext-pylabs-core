@@ -37,7 +37,7 @@ from twisted.plugin import IPlugin
 from twisted.web.resource import Resource
 
 from pyamf.remoting.gateway import ServiceWrapper, UnknownServiceMethodError, \
-     UnknownServiceError
+     UnknownServiceError, expose_request
 from pyamf.remoting.gateway.twisted import TwistedGateway
 
 from zope.interface import implements
@@ -153,6 +153,7 @@ class ApplicationserverAMFGateway(TwistedGateway):
                                  method)
 
    def getAuthenticator(self, service_request):
+      @expose_request
       def checkAuth(http_request, username, password):
          service, func = self.dispatcher.getServiceMethod(
             service_request.service.domain,
@@ -168,7 +169,6 @@ class ApplicationserverAMFGateway(TwistedGateway):
             return False
 
          return True
-      checkAuth._pyamf_expose_request = True
 
       return checkAuth
 
