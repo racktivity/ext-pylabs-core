@@ -57,8 +57,6 @@ CHECK_AUTHORIZATION_METHOD = 'checkAuthorization'
 APPLICATIONSERVER_REQUEST_ARG = 'applicationserver_request'
 APPLICATIONSERVER_HUMAN_READABLE_ARG = 'humanReadableResponse'
 
-from pylabs import q
-
 #TODO Find a better base exception type
 #TODO Difference between authentication required and authentication failed
 class AuthenticationError(RuntimeError):
@@ -308,6 +306,9 @@ class Dispatcher:
 
         @raise RuntimeError: Service got no L{CHECK_AUTHENTICATION_METHOD}
         '''
+        if hasattr(request, '_authentication'):
+			return request._authentication
+        request._authenticationchecked = True
         checker = getattr(service, CHECK_AUTHENTICATION_METHOD, None)
         if not checker:
             raise RuntimeError('Service %s got no %s method' % \
@@ -330,12 +331,13 @@ class Dispatcher:
             raise TypeError('checkAuthentication is neither a function '
                             'or a method')
         if len(checker_args) == 2:
-            return checker(request.username, request.password)
+            request._authentication = checker(request.username, request.password)
         elif len(checker_args) == 6:
-            return checker(request, domain, service, methodname, args, kwargs)
+            request._authentication = checker(request, domain, service, methodname, args, kwargs)
         else:
             raise ValueError('checkAuthentication should take two or three '
                              'arguments')
+        return request._authentication
 
 
     def checkAuthorization(self, auth_categories, domain, service, request, methodname, args, kwargs):
