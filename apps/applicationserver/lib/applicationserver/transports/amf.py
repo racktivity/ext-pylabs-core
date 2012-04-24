@@ -50,26 +50,6 @@ from applicationserver.itransport import ITransportFactory
 from applicationserver.itransport import ServerTransportInfo, SiteTransport
 
 # Some PyAMF glue
-class AuthenticationAMFRequest(object):
-   implements(IApplicationserverRequest)
-
-   def __init__(self, request, username, password):
-      self._username = username
-      self._password = password
-      self._request = request
-      self.user_authenticated = False
-
-   @property
-   def request_hostname(self):
-      raise AttributeError('Not available on AMF requests')
-
-   @property
-   def client_ip(self):
-      raise AttributeError('Not available on AMF requests')
-
-   username = property(operator.attrgetter('_username'))
-   password = property(operator.attrgetter('_password'))
-
 class AMFRequest(object):
    implements(IApplicationserverRequest)
 
@@ -109,17 +89,8 @@ class FakeService(ServiceWrapper):
          raise UnknownServiceMethodError('Unknown method %s' % method)
 
       def fun(http_request, *args):
-         if 'Credentials' not in self.request.headers:
-            username = password = None
-         else:
-            username = self.request.headers['Credentials'].get('userid',
-                                                               None)
-            password = self.request.headers['Credentials'].get('password',
-                                                               None)
-
-         request = AMFRequest(http_request, username, password)
          try:
-            return self.dispatcher.callServiceMethod(request, self.domain,
+            return self.dispatcher.callServiceMethod(http_request._twistedrequest, self.domain,
                                                      self.servicename,
                                                      method, *args)
          except NoSuchService:
@@ -160,10 +131,12 @@ class ApplicationserverAMFGateway(TwistedGateway):
             service_request.service.servicename,
             service_request.method)
 
+         request = AMFRequest(http_request, username, password)
+         http_request._twistedrequest = request
+
          if not exposed_authenticated(func):
             return True
 
-         request = AuthenticationAMFRequest(http_request, username, password)
 
          if not self.dispatcher.checkAuthentication(service_request.service.domain, service, request, service_request.method, None, None):
             return False

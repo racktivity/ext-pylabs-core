@@ -308,7 +308,6 @@ class Dispatcher:
         '''
         if hasattr(request, '_authentication'):
 			return request._authentication
-        request._authenticationchecked = True
         checker = getattr(service, CHECK_AUTHENTICATION_METHOD, None)
         if not checker:
             raise RuntimeError('Service %s got no %s method' % \
