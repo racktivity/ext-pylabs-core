@@ -25,12 +25,22 @@ class EventConsumerMgr:
     def _savePid(self, pid):
         q.system.fs.writeFile(self._pidfile, str(pid))
 
+    def _isRunning(self):
+        if not q.system.fs.exists(self._pidfile):
+            return False
+        pid = q.system.fs.fileGetContents(self._pidfile)
+        return q.system.process.isPidAlive(int(pid))
+
     def start(self):
+        if self._isRunning():
+            pid = q.system.fs.fileGetContents(self._pidfile)
+            q.logger.log("Event consumer daemon with PID %s is already running" % pid)
+            return
         pid = q.system.process.runDaemon(" ".join(buildCmd(self._appName)))
         self._savePid(pid)
 
     def stop(self):
-        if not q.system.fs.exists(self._pidfile):
+        if not self._isRunning():
             return
         pid = q.system.fs.fileGetContents(self._pidfile)
         if pid.isdigit():
@@ -43,4 +53,3 @@ class EventConsumerMgr:
         else:
             q.logger.log("PID in PID file %s is not a digit" % self._pidfile, 3)
         q.system.fs.removeFile(self._pidfile)
-
