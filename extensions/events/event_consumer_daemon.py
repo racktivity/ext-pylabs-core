@@ -17,8 +17,7 @@ respawn = True
 def main(appname):
     global respawn
     #initialize API
-    p.api = p.application.getAPI(appname)
-    p.api.model = p.application.getAPI(appname, context=q.enumerators.AppContext.APPSERVER).model
+    p.api = p.application.getAPI(appname, context=q.enumerators.AppContext.EVENT)
     host = p.application.getRabbitMqHost(appname)
     pids = {}
     workersPool = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "events")

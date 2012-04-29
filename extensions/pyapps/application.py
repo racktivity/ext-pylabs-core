@@ -14,6 +14,7 @@ class AppContext(BaseEnumeration):
 AppContext.registerItem('appserver')
 AppContext.registerItem('wfe')
 AppContext.registerItem('client')
+AppContext.registerItem('event')
 AppContext.finishItemRegistration()
 
 def check_application(function):
@@ -328,7 +329,7 @@ class ApplicationAPI(object):
     def _get_actions(self, appname, context):
 
         proxy = None
-        if context == q.enumerators.AppContext.CLIENT:
+        if context in (q.enumerators.AppContext.CLIENT, q.enumerators.AppContext.EVENT):
             host = self._host
             if self._username and self._password:
                 host = "%s:%s@%s" % (self._username, self._password, host)
