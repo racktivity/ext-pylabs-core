@@ -108,7 +108,7 @@ class Connection(object):
             if ex[0] == 404:
                 raise ValueError('No Exchange found with name %s. Reason: %s'%(exchangeName, ex[1]))
             raise ex
-        except socket.error, ex:
+        except (IOError, socket.error), ex:
             self._connected = False
             q.logger.log('Failed to add item to the queue with routing key  %s. Make sure the server is up and running on host: %s and port: %s then call connect'%(routingKey, self._host, self._port), 5)
             if retry > 0:
@@ -259,7 +259,7 @@ class Connection(object):
             if ex[0] == 404:
                 raise ValueError('No queue found with name %s. Reason: %s'%(queueName, ex[1]))
             raise ex
-        except socket.error, ex:
+        except (IOError, socket.error), ex:
             self._connected = False
             if ex[0] == 32:
                 q.logger.log('Failed to get and item from the queue with name %s. Make sure the server is up and running on host: %s and port: %s'%(queueName, self._host, self._port), 5)
