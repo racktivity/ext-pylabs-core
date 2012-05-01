@@ -2,16 +2,15 @@
 
 import unittest
 import urllib2
+import time
 from pylabs import q, p
 TESTAPP = 'sampleapp'
 
 def setUp():
-    from pylabs import q, p
     if not q._init_called:
-        from pylabs.InitBase import q, p, i
-    p.api = p.application.getAPI(TESTAPP)
-    api2 = p.application.getAPI(TESTAPP, context=q.enumerators.AppContext.APPSERVER)
-    p.api.model = api2.model
+        from pylabs.InitBase import q as z
+        q.logger.log("Initialized pylabs with %s" % z)
+    p.api = p.application.getAPI(TESTAPP, context=q.enumerators.AppContext.EVENT)
     q.qp.findNewest(TESTAPP).install()
     p.application.install(TESTAPP)
 
@@ -58,7 +57,7 @@ class TestPyapps(unittest.TestCase):
 
     def test_proxy(self):
         "Testing NGinx"
-        site = urllib2.urlopen("http://localhost/%s/" % TESTAPP)
+        urllib2.urlopen("http://localhost/%s/" % TESTAPP)
 
     def test_actions(self):
         "Testing Actions"
@@ -107,13 +106,16 @@ class TestPyapps(unittest.TestCase):
         assert result_dict['result'] is True
         print "Check if Jefke's page exists"
         page_name = "customer_detail_" + jefke_guid
-        page_guids_dict = p.api.action.ui.page.find(name=page_name)
-        page_guids = page_guids_dict['result']
+        start = time.time()
+        while time.time() - 60 < start:
+            page_guids = p.api.action.ui.page.find(name=page_name)['result']
+            if page_guids:
+                break
         assert len(page_guids) == 1, "Expected to find 1 page guid, but found %d" % len(page_guids)
 
         print "Check if we can access it"
         site = urllib2.urlopen("http://localhost/%s/#/crm/%s" %(TESTAPP, page_name))
-        content = site.read()
+        site.read()
 
     def list_lead_types(self):
         "List lead types"
