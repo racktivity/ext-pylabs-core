@@ -55,6 +55,7 @@ EventLevelType.registerItem('warning', 4)
 EventLevelType.registerItem('error', 3)
 EventLevelType.registerItem('urgent', 2)
 EventLevelType.registerItem('critical', 1)
+EventLevelType.registerItem('unknown', 0)
 
 
 
