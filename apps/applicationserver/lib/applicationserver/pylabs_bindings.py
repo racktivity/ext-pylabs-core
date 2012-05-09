@@ -43,6 +43,7 @@ import sys
 import time
 import xmlrpclib
 import socket
+import pwd
 
 from twisted.internet import reactor
 from twisted.python.threadpool import ThreadPool
@@ -139,10 +140,10 @@ class ApplicationserverConfigManagementItem(ConfigManagementItem):
     KEYS['mail_outgoing_password'] =""
     KEYS['mail_outgoing_ssl'] =""
     KEYS['mail_from_address'] =""
-    
-    
-    
-    
+
+
+
+
 
 
     def ask(self):
@@ -220,7 +221,7 @@ class ApplicationserverServiceConfigManagementItem(ConfigManagementItem):
     DESCRIPTION = 'Application server service'
     KEYS = {}
     KEYS['classspec'] =  'Service implementation class spec'
-    
+
     def ask(self):
         self.dialogAskString('classspec', 'Service implementation class spec')
 
@@ -454,13 +455,13 @@ def setup():
 
     # Setup pylabs at an appropriate time
     setup_pylabs_start_and_stop()
-    
+
     # get pyapps API
     appname = os.environ.get('TWISTED_NAME', None)
     if appname and appname.find('.'):
         appname = appname.split('.')[-1]
         p.api = p.application.getAPI(appname, context=q.enumerators.AppContext.APPSERVER)
-    
+
 
 
 def setup_pylabs_start_and_stop():
@@ -544,13 +545,13 @@ from applicationserver.services import service_close_handler \
 
 def service_close_handler(func):
     func = _service_close_handler(func)
-    
+
     @functools.wraps(func)
     def logged_func(*args, **kwargs):
         return _run_with_logger(func, *args, **kwargs)
-    
+
     return logged_func
-        
+
 #TaskletRunner implementation for pylabs2 tasklets
 import Queue
 
@@ -737,6 +738,11 @@ class Server:
     CRON_JOB_STOP = CRON_JOB_STOP
     service_close_handler = staticmethod(service_close_handler)
 
+    # user and group used to start the applicationserver
+    config = q.config.getConfig('main').get('main', {})
+    user = config.get('user')
+    group = config.get('group')
+
     def _checkName(self, name):
         if not name:
             name = "applicationserver"
@@ -789,17 +795,30 @@ class Server:
             # This code is suboptimal since it overrules previously-set values
             # of PYTHONPATH, which might not be the intention
             tacfile = q.system.fs.joinPaths(applicationserver_dir, 'applicationserver.tac')
+
+            homeDir = pwd.getpwnam(self.user).pw_dir if self.user else q.dirs.baseDir
+
+            env['PYTHON_EGG_CACHE'] = q.system.fs.joinPaths(homeDir, '.python-eggs')
+
             env['PYTHONPATH'] = applicationserver_dir
 
             cmd = "twistd --pidfile=%s -y %s --savestats %s"% (pidfile, tacfile, "-b" if debug else "")
+
             if debug:
                 cmd = "screen -dmS %s %s" % (name, cmd)
+
+            # Change current directory to user home before starting appserver, otherwise it might fail
+            # because of lack of permissions
+            q.system.fs.changeDir(homeDir)
+
             code, stdout, stderr = q.system.process.run(cmd,
                 showOutput=False,
                 captureOutput=True,
                 stopOnError=False,
                 # Use shell so the system's twistd can be found
                 shell=True,
+                user=self.user,
+                group=self.group,
                 env=env)
 
 
@@ -898,7 +917,7 @@ class Server:
         """
         name = self._checkName(name)
         self._callWithStatusCheck('reload', name, self._getProxy(name).reloadConfig, printWarningIfNotRunning)
-         
+
 
     def _callWithStatusCheck(self, commandname, appname, func, printWarning=True):
         """

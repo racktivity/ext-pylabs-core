@@ -363,7 +363,7 @@ class UnixSystem:
         pylabs.q.logger.log('Change root to %s' % path, 5)
         os.chroot(path)
 
-    def addSystemUser(self, username, groupname=None, shell=None):
+    def addSystemUser(self, username, groupname=None, shell=None, createHome=False, homeDir=None):
         '''Add a user to the system
 
         Note: you should be root to run this python command.
@@ -371,9 +371,11 @@ class UnixSystem:
         @param username: Username of the user to add
         @param groupname: Optional param to add user to existing systemgroup
         @param shell: Optional param to specify the shell of the user
+        @param createHome: Also create a home directory for user (by default /home/<user>)
+        @param homeDir: User home directory
         @type username: string
         '''
-        
+
         if not pylabs.q.system.unix.unixUserExists(username):
             pylabs.q.logger.log(
                 "User [%s] does not exist, creating an entry" % username, 5)
@@ -386,6 +388,10 @@ class UnixSystem:
                 options.append("-g %s" %(groupname))
             if shell:
                 options.append("-s %s" % shell)
+            if createHome:
+                options.append("-m")
+            if homeDir:
+                options.append("-d %s" % homeDir)
             command = "%s %s %s" % (command, " ".join(options), username)
             exitCode, stdout, stderr = pylabs.q.system.process.run(command, stopOnError=False)
 
@@ -399,16 +405,16 @@ class UnixSystem:
 
     def addSystemGroup(self, groupname):
         ''' Add a group to the system
-        
+
         Note: you should be root to run this python command.
-        
+
         @param groupname: Name of the group to add
         @type groupname : string
         '''
         if not pylabs.q.system.unix.unixGroupExists(groupname):
             pylabs.q.logger.log("Group [%s] does not exist, creating an entry" %groupname, 5)
             exitCode, stdout, stderr = pylabs.q.system.process.run("groupadd %s" %groupname, stopOnError=False)
-            
+
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
                 raise RuntimeError('Failed to add group %s, error: %s' %(groupname,output))
@@ -423,7 +429,7 @@ class UnixSystem:
 
         @returns: Whether the user exists
         @rtype: bool
-        """ 
+        """
         try:
             pwd.getpwnam(username)
         except KeyError:
@@ -444,7 +450,7 @@ class UnixSystem:
         except KeyError:
             return False
         return True
-    
+
     def disableUnixUser(self,username):
         """Disables a given unix user
 
@@ -480,7 +486,7 @@ class UnixSystem:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
                 raise RuntimeError('Failed to enable user %s, error: %s' %(username,output))
             return True
-        
+
     def removeUnixUser(self, username, removehome=False):
         """Remove a given unix user
 
@@ -499,15 +505,15 @@ class UnixSystem:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
                 raise RuntimeError('Failed to remove user %s, error: %s' %(username,output))
             return True
-        
+
     def setUnixUserPassword(self,username, password):
         """Set a password on unix user
 
         @param username: Name of the user to enable
         @type username: string
-        
+
         @param password: Password to set on the user
-        @type username: string        
+        @type username: string
 
         """
         if not pylabs.q.system.unix.unixUserExists(username):
@@ -519,7 +525,7 @@ class UnixSystem:
             if exitCode:
                 output = '\n'.join(('Stdout:', stdout, 'Stderr:', stderr, ))
                 raise RuntimeError('Failed to set password on user %s, error: %s' %(username,output))
-            return True   
+            return True
 
     @staticmethod
     def unixUserIsInGroup(username, groupname):

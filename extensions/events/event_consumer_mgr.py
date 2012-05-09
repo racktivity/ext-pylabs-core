@@ -22,6 +22,11 @@ class EventConsumerMgr:
         self._appName = appName
         self._pidfile = q.system.fs.joinPaths(PIDDIR, "%s.pid" % appName)
 
+        # user and group used to start the applicationserver
+        config = q.config.getConfig('main').get('main', {})
+        self.user = config.get('user')
+        self.group = config.get('group')
+
     def _savePid(self, pid):
         q.system.fs.writeFile(self._pidfile, str(pid))
 
@@ -36,7 +41,7 @@ class EventConsumerMgr:
             pid = q.system.fs.fileGetContents(self._pidfile)
             q.logger.log("Event consumer daemon with PID %s is already running" % pid)
             return
-        pid = q.system.process.runDaemon(" ".join(buildCmd(self._appName)))
+        pid = q.system.process.runDaemon(" ".join(buildCmd(self._appName)), user=self.user, group=self.group)
         self._savePid(pid)
 
     def stop(self):
@@ -53,3 +58,4 @@ class EventConsumerMgr:
         else:
             q.logger.log("PID in PID file %s is not a digit" % self._pidfile, 3)
         q.system.fs.removeFile(self._pidfile)
+

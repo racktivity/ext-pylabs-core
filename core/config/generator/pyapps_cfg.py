@@ -27,10 +27,18 @@ class PyAppsConfigGen:
         self.appName = appName
         self.config = None
         self.components = None
+        self.user = None
+        self.group = None
         self._load_config()
 
     def _load_config(self):
         self.config = q.config.getConfig('pyapps').get(self.appName)
+
+        # Get the user and group used for running pyapps
+        mainConfig = q.config.getConfig('main').get('main', {})
+        self.user = mainConfig.get('user')
+        self.group = mainConfig.get('group')
+
         self.components = self.list_needed_components()
 
     def pyapps_configuration(self):
@@ -97,6 +105,13 @@ class PyAppsConfigGen:
         #create user with applicationname
         if not q.system.unix.unixUserExists(self.appName):
             q.system.unix.addSystemUser(self.appName)
+        # create the user and group to be used by the new pyapp
+        if self.group and not q.system.unix.unixGroupExists(self.group):
+            q.system.unix.unix.addSystemGroup(self.group)
+        if self.user and self.group and not q.system.unix.unixUserExists(self.user):
+            q.system.unix.addSystemUser(username=self.user, groupname=self.group, homeDir=q.dirs.baseDir)
+
+
         if 'postgresql' in self.components:
             self.setup_postgres()
         if 'wfe' in self.components:
@@ -155,7 +170,6 @@ class PyAppsConfigGen:
         if te:
             te.execute(params, tags=('post',))
 
-
     def stop(self):
         params = {'appname': self.appName}
         te = None
@@ -176,6 +190,13 @@ class PyAppsConfigGen:
             te.execute(params, tags=('post',))
 
     def generateAll(self):
+        # Create and set ownership for directory used to store arakoon and event consumer logs
+        logDir = q.system.fs.joinPaths(q.dirs.logDir, self.appName)
+        if not q.system.fs.exists(logDir):
+            q.system.fs.createDir(logDir)
+            if self.user and self.group:
+                q.system.unix.chown(logDir, self.user, self.group)
+
         self.pyapps_configuration()
         if 'wfe_port' in self.config:
             self.generateWfeConfig()
@@ -191,7 +212,7 @@ class PyAppsConfigGen:
         wfe.generate_cfg(self.config['wfe_port'])
 
     def generateArakoonConfig(self):
-        arakoon = ArakoonPyApps(self.appName)
+        arakoon = ArakoonPyApps(self.appName, self.user, self.group)
         arakoon.generate_cfg(self.config['arakoon_baseport'])
 
     def generateOsisConfig(self):
@@ -284,7 +305,7 @@ class PyAppsConfigGen:
             site.addOption('root', jsmacros)
             site.addOption('try_files', '$uri $uri/ @lfw_macros')
             site.addOption('rewrite', '^/%s/js/macros/(.*) /$1 break' % self.appName)
-            
+
         sitename = "%s_jswizards" % self.appName
         if not sitename in vhost.sites:
             site = vhost.addSite(sitename, '/%s/jswizards' % self.appName)
@@ -352,10 +373,14 @@ LFW_CONFIG = {
         if not os.path.exists(config_file):
             if not os.path.isdir(config_dir):
                 os.makedirs(config_dir, 0755)
+                if self.user and self.group:
+                    q.system.unix.chown(config_dir, self.user, self.group)
 
             fd = open(config_file, 'w')
             try:
                 fd.write(config)
+                if self.user and self.group:
+                    q.system.unix.chown(config_file, self.user, self.group)
             finally:
                 fd.close()
 
@@ -365,6 +390,8 @@ LFW_CONFIG = {
 
             if not os.path.isdir(configdir):
                 os.makedirs(configdir, 0755)
+                if self.user and self.group:
+                    q.system.unix.chown(configdir, self.user, self.group)
 
             fn = os.path.join(configdir, name)
 
@@ -372,6 +399,8 @@ LFW_CONFIG = {
                 fd = open(fn, "w")
                 try:
                     fd.write(template)
+                    if self.user and self.group:
+                        q.system.unix.chown(fn, self.user, self.group)
                 finally:
                     fd.close()
 

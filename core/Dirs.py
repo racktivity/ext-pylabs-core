@@ -33,8 +33,7 @@
 #
 # </License>
 
-import sys, os
-from user import home
+import sys, os, pwd
 
 import pylabs
 
@@ -61,7 +60,7 @@ class Dirs(object):
 
     @type: string
     '''
-    
+
     pyAppsDir = None
 
     baseDir = None ##string
@@ -125,7 +124,7 @@ class Dirs(object):
     '''
 
     packageDir = None
-    
+
     etcDir = None ##string
     ''' etc folder where system configuration is kept (basedir/etc)
 
@@ -170,7 +169,8 @@ class Dirs(object):
         if not self.etcDir:
             self.etcDir = os.path.join(self.baseDir, 'etc')
         if not self.homeDir:
-            self.homeDir = pathToUnicode(os.path.join(home, ".qbase"))
+            userHome = pwd.getpwuid(os.geteuid()).pw_dir
+            self.homeDir = pathToUnicode(os.path.join(userHome, ".qbase"))
         if not self.extensionsDir:
             self.extensionsDir = os.path.join(self.baseDir, 'lib', 'pylabs','extensions')
         if not self.binDir:

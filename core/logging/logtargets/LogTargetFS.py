@@ -33,7 +33,7 @@ class LogTargetFS(object):
         logdir=os.path.join(pylabs.q.dirs.baseDir,"var",'log',"pylabslogs",pylabs.q.application.agentid)
         if os.path.isdir(logdir)==False:
             os.mkdir(logdir)
-            
+
         self.enabled = True #self.checkTarget()
 
         #q.base.time.getLocalTimeHRForFilesystem()
@@ -53,10 +53,10 @@ class LogTargetFS(object):
     def log(self, message,level=5,tags=""):
         """
         """
-        
+
         if not self._is_initialized():
             self._initialize()
-        
+
         if not self.enabled:
             self.enabled = self.checkTarget()
 
@@ -71,7 +71,7 @@ class LogTargetFS(object):
                 or self.logopenNrlines > int(self._config['main']['logrotate_number_of_lines']) \
                 or self.appname <> appLogname \
                 or pylabs.q.application.state <> self.lastappstatus:
-                
+
                 ##print "NEWLOG"
                 self.close()
                 self.open()
@@ -99,7 +99,7 @@ class LogTargetFS(object):
         return True
 
     def open(self):
-        
+
         if not self._is_initialized():
             self._initialize()
 
@@ -111,6 +111,11 @@ class LogTargetFS(object):
 
         if not os.path.isdir(logdir):
             os.makedirs(logdir)
+
+            config = pylabs.q.config.getConfig('main').get('main')
+            if config and config.get('user') and config.get('group'):
+                pylabs.q.system.unix.chown(logdir, config.get('user'), config.get('group'))
+
         filename=time.strftime("%b_%d--%H_%M_%S", time.gmtime())
         logfile=os.path.join(logdir,"%s_%s"%(filename,pylabs.q.application.state))
         filenum = 1
@@ -156,13 +161,13 @@ class LogTargetFS(object):
                         'Unable to close log file after %d attempts.\n'
                         % (max_attempts,))
             self.fileHandle = None
-            
+
     def cleanup(self):
-        
+
         if self._config['main']['logremove_enable'] == 'True':
-          
+
             if int(self._lastcleanuptime) <= (pylabs.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_check'])):
-        
+
                 self._lastcleanuptime=pylabs.q.base.time.getTimeEpoch()
                 self.nolog=True
                 inifile=pylabs.q.config.getInifile("main")
@@ -171,37 +176,37 @@ class LogTargetFS(object):
                             pylabs.q.system.fs.joinPaths(pylabs.q.dirs.logDir, 'pylabslogs'), \
                             recursive=True, \
                             maxmtime=(pylabs.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_age'])))
-                
+
                 for filepath in files:
                     if pylabs.q.system.fs.exists(filepath):
                         try:
                             pylabs.q.system.fs.removeFile(filepath)
                         except Exception, ex:
                             pass # We don't want to fail on logging
-            
+
                 self.nolog=False
-                
+
     def _is_initialized(self):
         return hasattr(self, '_config') and self._config and hasattr(self, '_lastcleanuptime')
-    
+
     def _initialize(self):
-        
+
         """
         Initialize logtarget config
 
         As we are in the initialization phase of the logging framework, we can't use anything
         using the logging framework.
         """
-        
+
         mainfile = pylabs.q.config.getInifile("main")
         if 'main' in mainfile.getSections() and mainfile.getValue('main', 'lastlogcleanup'):
             self._lastcleanuptime = mainfile.getValue('main', 'lastlogcleanup')
         else:
             self._lastcleanuptime = -1
- 
+
         # Check if we should rotate logfiles
         """
-        In [6]: q.config.getConfig('logtargetfs')                                                                                                                                                     
+        In [6]: q.config.getConfig('logtargetfs')
         {'main': {'logremove_enable': 'True',
                   'logrotate_enable': 'True',
                   'logrotate_number_of_lines': '5000',
@@ -209,24 +214,24 @@ class LogTargetFS(object):
                   'logrotate_time': '60',
                   'logremove_check': '86400'}}
         """
-        
+
         cfg_defaults = {'main': {'logremove_enable': 'True',
                   'logrotate_enable': 'True',
                   'logrotate_number_of_lines': '5000',
                   'logremove_age': '432000',
                   'logrotate_time': '60',
                   'logremove_check': '86400'}}
-        
+
         cfg = None
         if 'logtargetfs' in pylabs.q.config.list():
             logtargetfs_file = pylabs.q.config.getInifile("logtargetfs")
             cfg = logtargetfs_file.getFileAsDict()
-        
+
         if not cfg or not 'main' in cfg.keys():
             cfg = cfg_defaults
-            
+
         self._config = cfg
-        
+
         for k, v in cfg_defaults['main'].iteritems():
             if not self._config['main'].has_key(k) or self._config['main'].get(k) == None:
                 self._config['main'][k] = v
@@ -234,7 +239,7 @@ class LogTargetFS(object):
 
         self.enabled = self.checkTarget()
 
-        
+
 
 # Config
 from pylabs.config import ConfigManagementItem, ItemSingleClass
@@ -251,7 +256,7 @@ class LogTargetFSConfigManagementItem(ConfigManagementItem):
            "logrotate_time":"",
            "logremove_enable":"",
            "logremove_age":"",
-           "logremove_check":""           
+           "logremove_check":""
            }
     # MANDATORY IMPLEMENTATION OF ASK METHOD
     def ask(self):
@@ -263,8 +268,8 @@ class LogTargetFSConfigManagementItem(ConfigManagementItem):
         if self.params['logremove_enable']:
             self.dialogAskInteger('logremove_age', 'Max age of logfiles in seconds', 432000)
             self.dialogAskInteger('logremove_check', 'Interval to remove files older than max age', 86400)
-            
-            
+
+
     #  OPTIONAL CUSTOMIZATIONS OF CONFIGURATION
 
     def show(self):
@@ -273,11 +278,11 @@ class LogTargetFSConfigManagementItem(ConfigManagementItem):
         """
         # Here we do not want to show the password, so a customized show() method
         pylabs.q.gui.dialog.message(self.params)
-        
+
     def retrieve(self):
         """
         Optional implementation of retrieve() method, to be used by find()
         """
         return self.params
 
-      
+
