@@ -107,7 +107,7 @@ class PyAppsConfigGen:
             q.system.unix.addSystemUser(self.appName)
         # create the user and group to be used by the new pyapp
         if self.group and not q.system.unix.unixGroupExists(self.group):
-            q.system.unix.unix.addSystemGroup(self.group)
+            q.system.unix.addSystemGroup(self.group)
         if self.user and self.group and not q.system.unix.unixUserExists(self.user):
             q.system.unix.addSystemUser(username=self.user, groupname=self.group, homeDir=q.dirs.baseDir)
 
