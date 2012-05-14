@@ -78,6 +78,11 @@ def main(appname):
         cfgFile = q.tools.inifile.open(cfgFilePath)
         workers = cfgFile.getIntValue('main', 'workers')
         bindingKey = cfgFile.getValue('main', 'eventKey')
+        enabled = True
+        if cfgFile.checkParam('main', 'enabled'):
+            enabled = cfgFile.getBooleanValue('main', 'enabled')
+        if not enabled:
+            continue
         queueName = q.tools.hash.md5_string(workerPool)
         host = globalhost
         if cfgFile.checkSection('server'):
