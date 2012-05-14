@@ -18,7 +18,7 @@ def main(appname):
     global respawn
     #initialize API
     p.api = p.application.getAPI(appname, context=q.enumerators.AppContext.EVENT)
-    host = p.application.getRabbitMqHost(appname)
+    globalhost = p.application.getRabbitMqHost(appname)
     pids = {}
     workersPool = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, "impl", "events")
     
@@ -79,6 +79,9 @@ def main(appname):
         workers = cfgFile.getIntValue('main', 'workers')
         bindingKey = cfgFile.getValue('main', 'eventKey')
         queueName = q.tools.hash.md5_string(workerPool)
+        host = globalhost
+        if cfgFile.checkSection('server'):
+            host = cfgFile.getValue('server', 'host')
         multiconsumer = cfgFile.checkParam('main', 'multiconsume') and cfgFile.getBooleanValue('main', 'multiconsume')
         #multiconsumers do not require multiple works and should as events will be processed multiple times on same node
         if multiconsumer:
