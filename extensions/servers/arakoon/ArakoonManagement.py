@@ -33,6 +33,7 @@ import subprocess
 import time
 import string
 import logging
+import getpass
 
 from arakoon.ArakoonExceptions import ArakoonNodeNotLocal
 
@@ -780,7 +781,7 @@ class ArakoonCluster:
 
         config = self.getNodeConfig(name)
         cmd = []
-        if 'user' in config :
+        if 'user' in config and getpass.getuser() != config['user']:
             cmd = ['sudo']
             cmd.append('-u')
             cmd.append(config['user'])
