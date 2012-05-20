@@ -59,3 +59,7 @@ class EventConsumerMgr:
             q.logger.log("PID in PID file %s is not a digit" % self._pidfile, 3)
         q.system.fs.removeFile(self._pidfile)
 
+    def restart(self):
+        self.stop()
+        self.start()
+

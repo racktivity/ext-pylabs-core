@@ -1,4 +1,3 @@
-from pylabs import q
 from events import EXCHG_NAME
 from events.event_consumer_mgr import EventConsumerMgr
 
@@ -21,3 +20,6 @@ class Events(object):
     
     def stopConsumers(self, appName):
         EventConsumerMgr(appName).stop()
+
+    def restartConsumers(self, appName):
+        EventConsumerMgr(appName).restart()
