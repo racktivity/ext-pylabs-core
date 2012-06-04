@@ -32,7 +32,7 @@ self_extract(){
 
 get_qbase_remote(){
     TARFILE=/tmp/installer.$$
-    curl http://fileserver.incubaid.com/pylabs5/qbase5.tgz > $TARFILE
+    curl http://qpackages.racktivity.com/bundles/installer/qbase5.tgz > $TARFILE
     tar xf $TARFILE -C /opt
     rm $TARFILE
 }
@@ -53,7 +53,7 @@ install_qbase(){
 customize(){
     log "Adding sitecustomize to system python"
     mkdir -p /etc/python2.6
-    cp /opt/qbase5/utils/system/sitecustomize.py /etc/python2.6/sitecustomize.py    
+    cp /opt/qbase5/utils/system/sitecustomize.py /etc/python2.6/sitecustomize.py
 }
 
 update_metadata(){
