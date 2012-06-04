@@ -1,4 +1,5 @@
 __author__ = "Incubaid"
+from osis.store import OsisConnection
 
 FIELDS = []
 #for field in $fields
@@ -8,7 +9,7 @@ FIELDS.append("$field['name']")
 TYPE = "$rootobject"
 GUID_FIELD = "%sguid" % TYPE
 DOMAIN = "$domain"
-VIEW = "%s_view_%s_list" % (DOMAIN, TYPE)
+VIEW = OsisConnection.getTableName(domain = DOMAIN, objType = TYPE)
 
 def get_model_handle(p):
     return p.api.model.${domain}.${rootobject}

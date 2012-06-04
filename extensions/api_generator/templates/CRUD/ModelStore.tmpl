@@ -1,8 +1,9 @@
 __author__ = 'Incubaid'
+from osis.store import OsisConnection
 
 def main(q, i, p, params, tags):
-    osis = p.application.getOsisConnection(p.api.appname) 
-    viewname = '%s_view_%s_list' % (params['domain'], params['rootobjecttype'])
+    osis = p.application.getOsisConnection(p.api.appname)
+    viewname = OsisConnection.getTableName(domain = params['domain'], objType = params['rootobjecttype'])
     rootobject = params['rootobject']
     values = dict()
 #for $field in $fields
@@ -11,7 +12,7 @@ def main(q, i, p, params, tags):
     #end if
 #end for
     
-    osis.viewSave(params['domain'], params['rootobjecttype'],viewname, rootobject.guid, rootobject.version, values)
+    osis.viewSave(params['domain'], params['rootobjecttype'], viewname, rootobject.guid, rootobject.version, values)
 
 def match(q, i, params, tags):
     return params['rootobjecttype'] == '$rootobject' and params['domain'] == '$domain'
