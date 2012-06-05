@@ -32,7 +32,7 @@ self_extract(){
 
 get_qbase_remote(){
     TARFILE=/tmp/installer.$$
-    curl http://qpackages.racktivity.com/bundles/installer/qbase5.tgz > $TARFILE
+    curl http://qpackage.racktivity.com/bundles/installer/qbase5.tgz > $TARFILE
     tar xf $TARFILE -C /opt
     rm $TARFILE
 }
