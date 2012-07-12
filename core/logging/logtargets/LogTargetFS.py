@@ -172,10 +172,10 @@ class LogTargetFS(object):
                 self.nolog=True
                 inifile=pylabs.q.config.getInifile("main")
                 inifile.setParam("main","lastlogcleanup",self._lastcleanuptime)
-                files= pylabs.q.system.fs.listFilesInDir( \
-                            pylabs.q.system.fs.joinPaths(pylabs.q.dirs.logDir, 'pylabslogs'), \
-                            recursive=True, \
-                            maxmtime=(pylabs.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_age'])))
+
+                maxmtime = (pylabs.q.base.time.getTimeEpoch() - int(self._config['main']['logremove_age']))
+                logDir = pylabs.q.system.fs.joinPaths(pylabs.q.dirs.logDir)
+                files = pylabs.q.system.fs.listFilesInDir(logDir, recursive=True, maxmtime=maxmtime)
 
                 for filepath in files:
                     if pylabs.q.system.fs.exists(filepath):
