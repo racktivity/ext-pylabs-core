@@ -109,13 +109,14 @@ class AppManager(object):
                 q.manage.postgresql8.cmdb.save()
                 q.manage.postgresql8.applyConfig()
 
-        q.logger.log("Removing arakoon db", 1)
-
         arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var','db', appname)
-        arakoon_cfg_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'arakoon', appname) 
-        q.system.fs.removeDirTree(arakoon_db_path, True)
-        q.system.fs.removeDirTree(arakoon_cfg_path, True)
-        
+        arakoon_cfg_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'arakoon', appname)
+
+        if q.system.fs.exists(arakoon_db_path) or q.system.fs.exists(arakoon_cfg_path):
+            q.logger.log("Removing arakoon db", 1)
+            q.system.fs.removeDirTree(arakoon_db_path, True)
+            q.system.fs.removeDirTree(arakoon_cfg_path, True)
+
         appdir=q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
         q.system.fs.removeDirTree(appdir, True)
 
@@ -147,16 +148,17 @@ class AppManager(object):
                 q.manage.postgresql8.applyConfig()
                 q.manage.postgresql8.start()
 
-        q.logger.log("Removing arakoon db", 1)
-
         arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var','db', appname)
-        q.system.fs.removeDirTree(arakoon_db_path)
-        q.system.fs.createDir (q.system.fs.joinPaths(q.dirs.varDir, 'db', appname,appname+"_0"))
+
+        if q.system.fs.exists(arakoon_db_path):
+            q.logger.log("Removing arakoon db", 1)
+            q.system.fs.removeDirTree(arakoon_db_path)
+            q.system.fs.createDir (q.system.fs.joinPaths(q.dirs.varDir, 'db', appname,appname+"_0"))
 
         # if changes done
         # check if there is is changes done in the installed app
         if keepchanges:
-            changed_files, created_files, deleted_files, is_app_changed = self._getChangedFiles(appname)
+            changed_files, created_files, deleted_files, _ = self._getChangedFiles(appname)
             backup_folder = self._backup_changed_files(changed_files, created_files, deleted_files, appname)
 
             #reinstalling sampleapp package
@@ -193,14 +195,14 @@ class AppManager(object):
             except:
                 q.logger.log("Failed to restore %s"% created_file, 1)
 
-        for file in deleted_files:
+        for f in deleted_files:
             try:
-                if q.system.fs.isFile(file):
-                    q.system.fs.remove(file)
+                if q.system.fs.isFile(f):
+                    q.system.fs.remove(f)
                 else:
-                    q.system.fs.removeDirTree(file)
+                    q.system.fs.removeDirTree(f)
             except:
-                    q.logger.log("folder %s removed by install job and no mean to delete it "% file, 1)
+                q.logger.log("folder %s removed by install job and no mean to delete it "% file, 1)
 
     def _backup_changed_files(self, changed_files, created_files, deleted_files, appname):
         backup_folder = q.system.fs.joinPaths(q.dirs.varDir, "tmp","backup", appname, str(time.time()))
@@ -238,7 +240,7 @@ class AppManager(object):
         created_files_command = "diff -r -q     --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s | grep 'Only in /opt/qbase5/pyapps' |grep -v '/portal/static: js'| grep -v ': tmp'| grep -v  'spaces/api:' |grep -v ': cfg' |grep -v ': client'|grep -v ': service'  |grep -v ': __init__.py'| grep -v ': formwizard.md' |grep -v '.pyc'| awk '{sub(\":\",\"/\");print $3$4 }' "  %(appname, packagePath, appname)
         deleted_files_command = "diff -r -q  -y --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s  |grep 'Only in /opt/qbase5/var' |awk '{sub(\"%s/generic/pyapps/%s\",\"/opt/qbase5/pyapps/%s\");print $0 }' |     awk '{sub(\":\",\"/\");print $3$4 }'"  %(appname, packagePath, appname, packagePath, appname, appname)
 
-        exitCode, output1 = q.system.process.execute(changed_files_command)
+        _, output1 = q.system.process.execute(changed_files_command)
         changed_files=output1.splitlines()
 
         exitCode, output2 = q.system.process.execute(created_files_command)
@@ -317,7 +319,8 @@ class ApplicationAPI(object):
             if q.system.fs.isDir(localepath):
                 self.language = locale.getlocalizer(appname, localepath)
             #load arakoondb
-            self.db = q.clients.arakoon.getPoolClient(appname)
+            if appname in q.clients.arakoon.listClients():
+                self.db = q.clients.arakoon.getPoolClient(appname)
 
             if context == q.enumerators.AppContext.WFE:
                 self.actor = self._get_actors(appname, context)
@@ -371,10 +374,10 @@ class ApplicationAPI(object):
             def execute(**kwargs):
                 params = kwargs.pop('params', None)
                 params = params if params is not None else {}
-    
+
                 if 'rootobjecttype' in params and len(params['rootobjecttype']) == 3:
                     category, domain, rootobjecttype = params['rootobjecttype']
-    
+
                     params.update({
                         'category': category,
                         'domain': domain,
@@ -382,9 +385,9 @@ class ApplicationAPI(object):
                     })
                 if 'rootobjectguid' in params:
                     params['rootobjectguid'] = str(params['rootobjectguid'])
-    
+
                 kwargs['params'] = params
-    
+
                 result = orig_execute(**kwargs)
                 if 'result' in params and isinstance(params['result'], tuple):
                     params['result'] = list(params['result'])

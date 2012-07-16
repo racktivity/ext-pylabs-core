@@ -203,6 +203,7 @@ class PyAppsConfigGen:
             AgentPyApps(self.appName).generate_cfg()
         if 'arakoon_baseport' in self.config:
             self.generateArakoonConfig()
+        if 'osis' in self.components:
             self.generateOsisConfig()
         if 'app_server_xmlrpc_port' in self.config:
             self.generateAppServerConfig()
@@ -238,7 +239,6 @@ class PyAppsConfigGen:
         if 'actor' in dirBaseNames or 'action' in dirBaseNames:
             params.add('wfe')
         if 'osis' in dirBaseNames:
-            params.add('arakoon')
             params.add('osis')
             params.add('postgresql')
         types = ('osis', 'pymodel', 'service')
