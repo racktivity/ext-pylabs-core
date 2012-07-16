@@ -36,7 +36,7 @@ class LogHandler(object):
     def _init(self):
         """
         called by pylabs
-        """       
+        """
         self._lastinittime=0
         self.nolog=True
         inifile=pylabs.q.config.getInifile("main")
@@ -53,10 +53,10 @@ class LogHandler(object):
 
     def _inittargets(self):
         """
-        only execute this every 5 secs
+        only execute this every hour
         """
-        if self._lastinittime<pylabs.q.base.time.getTimeEpoch()-5:
-            
+        if self._lastinittime < pylabs.q.base.time.getTimeEpoch() - 3600:
+
             #check which loggers are not working
             for target in self.logTargets:
                 if target.enabled==False:
@@ -66,7 +66,7 @@ class LogHandler(object):
                         target.enabled = False
             self.cleanupLogsOnFilesystem()
             self._lastinittime=pylabs.q.base.time.getTimeEpoch()
-            
+
 
     def log(self, message, level=5, tags="",dontprint=False):
         """
@@ -84,18 +84,18 @@ class LogHandler(object):
         #if message<>"" and message[-1]<>"\n":
         #    message+="\n"
         if level<self.maxlevel+1:
-    
+
             #print pylabs.q.application.state
             #if pylabs.q.application.state==pylabs.q.enumerators.AppStatusType.RUNNING:
             logobject=LogObject()
             logobject.init(message,level,tags)
-            
+
             #add to active transaction when there is one
             if pylabs.q.transaction.activeTransaction<>None:
                 if len (pylabs.q.transaction.activeTransaction.logs)>250:
                     pylabs.q.transaction.activeTransaction.logs=pylabs.q.transaction.activeTransaction.logs[-200:]
                 pylabs.q.transaction.activeTransaction.logs.append(logobject)
-                
+
             self.logs.append(logobject)
             if len (self.logs)>550:
                     self.logs=self.logs[-500:]
@@ -121,12 +121,12 @@ class LogHandler(object):
         """
         if hasattr(self, '_fallbackLogger') and hasattr(self._fallbackLogger, 'cleanup'):
             self._fallbackLogger.cleanup()
-            
+
         for logtarget in self.logTargets:
             if hasattr(logtarget, 'cleanup'):
-                logtarget.cleanup()      
-        
-        
+                logtarget.cleanup()
+
+
 
     #@deprecated('q.logger.cleanupLogsOnFilesystem', 'q.logger.cleanup', '4.0')
     def cleanupLogsOnFilesystem(self):
@@ -134,8 +134,8 @@ class LogHandler(object):
         cleanup all old logfiles
         """
         self.cleanup()
-        
-        
+
+
 
 #####OLD CODE, WILL BE OBSOLETED ONCE NEW INFRASTRUCTURE WORKS
 
