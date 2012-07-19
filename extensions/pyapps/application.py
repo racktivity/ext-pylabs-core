@@ -98,8 +98,8 @@ class AppManager(object):
             error="Error stopping application, this error probably due to running reinstall twice without restarting qshell,  please restart qshell and try agin"
             q.logger.log(error, 1)
 
-        q.logger.log("Removing postgres database", 1)
         if q.manage.postgresql8.cmdb.databases.has_key(appname):
+            q.logger.log("Removing postgres database", 1)
             try:
                 q.manage.postgresql8.startChanges()
                 q.manage.postgresql8.cmdb.removeDatabase(appname)
@@ -134,9 +134,9 @@ class AppManager(object):
             error="Error stopping application, this error probably due to running reinstall twice without restarting qshell,  please restart qshell and try agin"
             q.logger.log(error, 1)
 
-        q.logger.log("Removing postgres database", 1)
         if q.manage.postgresql8.cmdb.databases.has_key(appname):
             try:
+                q.logger.log("Removing postgres database", 1)
                 q.manage.postgresql8.stop()
                 q.manage.postgresql8.startChanges()
                 q.manage.postgresql8.cmdb.removeDatabase(appname)

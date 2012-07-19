@@ -240,7 +240,19 @@ class PyAppsConfigGen:
             params.add('wfe')
         if 'osis' in dirBaseNames:
             params.add('osis')
-            params.add('postgresql')
+
+            # check if we want postgres or not
+            addPostgres = True
+            iniFile = q.system.fs.joinPaths(q.dirs.cfgDir, 'osisdb.cfg')
+            if q.system.fs.isFile(iniFile):
+                ini = q.tools.inifile.open(iniFile)
+                if ini.checkSection(self.appName) and ini.checkParam(self.appName, "type") and \
+                    ini.getValue(self.appName, "type") != "postgresql":
+
+                    addPostgres = False
+
+            if addPostgres:
+                params.add('postgresql')
         types = ('osis', 'pymodel', 'service')
         if any( (type_ in dirBaseNames) for type_ in  types):
             params.add('appserver')
