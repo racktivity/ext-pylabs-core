@@ -12,8 +12,8 @@ class Ubuntu:
         apt.apt_pkg.init()
         apt.apt_pkg.Config.set("APT::Install-Recommends", "0")
         apt.apt_pkg.Config.set("APT::Install-Suggests", "0")
-        self._cache = apt.Cache()
-        
+        self._cache = None
+
     def check(self):
         """
         check if ubuntu
@@ -28,23 +28,29 @@ class Ubuntu:
             except ImportError:
                 self._checked = False
                 raise RuntimeError("Only ubuntu is supported.")
-        
+        if not self._cache:
+            try:
+                import apt
+                self._cache = apt.Cache()
+            except ImportError:
+                pass
+
     def checkInstall(self, packagename, cmdname):
         """
         @param packagename is name of ubuntu package to install e.g. curl
         @param cmdname is cmd to check e.g. curl
         """
         self.check()
-        result,out=q.system.process.execute("which %s" % cmdname,False)
+        result, _ = q.system.process.execute("which %s" % cmdname, False)
         if result != 0:
             self.install(packagename)
         else:
-            return 
-        result,out=q.system.process.execute("which %s" % cmdname,False)   
+            return
+        result, _ = q.system.process.execute("which %s" % cmdname, False)
         if result != 0:
             raise RuntimeError("Could not install package %s and check for command %s." % (packagename, cmdname))
 
-        
+
     def install(self, packagename):
         self.check()
         if isinstance(packagename, basestring):
@@ -81,15 +87,15 @@ class Ubuntu:
 
     def _service(self, servicename, action):
         return q.system.process.execute("service %s %s" % (servicename, action))
-        
-        
+
+
     def updatePackageMetadata(self, force=True):
         self.check()
         self._cache.update()
-            
+
     def upgradePackages(self, force=True):
-        self.check()        
+        self.check()
         self.updatePackageMetadata()
         self._cache.upgrade()
-    
-       
+
+
