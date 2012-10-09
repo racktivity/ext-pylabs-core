@@ -434,6 +434,23 @@ class WizardTab(object):
         button = WizardElementBase(self.pm_actions._showButtonControl('button', name, label, trigger, callback, helpText))
         self.elements._addItem(button)
 
+    def addProgress(self, name, minValue=None, maxValue=None, currentValue=None, trigger=None, callback=None, helpText=''):
+        """
+        Create a display action containing a progress bar control with the
+        progress of the wizard.
+
+        @param name:          Unique name for the control
+        @param minValue:      Minimum value for the progress bar
+        @param maxValue:      Maximum value for the progress bar
+        @param currentValue:  Current value for the progress bar
+        @param trigger:       Event where the control should trigger on. 'click'
+        @param callback:      Method that will be called, if event has been triggered
+        @param helpText:      Information about the usage/functionality of the control
+        """
+        progress = WizardElementBase(self.pm_actions._showProgressControl(name, minValue, maxValue, currentValue,
+            trigger, callback, helpText))
+        self.elements._addItem(progress)
+
     def removeElement(self, name):
         """
         Remove existing tab from form

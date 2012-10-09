@@ -141,8 +141,8 @@ class EasyDialogWizardServer(EasyDialogGeneric):
         return self.pm_actions.ShowDateTime(question, minValue, maxValue, selectedValue, format)
 
     @dialogmessage
-    def showProgress(self, minvalue, maxvalue, currentvalue):
-        return self.pm_actions.ShowProgress(minvalue, maxvalue, currentvalue)
+    def showProgress(self, minvalue, maxvalue, currentvalue, title=None, message=None):
+        return self.pm_actions.ShowProgress(minvalue, maxvalue, currentvalue, title=title, message=message)
 
     @dialogmessage
     def showLogging(self, text):
@@ -361,7 +361,7 @@ class WizardActions(object):
         """
         return self.getDisplayAction(self._showDateControl('date', text, minValue, maxValue, selectedValue, format))
 
-    def ShowProgress(self, minValue=None, maxValue=None, currentValue=None):
+    def ShowProgress(self, minValue=None, maxValue=None, currentValue=None, title=None, message=None):
         """
         Create a display action containing a progress bar control with the
         progress of the wizard.
@@ -372,14 +372,7 @@ class WizardActions(object):
 
         @return: A JSON encoded string containing the display action
         """
-        params = {}
-
-        params = self.addParameter(params, 'control', 'progress')
-        params = self.addParameter(params, 'minvalue', minValue)
-        params = self.addParameter(params, 'maxvalue', maxValue)
-        params = self.addParameter(params, 'value', currentValue)
-
-        return self.getDisplayAction(params)
+        return self.getDisplayAction(self._showProgressControl('', minValue, maxValue, currentValue, title=title, message=message))
 
     def ShowLogging(self, text=None):
         """
@@ -667,6 +660,33 @@ class WizardActions(object):
         params = self.addParameter(params, 'trigger', trigger)
         params = self.addParameter(params, 'helpText', helpText)
         params = self.addParameter(params, 'optional', optional)
+        return params
+
+    def _showProgressControl(self, name, minValue=None, maxValue=None, currentValue=None, trigger=None,
+        callback=None, helpText='', title=None, message=None):
+        """
+        Create a display action containing a progress bar control with the
+        progress of the wizard.
+
+        @param minValue:      Minimum value for the progress bar
+        @param maxValue:      Maximum value for the progress bar
+        @param currentValue:  Current value for the progress bar
+
+        @return: A JSON encoded string containing the display action
+        """
+        params = {}
+
+        params = self.addParameter(params, 'control', 'progress')
+        params = self.addParameter(params, 'name', name)
+        params = self.addParameter(params, 'minvalue', minValue)
+        params = self.addParameter(params, 'maxvalue', maxValue)
+        params = self.addParameter(params, 'value', currentValue)
+        params = self.addParameter(params, 'callback', callback)
+        params = self.addParameter(params, 'trigger', trigger)
+        params = self.addParameter(params, 'helpText', helpText)
+        params = self.addParameter(params, 'title', title)
+        params = self.addParameter(params, 'message', message)
+
         return params
 
     def _showTab(self, name, text, elements):

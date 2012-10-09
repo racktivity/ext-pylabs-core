@@ -37,6 +37,7 @@ import pylabs
 
 from DialogType import DialogType
 from EasyDialogConsole import EasyDialogConsole
+from EasyDialogWizardServer import EasyDialogWizardServer
 
 class EasyDialog():
 
@@ -227,7 +228,7 @@ class EasyDialog():
         """
         return self.easyDialog.askDateTime(question, minValue, maxValue, selectedValue, format)
 
-    def showProgress(self, minvalue, maxvalue, currentvalue):
+    def showProgress(self, minvalue, maxvalue, currentvalue, title=None, message=None):
         """
         Shows a progress bar according to the given values
 
@@ -235,6 +236,9 @@ class EasyDialog():
         @param maxvalue: maxvlaue of scale
         @param currentvalue: the current value to show the progress
         """
+
+        if isinstance(self.easyDialog, EasyDialogWizardServer):
+            return self.easyDialog.showProgress(minvalue, maxvalue, currentvalue, title=title, message=message)
         return self.easyDialog.showProgress(minvalue, maxvalue, currentvalue)
 
     def showLogging(self, text):
@@ -245,10 +249,10 @@ class EasyDialog():
 
     def navigateTo(self, url):
         return self.easyDialog.navigateTo(url)
-    
+
     def askForm(self, form):
         return self.easyDialog.askForm(form)
-    
+
     def clear(self):
         return self.easyDialog.clear()
 
@@ -261,13 +265,13 @@ class EasyDialog():
         @param msgboxButtons: buttons to show in the messagebox. Possible values are 'OKCancel', 'YesNo', 'YesNoCancel', 'OK'
         @param msgboxIcon: icon to show in the messagebox. Possible values are 'None', 'Error', 'Warning', 'Information', 'Question'
         @param defaultButton: default button for the messagebox. Possible values are 'OK', 'Cancel', 'Yes', 'No'
-        
+
         @return: A JSON encoded string containing the selected button clicked
         """
         return self.easyDialog.showMessageBox(message, title, msgboxButtons, msgboxIcon, defaultButton)
 
 
-    
+
 
 if __name__=='__main__':
     #print EasyDialog().askFilePath()
