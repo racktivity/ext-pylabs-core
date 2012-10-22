@@ -5,6 +5,7 @@ import os
 import signal
 import event_consumer
 import time
+import setproctitle
 
 #import the next modules here although not used, so when forked, python doesn't reimport for child processes (become shared)
 import rabbitmqclient as rmq
@@ -56,6 +57,7 @@ def main(appname):
                 #restore default handler for child process so it doesn't try to do shutdown.
                 for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGQUIT):
                     signal.signal(sig, signal.SIG_DFL)
+                setproctitle.setproctitle(setproctitle.getproctitle() + " " + self.workername)
                 consumer = event_consumer.EventConsumer(*self.args)
                 q.application.appname = "../%s/eventconsumer/%s" % (self.appname, self.workername)
                 q.application.start()
