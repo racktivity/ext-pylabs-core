@@ -646,9 +646,6 @@ def _convert_uid_gid(user, group):
         # We want to make sure we're running as root. This requires os.getuid
         if not hasattr(os, 'getuid'):
             raise RuntimeError('No getuid() available on this platform')
-        if os.getuid() != 0:
-            raise ValueError('%s argument only supported when running '
-                             'as root' % cname)
 
         # If the given value is not a string, assume its a *ID
         if not isinstance(value, basestring):
@@ -668,6 +665,10 @@ def _convert_uid_gid(user, group):
             id_ = int(id_)
         except (ValueError, TypeError):
             raise ValueError('Provided %s should be a number' % idname)
+
+        if os.getuid() != 0 and os.getuid() != id_:
+            raise ValueError('%s argument only supported when running '
+                             'as root' % cname)
 
         # Check whether there's a reverse mapping of the *ID to a system object
         # We don't want people to use *IDs of unknown system objects
@@ -778,9 +779,9 @@ def run(commandline, showOutput=False, captureOutput=True, maxSeconds=0,
 
         cmd.extend(('-c', '\'from pylabs.system.processhelper import main; main()\'', ))
 
-        if uid is not None:
+        if uid is not None and uid != os.getuid():
             cmd.extend(('--uid', '%d' % uid, ))
-        if gid is not None:
+        if gid is not None and gid != os.getgid():
             cmd.extend(('--gid', '%d' % gid, ))
 
         cmd.append('--')
@@ -1115,9 +1116,9 @@ def runDaemon(commandline, stdout=None, stderr=None, user=None, group=None,
         pylabs.q.system.fs.createDir(os.path.dirname(stderr))
         cmd.extend(('--stderr', '"%s"' % stderr, ))
 
-    if uid is not None:
+    if uid is not None and uid != os.getuid():
         cmd.extend(('--uid', '%d' % uid, ))
-    if gid is not None:
+    if gid is not None and gid != os.getgid():
         cmd.extend(('--gid', '%d' % gid, ))
 
     cmd.append('--daemonize')
@@ -1412,7 +1413,7 @@ class SystemProcess:
                 childprocess = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True, env=os.environ)
                 (output,error) = childprocess.communicate()
                 exitcode = childprocess.returncode
-                
+
             elif pylabs.q.platform.isWindows():
                 import subprocess, win32pipe, msvcrt, pywintypes
 

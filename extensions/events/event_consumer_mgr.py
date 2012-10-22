@@ -27,8 +27,18 @@ class EventConsumerMgr:
         self.user = config.get('user')
         self.group = config.get('group')
 
+        if q.platform.isUnix():
+            if self.user and self.group:
+                # change ownership of the pid dir
+                q.system.unix.chown(PIDDIR, self.user, self.group)
+
     def _savePid(self, pid):
         q.system.fs.writeFile(self._pidfile, str(pid))
+
+        if q.platform.isUnix():
+            if self.user and self.group:
+                # change ownership of the file
+                q.system.unix.chown(self._pidfile, self.user, self.group)
 
     def _isRunning(self):
         if not q.system.fs.exists(self._pidfile):
