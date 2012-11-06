@@ -53,9 +53,9 @@ class LogHandler(object):
 
     def _inittargets(self):
         """
-        only execute this every hour
+        only execute this every 5 seconds
         """
-        if self._lastinittime < pylabs.q.base.time.getTimeEpoch() - 3600:
+        if self._lastinittime < pylabs.q.base.time.getTimeEpoch() - 5:
 
             #check which loggers are not working
             for target in self.logTargets:
@@ -64,8 +64,10 @@ class LogHandler(object):
                         target.open()
                     except:
                         target.enabled = False
-            self.cleanupLogsOnFilesystem()
             self._lastinittime=pylabs.q.base.time.getTimeEpoch()
+            if self._lastcleanuptime < pylabs.q.base.time.getTimeEpoch() - 3600:
+                self.cleanupLogsOnFilesystem()
+                self._lastcleanuptime = pylabs.q.base.time.getTimeEpoch()
 
 
     def log(self, message, level=5, tags="",dontprint=False):
