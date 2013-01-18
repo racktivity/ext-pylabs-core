@@ -39,26 +39,31 @@ import inspect
 import functools
 import types
 
-from pydispatch import dispatcher as pydispatcher
+from pydispatch import dispatcher as pydispatcher #pylint: disable=F0401
 
 from twisted.internet import threads
 from twisted.internet.defer import maybeDeferred
 from twisted.python import log
 from twisted.internet import reactor
 
-from applicationserver.iapplicationserverrequest import \
-        IApplicationserverRequest
-from applicationserver.humanreadable import HumanReadable
-from applicationserver.utils import attrchecker, service_method_caller
-from applicationserver import signals
+from applicationserver.iapplicationserverrequest import IApplicationserverRequest #pylint: disable=F0401
+from applicationserver.humanreadable import HumanReadable #pylint: disable=F0401
+from applicationserver.utils import attrchecker, service_method_caller #pylint: disable=F0401
+from applicationserver import signals #pylint: disable=F0401
 
 CHECK_AUTHENTICATION_METHOD = 'checkAuthentication'
 CHECK_AUTHORIZATION_METHOD = 'checkAuthorization'
 APPLICATIONSERVER_REQUEST_ARG = 'applicationserver_request'
 APPLICATIONSERVER_HUMAN_READABLE_ARG = 'humanReadableResponse'
+IGNORED_PARAMETERS = [ '_', 'realm', 'oauth_consumer_key', 'oauth_token', 'oauth_verifier', 'oauth_nonce',
+    'oauth_timestamp', 'oauth_signature', 'oauth_signature_method' ]
 
-#TODO Find a better base exception type
-#TODO Difference between authentication required and authentication failed
+from pylabs import p
+
+import threading
+
+#TO DO Find a better base exception type
+#TO DO Difference between authentication required and authentication failed
 class AuthenticationError(RuntimeError):
     ERRNO = 9000
     MESSAGE = 'Authentication required'
@@ -97,10 +102,10 @@ class Dispatcher:
         # as mapping key to retrieve the name
         log.msg('[DISPATCHER] Initializing')
         self.services = dict()
-        
+
         ## Hack
         ## Prevent the application server to hang when 10  (default threadpoolsize) concurrent requests are being processed
-        reactor.suggestThreadPoolSize(1000)
+        reactor.suggestThreadPoolSize(30) #pylint: disable=E1101
         ## REMOVE ME WHEN FIXED
 
     def addService(self, name, service):
@@ -160,19 +165,18 @@ class Dispatcher:
         @raise NoSuchService: Service unknown
         @raise NoSuchMethod: Method unknown
         '''
-      
+
         def callServiceMethodinThread(func, request, domain, service, method, *args, **kwargs):
                 #Check authentication
-            args = list(args)
             if exposed_authenticated(func):
                 #log.msg('[DISPATCHER] Checking authentication')
-                if not self.checkAuthentication(domain, service, request, method, 
+                if not self.checkAuthentication(domain, service, request, method,
                                                 args, kwargs):
                     raise AuthenticationError('Authentication failed')
                 request.user_authenticated = True
             else:
                 pass
-    
+
             #Check authorization
             if exposed_authorized(func):
                 #log.msg('[DISPATCHER] Checking authorization')
@@ -180,24 +184,44 @@ class Dispatcher:
                     auth_categories = getattr(func,'auth_categories')
                 else:
                     auth_categories = {}
-    
+
                 if not self.checkAuthorization(auth_categories, domain,
                                             service, request, method, args, kwargs):
                     raise AuthorizationError('Authorization failed')
             else:
                 pass
+            def _getUsername():
+                return request.username if request.username else 'anonymous'
+
+            def _getIp():
+                clientIp = None
+                for header in request._request.requestHeaders.getAllRawHeaders(): #pylint: disable=W0212
+                    if header[0] == "X-Forwarded-For":
+                        clientIp = header[1][0]
+
+                if not clientIp:
+                    clientIp = request._request.getClientIP() #pylint: disable=W0212
+                return clientIp
+            if not hasattr(p, "request_context"):
+                p.request_context = threading.local()
+            p.request_context.username = _getUsername()
+            p.request_context.ipaddress = _getIp()
             return func( *args, **kwargs)
 
         #log.msg('[DISPATCHER] Calling method %s on service %s' % \
         #        (method, service_name))
-        
+
         # Cast request to an IApplicationserverRequest
         request = IApplicationserverRequest(request)
 
         #Fetch the actual service and method callable
         service, func = self.getServiceMethod(domain, service_name, method)
 
-        
+        #remove ignored parameters
+        for ignore in IGNORED_PARAMETERS:
+            if ignore in kwargs:
+                kwargs.pop(ignore)
+
         #Provide the original request as a parameter, if requested
         if want_request(func):
             kwargs[APPLICATIONSERVER_REQUEST_ARG] = request
@@ -223,7 +247,7 @@ class Dispatcher:
             # The service should not run in a thread
             #log.msg('[DISPATCHER] Running service method %s:%s in reactor' % \
             #        (service_name, method))
-            
+
             defer = maybeDeferred(callServiceMethodinThread,func, request, domain, service, method, *args, **kwargs)
 
         def errback(failure):
@@ -239,8 +263,7 @@ class Dispatcher:
             log.err('[DISPATCHER] Service method call %s:%s failed: %s' % \
                     (service_name, method, failure))
 
-            pydispatcher.send(signal=signals.SERVICE_METHOD_EXCEPTION,
-                    sender=self, **dispatchkwargs)
+            pydispatcher.send(signal=signals.SERVICE_METHOD_EXCEPTION, sender=self, **dispatchkwargs) #pylint: disable=W0142
             return failure
 
         if returns_human_readable:
@@ -306,8 +329,6 @@ class Dispatcher:
 
         @raise RuntimeError: Service got no L{CHECK_AUTHENTICATION_METHOD}
         '''
-        if hasattr(request, '_authentication'):
-			return request._authentication
         checker = getattr(service, CHECK_AUTHENTICATION_METHOD, None)
         if not checker:
             raise RuntimeError('Service %s got no %s method' % \
@@ -330,13 +351,12 @@ class Dispatcher:
             raise TypeError('checkAuthentication is neither a function '
                             'or a method')
         if len(checker_args) == 2:
-            request._authentication = checker(request.username, request.password)
+            return checker(request.username, request.password)
         elif len(checker_args) == 6:
-            request._authentication = checker(request, domain, service, methodname, args, kwargs)
+            return checker(request, domain, service, methodname, args, kwargs)
         else:
             raise ValueError('checkAuthentication should take two or three '
                              'arguments')
-        return request._authentication
 
 
     def checkAuthorization(self, auth_categories, domain, service, request, methodname, args, kwargs):
@@ -391,15 +411,15 @@ class Dispatcher:
     def tupleToHumanReadable(self, t):
         if isinstance(t, tuple) and len(t) == 2:
             # This should be human readable...
-            return HumanReadable(*t)
+            return HumanReadable(*t) #pylint: disable=W0142
         return t
 
 
-'''Attribute set on exposed methods'''
+#Attribute set on exposed methods
 EXPOSE_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE'
-'''kwarg provided to methods containing the service name'''
+#kwarg provided to methods containing the service name
 EXPOSED_SERVICE_NAME_KWARG = '__pm_exposed_service_name'
-'''Attribute set if the method wants a request parameter'''
+#Attribute set if the method wants a request parameter
 APPLICATIONSERVER_REQUEST_ATTRIBUTE = 'APPLICATIONSERVER_WANT_REQUEST'
 APPLICATIONSERVER_HUMAN_READABLE_ATTRIBUTE = \
         'APPLICATIONSERVER_WANT_HUMAN_READABLE'
@@ -431,6 +451,8 @@ def tag_expose_authorized(func):
 def expose(func):
     '''Decorator to mark a method as exposed on a service instance'''
     func = tag_exposed(func)
+    if not hasattr(func, "argspec"):
+        func.argspec = inspect.getargspec(func)
 
     @functools.wraps(func)
     def exposed_func(*args, **kwargs):
@@ -462,7 +484,7 @@ want_human_readable = attrchecker(APPLICATIONSERVER_HUMAN_READABLE_ATTRIBUTE)
 # Function to check whether a method should not run in a thread
 want_not_threaded = attrchecker(APPLICATIONSERVER_NOT_THREADED_ATTRIBUTE)
 
-'''Attribute set on exposed methods who need authentication'''
+#Attribute set on exposed methods who need authentication
 EXPOSE_AUTHENTICATED_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE_AUTHENTICATED'
 def expose_authenticated(func):
     '''Decorator to mark a method as exposed with authentication'''
@@ -473,7 +495,7 @@ def expose_authenticated(func):
 #Function to check whether a method is exposed with authentication
 exposed_authenticated = attrchecker(EXPOSE_AUTHENTICATED_ATTRIBUTE)
 
-'''Attribute set on exposed methods who need authorization'''
+#Attribute set on exposed methods who need authorization
 EXPOSE_AUTHORIZED_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE_AUTHORIZED'
 class expose_authorized:
     '''Decorator to mark a method as exposed with authorization'''
@@ -486,7 +508,7 @@ class expose_authorized:
         else:
             try:
                 fa = bool(self.kwargs['force_authentication'])
-            except:
+            except: #pylint: disable=W0702
                 fa = True
 
         if 'force_authentication' in self.kwargs:

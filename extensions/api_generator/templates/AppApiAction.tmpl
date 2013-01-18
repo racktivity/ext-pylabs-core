@@ -2,18 +2,57 @@ from pylabs import q, p
 
 class ${className}(object):
 
-    def __init__(self, proxy=None):
-        self._proxy = proxy or ${className}ActionManagerProxy()
+    def __init__(self):
+        self.__te = None
+
+    # lazy load taskletengine
+    @property
+    def _taskletengine(self):
+        if self.__te is None:
+            self.__te = q.taskletengine.get(q.system.fs.joinPaths(q.dirs.pyAppsDir, '${appname}', 'impl', 'action', '$domain', '$className'))
+
+            # small hack to set the right tags
+            for tasklet in self.__te._tasklets.itervalues():
+                tags = tasklet.tags.pop()
+                tags = tuple(sorted(('$domain', '$className') + tags))
+                tasklet.tags.add(tags)
+        return self.__te
 
 #for $method in $methods:
     def $method.name (self, $method.args):
         """
         $method.docs
         """
+        params = dict()
         if executionparams is None:
             executionparams = dict()
-#set $line = ','.join($method.argNames)
-        result = self._proxy('$domain', '$className', '$method.name', $line)
+
+
+#for $key, $value in $method.params.iteritems():
+        params['$key'] = $value
+    #if $key == $className+'guid'
+        executionparams['rootobjectguid'] = $value
+    #end if
+#end for
+        if hasattr(p, "request_context") and hasattr(p.request_context, "username") and p.request_context.username:
+            audit_username = p.request_context.username
+            audit_clientip = p.request_context.ipaddress
+        else:
+            audit_username = "anonymous"
+            audit_clientip = "localhost"
+        params['request'] = { 'username': audit_username, 'ipaddress': audit_clientip }
+        executionparams['rootobjecttype'] = '$className'
+#for $key in  $method.properties.keys()
+    #if $key.startswith('execution_param_')
+        #set param_name = $key.split('_')[-1]
+        if not '$param_name' in executionparams:  executionparams['$param_name'] = $method.properties[$key]
+    #end if
+#end for
+        params["jobguid"] = None
+
+        self._taskletengine.execute(params, tags=('$domain', '$className', '$method.name'))
+        result = { 'jobguid': None, 'result': params.get('result') }
+
 #if $method.name == 'getObject'
         # Deserialize the pymodel object
         o = result['result']
@@ -38,49 +77,5 @@ class ${className}(object):
 #else
         return result
 #end if
-#end for
-
-class ${className}ActionManagerProxy(object):
-    def __call__(self, domainname, classname, methodname, *args):
-        try:
-            m = getattr(self,  methodname)
-            return m(*args)
-        except AttributeError, ae:
-            raise
-        except Exception, e:
-            raise
-
-
-#for $method in $methods:
-    def $method.name (self, $method.args):
-        """
-        $method.docs
-        """
-        params = dict()
-
-#for $key, $value in $method.params.iteritems():
-        params['$key'] = $value
-#if $key == $className+'guid'
-        executionparams['rootobjectguid'] = $value
-#end if
-#end for
-        executionparams['rootobjecttype'] = '$className'
-#for $key in  $method.properties.keys()
-    #if $key.startswith('execution_param_')
-        #set param_name = $key.split('_')[-1]
-        if not '$param_name' in executionparams:  executionparams['$param_name'] = $method.properties[$key]
-    #end if
-#end for
-
-
-#if 'execution_method' in $method.properties and $method.properties.execution_method == 'async'
-        return q.workflowengine.actionmanager.startRootobjectActionAsynchronous('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
-#elif 'execution_method' in $method.properties and $method.properties.execution_method == 'sync'
-        return q.workflowengine.actionmanager.startRootobjectActionSynchronous('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
-#else
-        return q.workflowengine.actionmanager.startRootobjectAction('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
-#end if
-
-
 
 #end for

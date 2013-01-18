@@ -504,7 +504,7 @@ one provides the run helpers, the latter performs the bytecode rewriting. The
 _step_ method of _RunningWizardManager_ shows the rewritten wizard can be used
 as a normal generator, handling nothing but the original _q.gui.dialog_ calls.
 '''
-#pylint: disable-msg=C0302,R0903,W0142,C0103
+#pylint: disable=C0302,R0903,W0142,C0103,E1101
 
 #This is *only* supported on CPython 2.5. If this ever needs to run on some
 #other version, make sure the bytecode rewriting tricks explained above also
@@ -519,16 +519,23 @@ import uuid
 import inspect
 import operator
 import threading
+import copy
 
 import json
 
 import byteplay
 
+# racktivity specific authorization
+try:
+    from racktivity import authorization
+except ImportError:
+    authorization = None
+
 # We require this for the tests to run fine
 if __name__ == '__main__':
-    from pylabs.InitBase import q, i, p #pylint: disable-msg=F0401
+    from pylabs.InitBase import q, i, p #pylint: disable=F0401
 else:
-    from pylabs import q, i, p #pylint: disable-msg=F0401
+    from pylabs import q, i, p #pylint: disable=F0401
 
 class UnknownSessionException(Exception):
     '''Exception raised when an invalid session ID is used'''
@@ -538,12 +545,12 @@ class EndOfWizard(Exception):
     '''The end of the wizard was reached'''
 
 
-    def __init__(self, result):
+    def __init__(self, result): #pylint: disable=W0231
         self.result = result
 
     def __str__(self):
         return '{"action": "endofwizard", "result": %s}' % \
-            json.dumps(self.result)
+            json.dumps(self.result) if self.result else ""
 
 
 class DialogMessage(object):
@@ -704,7 +711,6 @@ class GeneratorGenerator(object):
 
 class RunningWizardManager(object):
     '''Manager for all running wizards'''
-    #TODO Garbage collection? Remove timed-out sessions?
     def __init__(self):
         #a dict to hold the running wizards.
         self._wizards = dict()
@@ -803,10 +809,12 @@ class RunningWizardManager(object):
             except RuntimeError, e:
                 if e.message == 'generator ignored GeneratorExit':
                     # Log and discard
-                    q.logger.log('A wizard contains a catchall try/except '
-                                 'statement around a q.gui.dialog function. '
-                                 'This is considered bad style and might cause '
-                                 'memory leaks', 2)
+                    msg = 'A wizard contains a catchall try/except statement around a q.gui.dialog function.' + \
+                        'This is considered bad style and might cause memory leaks'
+                    if hasattr(q, 'rtlogger'):
+                        q.rtlogger.default.warning(msg)
+                    else:
+                        q.logger.log(msg)
                 else:
                     # Try to avoid a memleak
                     # The __del__ method of the generator might still bail out
@@ -872,11 +880,48 @@ class ApplicationserverWizardService(object):
         for dir_ in taskletPaths[1:]:
             self.taskletengine.addFromPath(dir_)
 
-    @q.manage.applicationserver.expose
+        # needed for dcpm specific authorization
+        basedir = os.path.join(q.dirs.pyAppsDir, p.api.appname)
+        self._authenticate = q.taskletengine.get(os.path.join(basedir, 'impl', 'authenticate'))
+        self._authorize = q.taskletengine.get(os.path.join(basedir, 'impl', 'authorize'))
+        if authorization is not None:
+            self._localAuthorize = authorization.RacktivityAuthorizationCrossChecker()
+        else:
+            self._localAuthorize = None
+
+    def checkAuthentication(self, request, domain, service, methodname, args, kwargs):
+        tags = ('authenticate',)
+        params = dict()
+        params['request'] = request
+        params['domain'] = domain
+        params['service'] = service
+        params['methodname'] = methodname
+        params['args'] = args
+        params['kwargs'] = kwargs
+        params['result'] = True
+        self._authenticate.execute(params, tags=tags)
+        return params.get('result', False)
+
+    def checkAuthorization(self, criteria, request, domain, service, methodname, args, kwargs):
+        tags = ('authorize',)
+        params = dict()
+        params['criteria'] = criteria
+        params['request'] = request
+        params['domain'] = domain
+        params['service'] = service
+        params['methodname'] = methodname
+        params['args'] = args
+        params['kwargs'] = kwargs
+        params['result'] = True
+        params['localAuthorize'] = self._localAuthorize
+        self._authorize.execute(params, tags=tags)
+        return params.get('result', False)
+
+    @q.manage.applicationserver.expose_authorized(defaultGroups=["admin"], authorizeParams={"wizard": "wizardName", "extra":"extra", "alarmGuid":""}, authorizeRule="start wizard")
     def start(self, domainName, wizardName, extra=None,
         applicationserver_request=None):
-        q.logger.log('Start new wizard %s in domain %s' % \
-                (wizardName, domainName), 7)
+        _p = copy.copy(p)
+        _p.api = p.application.getAPI(p.api.appname, context=q.enumerators.AppContext.CLIENT)
 
         login = applicationserver_request.username
         passwd = applicationserver_request.password
@@ -905,7 +950,7 @@ class ApplicationserverWizardService(object):
 
             # 0 case is 'default match': lambda *_1, lambda **_2: True
             if argcount_ == 5 or argcount_ == 0:
-                return proc_(q, i, p, params_, tags_)
+                return proc_(q, i, _p, params_, tags_)
             elif argcount_ == 4:
                 return proc_(q, i, params_, tags_)
 
@@ -918,7 +963,7 @@ class ApplicationserverWizardService(object):
 
                 args = ()
                 if argcount == 5:
-                    args = (q, i, p, params, tags)
+                    args = (q, i, _p, params, tags)
                 elif argcount == 4:
                     args = (q, i, params, tags)
                 else:
@@ -937,13 +982,11 @@ class ApplicationserverWizardService(object):
             'No matching wizard ("%s") found for domain "%s"' % \
             (wizardName, domainName))
 
-    @q.manage.applicationserver.expose
+    @q.manage.applicationserver.expose_authenticated
     def callback(self, domainName, wizardName='', methodName='', formData='',
         extra=None, SessionId=None, applicationserver_request=None):
 
-        q.logger.log('Callback method %s of wizard %s' % \
-                (methodName, wizardName), 7)
-        methodName = 'callback_%s'%methodName
+        methodName = 'callback_%s'% methodName
         extra = extra or dict()
         extra['formData'] = formData
 
@@ -951,59 +994,46 @@ class ApplicationserverWizardService(object):
         extra['password'] = applicationserver_request.password
 
         if SessionId:
-            q.logger.log('Callback gets SessionID: %s' %SessionId)
-            extra['SESSIONSTATE'] = self._manager._sessionstore[SessionId]
+            extra['SESSIONSTATE'] = self._manager._sessionstore[SessionId] #pylint: disable=W0212
         else:
-            q.logger.log('Callback does not get a sessionid')
             extra['SESSIONSTATE'] = None
 
-        callback_method = self._getWizardMethod(domainName, wizardName, methodName, extra)
+        callback_method = self._getWizardMethod(domainName, wizardName, methodName)
 
         updatedForm = callback_method(q, i, extra, (domainName, ))
         action = updatedForm.convertToWizardAction()
 
         return json.dumps(action)
 
-    @q.manage.applicationserver.expose
+    @q.manage.applicationserver.expose_authenticated
     def stop(self, sessionId):
-        q.logger.log('Stop wizard %s' % sessionId, 7)
         self._manager.stop(sessionId)
         return str(EndOfWizard(""))
 
-    @q.manage.applicationserver.expose
+    @q.manage.applicationserver.expose_authenticated
     def result(self, sessionId, result):
-        q.logger.log('New result in wizard %s: %s' % (sessionId, result), 7)
-
         try:
             step = self._manager.step(sessionId, result)
         except EndOfWizard, e:
-            q.logger.log('End of wizard %s' % sessionId, 7)
             step = str(e)
 
         return step
 
-    def _getWizardMethod(self, domainName, wizardName, method, params=None):
-        params = params if params else dict()
-        tags = (domainName, wizardName)
-        wizard_methods = self.taskletengine.find(name='*', tags=tags)
+    def _getWizardMethod(self, domainName, wizardName, method):
+        wizard_methods = self.taskletengine.find(name='*',
+            tags=(domainName,wizardName))
 
-        matches = 0
-        mywizard = None
-        for wizard in wizard_methods:
-            if wizard.match(q, i, p, tags=tags, params=params):
-                mywizard = wizard
-                matches += 1
-        if not matches:
+        if not wizard_methods:
             raise RuntimeError('No matching wizard ("%s")found for domain "%s"' % (wizardName, domainName) )
-        if matches > 1:
+        if len(wizard_methods) > 1:
             raise RuntimeError('Multiple matching wizards found')
 
-        wizard_method = mywizard.methods[method]
+        wizard_method = wizard_methods[0].methods[method]
         return wizard_method
 
 # Some testcases testing our function rewriting, static analysis
 if __name__ == '__main__':
-    #pylint: disable-msg=C0111,C0103,E0602,W0142,W0612,W0212,W0613,R0911
+    #pylint: disable=C0111,C0103,E0602,W0142,W0612,W0212,W0613,R0911,E1101
     import unittest
 
     # This is the function we will rewrite in the yield insert test
@@ -1035,7 +1065,7 @@ if __name__ == '__main__':
 
         a = 456
 
-        h = q.some.function('abc')
+        #h = q.some.function('abc')
 
         a = 789
 
@@ -1068,7 +1098,7 @@ if __name__ == '__main__':
 
         a = 456
 
-        h = (yield q.some.function('abc'))
+        #h = (yield q.some.function('abc'))
 
         a = 789
 

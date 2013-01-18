@@ -1,10 +1,10 @@
 #for $iimport in $imports:
-from $iimport.modulename import $iimport.classname as ${iimport.classname}_actions 
+from $iimport.modulename import $iimport.classname as ${iimport.classname}_actions
 #end for
 
 class ${classname}(object):
-    def __init__(self, proxy=None):
+    def __init__(self):
 #for $iimport in $imports:
-        self.$iimport.classname = ${iimport.classname}_actions(proxy=proxy)
-#end for 
+        self.$iimport.classname = ${iimport.classname}_actions()
+#end for
         pass

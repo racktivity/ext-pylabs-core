@@ -1,11 +1,11 @@
-import os
+import os, time
 import os.path
 from pylabs import q, p
-from wfe_cfg import WfePyApps
-from arakoon_cfg import ArakoonPyApps
-from osis_cfg import OsisPyApps
-from agent_cfg import AgentPyApps
-from applicationserver_cfg import AppServerPyApps
+from wfe_cfg import WfePyApps #pylint: disable=F0401
+from arakoon_cfg import ArakoonPyApps #pylint: disable=F0401
+from osis_cfg import OsisPyApps #pylint: disable=F0401
+from agent_cfg import AgentPyApps #pylint: disable=F0401
+from applicationserver_cfg import AppServerPyApps #pylint: disable=F0401
 
 POSTGRESUSER = "postgres"
 join = q.system.fs.joinPaths
@@ -41,6 +41,19 @@ class PyAppsConfigGen:
 
         self.components = self.list_needed_components()
 
+    def _killDCPMProcess(self, processName, pid):
+        q.system.process.kill(pid, 15)
+        countdown = 5
+        while countdown and pid and q.system.process.isPidAlive(pid):
+            q.console.echo("%s is still running, waiting for %d more seconds" % (processName, countdown))
+            time.sleep(1)
+            countdown -= 1
+
+        if countdown == 0:
+            if pid:
+                q.console.echo("%s with pid [%s] is still alive, killing it..." % (processName, pid))
+                q.system.process.kill(pid)
+
     def pyapps_configuration(self):
         pyappsCfg = q.config.getInifile('pyapps')
         exists = pyappsCfg.checkSection(self.appName)
@@ -74,7 +87,7 @@ class PyAppsConfigGen:
             dbhost = dbconnections.getValue(section, 'dbserver')
 
         islocal = dbhost in ('localhost', '127.0.0.1')
-        postgres = q.manage.postgresql8
+        postgres = q.manage.postgresql8 #pylint: disable=E1101
         if islocal and self.appName not in postgres.cmdb.databases:
             postgres.startChanges()
             if not postgres.cmdb.initialized:
@@ -89,16 +102,16 @@ class PyAppsConfigGen:
                     cidr_address='127.0.0.1/32',database=self.appName)
             postgres.save()
             postgres.applyConfig()
-            q.manage.postgresql8.start()
+            q.manage.postgresql8.start() #pylint: disable=E1101
             conn = DBConnection.DBConnection('127.0.0.1', 'postgres', POSTGRESUSER)
             createdb = True
             if {'datname': self.appName} in conn.sqlexecute("select datname from pg_catalog.pg_database").dictresult():
                 if q.console.askYesNo('Database already exists, overwrite existing database?'):
-                    q.cmdtools.postgresql8.dropdb(self.appName, POSTGRESUSER)
+                    q.cmdtools.postgresql8.dropdb(self.appName, POSTGRESUSER) #pylint: disable=E1101
                 else:
                     createdb = False
             if createdb:
-                q.cmdtools.postgresql8.createdb(self.appName, POSTGRESUSER, self.appName)
+                q.cmdtools.postgresql8.createdb(self.appName, POSTGRESUSER, self.appName) #pylint: disable=E1101
 
 
     def setup(self):
@@ -115,20 +128,20 @@ class PyAppsConfigGen:
         if 'postgresql' in self.components:
             self.setup_postgres()
         if 'wfe' in self.components:
-            if self.appName not in q.manage.ejabberd.cmdb.hosts:
+            if self.appName not in q.manage.ejabberd.cmdb.hosts: #pylint: disable=E1101
                 agent_cfg = AgentPyApps(self.appName)
                 password = agent_cfg.password
                 agentguid = agent_cfg.agentguid
                 agentcontrollerguid = agent_cfg.agentcontrollerguid
                 hostname = agent_cfg.hostname
 
-                q.manage.ejabberd.startChanges()
-                q.manage.ejabberd.cmdb.addHost(hostname)
-                q.manage.ejabberd.cmdb.addUser(agentguid, hostname, password)
-                q.manage.ejabberd.cmdb.addUser(agentcontrollerguid, hostname, agentcontrollerguid)
+                q.manage.ejabberd.startChanges() #pylint: disable=E1101
+                q.manage.ejabberd.cmdb.addHost(hostname) #pylint: disable=E1101
+                q.manage.ejabberd.cmdb.addUser(agentguid, hostname, password) #pylint: disable=E1101
+                q.manage.ejabberd.cmdb.addUser(agentcontrollerguid, hostname, agentcontrollerguid) #pylint: disable=E1101
 
-                q.manage.ejabberd.save()
-                q.manage.ejabberd.applyConfig()
+                q.manage.ejabberd.save() #pylint: disable=E1101
+                q.manage.ejabberd.applyConfig() #pylint: disable=E1101
 
         self._configurePortal()
         self._configureAuth()
@@ -155,20 +168,23 @@ class PyAppsConfigGen:
             te = q.taskletengine.get(startpath)
             te.execute(params, tags=('pre',))
         if 'postgresql' in self.components:
-            q.manage.postgresql8.start()
+            q.manage.postgresql8.start() #pylint: disable=E1101
         if 'arakoon' in self.components:
-            cluster = q.manage.arakoon.getCluster(self.appName)
+            cluster = q.manage.arakoon.getCluster(self.appName) #pylint: disable=E1101
             cluster.start()
         if 'appserver' in self.components:
-            q.manage.applicationserver.start(self.appName)
-            q.manage.nginx.start()
+            q.manage.applicationserver.start(self.appName) #pylint: disable=E1101
+            q.manage.nginx.start() #pylint: disable=E1101
         if 'wfe' in self.components:
-            q.manage.ejabberd.start()
-            q.manage.workflowengine.start(self.appName)
+            q.manage.ejabberd.start() #pylint: disable=E1101
+            q.manage.workflowengine.start(self.appName) #pylint: disable=E1101
         if 'event_consumers' in self.components:
-            p.events.startConsumers(self.appName)
+            p.events.startConsumers(self.appName) #pylint: disable=E1101
         if te:
             te.execute(params, tags=('post',))
+        q.system.process.runDaemon("/usr/bin/python /opt/qbase5/bin/fileuploader.py", user=self.user, group=self.group)
+        q.system.process.runDaemon("/usr/bin/python /opt/qbase5/bin/alarmchecker.py", user=self.user, group=self.group)
+        q.system.process.runDaemon('/usr/bin/python /opt/qbase5/bin/snmpagent.py')
 
     def stop(self):
         params = {'appname': self.appName}
@@ -178,16 +194,43 @@ class PyAppsConfigGen:
             te = q.taskletengine.get(stop)
             te.execute(params, tags=('pre',))
         if 'appserver' in self.components:
-            q.manage.applicationserver.stop(self.appName)
+            q.manage.applicationserver.stop(self.appName) #pylint: disable=E1101
         if 'wfe' in self.components:
-            q.manage.workflowengine.stop(self.appName)
+            q.manage.workflowengine.stop(self.appName) #pylint: disable=E1101
         if 'arakoon' in self.components:
-            cluster = q.manage.arakoon.getCluster(self.appName)
+            cluster = q.manage.arakoon.getCluster(self.appName) #pylint: disable=E1101
             cluster.stop()
         if 'event_consumers' in self.components:
-            p.events.stopConsumers(self.appName)
+            p.events.stopConsumers(self.appName) #pylint: disable=E1101
         if te:
             te.execute(params, tags=('post',))
+
+        # close any remaining osis connections
+        p.application.getOsisConnection(self.appName)._sqlalchemy_engine.dispose() #pylint: disable=W0212
+
+        try:
+            with open('/opt/qbase5/var/pid/fileuploader.dcpm.pid', 'r') as f:
+                pid = int(f.readline())
+        except: #pylint: disable=W0702
+            pid = None
+        if pid and q.system.process.isPidAlive(pid):
+            self._killDCPMProcess('fileuploader', pid)
+
+        try:
+            with open('/opt/qbase5/var/pid/snmpagent.dcpm.pid', 'r') as f:
+                pid = int(f.readline())
+        except: #pylint: disable=W0702
+            pid = None
+        if pid and q.system.process.isPidAlive(pid):
+            self._killDCPMProcess('snmpagent', pid)
+
+        try:
+            with open('/opt/qbase5/var/pid/alarmchecker.dcpm.pid', 'r') as f:
+                pid = int(f.readline())
+        except: #pylint: disable=W0702
+            pid = None
+        if pid and q.system.process.isPidAlive(pid):
+            self._killDCPMProcess('alarmchecker', pid)
 
     def generateAll(self):
         # Create and set ownership for directory used to store arakoon and event consumer logs
@@ -236,23 +279,9 @@ class PyAppsConfigGen:
             dirs.update(q.system.fs.listDirsInDir(interfacePath))
         dirBaseNames = set([q.system.fs.getBaseName(dir_) for dir_ in dirs])
         params = set()
-        if 'actor' in dirBaseNames or 'action' in dirBaseNames:
-            params.add('wfe')
         if 'osis' in dirBaseNames:
             params.add('osis')
-
-            # check if we want postgres or not
-            addPostgres = True
-            iniFile = q.system.fs.joinPaths(q.dirs.cfgDir, 'osisdb.cfg')
-            if q.system.fs.isFile(iniFile):
-                ini = q.tools.inifile.open(iniFile)
-                if ini.checkSection(self.appName) and ini.checkParam(self.appName, "type") and \
-                    ini.getValue(self.appName, "type") != "postgresql":
-
-                    addPostgres = False
-
-            if addPostgres:
-                params.add('postgresql')
+            params.add('postgresql')
         types = ('osis', 'pymodel', 'service')
         if any( (type_ in dirBaseNames) for type_ in  types):
             params.add('appserver')
@@ -278,7 +307,7 @@ class PyAppsConfigGen:
         return params
 
     def _configurePortal(self):
-        nginx = q.manage.nginx
+        nginx = q.manage.nginx #pylint: disable=E1101
 
         nginx.startChanges()
 
@@ -336,6 +365,7 @@ LFW_CONFIG = {
         'search': '/%(appname)s/appserver/rest/ui/portal/search',
         'tags': '/%(appname)s/appserver/rest/ui/portal/tags',
         'title': '/%(appname)s/appserver/rest/ui/portal/listPages',
+        'filterTitles': '/%(appname)s/appserver/rest/ui/portal/filterPages',
         'pages': '/%(appname)s/appserver/rest/ui/portal/getPage',
         'breadcrumbs': '/%(appname)s/appserver/rest/ui/portal/breadcrumbs',
         'createPage': '/%(appname)s/appserver/rest/ui/portal/createPage',
@@ -369,10 +399,19 @@ LFW_CONFIG = {
         'updateMacroConfig': '/%(appname)s/appserver/rest/ui/portal/updateMacroConfig',
         'oauthservice': '/%(appname)s/appserver/rest/ui/oauth/getToken',
         'checkAuthorization': '/%(appname)s/appserver/rest/ui/auth/isAuthorised',
-        'myGroups': '/%(appname)s/appserver/rest/ui/portal/getMyGroups'
+        'myGroups': '/%(appname)s/appserver/rest/ui/portal/getMyGroups',
+        'listRacktivityRules': '/%(appname)s/appserver/rest/ui/racktivity_rules/listRulesInfo',
+        'assignRacktivityRules': '/%(appname)s/appserver/rest/ui/racktivity_rules/assignRules',
+        'revokeRacktivityRules': '/%(appname)s/appserver/rest/ui/racktivity_rules/revokeRules',
+        'createBookmark': '/%(appname)s/appserver/rest/ui/portal/createBookmark',
+        'listBookmarks': '/%(appname)s/appserver/rest/ui/portal/listBookmarks',
+        'updateBookmark': '/%(appname)s/appserver/rest/ui/portal/updateBookmark',
+        'deleteBookmark': '/%(appname)s/appserver/rest/ui/portal/deleteBookmark',
+        'sortBookmarks': '/%(appname)s/appserver/rest/ui/portal/sortBookmarks'
     },
     'appname' : '%(appname)s',
-    'development'  : true
+    'development'  : true,
+    'isconfigured': false
 };
 '''
 

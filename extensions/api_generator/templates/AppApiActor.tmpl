@@ -1,10 +1,59 @@
-from pylabs import q
+from pylabs import q, i
+
+# Monkey patch to be able to run rscripts
+if not hasattr(q.workflowengine.agentcontroller, "executeActorActionScript"):
+    import inspect
+    import threading
+    import cPickle
+
+    # store compiled rscripts so we don't need to compile them each time
+    q.workflowengine.agentcontroller.rscripts = {}
+    q.workflowengine.agentcontroller.rscriptsLock = threading.Lock()
+
+    def executeActorActionScript(agentguid, scriptname, params, executionparams=None, jobguid=None):
+        actorpath = inspect.stack()[1][1]
+        scriptpath = q.system.fs.joinPaths(q.system.fs.getDirName(actorpath), 'scripts', scriptname + ".rscript")
+
+        # get the compiled code of the script
+        q.workflowengine.agentcontroller.rscriptsLock.acquire()
+        try:
+            if scriptpath in q.workflowengine.agentcontroller.rscripts:
+                code = q.workflowengine.agentcontroller.rscripts[scriptpath]
+            else:
+                code = compile(q.system.fs.fileGetContents(scriptpath).replace("\r\n", "\n"), scriptname, 'exec')
+                q.workflowengine.agentcontroller.rscripts[scriptpath] = code
+        finally:
+            q.workflowengine.agentcontroller.rscriptsLock.release()
+
+        # pickle and unpickle the params to mimick the old behaviour
+        params = cPickle.loads(cPickle.dumps(params))
+
+        # run the script using the params
+        local_ns = { 'params': params, 'q': q, 'i': i }
+        global_ns = local_ns
+        exec(code, global_ns, local_ns)
+
+        return params
+
+    q.workflowengine.agentcontroller.executeActorActionScript = executeActorActionScript
 
 class ${className}(object):
-    
-    def __init__(self, proxy=None):
-        self._proxy = proxy
-        
+    def __init__(self):
+        self.__te = None
+
+    # lazy load taskletengine
+    @property
+    def _taskletengine(self):
+        if self.__te is None:
+            self.__te = q.taskletengine.get(q.system.fs.joinPaths(q.dirs.pyAppsDir, '${appname}', 'impl', 'actor', '$domain', '$className'))
+
+            # small hack to set the right tags
+            for tasklet in self.__te._tasklets.itervalues():
+                tags = tasklet.tags.pop()
+                tags = tuple(sorted(('$domain', '$className') + tags))
+                tasklet.tags.add(tags)
+        return self.__te
+
 #for $method in $methods:
     def $method.name (self, $method.args):
         """
@@ -14,7 +63,8 @@ class ${className}(object):
 #for $key, $value in $method.params.iteritems():
         params['$key'] = $value
 #end for
-        return q.workflowengine.actionmanager.startActorAction('$domain', '$className', '$method.name', params, jobguid=jobguid, executionparams=executionparams)
+
+        self._taskletengine.execute(params, tags=('$domain', '$className', '$method.name'))
+        return { 'jobguid': None, 'result': params.get('result') }
 
 #end for
-
