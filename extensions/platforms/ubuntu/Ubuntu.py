@@ -1,5 +1,6 @@
 from pylabs import q
 
+
 class Ubuntu:
     def __init__(self):
         self._aptupdated = False
@@ -50,11 +51,10 @@ class Ubuntu:
         if result != 0:
             raise RuntimeError("Could not install package %s and check for command %s." % (packagename, cmdname))
 
-
     def install(self, packagename):
         self.check()
         if isinstance(packagename, basestring):
-            packagename = [ packagename ]
+            packagename = [packagename]
         for package in packagename:
             pkg = self._cache[package]
             if not pkg.is_installed:
@@ -67,6 +67,8 @@ class Ubuntu:
         import apt.debfile
         deb = apt.debfile.DebPackage(path)
         deb.install()
+        # reread the cache
+        self._cache.open()
 
     def remove(self, packagename):
         self.check()
@@ -88,7 +90,6 @@ class Ubuntu:
     def _service(self, servicename, action):
         return q.system.process.execute("service %s %s" % (servicename, action))
 
-
     def updatePackageMetadata(self, force=True):
         self.check()
         self._cache.update()
@@ -97,5 +98,3 @@ class Ubuntu:
         self.check()
         self.updatePackageMetadata()
         self._cache.upgrade()
-
-
