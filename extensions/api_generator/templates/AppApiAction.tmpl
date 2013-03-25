@@ -1,8 +1,15 @@
 from pylabs import q, p
 
-class ${className}(object):
+try:
+    classModule = __import__("${domain}.rootobject.${className}.${className}", globals(), locals(), ["${className}"], 0)
+    classToInherit = classModule.${className}
+except ImportError:
+    classToInherit = object
 
+
+class ${className}(classToInherit):
     def __init__(self):
+        super($className, self).__init__()
         self.__te = None
 
     # lazy load taskletengine
