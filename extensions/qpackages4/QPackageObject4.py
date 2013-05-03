@@ -1036,9 +1036,9 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         recipe = json.loads(q.system.fs.fileGetContents(recipefile))
         for repo in recipe:
             connection = i.config.clients.mercurial.findByUrl(repo['location'])
+            connection.pullupdate()
             branch = repo.get('branch', 'default')
             connection.switchbranch(branch)
-            connection.pullupdate()
             for repolocation, qbaselocation in repo['mapping'].iteritems():
                 repofulllocation = q.system.fs.joinPaths(connection.basedir, repolocation)
                 yield repofulllocation, qbaselocation
@@ -1137,7 +1137,7 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
                 if q.cloud.system.fs.sourcePathExists(sourceFile):
                     #download from source to local dir
                     self._log('Trying to download from  ' + sourceFile)
-                    self._downloadFile(sourceFile, bundleFile, checksum) 
+                    self._downloadFile(sourceFile, bundleFile, checksum)
                     #@todo function above not throw an exception if this fails! (info nick)
                     if not q.system.fs.exists(bundleFile):
                         raise RuntimeError("%s was not downloaded well to %s" % (sourceFile,bundleFile))
@@ -1312,16 +1312,16 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
         if sourceDir [-1] != '/':
             sourceDir = sourceDir + '/'
         prefixHiddenFile = sourceDir + '_'
-        
+
         if q.system.fs.isDir(sourceDir):
-            
+
             files     = q.system.fs.walk(sourceDir, recurse=True, return_folders=True,followSoftlinks=False)
             for file in files:
-                
+
                 # Remove hidden files and directories:
                 if file.find ( prefixHiddenFile ) == 0 :
                     continue
-                
+
                 destinationFile = q.system.fs.joinPaths(destination, file[len(sourceDir):])
                 createAncestors(destinationFile)
                 if q.system.fs.isLink( file ) :
@@ -1329,11 +1329,11 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
                 elif q.system.fs.isDir (file) :
                     q.system.fs.createDir( destinationFile )
                 else:
-                    q.system.fs.copyFile(file, destinationFile)                    
+                    q.system.fs.copyFile(file, destinationFile)
 
             self._log('Syncing done')
-    
-        else : 
+
+        else :
             self._log('Directory <%s> does not exist'%sourceDir)
 
 
