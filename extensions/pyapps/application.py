@@ -7,6 +7,7 @@ from functools import wraps
 from pylabs.baseclasses import BaseEnumeration
 from pylabs.config.generator import PyAppsConfigGen
 
+
 class AppContext(BaseEnumeration):
     def __repr__(self):
         return str(self)
@@ -16,6 +17,7 @@ AppContext.registerItem('wfe')
 AppContext.registerItem('client')
 AppContext.registerItem('event')
 AppContext.finishItemRegistration()
+
 
 def check_application(function):
 
@@ -29,6 +31,10 @@ def check_application(function):
             app_cfg_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'cfg')
             if not q.system.fs.exists(app_cfg_dir):
                 raise RuntimeError('Application "%s" configuration does not exist ... Please install application first' % appname)
+        elif function.func_name == "getAPI":
+            app_client_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname, 'client')
+            if not q.system.fs.exists(app_client_dir):
+                raise RuntimeError('Application "%s" generated client code does not exist ... Please install application first' % appname)
 
         return function(self, appname, *args, **kwargs)
 
@@ -41,7 +47,7 @@ class AppManager(object):
         pass
 
     @check_application
-    def getAPI(self, appname, host='127.0.0.1', context=None, username=None, password=None): #pylint: disable=W0613
+    def getAPI(self, appname, host='127.0.0.1', context=None, username=None, password=None):  #pylint: disable=W0613
         '''Retrieve api object for an application'''
 
         api = ApplicationAPI(appname, host, username, password)
@@ -53,7 +59,7 @@ class AppManager(object):
     def install(self, appname):
         app_dir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
         if not q.system.fs.exists(app_dir):
-            raise RuntimeError('Application "%s" does not exist'%appname)
+            raise RuntimeError('Application "%s" does not exist' % appname)
 
         p.core.codemanagement.api.generate(appname)
         p.core.codemanagement.language.compile(appname)
@@ -83,7 +89,7 @@ class AppManager(object):
 
     def _validate_user_inputs(self, appname, keepchanges):
         if not q.system.fs.isDir(q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)):
-            raise Exception( "%s is not valid application name " % appname)
+            raise Exception("%s is not valid application name " % appname)
         if keepchanges is None:
             return q.gui.dialog.askYesNo("Note: Due to design of qshell, qshell must be restarted after the call of reinstall. \nDo you want to keep change? WARRNING: USE THIS OPTION AT YOUR RISK")
         return keepchanges
@@ -94,22 +100,22 @@ class AppManager(object):
         """
         try:
             p.application.stop(appname)
-        except: #pylint: disable=W0702
-            error="Error stopping application, this error probably due to running reinstall twice without restarting qshell,  please restart qshell and try agin"
+        except:  #pylint: disable=W0702
+            error = "Error stopping application, this error probably due to running reinstall twice without restarting qshell,  please restart qshell and try agin"
             q.logger.log(error, 1)
 
-        if q.manage.postgresql8.cmdb.databases.has_key(appname):
+        if appname in q.manage.postgresql8.cmdb.databases:
             q.logger.log("Removing postgres database", 1)
             try:
                 q.manage.postgresql8.startChanges()
                 q.manage.postgresql8.cmdb.removeDatabase(appname)
                 q.manage.postgresql8.cmdb.save()
                 q.manage.postgresql8.applyConfig()
-            except: #pylint: disable=W0702
+            except:  #pylint: disable=W0702
                 q.manage.postgresql8.cmdb.save()
                 q.manage.postgresql8.applyConfig()
 
-        arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var','db', appname)
+        arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var', 'db', appname)
         arakoon_cfg_path = q.system.fs.joinPaths(q.dirs.cfgDir, 'qconfig', 'arakoon', appname)
 
         if q.system.fs.exists(arakoon_db_path) or q.system.fs.exists(arakoon_cfg_path):
@@ -117,7 +123,7 @@ class AppManager(object):
             q.system.fs.removeDirTree(arakoon_db_path, True)
             q.system.fs.removeDirTree(arakoon_cfg_path, True)
 
-        appdir=q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
+        appdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
         q.system.fs.removeDirTree(appdir, True)
 
     def reinstall(self, appname, keepchanges=None):
@@ -130,12 +136,12 @@ class AppManager(object):
         keepchanges = self._validate_user_inputs(appname, keepchanges)
         try:
             p.application.stop(appname)
-        except: #pylint: disable=W0702
+        except:  #pylint: disable=W0702
             error = "Error stopping application, this error probably due to running reinstall " \
                     + "twice without restarting qshell,  please restart qshell and try again"
             q.logger.log(error, 1)
 
-        if q.manage.postgresql8.cmdb.databases.has_key(appname):
+        if appname in q.manage.postgresql8.cmdb.databases:
             q.logger.log("Removing postgres database", 1)
             try:
                 q.manage.postgresql8.stop()
@@ -144,17 +150,17 @@ class AppManager(object):
                 q.manage.postgresql8.cmdb.save()
                 q.manage.postgresql8.applyConfig()
                 q.manage.postgresql8.start()
-            except: #pylint: disable=W0702
+            except:  #pylint: disable=W0702
                 q.manage.postgresql8.cmdb.save()
                 q.manage.postgresql8.applyConfig()
                 q.manage.postgresql8.start()
 
-        arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var','db', appname)
+        arakoon_db_path = q.system.fs.joinPaths(q.dirs.baseDir, 'var', 'db', appname)
 
         if q.system.fs.exists(arakoon_db_path):
             q.logger.log("Removing arakoon db", 1)
             q.system.fs.removeDirTree(arakoon_db_path)
-            q.system.fs.createDir (q.system.fs.joinPaths(q.dirs.varDir, 'db', appname, appname + "_0"))
+            q.system.fs.createDir(q.system.fs.joinPaths(q.dirs.varDir, 'db', appname, appname + "_0"))
 
         # if changes done
         # check if there is is changes done in the installed app
@@ -168,7 +174,7 @@ class AppManager(object):
             self._restore_backup(backup_folder, changed_files, created_files, deleted_files)
 
         else:
-            backup_folder = q.system.fs.joinPaths(q.dirs.varDir, "tmp", "backup", appname, str(time.time()) , "_full")
+            backup_folder = q.system.fs.joinPaths(q.dirs.varDir, "tmp", "backup", appname, str(time.time()), "_full")
             appdir = q.system.fs.joinPaths(q.dirs.pyAppsDir, appname)
             q.system.fs.moveDir(appdir, backup_folder)
 
@@ -179,7 +185,8 @@ class AppManager(object):
         q.manage.postgresql8.start()
         p.application.install(appname)
 
-        q.gui.dialog.message("%s was reinstalled sucessfully .\n Copy of previous app were backedup in %s\n qshell should be restarted , Please restart qshell by choosing yes"%(appname, backup_folder))
+        q.gui.dialog.message("%s was reinstalled sucessfully .\n Copy of previous app were backedup in %s\n qshell should be restarted , "
+            "Please restart qshell by choosing yes" % (appname, backup_folder))
         exit()
 
     def _restore_backup(self, backup_folder, changed_files, created_files, deleted_files):
@@ -193,7 +200,7 @@ class AppManager(object):
                     q.system.fs.copyFile(backup_file, created_file)
                 else:
                     q.system.fs.createDir(created_file)
-            except: #pylint: disable=W0702
+            except:  #pylint: disable=W0702
                 q.logger.log("Failed to restore %s" % created_file, 1)
 
         for filename in deleted_files:
@@ -202,7 +209,7 @@ class AppManager(object):
                     q.system.fs.remove(filename)
                 else:
                     q.system.fs.removeDirTree(filename)
-            except: #pylint: disable=W0702
+            except:  #pylint: disable=W0702
                 q.logger.log("folder %s removed by install job and no mean to delete it " % filename, 1)
 
     def _backup_changed_files(self, changed_files, created_files, deleted_files, appname):
@@ -218,7 +225,7 @@ class AppManager(object):
                     q.system.fs.copyFile(created_file, to_file)
                 else:
                     q.system.fs.createDir(to_file)
-            except: #pylint: disable=W0702
+            except:  #pylint: disable=W0702
                 q.eventhandler.raiseWarning("Error coping file %s" % created_file)
         deleted_file_path = q.system.fs.joinPaths(backup_folder, "%s_deletedFiles.txt" % appname)
         deleted_file_dump = open(deleted_file_path, "a")
@@ -237,9 +244,15 @@ class AppManager(object):
         package = q.qp.find(appname)[0]
         packagePath = package.getPathFiles()
 
-        changed_files_command = "diff -r -q  -y --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s | grep 'differ' |awk '{print $2}'" % (appname, packagePath, appname)
-        created_files_command = "diff -r -q     --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s | grep 'Only in /opt/qbase5/pyapps' |grep -v '/portal/static: js'| grep -v ': tmp'| grep -v  'spaces/api:' |grep -v ': cfg' |grep -v ': client'|grep -v ': service'  |grep -v ': __init__.py'| grep -v ': formwizard.md' |grep -v '.pyc'| awk '{sub(\":\",\"/\");print $3$4 }' "  % (appname, packagePath, appname)
-        deleted_files_command = "diff -r -q  -y --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s  |grep 'Only in /opt/qbase5/var' |awk '{sub(\"%s/generic/pyapps/%s\",\"/opt/qbase5/pyapps/%s\");print $0 }' |     awk '{sub(\":\",\"/\");print $3$4 }'"  % (appname, packagePath, appname, packagePath, appname, appname)
+        changed_files_command = "diff -r -q  -y --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s | " \
+            "grep 'differ' |awk '{print $2}'" % (appname, packagePath, appname)
+        created_files_command = "diff -r -q     --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s | " \
+            "grep 'Only in /opt/qbase5/pyapps' |grep -v '/portal/static: js'| grep -v ': tmp'| grep -v  'spaces/api:' |" \
+            "grep -v ': cfg' |grep -v ': client'|grep -v ': service'  |grep -v ': __init__.py'| grep -v ': formwizard.md' |grep -v '.pyc'| " \
+            "awk '{sub(\":\",\"/\");print $3$4 }' " % (appname, packagePath, appname)
+        deleted_files_command = "diff -r -q  -y --suppress-common-lines /opt/qbase5/pyapps/%s %s/generic/pyapps/%s  |" \
+            "grep 'Only in /opt/qbase5/var' |awk '{sub(\"%s/generic/pyapps/%s\",\"/opt/qbase5/pyapps/%s\");print $0 }' |     " \
+            "awk '{sub(\":\",\"/\");print $3$4 }'" % (appname, packagePath, appname, packagePath, appname, appname)
 
         _, output1 = q.system.process.execute(changed_files_command)
         changed_files = output1.splitlines()
@@ -250,18 +263,17 @@ class AppManager(object):
         _, output3 = q.system.process.execute(deleted_files_command)
         deleted_files = output3.splitlines()
 
-        is_changed =  len(deleted_files) > 0 or len(created_files) > 0 or len(changed_files) > 0
+        is_changed = len(deleted_files) > 0 or len(created_files) > 0 or len(changed_files) > 0
 
-        q.logger.log("changed_files %s"%str(changed_files), 1)
-        q.logger.log("created_files %s"%str(created_files), 1)
-        q.logger.log("deleted_files %s"%str(deleted_files), 1)
+        q.logger.log("changed_files %s" % str(changed_files), 1)
+        q.logger.log("created_files %s" % str(created_files), 1)
+        q.logger.log("deleted_files %s" % str(deleted_files), 1)
 
         return changed_files, created_files, deleted_files, is_changed
 
     def syncPortal(self, appname, space=None, page=None, clean_up=False):
         from alkira.sync_md_to_lfw import sync_to_alkira
         sync_to_alkira(appname, sync_space=space, sync_page=page, clean_up=clean_up)
-
 
     @check_application
     def start(self, appname):
@@ -287,6 +299,7 @@ class Events(object):
 
     def publish(self, rootingKey, tagString):
         p.events.publish(rootingKey, tagString, self._hostname)
+
 
 class ApplicationAPI(object):
 
@@ -323,12 +336,12 @@ class ApplicationAPI(object):
 
         self.actor = self._get_actors(appname)
 
-    def _get_actors(self, appname): #pylint: disable=W0613
-        from client.actor import actors #pylint: disable=F0401
+    def _get_actors(self, appname):  #pylint: disable=W0613
+        from client.actor import actors  #pylint: disable=F0401
         return actors()
 
     def _get_actions(self, appname):
-        q.system.fs.changeDir(q.dirs.pyAppsDir) #change the dir so we're sure we load the right module
+        q.system.fs.changeDir(q.dirs.pyAppsDir)  # change the dir so we're sure we load the right module
         actions = __import__("%s.client" % appname, globals(), locals(), ["action"], 0).action.actions
         return actions()
 
@@ -359,6 +372,7 @@ class ApplicationAPI(object):
         transport = local.LocalTransport(list_(path))
         transport.tasklet_engine = q.taskletengine.get(tasklet_path)
         orig_execute = transport.tasklet_engine.execute
+
         def execute(**kwargs):
             params = kwargs.pop('params', None)
             params = params if params is not None else {}
@@ -366,11 +380,12 @@ class ApplicationAPI(object):
             if 'rootobjecttype' in params and len(params['rootobjecttype']) == 3:
                 category, domain, rootobjecttype = params['rootobjecttype']
 
-                params.update({
-                    'category': category,
-                    'domain': domain,
-                    'rootobjecttype': rootobjecttype,
-                })
+                params.update(
+                    {
+                        'category': category,
+                        'domain': domain,
+                        'rootobjecttype': rootobjecttype,
+                    })
             if 'rootobjectguid' in params:
                 params['rootobjectguid'] = str(params['rootobjectguid'])
 
