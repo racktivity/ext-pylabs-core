@@ -33,8 +33,6 @@
 #
 # </License>
 
-import functools
-
 import json
 
 from twisted.plugin import IPlugin
@@ -44,7 +42,7 @@ from twisted.python import log
 
 from zope.interface import implements
 
-from applicationserver.itransport import ITransportFactory, IServerTransport
+from applicationserver.itransport import ITransportFactory
 from applicationserver.itransport import ServerTransportInfo, SiteTransport
 from applicationserver.dispatcher import AuthenticationError, AuthorizationError, NoSuchService
 from applicationserver.dispatcher import NoSuchMethod
@@ -52,6 +50,7 @@ from applicationserver.dispatcher import NoSuchMethod
 FAILURE_CODE = 8002
 JSON_MIME = 'application/json'
 SCRIPT_MIME = 'text/javascript'
+
 
 class JSONException:
     def __init__(self, message, exception):
@@ -109,7 +108,7 @@ class RESTTransport(Resource):
         if not name:
             return Resource.getChild(self, name, request)
         if len(request.postpath) > 1:
-            return RESTDomain(self.dispatcher, name, self.noerrors )
+            return RESTDomain(self.dispatcher, name, self.noerrors)
         return RESTService(self.dispatcher, None, name, self.noerrors)
 
 
@@ -123,22 +122,26 @@ class RESTDomain(Resource):
     def getChild(self, name, request):
         if not name:
             return Resource.getChild(self, name, request)
-        if not self.isServiceName( str(request.URLPath())  ):
-            return RESTDomain( self.dispatcher, name , self.noerrors)
+        if not self.isServiceName(str(request.URLPath())):
+            return RESTDomain(self.dispatcher, name, self.noerrors)
         return RESTService(self.dispatcher, self.domain, name, self.noerrors)
 
     def isServiceName(self, url):
         # URL is http://url[:port]/appname/appserver/rest/domain/servicename/method
         urlParts = url.split('/')
-        if len( urlParts ) < 8 :
+        if len(urlParts) < 8:
             return False
         return True
+
 
 class RESTService(Resource):
     '''REST service handler
 
     This handles requests to '/myservice/'.
     '''
+
+    isLeaf = True  # Disable calling getChild
+
     def __init__(self, dispatcher, domain, service, noerrors=False):
         Resource.__init__(self)
         self.dispatcher = dispatcher
@@ -146,40 +149,7 @@ class RESTService(Resource):
         self.domain = domain
         self.noerrors = noerrors
 
-    def getChild(self, name, request):
-        if not name:
-            return Resource.getChild(self, name, request)
-        return RESTMethod(self.dispatcher, self.domain, self.service, name, self.noerrors)
-
-    def render_GET(self, request):
-        if request.uri == "/crossdomain.xml":
-            # may needs to-ports="8888,8889"
-            request.setHeader("content-type", "text/xml")
-            return """<?xml version="1.0"?><!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd"><cross-domain-policy><allow-access-from domain="*" /></cross-domain-policy>"""
-        else:
-            return "Service unknown"
-
-
-class RESTMethod(Resource):
-    '''REST method handler
-
-    This handles requests to '/myservice/mymethod/'.
-    '''
-    def __init__(self, dispatcher, domain, service, method, noerrors=False):
-        Resource.__init__(self)
-        self.dispatcher = dispatcher
-        self.domain = domain
-        self.service = service
-        self.method = method
-        self.noerrors = noerrors
-
-    def getChild(self, name, request):
-        if not name:
-            return self
-        #TODO Check whether next line is actually what we want
-        return RESTMethod(self.dispatcher, self.domain, self.service, name, self.noerrors)
-
-    def render_GET(self, request):
+    def render_call(self, request):
         #TODO Defer this
         def parse_args():
             args = dict()
@@ -207,17 +177,17 @@ class RESTMethod(Resource):
             request.setResponseCode(http.INTERNAL_SERVER_ERROR)
             request.setHeader('Content-Type', JSON_MIME)
             return JSONException(
-                'The server was unable to parse your request parameters: %s' %\
-                    str(e), e).dumps()
+                'The server was unable to parse your request parameters: %s' % str(e), e).dumps()
         callback = None
         contenttype = JSON_MIME
         if 'jsonp_callback' in args:
             callback = args.pop('jsonp_callback')
             contenttype = SCRIPT_MIME
+
         try:
             originalContentType = str(request.responseHeaders.getRawHeaders("Content-Type"))
             request.setHeader('Content-Type', contenttype)
-            d = self.dispatcher.callServiceMethod(request, self.domain, self.service, self.method, **args)
+            d = self.dispatcher.callServiceMethod(request, self.domain, self.service, request.postpath[-1], **args)
         except (NoSuchService, NoSuchMethod), e:
             request.setResponseCode(http.NOT_FOUND)
             request.setHeader('Content-Type', contenttype)
@@ -258,11 +228,11 @@ class RESTMethod(Resource):
                 log.msg("An error occurred in the service method: %s" % failure)
                 request.setResponseCode(http.INTERNAL_SERVER_ERROR)
             request.setHeader('Content-Type', contenttype)
-            if self.noerrors :
-                write(JSONException('Internal server error', 'Please, contact administrator.' ).dumps())
+            if self.noerrors:
+                write(JSONException('Internal server error', 'Please, contact administrator.').dumps())
             else:
                 write(JSONException('Internal server error', getattr(failure, 'value', None)).dumps())
-      
+
             request.finish()
 
         d.addCallback(finish_render)
@@ -270,8 +240,26 @@ class RESTMethod(Resource):
 
         return server.NOT_DONE_YET
 
-    #These are the same
-    render_POST = render_GET
+    def render_GET(self, request):
+        if request.uri == "/crossdomain.xml":
+            # may needs to-ports="8888,8889"
+            request.setHeader("content-type", "text/xml")
+            return """<?xml version="1.0"?><!DOCTYPE cross-domain-policy SYSTEM """ \
+                """"http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd">""" \
+                """<cross-domain-policy><allow-access-from domain="*" /></cross-domain-policy>"""
+        else:
+            return self.render_call(request)
+
+    # POST is just a normal render
+    render_POST = render_call
+
+    # Both DELETE and PUT need to have their body parsed first because twisted only does this for POST
+    def render_DELETE(self, request):
+        request.args = http.parse_qs(request.content.read(), 1)
+        return self.render_call(request)
+
+    render_PUT = render_DELETE
+
 
 class RESTTransportFactory(object):
     implements(IPlugin, ITransportFactory)
