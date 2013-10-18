@@ -925,15 +925,14 @@ class QPackageObject4(BaseType, DirtyFlaggingMixin):
 
         # Check apt dependecies
         recipe_file = q.system.fs.joinPaths(self.getPathMetadata(), 'recipe.json')
-        if not q.system.fs.exists(recipe_file):
-            return
-        recipe = json.loads(q.system.fs.fileGetContents(recipe_file))
-        q.platform.ubuntu.check() # To make sure our cache is initialized
-        for repo in recipe:
-            if "apt-dependencies" in repo:
-                for apt in repo["apt-dependencies"]:
-                    if apt in q.platform.ubuntu._cache and not q.platform.ubuntu._cache[apt].is_installed:
-                        q.platform.ubuntu.install(apt)
+        if q.system.fs.exists(recipe_file):
+            recipe = json.loads(q.system.fs.fileGetContents(recipe_file))
+            q.platform.ubuntu.check() # To make sure our cache is initialized
+            for repo in recipe:
+                if "apt-dependencies" in repo:
+                    for apt in repo["apt-dependencies"]:
+                        if apt in q.platform.ubuntu._cache and not q.platform.ubuntu._cache[apt].is_installed:
+                            q.platform.ubuntu.install(apt)
 
         if dependencies:
             deps=self.getDependencies()
