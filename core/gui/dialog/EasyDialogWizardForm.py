@@ -302,7 +302,7 @@ class WizardTab(object):
         integers = WizardElementBase(self.pm_actions._showText(question, value, name=name, message=message, status=status, validator='[0-9,]', trigger=trigger, callback=callback, helpText=helpText, optional=optional))
         self.elements._addItem(integers)
 
-    def addChoice(self, name, text, values, selectedValue=0, message='', status='', trigger=None, callback=None, helpText='', optional=True):
+    def addChoice(self, name, text, values, selectedValue=0, message='', status='', trigger=None, callback=None, helpText='', optional=True, forceChoice=False):
         """
         Create a display action containing item selector control.
 
@@ -318,7 +318,7 @@ class WizardTab(object):
         @param optional:      Define the choice field as optional parameter (boolean)
         """
 
-        if len(values) > 4:
+        if len(values) > 4 and not forceChoice:
             options = WizardElementBase(self.pm_actions._showDropDown(text, values, selectedValue, name, message, status, trigger, callback, helpText, optional))
         else:
             options = WizardElementBase(self.pm_actions._showOptions(text, values, selectedValue, name, message, status, trigger, callback, helpText, optional))
