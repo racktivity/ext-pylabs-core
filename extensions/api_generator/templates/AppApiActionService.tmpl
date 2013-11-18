@@ -2,6 +2,9 @@ from pylabs import q, p
 from actionservice import ActionService
 
 class ${className}(ActionService):
+#if not $methods:
+    pass
+#end if
 
 #for $method in $methods:
 #if $method.properties.get('execution_method', 'async').upper() != 'SYNC' and $wfe_amqp

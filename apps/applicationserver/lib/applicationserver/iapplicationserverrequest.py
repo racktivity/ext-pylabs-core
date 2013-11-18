@@ -32,41 +32,42 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # </License>
- 
+
 '''Applicationserver request object interface'''
 
 from twisted.python import components
 from twisted.web.http import Request
 from zope.interface import Interface, Attribute, implements
 
+
 class IApplicationserverRequest(Interface):
     '''Request information transfered from a transport to the dispatcher'''
     request_hostname = Attribute('''
         Request hostname
-        
+
         @type: string''')
     client_ip = Attribute('''
         Client IP
-        
+
         @type: string''')
 
     user_authenticated = Attribute('''
         Denotes whether the request is authenticated
-        
+
         @type: bool''')
     username = Attribute('''
         Authentication username
-        
+
         @type: string''')
     password = Attribute('''
         Authentication password
-        
+
         @type: string''')
 
 
 class ApplicationserverRequestFromTwistedWebHTTPRequest:
     '''Adapter from twisted.web request objects to L{IApplicationserverRequest}
-    
+
     This adapter can transform a L{twisted.web.http.Request} into an
     L{IApplicationserverRequest}'''
     implements(IApplicationserverRequest)
@@ -78,6 +79,7 @@ class ApplicationserverRequestFromTwistedWebHTTPRequest:
         @type request: L{twisted.web.http.Request}
         '''
         self._request = request
+        self.request = request
         self.user_authenticated = False
 
     @property

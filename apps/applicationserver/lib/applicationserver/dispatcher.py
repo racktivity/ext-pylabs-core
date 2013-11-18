@@ -39,28 +39,32 @@ import inspect
 import functools
 import types
 
-from pydispatch import dispatcher as pydispatcher #pylint: disable=F0401
+from pydispatch import dispatcher as pydispatcher  # pylint: disable=F0401
 
 from twisted.internet import threads
 from twisted.internet.defer import maybeDeferred
 from twisted.python import log
 from twisted.internet import reactor
 
-from applicationserver.iapplicationserverrequest import IApplicationserverRequest #pylint: disable=F0401
-from applicationserver.humanreadable import HumanReadable #pylint: disable=F0401
-from applicationserver.utils import attrchecker, service_method_caller #pylint: disable=F0401
-from applicationserver import signals #pylint: disable=F0401
+from applicationserver.iapplicationserverrequest import IApplicationserverRequest  # pylint: disable=F0401
+from applicationserver.humanreadable import HumanReadable  # pylint: disable=F0401
+from applicationserver.utils import attrchecker, service_method_caller  # pylint: disable=F0401
+from applicationserver import signals  # pylint: disable=F0401
 
 CHECK_AUTHENTICATION_METHOD = 'checkAuthentication'
 CHECK_AUTHORIZATION_METHOD = 'checkAuthorization'
 APPLICATIONSERVER_REQUEST_ARG = 'applicationserver_request'
 APPLICATIONSERVER_HUMAN_READABLE_ARG = 'humanReadableResponse'
-IGNORED_PARAMETERS = [ '_', 'realm', 'oauth_consumer_key', 'oauth_token', 'oauth_verifier', 'oauth_nonce',
-    'oauth_timestamp', 'oauth_signature', 'oauth_signature_method' ]
+IGNORED_PARAMETERS = [
+    '_', 'realm', 'oauth_consumer_key', 'oauth_token', 'oauth_verifier', 'oauth_nonce', 'oauth_timestamp',
+    'oauth_signature', 'oauth_signature_method'
+]
+GET_REST_FUNCTION = 'get_rest_function'
 
 from pylabs import p
 
 import threading
+
 
 #TO DO Find a better base exception type
 #TO DO Difference between authentication required and authentication failed
@@ -77,12 +81,14 @@ class AuthorizationError(RuntimeError):
 
     applicationserver_errno = ERRNO
 
+
 class NoSuchService(Exception):
     '''No such service exposed by the server'''
     ERRNO = 8000
     MESSAGE = 'Service not found'
 
     applicationserver_errno = ERRNO
+
 
 class NoSuchMethod(Exception):
     '''No such method exposed by the server'''
@@ -104,8 +110,9 @@ class Dispatcher:
         self.services = dict()
 
         ## Hack
-        ## Prevent the application server to hang when 10  (default threadpoolsize) concurrent requests are being processed
-        reactor.suggestThreadPoolSize(30) #pylint: disable=E1101
+        ## Prevent the application server to hang when 10  (default threadpoolsize)
+        ## concurrent requests are being processed
+        reactor.suggestThreadPoolSize(30)  # pylint: disable=E1101
         ## REMOVE ME WHEN FIXED
 
     def addService(self, name, service):
@@ -139,8 +146,7 @@ class Dispatcher:
         self.services.pop(name)
         self.services.pop(service)
 
-    def callServiceMethod(self, request, domain, service_name, method, *args,
-            **kwargs):
+    def callServiceMethod(self, request, domain, service_name, method, *args, **kwargs):
         '''Call a method on service exposed by this dispatcher
 
         This should be used by C{transports} which get a reference to a
@@ -166,12 +172,18 @@ class Dispatcher:
         @raise NoSuchMethod: Method unknown
         '''
 
-        def callServiceMethodinThread(func, request, domain, service, method, *args, **kwargs):
-                #Check authentication
+        def callServiceMethodinThread(func, request, domain, service, method, rest_kwargs=None, *args, **kwargs):
+            #Check authentication
+            total_kwargs = None
             if exposed_authenticated(func):
-                #log.msg('[DISPATCHER] Checking authentication')
-                if not self.checkAuthentication(domain, service, request, method,
-                                                args, kwargs):
+                if rest_kwargs:
+                    # Combine kwargs and rest_kwargs
+                    total_kwargs = kwargs.copy()
+                    total_kwargs.update(rest_kwargs)
+                else:
+                    # Just use kwargs
+                    total_kwargs = kwargs
+                if not self.checkAuthentication(domain, service, request, method, args, total_kwargs):
                     raise AuthenticationError('Authentication failed')
                 request.user_authenticated = True
             else:
@@ -179,43 +191,51 @@ class Dispatcher:
 
             #Check authorization
             if exposed_authorized(func):
-                #log.msg('[DISPATCHER] Checking authorization')
-                if hasattr(func,'auth_categories'):
-                    auth_categories = getattr(func,'auth_categories')
+                if not total_kwargs:
+                    if rest_kwargs:
+                        # Combine kwargs and rest_kwargs
+                        total_kwargs = kwargs.copy()
+                        total_kwargs.update(rest_kwargs)
+                    else:
+                        # Just use kwargs
+                        total_kwargs = kwargs
+                if hasattr(func, 'auth_categories'):
+                    auth_categories = getattr(func, 'auth_categories')
                 else:
                     auth_categories = {}
 
-                if not self.checkAuthorization(auth_categories, domain,
-                                            service, request, method, args, kwargs):
+                if not self.checkAuthorization(auth_categories, domain, service, request, method, args, total_kwargs):
                     raise AuthorizationError('Authorization failed')
             else:
                 pass
+
             def _getUsername():
                 return request.username if request.username else 'anonymous'
 
             def _getIp():
                 clientIp = None
-                for header in request._request.requestHeaders.getAllRawHeaders(): #pylint: disable=W0212
+                for header in request._request.requestHeaders.getAllRawHeaders():  # pylint: disable=W0212
                     if header[0] == "X-Forwarded-For":
                         clientIp = header[1][0]
 
                 if not clientIp:
-                    clientIp = request._request.getClientIP() #pylint: disable=W0212
+                    clientIp = request._request.getClientIP()  # pylint: disable=W0212
                 return clientIp
             if not hasattr(p, "request_context"):
                 p.request_context = threading.local()
             p.request_context.username = _getUsername()
             p.request_context.ipaddress = _getIp()
-            return func( *args, **kwargs)
 
-        #log.msg('[DISPATCHER] Calling method %s on service %s' % \
-        #        (method, service_name))
+            if rest_kwargs is not None:
+                return func(request.request, **rest_kwargs)  # pylint: disable=W0142
+            else:
+                return func(*args, **kwargs)
+
+        #Fetch the actual service and method callable
+        service, func, method, rest_kwargs = self.getServiceMethod(domain, service_name, method, request)
 
         # Cast request to an IApplicationserverRequest
         request = IApplicationserverRequest(request)
-
-        #Fetch the actual service and method callable
-        service, func = self.getServiceMethod(domain, service_name, method)
 
         #remove ignored parameters
         for ignore in IGNORED_PARAMETERS:
@@ -226,13 +246,10 @@ class Dispatcher:
         if want_request(func):
             kwargs[APPLICATIONSERVER_REQUEST_ARG] = request
 
-        applicationserver_human_readable = \
-                kwargs.pop('__applicationserver_human_readable', False)
+        applicationserver_human_readable = kwargs.pop('__applicationserver_human_readable', False)
         if want_human_readable(func):
-            kwargs[APPLICATIONSERVER_HUMAN_READABLE_ARG] = \
-                    applicationserver_human_readable
-        returns_human_readable = bool(want_human_readable(func) and \
-                                      applicationserver_human_readable)
+            kwargs[APPLICATIONSERVER_HUMAN_READABLE_ARG] = applicationserver_human_readable
+        returns_human_readable = bool(want_human_readable(func) and applicationserver_human_readable)
 
         #Decorate the original func so log stuff can be set up correctly
         func = service_method_caller(service_name, func)
@@ -240,30 +257,29 @@ class Dispatcher:
         hasauth = exposed_authenticated(func) or exposed_authorized(func)
 
         if not want_not_threaded(func) or hasauth:
-            #log.msg('[DISPATCHER] Running service method %s:%s in thread' % \
-            #        (service_name, method))
-            defer = threads.deferToThread(callServiceMethodinThread, func, request, domain, service, method, *args, **kwargs)
+            defer = threads.deferToThread(
+                callServiceMethodinThread, func, request, domain, service, method, rest_kwargs, *args, **kwargs
+            )
         else:
             # The service should not run in a thread
-            #log.msg('[DISPATCHER] Running service method %s:%s in reactor' % \
-            #        (service_name, method))
-
-            defer = maybeDeferred(callServiceMethodinThread,func, request, domain, service, method, *args, **kwargs)
+            defer = maybeDeferred(
+                callServiceMethodinThread, func, request, domain, service, method, rest_kwargs, *args, **kwargs
+            )
 
         def errback(failure):
             dispatchkwargs = {
-                    'request': request,
-                    'service': service_name,
-                    'method': method,
-                    'args': args,
-                    'kwargs': kwargs,
-                    'failure': failure,
+                'request': request,
+                'service': service_name,
+                'method': method,
+                'args': args,
+                'kwargs': kwargs,
+                'failure': failure,
             }
 
-            log.err('[DISPATCHER] Service method call %s:%s failed: %s' % \
-                    (service_name, method, failure))
+            log.err('[DISPATCHER] Service method call %s:%s failed: %s' % (service_name, method, failure))
 
-            pydispatcher.send(signal=signals.SERVICE_METHOD_EXCEPTION, sender=self, **dispatchkwargs) #pylint: disable=W0142
+            # pylint: disable=W0142
+            pydispatcher.send(signal=signals.SERVICE_METHOD_EXCEPTION, sender=self, **dispatchkwargs)
             return failure
 
         if returns_human_readable:
@@ -272,7 +288,7 @@ class Dispatcher:
 
         return defer
 
-    def getServiceMethod(self, domain, service_name, method):
+    def getServiceMethod(self, domain, service_name, method, request=None):
         '''Resolve a function given a service and method name
 
         @param service_name: Name of the service to resolve
@@ -294,20 +310,23 @@ class Dispatcher:
                 service_name = "%s.%s" % (domain, service_name)
             service = self.services[service_name]
         except KeyError:
-            raise NoSuchService(
-                'No service called \'%s\' registered on this server' % \
-                    service_name)
+            raise NoSuchService('No service called \'%s\' registered on this server' % service_name)
+
+        rest_kwargs = None
+        if request and hasattr(service, GET_REST_FUNCTION):
+            # Get the method we actually need to call
+            method, rest_kwargs = getattr(service, GET_REST_FUNCTION)(request)
 
         try:
             func = getattr(service, method)
         except AttributeError:
-            raise NoSuchMethod('Service %s exposes no method \'%s\'' % \
-                    (service_name, method))
+            raise NoSuchMethod('Service %s exposes no method \'%s\'' % (service_name, method))
 
         if not exposed(func):
-            raise NoSuchMethod('Method %s on %s is not exposed' % (method,
-                service_name))
+            raise NoSuchMethod('Method %s on %s is not exposed' % (method, service_name))
 
+        if request:
+            return service, func, method, rest_kwargs
         return service, func
 
     def checkAuthentication(self, domain, service, request, methodname, args, kwargs):
@@ -331,8 +350,7 @@ class Dispatcher:
         '''
         checker = getattr(service, CHECK_AUTHENTICATION_METHOD, None)
         if not checker:
-            raise RuntimeError('Service %s got no %s method' % \
-                    (service,CHECK_AUTHENTICATION_METHOD) )
+            raise RuntimeError('Service %s got no %s method' % (service, CHECK_AUTHENTICATION_METHOD))
 
         # Figure out whether the checkAuthentication method wants access to the
         # full request object.
@@ -358,7 +376,6 @@ class Dispatcher:
             raise ValueError('checkAuthentication should take two or three '
                              'arguments')
 
-
     def checkAuthorization(self, auth_categories, domain, service, request, methodname, args, kwargs):
         '''Check authorization for a given service
 
@@ -383,8 +400,7 @@ class Dispatcher:
         '''
         checker = getattr(service, CHECK_AUTHORIZATION_METHOD, None)
         if not checker:
-            raise RuntimeError('Service %s got no %s method' % \
-                    (service,CHECK_AUTHORIZATION_METHOD) )
+            raise RuntimeError('Service %s got no %s method' % (service, CHECK_AUTHORIZATION_METHOD))
 
         # Figure out whether the checkAuthorization method wants access to the
         # full request object.
@@ -400,18 +416,17 @@ class Dispatcher:
             # It's a method (or classmethod), we want to skip self/cls
             checker_args = checker_args[1:]
         else:
-            raise TypeError('%s is neither a function or a method' %(CHECK_AUTHORIZATION_METHOD,))
+            raise TypeError('%s is neither a function or a method' % (CHECK_AUTHORIZATION_METHOD,))
 
         if len(checker_args) == 2:
-            return checker(auth_categories,request.username)
-        else :
+            return checker(auth_categories, request.username)
+        else:
             return checker(auth_categories, request, domain, service, methodname, args, kwargs)
-
 
     def tupleToHumanReadable(self, t):
         if isinstance(t, tuple) and len(t) == 2:
             # This should be human readable...
-            return HumanReadable(*t) #pylint: disable=W0142
+            return HumanReadable(*t)  # pylint: disable=W0142
         return t
 
 
@@ -421,9 +436,9 @@ EXPOSE_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE'
 EXPOSED_SERVICE_NAME_KWARG = '__pm_exposed_service_name'
 #Attribute set if the method wants a request parameter
 APPLICATIONSERVER_REQUEST_ATTRIBUTE = 'APPLICATIONSERVER_WANT_REQUEST'
-APPLICATIONSERVER_HUMAN_READABLE_ATTRIBUTE = \
-        'APPLICATIONSERVER_WANT_HUMAN_READABLE'
+APPLICATIONSERVER_HUMAN_READABLE_ATTRIBUTE = 'APPLICATIONSERVER_WANT_HUMAN_READABLE'
 APPLICATIONSERVER_NOT_THREADED_ATTRIBUTE = 'APPLICATIONSERVER_NOT_THREADED'
+
 
 def tag_exposed(func):
     '''Tag a method as exposed'''
@@ -437,16 +452,19 @@ def tag_exposed(func):
 
     return func
 
+
 def tag_expose_authenticated(func):
     '''Tag a method as exposed with authentication'''
     setattr(func, EXPOSE_AUTHENTICATED_ATTRIBUTE, True)
     return func
 
+
 def tag_expose_authorized(func):
     '''Tag a method as exposed with authorization'''
 
-    setattr(func,EXPOSE_AUTHORIZED_ATTRIBUTE, True)
+    setattr(func, EXPOSE_AUTHORIZED_ATTRIBUTE, True)
     return func
+
 
 def expose(func):
     '''Decorator to mark a method as exposed on a service instance'''
@@ -471,6 +489,7 @@ def expose(func):
 
     return exposed_func
 
+
 def not_threaded(func):
     '''Tag a method as Twisted-aware'''
     setattr(func, APPLICATIONSERVER_NOT_THREADED_ATTRIBUTE, True)
@@ -479,13 +498,15 @@ def not_threaded(func):
 #Function to check whether a method is exposed
 exposed = attrchecker(EXPOSE_ATTRIBUTE)
 #Function to check whether a method wants a request argument
-want_request =  attrchecker(APPLICATIONSERVER_REQUEST_ATTRIBUTE)
+want_request = attrchecker(APPLICATIONSERVER_REQUEST_ATTRIBUTE)
 want_human_readable = attrchecker(APPLICATIONSERVER_HUMAN_READABLE_ATTRIBUTE)
 # Function to check whether a method should not run in a thread
 want_not_threaded = attrchecker(APPLICATIONSERVER_NOT_THREADED_ATTRIBUTE)
 
 #Attribute set on exposed methods who need authentication
 EXPOSE_AUTHENTICATED_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE_AUTHENTICATED'
+
+
 def expose_authenticated(func):
     '''Decorator to mark a method as exposed with authentication'''
     func = expose(func)
@@ -497,6 +518,8 @@ exposed_authenticated = attrchecker(EXPOSE_AUTHENTICATED_ATTRIBUTE)
 
 #Attribute set on exposed methods who need authorization
 EXPOSE_AUTHORIZED_ATTRIBUTE = 'APPLICATIONSERVER_EXPOSE_AUTHORIZED'
+
+
 class expose_authorized:
     '''Decorator to mark a method as exposed with authorization'''
     def __init__(self, **kwargs):
@@ -508,7 +531,7 @@ class expose_authorized:
         else:
             try:
                 fa = bool(self.kwargs['force_authentication'])
-            except: #pylint: disable=W0702
+            except:  # pylint: disable=W0702
                 fa = True
 
         if 'force_authentication' in self.kwargs:
@@ -525,4 +548,3 @@ class expose_authorized:
 
 #Function to check whether a method is exposed with authorization
 exposed_authorized = attrchecker(EXPOSE_AUTHORIZED_ATTRIBUTE)
-
