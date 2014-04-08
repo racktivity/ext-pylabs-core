@@ -537,6 +537,10 @@ if __name__ == '__main__':
 else:
     from pylabs import q, i, p #pylint: disable=F0401
 
+LOCAL_P = copy.copy(p)
+LOCAL_P.api = p.application.getAPI(p.api.appname, context=q.enumerators.AppContext.CLIENT)
+
+
 class UnknownSessionException(Exception):
     '''Exception raised when an invalid session ID is used'''
     pass
@@ -918,23 +922,17 @@ class ApplicationserverWizardService(object):
         return params.get('result', False)
 
     @q.manage.applicationserver.expose_authorized(defaultGroups=["admin"], authorizeParams={"wizard": "wizardName", "extra":"extra", "alarmGuid":""}, authorizeRule="start wizard")
-    def start(self, domainName, wizardName, extra=None,
-        applicationserver_request=None):
-        _p = copy.copy(p)
-        _p.api = p.application.getAPI(p.api.appname, context=q.enumerators.AppContext.CLIENT)
+    def start(self, domainName, wizardName, extra=None, applicationserver_request=None):
 
         login = applicationserver_request.username
         passwd = applicationserver_request.password
 
-        extra = extra or dict()
+        extra = extra or {}
 
-        tasklets = self.taskletengine.find(name='*',
-            tags=(domainName, wizardName))
+        tasklets = self.taskletengine.find(name='*', tags=(domainName, wizardName))
 
         if not tasklets:
-            raise RuntimeError(
-                'No matching wizard ("%s") found for domain "%s"' % \
-                (wizardName, domainName) )
+            raise RuntimeError('No matching wizard ("%s") found for domain "%s"' % (wizardName, domainName))
 
         params = {
             'domain': domainName,
@@ -942,7 +940,7 @@ class ApplicationserverWizardService(object):
             'login':login,
             'password': passwd,
         }
-        params.update( extra )
+        params.update(extra)
         tags = (domainName, wizardName)
 
         def call_tasklet_procedure(proc_, params_, tags_):
@@ -950,7 +948,7 @@ class ApplicationserverWizardService(object):
 
             # 0 case is 'default match': lambda *_1, lambda **_2: True
             if argcount_ == 5 or argcount_ == 0:
-                return proc_(q, i, _p, params_, tags_)
+                return proc_(q, i, LOCAL_P, params_, tags_)
             elif argcount_ == 4:
                 return proc_(q, i, params_, tags_)
 
@@ -963,7 +961,7 @@ class ApplicationserverWizardService(object):
 
                 args = ()
                 if argcount == 5:
-                    args = (q, i, _p, params, tags)
+                    args = (q, i, LOCAL_P, params, tags)
                 elif argcount == 4:
                     args = (q, i, params, tags)
                 else:
@@ -978,9 +976,7 @@ class ApplicationserverWizardService(object):
 
                 return session, step
 
-        raise RuntimeError(
-            'No matching wizard ("%s") found for domain "%s"' % \
-            (wizardName, domainName))
+        raise RuntimeError('No matching wizard ("%s") found for domain "%s"' % (wizardName, domainName))
 
     @q.manage.applicationserver.expose_authenticated
     def callback(self, domainName, wizardName='', methodName='', formData='',
@@ -1024,7 +1020,7 @@ class ApplicationserverWizardService(object):
             tags=(domainName,wizardName))
 
         if not wizard_methods:
-            raise RuntimeError('No matching wizard ("%s")found for domain "%s"' % (wizardName, domainName) )
+            raise RuntimeError('No matching wizard ("%s")found for domain "%s"' % (wizardName, domainName))
         if len(wizard_methods) > 1:
             raise RuntimeError('Multiple matching wizards found')
 
