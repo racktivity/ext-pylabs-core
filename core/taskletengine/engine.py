@@ -275,9 +275,6 @@ class TaskletEngine(object):
 
         #Don't reload if file is not touched
         if not pylabs.q.system.fs.exists(tasklets_updated):
-            pylabs.q.logger.log('Not reloading tasklets in %s, ' \
-                                  '%s doesn\'t exist' % \
-                                  (path, tasklets_updated), 6)
             return False
 
         stat_info = os.stat(tasklets_updated)
@@ -458,7 +455,6 @@ class TaskletEngine(object):
 
         matches = self.find(author, name, tags, priority, path=path,
             clusters=clusters)
-        pylabs.q.logger.log('Executing previously found tasklets', 6)
 
         for tasklet in matches:
             if tasklet.realizes and tasklet.realizes in realized:
