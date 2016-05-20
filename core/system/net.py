@@ -202,9 +202,9 @@ class SystemNet:
         if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
             exitcode,output = pylabs.q.system.process.execute("ip l", outputToStdout=False)
             if not up:
-                regex = "^\d+:\s(?P<name>[\w\d]*):.*$"
+                regex = "^\d+:\s(?P<name>[\w\d\@]*):.*$"
             else:
-                regex = "^\d+:\s(?P<name>[\w\d]*):\s<.*UP.*>.*$"
+                regex = "^\d+:\s(?P<name>[\w\d\@]*):\s<.*UP.*>.*$"
             return list(set(re.findall(regex,output,re.MULTILINE)))
         elif pylabs.q.platform.isSolaris():
             exitcode,output = pylabs.q.system.process.execute("ifconfig -a", outputToStdout=False)
@@ -341,6 +341,7 @@ class SystemNet:
     def getIpAddress(self, interface):
         """Return a list of ip addresses and netmasks assigned to this interface"""
         if pylabs.q.platform.isLinux() or pylabs.q.platform.isESX():
+            interface = interface.split("@")[0]
             command = "ip a s %s" % interface
             (exitcode, output) = pylabs.q.system.process.execute(command, outputToStdout=False, dieOnNonZeroExitCode=False)
             if exitcode != 0:
