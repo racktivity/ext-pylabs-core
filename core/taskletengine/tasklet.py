@@ -251,7 +251,8 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
         wrapper = wrapper or (lambda func: func)
         name = 'main'
         func = self.methods[name]
-        pylabs.q.logger.log('Executing tasklet %s' % self.name, 6)
+        r = random.randrange(0, 1000000)
+        pylabs.q.logger.log('[%06d] Executing tasklet %s' % (r, self.name), 6)
 
         if inspect.getargspec(func) == (['q', 'i', 'params', 'tags'], None, None, None):
             args = (pylabs.q, pylabs.i, params, tags or tuple())
@@ -262,7 +263,15 @@ class Tasklet(object): #pylint: disable-msg=R0902,R0903
 
         self._lastexecutiontime = time.time()
         wrapped = wrapper(func)
-        return wrapped(*args)
+        try:
+            result = wrapped(*args)
+        except:
+            pylabs.q.logger.log('[%06d] Error tasklet %s' % (r, self.name), 6)
+            raise
+        else:
+            pylabs.q.logger.log('[%06d] Finished tasklet %s' % (r, self.name), 6)
+        return result
+
 
     name = property(fget=operator.attrgetter('_name'))
     priority = property(fget=operator.attrgetter('_priority'))
